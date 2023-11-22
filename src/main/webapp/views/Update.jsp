@@ -1,3 +1,4 @@
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
@@ -66,7 +67,7 @@
                                 >Full name</label>
                                 <div class="input-group mb-2">
                                     <input type="text" class="form-control" placeholder="Họ và tên"
-                                           aria-label="Username" aria-describedby="basic-addon1" name="fullNameInp">
+                                           aria-label="Username" aria-describedby="basic-addon1" name="fullNameInp" value="${staff.fullName}">
                                 </div>
                             </div>
                             <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
@@ -74,14 +75,14 @@
                                        for="input_32_1">Date of birth</label>
                                 <div class="input-group mb-2">
                                     <input type="date" class="form-control" placeholder="DD/MM/YYYY"
-                                           aria-label="Username" aria-describedby="basic-addon1" name="dobInp">
+                                           aria-label="Username" aria-describedby="basic-addon1" name="dobInp" value="${staff.dob}">
                                 </div>
                             </div>
                             <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
                                 <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
                                        for="input_32_1">Gender</label>
                                 <div class="input-group mb-2">
-                                    <select class="form-select" aria-label="Default select example" name="genderInp">
+                                    <select class="form-select" aria-label="Default select example" name="genderInp" value="${staff.gender}">
                                         <option value="Male" selected>Male</option>
                                         <option value="Female">Female</option>
                                     </select>
@@ -90,7 +91,7 @@
                             <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
                                 <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
                                        for="input_32_1">Position</label>
-                                <select class="form-select" aria-label="Default select example" name="positionInp">
+                                <select class="form-select" aria-label="Default select example" name="positionInp" value="${staff.position}">
                                     <c:forEach varStatus="i" items="${lstPos}" var="pos">
                                         <option value="${pos.id}">${pos.name} - ${pos.code}</option>
                                     </c:forEach>
@@ -101,7 +102,7 @@
                                        for="input_32_1">Number of id card</label>
                                 <div class="input-group mb-3">
                                     <input type="text" class="form-control" placeholder="0123456789"
-                                           aria-label="Username" aria-describedby="basic-addon1" name="idCardNoInp">
+                                           aria-label="Username" aria-describedby="basic-addon1" name="idCardNoInp"value="${staff.idCardNo}">
                                 </div>
                             </div>
                             <div class="col-xxl-4 col-xl-6 col-md-12 mb-2">
@@ -109,13 +110,13 @@
                                        for="input_32_1">IdCard date</label>
                                 <div class="input-group mb-3">
                                     <input type="date" class="form-control" placeholder="DD/MM/YYYY"
-                                           aria-label="Username" aria-describedby="basic-addon1" name="idCardDateInp">
+                                           aria-label="Username" aria-describedby="basic-addon1" name="idCardDateInp" value=${staff.idCardDate}>
                                 </div>
                             </div>
                             <div class="col-xxl-4 col-xl-6 col-md-12 mb-2">
                                 <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
                                        for="input_32_1">IdCard isssued by</label>
-                                <select class="form-select" aria-label="Default select example" name="idCardPosInp">
+                                <select class="form-select" aria-label="Default select example" name="idCardPosInp" value="${staff.Province}">
                                     <c:forEach varStatus="i" items="${lstProvince}" var="province">
                                         <option value="${province.id}">${province.name}</option>
                                     </c:forEach>
@@ -126,7 +127,7 @@
                                        for="input_32_1">Place of residence</label>
                                 <div class="input-group mb-3">
                                     <input type="text" class="form-control" placeholder="" aria-label="Username"
-                                           aria-describedby="basic-addon1"name="residenceInp">
+                                           aria-describedby="basic-addon1"name="residenceInp" value="${staff.placeOfResidence}}">
                                 </div>
                             </div>
                             <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
@@ -134,7 +135,7 @@
                                        for="input_32_1">Phone number</label>
                                 <div class="input-group mb-3">
                                     <input type="text" class="form-control" placeholder="" aria-label="Username"
-                                           aria-describedby="basic-addon1" name="phoneInp">
+                                           aria-describedby="basic-addon1" name="phoneInp" value=${staff.phoneNumber}>
                                 </div>
                             </div>
                             <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
@@ -142,47 +143,13 @@
                                        for="input_32_1">Email</label>
                                 <div class="input-group mb-3">
                                     <input type="text" class="form-control" placeholder="" aria-label="Username"
-                                           aria-describedby="basic-addon1" name="emailInp">
+                                           aria-describedby="basic-addon1" name="emailInp" value=${staff.email}>
                                 </div>
                             </div>
                             <div class="text-center ">
                                 <br><br><br>
-                                <button type="submit" class="btn btn-primary" style="border-radius:0%;">Add employee</button>
+                                <button type="submit" class="btn btn-primary" style="border-radius:0%;">Update</button>
                             </div>
-                            <table class="table mt-5">
-                                <thead>
-                                <tr class="table-light">
-                                    <th scope="col">Index</th>
-                                    <th scope="col">Id</th>
-                                    <th scope="col">Name</th>
-                                    <th scope="col">Email</th>
-                                    <th scope="col">Position</th>
-                                    <th scope="col">Action</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <c:forEach varStatus="i" items="${lstStaff}" var="staff">
-                                    <tr>
-                                        <td>1</td>
-                                        <td>${staff.idStaff}</td>
-                                        <td>${staff.fullName}</td>
-                                        <td>${staff.email}</td>
-                                        <td>${staff.position.name} - ${staff.position.code} </td>
-                                        <td>
-                                            <a href="/Home/detail?id=${staff.id}">
-                                                <button type="button" class="btn btn-primary">Detail</button>
-                                            </a>
-                                            <a href="/Home/update?target=${staff.id}">
-                                                <button type="button" class="btn btn-Success ">Update</button>
-                                            </a>
-                                            <a href="/Home/delete?target=${staff.id}">
-                                                <button type="button" class="btn btn-danger">Delete</button>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                </c:forEach>
-                                </tbody>
-                            </table>
                         </div>
                     </div>
                 </div>
