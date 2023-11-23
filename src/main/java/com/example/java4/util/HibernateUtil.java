@@ -1,9 +1,6 @@
 package com.example.java4.util;
 
-import com.example.java4.model.ChucVu;
-import com.example.java4.model.Clss;
-import com.example.java4.model.CuaHang;
-import com.example.java4.model.Student;
+import com.example.java4.model.*;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
@@ -31,6 +28,8 @@ public class HibernateUtil {
         conf.addAnnotatedClass(Student.class);
         conf.addAnnotatedClass(ChucVu.class);
         conf.addAnnotatedClass(CuaHang.class);
+        conf.addAnnotatedClass(DongSP.class);
+
         ServiceRegistry registry = new StandardServiceRegistryBuilder()
                 .applySettings(conf.getProperties()).build();
         FACTORY = conf.buildSessionFactory(registry);
