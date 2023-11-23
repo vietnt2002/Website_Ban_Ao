@@ -1,11 +1,15 @@
 package com.example.java4.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
-public class SanPham {
+import java.io.Serializable;
+
+@Data
+@Entity
+@Table(name = "SanPham")
+public class SanPham implements Serializable {
     @Id
     @Column(name = "id", unique = true, nullable = false)
     @GeneratedValue(generator = "UUID")

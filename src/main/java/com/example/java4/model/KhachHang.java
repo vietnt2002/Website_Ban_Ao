@@ -1,13 +1,19 @@
 package com.example.java4.model;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Table;
+import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Id;
+import java.io.Serializable;
 import java.sql.Date;
-
-public class KhachHang {
+@Data
+@Entity
+@Table(name = "KhachHang")
+public class KhachHang implements Serializable {
     @Id
     @Column(name = "id", unique = true, nullable = false)
     @GeneratedValue(generator = "UUID")

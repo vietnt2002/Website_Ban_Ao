@@ -1,11 +1,15 @@
 package com.example.java4.model;
 
 import jakarta.persistence.*;
+import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.io.Serializable;
 import java.sql.Date;
-
-public class NhanVien {
+@Data
+@Entity
+@Table(name = "NhanVien")
+public class NhanVien implements Serializable {
     @Id
     @Column(name = "id", unique = true, nullable = false)
     @GeneratedValue(generator = "UUID")

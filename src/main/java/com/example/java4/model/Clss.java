@@ -6,15 +6,15 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-    @Entity
-    @Table(name = "clss")
-    public class Clss implements Serializable {
-        @Id
-        @Column(name = "idClss", unique = true, nullable = false)
-        @GeneratedValue
-        private Integer id;
-        @Column(name = "tenLop", length = 20)
-        private String name;
+@Entity
+@Table(name = "clss")
+public class Clss implements Serializable {
+    @Id
+    @Column(name = "idClss", unique = true, nullable = false)
+    @GeneratedValue
+    private Integer id;
+    @Column(name = "tenLop", length = 20)
+    private String name;
 
     public Clss() {
     }

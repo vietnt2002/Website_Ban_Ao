@@ -16,7 +16,7 @@ public class ClssDAO {
         cfg.configure("hibernate.cfg.xml");
         factory = cfg.buildSessionFactory();
     }
-    public static void  addClss(Integer id, String name) {
+    public static void  addClss(Integer id, String name)     {
         Session session = factory.openSession();
         Transaction tx = null;
         try {

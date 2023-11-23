@@ -1,18 +1,17 @@
 package com.example.java4.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
-public class DongSP {
+import java.io.Serializable;
+
+@Data
+@Entity
+@Table(name = "DongSP")
+public class DongSP implements Serializable {
     @Id
-    @Column(name = "id", unique = true, nullable = false)
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGeneratior"
-    )
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
     @Column(name = "Ma")
     private String ma;

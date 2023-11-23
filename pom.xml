@@ -94,7 +94,7 @@
         <dependency>
             <groupId>com.microsoft.sqlserver</groupId>
             <artifactId>mssql-jdbc</artifactId>
-            <version>10.2.0.jre11</version>
+            <version>9.4.1.jre16</version>
         </dependency>
         <dependency>
             <groupId>javax.persistence</groupId>
