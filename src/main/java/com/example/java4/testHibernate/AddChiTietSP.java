@@ -1,12 +1,9 @@
-package com.example.java4;
+package com.example.java4.testHibernate;
 
 import com.example.java4.model.*;
 import com.example.java4.repositories.*;
 
-import java.sql.Date;
-import java.util.ArrayList;
-
-public class main {
+public class AddChiTietSP {
     public static void main(String[] args) {
         SanPhamDAO spDao = new SanPhamDAO();
         NSXDAO nsxdao = new NSXDAO();

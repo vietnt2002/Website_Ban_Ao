@@ -4,23 +4,17 @@ import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Id;
 import java.io.Serializable;
 
 @Data
 @Entity
 @Table(name = "HoaDonChiTiet")
 public class HoaDonChiTiet implements Serializable {
-    @Id
-    @Column(name = "id", unique = true, nullable = false)
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGeneratior"
-    )
-    private String idGioHang;
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "idHoaDon")
+    private HoaDon hoaDon;
+    @ManyToOne
+    @JoinColumn(name = "idSanPham")
     private SanPham sp;
     @Column(name = "SoLuong")
     private int soluong;
@@ -30,19 +24,19 @@ public class HoaDonChiTiet implements Serializable {
     public HoaDonChiTiet() {
     }
 
-    public HoaDonChiTiet(String idGioHang, SanPham sp, int soluong, double donGia) {
-        this.idGioHang = idGioHang;
+    public HoaDonChiTiet(HoaDon hoaDon, SanPham sp, int soluong, double donGia) {
+        this.hoaDon = hoaDon;
         this.sp = sp;
         this.soluong = soluong;
         this.donGia = donGia;
     }
 
-    public String getIdGioHang() {
-        return idGioHang;
+    public HoaDon getHoaDon() {
+        return hoaDon;
     }
 
-    public void setIdGioHang(String idGioHang) {
-        this.idGioHang = idGioHang;
+    public void setHoaDon(HoaDon hoaDon) {
+        this.hoaDon = hoaDon;
     }
 
     public SanPham getSp() {
@@ -72,7 +66,7 @@ public class HoaDonChiTiet implements Serializable {
     @Override
     public String toString() {
         return "HoaDonChiTiet{" +
-                "idGioHang='" + idGioHang + '\'' +
+                "hoaDon=" + hoaDon +
                 ", sp=" + sp +
                 ", soluong=" + soluong +
                 ", donGia=" + donGia +

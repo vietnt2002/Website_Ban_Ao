@@ -11,13 +11,8 @@ import java.sql.Date;
 @Table(name = "GioHang")
 public class GioHang implements Serializable {
     @Id
-    @Column(name = "id", unique = true, nullable = false)
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGeneratior"
-    )
-    private String id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String idGioHang;
     @ManyToOne
     @JoinColumn(name = "id")
     private KhachHang kh;
@@ -42,8 +37,8 @@ public class GioHang implements Serializable {
     public GioHang() {
     }
 
-    public GioHang(String id, KhachHang kh, NhanVien idNV, String ma, Date ngayTao, Date ngayThanhToan, String tenNguoiNhan, String diaChi, String sdt, int tinhTrang) {
-        this.id = id;
+    public GioHang(String idGioHang, KhachHang kh, NhanVien idNV, String ma, Date ngayTao, Date ngayThanhToan, String tenNguoiNhan, String diaChi, String sdt, int tinhTrang) {
+        this.idGioHang = idGioHang;
         this.kh = kh;
         this.idNV = idNV;
         this.ma = ma;
@@ -55,12 +50,12 @@ public class GioHang implements Serializable {
         this.tinhTrang = tinhTrang;
     }
 
-    public String getId() {
-        return id;
+    public String getIdGioHang() {
+        return idGioHang;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setIdGioHang(String idGioHang) {
+        this.idGioHang = idGioHang;
     }
 
     public KhachHang getKh() {
@@ -135,4 +130,19 @@ public class GioHang implements Serializable {
         this.tinhTrang = tinhTrang;
     }
 
+    @Override
+    public String toString() {
+        return "GioHang{" +
+                "idGioHang='" + idGioHang + '\'' +
+                ", kh=" + kh +
+                ", idNV=" + idNV +
+                ", ma='" + ma + '\'' +
+                ", ngayTao=" + ngayTao +
+                ", ngayThanhToan=" + ngayThanhToan +
+                ", tenNguoiNhan='" + tenNguoiNhan + '\'' +
+                ", diaChi='" + diaChi + '\'' +
+                ", sdt='" + sdt + '\'' +
+                ", tinhTrang=" + tinhTrang +
+                '}';
+    }
 }

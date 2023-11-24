@@ -1,13 +1,9 @@
 package com.example.java4.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Id;
 import java.io.Serializable;
 
 @Data
@@ -15,15 +11,10 @@ import java.io.Serializable;
 @Table(name = "GioHangChiTiet")
 public class GioHangChiTiet implements Serializable {
     @Id
-    @Column(name = "id", unique = true, nullable = false)
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGeneratior"
-    )
-    private String idGioHang;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String idGioHangChiTiet;
     @Column(name = "IdChiTietSP")
-    private String idChiTietSP;
+    private ChiTietSP chiTietSP;
     @Column(name = "SoLuong")
     private int soLuong;
     @Column(name = "DonGia")
@@ -34,28 +25,28 @@ public class GioHangChiTiet implements Serializable {
     public GioHangChiTiet() {
     }
 
-    public GioHangChiTiet(String idGioHang, String idChiTietSP, int soLuong, double donGia, double donGiaKhiGiam) {
-        this.idGioHang = idGioHang;
-        this.idChiTietSP = idChiTietSP;
+    public GioHangChiTiet(String idGioHangChiTiet, ChiTietSP chiTietSP, int soLuong, double donGia, double donGiaKhiGiam) {
+        this.idGioHangChiTiet = idGioHangChiTiet;
+        this.chiTietSP = chiTietSP;
         this.soLuong = soLuong;
         this.donGia = donGia;
         this.donGiaKhiGiam = donGiaKhiGiam;
     }
 
-    public String getIdGioHang() {
-        return idGioHang;
+    public String getIdGioHangChiTiet() {
+        return idGioHangChiTiet;
     }
 
-    public void setIdGioHang(String idGioHang) {
-        this.idGioHang = idGioHang;
+    public void setIdGioHangChiTiet(String idGioHangChiTiet) {
+        this.idGioHangChiTiet = idGioHangChiTiet;
     }
 
-    public String getIdChiTietSP() {
-        return idChiTietSP;
+    public ChiTietSP getChiTietSP() {
+        return chiTietSP;
     }
 
-    public void setIdChiTietSP(String idChiTietSP) {
-        this.idChiTietSP = idChiTietSP;
+    public void setChiTietSP(ChiTietSP chiTietSP) {
+        this.chiTietSP = chiTietSP;
     }
 
     public int getSoLuong() {
@@ -85,8 +76,8 @@ public class GioHangChiTiet implements Serializable {
     @Override
     public String toString() {
         return "GioHangChiTiet{" +
-                "idGioHang='" + idGioHang + '\'' +
-                ", idChiTietSP='" + idChiTietSP + '\'' +
+                "idGioHangChiTiet='" + idGioHangChiTiet + '\'' +
+                ", chiTietSP=" + chiTietSP +
                 ", soLuong=" + soLuong +
                 ", donGia=" + donGia +
                 ", donGiaKhiGiam=" + donGiaKhiGiam +

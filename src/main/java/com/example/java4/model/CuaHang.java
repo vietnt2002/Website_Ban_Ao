@@ -12,7 +12,7 @@ import java.io.Serializable;
 public class CuaHang implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    private String idCuaHang;
     @Column(name = "Ma")
     private String ma;
     @Column(name = "Ten")
@@ -27,8 +27,8 @@ public class CuaHang implements Serializable {
     public CuaHang() {
     }
 
-    public CuaHang(String id, String ma, String ten, String diaChi, String thanhPho, String quocGia) {
-        this.id = id;
+    public CuaHang(String idCuaHang, String ma, String ten, String diaChi, String thanhPho, String quocGia) {
+        this.idCuaHang = idCuaHang;
         this.ma = ma;
         this.ten = ten;
         this.diaChi = diaChi;
@@ -36,12 +36,12 @@ public class CuaHang implements Serializable {
         this.quocGia = quocGia;
     }
 
-    public String getId() {
-        return id;
+    public String getIdCuaHang() {
+        return idCuaHang;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setIdCuaHang(String idCuaHang) {
+        this.idCuaHang = idCuaHang;
     }
 
     public String getMa() {
@@ -87,7 +87,7 @@ public class CuaHang implements Serializable {
     @Override
     public String toString() {
         return "CuaHang{" +
-                "id='" + id + '\'' +
+                "idCuaHang='" + idCuaHang + '\'' +
                 ", ma='" + ma + '\'' +
                 ", ten='" + ten + '\'' +
                 ", diaChi='" + diaChi + '\'' +

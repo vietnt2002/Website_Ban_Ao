@@ -12,7 +12,7 @@ import java.io.Serializable;
 public class DongSP implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    private String idDongSP;
     @Column(name = "Ma")
     private String ma;
     @Column(name = "Ten")
@@ -21,18 +21,18 @@ public class DongSP implements Serializable {
     public DongSP() {
     }
 
-    public DongSP(String id, String ma, String ten) {
-        this.id = id;
+    public DongSP(String idDongSP, String ma, String ten) {
+        this.idDongSP = idDongSP;
         this.ma = ma;
         this.ten = ten;
     }
 
-    public String getId() {
-        return id;
+    public String getIdDongSP() {
+        return idDongSP;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setIdDongSP(String idDongSP) {
+        this.idDongSP = idDongSP;
     }
 
     public String getMa() {
@@ -54,10 +54,9 @@ public class DongSP implements Serializable {
     @Override
     public String toString() {
         return "DongSP{" +
-                "id='" + id + '\'' +
+                "idDongSP='" + idDongSP + '\'' +
                 ", ma='" + ma + '\'' +
                 ", ten='" + ten + '\'' +
                 '}';
     }
-
 }

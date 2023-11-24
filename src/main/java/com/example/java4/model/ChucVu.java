@@ -12,7 +12,7 @@ import java.io.Serializable;
 public class ChucVu implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    private String idChucVu;
     @Column(name = "ma")
     private String ma;
     @Column(name = "ten")
@@ -21,18 +21,18 @@ public class ChucVu implements Serializable {
     public ChucVu() {
     }
 
-    public ChucVu(String id, String ma, String ten) {
-        this.id = id;
+    public ChucVu(String idChucVu, String ma, String ten) {
+        this.idChucVu = idChucVu;
         this.ma = ma;
         this.ten = ten;
     }
 
-    public String getId() {
-        return id;
+    public String getIdChucVu() {
+        return idChucVu;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setIdChucVu(String idChucVu) {
+        this.idChucVu = idChucVu;
     }
 
     public String getMa() {
@@ -54,7 +54,7 @@ public class ChucVu implements Serializable {
     @Override
     public String toString() {
         return "ChucVu{" +
-                "id='" + id + '\'' +
+                "idChucVu='" + idChucVu + '\'' +
                 ", ma='" + ma + '\'' +
                 ", ten='" + ten + '\'' +
                 '}';

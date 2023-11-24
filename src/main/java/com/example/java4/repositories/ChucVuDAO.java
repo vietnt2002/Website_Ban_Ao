@@ -42,4 +42,17 @@ public class ChucVuDAO {
         return lstChucVus;
     }
 
+    public ChucVu getByID(String id){
+        Session session = factory.openSession();
+        Transaction tx = null;
+        ChucVu  chucVu = new ChucVu();
+        try {
+            chucVu  = session.get(ChucVu.class,id);
+            System.out.println(chucVu.toString());
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
+        return  chucVu;
+    }
 }

@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Id;
 import java.io.Serializable;
 import java.sql.Date;
 @Data
@@ -12,13 +11,8 @@ import java.sql.Date;
 @Table(name = "HoaDon")
 public class HoaDon implements Serializable {
     @Id
-    @Column(name = "id", unique = true, nullable = false)
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGeneratior"
-    )
-    private String id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String idHoaDon;
     @ManyToOne
     @JoinColumn(name = "Id")
     private KhachHang KH;
@@ -47,8 +41,8 @@ public class HoaDon implements Serializable {
     public HoaDon() {
     }
 
-    public HoaDon(String id, KhachHang KH, NhanVien nv, String ma, Date ngayTao, Date ngayThanhToan, Date ngayShip, Date ngayNhan, int tinhTrang, String tenNguoiNhan, String diaChi, String sdt) {
-        this.id = id;
+    public HoaDon(String idHoaDon, KhachHang KH, NhanVien nv, String ma, Date ngayTao, Date ngayThanhToan, Date ngayShip, Date ngayNhan, int tinhTrang, String tenNguoiNhan, String diaChi, String sdt) {
+        this.idHoaDon = idHoaDon;
         this.KH = KH;
         this.nv = nv;
         this.ma = ma;
@@ -62,12 +56,12 @@ public class HoaDon implements Serializable {
         this.sdt = sdt;
     }
 
-    public String getId() {
-        return id;
+    public String getIdHoaDon() {
+        return idHoaDon;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setIdHoaDon(String idHoaDon) {
+        this.idHoaDon = idHoaDon;
     }
 
     public KhachHang getKH() {
@@ -161,7 +155,7 @@ public class HoaDon implements Serializable {
     @Override
     public String toString() {
         return "HoaDon{" +
-                "id='" + id + '\'' +
+                "idHoaDon='" + idHoaDon + '\'' +
                 ", KH=" + KH +
                 ", nv=" + nv +
                 ", ma='" + ma + '\'' +

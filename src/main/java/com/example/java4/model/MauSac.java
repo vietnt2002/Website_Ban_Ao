@@ -11,13 +11,8 @@ import java.io.Serializable;
 @Table(name = "MauSac")
 public class MauSac implements Serializable {
     @Id
-    @Column(name = "id", unique = true, nullable = false)
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGeneratior"
-    )
-    private String id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String idMauSac;
     @Column(name = "Ma")
     private String ma;
     @Column(name = "ten")
@@ -26,18 +21,18 @@ public class MauSac implements Serializable {
     public MauSac() {
     }
 
-    public MauSac(String id, String ma, String ten) {
-        this.id = id;
+    public MauSac(String idMauSac, String ma, String ten) {
+        this.idMauSac = idMauSac;
         this.ma = ma;
         this.ten = ten;
     }
 
-    public String getId() {
-        return id;
+    public String getIdMauSac() {
+        return idMauSac;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setIdMauSac(String idMauSac) {
+        this.idMauSac = idMauSac;
     }
 
     public String getMa() {
@@ -59,7 +54,7 @@ public class MauSac implements Serializable {
     @Override
     public String toString() {
         return "MauSac{" +
-                "id='" + id + '\'' +
+                "idMauSac='" + idMauSac + '\'' +
                 ", ma='" + ma + '\'' +
                 ", ten='" + ten + '\'' +
                 '}';

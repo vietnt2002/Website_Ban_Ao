@@ -42,4 +42,20 @@ public class DongSPDAO {
         }
         return lstDongSP;
     }
+
+    public DongSP getById(String id){
+         Session session = factory.openSession();
+         Transaction tx = null;
+         DongSP dongSP = new DongSP();
+         try {
+             tx = session.beginTransaction();
+             dongSP = session.get(DongSP.class,id);
+             System.out.println(dongSP.toString());
+         }
+         catch(Exception e) {
+             e.printStackTrace();
+         }
+         return dongSP;
+    }
+
 }

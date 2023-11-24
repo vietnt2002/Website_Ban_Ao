@@ -9,24 +9,19 @@ import org.hibernate.annotations.GenericGenerator;
 @Table(name = "ChiTietSP")
 public class ChiTietSP {
     @Id
-    @Column(name="id", unique = true, nullable = false)
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator"
-    )
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
-    @OneToMany
-    @JoinColumn(name="id")
+    @ManyToOne
+    @JoinColumn(name="idSanPham")
     private SanPham sp;
     @ManyToOne
-    @JoinColumn(name="id")
+    @JoinColumn(name="idNSX")
     private NSX nsx;
     @ManyToOne
-    @JoinColumn(name="id")
-    private String idMauSac;
+    @JoinColumn(name="idMauSac")
+    private MauSac mauSac;
     @ManyToOne
-    @JoinColumn(name="id")
+    @JoinColumn(name="idDongSP")
     private DongSP dongSP;
     @Column(name="NamBH")
     private int namBH;
@@ -42,11 +37,11 @@ public class ChiTietSP {
     public ChiTietSP() {
     }
 
-    public ChiTietSP(String id, SanPham sp, NSX nsx, String idMauSac, DongSP dongSP, int namBH, String mota, int soLuongTon, double giaNhap, double giaBan) {
+    public ChiTietSP(String id, SanPham sp, NSX nsx, MauSac mauSac, DongSP dongSP, int namBH, String mota, int soLuongTon, double giaNhap, double giaBan) {
         this.id = id;
         this.sp = sp;
         this.nsx = nsx;
-        this.idMauSac = idMauSac;
+        this.mauSac = mauSac;
         this.dongSP = dongSP;
         this.namBH = namBH;
         this.mota = mota;
@@ -79,12 +74,12 @@ public class ChiTietSP {
         this.nsx = nsx;
     }
 
-    public String getIdMauSac() {
-        return idMauSac;
+    public MauSac getMauSac() {
+        return mauSac;
     }
 
-    public void setIdMauSac(String idMauSac) {
-        this.idMauSac = idMauSac;
+    public void setMauSac(MauSac mauSac) {
+        this.mauSac = mauSac;
     }
 
     public DongSP getDongSP() {
@@ -141,7 +136,7 @@ public class ChiTietSP {
                 "id='" + id + '\'' +
                 ", sp=" + sp +
                 ", nsx=" + nsx +
-                ", idMauSac='" + idMauSac + '\'' +
+                ", mauSac=" + mauSac +
                 ", dongSP=" + dongSP +
                 ", namBH=" + namBH +
                 ", mota='" + mota + '\'' +

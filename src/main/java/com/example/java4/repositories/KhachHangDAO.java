@@ -12,10 +12,10 @@ import java.util.ArrayList;
 public class KhachHangDAO {
      SessionFactory factory = HibernateUtil.getFACTORY();
      Transaction tx = null;
-     public void addKhachHang(String id, String ma, String ten, String tenDem, String ho, Date ngaySinh, String sdt, String diaChi, String quocGia, String matKhau){
+     public void addKhachHang(String id, String ma, String ten, String tenDem, String ho, Date ngaySinh, String sdt, String diaChi,String thanhPho, String quocGia, String matKhau){
          Session session  = factory.openSession();
          tx = session.beginTransaction();
-         KhachHang kh  = new KhachHang(id,ma,ten,tenDem,ho,ngaySinh,sdt,diaChi,quocGia,matKhau);
+         KhachHang kh  = new KhachHang(id,ma,ten,tenDem,ho,ngaySinh,sdt,diaChi,thanhPho,quocGia,matKhau);
          session.save(kh);
          tx.commit();
          System.out.println("Add customer success");
@@ -36,4 +36,18 @@ public class KhachHangDAO {
            }
            return lstKH;
      }
+     public KhachHang getById(String id){
+           Session session = factory.openSession();
+           Transaction tx = null;
+           KhachHang kh = new KhachHang();
+           try {
+               kh = session.get(KhachHang.class,id);
+               System.out.println(kh.toString());
+           }
+           catch(Exception e) {
+               e.printStackTrace();
+           }
+           return kh;
+     }
+
 }

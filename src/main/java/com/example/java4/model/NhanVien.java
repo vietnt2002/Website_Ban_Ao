@@ -11,13 +11,8 @@ import java.sql.Date;
 @Table(name = "NhanVien")
 public class NhanVien implements Serializable {
     @Id
-    @Column(name = "id", unique = true, nullable = false)
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGeneratior"
-    )
-    private String id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String idNV;
     @Column(name = "Ma")
     private String ma;
     @Column(name = "Ten")
@@ -52,8 +47,8 @@ public class NhanVien implements Serializable {
     public NhanVien() {
     }
 
-    public NhanVien(String id, String ma, String ten, String temDem, String ho, String gioiTinh, Date ngaySinh, String diaChi, String sdt, String matKhau, CuaHang ch, ChucVu cv, String idGuiBC, int trangThai) {
-        this.id = id;
+    public NhanVien(String idNV, String ma, String ten, String temDem, String ho, String gioiTinh, Date ngaySinh, String diaChi, String sdt, String matKhau, CuaHang ch, ChucVu cv, String idGuiBC, int trangThai) {
+        this.idNV = idNV;
         this.ma = ma;
         this.ten = ten;
         this.temDem = temDem;
@@ -69,12 +64,12 @@ public class NhanVien implements Serializable {
         this.trangThai = trangThai;
     }
 
-    public String getId() {
-        return id;
+    public String getIdNV() {
+        return idNV;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setIdNV(String idNV) {
+        this.idNV = idNV;
     }
 
     public String getMa() {
@@ -184,7 +179,7 @@ public class NhanVien implements Serializable {
     @Override
     public String toString() {
         return "NhanVien{" +
-                "id='" + id + '\'' +
+                "idNV='" + idNV + '\'' +
                 ", ma='" + ma + '\'' +
                 ", ten='" + ten + '\'' +
                 ", temDem='" + temDem + '\'' +

@@ -46,4 +46,20 @@ public class CuaHangDAO {
         }
         return lstCuaHang;
     }
+
+    public CuaHang getByID(String id){
+         Session session = factory.openSession();
+         Transaction tx = null;
+         CuaHang cuaHang = new CuaHang();
+         try {
+             tx = session.beginTransaction();
+             cuaHang = session.get(CuaHang.class,id);
+             System.out.println(cuaHang.toString());
+         }
+         catch(Exception e) {
+             e.printStackTrace();
+         }
+         return cuaHang;
+    }
+
 }

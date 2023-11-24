@@ -1,13 +1,9 @@
 package com.example.java4.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Id;
 import java.io.Serializable;
 import java.sql.Date;
 @Data
@@ -15,13 +11,8 @@ import java.sql.Date;
 @Table(name = "KhachHang")
 public class KhachHang implements Serializable {
     @Id
-    @Column(name = "id", unique = true, nullable = false)
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGeneratior"
-    )
-    private String id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String idKH;
     @Column(name = "Ma")
     private String ma;
     @Column(name = "Ten")
@@ -36,6 +27,8 @@ public class KhachHang implements Serializable {
     private String sdt;
     @Column(name = "DiaChi")
     private String diaChi;
+    @Column(name="ThanhPho")
+    private String thanhPho;
     @Column(name = "QuocGia")
     private String quocGia;
     @Column(name = "MatKhau")
@@ -44,8 +37,8 @@ public class KhachHang implements Serializable {
     public KhachHang() {
     }
 
-    public KhachHang(String id, String ma, String ten, String tenDem, String ho, Date ngaySinh, String sdt, String diaChi, String quocGia, String matKhau) {
-        this.id = id;
+    public KhachHang(String idKH, String ma, String ten, String tenDem, String ho, Date ngaySinh, String sdt, String diaChi, String thanhPho, String quocGia, String matKhau) {
+        this.idKH = idKH;
         this.ma = ma;
         this.ten = ten;
         this.tenDem = tenDem;
@@ -53,16 +46,17 @@ public class KhachHang implements Serializable {
         this.ngaySinh = ngaySinh;
         this.sdt = sdt;
         this.diaChi = diaChi;
+        this.thanhPho = thanhPho;
         this.quocGia = quocGia;
         this.matKhau = matKhau;
     }
 
-    public String getId() {
-        return id;
+    public String getIdKH() {
+        return idKH;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setIdKH(String idKH) {
+        this.idKH = idKH;
     }
 
     public String getMa() {
@@ -121,6 +115,14 @@ public class KhachHang implements Serializable {
         this.diaChi = diaChi;
     }
 
+    public String getThanhPho() {
+        return thanhPho;
+    }
+
+    public void setThanhPho(String thanhPho) {
+        this.thanhPho = thanhPho;
+    }
+
     public String getQuocGia() {
         return quocGia;
     }
@@ -140,7 +142,7 @@ public class KhachHang implements Serializable {
     @Override
     public String toString() {
         return "KhachHang{" +
-                "id='" + id + '\'' +
+                "idKH='" + idKH + '\'' +
                 ", ma='" + ma + '\'' +
                 ", ten='" + ten + '\'' +
                 ", tenDem='" + tenDem + '\'' +
@@ -148,6 +150,7 @@ public class KhachHang implements Serializable {
                 ", ngaySinh=" + ngaySinh +
                 ", sdt='" + sdt + '\'' +
                 ", diaChi='" + diaChi + '\'' +
+                ", thanhPho='" + thanhPho + '\'' +
                 ", quocGia='" + quocGia + '\'' +
                 ", matKhau='" + matKhau + '\'' +
                 '}';
