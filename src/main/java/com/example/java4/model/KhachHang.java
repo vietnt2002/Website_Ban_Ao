@@ -12,7 +12,7 @@ import java.sql.Date;
 public class KhachHang implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private String idKH;
+    private String idKhachHang;
     @Column(name = "Ma")
     private String ma;
     @Column(name = "Ten")
@@ -37,8 +37,8 @@ public class KhachHang implements Serializable {
     public KhachHang() {
     }
 
-    public KhachHang(String idKH, String ma, String ten, String tenDem, String ho, Date ngaySinh, String sdt, String diaChi, String thanhPho, String quocGia, String matKhau) {
-        this.idKH = idKH;
+    public KhachHang(String idKhachHang, String ma, String ten, String tenDem, String ho, Date ngaySinh, String sdt, String diaChi, String thanhPho, String quocGia, String matKhau) {
+        this.idKhachHang = idKhachHang;
         this.ma = ma;
         this.ten = ten;
         this.tenDem = tenDem;
@@ -51,12 +51,12 @@ public class KhachHang implements Serializable {
         this.matKhau = matKhau;
     }
 
-    public String getIdKH() {
-        return idKH;
+    public String getIdKhachHang() {
+        return idKhachHang;
     }
 
-    public void setIdKH(String idKH) {
-        this.idKH = idKH;
+    public void setIdKhachHang(String idKhachHang) {
+        this.idKhachHang = idKhachHang;
     }
 
     public String getMa() {
@@ -142,7 +142,7 @@ public class KhachHang implements Serializable {
     @Override
     public String toString() {
         return "KhachHang{" +
-                "idKH='" + idKH + '\'' +
+                "idKhachHang='" + idKhachHang + '\'' +
                 ", ma='" + ma + '\'' +
                 ", ten='" + ten + '\'' +
                 ", tenDem='" + tenDem + '\'' +

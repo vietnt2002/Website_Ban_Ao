@@ -1,5 +1,4 @@
 package com.example.java4.testHibernate;
-
 import com.example.java4.model.*;
 import com.example.java4.repositories.*;
 

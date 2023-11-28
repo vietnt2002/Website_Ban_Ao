@@ -10,7 +10,7 @@ import org.hibernate.annotations.GenericGenerator;
 public class ChiTietSP {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    private String idChiTietSP;
     @ManyToOne
     @JoinColumn(name="idSanPham")
     private SanPham sp;
@@ -37,8 +37,8 @@ public class ChiTietSP {
     public ChiTietSP() {
     }
 
-    public ChiTietSP(String id, SanPham sp, NSX nsx, MauSac mauSac, DongSP dongSP, int namBH, String mota, int soLuongTon, double giaNhap, double giaBan) {
-        this.id = id;
+    public ChiTietSP(String idChiTietSP, SanPham sp, NSX nsx, MauSac mauSac, DongSP dongSP, int namBH, String mota, int soLuongTon, double giaNhap, double giaBan) {
+        this.idChiTietSP = idChiTietSP;
         this.sp = sp;
         this.nsx = nsx;
         this.mauSac = mauSac;
@@ -50,12 +50,12 @@ public class ChiTietSP {
         this.giaBan = giaBan;
     }
 
-    public String getId() {
-        return id;
+    public String getIdChiTietSP() {
+        return idChiTietSP;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setIdChiTietSP(String idChiTietSP) {
+        this.idChiTietSP = idChiTietSP;
     }
 
     public SanPham getSp() {
@@ -133,7 +133,7 @@ public class ChiTietSP {
     @Override
     public String toString() {
         return "ChiTietSP{" +
-                "id='" + id + '\'' +
+                "idChiTietSP='" + idChiTietSP + '\'' +
                 ", sp=" + sp +
                 ", nsx=" + nsx +
                 ", mauSac=" + mauSac +

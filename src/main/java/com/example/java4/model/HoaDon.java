@@ -14,10 +14,10 @@ public class HoaDon implements Serializable {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String idHoaDon;
     @ManyToOne
-    @JoinColumn(name = "Id")
+    @JoinColumn(name = "idKhachHang")
     private KhachHang KH;
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "idNhanVien")
     private NhanVien nv;
     @Column(name = "Ma")
     private String ma;

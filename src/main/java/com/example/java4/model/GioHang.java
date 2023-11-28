@@ -14,11 +14,11 @@ public class GioHang implements Serializable {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String idGioHang;
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "idKhachHang")
     private KhachHang kh;
     @ManyToOne
-    @JoinColumn(name = "id")
-    private NhanVien idNV;
+    @JoinColumn(name = "idNhanVien")
+    private NhanVien nv;
     @Column(name = "Ma")
     private String ma;
     @Column(name = "NgayTao")
@@ -37,10 +37,10 @@ public class GioHang implements Serializable {
     public GioHang() {
     }
 
-    public GioHang(String idGioHang, KhachHang kh, NhanVien idNV, String ma, Date ngayTao, Date ngayThanhToan, String tenNguoiNhan, String diaChi, String sdt, int tinhTrang) {
+    public GioHang(String idGioHang, KhachHang kh, NhanVien nv, String ma, Date ngayTao, Date ngayThanhToan, String tenNguoiNhan, String diaChi, String sdt, int tinhTrang) {
         this.idGioHang = idGioHang;
         this.kh = kh;
-        this.idNV = idNV;
+        this.nv = nv;
         this.ma = ma;
         this.ngayTao = ngayTao;
         this.ngayThanhToan = ngayThanhToan;
@@ -66,12 +66,12 @@ public class GioHang implements Serializable {
         this.kh = kh;
     }
 
-    public NhanVien getIdNV() {
-        return idNV;
+    public NhanVien getNv() {
+        return nv;
     }
 
-    public void setIdNV(NhanVien idNV) {
-        this.idNV = idNV;
+    public void setNv(NhanVien nv) {
+        this.nv = nv;
     }
 
     public String getMa() {
@@ -135,7 +135,7 @@ public class GioHang implements Serializable {
         return "GioHang{" +
                 "idGioHang='" + idGioHang + '\'' +
                 ", kh=" + kh +
-                ", idNV=" + idNV +
+                ", nv=" + nv +
                 ", ma='" + ma + '\'' +
                 ", ngayTao=" + ngayTao +
                 ", ngayThanhToan=" + ngayThanhToan +

@@ -12,7 +12,7 @@ import java.sql.Date;
 public class NhanVien implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private String idNV;
+    private String idNhanVien;
     @Column(name = "Ma")
     private String ma;
     @Column(name = "Ten")
@@ -32,23 +32,19 @@ public class NhanVien implements Serializable {
     @Column(name = "MatKhau")
     private String matKhau;
     @ManyToOne
-    @JoinColumn(name = "Id")
+    @JoinColumn(name = "idCuaHang")
     private  CuaHang ch;
     @ManyToOne
-    @JoinColumn(name = "Id")
+    @JoinColumn(name = "idChucVu")
     private ChucVu cv;
-    @ManyToOne
-    @JoinColumn(name = "IdGuiBC")
-    private String idGuiBC;
-    @ManyToOne
-    @JoinColumn(name = "TrangThai")
+    @Column(name = "TrangThai")
     private int trangThai;
 
     public NhanVien() {
     }
 
-    public NhanVien(String idNV, String ma, String ten, String temDem, String ho, String gioiTinh, Date ngaySinh, String diaChi, String sdt, String matKhau, CuaHang ch, ChucVu cv, String idGuiBC, int trangThai) {
-        this.idNV = idNV;
+    public NhanVien(String idNhanVien, String ma, String ten, String temDem, String ho, String gioiTinh, Date ngaySinh, String diaChi, String sdt, String matKhau, CuaHang ch, ChucVu cv, int trangThai) {
+        this.idNhanVien = idNhanVien;
         this.ma = ma;
         this.ten = ten;
         this.temDem = temDem;
@@ -60,16 +56,15 @@ public class NhanVien implements Serializable {
         this.matKhau = matKhau;
         this.ch = ch;
         this.cv = cv;
-        this.idGuiBC = idGuiBC;
         this.trangThai = trangThai;
     }
 
-    public String getIdNV() {
-        return idNV;
+    public String getIdNhanVien() {
+        return idNhanVien;
     }
 
-    public void setIdNV(String idNV) {
-        this.idNV = idNV;
+    public void setIdNhanVien(String idNhanVien) {
+        this.idNhanVien = idNhanVien;
     }
 
     public String getMa() {
@@ -160,14 +155,6 @@ public class NhanVien implements Serializable {
         this.cv = cv;
     }
 
-    public String getIdGuiBC() {
-        return idGuiBC;
-    }
-
-    public void setIdGuiBC(String idGuiBC) {
-        this.idGuiBC = idGuiBC;
-    }
-
     public int getTrangThai() {
         return trangThai;
     }
@@ -179,7 +166,7 @@ public class NhanVien implements Serializable {
     @Override
     public String toString() {
         return "NhanVien{" +
-                "idNV='" + idNV + '\'' +
+                "idNhanVien='" + idNhanVien + '\'' +
                 ", ma='" + ma + '\'' +
                 ", ten='" + ten + '\'' +
                 ", temDem='" + temDem + '\'' +
@@ -191,7 +178,6 @@ public class NhanVien implements Serializable {
                 ", matKhau='" + matKhau + '\'' +
                 ", ch=" + ch +
                 ", cv=" + cv +
-                ", idGuiBC='" + idGuiBC + '\'' +
                 ", trangThai=" + trangThai +
                 '}';
     }

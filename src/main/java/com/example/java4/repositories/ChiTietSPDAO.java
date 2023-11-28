@@ -42,4 +42,18 @@ public class ChiTietSPDAO {
         return lstChiTietSp;
     }
 
+    public ChiTietSP getByID(String id){
+        ChiTietSP chiTietSP = new ChiTietSP();
+        try {
+            Session session = factory.openSession();
+            tx = session.beginTransaction();
+            chiTietSP = session.get(ChiTietSP.class,id);
+            System.out.println(chiTietSP);
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
+        return chiTietSP;
+    }
+
 }

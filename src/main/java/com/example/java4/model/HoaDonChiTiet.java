@@ -10,12 +10,14 @@ import java.io.Serializable;
 @Entity
 @Table(name = "HoaDonChiTiet")
 public class HoaDonChiTiet implements Serializable {
+    @EmbeddedId
     @ManyToOne
     @JoinColumn(name = "idHoaDon")
     private HoaDon hoaDon;
+    @EmbeddedId
     @ManyToOne
-    @JoinColumn(name = "idSanPham")
-    private SanPham sp;
+    @JoinColumn(name = "idChiTietSP")
+    private ChiTietSP chiTietSP;
     @Column(name = "SoLuong")
     private int soluong;
     @Column(name = "DonGia")
@@ -24,9 +26,9 @@ public class HoaDonChiTiet implements Serializable {
     public HoaDonChiTiet() {
     }
 
-    public HoaDonChiTiet(HoaDon hoaDon, SanPham sp, int soluong, double donGia) {
+    public HoaDonChiTiet(HoaDon hoaDon, ChiTietSP chiTietSP, int soluong, double donGia) {
         this.hoaDon = hoaDon;
-        this.sp = sp;
+        this.chiTietSP = chiTietSP;
         this.soluong = soluong;
         this.donGia = donGia;
     }
@@ -39,12 +41,12 @@ public class HoaDonChiTiet implements Serializable {
         this.hoaDon = hoaDon;
     }
 
-    public SanPham getSp() {
-        return sp;
+    public ChiTietSP getChiTietSP() {
+        return chiTietSP;
     }
 
-    public void setSp(SanPham sp) {
-        this.sp = sp;
+    public void setChiTietSP(ChiTietSP chiTietSP) {
+        this.chiTietSP = chiTietSP;
     }
 
     public int getSoluong() {
@@ -67,7 +69,7 @@ public class HoaDonChiTiet implements Serializable {
     public String toString() {
         return "HoaDonChiTiet{" +
                 "hoaDon=" + hoaDon +
-                ", sp=" + sp +
+                ", chiTietSP=" + chiTietSP +
                 ", soluong=" + soluong +
                 ", donGia=" + donGia +
                 '}';

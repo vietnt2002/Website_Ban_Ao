@@ -10,10 +10,13 @@ import java.io.Serializable;
 @Entity
 @Table(name = "GioHangChiTiet")
 public class GioHangChiTiet implements Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String idGioHangChiTiet;
-    @Column(name = "IdChiTietSP")
+    @EmbeddedId
+    @ManyToOne
+    @JoinColumn(name = "idGioHang")
+    private GioHang gioHang;
+    @EmbeddedId
+    @ManyToOne
+    @JoinColumn(name = "idChiTietSP")
     private ChiTietSP chiTietSP;
     @Column(name = "SoLuong")
     private int soLuong;
@@ -25,20 +28,20 @@ public class GioHangChiTiet implements Serializable {
     public GioHangChiTiet() {
     }
 
-    public GioHangChiTiet(String idGioHangChiTiet, ChiTietSP chiTietSP, int soLuong, double donGia, double donGiaKhiGiam) {
-        this.idGioHangChiTiet = idGioHangChiTiet;
+    public GioHangChiTiet(GioHang gioHang, ChiTietSP chiTietSP, int soLuong, double donGia, double donGiaKhiGiam) {
+        this.gioHang = gioHang;
         this.chiTietSP = chiTietSP;
         this.soLuong = soLuong;
         this.donGia = donGia;
         this.donGiaKhiGiam = donGiaKhiGiam;
     }
 
-    public String getIdGioHangChiTiet() {
-        return idGioHangChiTiet;
+    public GioHang getGioHang() {
+        return gioHang;
     }
 
-    public void setIdGioHangChiTiet(String idGioHangChiTiet) {
-        this.idGioHangChiTiet = idGioHangChiTiet;
+    public void setGioHang(GioHang gioHang) {
+        this.gioHang = gioHang;
     }
 
     public ChiTietSP getChiTietSP() {
@@ -76,7 +79,7 @@ public class GioHangChiTiet implements Serializable {
     @Override
     public String toString() {
         return "GioHangChiTiet{" +
-                "idGioHangChiTiet='" + idGioHangChiTiet + '\'' +
+                "gioHang=" + gioHang +
                 ", chiTietSP=" + chiTietSP +
                 ", soLuong=" + soLuong +
                 ", donGia=" + donGia +

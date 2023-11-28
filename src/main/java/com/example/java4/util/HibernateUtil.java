@@ -31,14 +31,17 @@ public class HibernateUtil {
         conf.addAnnotatedClass(DongSP.class);
         conf.addAnnotatedClass(KhachHang.class);
         conf.addAnnotatedClass(MauSac.class);
+        conf.addAnnotatedClass(NhanVien.class);
         conf.addAnnotatedClass(NSX.class);
         conf.addAnnotatedClass(SanPham.class);
+        conf.addAnnotatedClass(GioHangChiTiet.class);
         conf.addAnnotatedClass(ChiTietSP.class);
-
+        conf.addAnnotatedClass(GioHang.class);
+        conf.addAnnotatedClass(HoaDon.class);
+        conf.addAnnotatedClass(HoaDonChiTiet.class);
         ServiceRegistry registry = new StandardServiceRegistryBuilder()
                 .applySettings(conf.getProperties()).build();
         FACTORY = conf.buildSessionFactory(registry);
-
     }
 
     public static SessionFactory getFACTORY() {
@@ -48,6 +51,5 @@ public class HibernateUtil {
     public static void main(String[] args) {
         System.out.println(getFACTORY());
     }
-
 
 }
