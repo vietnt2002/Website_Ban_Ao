@@ -55,4 +55,18 @@ public class NhanVienDAO {
          }
          return nv;
     }
+
+    public void deleteNhanVienByID(NhanVien nv) {
+        try {
+            Session session = factory.openSession();
+            tx  = session.beginTransaction();
+            session.delete(nv);
+            tx.commit();
+            System.out.println("delete success !");
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
+
+    }
 }

@@ -55,4 +55,17 @@ public class ChucVuDAO {
         }
         return  chucVu;
     }
+
+    public void deleteChucVu(ChucVu chucVu) {
+        try {
+            Session session = factory.openSession();
+            Transaction tx = null;
+            tx = session.beginTransaction();
+            session.delete(chucVu);
+            tx.commit();
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

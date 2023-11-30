@@ -62,4 +62,16 @@ public class CuaHangDAO {
          return cuaHang;
     }
 
+    public void delete(CuaHang cuaHang) {
+        Transaction tx = null;
+        try {
+            Session session = factory.openSession();
+            tx = session.beginTransaction();
+            session.delete(cuaHang);
+            System.out.println("Delete sucess!");
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

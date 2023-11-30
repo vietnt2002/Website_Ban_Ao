@@ -18,7 +18,7 @@ public class NhanVien implements Serializable {
     @Column(name = "Ten")
     private String ten;
     @Column(name = "TenDem")
-    private String temDem;
+    private String tenDem;
     @Column(name = "Ho")
     private String ho;
     @Column(name = "GioiTinh")
@@ -43,11 +43,11 @@ public class NhanVien implements Serializable {
     public NhanVien() {
     }
 
-    public NhanVien(String idNhanVien, String ma, String ten, String temDem, String ho, String gioiTinh, Date ngaySinh, String diaChi, String sdt, String matKhau, CuaHang ch, ChucVu cv, int trangThai) {
+    public NhanVien(String idNhanVien, String ma, String ten, String tenDem, String ho, String gioiTinh, Date ngaySinh, String diaChi, String sdt, String matKhau, CuaHang ch, ChucVu cv, int trangThai) {
         this.idNhanVien = idNhanVien;
         this.ma = ma;
         this.ten = ten;
-        this.temDem = temDem;
+        this.tenDem = tenDem;
         this.ho = ho;
         this.gioiTinh = gioiTinh;
         this.ngaySinh = ngaySinh;
@@ -83,12 +83,12 @@ public class NhanVien implements Serializable {
         this.ten = ten;
     }
 
-    public String getTemDem() {
-        return temDem;
+    public String getTenDem() {
+        return tenDem;
     }
 
-    public void setTemDem(String temDem) {
-        this.temDem = temDem;
+    public void setTenDem(String tenDem) {
+        this.tenDem = tenDem;
     }
 
     public String getHo() {
@@ -169,7 +169,7 @@ public class NhanVien implements Serializable {
                 "idNhanVien='" + idNhanVien + '\'' +
                 ", ma='" + ma + '\'' +
                 ", ten='" + ten + '\'' +
-                ", temDem='" + temDem + '\'' +
+                ", tenDem='" + tenDem + '\'' +
                 ", ho='" + ho + '\'' +
                 ", gioiTinh='" + gioiTinh + '\'' +
                 ", ngaySinh=" + ngaySinh +

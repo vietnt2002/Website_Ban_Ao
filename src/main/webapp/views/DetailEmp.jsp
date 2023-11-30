@@ -47,107 +47,175 @@
     </nav>
 </header>
 <!-- <div class="col-f" style="width:700px;margin-left: auto;margin-right: auto;"> -->
-<main >
-    <div class="card bg-light text-white" style="height: 900px">
-        <div class="card-img-overlay">
-            <h5 class="card-title" style="color:darkblue; text-align: center; font-size: 36px;">Detail
-            </h5>
-            <div class="d-flex justify-content-center bg-white"
-                 style="margin-left: auto;margin-right:auto;max-width:1280px">
-                <div class="form bg-white m-auto" style="color:black;width:1280px;padding:56px;">
-                    <div class="row">
-                        <div class="col-md-12 fw-bold mb-3" style="color:darkblue;font: 20 px">
-                            <i class="bi bi-square-fill me-2" style="color:#f26522"></i>
-                            EMPLOYEE INFORMATION
-                        </div>
-                        <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
-                            <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
-                            >Full name</label>
-                            <div class="input-group mb-2">
-                                <input type="text" class="form-control" placeholder="Họ và tên"
-                                       aria-label="Username" aria-describedby="basic-addon1" value="${staff.fullName}" readonly >
+<main>
+    <form action="addEmployee" method=post>
+        <div class="card bg-light text-white" style="height: 900px">
+            <div class="card-img-overlay">
+                <h5 class="card-title" style="color:darkblue; text-align: center; font-size: 36px;">Employee management
+                </h5>
+                <div class="d-flex justify-content-center bg-white"
+                     style="margin-left: auto;margin-right:auto;max-width:1280px">
+                    <div class="form bg-white m-auto" style="color:black;width:1280px;padding:56px;">
+                        <div class="row">
+                            <div class="col-md-12 fw-bold mb-3" style="color:darkblue;font-size: 20px;">
+                                <i class="bi bi-square-fill me-2" style="color:#f26522"></i>
+                                EMPLOYEE INFORMATION
                             </div>
-                        </div>
-                        <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
-                            <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
-                                   for="input_32_1">Date of birth</label>
-                            <div class="input-group mb-2">
-                                <input type="date" class="form-control" placeholder="DD/MM/YYYY"
-                                       aria-label="Username" aria-describedby="basic-addon1" value="${staff.dob}" readonly >
+                            <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
+                                <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
+                                >Mã</label>
+                                <div class="input-group mb-2">
+                                    <input type="text" class="form-control" placeholder="Mã nhân viên"
+                                           aria-label="Username" aria-describedby="basic-addon1" name="maInp" value = "${nhanVien.ma}">
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
-                            <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
-                                   for="input_32_1">Gender</label>
-                            <div class="input-group mb-2">
-                                <select class="form-select" aria-label="Default select example">
-                                    <option value="1" selected>Male</option>
-                                    <option value="0">Female</option>
+                            <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
+                                <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
+                                >Tên</label>
+                                <div class="input-group mb-2">
+                                    <input type="text" class="form-control" placeholder="Tên"
+                                           aria-label="Username" aria-describedby="basic-addon1" name="tenInp" value = "${nhanVien.ten}">
+                                </div>
+                            </div>
+                            <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
+                                <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
+                                >Tên Đệm</label>
+                                <div class="input-group mb-2">
+                                    <input type="text" class="form-control" placeholder="Tên đệm"
+                                           aria-label="Username" aria-describedby="basic-addon1" name="tenDemInp" value = "${nhanVien.tenDem}">
+                                </div>
+                            </div>
+                            <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
+                                <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
+                                >Họ</label>
+                                <div class="input-group mb-2">
+                                    <input type="text" class="form-control" placeholder="Họ"
+                                           aria-label="Username" aria-describedby="basic-addon1" name="hoInp" value = "${nhanVien.ho}">
+                                </div>
+                            </div>
+                            <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
+                                <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
+                                >Giới tính</label>
+                                <div class="input-group mb-2">
+                                    <select class="form-select" aria-label="Default select example" name="gioiTinhInp">
+                                        <option value="Male" <c:if test="${nhanVien.gioiTinh == 'Male'}">selected</c:if>>Male</option>
+                                        <option value="Female" <c:if test="${nhanVien.gioiTinh == 'Female'}">selected</c:if>>Female</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
+                                <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
+                                >Ngày sinh</label>
+                                <div class="input-group mb-2">
+                                    <input type="date" class="form-control" placeholder="DD/MM/YYYY"
+                                           aria-label="Username" aria-describedby="basic-addon1" name="ngaySinhInp" value = "${nhanVien.ngaySinh}">
+                                </div>
+                            </div>
+                            <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
+                                <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
+                                >Địa chỉ</label>
+                                <div class="input-group mb-2">
+                                    <input type="text" class="form-control" placeholder=""
+                                           aria-label="Username" aria-describedby="basic-addon1" name="diaChiInp" value = "${nhanVien.diaChi}">
+                                </div>
+                            </div>
+                            <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
+                                <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
+                                >Số điện thoại</label>
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control" placeholder="" aria-label=""
+                                           aria-describedby="basic-addon1" name="sdtInp" value = "${nhanVien.sdt}" >
+                                </div>
+                            </div>
+                            <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
+                                <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
+                                >Mật khẩu</label>
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control" placeholder="" aria-label=""
+                                           aria-describedby="basic-addon1" name="matKhauInp" value = "${nhanVien.matKhau}">
+                                </div>
+                            </div>
+                            <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
+                                <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
+                                >Cửa hàng</label>
+                                <select class="form-select" aria-label="Default select example" name="cuaHangInp">
+                                    <c:forEach varStatus="i" items="${lstCuaHang}" var="cuaHang">
+                                        <option value="${cuaHang.idCuaHang}" <c:if test="${nhanVien.ch.idCuaHang == cuaHang.idCuaHang}">selected</c:if>
+                                        >${cuaHang.ten} - ${cuaHang.ma}</option>
+                                    </c:forEach>
                                 </select>
                             </div>
-                        </div>
-                        <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
-                            <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
-                                   for="input_32_1">Position</label>
-                            <select class="form-select" aria-label="Default select example" name="posInput">
-                                    <option value="${position.id}">${position.name} - ${position.code}</option>
-                            </select>
-                        </div>
-                        <div class="col-xxl-4 col-xl-6 col-md-12 mb-2">
-                            <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
-                                   for="input_32_1">Number of id card</label>
-                            <div class="input-group mb-3">
-                                <input type="text" class="form-control" placeholder="0123456789"
-                                       aria-label="Username" aria-describedby="basic-addon1" value="${staff.idCardNo}" readonly >
+                            <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
+                                <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
+                                >Chức vụ</label>
+                                <div class="input-group mb-3">
+                                    <select class="form-select" aria-label="Default select example" name="chucVuInp">
+                                        <c:forEach varStatus="i" items="${lstChucVu}" var="chucVu">
+                                            <option value="${chucVu.idChucVu}" <c:if test="${nhanVien.cv.idChucVu == chucVu.idChucVu}">selected</c:if>
+                                            >${chucVu.ten} - ${chucVu.ma}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-xxl-4 col-xl-6 col-md-12 mb-2">
-                            <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
-                                   for="input_32_1">IdCard date</label>
-                            <div class="input-group mb-3">
-                                <input type="date" class="form-control" placeholder="DD/MM/YYYY"
-                                       aria-label="Username" aria-describedby="basic-addon1" value="${staff.idCardDate}" readonly >
+                            <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
+                                <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
+                                >Trạng thái</label>
+                                <div class="input-group mb-3">
+                                    <input type="number" class="form-control" placeholder="1:Đang làm/0:Nghỉ việc"
+                                           aria-label="Username" aria-describedby="basic-addon1" name="trangThaiInp" value="${nhanVien.trangThai}">
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-xxl-4 col-xl-6 col-md-12 mb-2">
-                            <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
-                                   for="input_32_1">IdCard isssued by</label>
-                            <select class="form-select" aria-label="Default select example" >
-                                    <option value="${province.id}">${province.name}</option>
-                            </select>
-                        </div>
-                        <div class="col-xxl-6 col-xl-12 col-md-12 mb-2">
-                            <label class="gfield_label fw-semibold" style="color:#374151;font: size 14px;"
-                                   for="input_32_1">Place of residence</label>
-                            <div class="input-group mb-3">
-                                <input type="text" class="form-control" placeholder="" aria-label="Username"
-                                       aria-describedby="basic-addon1" value="${staff.placeOfResidence}" readonly >
+                            <div class="text-center ">
+                                <br><br><br>
+                                <button type="submit" class="btn btn-primary" style="border-radius:0%;">Add employee
+                                </button>
                             </div>
-                        </div>
-                        <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
-                            <label class="gfield_label fw-semibold" style="color:#374151;font: size 14px;"
-                                   for="input_32_1">Phone number</label>
-                            <div class="input-group mb-3">
-                                <input type="text" class="form-control" placeholder="" aria-label="Username"
-                                       aria-describedby="basic-addon1" value="${staff.phoneNumber}" readonly >
-                            </div>
-                        </div>
-                        <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
-                            <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
-                                   for="input_32_1">Email</label>
-                            <div class="input-group mb-3">
-                                <input type="text" class="form-control" placeholder="" aria-label="Username"
-                                       aria-describedby="basic-addon1" value="${staff.email}" readonly >
-                            </div>
+                            <table class="table mt-5">
+                                <thead>
+                                <tr class="table-light">
+                                    <th scope="col">Stt</th>
+                                    <th scope="col">Mã nhân viên</th>
+                                    <th scope="col">Tên</th>
+                                    <th scope="col">Giới tính</th>
+                                    <th scope="col">Ngày sinh</th>
+                                    <th scope="col">Địa chỉ</th>
+                                    <th scope="col">Số điện thoại</th>
+                                    <th scope="col">trạng thái</th>
+                                    <th scope="col">Hành động</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <c:forEach varStatus="i" items="${lstNhanVien}" var="nhanVien">
+                                    <tr>
+                                        <td>1</td>
+                                        <td>${nhanVien.ma}</td>
+                                        <td>${nhanVien.ho} ${nhanVien.tenDem} ${nhanVien.ten}</td>
+                                        <td>${nhanVien.gioiTinh}</td>
+                                        <td>${nhanVien.ngaySinh}</td>
+                                        <td>${nhanVien.diaChi}</td>
+                                        <td>${nhanVien.sdt}</td>
+                                        <td>${nhanVien.trangThai}</td>
+                                        <td>
+                                            <a href="/Home/detail?id=${nhanVien.idNhanVien}">
+                                                <button type="button" class="btn btn-primary">Detail</button>
+                                            </a>
+                                            <a href="/Home/update?id=${nhanVien.idNhanVien}">
+                                                <button type="button" class="btn btn-success ">Update</button>
+                                            </a>
+                                            <a href="/Home/delete?id=${nhanVien.idNhanVien}">
+                                                <button type="button" class="btn btn-danger">Delete</button>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-                    <a href="/Home/employee">
-                        <button type="button" class="btn btn-primary" style="border-radius:0%;margin-left: 600px" >Back</button>
-                    </a>
                 </div>
             </div>
         </div>
-    </div>
+    </form>
 </main>
 <footer id="footer" style="margin-top: 60px;">
     <div class="container">

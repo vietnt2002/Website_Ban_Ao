@@ -51,7 +51,7 @@
 </header>
 <!-- <div class="col-f" style="width:700px;margin-left: auto;margin-right: auto;"> -->
 <main>
-    <form action="addEmployee" method=post>
+    <form action="addCuaHang" method=post>
         <div class="card bg-light text-white" style="height: 900px">
             <div class="card-img-overlay">
                 <h5 class="card-title" style="color:darkblue; text-align: center; font-size: 36px;">Employee management
@@ -62,14 +62,22 @@
                         <div class="row">
                             <div class="col-md-12 fw-bold mb-3" style="color:darkblue;font-size: 20px;">
                                 <i class="bi bi-square-fill me-2" style="color:#f26522"></i>
-                                EMPLOYEE INFORMATION
+                                Quản lý cửa hàng
+                            </div>
+                            <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
+                                <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
+                                >Id</label>
+                                <div class="input-group mb-2">
+                                    <input type="text" class="form-control" placeholder="#idSystem"
+                                           aria-label="Username" aria-describedby="basic-addon1" name="idInp" value = "${cuaHang.id}" readonly>
+                                </div>
                             </div>
                             <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
                                 <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
                                 >Mã</label>
                                 <div class="input-group mb-2">
-                                    <input type="text" class="form-control" placeholder="Mã nhân viên"
-                                           aria-label="Username" aria-describedby="basic-addon1" name="maInp">
+                                    <input type="text" class="form-control" placeholder="Tên"
+                                           aria-label="Username" aria-describedby="basic-addon1" name="maInp" value = "${cuaHang.ma}">
                                 </div>
                             </div>
                             <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
@@ -77,133 +85,72 @@
                                 >Tên</label>
                                 <div class="input-group mb-2">
                                     <input type="text" class="form-control" placeholder="Tên"
-                                           aria-label="Username" aria-describedby="basic-addon1" name="tenInp">
+                                           aria-label="Username" aria-describedby="basic-addon1" name="tenInp" value ="${cuaHang.ten}">
                                 </div>
                             </div>
                             <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
                                 <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
-                                >Tên Đệm</label>
+                                >Dia chỉ</label>
                                 <div class="input-group mb-2">
-                                    <input type="text" class="form-control" placeholder="Tên đệm"
-                                           aria-label="Username" aria-describedby="basic-addon1" name="tenDemInp">
+                                    <input type="text" class="form-control" placeholder="Tên"
+                                           aria-label="Username" aria-describedby="basic-addon1" name="diaChiInp" value ="${cuaHang.diaChi}">
                                 </div>
                             </div>
+
                             <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
                                 <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
-                                >Họ</label>
+                                >Thành phố</label>
                                 <div class="input-group mb-2">
-                                    <input type="text" class="form-control" placeholder="Họ"
-                                           aria-label="Username" aria-describedby="basic-addon1" name="hoInp">
+                                    <input type="text" class="form-control" placeholder="Tên"
+                                           aria-label="Username" aria-describedby="basic-addon1" name="thanhPhoInp" value ="${cuaHang.thanhPho}">
                                 </div>
                             </div>
+
                             <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
                                 <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
-                                       >Giới tính</label>
+                                >Quốc gia</label>
                                 <div class="input-group mb-2">
-                                    <select class="form-select" aria-label="Default select example" name="gioiTinhInp">
-                                        <option value="Male" selected>Male</option>
-                                        <option value="Female">Female</option>
-                                    </select>
+                                    <input type="text" class="form-control" placeholder="Tên"
+                                           aria-label="Username" aria-describedby="basic-addon1" name="quocGiaInp" value ="${cuaHang.quocGia}">
                                 </div>
                             </div>
-                            <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
-                                <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
-                                       >Ngày sinh</label>
-                                <div class="input-group mb-2">
-                                    <input type="date" class="form-control" placeholder="DD/MM/YYYY"
-                                           aria-label="Username" aria-describedby="basic-addon1" name="ngaySinhInp">
-                                </div>
-                            </div>
-                            <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
-                                <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
-                                       >Địa chỉ</label>
-                                <div class="input-group mb-2">
-                                    <input type="text" class="form-control" placeholder=""
-                                           aria-label="Username" aria-describedby="basic-addon1" name="diaChiInp">
-                                </div>
-                            </div>
-                            <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
-                                <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
-                                       >Số điện thoại</label>
-                                <div class="input-group mb-3">
-                                    <input type="text" class="form-control" placeholder="" aria-label=""
-                                           aria-describedby="basic-addon1" name="sdtInp">
-                                </div>
-                            </div>
-                            <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
-                                <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
-                                       >Mật khẩu</label>
-                                <div class="input-group mb-3">
-                                    <input type="text" class="form-control" placeholder="" aria-label=""
-                                           aria-describedby="basic-addon1" name="matKhauInp">
-                                </div>
-                            </div>
-                            <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
-                                <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
-                                       >Cửa hàng</label>
-                                <select class="form-select" aria-label="Default select example" name="cuaHangInp">
-                                    <c:forEach varStatus="i" items="${lstCuaHang}" var="cuaHang">
-                                        <option value="${cuaHang.idCuaHang}">${cuaHang.ten} - ${cuaHang.ma}</option>
-                                    </c:forEach>
-                                </select>
-                            </div>
-                            <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
-                                <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
-                                       >Chức vụ</label>
-                                <div class="input-group mb-3">
-                                    <select class="form-select" aria-label="Default select example" name="chucVuInp">
-                                        <c:forEach varStatus="i" items="${lstChucVu}" var="chucVu">
-                                            <option value="${chucVu.idChucVu}">${chucVu.ten} - ${chucVu.ma}</option>
-                                        </c:forEach>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
-                                <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
-                                       >Trạng thái</label>
-                                <div class="input-group mb-3">
-                                    <input type="number" class="form-control" placeholder="1:Đang làm/0:Nghỉ việc"
-                                           aria-label="Username" aria-describedby="basic-addon1" name="trangThaiInp">
-                                </div>
-                            </div>
+
                             <div class="text-center ">
                                 <br><br><br>
-                                <button type="submit" class="btn btn-primary" style="border-radius:0%;">Add employee
+                                <button type="submit" class="btn btn-primary" style="border-radius:0%;">Thêm cửa hàng
                                 </button>
                             </div>
                             <table class="table mt-5">
                                 <thead>
                                 <tr class="table-light">
                                     <th scope="col">Stt</th>
-                                    <th scope="col">Mã nhân viên</th>
+                                    <th scope="col">Id</th>
+                                    <th scope="col">Mã</th>
                                     <th scope="col">Tên</th>
-                                    <th scope="col">Giới tính</th>
-                                    <th scope="col">Ngày sinh</th>
                                     <th scope="col">Địa chỉ</th>
-                                    <th scope="col">Số điện thoại</th>
-                                    <th scope="col">trạng thái</th>
+                                    <th scope="col">Thành phố</th>
+                                    <th scope="col">Quốc gia</th>
                                     <th scope="col">Hành động</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <c:forEach varStatus="i" items="${lstNhanVien}" var="nhanVien">
+                                <c:forEach varStatus="i" items="${lstCuaHang}" var="cuaHang">
                                     <tr>
                                         <td>1</td>
-                                        <td>${nhanVien.ma}</td>
-                                        <td>${nhanVien.ho} ${nhanVien.tenDem} ${nhanVien.ten}</td>
-                                        <td>${nhanVien.gioiTinh}</td>
-                                        <td>${nhanVien.ngaySinh}</td>
-                                        <td>${nhanVien.diaChi}</td>
-                                        <td>${nhanVien.sdt}</td>
-                                        <td>${nhanVien.trangThai}</td>
+                                        <td>${cuaHang.idCuaHang}</td>
+                                        <td>${cuaHang.ma}</td>
+                                        <td>${cuaHang.ten}</td>
+                                        <td>${cuaHang.diaChi}</td>
+                                        <td>${cuaHang.thanhPho}</td>
+                                        <td>${cuaHang.quocGia}</td>
                                         <td>
-                                            <a href="/Home/detail-nhanvien?id=${nhanVien.idNhanVien}">
+                                            <a href="/Home/detail-CuaHang?id=${cuaHang.idCuaHang}">
                                                 <button type="button" class="btn btn-primary">Detail</button>
                                             </a>
-                                            <a href="/Home/update-nhanvien?id=${nhanVien.idNhanVien}">
+                                            <a href="/Home/update-CuaHang?id=${cuaHang.ma}">
                                                 <button type="button" class="btn btn-success ">Update</button>
                                             </a>
-                                            <a href="/Home/delete-nhanvien?id=${nhanVien.idNhanVien}">
+                                            <a href="/Home/delete-CuaHang?id=${cuaHang.ten}">
                                                 <button type="button" class="btn btn-danger">Delete</button>
                                             </a>
                                         </td>

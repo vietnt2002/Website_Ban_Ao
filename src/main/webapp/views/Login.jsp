@@ -45,7 +45,7 @@
                         <a class="nav-link" aria-current="page" href="/Home/contactServlet">Contacts</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="/Home/login">Login</a>
+                        <a class="nav-link" aria-current="page" href="/Home/loginServlet">Login</a>
                     </li>
                 </ul>
                 <form class="d-flex" role="search">
@@ -72,18 +72,15 @@
             <div class="carousel-item active">
                 <div class="row">
                     <div class="col-4 md-4 sm-4" style="padding: 0;">
-                        <img class="d-block w-100" style="width: auto;height:250px;"
-                             src="https://ts2.space/wp-content/uploads/2023/10/What-will-happen-if-the-spacex-rocket-hits-the-Moon_652a460e34c3d.jpg"
+                        <img class="d-block w-100" style="width: auto;height:250px;" src="https://ts2.space/wp-content/uploads/2023/10/What-will-happen-if-the-spacex-rocket-hits-the-Moon_652a460e34c3d.jpg"
                              alt="Responsive image">
                     </div>
                     <div class="col-4 md-4 sm-4" style="padding: 0;">
-                        <img class="d-block w-100" style="width: auto;;height:250px;"
-                             src="https://ts2.space/wp-content/uploads/2023/10/What-will-happen-if-the-spacex-rocket-hits-the-Moon_652a460e34c3d.jpg"
+                        <img class="d-block w-100" style="width: auto;;height:250px;" src="https://ts2.space/wp-content/uploads/2023/10/What-will-happen-if-the-spacex-rocket-hits-the-Moon_652a460e34c3d.jpg"
                              alt="Responsive image">
                     </div>
                     <div class="col-4 md-4 sm-4" style="padding: 0;">
-                        <img class="d-block w-100" style="width: auto;;height:250px;"
-                             src="https://ts2.space/wp-content/uploads/2023/10/What-will-happen-if-the-spacex-rocket-hits-the-Moon_652a460e34c3d.jpg"
+                        <img class="d-block w-100" style="width: auto;;height:250px;" src="https://ts2.space/wp-content/uploads/2023/10/What-will-happen-if-the-spacex-rocket-hits-the-Moon_652a460e34c3d.jpg"
                              alt="Responsive image">
                     </div>
                 </div>
@@ -98,18 +95,15 @@
             <div class="carousel-item">
                 <div class="row">
                     <div class="col-4 md-4 sm-4" style="padding: 0;">
-                        <img class="d-block w-100" style="width: auto;height:250px;"
-                             src="https://ts2.space/wp-content/uploads/2023/10/What-will-happen-if-the-spacex-rocket-hits-the-Moon_652a460e34c3d.jpg"
+                        <img class="d-block w-100" style="width: auto;height:250px;" src="https://ts2.space/wp-content/uploads/2023/10/What-will-happen-if-the-spacex-rocket-hits-the-Moon_652a460e34c3d.jpg"
                              alt="Responsive image">
                     </div>
                     <div class="col-4 md-4 sm-4" style="padding: 0;">
-                        <img class="d-block w-100" style="width: auto;height:250px;"
-                             src="https://ts2.space/wp-content/uploads/2023/10/What-will-happen-if-the-spacex-rocket-hits-the-Moon_652a460e34c3d.jpg"
+                        <img class="d-block w-100" style="width: auto;height:250px;" src="https://ts2.space/wp-content/uploads/2023/10/What-will-happen-if-the-spacex-rocket-hits-the-Moon_652a460e34c3d.jpg"
                              alt="Responsive image">
                     </div>
                     <div class="col-4 md-4 sm-4" style="padding: 0;">
-                        <img class="d-block w-100" style="width: auto;height:250px;"
-                             src="https://ts2.space/wp-content/uploads/2023/10/What-will-happen-if-the-spacex-rocket-hits-the-Moon_652a460e34c3d.jpg"
+                        <img class="d-block w-100" style="width: auto;height:250px;" src="https://ts2.space/wp-content/uploads/2023/10/What-will-happen-if-the-spacex-rocket-hits-the-Moon_652a460e34c3d.jpg"
                              alt="Responsive image">
                     </div>
                 </div>
@@ -124,18 +118,15 @@
             <div class="carousel-item">
                 <div class="row">
                     <div class="col-4 md-4 sm-4" style="padding: 0;">
-                        <img class="d-block w-100" style="width: auto;height:250px;"
-                             src="https://ts2.space/wp-content/uploads/2023/10/What-will-happen-if-the-spacex-rocket-hits-the-Moon_652a460e34c3d.jpg"
+                        <img class="d-block w-100" style="width: auto;height:250px;" src="https://ts2.space/wp-content/uploads/2023/10/What-will-happen-if-the-spacex-rocket-hits-the-Moon_652a460e34c3d.jpg"
                              alt="Responsive image">
                     </div>
                     <div class="col-4 md-4 sm-4" style="padding: 0;">
-                        <img class="d-block w-100" style="width: auto;height:250px;"
-                             src="https://ts2.space/wp-content/uploads/2023/10/What-will-happen-if-the-spacex-rocket-hits-the-Moon_652a460e34c3d.jpg"
+                        <img class="d-block w-100" style="width: auto;height:250px;" src="https://ts2.space/wp-content/uploads/2023/10/What-will-happen-if-the-spacex-rocket-hits-the-Moon_652a460e34c3d.jpg"
                              alt="Responsive image">
                     </div>
                     <div class="col-4 md-4 sm-4" style="padding: 0;">
-                        <img class="d-block w-100" style="width: auto;height:250px;"
-                             src="https://ts2.space/wp-content/uploads/2023/10/What-will-happen-if-the-spacex-rocket-hits-the-Moon_652a460e34c3d.jpg"
+                        <img class="d-block w-100" style="width: auto;height:250px;" src="https://ts2.space/wp-content/uploads/2023/10/What-will-happen-if-the-spacex-rocket-hits-the-Moon_652a460e34c3d.jpg"
                              alt="Responsive image">
                     </div>
                 </div>
@@ -160,56 +151,32 @@
             <span class="visually-hidden">Next</span>
         </button>
     </div>
-
-    <div class="row">
-        <div class="col-md-4">
-            <h2>Danh sách sản phẩm</h2>
-        </div>
-        <div class="col-md-4">
-        </div>
-        <div class="col-md-4">
-            <h3>Xin chào ${khachHang.ten} !</h3>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-4">
-            <div class="card" style="width: 18rem;">
-                <img src="https://shopdunk.com/images/thumbs/0005888_air-m2-silver_1600.jpeg"
-                     class="card-img-top" alt="...">
+    <form action="enter" method=get>
+        <div class="row" style="max-width: 25rem;margin-left: auto;margin-right: auto;padding-top: 50px;">
+            <div class="card" >
                 <div class="card-body">
-                    <h5 class="card-title">Beautiful product</h5>
-                    <p class="card-text">Price: $priceless$</p>
-                    <a href="/Home/Cart" class="btn btn-warning">Add to cart</a>
-                    <a href="#" class="btn btn-primary">Buy product</a>
+                    <h5 class="card-title">Log in</h5>
+                    <div class="row">
+                        <div class="col-lg-12 md-12 mt-3">
+                            <div class="input-group flex-nowrap">
+                                <input type="text" class="form-control" placeholder="Account" aria-label="Username"
+                                       aria-describedby="addon-wrapping" name="userNameInp">
+                            </div>
+                        </div>
+                        <div class="col-lg-12 md-12 mt-3">
+                            <div class="input-group flex-nowrap">
+                                <input type="password" class="form-control" placeholder="Password" aria-label="Username"
+                                       aria-describedby="addon-wrapping" name="passInp">
+                            </div>
+                        </div>
+                        <br><br><br><br>
+                        <button type="submit" class="btn btn-primary">Login</button>
+                    </div>
+                    <br>
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="card" style="width: 18rem;">
-                <img src="https://shopdunk.com/images/thumbs/0005888_air-m2-silver_1600.jpeg"
-                     class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">Beautiful product</h5>
-                    <p class="card-text">Price: $priceless$</p>
-                    <a href="/Home/Cart" class="btn btn-warning">Add to cart</a>
-                    <a href="#" class="btn btn-primary">Buy product</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card" style="width: 18rem;">
-                <img src="https://shopdunk.com/images/thumbs/0005888_air-m2-silver_1600.jpeg" class="card-img-top"
-                     alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">Beautiful product</h5>
-                    <p class="card-text">Price: $priceless$</p>
-                    <a href="/Home/Cart" class="btn btn-warning">Add to cart</a>
-                    <a href="#" class="btn btn-primary">Buy product</a>
-                </div>
-            </div>
-        </div>
-    </div>
+    </form>
 </main>
 <footer id="footer" style="margin-top: 60px;">
     <div class="container">

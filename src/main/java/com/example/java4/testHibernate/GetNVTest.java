@@ -7,6 +7,6 @@ public class GetNVTest {
         NhanVienDAO dao = new NhanVienDAO();
         dao.getAll();
         System.out.println("get by id");
-        dao.getByID("6BEA5DC1-5452-4DF3-8D68-AC2A110D494D");
+        dao.getAll();
     }
 }
