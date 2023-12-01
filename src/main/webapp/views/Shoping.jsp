@@ -27,38 +27,8 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="/Home/homeServlet">Home</a>
+                        <a class="nav-link" aria-current="page" href="/Home/shoping">Thông tin cá nhân</a>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown1" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            QL sản phẩm
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="/Home/sanPham">Sản phẩm</a></li>
-                            <li><a class="dropdown-item" href="/Home/chiTietSP">Chi tiết sản phẩm</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Ql Cửa hàng
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="/Home/employee">Nhân viên</a></li>
-                            <li><a class="dropdown-item" href="/Home/chucvu">Chức vụ</a></li>
-                            <li><a class="dropdown-item" href="/Home/cuaHang">Cửa hàng</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown3" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Ql Hóa đơn
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="/Home/employee">Nhân viên</a></li>
-                            <li><a class="dropdown-item" href="/Home/chucvu">Chức vụ</a></li>
-                            <li><a class="dropdown-item" href="/Home/cuaHang">Cửa hàng</a></li>
-                        </ul>
-                    </li>
-
                     <li class="nav-item">
                         <a class="nav-link" aria-current="page" href="/Home/login">Login</a>
                     </li>
@@ -183,7 +153,7 @@
         <div class="col-md-4">
         </div>
         <div class="col-md-4">
-            <h3>Xin chào !</h3>
+            <h3>Xin chào ${khachHang.ten} !</h3>
         </div>
     </div>
 

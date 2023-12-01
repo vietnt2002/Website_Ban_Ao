@@ -19,7 +19,7 @@ public class BillServlet extends HttpServlet {
         System.out.println("do get!");
         String uri = request.getRequestURI();
         if(uri.contains("/bill")){
-            request.getRequestDispatcher("views/Bill.jsp").forward(request,response);
+            request.getRequestDispatcher("views/Invoice.jsp").forward(request,response);
         }
     }
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

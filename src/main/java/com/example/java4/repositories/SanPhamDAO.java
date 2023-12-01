@@ -50,4 +50,30 @@ public class SanPhamDAO {
         }
         return sp;
     }
+
+    public void update(SanPham sanPham) {
+        try {
+            Session session = factory.openSession();
+            tx = session.beginTransaction();
+            session.saveOrUpdate(sanPham);
+            tx.commit();
+            System.out.println("Update succes");
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void delete(SanPham sanPham){
+         try {
+            Session session = factory.openSession();
+            tx = session.beginTransaction();
+            session.delete(sanPham);
+            tx.commit();
+             System.out.println("Do delete success !");
+         }
+         catch(Exception e) {
+             e.printStackTrace();
+         }
+    }
 }

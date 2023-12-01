@@ -56,4 +56,27 @@ public class ChiTietSPDAO {
         return chiTietSP;
     }
 
+    public void update(ChiTietSP chiTietSP) {
+        try {
+            Session session = factory.openSession();
+            tx = session.beginTransaction();
+            session.saveOrUpdate(chiTietSP);
+            tx.commit();
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void delete(ChiTietSP chiTietSP) {
+        try {
+            Session session = factory.openSession();
+            tx = session.beginTransaction();
+            session.detach(chiTietSP);
+            tx.commit();
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

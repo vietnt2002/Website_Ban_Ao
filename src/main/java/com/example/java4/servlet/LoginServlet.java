@@ -52,7 +52,7 @@ public class LoginServlet extends HttpServlet {
              if(checkingPort(userName,pass)==true){
                  KhachHang khachHang = KhachHangSingleton.getInstance().khachHang;
                  request.setAttribute("khachHang",khachHang);
-                 request.getRequestDispatcher("/index.jsp").forward(request,response);
+                 request.getRequestDispatcher("views/Shoping.jsp").forward(request,response);
              }
         }
         if(uri.contains("/return")){
