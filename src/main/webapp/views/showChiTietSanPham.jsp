@@ -51,7 +51,7 @@
 </header>
 <!-- <div class="col-f" style="width:700px;margin-left: auto;margin-right: auto;"> -->
 <main>
-    <form action="addChiTietSP" method=post>
+    <form action="update-chiTietSP" method=post>
         <div class="card bg-light text-white" style="height: 900px">
             <div class="card-img-overlay">
                 <h5 class="card-title" style="color:darkblue; text-align: center; font-size: 36px;">Quản lý chi tiết sản
@@ -61,16 +61,26 @@
                      style="margin-left: auto;margin-right:auto;max-width:1280px">
                     <div class="form bg-white m-auto" style="color:black;width:1280px;padding:56px;">
                         <div class="row">
-                            <div class="col-md-12 fw-bold mb-3" style="color:darkblue;font-size: 20px;">
+                            <div class="col-md-4 fw-bold mb-3" style="color:darkblue;font-size: 20px;">
                                 <i class="bi bi-square-fill me-2" style="color:#f26522"></i>
-                                Chi tiết sản phẩm
+                                Chi tiết sản phẩm id:
+                            </div>
+                            <div class="col-md-4 fw-bold mb-3" style="color:darkblue;font-size: 20px;">
+                                <div class="input-group mb-2">
+                                    <input type="text" class="form-control" placeholder=""
+                                           aria-label="Username" aria-describedby="basic-addon1" name="idInp" value ="${chiTietSP.idChiTietSP}" readonly>
+                                </div>
+                            </div>
+                            <div class="col-md-4 fw-bold mb-3" style="color:darkblue;font-size: 20px;">
+
                             </div>
                             <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
                                 <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
                                 >Sản phẩm</label>
                                     <select class="form-select" aria-label="Default select example" name="sanPhamInp">
                                         <c:forEach varStatus="i" items="${lstSanPham}" var="sanPham">
-                                            <option value="${sanPham.idSanPham}">${sanPham.ten} - ${sanPham.ma}</option>
+                                            <option value="${sanPham.idSanPham}" <c:if test="${chiTietSP.sp.idSanPham == sanPham.idSanPham}">selected </c:if>
+                                            >${sanPham.ten} - ${sanPham.ma}</option>
                                         </c:forEach>
                                     </select>
                             </div>
@@ -79,7 +89,8 @@
                                 >Nơi sản xuất</label>
                                 <select class="form-select" aria-label="Default select example" name="nsxInp">
                                     <c:forEach varStatus="i" items="${lstNSX}" var="nsx">
-                                        <option value="${nsx.idNSX}">${nsx.ten} - ${nsx.ma}</option>
+                                        <option value="${nsx.idNSX}" <c:if test="${chiTietSP.nsx.idNSX == nsx.idNSX}">selected</c:if>
+                                        >${nsx.ten} - ${nsx.ma}</option>
                                     </c:forEach>
                                 </select>
                             </div>
@@ -88,7 +99,8 @@
                                 >Màu sắc</label>
                                 <select class="form-select" aria-label="Default select example" name="mauSacInp">
                                     <c:forEach varStatus="i" items="${lstMauSac}" var="mauSac">
-                                        <option value="${mauSac.idMauSac}">${mauSac.ten} - ${mauSac.ma}</option>
+                                        <option value="${mauSac.idMauSac}" <c:if test="${chiTietSP.mauSac.idMauSac == mauSac.idMauSac}">selected</c:if>
+                                        >${mauSac.ten} - ${mauSac.ma}</option>
                                     </c:forEach>
                                 </select>
                             </div>
@@ -97,7 +109,8 @@
                                 >Dòng sản phẩm</label>
                                 <select class="form-select" aria-label="Default select example" name="dongSPInp">
                                     <c:forEach varStatus="i" items="${lstDongSP}" var="dongSP">
-                                        <option value="${dongSP.idDongSP}">${dongSP.ten} - ${dongSP.ma}</option>
+                                        <option value="${dongSP.idDongSP}" <c:if test="${chiTietSP.dongSP.idDongSP == dongSP.idDongSP}">selected</c:if>
+                                        >${dongSP.ten} - ${dongSP.ma}</option>
                                     </c:forEach>
                                 </select>
                             </div>
@@ -106,7 +119,7 @@
                                 >Năm bảo hành</label>
                                 <div class="input-group mb-2">
                                     <input type="number" class="form-control" placeholder=""
-                                           aria-label="Username" aria-describedby="basic-addon1" name="namBHInp">
+                                           aria-label="Username" aria-describedby="basic-addon1" name="namBHInp" value = "${chiTietSP.namBH}">
                                 </div>
                             </div>
                             <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
@@ -114,7 +127,7 @@
                                 >Mô tả</label>
                                 <div class="input-group mb-2">
                                     <input type="text" class="form-control" placeholder=""
-                                           aria-label="Username" aria-describedby="basic-addon1" name="motaInp">
+                                           aria-label="Username" aria-describedby="basic-addon1" name="motaInp" value ="${chiTietSP.mota}">
                                 </div>
                             </div>
                             <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
@@ -122,7 +135,7 @@
                                 >Số lượng tồn</label>
                                 <div class="input-group mb-2">
                                     <input type="text" class="form-control" placeholder=""
-                                           aria-label="Username" aria-describedby="basic-addon1" name="soLuongTonInp">
+                                           aria-label="Username" aria-describedby="basic-addon1" name="soLuongTonInp" value = "${chiTietSP.soLuongTon}">
                                 </div>
                             </div>
                             <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
@@ -130,7 +143,7 @@
                                 >Giá nhập</label>
                                 <div class="input-group mb-3">
                                     <input type="text" class="form-control" placeholder="" aria-label=""
-                                           aria-describedby="basic-addon1" name="giaNhapInp">
+                                           aria-describedby="basic-addon1" name="giaNhapInp" value = "${chiTietSP.giaNhap}">
                                 </div>
                             </div>
                             <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
@@ -138,60 +151,16 @@
                                 >Giá bán</label>
                                 <div class="input-group mb-3">
                                     <input type="text" class="form-control" placeholder="" aria-label=""
-                                           aria-describedby="basic-addon1" name="giaBanInp">
+                                           aria-describedby="basic-addon1" name="giaBanInp" value ="${chiTietSP.giaBan}">
                                 </div>
                             </div>
 
                             <div class="text-center ">
                                 <br><br><br>
-                                <button type="submit" class="btn btn-primary" style="border-radius:0%;">Thêm
+                                <button type="submit" class="btn btn-primary" style="border-radius:0%;">Cập nhật
                                 </button>
                             </div>
 
-                            <table class="table mt-5">
-                                <thead>
-                                <tr class="table-light">
-                                    <th scope="col">Stt</th>
-                                    <th scope="col">Tên sản phẩm</th>
-                                    <th scope="col">NSX</th>
-                                    <th scope="col">Màu sắc</th>
-                                    <th scope="col">Dòng SP</th>
-                                    <th scope="col">Năm BH</th>
-                                    <th scope="col">Mô tả</th>
-                                    <th scope="col">Số lượng tồn</th>
-                                    <th scope="col">Giá nhập</th>
-                                    <th scope="col">Giá bán</th>
-                                    <th scope="col">Hành động</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <c:forEach varStatus="i" items="${lstChiTietSP}" var="chiTietSP">
-                                    <tr>
-                                        <td>1</td>
-                                        <td>${chiTietSP.sp.ten}-${chiTietSP.sp.ma}</td>
-                                        <td>${chiTietSP.nsx.ten}-${chiTietSP.nsx.ma}</td>
-                                        <td>${chiTietSP.mauSac.ten}-${chiTietSP.mauSac.ma}</td>
-                                        <td>${chiTietSP.dongSP.ten} ${chiTietSP.dongSP.ma}</td>
-                                        <td>${chiTietSP.namBH}</td>
-                                        <td>${chiTietSP.mota}</td>
-                                        <td>${chiTietSP.soLuongTon}</td>
-                                        <td>${chiTietSP.giaNhap}</td>
-                                        <td>${chiTietSP.giaBan}</td>
-                                        <td>
-                                            <a href="/Home/detail-chiTietSP?id=${chiTietSP.idChiTietSP}">
-                                                <button type="button" class="btn btn-primary">Detail</button>
-                                            </a>
-                                            <a href="/Home/routeUpdate-chiTietSP?id=${chiTietSP.idChiTietSP}">
-                                                <button type="button" class="btn btn-success ">Update</button>
-                                            </a>
-                                            <a href="/Home/delete-chiTietSP?id=${chiTietSP.idChiTietSP}">
-                                                <button type="button" class="btn btn-danger">Delete</button>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                </c:forEach>
-                                </tbody>
-                            </table>
                         </div>
                     </div>
                 </div>

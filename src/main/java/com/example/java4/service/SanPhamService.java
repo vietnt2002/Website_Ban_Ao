@@ -59,4 +59,16 @@ public class SanPhamService {
     public ArrayList<NSX> getAllNSX() {
         return  nsxdao.getLst();
     }
+
+    public NSX getByIDNSX(String idNSX) {
+        return  nsxdao.getById(idNSX);
+    }
+
+    public MauSac getByIdMauSac(String idMauSac) {
+         return mauSacDAO.getById(idMauSac);
+    }
+
+    public DongSP getByIDDongSP(String idDongSP) {
+         return dongSPDAO.getById(idDongSP);
+    }
 }

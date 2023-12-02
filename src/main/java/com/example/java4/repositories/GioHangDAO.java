@@ -13,11 +13,14 @@ import java.sql.Date;
 import java.util.ArrayList;
 
 public class GioHangDAO {
-    SessionFactory factory = HibernateUtil.getFACTORY();
+//    SessionFactory factory = HibernateUtil.getFACTORY();
     Transaction tx = null;
 
     public void add(String idGioHang, KhachHang kh, NhanVien idNV, String ma, Date ngayTao, Date ngayThanhToan, String tenNguoiNhan, String diaChi, String sdt, int tinhTrang){
         try {
+            org.hibernate.cfg.Configuration cfg = new org.hibernate.cfg.Configuration();
+            cfg.configure("hibernate.cfg.xml");
+            SessionFactory factory =cfg.buildSessionFactory();
             Session session = factory.openSession();
             tx = session.beginTransaction();
             GioHang gioHang = new GioHang(idGioHang,kh,idNV,ma,ngayTao,ngayThanhToan,tenNguoiNhan,diaChi,sdt,tinhTrang);
@@ -32,6 +35,9 @@ public class GioHangDAO {
     public ArrayList<GioHang> getLst(){
         ArrayList<GioHang> lstGioHangs = new ArrayList<>();
         try {
+            org.hibernate.cfg.Configuration cfg = new org.hibernate.cfg.Configuration();
+            cfg.configure("hibernate.cfg.xml");
+            SessionFactory factory =cfg.buildSessionFactory();
             Session session = factory.openSession();
             tx = session.beginTransaction();
             lstGioHangs = (ArrayList<GioHang>) session.createQuery("from GioHang").list();
@@ -46,6 +52,9 @@ public class GioHangDAO {
     public GioHang getByID(String id){
          GioHang gioHang = new GioHang();
          try {
+             org.hibernate.cfg.Configuration cfg = new org.hibernate.cfg.Configuration();
+             cfg.configure("hibernate.cfg.xml");
+             SessionFactory factory =cfg.buildSessionFactory();
              Session session = factory.openSession();
              tx = session.beginTransaction();
              gioHang = session.get(GioHang.class,id);

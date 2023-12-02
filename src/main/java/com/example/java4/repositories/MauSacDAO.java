@@ -10,9 +10,12 @@ import org.hibernate.Transaction;
 import java.util.ArrayList;
 
 public class MauSacDAO {
-    SessionFactory factory = HibernateUtil.getFACTORY();
+//    SessionFactory factory = HibernateUtil.getFACTORY();
     Transaction tx = null;
     public void addMauSac(String id, String ma, String ten){
+        org.hibernate.cfg.Configuration cfg = new org.hibernate.cfg.Configuration();
+        cfg.configure("hibernate.cfg.xml");
+        SessionFactory factory =cfg.buildSessionFactory();
         Session session = factory.openSession();
         tx = session.beginTransaction();
         MauSac  mauSac = new MauSac(id,ma,ten);
@@ -27,6 +30,9 @@ public class MauSacDAO {
     }
 
     public ArrayList<MauSac> getLstMauSac(){
+        org.hibernate.cfg.Configuration cfg = new org.hibernate.cfg.Configuration();
+        cfg.configure("hibernate.cfg.xml");
+        SessionFactory factory =cfg.buildSessionFactory();
          ArrayList<MauSac> lstMauSac = new ArrayList<>();
          Session session = factory.openSession();
          tx  = session.beginTransaction();
@@ -41,6 +47,9 @@ public class MauSacDAO {
 }
 
     public MauSac getById(String id){
+        org.hibernate.cfg.Configuration cfg = new org.hibernate.cfg.Configuration();
+        cfg.configure("hibernate.cfg.xml");
+        SessionFactory factory =cfg.buildSessionFactory();
         MauSac mauSac = new MauSac();
         Session session = factory.openSession();
         tx = session.beginTransaction();

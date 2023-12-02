@@ -2,6 +2,7 @@ package com.example.java4.repositories;
 
 import com.example.java4.model.ChucVu;
 import com.example.java4.util.HibernateUtil;
+import org.apache.taglibs.standard.lang.jstl.test.beans.Factory;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -9,8 +10,11 @@ import org.hibernate.Transaction;
 import java.util.ArrayList;
 
 public class ChucVuDAO {
-    private SessionFactory factory = HibernateUtil.getFACTORY();
+//    private SessionFactory factory = HibernateUtil.getFACTORY();
     public void addChucVu(String id, String ma, String ten){
+        org.hibernate.cfg.Configuration cfg = new org.hibernate.cfg.Configuration();
+        cfg.configure("hibernate.cfg.xml");
+        SessionFactory factory =cfg.buildSessionFactory();
         Session session = factory.openSession();
         Transaction tx = null;
         try {
@@ -26,6 +30,9 @@ public class ChucVuDAO {
         }
     }
     public ArrayList<ChucVu> getLstChucVu(){
+        org.hibernate.cfg.Configuration cfg = new org.hibernate.cfg.Configuration();
+        cfg.configure("hibernate.cfg.xml");
+        SessionFactory factory =cfg.buildSessionFactory();
         Session session = factory.openSession();
         Transaction tx = null;
         ArrayList<ChucVu> lstChucVus = new ArrayList<>();
@@ -43,6 +50,9 @@ public class ChucVuDAO {
     }
 
     public ChucVu getByID(String id){
+        org.hibernate.cfg.Configuration cfg = new org.hibernate.cfg.Configuration();
+        cfg.configure("hibernate.cfg.xml");
+        SessionFactory factory =cfg.buildSessionFactory();
         Session session = factory.openSession();
         Transaction tx = null;
         ChucVu  chucVu = new ChucVu();
@@ -58,6 +68,9 @@ public class ChucVuDAO {
 
     public void deleteChucVu(ChucVu chucVu) {
         try {
+            org.hibernate.cfg.Configuration cfg = new org.hibernate.cfg.Configuration();
+            cfg.configure("hibernate.cfg.xml");
+            SessionFactory factory =cfg.buildSessionFactory();
             Session session = factory.openSession();
             Transaction tx = null;
             tx = session.beginTransaction();

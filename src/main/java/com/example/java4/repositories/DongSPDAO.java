@@ -9,9 +9,12 @@ import org.hibernate.Transaction;
 import java.util.ArrayList;
 
 public class DongSPDAO {
-    SessionFactory factory = HibernateUtil.getFACTORY();
+//    SessionFactory factory = HibernateUtil.getFACTORY();
 
     public void addDongSP(String id, String ma, String ten) {
+        org.hibernate.cfg.Configuration cfg = new org.hibernate.cfg.Configuration();
+        cfg.configure("hibernate.cfg.xml");
+        SessionFactory factory = cfg.buildSessionFactory();
         Session session = factory.openSession();
         Transaction tx = null;
         DongSP dongSp = new DongSP(id, ma, ten);
@@ -27,35 +30,39 @@ public class DongSPDAO {
         }
     }
 
-    public ArrayList<DongSP> getLstDongSP(){
+    public ArrayList<DongSP> getLstDongSP() {
+        org.hibernate.cfg.Configuration cfg = new org.hibernate.cfg.Configuration();
+        cfg.configure("hibernate.cfg.xml");
+        SessionFactory factory = cfg.buildSessionFactory();
         ArrayList<DongSP> lstDongSP = new ArrayList<>();
-        Session  session = factory.openSession();
+        Session session = factory.openSession();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
             lstDongSP = (ArrayList<DongSP>) session.createQuery("From DongSP").list();
             tx.commit();
             System.out.println(lstDongSP);
-        }
-        catch(Exception e) {
-          e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return lstDongSP;
     }
 
-    public DongSP getById(String id){
-         Session session = factory.openSession();
-         Transaction tx = null;
-         DongSP dongSP = new DongSP();
-         try {
-             tx = session.beginTransaction();
-             dongSP = session.get(DongSP.class,id);
-             System.out.println(dongSP.toString());
-         }
-         catch(Exception e) {
-             e.printStackTrace();
-         }
-         return dongSP;
+    public DongSP getById(String id) {
+        org.hibernate.cfg.Configuration cfg = new org.hibernate.cfg.Configuration();
+        cfg.configure("hibernate.cfg.xml");
+        SessionFactory factory = cfg.buildSessionFactory();
+        Session session = factory.openSession();
+        Transaction tx = null;
+        DongSP dongSP = new DongSP();
+        try {
+            tx = session.beginTransaction();
+            dongSP = session.get(DongSP.class, id);
+            System.out.println(dongSP.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return dongSP;
     }
 
 }

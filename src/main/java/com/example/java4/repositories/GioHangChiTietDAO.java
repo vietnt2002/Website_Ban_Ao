@@ -12,10 +12,13 @@ import org.hibernate.engine.spi.SessionFactoryDelegatingImpl;
 import java.util.ArrayList;
 
 public class GioHangChiTietDAO {
-    SessionFactory factory = HibernateUtil.getFACTORY();
+//    SessionFactory factory = HibernateUtil.getFACTORY();
     Transaction tx = null;
 
     public void add(GioHang gioHang, ChiTietSP chiTietSP, int soLuong, double donGia, double donGiaKhiGiam) {
+        org.hibernate.cfg.Configuration cfg = new org.hibernate.cfg.Configuration();
+        cfg.configure("hibernate.cfg.xml");
+        SessionFactory factory =cfg.buildSessionFactory();
         GioHangChiTiet gioHangChiTiet = new GioHangChiTiet(gioHang, chiTietSP, soLuong, donGia, donGiaKhiGiam);
         try {
             Session session = factory.openSession();
@@ -29,6 +32,9 @@ public class GioHangChiTietDAO {
     }
 
     public ArrayList<GioHangChiTiet> getAll() {
+        org.hibernate.cfg.Configuration cfg = new org.hibernate.cfg.Configuration();
+        cfg.configure("hibernate.cfg.xml");
+        SessionFactory factory =cfg.buildSessionFactory();
         ArrayList<GioHangChiTiet> lstGioHangChiTiets = new ArrayList<>();
         try {
             Session session = factory.openSession();
@@ -42,6 +48,9 @@ public class GioHangChiTietDAO {
     }
 
     public GioHangChiTiet getByID(String id) {
+        org.hibernate.cfg.Configuration cfg = new org.hibernate.cfg.Configuration();
+        cfg.configure("hibernate.cfg.xml");
+        SessionFactory factory =cfg.buildSessionFactory();
         GioHangChiTiet gioHangChiTiet = new GioHangChiTiet();
         try {
             Session session = factory.openSession();

@@ -12,12 +12,15 @@ import org.hibernate.Transaction;
 import java.util.ArrayList;
 
 public class HoaDonChiTietDAO {
-    SessionFactory factory = HibernateUtil.getFACTORY();
+//    SessionFactory factory = HibernateUtil.getFACTORY();
     Transaction tx = null;
 
     public void add(HoaDon hoaDon, ChiTietSP chiTietSP, int soluong, double donGia) {
         HoaDonChiTiet hoaDonChiTiet = new HoaDonChiTiet(hoaDon,chiTietSP, soluong, donGia);
         try {
+            org.hibernate.cfg.Configuration cfg = new org.hibernate.cfg.Configuration();
+            cfg.configure("hibernate.cfg.xml");
+            SessionFactory factory =cfg.buildSessionFactory();
             Session session = factory.openSession();
             tx = session.beginTransaction();
             session.save(hoaDonChiTiet);
@@ -29,6 +32,9 @@ public class HoaDonChiTietDAO {
     }
 
     public ArrayList<HoaDonChiTiet> getAll() {
+        org.hibernate.cfg.Configuration cfg = new org.hibernate.cfg.Configuration();
+        cfg.configure("hibernate.cfg.xml");
+        SessionFactory factory =cfg.buildSessionFactory();
         ArrayList<HoaDonChiTiet> lstHoaDonChiTiets = new ArrayList<>();
         Session session = factory.openSession();
         tx = session.beginTransaction();
@@ -42,6 +48,9 @@ public class HoaDonChiTietDAO {
     }
 
     public HoaDonChiTiet getByID(String id) {
+        org.hibernate.cfg.Configuration cfg = new org.hibernate.cfg.Configuration();
+        cfg.configure("hibernate.cfg.xml");
+        SessionFactory factory =cfg.buildSessionFactory();
         HoaDonChiTiet hoaDonChiTiet = new HoaDonChiTiet();
         try {
             Session session = factory.openSession();

@@ -9,11 +9,13 @@ import org.hibernate.Transaction;
 import java.util.ArrayList;
 
 public class CuaHangDAO {
-    SessionFactory factory = HibernateUtil.getFACTORY();
+//    SessionFactory factory = HibernateUtil.getFACTORY();
     public void addCuaHang(String id, String ma, String ten, String diaChi, String thanhPho, String quocGia){
+        org.hibernate.cfg.Configuration cfg = new org.hibernate.cfg.Configuration();
+        cfg.configure("hibernate.cfg.xml");
+        SessionFactory factory =cfg.buildSessionFactory();
         Session session  = factory.openSession();
         Transaction tx = null;
-
         try {
             tx = session.beginTransaction();
             CuaHang cuaHang = new CuaHang(id, ma, ten,diaChi, thanhPho,quocGia);
@@ -29,6 +31,9 @@ public class CuaHangDAO {
         }
     }
     public ArrayList<CuaHang> getLstCuaHang(){
+        org.hibernate.cfg.Configuration cfg = new org.hibernate.cfg.Configuration();
+        cfg.configure("hibernate.cfg.xml");
+        SessionFactory factory =cfg.buildSessionFactory();
         Session session = factory.openSession();
         Transaction tx = null;
         ArrayList<CuaHang> lstCuaHang = new ArrayList<>();
@@ -48,6 +53,9 @@ public class CuaHangDAO {
     }
 
     public CuaHang getByID(String id){
+        org.hibernate.cfg.Configuration cfg = new org.hibernate.cfg.Configuration();
+        cfg.configure("hibernate.cfg.xml");
+        SessionFactory factory =cfg.buildSessionFactory();
          Session session = factory.openSession();
          Transaction tx = null;
          CuaHang cuaHang = new CuaHang();
@@ -63,6 +71,9 @@ public class CuaHangDAO {
     }
 
     public void delete(CuaHang cuaHang) {
+        org.hibernate.cfg.Configuration cfg = new org.hibernate.cfg.Configuration();
+        cfg.configure("hibernate.cfg.xml");
+        SessionFactory factory =cfg.buildSessionFactory();
         Transaction tx = null;
         try {
             Session session = factory.openSession();

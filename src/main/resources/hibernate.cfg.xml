@@ -8,7 +8,7 @@
             com.microsoft.sqlserver.jdbc.SQLServerDriver
         </property>
         <property name="hibernate.connection.url">
-            jdbc:sqlserver://localhost:1433;databaseName=java4;encrypt=false
+            jdbc:sqlserver://localhost:1433;databaseName=FINALASS_FPOLYSHOP_FA22_SOF205__SOF2041;encrypt=false
         </property>
         <property name="hibernate.connection.username">
             sa
@@ -22,11 +22,21 @@
         <property name="hibernate.dialect">
             org.hibernate.dialect.SQLServerDialect
         </property>
-        <property name="hibernate.hbm2ddl.auto">update</property>
         <!-- Show all executed SQL to stdout -->
         <property name="show_sql">true</property>
         <!-- List mapping annotation classes -->
-        <mapping class="com.example.java4.model.Student" />
-        <mapping class="com.example.java4.model.Clss" />
+        <mapping class="com.example.java4.model.ChucVu" />
+        <mapping class="com.example.java4.model.CuaHang" />
+        <mapping class="com.example.java4.model.DongSP" />
+        <mapping class="com.example.java4.model.KhachHang" />
+        <mapping class="com.example.java4.model.MauSac" />
+        <mapping class="com.example.java4.model.NhanVien" />
+        <mapping class="com.example.java4.model.NSX" />
+        <mapping class="com.example.java4.model.SanPham" />
+        <mapping class="com.example.java4.model.GioHangChiTiet" />
+        <mapping class="com.example.java4.model.ChiTietSP" />
+        <mapping class="com.example.java4.model.GioHang" />
+        <mapping class="com.example.java4.model.HoaDon" />
+        <mapping class="com.example.java4.model.HoaDonChiTiet" />
     </session-factory>
 </hibernate-configuration>

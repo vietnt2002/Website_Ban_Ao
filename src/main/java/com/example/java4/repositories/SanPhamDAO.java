@@ -9,10 +9,13 @@ import org.hibernate.Transaction;
 import java.util.ArrayList;
 
 public class SanPhamDAO {
-    SessionFactory factory = HibernateUtil.getFACTORY();
+    //    SessionFactory factory = HibernateUtil.getFACTORY();
     Transaction tx = null;
 
     public void add(String id, String ma, String ten) {
+        org.hibernate.cfg.Configuration cfg = new org.hibernate.cfg.Configuration();
+        cfg.configure("hibernate.cfg.xml");
+        SessionFactory factory = cfg.buildSessionFactory();
         Session session = factory.openSession();
         tx = session.beginTransaction();
         SanPham sp = new SanPham(id, ma, ten);
@@ -26,6 +29,9 @@ public class SanPhamDAO {
     }
 
     public ArrayList<SanPham> getLst() {
+        org.hibernate.cfg.Configuration cfg = new org.hibernate.cfg.Configuration();
+        cfg.configure("hibernate.cfg.xml");
+        SessionFactory factory = cfg.buildSessionFactory();
         ArrayList<SanPham> lstSanPham = new ArrayList<>();
         Session session = factory.openSession();
         tx = session.beginTransaction();
@@ -39,6 +45,9 @@ public class SanPhamDAO {
     }
 
     public SanPham getById(String id) {
+        org.hibernate.cfg.Configuration cfg = new org.hibernate.cfg.Configuration();
+        cfg.configure("hibernate.cfg.xml");
+        SessionFactory factory = cfg.buildSessionFactory();
         Session session = factory.openSession();
         tx = session.beginTransaction();
         SanPham sp = new SanPham();
@@ -53,27 +62,31 @@ public class SanPhamDAO {
 
     public void update(SanPham sanPham) {
         try {
+            org.hibernate.cfg.Configuration cfg = new org.hibernate.cfg.Configuration();
+            cfg.configure("hibernate.cfg.xml");
+            SessionFactory factory = cfg.buildSessionFactory();
             Session session = factory.openSession();
             tx = session.beginTransaction();
             session.saveOrUpdate(sanPham);
             tx.commit();
             System.out.println("Update succes");
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void delete(SanPham sanPham){
-         try {
+    public void delete(SanPham sanPham) {
+        try {
+            org.hibernate.cfg.Configuration cfg = new org.hibernate.cfg.Configuration();
+            cfg.configure("hibernate.cfg.xml");
+            SessionFactory factory = cfg.buildSessionFactory();
             Session session = factory.openSession();
             tx = session.beginTransaction();
             session.delete(sanPham);
             tx.commit();
-             System.out.println("Do delete success !");
-         }
-         catch(Exception e) {
-             e.printStackTrace();
-         }
+            System.out.println("Do delete success !");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
