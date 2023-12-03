@@ -33,11 +33,12 @@ public class ChiTietSP {
     private double giaNhap;
     @Column(name="GiaBan")
     private double giaBan;
-
+    @Column(name ="Link")
+    private String link;
     public ChiTietSP() {
     }
 
-    public ChiTietSP(String idChiTietSP, SanPham sp, NSX nsx, MauSac mauSac, DongSP dongSP, int namBH, String mota, int soLuongTon, double giaNhap, double giaBan) {
+    public ChiTietSP(String idChiTietSP, SanPham sp, NSX nsx, MauSac mauSac, DongSP dongSP, int namBH, String mota, int soLuongTon, double giaNhap, double giaBan, String link) {
         this.idChiTietSP = idChiTietSP;
         this.sp = sp;
         this.nsx = nsx;
@@ -48,6 +49,7 @@ public class ChiTietSP {
         this.soLuongTon = soLuongTon;
         this.giaNhap = giaNhap;
         this.giaBan = giaBan;
+        this.link = link;
     }
 
     public String getIdChiTietSP() {
@@ -130,6 +132,14 @@ public class ChiTietSP {
         this.giaBan = giaBan;
     }
 
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
+
     @Override
     public String toString() {
         return "ChiTietSP{" +
@@ -143,6 +153,7 @@ public class ChiTietSP {
                 ", soLuongTon=" + soLuongTon +
                 ", giaNhap=" + giaNhap +
                 ", giaBan=" + giaBan +
+                ", link='" + link + '\'' +
                 '}';
     }
 }

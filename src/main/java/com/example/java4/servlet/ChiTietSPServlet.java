@@ -113,7 +113,8 @@ public class ChiTietSPServlet extends HttpServlet {
             int soLuongTon = Integer.parseInt(request.getParameter("soLuongTonInp"));
             Double giaNhap = Double.valueOf(request.getParameter("giaNhapInp"));
             Double giaBan = Double.valueOf(request.getParameter("giaBanInp"));
-            service.addChiTietSP(null,sanPham,nsx,mauSac,dongSP,namBH,mota,soLuongTon,giaNhap,giaBan);
+            String link =  request.getParameter("linkInp");
+            service.addChiTietSP(null,sanPham,nsx,mauSac,dongSP,namBH,mota,soLuongTon,giaNhap,giaBan,link);
             response.sendRedirect("/Home/chiTietSP");
         }
 
@@ -132,7 +133,8 @@ public class ChiTietSPServlet extends HttpServlet {
             int soLuongTon = Integer.parseInt(request.getParameter("soLuongTonInp"));
             Double giaNhap = Double.valueOf(request.getParameter("giaNhapInp"));
             Double giaBan = Double.valueOf(request.getParameter("giaBanInp"));
-            ChiTietSP chiTietSP = new ChiTietSP(id,sanPham,nsx,mauSac,dongSP,namBH,mota,soLuongTon,giaNhap,giaBan);
+            String link  =  request.getParameter("linkInp");
+            ChiTietSP chiTietSP = new ChiTietSP(id,sanPham,nsx,mauSac,dongSP,namBH,mota,soLuongTon,giaNhap,giaBan,link);
             service.updateChiTietSP(chiTietSP);
             response.sendRedirect("/Home/chiTietSP");
         }

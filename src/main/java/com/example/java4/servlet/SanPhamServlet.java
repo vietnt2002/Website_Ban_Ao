@@ -53,7 +53,8 @@ public class SanPhamServlet extends HttpServlet {
             System.out.println(id);
             String ma = request.getParameter("maInp");
             String ten = request.getParameter("tenInp");
-            SanPham sanPham = new SanPham(id,ma,ten);
+            String link = request.getParameter("linkInp");
+            SanPham sanPham = new SanPham(id,ma,ten,link);
             service.updateSP(sanPham);
             response.sendRedirect("/Home/sanPham");
         }
@@ -73,7 +74,8 @@ public class SanPhamServlet extends HttpServlet {
             String id = null;
             String ma = request.getParameter("maInp");
             String ten = request.getParameter("tenInp");
-            service.addSP(id, ma, ten);
+            String link = request.getParameter("linkInp");
+            service.addSP(id, ma, ten, link);
         }
 
         response.sendRedirect("/Home/sanPham");

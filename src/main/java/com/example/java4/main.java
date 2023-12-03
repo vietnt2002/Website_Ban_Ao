@@ -17,8 +17,5 @@ public class main {
         SanPham sp =  spDao.getById("4685EFA6-188E-4831-AF5F-483FDF4447C8");
         MauSac mauSac = mauSacDAO.getById("6F223CFF-C909-44A7-A408-A85E4303E0D7");
 //       String id, SanPham sp, NSX nsx, String idMauSac, DongSP dongSP, int namBH, String mota, int soLuongTon, double giaNhap, double giaBan
-        ChiTietSP chiTietSP = new ChiTietSP(null,sp,nsx,mauSac,dongSP,2023,"The best deal", 15, 900,1200);
-        ChiTietSPDAO  chiTietSPDAO = new ChiTietSPDAO();
-        chiTietSPDAO.addChiTietSP(null,sp,nsx,mauSac,dongSP,2023,"The best deal", 15, 900,1200);
     }
 }

@@ -65,4 +65,38 @@ public class DongSPDAO {
         return dongSP;
     }
 
+    public void delete(DongSP dongSP) {
+        org.hibernate.cfg.Configuration cfg = new org.hibernate.cfg.Configuration();
+        cfg.configure("hibernate.cfg.xml");
+        SessionFactory factory = cfg.buildSessionFactory();
+        Session session = factory.openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            session.delete(dongSP);
+            tx.commit();
+            System.out.println(dongSP);
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void update(String id, String ma, String ten) {
+        org.hibernate.cfg.Configuration cfg = new org.hibernate.cfg.Configuration();
+        cfg.configure("hibernate.cfg.xml");
+        SessionFactory factory = cfg.buildSessionFactory();
+        Session session = factory.openSession();
+        Transaction tx = null;
+        DongSP dongSP = new DongSP(id,ma,ten);
+        try {
+            tx = session.beginTransaction();
+            session.saveOrUpdate(dongSP);
+            tx.commit();
+            System.out.println(dongSP);
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

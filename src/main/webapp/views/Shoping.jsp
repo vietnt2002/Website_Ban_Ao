@@ -158,20 +158,18 @@
         </div>
     </div>
 
-    <div class="row">
+    <div class="row ms-3">
         <c:forEach varStatus="i" items="${lstSanPham}" var="sanPham">
-            <div class="col-md-4">
+            <div class="col-md-3 mt-5">
                 <div class="card" style="width: 18rem;">
-                    <img src="https://shopdunk.com/images/thumbs/0005888_air-m2-silver_1600.jpeg"
-                         class="card-img-top" alt="...">
+                    <img src="${sanPham.link}"
+                         class="card-img-top" alt="..." style="width: 285px;height: 200px">
                     <div class="card-body">
                         <h5 class="card-title">${sanPham.ten}</h5>
                         <p class="card-text">Price: $priceless$</p>
                         <div class="input-group">
-                            <a href="/Home/Cart" class="btn btn-warning">Add to cart</a>
-                        </div>
-                        <div class="input-group">
-                            <a href="/Home/Cart" class="btn btn-primary">Buy product</a>
+                            <a href="/Home/Cart" class="btn btn-warning ms-3">Add to cart</a>
+                            <a href="/Home/Cart" class="btn btn-primary ms-3">Buy product</a>
                         </div>
                     </div>
                 </div>

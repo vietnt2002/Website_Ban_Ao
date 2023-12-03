@@ -27,6 +27,18 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="/Home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="/Home/employee">Employee</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="/Home/contactServlet">Contacts</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="/Home/loginServlet">Login</a>
+                    </li>
                 </ul>
                 <form class="d-flex" role="search">
                     <input class="form-control bg-light me-2" style="border:none" type="search"
@@ -39,10 +51,10 @@
 </header>
 <!-- <div class="col-f" style="width:700px;margin-left: auto;margin-right: auto;"> -->
 <main>
-    <form action="update-SanPham" method=get>
+    <form action="addDongSP" method=post>
         <div class="card bg-light text-white" style="height: 900px">
             <div class="card-img-overlay">
-                <h5 class="card-title" style="color:darkblue; text-align: center; font-size: 36px;">Chi tiết sản phẩm
+                <h5 class="card-title" style="color:darkblue; text-align: center; font-size: 36px;">Dòng sản phẩm
                 </h5>
                 <div class="d-flex justify-content-center bg-white"
                      style="margin-left: auto;margin-right:auto;max-width:1280px">
@@ -50,14 +62,14 @@
                         <div class="row">
                             <div class="col-md-12 fw-bold mb-3" style="color:darkblue;font-size: 20px;">
                                 <i class="bi bi-square-fill me-2" style="color:#f26522"></i>
-                                Chi tiết sản phẩm
+                                Quản lý dòng sản phẩm
                             </div>
                             <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
                                 <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
                                 >Id</label>
                                 <div class="input-group mb-2">
                                     <input type="text" class="form-control" placeholder="#idSystem"
-                                           aria-label="Username" aria-describedby="basic-addon1" name="idInp" value = "${sanPham.idSanPham}" readonly>
+                                           aria-label="Username" aria-describedby="basic-addon1" name="idInp" value = "${dongSP.id}" readonly>
                                 </div>
                             </div>
                             <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
@@ -65,7 +77,7 @@
                                 >Mã</label>
                                 <div class="input-group mb-2">
                                     <input type="text" class="form-control" placeholder="Tên"
-                                           aria-label="Username" aria-describedby="basic-addon1" name="maInp" value = "${sanPham.ma}">
+                                           aria-label="Username" aria-describedby="basic-addon1" name="maInp" value = "${dongSP.ma}">
                                 </div>
                             </div>
                             <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
@@ -73,22 +85,46 @@
                                 >Tên</label>
                                 <div class="input-group mb-2">
                                     <input type="text" class="form-control" placeholder="Tên"
-                                           aria-label="Username" aria-describedby="basic-addon1" name="tenInp" value ="${sanPham.ten}">
-                                </div>
-                            </div>
-                            <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
-                                <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
-                                >Link</label>
-                                <div class="input-group mb-2">
-                                    <input type="text" class="form-control" placeholder="Tên"
-                                           aria-label="Username" aria-describedby="basic-addon1" name="linkInp" value ="${sanPham.link}">
+                                           aria-label="Username" aria-describedby="basic-addon1" name="tenInp" value ="${dongSP.ten}">
                                 </div>
                             </div>
                             <div class="text-center ">
                                 <br><br><br>
-                                <button type="submit" class="btn btn-primary" style="border-radius:0%;">Cập nhật
+                                <button type="submit" class="btn btn-primary" style="border-radius:0%;">Thêm
                                 </button>
                             </div>
+                            <table class="table mt-5">
+                                <thead>
+                                <tr class="table-light">
+                                    <th scope="col">Stt</th>
+                                    <th scope="col">Id</th>
+                                    <th scope="col">Mã</th>
+                                    <th scope="col">Tên</th>
+                                    <th scope="col">Hành động</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <c:forEach varStatus="i" items="${lstDongSP}" var="dongSP">
+                                    <tr>
+                                        <td>1</td>
+                                        <td>${dongSP.idDongSP}</td>
+                                        <td>${dongSP.ma}</td>
+                                        <td>${dongSP.ten}</td>
+                                        <td>
+                                            <a href="/Home/detail-dongSP?id=${dongSP.idDongSP}">
+                                                <button type="button" class="btn btn-primary">Detail</button>
+                                            </a>
+                                            <a href="/Home/routeUpdate-dongSP?id=${dongSP.idDongSP}">
+                                                <button type="button" class="btn btn-success ">Update</button>
+                                            </a>
+                                            <a href="/Home/delete-dongSP?id=${dongSP.idDongSP}">
+                                                <button type="button" class="btn btn-danger">Delete</button>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>

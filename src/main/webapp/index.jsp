@@ -36,6 +36,9 @@
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item" href="/Home/sanPham">Sản phẩm</a></li>
                             <li><a class="dropdown-item" href="/Home/chiTietSP">Chi tiết sản phẩm</a></li>
+                            <li><a class="dropdown-item" href="/Home/dongSP">Dòng sản phẩm</a></li>
+                            <li><a class="dropdown-item" href="/Home/mauSac">Màu sắc</a></li>
+                            <li><a class="dropdown-item" href="/Home/nsx">Nsx</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
@@ -53,12 +56,18 @@
                             Ql Hóa đơn
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="/Home/employee">Nhân viên</a></li>
-                            <li><a class="dropdown-item" href="/Home/chucvu">Chức vụ</a></li>
-                            <li><a class="dropdown-item" href="/Home/cuaHang">Cửa hàng</a></li>
+                            <li><a class="dropdown-item" href="/Home/hoaDon">Hóa đơn</a></li>
+                            <li><a class="dropdown-item" href="/Home/hoaDonChiTiet">Hóa đơn chi tiết</a></li>
                         </ul>
                     </li>
-
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown4" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Ql khách hàng
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="/Home/khachHang">Khách hàng</a></li>
+                        </ul>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link" aria-current="page" href="/Home/login">Login</a>
                     </li>

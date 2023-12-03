@@ -12,13 +12,13 @@ public class SanPhamDAO {
     //    SessionFactory factory = HibernateUtil.getFACTORY();
     Transaction tx = null;
 
-    public void add(String id, String ma, String ten) {
+    public void add(String id, String ma, String ten,String link) {
         org.hibernate.cfg.Configuration cfg = new org.hibernate.cfg.Configuration();
         cfg.configure("hibernate.cfg.xml");
         SessionFactory factory = cfg.buildSessionFactory();
         Session session = factory.openSession();
         tx = session.beginTransaction();
-        SanPham sp = new SanPham(id, ma, ten);
+        SanPham sp = new SanPham(id, ma, ten,link);
         try {
             session.save(sp);
             tx.commit();

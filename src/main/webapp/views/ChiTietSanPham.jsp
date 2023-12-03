@@ -141,6 +141,14 @@
                                            aria-describedby="basic-addon1" name="giaBanInp">
                                 </div>
                             </div>
+                            <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
+                                <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
+                                >Link</label>
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control" placeholder="" aria-label=""
+                                           aria-describedby="basic-addon1" name="linkInp">
+                                </div>
+                            </div>
 
                             <div class="text-center ">
                                 <br><br><br>
