@@ -70,7 +70,7 @@
                                 <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
                                 >Khách hàng</label>
                                 <div class="input-group mb-2">
-                                    <input type="number" class="form-control" placeholder=""
+                                    <input type="text" class="form-control" placeholder="sđt khách hàng"
                                            aria-label="Username" aria-describedby="basic-addon1" name="khachHangInp">
                                     <a class="btn btn-primary" href="#" role="button">Tìm kiếm</a>
                                 </div>
@@ -80,7 +80,7 @@
                                 <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
                                 >Nhân viên</label>
                                 <div class="input-group mb-2">
-                                    <input type="number" class="form-control" placeholder=""
+                                    <input type="text" class="form-control" placeholder="Mã nv"
                                            aria-label="Username" aria-describedby="basic-addon1" name="nhanVienInp">
                                     <a class="btn btn-primary" href="#" role="button">Tìm kiếm</a>
                                 </div>
@@ -90,7 +90,7 @@
                                 <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
                                 >Mã</label>
                                 <div class="input-group mb-2">
-                                    <input type="number" class="form-control" placeholder=""
+                                    <input type="text" class="form-control" placeholder="Mã hóa đơn"
                                            aria-label="Username" aria-describedby="basic-addon1" name="maInp">
                                     <a class="btn btn-primary" href="#" role="button">Tìm kiếm</a>
                                 </div>
@@ -100,7 +100,9 @@
                                 <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
                                 >Ngày tạo</label>
                                 <div class="input-group mb-2">
-                                    <input type="number" class="form-control" placeholder=""
+                                    <input type="date" class="form-control" placeholder="Từ ngày"
+                                           aria-label="Username" aria-describedby="basic-addon1" name="ngayTaoInp">
+                                    <input type="date" class="form-control" placeholder="Đến ngày"
                                            aria-label="Username" aria-describedby="basic-addon1" name="ngayTaoInp">
                                     <a class="btn btn-primary" href="#" role="button">Tìm kiếm</a>
                                 </div>
@@ -110,8 +112,10 @@
                                 <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
                                 >Ngày thanh toán</label>
                                 <div class="input-group mb-2">
-                                    <input type="number" class="form-control" placeholder=""
-                                           aria-label="Username" aria-describedby="basic-addon1" name="ngayThanhToanInp">
+                                    <input type="date" class="form-control" placeholder="Từ ngày"
+                                           aria-label="Username" aria-describedby="basic-addon1" name="ngayTaoInp">
+                                    <input type="date" class="form-control" placeholder="Đến ngày"
+                                           aria-label="Username" aria-describedby="basic-addon1" name="ngayTaoInp">
                                     <a class="btn btn-primary" href="#" role="button">Tìm kiếm</a>
                                 </div>
                             </div>
@@ -120,8 +124,10 @@
                                 <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
                                 >Ngày ship</label>
                                 <div class="input-group mb-2">
-                                    <input type="text" class="form-control" placeholder=""
-                                           aria-label="Username" aria-describedby="basic-addon1" name="ngayShipInp">
+                                    <input type="date" class="form-control" placeholder="Từ ngày"
+                                           aria-label="Username" aria-describedby="basic-addon1" name="ngayTaoInp">
+                                    <input type="date" class="form-control" placeholder="Đến ngày"
+                                           aria-label="Username" aria-describedby="basic-addon1" name="ngayTaoInp">
                                     <a class="btn btn-primary" href="#" role="button">Tìm kiếm</a>
                                 </div>
                             </div>
@@ -130,8 +136,10 @@
                                 <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
                                 >Ngày nhận</label>
                                 <div class="input-group mb-2">
-                                    <input type="text" class="form-control" placeholder=""
-                                           aria-label="Username" aria-describedby="basic-addon1" name="ngayNhanInp">
+                                    <input type="date" class="form-control" placeholder="Từ ngày"
+                                           aria-label="Username" aria-describedby="basic-addon1" name="ngayTaoInp">
+                                    <input type="date" class="form-control" placeholder="Đến ngày"
+                                           aria-label="Username" aria-describedby="basic-addon1" name="ngayTaoInp">
                                     <a class="btn btn-primary" href="#" role="button">Tìm kiếm</a>
                                 </div>
                             </div>
@@ -187,13 +195,14 @@
                                     <th scope="col">Ten người nhận</th>
                                     <th scope="col">Địa chỉ</th>
                                     <th scope="col">Sđt</th>
+                                    <th scope="col">Hành động</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <c:forEach varStatus="i" items="${lstHoaDon}" var="hoaDon">
                                     <tr>
                                         <td>1</td>
-                                        <td>${hoaDon.Kh.sdt}</td>
+                                        <td>${hoaDon.KH.sdt}</td>
                                         <td>${hoaDon.nv.ten} ${hoaDon.nv.ma}</td>
                                         <td>${hoaDon.ma}</td>
                                         <td>${hoaDon.ngayTao}</td>

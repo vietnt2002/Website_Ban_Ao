@@ -1,103 +1,84 @@
-//package com.example.java4.servlet;
-//
-//import com.example.java4.model.*;
-//import com.example.java4.service.SanPhamService;
-//import jakarta.servlet.ServletException;
-//import jakarta.servlet.annotation.WebServlet;
-//import jakarta.servlet.http.HttpServlet;
-//import jakarta.servlet.http.HttpServletRequest;
-//import jakarta.servlet.http.HttpServletResponse;
-//
-//import java.io.IOException;
-//import java.util.ArrayList;
-//
-//@WebServlet(value = {"/hoaDon", "/routeUpdate-hoaDon", "/addhoaDon", "/delete-hoaDon", "/detail-hoaDon","/update-hoaDon"})
-//public class HoaDonServlet extends HttpServlet {
-//
-//    ArrayList<ChiTietSP> lstChiTietSPS = new ArrayList<>();
-//    ArrayList<MauSac> lstMauSacs = new ArrayList<>();
-//    ArrayList<DongSP> lstDongSPS = new ArrayList<>();
-//    ArrayList<NSX> lstNSXes = new ArrayList<>();
-//
-//    public void reload() {
-//        lstSanPhams = service.getAllSP();
-//        lstChiTietSPS = service.getAllChiTietSP();
-//        lstMauSacs = service.getAllMauSac();
-//        lstDongSPS = service.getAllDongSP();
-//        lstNSXes = service.getAllNSX();
-//    }
-//
-//    public void reloadSelectOP(){
-//        lstSanPhams = service.getAllSP();
-//        lstMauSacs = service.getAllMauSac();
-//        lstDongSPS = service.getAllDongSP();
-//        lstNSXes = service.getAllNSX();
-//    }
-//
-//    public void init() {
-//        System.out.println("init success");
-//    }
-//
-//    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//        System.out.println("do get!");
-//        String uri = request.getRequestURI();
-//        if (uri.contains("/chiTietSP")) {
-//            reload();
-//            request.setAttribute("lstSanPham", lstSanPhams);
-//            request.setAttribute("lstChiTietSP", lstChiTietSPS);
-//            request.setAttribute("lstMauSac", lstMauSacs);
-//            request.setAttribute("lstDongSP", lstDongSPS);
-//            request.setAttribute("lstNSX", lstNSXes);
-//            request.getRequestDispatcher("views/ChiTietSanPham.jsp").forward(request, response);
-//        }
-//
-//        if (uri.contains("/detail-chiTietSP")) {
-//
+package com.example.java4.servlet;
+
+import com.example.java4.model.*;
+import com.example.java4.service.HoaDonService;
+import com.example.java4.service.KhachHangService;
+import com.example.java4.service.NhanVienService;
+import com.example.java4.service.SanPhamService;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
+@WebServlet(value = {"/hoaDon", "/routeUpdate-hoaDon", "/delete-hoaDon", "/detail-hoaDon"})
+public class HoaDonServlet extends HttpServlet {
+    HoaDonService hoaDonService  = new HoaDonService();
+    KhachHangService khachHangService = new KhachHangService();
+    NhanVienService nhanVienService = new NhanVienService();
+    ArrayList<HoaDon> lstHoaDons = new ArrayList<>();
+    public void reload() {
+        lstHoaDons = hoaDonService.getAllHoaDon();
+    }
+
+    public void reloadSelectOP(){
+
+    }
+
+    public void init() {
+        System.out.println("init success");
+    }
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println("do get!");
+        String uri = request.getRequestURI();
+        if (uri.contains("/hoaDon")) {
+            reload();
+            request.setAttribute("lstHoaDon", lstHoaDons);
+            request.getRequestDispatcher("views/HoaDon.jsp").forward(request, response);
+        }
+
+        if (uri.contains("/detail-chiTietSP")) {
+            String id = request.getParameter("id");
+            HoaDon  hoaDon = new HoaDon();
+            for (HoaDon hd : lstHoaDons) {
+                if (hd.getIdHoaDon().equals(id)) {
+                    hoaDon = hd;
+                }
+            }
+            request.setAttribute("hoaDon", hoaDon);
+            request.getRequestDispatcher("views/showHoaDon.jsp").forward(request, response);
+        }
+
+        if (uri.contains("/routeUpdate-hoaDon")) {
+            String id = request.getParameter("id");
+            HoaDon hoaDon = new HoaDon();
+            for (HoaDon hd : lstHoaDons ) {
+                if (hd.getIdHoaDon().equals(id)) {
+                    hoaDon = hd;
+                }
+            }
+            request.setAttribute("hoaDon", hoaDon);
+            request.getRequestDispatcher("views/showHoaDon.jsp").forward(request, response);
+        }
+//        if(uri.contains("/delete-hoaDon")){
 //            String id = request.getParameter("id");
-//            ChiTietSP chiTietSP = new ChiTietSP();
-//            for (ChiTietSP ctsp : lstChiTietSPS) {
-//                if (ctsp.getIdChiTietSP().equals(id)) {
-//                    chiTietSP = ctsp;
-//                }
+//            HoaDon hoaDon  = new HoaDon();
+//            for (HoaDon hd : lstHoaDons) {
+//                 hoaDon = hd;
 //            }
-//            request.setAttribute("lstSanPham",lstSanPhams);
-//            request.setAttribute("lstNSX", lstNSXes);
-//            request.setAttribute("lstMauSac",lstMauSacs);
-//            request.setAttribute("lstDongSP",lstDongSPS);
-//            request.setAttribute("chiTietSP", chiTietSP);
-//            request.getRequestDispatcher("views/showChiTietSanPham.jsp").forward(request, response);
-//        }
-//
-//        if (uri.contains("/routeUpdate-chiTietSP")) {
-//            String id = request.getParameter("id");
-//            ChiTietSP chiTietSP = new ChiTietSP();
-//            for (ChiTietSP ctsp : lstChiTietSPS) {
-//                if (ctsp.getIdChiTietSP().equals(id)) {
-//                    chiTietSP = ctsp;
-//                }
-//            }
-//            request.setAttribute("lstSanPham",lstSanPhams);
-//            request.setAttribute("lstNSX", lstNSXes);
-//            request.setAttribute("lstMauSac",lstMauSacs);
-//            request.setAttribute("lstDongSP",lstDongSPS);
-//            request.setAttribute("chiTietSP", chiTietSP);
-//            request.getRequestDispatcher("views/showChiTietSanPham.jsp").forward(request, response);
-//        }
-//        if(uri.contains("/delete-chiTietSP")){
-//            String id = request.getParameter("id");
-//            ChiTietSP chiTietSP = new ChiTietSP();
-//            for (ChiTietSP ctsp : lstChiTietSPS) {
-//                 chiTietSP = ctsp;
-//            }
-//            service.deleteChiTietSP(chiTietSP);
+//            hoaDonService.deleteHoaDon(hoaDon);
 //            response.sendRedirect("/Home/chiTietSP");
 //        }
-//    }
-//
-//    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//        System.out.println("do post!");
-//        String uri = request.getRequestURI();
-//        if(uri.contains("/addChiTietSP")){
+    }
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println("do post!");
+        String uri = request.getRequestURI();
+//        if(uri.contains("/addHoaDon")){
 //            String idSanPham = request.getParameter("sanPhamInp");
 //            String idNSX = request.getParameter("nsxInp");
 //            String idMauSac  = request.getParameter("mauSacInp");
@@ -115,8 +96,8 @@
 //            service.addChiTietSP(null,sanPham,nsx,mauSac,dongSP,namBH,mota,soLuongTon,giaNhap,giaBan,link);
 //            response.sendRedirect("/Home/chiTietSP");
 //        }
-//
-//        if(uri.contains("/update-chiTietSP")){
+
+//        if(uri.contains("/update-hoaDon")){
 //            String id = request.getParameter("idInp");
 //            String idSanPham = request.getParameter("sanPhamInp");
 //            String idNSX = request.getParameter("nsxInp");
@@ -136,10 +117,12 @@
 //            service.updateChiTietSP(chiTietSP);
 //            response.sendRedirect("/Home/chiTietSP");
 //        }
-//    }
-//
-//    public void destroy() {
-//        System.out.println("do destroy!");
-//    }
-//}
-//
+
+
+    }
+
+    public void destroy() {
+        System.out.println("do destroy!");
+    }
+}
+

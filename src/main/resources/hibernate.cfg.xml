@@ -33,9 +33,7 @@
         <mapping class="com.example.java4.model.NhanVien" />
         <mapping class="com.example.java4.model.NSX" />
         <mapping class="com.example.java4.model.SanPham" />
-        <mapping class="com.example.java4.model.GioHangChiTiet" />
         <mapping class="com.example.java4.model.ChiTietSP" />
-        <mapping class="com.example.java4.model.GioHang" />
         <mapping class="com.example.java4.model.HoaDon" />
         <mapping class="com.example.java4.model.HoaDonChiTiet" />
     </session-factory>

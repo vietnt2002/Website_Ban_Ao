@@ -1,7 +1,6 @@
 package com.example.java4.testHibernate;
 
 import com.example.java4.repositories.ChiTietSPDAO;
-import com.example.java4.repositories.GioHangChiTietDAO;
 
 public class GetChiTietSPTest {
     public static void main(String[] args) {

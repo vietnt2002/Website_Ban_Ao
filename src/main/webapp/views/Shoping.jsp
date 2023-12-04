@@ -85,17 +85,17 @@
                 <div class="row">
                     <div class="col-4 md-4 sm-4" style="padding: 0;">
                         <img class="d-block w-100" style="width: auto;height:250px;"
-                             src="https://ts2.space/wp-content/uploads/2023/10/What-will-happen-if-the-spacex-rocket-hits-the-Moon_652a460e34c3d.jpg"
+                             src=""
                              alt="Responsive image">
                     </div>
                     <div class="col-4 md-4 sm-4" style="padding: 0;">
                         <img class="d-block w-100" style="width: auto;height:250px;"
-                             src="https://ts2.space/wp-content/uploads/2023/10/What-will-happen-if-the-spacex-rocket-hits-the-Moon_652a460e34c3d.jpg"
+                             src=""
                              alt="Responsive image">
                     </div>
                     <div class="col-4 md-4 sm-4" style="padding: 0;">
                         <img class="d-block w-100" style="width: auto;height:250px;"
-                             src="https://ts2.space/wp-content/uploads/2023/10/What-will-happen-if-the-spacex-rocket-hits-the-Moon_652a460e34c3d.jpg"
+                             src=""
                              alt="Responsive image">
                     </div>
                 </div>
@@ -111,17 +111,17 @@
                 <div class="row">
                     <div class="col-4 md-4 sm-4" style="padding: 0;">
                         <img class="d-block w-100" style="width: auto;height:250px;"
-                             src="https://ts2.space/wp-content/uploads/2023/10/What-will-happen-if-the-spacex-rocket-hits-the-Moon_652a460e34c3d.jpg"
+                             src=""
                              alt="Responsive image">
                     </div>
                     <div class="col-4 md-4 sm-4" style="padding: 0;">
                         <img class="d-block w-100" style="width: auto;height:250px;"
-                             src="https://ts2.space/wp-content/uploads/2023/10/What-will-happen-if-the-spacex-rocket-hits-the-Moon_652a460e34c3d.jpg"
+                             src=""
                              alt="Responsive image">
                     </div>
                     <div class="col-4 md-4 sm-4" style="padding: 0;">
                         <img class="d-block w-100" style="width: auto;height:250px;"
-                             src="https://ts2.space/wp-content/uploads/2023/10/What-will-happen-if-the-spacex-rocket-hits-the-Moon_652a460e34c3d.jpg"
+                             src=""
                              alt="Responsive image">
                     </div>
                 </div>
@@ -159,14 +159,21 @@
     </div>
 
     <div class="row ms-3">
-        <c:forEach varStatus="i" items="${lstSanPham}" var="sanPham">
+        <c:forEach varStatus="i" items="${lstChiTietSanPham}" var="chiTietSanPham">
             <div class="col-md-3 mt-5">
                 <div class="card" style="width: 18rem;">
-                    <img src="${sanPham.link}"
+                    <img src="${chiTietSanPham.link}"
                          class="card-img-top" alt="..." style="width: 285px;height: 200px">
                     <div class="card-body">
-                        <h5 class="card-title">${sanPham.ten}</h5>
-                        <p class="card-text">Price: $priceless$</p>
+                        <h5 class="card-title">${chiTietSanPham.sp.ten}</h5>
+                        <br>
+                        <p class="card-text">Price: ${chiTietSanPham.giaBan}</p>
+                        <br>
+                        <p class="card-text">Màu sắc: ${chiTietSanPham.mauSac.ten}</p>
+                        <br>
+                        <p class="card-text">NSX: ${chiTietSanPham.nsx.ten}</p>
+                        <br>
+                        <p class="card-text">Dòng SP: ${chiTietSanPham.dongSP.ten}</p>
                         <div class="input-group">
                             <a href="/Home/Cart" class="btn btn-warning ms-3">Add to cart</a>
                             <a href="/Home/Cart" class="btn btn-primary ms-3">Buy product</a>

@@ -63,4 +63,19 @@ public class HoaDonChiTietDAO {
         return hoaDonChiTiet;
     }
 
+    public ArrayList<HoaDonChiTiet> getAllByIdHoaDon(String idHoaDon) {
+        org.hibernate.cfg.Configuration cfg = new org.hibernate.cfg.Configuration();
+        cfg.configure("hibernate.cfg.xml");
+        SessionFactory factory =cfg.buildSessionFactory();
+        ArrayList<HoaDonChiTiet> lstHoaDonChiTiets = new ArrayList<>();
+        try {
+            Session session = factory.openSession();
+            tx = session.beginTransaction();
+            lstHoaDonChiTiets = (ArrayList<HoaDonChiTiet>) session.createQuery("from HoaDonChiTiet hdct where hdct.hoaDon.idHoaDon =:idHoaDon").setParameter("idHoaDon",idHoaDon).list();
+            System.out.println(lstHoaDonChiTiets);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return lstHoaDonChiTiets;
+    }
 }

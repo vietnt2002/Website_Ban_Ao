@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -50,121 +51,36 @@
                                     <h5 class="mb-3"><a href="#!" class="text-body"><i
                                             class="fas fa-long-arrow-alt-left me-2"></i>Continue shopping</a></h5>
                                     <hr>
-                                    <div class="card mb-3">
-                                        <div class="card-body">
-                                            <div class="d-flex justify-content-between">
-                                                <div class="d-flex flex-row align-items-center">
-                                                    <div>
-                                                        <img
-                                                                src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img1.webp"
-                                                                class="img-fluid rounded-3" alt="Shopping item"
-                                                                style="width: 65px;">
+                                    <c:forEach varStatus="i" items="${lstHoaDonChiTiet}" var="hoaDonChiTiet">
+                                        <div class="card mb-3">
+                                            <div class="card-body">
+                                                <div class="d-flex justify-content-between">
+                                                    <div class="d-flex flex-row align-items-center">
+                                                        <div>
+                                                            <img
+                                                                    src="${hoaDonChiTiet.link}"
+                                                                    class="img-fluid rounded-3" alt="Shopping item"
+                                                                    style="width: 65px;">
+                                                        </div>
+                                                        <div class="ms-3">
+                                                            <h5>${hoaDonChiTiet.chiTietSP.sp.ten}</h5>
+                                                            <p class="small mb-0">${hoaDonChiTiet.chiTiet.mauSac.ten} ${hoaDonChiTiet.nsx.ten}</p>
+                                                        </div>
                                                     </div>
-                                                    <div class="ms-3">
-                                                        <h5>Iphone 11 pro</h5>
-                                                        <p class="small mb-0">256GB, Navy Blue</p>
+                                                    <div class="d-flex flex-row align-items-center">
+                                                        <div style="width: 50px;">
+                                                            <h5 class="fw-normal mb-0">2</h5>
+                                                        </div>
+                                                        <div style="width: 80px;">
+                                                            <h5 class="mb-0">${hoaDonChiTiet.chiTietSP.giaBan}</h5>
+                                                        </div>
+                                                        <a href="#!" style="color: #cecece;"><i
+                                                                class="fas fa-trash-alt"></i></a>
                                                     </div>
-                                                </div>
-                                                <div class="d-flex flex-row align-items-center">
-                                                    <div style="width: 50px;">
-                                                        <h5 class="fw-normal mb-0">2</h5>
-                                                    </div>
-                                                    <div style="width: 80px;">
-                                                        <h5 class="mb-0">$900</h5>
-                                                    </div>
-                                                    <a href="#!" style="color: #cecece;"><i
-                                                            class="fas fa-trash-alt"></i></a>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="card mb-3">
-                                        <div class="card-body">
-                                            <div class="d-flex justify-content-between">
-                                                <div class="d-flex flex-row align-items-center">
-                                                    <div>
-                                                        <img
-                                                                src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img2.webp"
-                                                                class="img-fluid rounded-3" alt="Shopping item"
-                                                                style="width: 65px;">
-                                                    </div>
-                                                    <div class="ms-3">
-                                                        <h5>Samsung galaxy Note 10 </h5>
-                                                        <p class="small mb-0">256GB, Navy Blue</p>
-                                                    </div>
-                                                </div>
-                                                <div class="d-flex flex-row align-items-center">
-                                                    <div style="width: 50px;">
-                                                        <h5 class="fw-normal mb-0">2</h5>
-                                                    </div>
-                                                    <div style="width: 80px;">
-                                                        <h5 class="mb-0">$900</h5>
-                                                    </div>
-                                                    <a href="#!" style="color: #cecece;"><i
-                                                            class="fas fa-trash-alt"></i></a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="card mb-3">
-                                        <div class="card-body">
-                                            <div class="d-flex justify-content-between">
-                                                <div class="d-flex flex-row align-items-center">
-                                                    <div>
-                                                        <img
-                                                                src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img3.webp"
-                                                                class="img-fluid rounded-3" alt="Shopping item"
-                                                                style="width: 65px;">
-                                                    </div>
-                                                    <div class="ms-3">
-                                                        <h5>Canon EOS M50</h5>
-                                                        <p class="small mb-0">Onyx Black</p>
-                                                    </div>
-                                                </div>
-                                                <div class="d-flex flex-row align-items-center">
-                                                    <div style="width: 50px;">
-                                                        <h5 class="fw-normal mb-0">1</h5>
-                                                    </div>
-                                                    <div style="width: 80px;">
-                                                        <h5 class="mb-0">$1199</h5>
-                                                    </div>
-                                                    <a href="#!" style="color: #cecece;"><i
-                                                            class="fas fa-trash-alt"></i></a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="card mb-3 mb-lg-0">
-                                        <div class="card-body">
-                                            <div class="d-flex justify-content-between">
-                                                <div class="d-flex flex-row align-items-center">
-                                                    <div>
-                                                        <img
-                                                                src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img4.webp"
-                                                                class="img-fluid rounded-3" alt="Shopping item"
-                                                                style="width: 65px;">
-                                                    </div>
-                                                    <div class="ms-3">
-                                                        <h5>MacBook Pro</h5>
-                                                        <p class="small mb-0">1TB, Graphite</p>
-                                                    </div>
-                                                </div>
-                                                <div class="d-flex flex-row align-items-center">
-                                                    <div style="width: 50px;">
-                                                        <h5 class="fw-normal mb-0">1</h5>
-                                                    </div>
-                                                    <div style="width: 80px;">
-                                                        <h5 class="mb-0">$1799</h5>
-                                                    </div>
-                                                    <a href="#!" style="color: #cecece;"><i
-                                                            class="fas fa-trash-alt"></i></a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
+                                    </c:forEach>
                                 </div>
                                 <div class="col-lg-5">
 
@@ -241,7 +157,7 @@
                                                 <p class="mb-2">Total(Incl. taxes)</p>
                                                 <p class="mb-2">$4818.00</p>
                                             </div>
-                                            <button type="button" class="btn btn-success">
+                                            <button type="button" class="btn btn-dark">
                                                 <a href="/Home/bill">Checkout</a></button>
                                         </div>
                                     </div>

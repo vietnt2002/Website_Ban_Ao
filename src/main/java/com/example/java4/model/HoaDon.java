@@ -20,7 +20,7 @@ public class HoaDon implements Serializable {
     @JoinColumn(name = "idNhanVien")
     private NhanVien nv;
     @Column(name = "Ma")
-    private String ma;
+    private int ma;
     @Column(name = "NgayTao")
     private Date ngayTao;
     @Column(name = "NgayThanhToan")
@@ -34,14 +34,14 @@ public class HoaDon implements Serializable {
     @Column(name = "TenNguoiNhan")
     private String tenNguoiNhan;
     @Column(name = "DiaChi")
-    private String DiaChi;
+    private String diaChi;
     @Column(name = "Sdt")
     private String sdt;
 
     public HoaDon() {
     }
 
-    public HoaDon(String idHoaDon, KhachHang KH, NhanVien nv, String ma, Date ngayTao, Date ngayThanhToan, Date ngayShip, Date ngayNhan, int tinhTrang, String tenNguoiNhan, String diaChi, String sdt) {
+    public HoaDon(String idHoaDon, KhachHang KH, NhanVien nv, int ma, Date ngayTao, Date ngayThanhToan, Date ngayShip, Date ngayNhan, int tinhTrang, String tenNguoiNhan, String diaChi, String sdt) {
         this.idHoaDon = idHoaDon;
         this.KH = KH;
         this.nv = nv;
@@ -52,7 +52,7 @@ public class HoaDon implements Serializable {
         this.ngayNhan = ngayNhan;
         this.tinhTrang = tinhTrang;
         this.tenNguoiNhan = tenNguoiNhan;
-        DiaChi = diaChi;
+        this.diaChi = diaChi;
         this.sdt = sdt;
     }
 
@@ -80,11 +80,11 @@ public class HoaDon implements Serializable {
         this.nv = nv;
     }
 
-    public String getMa() {
+    public int getMa() {
         return ma;
     }
 
-    public void setMa(String ma) {
+    public void setMa(int ma) {
         this.ma = ma;
     }
 
@@ -137,11 +137,11 @@ public class HoaDon implements Serializable {
     }
 
     public String getDiaChi() {
-        return DiaChi;
+        return diaChi;
     }
 
     public void setDiaChi(String diaChi) {
-        DiaChi = diaChi;
+        this.diaChi = diaChi;
     }
 
     public String getSdt() {
@@ -158,14 +158,14 @@ public class HoaDon implements Serializable {
                 "idHoaDon='" + idHoaDon + '\'' +
                 ", KH=" + KH +
                 ", nv=" + nv +
-                ", ma='" + ma + '\'' +
+                ", ma=" + ma +
                 ", ngayTao=" + ngayTao +
                 ", ngayThanhToan=" + ngayThanhToan +
                 ", ngayShip=" + ngayShip +
                 ", ngayNhan=" + ngayNhan +
                 ", tinhTrang=" + tinhTrang +
                 ", tenNguoiNhan='" + tenNguoiNhan + '\'' +
-                ", DiaChi='" + DiaChi + '\'' +
+                ", diaChi='" + diaChi + '\'' +
                 ", sdt='" + sdt + '\'' +
                 '}';
     }

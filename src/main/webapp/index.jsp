@@ -123,17 +123,17 @@
                 <div class="row">
                     <div class="col-4 md-4 sm-4" style="padding: 0;">
                         <img class="d-block w-100" style="width: auto;height:250px;"
-                             src="https://ts2.space/wp-content/uploads/2023/10/What-will-happen-if-the-spacex-rocket-hits-the-Moon_652a460e34c3d.jpg"
+                             src=""
                              alt="Responsive image">
                     </div>
                     <div class="col-4 md-4 sm-4" style="padding: 0;">
                         <img class="d-block w-100" style="width: auto;height:250px;"
-                             src="https://ts2.space/wp-content/uploads/2023/10/What-will-happen-if-the-spacex-rocket-hits-the-Moon_652a460e34c3d.jpg"
+                             src=""
                              alt="Responsive image">
                     </div>
                     <div class="col-4 md-4 sm-4" style="padding: 0;">
                         <img class="d-block w-100" style="width: auto;height:250px;"
-                             src="https://ts2.space/wp-content/uploads/2023/10/What-will-happen-if-the-spacex-rocket-hits-the-Moon_652a460e34c3d.jpg"
+                             src=""
                              alt="Responsive image">
                     </div>
                 </div>
@@ -149,17 +149,17 @@
                 <div class="row">
                     <div class="col-4 md-4 sm-4" style="padding: 0;">
                         <img class="d-block w-100" style="width: auto;height:250px;"
-                             src="https://ts2.space/wp-content/uploads/2023/10/What-will-happen-if-the-spacex-rocket-hits-the-Moon_652a460e34c3d.jpg"
+                             src=""
                              alt="Responsive image">
                     </div>
                     <div class="col-4 md-4 sm-4" style="padding: 0;">
                         <img class="d-block w-100" style="width: auto;height:250px;"
-                             src="https://ts2.space/wp-content/uploads/2023/10/What-will-happen-if-the-spacex-rocket-hits-the-Moon_652a460e34c3d.jpg"
+                             src=""
                              alt="Responsive image">
                     </div>
                     <div class="col-4 md-4 sm-4" style="padding: 0;">
                         <img class="d-block w-100" style="width: auto;height:250px;"
-                             src="https://ts2.space/wp-content/uploads/2023/10/What-will-happen-if-the-spacex-rocket-hits-the-Moon_652a460e34c3d.jpg"
+                             src=""
                              alt="Responsive image">
                     </div>
                 </div>

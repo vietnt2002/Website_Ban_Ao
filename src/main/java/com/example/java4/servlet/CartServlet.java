@@ -1,4 +1,7 @@
 package com.example.java4.servlet;
+import com.example.java4.Singleton.HoaDonSingleton;
+import com.example.java4.model.HoaDonChiTiet;
+import com.example.java4.service.HoaDonService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -10,6 +13,11 @@ import java.util.ArrayList;
 
 @WebServlet( value={"/Cart","/Check","/Return"})
 public class CartServlet extends HttpServlet {
+    HoaDonService hoaDonService = new HoaDonService();
+    ArrayList<HoaDonChiTiet> lstHoaDonChiTiets = new ArrayList<>();
+    public void reloadHoaDonChiTiet(){
+        lstHoaDonChiTiets = hoaDonService.getAllByIdHoaDon(HoaDonSingleton.getInstance().hoaDon.getIdHoaDon());
+    }
     public void init(){
         System.out.println("init success");
     }
@@ -17,6 +25,7 @@ public class CartServlet extends HttpServlet {
         System.out.println("do get!");
         String uri = request.getRequestURI();
         if(uri.contains("/Cart")){
+            request.setAttribute("lstHoaDonChiTiet",lstHoaDonChiTiets);
             request.getRequestDispatcher("views/Cart.jsp").forward(request,response);
         }
     }

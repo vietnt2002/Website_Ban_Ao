@@ -10,11 +10,12 @@ import java.io.Serializable;
 @Entity
 @Table(name = "HoaDonChiTiet")
 public class HoaDonChiTiet implements Serializable {
-    @EmbeddedId
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String idHoaDonChiTiet;
     @ManyToOne
     @JoinColumn(name = "idHoaDon")
     private HoaDon hoaDon;
-    @EmbeddedId
     @ManyToOne
     @JoinColumn(name = "idChiTietSP")
     private ChiTietSP chiTietSP;
