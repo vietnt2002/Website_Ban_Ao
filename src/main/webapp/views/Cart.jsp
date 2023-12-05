@@ -58,18 +58,18 @@
                                                     <div class="d-flex flex-row align-items-center">
                                                         <div>
                                                             <img
-                                                                    src="${hoaDonChiTiet.link}"
+                                                                    src="${hoaDonChiTiet.chiTietSP.link}"
                                                                     class="img-fluid rounded-3" alt="Shopping item"
                                                                     style="width: 65px;">
                                                         </div>
                                                         <div class="ms-3">
                                                             <h5>${hoaDonChiTiet.chiTietSP.sp.ten}</h5>
-                                                            <p class="small mb-0">${hoaDonChiTiet.chiTiet.mauSac.ten} ${hoaDonChiTiet.nsx.ten}</p>
+                                                            <p class="small mb-0">${hoaDonChiTiet.chiTietSP.mauSac.ten} ${hoaDonChiTiet.chiTietSP.nsx.ten}</p>
                                                         </div>
                                                     </div>
                                                     <div class="d-flex flex-row align-items-center">
                                                         <div style="width: 50px;">
-                                                            <h5 class="fw-normal mb-0">2</h5>
+                                                            <h5 class="fw-normal mb-0">${hoaDonChiTiet.soluong}</h5>
                                                         </div>
                                                         <div style="width: 80px;">
                                                             <h5 class="mb-0">${hoaDonChiTiet.chiTietSP.giaBan}</h5>
@@ -145,7 +145,7 @@
 
                                             <div class="d-flex justify-content-between">
                                                 <p class="mb-2">Subtotal</p>
-                                                <p class="mb-2">$4798.00</p>
+                                                <p class="mb-2">$ ${subtotal}</p>
                                             </div>
 
                                             <div class="d-flex justify-content-between">
@@ -155,10 +155,10 @@
 
                                             <div class="d-flex justify-content-between mb-4">
                                                 <p class="mb-2">Total(Incl. taxes)</p>
-                                                <p class="mb-2">$4818.00</p>
+                                                <p class="mb-2">$ ${total}</p>
                                             </div>
                                             <button type="button" class="btn btn-dark">
-                                                <a href="/Home/bill">Checkout</a></button>
+                                                <a href="/Home/bill?id=${hoaDon.idHoaDon}">Checkout</a></button>
                                         </div>
                                     </div>
                                 </div>
@@ -170,49 +170,5 @@
         </div>
     </section>
 </main>
-<footer id="footer" style="margin-top: 60px;">
-    <div class="container">
-        <div class="row" style="width:750px;margin-left: auto;margin-right: auto;">
-            <div class="col-4 md-4">
-                <div class="useful-link">
-                    <h2 style="color:white;">Useful Links</h2>
-                    <div class="use-links">
-                        <li><a href=""><i class="fa-solid fa-angles-right"></i> Home</a></li>
-                        <li><a href=""><i class="fa-solid fa-angles-right"></i> About Us</a>
-                        </li>
-                        <li><a href=""><i class="fa-solid fa-angles-right"></i> Gallery</a>
-                        </li>
-                        <li><a href=""><i class="fa-solid fa-angles-right"></i> Contact</a>
-                        </li>
-                    </div>
-                </div>
-            </div>
-            <div class="col-4 md-4">
-                <div class="social-links">
-                    <h2 style="color: white;">Follow Us</h2>
-                    <div class="social-icons">
-                        <li><a href=""><i class="fa-brands fa-facebook-f"></i> Facebook</a></li>
-                        <li><a href=""><i class="fa-brands fa-instagram"></i> Instagram</a></li>
-                        <li><a href=""><i class="fa-brands fa-linkedin-in"></i> Linkedin</a></li>
-                    </div>
-                </div>
-            </div>
-            <div class="col-4 md-4">
-                <div class="address">
-                    <h2 style="color: white">Address</h2>
-                    <div class="address-links">
-                        <li class="address1"><i class="fa-solid fa-location-dot"></i>FPT
-                            Nam Từ Liêm-
-                            Hà Nội
-                            Việt Nam
-                        </li>
-                        <li><a href=""><i class="fa-solid fa-phone"></i> +84374223222</a></li>
-                        <li><a href=""><i class="fa-solid fa-envelope"></i> phucloc@gmail.com</a></li>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</footer>
 </body>
 </html>

@@ -175,8 +175,8 @@
                         <br>
                         <p class="card-text">Dòng SP: ${chiTietSanPham.dongSP.ten}</p>
                         <div class="input-group">
-                            <a href="/Home/Cart" class="btn btn-warning ms-3">Add to cart</a>
-                            <a href="/Home/Cart" class="btn btn-primary ms-3">Buy product</a>
+                            <a href="/Home/Cart?id=${chiTietSanPham.idChiTietSP}" class="btn btn-warning ms-3">Add to cart</a>
+                            <a href="/Home/Cart?id=${chiTietSanPham.idChiTietSP}" class="btn btn-primary ms-3">Buy product</a>
                         </div>
                     </div>
                 </div>

@@ -104,4 +104,19 @@ public class HoaDonDAO {
         return hoaDon;
     }
 
+    public void updateTinhTrangHoaDon(HoaDon hoaDon) {
+        try {
+            org.hibernate.cfg.Configuration cfg = new org.hibernate.cfg.Configuration();
+            cfg.configure("hibernate.cfg.xml");
+            SessionFactory factory =cfg.buildSessionFactory();
+            Session session  = factory.openSession();
+            tx  = session.beginTransaction();
+            session.saveOrUpdate(hoaDon);
+            tx.commit();
+            System.out.println("update succes!");
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -54,8 +54,7 @@
     <form action="addHoaDon" method=post>
         <div class="card bg-light text-white" style="height: 900px">
             <div class="card-img-overlay">
-                <h5 class="card-title" style="color:darkblue; text-align: center; font-size: 36px;">Quản lý chi tiết sản
-                    phẩm
+                <h5 class="card-title" style="color:darkblue; text-align: center; font-size: 36px;">Quản lý hóa đơn
                 </h5>
                 <div class="d-flex justify-content-center bg-white"
                      style="margin-left: auto;margin-right:auto;max-width:1280px">
@@ -63,9 +62,8 @@
                         <div class="row">
                             <div class="col-md-12 fw-bold mb-3" style="color:darkblue;font-size: 20px;">
                                 <i class="bi bi-square-fill me-2" style="color:#f26522"></i>
-                                Chi tiết sản phẩm
+                                Hóa đơn
                             </div>
-
                             <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
                                 <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
                                 >Khách hàng</label>
@@ -217,12 +215,6 @@
                                             <a href="/Home/detail-hoaDon?id=${hoaDon.idHoaDon}">
                                                 <button type="button" class="btn btn-primary">Detail</button>
                                             </a>
-                                            <a href="/Home/routeUpdate-hoaDon?id=${hoaDon.idHoaDon}">
-                                                <button type="button" class="btn btn-success ">Update</button>
-                                            </a>
-                                            <a href="/Home/delete-hoaDon?id=${hoaDon.idHoaDon}">
-                                                <button type="button" class="btn btn-danger">Delete</button>
-                                            </a>
                                         </td>
                                     </tr>
                                 </c:forEach>
@@ -235,49 +227,5 @@
         </div>
     </form>
 </main>
-<footer id="footer" style="margin-top: 60px;">
-    <div class="container">
-        <div class="row" style="width:750px;margin-left: auto;margin-right: auto;">
-            <div class="col-4 md-4">
-                <div class="useful-link">
-                    <h2 style="color:white;">Useful Links</h2>
-                    <div class="use-links">
-                        <li><a href=""><i class="fa-solid fa-angles-right"></i> Home</a></li>
-                        <li><a href=""><i class="fa-solid fa-angles-right"></i> About Us</a>
-                        </li>
-                        <li><a href=""><i class="fa-solid fa-angles-right"></i> Gallery</a>
-                        </li>
-                        <li><a href=""><i class="fa-solid fa-angles-right"></i> Contact</a>
-                        </li>
-                    </div>
-                </div>
-            </div>
-            <div class="col-4 md-4">
-                <div class="social-links">
-                    <h2 style="color: white;">Follow Us</h2>
-                    <div class="social-icons">
-                        <li><a href=""><i class="fa-brands fa-facebook-f"></i> Facebook</a></li>
-                        <li><a href=""><i class="fa-brands fa-instagram"></i> Instagram</a></li>
-                        <li><a href=""><i class="fa-brands fa-linkedin-in"></i> Linkedin</a></li>
-                    </div>
-                </div>
-            </div>
-            <div class="col-4 md-4">
-                <div class="address">
-                    <h2 style="color: white">Address</h2>
-                    <div class="address-links">
-                        <li class="address1"><i class="fa-solid fa-location-dot"></i>FPT
-                            Nam Từ Liêm-
-                            Hà Nội
-                            Việt Nam
-                        </li>
-                        <li><a href=""><i class="fa-solid fa-phone"></i> +84374223222</a></li>
-                        <li><a href=""><i class="fa-solid fa-envelope"></i> phucloc@gmail.com</a></li>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</footer>
 </body>
 </html>

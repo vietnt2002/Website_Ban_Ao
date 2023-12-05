@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -57,8 +58,8 @@
                                     <div class="col-md-4 invoice-id">
                                         <div class="info">
                                             <h1 class="color-white inv-header-1">Invoice</h1>
-                                            <p class="color-white mb-1">Invoice Number <span>#45613</span></p>
-                                            <p class="color-white mb-0">Invoice Date <span>21 Sep 2021</span></p>
+                                            <p class="color-white mb-1">Invoice Number <span>#${hoaDon.ma}</span></p>
+                                            <p class="color-white mb-0">Invoice Date <span>${hoaDon.ngayTao}</span></p>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
@@ -70,11 +71,11 @@
                                     <div class="col-md-6">
                                         <div class="invoice-number mb-30">
                                             <h4 class="inv-title-1">Invoice To</h4>
-                                            <h2 class="name mb-10">Jhon Smith</h2>
+                                            <h2 class="name mb-10">${khachHang.ho} ${khachHang.tenDem} ${khachHang.ten}</h2>
                                             <p class="invo-addr-1">
-                                                Theme Vessel <br/>
-                                                info@themevessel.com <br/>
-                                                21-12 Green Street, Meherpur, Bangladesh <br/>
+                                                Valid <br/>
+                                                ${khachHang.sdt}<br/>
+                                                ${khachHang.diaChi}<br/>
                                             </p>
                                         </div>
                                     </div>
@@ -95,35 +96,34 @@
                             </div>
                             <div class="invoice-center">
                                 <div class="table-responsive">
-                                    <table class="table" style="width: 900px">
+                                    <table class="table">
                                         <thead>
                                         <tr>
-                                            <th scope="col">#</th>
-                                            <th scope="col">First</th>
-                                            <th scope="col">Last</th>
-                                            <th scope="col">Handle</th>
+                                            <th scope="col">Stt</th>
+                                            <th scope="col">Tên sản phẩm</th>
+                                            <th scope="col">So Lượng</th>
+                                            <th scope="col">Đơn giá</th>
+                                            <th scope="col">Tổng</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr>
-                                            <th scope="row">1</th>
-                                            <td>Mark</td>
-                                            <td>Otto</td>
-                                            <td>@mdo</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">2</th>
-                                            <td>Jacob</td>
-                                            <td>Thornton</td>
-                                            <td>@fat</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">3</th>
-                                            <td colspan="2">Larry the Bird</td>
-                                            <td>@twitter</td>
-                                        </tr>
+                                        <c:forEach varStatus="i" items="${lstHoaDonChiTiet}" var="hoaDonChiTiet">
+                                            <tr>
+                                                <th scope="row">1</th>
+                                                <td>${hoaDonChiTiet.chiTietSP.sp.ten}</td>
+                                                <td>${hoaDonChiTiet.soluong}</td>
+                                                <td>${hoaDonChiTiet.chiTietSP.giaBan}</td>
+                                                <td>${hoaDonChiTiet.chiTietSP.giaBan}</td>
+                                            </tr>
+                                        </c:forEach>
                                         </tbody>
                                     </table>
+                                    <p>SubTotal: $ ${subtotal}</p>
+                                    <br>
+                                    <p>Ship: $ 20</p>
+                                    <br>
+                                    <p>SubTotal: $ ${total}</p>
+                                    <p>Status:<c:if test="${hoaDon.tinhTrang == 1}">Checked</c:if><c:if test="${hoaDon.tinhTrang == 0}">Not yet</c:if></p>
                                 </div>
                             </div>
                             <div class="invoice-bottom">

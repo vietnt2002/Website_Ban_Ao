@@ -1,9 +1,6 @@
 package com.example.java4.service;
 
-import com.example.java4.model.HoaDon;
-import com.example.java4.model.HoaDonChiTiet;
-import com.example.java4.model.KhachHang;
-import com.example.java4.model.NhanVien;
+import com.example.java4.model.*;
 import com.example.java4.repositories.HoaDonChiTietDAO;
 import com.example.java4.repositories.HoaDonDAO;
 
@@ -36,5 +33,17 @@ public class HoaDonService {
 
     public ArrayList<HoaDonChiTiet> getAllByIdHoaDon(String idHoaDon) {
         return  hoaDonChiTietDAO.getAllByIdHoaDon(idHoaDon);
+    }
+
+    public void addHoaDonChiTiet(HoaDon hoaDon, ChiTietSP chiTietSP, int soLuong, double donGia) {
+        hoaDonChiTietDAO.add(hoaDon,chiTietSP,soLuong,donGia);
+    }
+
+    public HoaDon getHoaDonById(String idHoaDon) {
+        return  hoaDonDAO.getByID(idHoaDon);
+    }
+
+    public void updateTinhTrangHD(HoaDon hoaDon) {
+        hoaDonDAO.updateTinhTrangHoaDon(hoaDon);
     }
 }

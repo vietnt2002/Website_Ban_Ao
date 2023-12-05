@@ -1,5 +1,6 @@
 package com.example.java4.servlet;
 
+import com.example.java4.Singleton.KhachHangSingleton;
 import com.example.java4.model.*;
 import com.example.java4.service.HoaDonService;
 import com.example.java4.service.KhachHangService;
@@ -41,16 +42,27 @@ public class HoaDonServlet extends HttpServlet {
             request.getRequestDispatcher("views/HoaDon.jsp").forward(request, response);
         }
 
-        if (uri.contains("/detail-chiTietSP")) {
+        if (uri.contains("/detail-hoaDon")) {
             String id = request.getParameter("id");
             HoaDon  hoaDon = new HoaDon();
+            double subtotal  = 0;
+            double total = 0;
             for (HoaDon hd : lstHoaDons) {
                 if (hd.getIdHoaDon().equals(id)) {
                     hoaDon = hd;
                 }
             }
+            ArrayList<HoaDonChiTiet> lstHoaDonChiTiet  = hoaDonService.getAllByIdHoaDon(hoaDon.getIdHoaDon()) ;
+            for (HoaDonChiTiet hoaDonChiTiet : lstHoaDonChiTiet) {
+                subtotal =subtotal+ hoaDonChiTiet.getChiTietSP().getGiaBan()*hoaDonChiTiet.getSoluong();
+            }
+            total = subtotal + 20;
+            request.setAttribute("subtotal",subtotal);
+            request.setAttribute("total",total);
             request.setAttribute("hoaDon", hoaDon);
-            request.getRequestDispatcher("views/showHoaDon.jsp").forward(request, response);
+            request.setAttribute("lstHoaDonChiTiet",lstHoaDonChiTiet);
+            request.setAttribute("khachHang", hoaDon.getKH());
+            request.getRequestDispatcher("views/Invoice.jsp").forward(request, response);
         }
 
         if (uri.contains("/routeUpdate-hoaDon")) {
