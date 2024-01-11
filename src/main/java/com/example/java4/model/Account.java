@@ -9,8 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class MauSac {
-    private String id;
-    private String ma;
-    private String ten;
+public class Account {
+    private String email;
+    private String password;
 }

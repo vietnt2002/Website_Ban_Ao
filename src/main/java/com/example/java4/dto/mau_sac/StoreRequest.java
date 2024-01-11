@@ -1,4 +1,4 @@
-package com.example.java4.model;
+package com.example.java4.dto.mau_sac;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,8 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class MauSac {
+public class StoreRequest {
+    @
     private String id;
     private String ma;
     private String ten;

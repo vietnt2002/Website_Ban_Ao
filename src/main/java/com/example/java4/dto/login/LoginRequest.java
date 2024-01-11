@@ -1,16 +1,13 @@
-package com.example.java4.model;
-
+package com.example.java4.dto.login;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class MauSac {
-    private String id;
-    private String ma;
-    private String ten;
+public class LoginRequest {
+    private String email;
+    private String password;
 }

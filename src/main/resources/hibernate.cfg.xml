@@ -32,7 +32,7 @@
         <mapping class="com.example.java4.model.MauSac" />
         <mapping class="com.example.java4.model.NhanVien" />
         <mapping class="com.example.java4.model.NSX" />
-        <mapping class="com.example.java4.model.SanPham" />
+        <mapping class="com.example.java4.model.MauSac" />
         <mapping class="com.example.java4.model.ChiTietSP" />
         <mapping class="com.example.java4.model.HoaDon" />
         <mapping class="com.example.java4.model.HoaDonChiTiet" />
