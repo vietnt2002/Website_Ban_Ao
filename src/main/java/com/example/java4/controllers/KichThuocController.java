@@ -1,5 +1,7 @@
 package com.example.java4.controllers;
-import com.example.java4.dto.mau_sac.StoreRequest;
+
+import com.example.java4.dto.kich_thuoc.StoreRequest;
+import com.example.java4.model.KichThuoc;
 import com.example.java4.model.MauSac;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
@@ -9,26 +11,25 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
 import java.util.ArrayList;
+
 @Controller
-@RequestMapping("mau_sac")
-public class MauSacController {
+@RequestMapping("kich_thuoc")
+public class KichThuocController {
     //    @RequestMapping(name="login", method = RequestMethod.POST)
-    ArrayList<MauSac> lstMauSac = new ArrayList<>();
-    MauSac msRem = new MauSac();
-    public MauSacController() {
-        lstMauSac.add(new MauSac("sp1","Black","fdsafasdfs"));
-        lstMauSac.add(new MauSac("sp2","Violet","fdsafasdfs"));
-        lstMauSac.add(new MauSac("sp3","Yellow","fdsafasdfs"));
-        lstMauSac.add(new MauSac("sp4","Pink","fdsafasdfs"));
+    ArrayList<KichThuoc> lstKichThuoc = new ArrayList<>();
+    KichThuoc ktRem = new KichThuoc();
+    public KichThuocController() {
+
     }
     @GetMapping("/create")
     public String getSanPhamForm(Model model)
     {
         String name = "SD18203";
-        model.addAttribute("lstMauSac",lstMauSac);
-        model.addAttribute("data",msRem);
-        return "admin/ql_mau_sac/Create";
+        model.addAttribute("lstKichThuoc",lstKichThuoc);
+        model.addAttribute("data",ktRem);
+        return "admin/ql_kich_thuoc/Create";
     }
     @PostMapping("store")
     public String create(
@@ -43,10 +44,11 @@ public class MauSacController {
         System.out.println(req.getId());
         System.out.println(req.getTen());
         System.out.println(req.getMa());
-        MauSac ms = new MauSac(req.getId(),req.getTen(),req.getMa());
-        msRem = ms;
-        lstMauSac.add(ms);
+        System.out.println(req.getTrangThai());
+        KichThuoc kt = new KichThuoc(req.getId(),req.getTen(),req.getMa(),req.getTrangThai());
+        ktRem = kt;
+        lstKichThuoc.add(kt);
         System.out.println(result.getAllErrors());
-        return "admin/ql_mau_sac/Create";
+        return "admin/ql_kich_thuoc/Create";
     }
 }

@@ -53,10 +53,10 @@
 </header>
 <!-- <div class="col-f" style="width:700px;margin-left: auto;margin-right: auto;"> -->
 <main>
-    <sf:form action="/mau_sac/store" method="POST" modelAttribute="data">
+    <sf:form action="/nhan_vien/store" method="POST" modelAttribute="data">
         <div class="card bg-light text-white" style="height: 900px">
             <div class="card-img-overlay">
-                <h5 class="card-title" style="color:darkblue; text-align: center; font-size: 36px;">Màu sắc
+                <h5 class="card-title" style="color:darkblue; text-align: center; font-size: 36px;">Nhân viên
                 </h5>
                 <div class="d-flex justify-content-center bg-white"
                      style="margin-left: auto;margin-right:auto;max-width:1280px">
@@ -64,7 +64,7 @@
                         <div class="row">
                             <div class="col-md-12 fw-bold mb-3" style="color:darkblue;font-size: 20px;">
                                 <i class="bi bi-square-fill me-2" style="color:#f26522"></i>
-                                Quản lý màu sắc
+                                Quản lý nhân viên
                             </div>
                             <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
                                 <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
@@ -75,15 +75,7 @@
                                     <sf:errors path="id" cssStyle="color: red" />
                                 </div>
                             </div>
-                            <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
-                                <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
-                                >Mã</label>
-                                <div class="input-group mb-2">
-                                    <sf:input type="text" class="form-control" placeholder="Tên"
-                                           aria-label="Username" aria-describedby="basic-addon1" name="ma" path="ma"/>
-                                    <sf:errors path="ma" cssStyle="color: red" />
-                                </div>
-                            </div>
+
                             <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
                                 <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
                                 >Tên</label>
@@ -93,6 +85,47 @@
                                     <sf:errors path="ten" cssStyle="color: red" />
                                 </div>
                             </div>
+
+                            <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
+                                <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
+                                >Mã NV</label>
+                                <div class="input-group mb-2">
+                                    <sf:input type="text" class="form-control" placeholder="SDT"
+                                              aria-label="Username" aria-describedby="basic-addon1" name="maNV" path="maNV"/>
+                                    <sf:errors path="maNV" cssStyle="color: red" />
+                                </div>
+                            </div>
+
+                            <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
+                                <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
+                                >Tên đăng nhập</label>
+                                <div class="input-group mb-2">
+                                    <sf:input type="text" class="form-control" placeholder="Mã KH"
+                                              aria-label="Username" aria-describedby="basic-addon1" name="tenDangNhap" path="tenDangNhap"/>
+                                    <sf:errors path="tenDangNhap" cssStyle="color: red" />
+                                </div>
+                            </div>
+
+                            <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
+                                <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
+                                >Mật khẩu</label>
+                                <div class="input-group mb-2">
+                                    <sf:input type="text" class="form-control" placeholder="Trạng thái"
+                                              aria-label="Username" aria-describedby="basic-addon1" name="matKhau" path="matKhau"/>
+                            <sf:errors path="matKhau" cssStyle="color: red" />
+                                </div>
+                            </div>
+
+                            <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
+                                <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
+                                >Trạng thái</label>
+                                <div class="input-group mb-2">
+                                    <sf:input type="text" class="form-control" placeholder="Trạng thái"
+                                              aria-label="Username" aria-describedby="basic-addon1" name="trangThai" path="trangThai"/>
+                                    <sf:errors path="trangThai" cssStyle="color: red" />
+                                </div>
+                            </div>
+
                             <div class="text-center ">
                                 <br><br><br>
                                 <button type="submit" class="btn btn-primary" style="border-radius:0%;">Thêm

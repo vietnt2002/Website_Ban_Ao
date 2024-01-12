@@ -1,7 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="jakarta.tags.core" %>
-<%@ taglib prefix="f" uri="jakarta.tags.functions" %>
-<%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -53,7 +51,7 @@
 </header>
 <!-- <div class="col-f" style="width:700px;margin-left: auto;margin-right: auto;"> -->
 <main>
-    <sf:form action="/mau_sac/store" method="POST" modelAttribute="data">
+    <form action="update-mauSac" method=post>
         <div class="card bg-light text-white" style="height: 900px">
             <div class="card-img-overlay">
                 <h5 class="card-title" style="color:darkblue; text-align: center; font-size: 36px;">Màu sắc
@@ -64,78 +62,43 @@
                         <div class="row">
                             <div class="col-md-12 fw-bold mb-3" style="color:darkblue;font-size: 20px;">
                                 <i class="bi bi-square-fill me-2" style="color:#f26522"></i>
-                                Quản lý màu sắc
+                                Chi tiết màu sắc
                             </div>
                             <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
                                 <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
                                 >Id</label>
                                 <div class="input-group mb-2">
-                                    <sf:input type="text" class="form-control" placeholder="#idSystem"
-                                           aria-label="Username" aria-describedby="basic-addon1" name="id" path="id"/>
-                                    <sf:errors path="id" cssStyle="color: red" />
+                                    <input type="text" class="form-control" placeholder="#idSystem"
+                                           aria-label="Username" aria-describedby="basic-addon1" name="idInp" value = "${mauSac.idMauSac}" readonly>
                                 </div>
                             </div>
                             <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
                                 <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
                                 >Mã</label>
                                 <div class="input-group mb-2">
-                                    <sf:input type="text" class="form-control" placeholder="Tên"
-                                           aria-label="Username" aria-describedby="basic-addon1" name="ma" path="ma"/>
-                                    <sf:errors path="ma" cssStyle="color: red" />
+                                    <input type="text" class="form-control" placeholder="Tên"
+                                           aria-label="Username" aria-describedby="basic-addon1" name="maInp" value = "${mauSac.ma}">
                                 </div>
                             </div>
                             <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
                                 <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
                                 >Tên</label>
                                 <div class="input-group mb-2">
-                                    <sf:input type="text" class="form-control" placeholder="Tên"
-                                           aria-label="Username" aria-describedby="basic-addon1" name="ten" path="ten"/>
-                                    <sf:errors path="ten" cssStyle="color: red" />
+                                    <input type="text" class="form-control" placeholder="Tên"
+                                           aria-label="Username" aria-describedby="basic-addon1" name="tenInp" value ="${mauSac.ten}">
                                 </div>
                             </div>
                             <div class="text-center ">
                                 <br><br><br>
-                                <button type="submit" class="btn btn-primary" style="border-radius:0%;">Thêm
+                                <button type="submit" class="btn btn-primary" style="border-radius:0%;">Update
                                 </button>
                             </div>
-                            <table class="table mt-5">
-                                <thead>
-                                <tr class="table-light">
-                                    <th scope="col">Stt</th>
-                                    <th scope="col">Id</th>
-                                    <th scope="col">Mã</th>
-                                    <th scope="col">Tên</th>
-                                    <th scope="col">Hành động</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <c:forEach varStatus="i" items="${lstMauSac}" var="mauSac">
-                                    <tr>
-                                        <td>1</td>
-                                        <td>${mauSac.id}</td>
-                                        <td>${mauSac.ma}</td>
-                                        <td>${mauSac.ten}</td>
-                                        <td>
-                                            <a href="/Home/detail-mauSac?id=${mauSac.id}">
-                                                <button type="button" class="btn btn-primary">Detail</button>
-                                            </a>
-                                            <a href="/Home/routeUpdate-mauSac?id=${mauSac.id}">
-                                                <button type="button" class="btn btn-success ">Update</button>
-                                            </a>
-                                            <a href="/Home/delete-mauSac?id=${mauSac.id}">
-                                                <button type="button" class="btn btn-danger">Delete</button>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                </c:forEach>
-                                </tbody>
-                            </table>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </sf:form>
+    </form>
 </main>
 <footer id="footer" style="margin-top: 60px;">
     <div class="container">

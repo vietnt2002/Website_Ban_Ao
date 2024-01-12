@@ -53,10 +53,10 @@
 </header>
 <!-- <div class="col-f" style="width:700px;margin-left: auto;margin-right: auto;"> -->
 <main>
-    <sf:form action="/mau_sac/store" method="POST" modelAttribute="data">
+    <sf:form action="/san_pham/store" method="POST" modelAttribute="data">
         <div class="card bg-light text-white" style="height: 900px">
             <div class="card-img-overlay">
-                <h5 class="card-title" style="color:darkblue; text-align: center; font-size: 36px;">Màu sắc
+                <h5 class="card-title" style="color:darkblue; text-align: center; font-size: 36px;">Sản phẩm
                 </h5>
                 <div class="d-flex justify-content-center bg-white"
                      style="margin-left: auto;margin-right:auto;max-width:1280px">
@@ -64,7 +64,7 @@
                         <div class="row">
                             <div class="col-md-12 fw-bold mb-3" style="color:darkblue;font-size: 20px;">
                                 <i class="bi bi-square-fill me-2" style="color:#f26522"></i>
-                                Quản lý màu sắc
+                                Quản lý sản phẩm
                             </div>
                             <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
                                 <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
@@ -91,6 +91,15 @@
                                     <sf:input type="text" class="form-control" placeholder="Tên"
                                            aria-label="Username" aria-describedby="basic-addon1" name="ten" path="ten"/>
                                     <sf:errors path="ten" cssStyle="color: red" />
+                                </div>
+                            </div>
+                            <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
+                                <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
+                                >Trạng thái</label>
+                                <div class="input-group mb-2">
+                                    <sf:input type="text" class="form-control" placeholder="Tên"
+                                              aria-label="Username" aria-describedby="basic-addon1" name="trangThai" path="trangThai"/>
+                                    <sf:errors path="trangThai" cssStyle="color: red" />
                                 </div>
                             </div>
                             <div class="text-center ">

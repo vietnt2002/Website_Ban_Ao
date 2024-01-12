@@ -1,6 +1,6 @@
 package com.example.java4.controllers;
-import com.example.java4.dto.mau_sac.StoreRequest;
-import com.example.java4.model.MauSac;
+import com.example.java4.dto.nhan_vien.StoreRequest;
+import com.example.java4.model.NhanVien;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,26 +9,25 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
 import java.util.ArrayList;
+
 @Controller
-@RequestMapping("mau_sac")
-public class MauSacController {
+@RequestMapping("nhan_vien")
+public class NhanVienController {
     //    @RequestMapping(name="login", method = RequestMethod.POST)
-    ArrayList<MauSac> lstMauSac = new ArrayList<>();
-    MauSac msRem = new MauSac();
-    public MauSacController() {
-        lstMauSac.add(new MauSac("sp1","Black","fdsafasdfs"));
-        lstMauSac.add(new MauSac("sp2","Violet","fdsafasdfs"));
-        lstMauSac.add(new MauSac("sp3","Yellow","fdsafasdfs"));
-        lstMauSac.add(new MauSac("sp4","Pink","fdsafasdfs"));
+    ArrayList<NhanVien> lstNhanViens = new ArrayList<>();
+    NhanVien nvRem = new NhanVien();
+    public NhanVienController() {
+
     }
     @GetMapping("/create")
-    public String getSanPhamForm(Model model)
+    public String create(Model model)
     {
         String name = "SD18203";
-        model.addAttribute("lstMauSac",lstMauSac);
-        model.addAttribute("data",msRem);
-        return "admin/ql_mau_sac/Create";
+        model.addAttribute("lstNhanVien",lstNhanViens);
+        model.addAttribute("data",nvRem);
+        return "admin/ql_nhan_vien/Create";
     }
     @PostMapping("store")
     public String create(
@@ -40,13 +39,11 @@ public class MauSacController {
         if (result.hasErrors()) {
             System.out.println("Có lỗi");
         }
-        System.out.println(req.getId());
-        System.out.println(req.getTen());
-        System.out.println(req.getMa());
-        MauSac ms = new MauSac(req.getId(),req.getTen(),req.getMa());
-        msRem = ms;
-        lstMauSac.add(ms);
+        NhanVien nv = new NhanVien(req.getId(), req.getTen(),req.getMaNV(),req.getTenDangNhap(),req.getMatKhau(),req.getTrangThai());
+        System.out.println(nv);
+        nvRem = nv;
+        lstNhanViens.add(nv);
         System.out.println(result.getAllErrors());
-        return "admin/ql_mau_sac/Create";
+        return "admin/ql_nhan_vien/Create";
     }
 }

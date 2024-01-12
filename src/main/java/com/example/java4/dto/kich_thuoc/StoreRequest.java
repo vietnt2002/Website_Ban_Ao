@@ -1,9 +1,10 @@
-package com.example.java4.dto.mau_sac;
+package com.example.java4.dto.kich_thuoc;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -15,4 +16,6 @@ public class StoreRequest {
     private String ma;
     @NotBlank(message = "Do not empty ten")
     private String ten;
+    @NotBlank(message = "Do not empty trang thai")
+    private String trangThai;
 }
