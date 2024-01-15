@@ -75,7 +75,6 @@
                                     <sf:errors path="id" cssStyle="color: red" />
                                 </div>
                             </div>
-
                             <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
                                 <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
                                 >Tên</label>

@@ -84,7 +84,6 @@
                                     <sf:errors path="ma" cssStyle="color: red" />
                                 </div>
                             </div>
-
                             <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
                                 <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
                                 >Tên</label>
@@ -94,7 +93,6 @@
                                     <sf:errors path="ten" cssStyle="color: red" />
                                 </div>
                             </div>
-
                             <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
                                 <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
                                 >Trạng thái</label>
@@ -110,38 +108,6 @@
                                 <button type="submit" class="btn btn-primary" style="border-radius:0%;">Thêm
                                 </button>
                             </div>
-                            <table class="table mt-5">
-                                <thead>
-                                <tr class="table-light">
-                                    <th scope="col">Stt</th>
-                                    <th scope="col">Id</th>
-                                    <th scope="col">Mã</th>
-                                    <th scope="col">Tên</th>
-                                    <th scope="col">Hành động</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <c:forEach varStatus="i" items="${lstMauSac}" var="mauSac">
-                                    <tr>
-                                        <td>1</td>
-                                        <td>${mauSac.id}</td>
-                                        <td>${mauSac.ma}</td>
-                                        <td>${mauSac.ten}</td>
-                                        <td>
-                                            <a href="/Home/detail-mauSac?id=${mauSac.id}">
-                                                <button type="button" class="btn btn-primary">Detail</button>
-                                            </a>
-                                            <a href="/Home/routeUpdate-mauSac?id=${mauSac.id}">
-                                                <button type="button" class="btn btn-success ">Update</button>
-                                            </a>
-                                            <a href="/Home/delete-mauSac?id=${mauSac.id}">
-                                                <button type="button" class="btn btn-danger">Delete</button>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                </c:forEach>
-                                </tbody>
-                            </table>
                         </div>
                     </div>
                 </div>

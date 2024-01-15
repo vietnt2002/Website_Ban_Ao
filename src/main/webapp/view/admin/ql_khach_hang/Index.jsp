@@ -51,98 +51,40 @@
 </header>
 <!-- <div class="col-f" style="width:700px;margin-left: auto;margin-right: auto;"> -->
 <main>
-    <form action="update-mauSac" method=post>
-        <div class="card bg-light text-white" style="height: 900px">
-            <div class="card-img-overlay">
-                <h5 class="card-title" style="color:darkblue; text-align: center; font-size: 36px;">Màu sắc
-                </h5>
-                <div class="d-flex justify-content-center bg-white"
-                     style="margin-left: auto;margin-right:auto;max-width:1280px">
-                    <div class="form bg-white m-auto" style="color:black;width:1280px;padding:56px;">
-                        <div class="row">
-                            <div class="col-md-12 fw-bold mb-3" style="color:darkblue;font-size: 20px;">
-                                <i class="bi bi-square-fill me-2" style="color:#f26522"></i>
-                                Chi tiết màu sắc
-                            </div>
-                            <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
-                                <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
-                                >Id</label>
-                                <div class="input-group mb-2">
-                                    <input type="text" class="form-control" placeholder="#idSystem"
-                                           aria-label="Username" aria-describedby="basic-addon1" name="idInp" value = "${mauSac.idMauSac}" readonly>
-                                </div>
-                            </div>
-                            <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
-                                <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
-                                >Mã</label>
-                                <div class="input-group mb-2">
-                                    <input type="text" class="form-control" placeholder="Tên"
-                                           aria-label="Username" aria-describedby="basic-addon1" name="maInp" value = "${mauSac.ma}">
-                                </div>
-                            </div>
-                            <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
-                                <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
-                                >Tên</label>
-                                <div class="input-group mb-2">
-                                    <input type="text" class="form-control" placeholder="Tên"
-                                           aria-label="Username" aria-describedby="basic-addon1" name="tenInp" value ="${mauSac.ten}">
-                                </div>
-                            </div>
-                            <div class="text-center ">
-                                <br><br><br>
-                                <button type="submit" class="btn btn-primary" style="border-radius:0%;">Update
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </form>
+    <table class="table mt-5">
+        <thead>
+        <tr class="table-light">
+            <th scope="col">Stt</th>
+            <th scope="col">Id</th>
+            <th scope="col">Tên</th>
+            <th scope="col">Mã NV</th>
+            <th scope="col">Tên đăng nhập</th>
+            <th scope="col">Mật khẩu</th>
+            <th scope="col">Trạng thái</th>
+            <th scope="col">Hành động</th>
+        </tr>
+        </thead>
+        <tbody>
+        <c:forEach varStatus="i" items="${data}" var="khachHang">
+            <tr>
+                <td>1</td>
+                <td>${khachHang.id}</td>
+                <td>${khachHang.ten}</td>
+                <td>${khachHang.sdt}</td>
+                <td>${khachHang.maKH}</td>
+                <td>${khachHang.trangThai}</td>
+                <td>
+                    <a href="update/${khachHang.id}">
+                        <button type="button" class="btn btn-success ">Update</button>
+                    </a>
+                    <a href="delete/${khachHang.id}">
+                        <button type="button" class="btn btn-danger">Delete</button>
+                    </a>
+                </td>
+            </tr>
+        </c:forEach>
+        </tbody>
+    </table>
 </main>
-<footer id="footer" style="margin-top: 60px;">
-    <div class="container">
-        <div class="row" style="width:750px;margin-left: auto;margin-right: auto;">
-            <div class="col-4 md-4">
-                <div class="useful-link">
-                    <h2 style="color:white;">Useful Links</h2>
-                    <div class="use-links">
-                        <li><a href=""><i class="fa-solid fa-angles-right"></i> Home</a></li>
-                        <li><a href=""><i class="fa-solid fa-angles-right"></i> About Us</a>
-                        </li>
-                        <li><a href=""><i class="fa-solid fa-angles-right"></i> Gallery</a>
-                        </li>
-                        <li><a href=""><i class="fa-solid fa-angles-right"></i> Contact</a>
-                        </li>
-                    </div>
-                </div>
-            </div>
-            <div class="col-4 md-4">
-                <div class="social-links">
-                    <h2 style="color: white;">Follow Us</h2>
-                    <div class="social-icons">
-                        <li><a href=""><i class="fa-brands fa-facebook-f"></i> Facebook</a></li>
-                        <li><a href=""><i class="fa-brands fa-instagram"></i> Instagram</a></li>
-                        <li><a href=""><i class="fa-brands fa-linkedin-in"></i> Linkedin</a></li>
-                    </div>
-                </div>
-            </div>
-            <div class="col-4 md-4">
-                <div class="address">
-                    <h2 style="color: white">Address</h2>
-                    <div class="address-links">
-                        <li class="address1"><i class="fa-solid fa-location-dot"></i>FPT
-                            Nam Từ Liêm-
-                            Hà Nội
-                            Việt Nam
-                        </li>
-                        <li><a href=""><i class="fa-solid fa-phone"></i> +84374223222</a></li>
-                        <li><a href=""><i class="fa-solid fa-envelope"></i> phucloc@gmail.com</a></li>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</footer>
 </body>
 </html>

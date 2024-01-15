@@ -1,5 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="f" uri="jakarta.tags.functions" %>
+<%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -51,10 +53,10 @@
 </header>
 <!-- <div class="col-f" style="width:700px;margin-left: auto;margin-right: auto;"> -->
 <main>
-    <form action="update-mauSac" method=post>
+    <sf:form action="/nhan_vien/update/${data.id}" method="POST" modelAttribute="data">
         <div class="card bg-light text-white" style="height: 900px">
             <div class="card-img-overlay">
-                <h5 class="card-title" style="color:darkblue; text-align: center; font-size: 36px;">Màu sắc
+                <h5 class="card-title" style="color:darkblue; text-align: center; font-size: 36px;">Nhân viên
                 </h5>
                 <div class="d-flex justify-content-center bg-white"
                      style="margin-left: auto;margin-right:auto;max-width:1280px">
@@ -62,35 +64,71 @@
                         <div class="row">
                             <div class="col-md-12 fw-bold mb-3" style="color:darkblue;font-size: 20px;">
                                 <i class="bi bi-square-fill me-2" style="color:#f26522"></i>
-                                Chi tiết màu sắc
+                                Quản lý nhân viên
                             </div>
                             <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
                                 <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
                                 >Id</label>
                                 <div class="input-group mb-2">
-                                    <input type="text" class="form-control" placeholder="#idSystem"
-                                           aria-label="Username" aria-describedby="basic-addon1" name="idInp" value = "${mauSac.idMauSac}" readonly>
+                                    <sf:input type="text" class="form-control" placeholder="#idSystem"
+                                              aria-label="Username" aria-describedby="basic-addon1" name="id" path="id"/>
+                                    <sf:errors path="id" cssStyle="color: red" />
                                 </div>
                             </div>
-                            <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
-                                <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
-                                >Mã</label>
-                                <div class="input-group mb-2">
-                                    <input type="text" class="form-control" placeholder="Tên"
-                                           aria-label="Username" aria-describedby="basic-addon1" name="maInp" value = "${mauSac.ma}">
-                                </div>
-                            </div>
+
                             <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
                                 <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
                                 >Tên</label>
                                 <div class="input-group mb-2">
-                                    <input type="text" class="form-control" placeholder="Tên"
-                                           aria-label="Username" aria-describedby="basic-addon1" name="tenInp" value ="${mauSac.ten}">
+                                    <sf:input type="text" class="form-control" placeholder="Tên"
+                                              aria-label="Username" aria-describedby="basic-addon1" name="ten" path="ten"/>
+                                    <sf:errors path="ten" cssStyle="color: red" />
                                 </div>
                             </div>
+
+                            <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
+                                <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
+                                >Mã NV</label>
+                                <div class="input-group mb-2">
+                                    <sf:input type="text" class="form-control" placeholder="SDT"
+                                              aria-label="Username" aria-describedby="basic-addon1" name="maNV" path="maNV"/>
+                                    <sf:errors path="maNV" cssStyle="color: red" />
+                                </div>
+                            </div>
+
+                            <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
+                                <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
+                                >Tên đăng nhập</label>
+                                <div class="input-group mb-2">
+                                    <sf:input type="text" class="form-control" placeholder="Mã KH"
+                                              aria-label="Username" aria-describedby="basic-addon1" name="tenDangNhap" path="tenDangNhap"/>
+                                    <sf:errors path="tenDangNhap" cssStyle="color: red" />
+                                </div>
+                            </div>
+
+                            <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
+                                <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
+                                >Mật khẩu</label>
+                                <div class="input-group mb-2">
+                                    <sf:input type="text" class="form-control" placeholder="Trạng thái"
+                                              aria-label="Username" aria-describedby="basic-addon1" name="matKhau" path="matKhau"/>
+                                    <sf:errors path="matKhau" cssStyle="color: red" />
+                                </div>
+                            </div>
+
+                            <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
+                                <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
+                                >Trạng thái</label>
+                                <div class="input-group mb-2">
+                                    <sf:input type="text" class="form-control" placeholder="Trạng thái"
+                                              aria-label="Username" aria-describedby="basic-addon1" name="trangThai" path="trangThai"/>
+                                    <sf:errors path="trangThai" cssStyle="color: red" />
+                                </div>
+                            </div>
+
                             <div class="text-center ">
                                 <br><br><br>
-                                <button type="submit" class="btn btn-primary" style="border-radius:0%;">Update
+                                <button type="submit" class="btn btn-primary" style="border-radius:0%;">Thêm
                                 </button>
                             </div>
                         </div>
@@ -98,7 +136,7 @@
                 </div>
             </div>
         </div>
-    </form>
+    </sf:form>
 </main>
 <footer id="footer" style="margin-top: 60px;">
     <div class="container">
