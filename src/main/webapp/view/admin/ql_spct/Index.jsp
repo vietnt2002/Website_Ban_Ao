@@ -62,6 +62,7 @@
             <th scope="col">Số lượng</th>
             <th scope="col">Đơn giá</th>
             <th scope="col">Trạng thái</th>
+            <th scope="col">Hành động</th>
         </tr>
         </thead>
         <tbody>
@@ -70,9 +71,9 @@
                 <td>1</td>
                 <td>${spct.id}</td>
                 <td>${spct.maSPCT}</td>
-                <td>${spct.kichThuoc}</td>
-                <td>${spct.mauSac}</td>
-                <td>${spct.sanPham}</td>
+                <td>${spct.kichThuoc.ten}-${spct.kichThuoc.ma}</td>
+                <td>${spct.mauSac.ten}-${spct.mauSac.ma}</td>
+                <td>${spct.sanPham.ten}-${spct.sanPham.ma}</td>
                 <td>${spct.soLuong}</td>
                 <td>${spct.donGia}</td>
                 <td>${spct.trangThai}</td>

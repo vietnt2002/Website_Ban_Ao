@@ -17,11 +17,10 @@ public class StoreRequest {
     private String id;
     @NotBlank(message = "Do not empty ma SPCT")
     private String maSPCT;
-    private KichThuoc kichThuoc;
-    private MauSac mauSac;
-    private SanPham sanPham;
+    private String kichThuoc;
+    private String mauSac;
+    private String sanPham;
     private int soLuong;
-    @NotBlank(message = "Do not empty don gia")
     private double donGia;
     @NotBlank(message = "Do not empty trang thai")
     private String trangThai;

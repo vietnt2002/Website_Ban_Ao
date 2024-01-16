@@ -53,7 +53,7 @@
 </header>
 <!-- <div class="col-f" style="width:700px;margin-left: auto;margin-right: auto;"> -->
 <main>
-    <sf:form action="/san_pham/store" method="POST" modelAttribute="data">
+    <sf:form action="/spct/update/${data.id}" method="POST" modelAttribute="data">
         <div class="card bg-light text-white" style="height: 900px">
             <div class="card-img-overlay">
                 <h5 class="card-title" style="color:darkblue; text-align: center; font-size: 36px;">Sản phẩm chi tiết
@@ -66,13 +66,15 @@
                                 <i class="bi bi-square-fill me-2" style="color:#f26522"></i>
                                 Quản lý sản phẩm chi tiết
                             </div>
+
                             <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
                                 <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
                                 >Id</label>
                                 <div class="input-group mb-2">
                                     <sf:input type="text" class="form-control" placeholder="#idSystem"
-                                              aria-label="Username" aria-describedby="basic-addon1" name="id" path="id"/>
-                                    <sf:errors path="id" cssStyle="color: red" />
+                                              aria-label="Username" aria-describedby="basic-addon1" name="id"
+                                              path="id"/>
+                                    <sf:errors path="id" cssStyle="color: red"/>
                                 </div>
                             </div>
 
@@ -81,8 +83,9 @@
                                 >Mã SPCT</label>
                                 <div class="input-group mb-2">
                                     <sf:input type="text" class="form-control" placeholder="Mã SPCT"
-                                              aria-label="Username" aria-describedby="basic-addon1" name="maSPCT" path="maSPCT"/>
-                                    <sf:errors path="maSPCT" cssStyle="color: red" />
+                                              aria-label="Username" aria-describedby="basic-addon1" name="maSPCT"
+                                              path="maSPCT"/>
+                                    <sf:errors path="maSPCT" cssStyle="color: red"/>
                                 </div>
                             </div>
 
@@ -90,9 +93,13 @@
                                 <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
                                 >Kích thước</label>
                                 <div class="input-group mb-2">
-                                    <sf:input type="text" class="form-control" placeholder="Tên"
-                                              aria-label="Username" aria-describedby="basic-addon1" name="kichThuoc" path="kichThuoc"/>
-                                    <sf:errors path="kichThuoc" cssStyle="color: red" />
+                                    <sf:select class="form-select" id="inputGroupSelect01" name="kichThuoc"
+                                               path="kichThuoc">
+                                        <c:forEach varStatus="i" items="${dsKichThuoc}" var="kichThuoc">
+                                            <option value=${kichThuoc.id} <c:if test="${data.kichThuoc == kichThuoc.id }">selected</c:if>>${kichThuoc.ten} - ${kichThuoc.ma}</option>
+                                        </c:forEach>
+                                    </sf:select>
+                                    <sf:errors path="kichThuoc" cssStyle="color: red"/>
                                 </div>
                             </div>
 
@@ -100,9 +107,13 @@
                                 <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
                                 >Màu sắc</label>
                                 <div class="input-group mb-2">
-                                    <sf:input type="text" class="form-control" placeholder="Tên"
-                                              aria-label="Username" aria-describedby="basic-addon1" name="mauSac" path="mauSac"/>
-                                    <sf:errors path="mauSac" cssStyle="color: red" />
+                                    <select class="form-select" id="inputGroupSelect02" name="mauSac"
+                                            path="mauSac">
+                                        <c:forEach varStatus="i" items="${dsMauSac}" var="mauSac">
+                                            <option value=${mauSac.id} <c:if test="${data.mauSac == mauSac.id }">selected</c:if>>${mauSac.ten} - ${mauSac.ma}</option>
+                                        </c:forEach>
+                                    </select>
+                                    <sf:errors path="mauSac" cssStyle="color: red"/>
                                 </div>
                             </div>
 
@@ -110,9 +121,13 @@
                                 <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
                                 >Sản phẩm</label>
                                 <div class="input-group mb-2">
-                                    <sf:input type="text" class="form-control" placeholder="Tên"
-                                              aria-label="Username" aria-describedby="basic-addon1" name="sanPham" path="sanPham"/>
-                                    <sf:errors path="trangThai" cssStyle="color: red" />
+                                    <sf:select class="form-select" id="inputGroupSelect03" name="sanPham"
+                                               path="sanPham">
+                                        <c:forEach varStatus="i" items="${dsSanPham}" var="sanPham">
+                                            <option value=${sanPham.id} <c:if test="${data.sanPham == sanPham.id }">selected</c:if>>${sanPham.ten} - ${sanPham.ma} </option>
+                                        </c:forEach>
+                                    </sf:select>
+                                    <sf:errors path="sanPham" cssStyle="color: red"/>
                                 </div>
                             </div>
 
@@ -120,9 +135,10 @@
                                 <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
                                 >Số lượng</label>
                                 <div class="input-group mb-2">
-                                    <sf:input type="text" class="form-control" placeholder="Tên"
-                                              aria-label="Username" aria-describedby="basic-addon1" name="soLuong" path="soLuong"/>
-                                    <sf:errors path="trangThai" cssStyle="color: red" />
+                                    <sf:input type="text" class="form-control" placeholder="số lượng"
+                                              aria-label="Username" aria-describedby="basic-addon1" name="soLuong"
+                                              path="soLuong"/>
+                                    <sf:errors path="soLuong" cssStyle="color: red"/>
                                 </div>
                             </div>
 
@@ -130,9 +146,10 @@
                                 <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
                                 >Đơn giá</label>
                                 <div class="input-group mb-2">
-                                    <sf:input type="text" class="form-control" placeholder="Tên"
-                                              aria-label="Username" aria-describedby="basic-addon1" name="donGia" path="donGia"/>
-                                    <sf:errors path="donGia" cssStyle="color: red" />
+                                    <sf:input type="text" class="form-control" placeholder="Đơn giá"
+                                              aria-label="Username" aria-describedby="basic-addon1" name="donGia"
+                                              path="donGia"/>
+                                    <sf:errors path="donGia" cssStyle="color: red"/>
                                 </div>
                             </div>
 
@@ -140,9 +157,10 @@
                                 <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
                                 >Trạng thái</label>
                                 <div class="input-group mb-2">
-                                    <sf:input type="text" class="form-control" placeholder="Tên"
-                                              aria-label="Username" aria-describedby="basic-addon1" name="trangThai" path="trangThai"/>
-                                    <sf:errors path="trangThai" cssStyle="color: red" />
+                                    <sf:input type="text" class="form-control" placeholder="Trạng thái"
+                                              aria-label="Username" aria-describedby="basic-addon1" name="trangThai"
+                                              path="trangThai"/>
+                                    <sf:errors path="trangThai" cssStyle="color: red"/>
                                 </div>
                             </div>
 
@@ -156,51 +174,9 @@
                 </div>
             </div>
         </div>
+
+        <h1>${data.kichThuoc==2}</h1>
     </sf:form>
 </main>
-<footer id="footer" style="margin-top: 60px;">
-    <div class="container">
-        <div class="row" style="width:750px;margin-left: auto;margin-right: auto;">
-            <div class="col-4 md-4">
-                <div class="useful-link">
-                    <h2 style="color:white;">Useful Links</h2>
-                    <div class="use-links">
-                        <li><a href=""><i class="fa-solid fa-angles-right"></i> Home</a></li>
-                        <li><a href=""><i class="fa-solid fa-angles-right"></i> About Us</a>
-                        </li>
-                        <li><a href=""><i class="fa-solid fa-angles-right"></i> Gallery</a>
-                        </li>
-                        <li><a href=""><i class="fa-solid fa-angles-right"></i> Contact</a>
-                        </li>
-                    </div>
-                </div>
-            </div>
-            <div class="col-4 md-4">
-                <div class="social-links">
-                    <h2 style="color: white;">Follow Us</h2>
-                    <div class="social-icons">
-                        <li><a href=""><i class="fa-brands fa-facebook-f"></i> Facebook</a></li>
-                        <li><a href=""><i class="fa-brands fa-instagram"></i> Instagram</a></li>
-                        <li><a href=""><i class="fa-brands fa-linkedin-in"></i> Linkedin</a></li>
-                    </div>
-                </div>
-            </div>
-            <div class="col-4 md-4">
-                <div class="address">
-                    <h2 style="color: white">Address</h2>
-                    <div class="address-links">
-                        <li class="address1"><i class="fa-solid fa-location-dot"></i>FPT
-                            Nam Từ Liêm-
-                            Hà Nội
-                            Việt Nam
-                        </li>
-                        <li><a href=""><i class="fa-solid fa-phone"></i> +84374223222</a></li>
-                        <li><a href=""><i class="fa-solid fa-envelope"></i> phucloc@gmail.com</a></li>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</footer>
 </body>
 </html>
