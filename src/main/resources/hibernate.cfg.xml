@@ -35,6 +35,6 @@
         <mapping class="com.example.java4.model.MauSac" />
         <mapping class="com.example.java4.model.ChiTietSP" />
         <mapping class="com.example.java4.model.HoaDon" />
-        <mapping class="com.example.java4.model.HoaDonChiTiet" />
+        <mapping class="com.example.java4.model.HDCT" />
     </session-factory>
 </hibernate-configuration>
