@@ -1,4 +1,5 @@
 package com.example.java4.controllers;
+
 import com.example.java4.dto.sale.NewHDCTRequest;
 import com.example.java4.model.*;
 import jakarta.validation.Valid;
@@ -24,13 +25,12 @@ public class SaleController {
     ArrayList<HDCT> dsHDCT;
     ArrayList<NhanVien> dsNhanVien;
     ArrayList<KhachHang> dsKhachHang;
-    HoaDon hoaDon;
+    HoaDon hoaDonTemp;
     KhachHang kh;
     NhanVien nv;
-    StoreRequest rem;
 
     public ArrayList<KichThuoc> loadToKichThuocCbo() {
-        hoaDon = new HoaDon();
+        hoaDonTemp = new HoaDon();
         ArrayList<KichThuoc> lstKichThuoc = new ArrayList<>();
         lstKichThuoc.add(new KichThuoc("1", "kt1", "large", "available"));
         lstKichThuoc.add(new KichThuoc("2", "kt2", "min", "available"));
@@ -96,9 +96,12 @@ public class SaleController {
     }
 
     public ArrayList<HDCT> getHDCTByIDHoaDon(String idHD) {
-        for (int i = 0; i < dsHDCT.size(); i++) {
-            if (dsHDCT.get(i).getId().equals(idHD)) {
-                dsHDCTBucket.add(dsHDCT.get(i));
+        dsHDCTBucket = new ArrayList<>();
+        if (dsHDCT != null) {
+            for (int i = 0; i < dsHDCT.size(); i++) {
+                if (dsHDCT.get(i).getId().equals(idHD)) {
+                    dsHDCTBucket.add(dsHDCT.get(i));
+                }
             }
         }
         return dsHDCTBucket;
@@ -109,22 +112,24 @@ public class SaleController {
         SPCT newSPCT = new SPCT();
         HDCT newHDCT = new HDCT();
         for (int i = 0; i < dsHDCT.size(); i++) {
-            if(dsHDCT.get(i).getId().equals(req.getIdHD())){
-                 newHoaDon = dsHDCT.get(i).getHd();
+            if (dsHDCT.get(i).getId().equals(req.getIdHD())) {
+                newHoaDon = dsHDCT.get(i).getHd();
             }
         }
 
         for (int i = 0; i < dsSPCT.size(); i++) {
-            if(dsSPCT.get(i).getId().equals(req.getIdSPCT())){
+            if (dsSPCT.get(i).getId().equals(req.getIdSPCT())) {
                 newHoaDon = dsHDCT.get(i).getHd();
             }
         }
-        newHDCT = new HDCT(req.getId(),newHoaDon,newSPCT,req.getSoLuong(),req.getDonGia(),req.getTrangThai());
+        newHDCT = new HDCT(req.getId(), newHoaDon, newSPCT, req.getSoLuong(), req.getDonGia(), req.getTrangThai());
         return newHDCT;
     }
 
     public SaleController() {
         this.dsSPCT = new ArrayList<>();
+        this.dsHDCT  = new ArrayList<>();
+        this.dsHDCTBucket = new ArrayList<>();
         this.dsKichThuoc = loadToKichThuocCbo();
         this.dsMauSac = loadMauSacCbo();
         this.dsSanPham = loadSanPhamCbo();
@@ -137,11 +142,38 @@ public class SaleController {
         dsSPCT.add(new SPCT("6", "SPCT6", dsKichThuoc.get(4), dsMauSac.get(3), dsSanPham.get(2), 3, 110.5, "stocking"));
     }
 
+    public void initHDCT(HoaDon hd) {
+        HDCT newHdct = new HDCT(String.valueOf(dsHDCT.size() + 1), hd, null, 0, 0.0, "success");
+        dsHDCT.add(newHdct);
+    }
+
+    public void firstInitHDCT(HoaDon hd) {
+        HDCT newHdct = new HDCT(String.valueOf(1), hd, null, 0, 0.0, "success");
+        dsHDCT.add(newHdct);
+    }
+
+
     @GetMapping("/create")
     public String create(Model model) {
+        if (hoaDonTemp != null && dsHDCT != null) {
+            int flag = 0;
+            for (int i = 0; i < dsHDCT.size(); i++) {
+                if (dsHDCT.get(i).getHd().equals(hoaDonTemp)) {
+                    flag = 1;
+                    break;
+                }
+            }
+            if (flag == 0) {
+                System.out.println("inint new hdct record");
+                initHDCT(hoaDonTemp);
+            }
+        } else if(dsHDCT==null) {
+            System.out.println("inint new hdct record");
+            firstInitHDCT(hoaDonTemp);
+        }
         model.addAttribute("dsSPCT", dsSPCT);
-        model.addAttribute("hoaDon", hoaDon);
-        model.addAttribute("dsHDCT", dsHDCT);
+        model.addAttribute("dsHoaDon", dsHoaDon);
+        model.addAttribute("dsHDCT", getHDCTByIDHoaDon(hoaDonTemp.getId()));
         return "admin/sale/MainView";
     }
 
@@ -149,6 +181,17 @@ public class SaleController {
     public String index(Model model) {
         model.addAttribute("data", dsSPCT);
         return "admin/ql_spct/Index";
+    }
+
+    @GetMapping("/select/{id}")
+    public String index(Model model, @PathVariable(value = "id") String id) {
+        for (int i = 0; i < dsHoaDon.size(); i++) {
+            if (dsHoaDon.get(i).getId().equals(id)) {
+                hoaDonTemp = dsHoaDon.get(i);
+                break;
+            }
+        }
+        return "redirect:/sale/create";
     }
 
     @GetMapping("/delete/{id}")
@@ -203,8 +246,8 @@ public class SaleController {
     ) {
         dsHDCT.add(reqToModel(req));
         model.addAttribute("dsSPCT", dsSPCT);
-        model.addAttribute("hoaDon", hoaDon);
-        model.addAttribute("dsHDCT", dsHDCT);
+        model.addAttribute("dsHD", dsHoaDon);
+        model.addAttribute("dsHDCT", getHDCTByIDHoaDon(hoaDonTemp.getId()));
         return "redirect:/spct/create";
     }
 }

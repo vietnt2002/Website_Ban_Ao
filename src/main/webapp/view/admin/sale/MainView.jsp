@@ -46,7 +46,7 @@
 <!-- <div class="col-f" style="width:700px;margin-left: auto;margin-right: auto;"> -->
 <main>
     <div class="row ms-3">
-    <div class="col-md-4" style="border: solid red">
+    <div class="col-md-3" style="border: solid red">
         <h2>Danh sách sản phẩm</h2>
         <c:forEach varStatus="i" items="${dsSPCT}" var="spct">
             <div class="col-md-6" style="border: solid red">
@@ -71,70 +71,70 @@
             </div>
         </c:forEach>
     </div>
-        <div class="col-md-4">
+        <div class="col-md-5">
             <h2>Hóa đơn</h2>
             <table class="table mt-5">
                 <thead>
                 <tr class="table-light">
                     <th scope="col">Stt</th>
-                    <th scope="col">Id</th>
-                    <th scope="col">Mã SPCT</th>
-                    <th scope="col">Kích thước</th>
-                    <th scope="col">Màu sắc</th>
+                    <th scope="col">Id HĐ</th>
+                    <th scope="col">Nhân viên</th>
+                    <th scope="col">Khách hàng</th>
+                    <th scope="col">Ngày mua hàng</th>
                     <th scope="col">Hành động</th>
                 </tr>
                 </thead>
                 <tbody>
-                <c:forEach varStatus="i" items="${dsSPCT}" var="spct">
+                <c:forEach varStatus="i" items="${dsHoaDon}" var="hoaDon">
                     <tr>
                         <td>1</td>
-                        <td>${spct.id}</td>
-                        <td>${spct.maSPCT}</td>
-                        <td>${spct.kichThuoc.ten}-${spct.kichThuoc.ma}</td>
-                        <td>${spct.mauSac.ten}-${spct.mauSac.ma}</td>
+                        <td>${hoaDon.id}</td>
+                        <td>${hoaDon.nv.ten}-${hoaDon.nv.maNV}</td>
+                        <td>${hoaDon.kh.ten}-${hoaDon.kh.maKH}</td>
+                        <td>${hoaDon.ngayMua}</td>
                         <td>
-                            <a href="update/${spct.id}">
-                                <button type="button" class="btn btn-success ">Update</button>
-                            </a>
-                            <a href="delete/${spct.id}">
-                                <button type="button" class="btn btn-danger">Delete</button>
+                            <a href="select/${hoaDon.id}">
+                                <button type="button" class="btn btn-success ">Select</button>
                             </a>
                         </td>
                     </tr>
                 </c:forEach>
                 </tbody>
             </table>
+            <a href="update/${spct.id}">
+                <button type="button" class="btn btn-success ">Add new</button>
+            </a>
         </div>
-
         <div class="col-md-4">
             <h2>Hóa đơn chi tiết</h2>
-            <table class="table mt-5">
+            <div class="d-flex flex-row mb-3">
+                <p1>IdHD:</p1>
+                <p1>Tên KH:</p1>
+            </div>
+            <div class="d-flex flex-row mb-3">
+                <p1>Tên NV:</p1>
+                <p1>Ngày mua:</p1>
+            </div>
+                <table class="table mt-5">
                 <thead>
                 <tr class="table-light">
                     <th scope="col">Stt</th>
                     <th scope="col">Id</th>
-                    <th scope="col">Mã SPCT</th>
-                    <th scope="col">Kích thước</th>
-                    <th scope="col">Màu sắc</th>
-                    <th scope="col">Hành động</th>
+                    <th scope="col">SPCT</th>
+                    <th scope="col">Số lương</th>
+                    <th scope="col">Đơn giá</th>
+                    <th scope="col">Trạng thái</th>
                 </tr>
                 </thead>
                 <tbody>
-                <c:forEach varStatus="i" items="${dsSPCT}" var="spct">
+                <c:forEach varStatus="i" items="${dsHDCT}" var="hdct">
                     <tr>
                         <td>1</td>
-                        <td>${spct.id}</td>
-                        <td>${spct.maSPCT}</td>
-                        <td>${spct.kichThuoc.ten}-${spct.kichThuoc.ma}</td>
-                        <td>${spct.mauSac.ten}-${spct.mauSac.ma}</td>
-                        <td>
-                            <a href="update/${spct.id}">
-                                <button type="button" class="btn btn-success ">Update</button>
-                            </a>
-                            <a href="delete/${spct.id}">
-                                <button type="button" class="btn btn-danger">Delete</button>
-                            </a>
-                        </td>
+                        <td>${hdct.id}</td>
+                        <td>${hdct.spct.sanPham.ten}-${hdct.spct.maSPCT}</td>
+                        <td>${hdct.soLuong}</td>
+                        <td>${hdct.donGia}</td>
+                        <td>${hdct.trangThai}</td>
                     </tr>
                 </c:forEach>
                 </tbody>

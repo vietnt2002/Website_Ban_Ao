@@ -13,5 +13,5 @@ public class HoaDon {
     private String id;
     private NhanVien nv;
     private KhachHang kh;
-    private Date ngayMuaHang;
+    private Date ngayMua;
 }
