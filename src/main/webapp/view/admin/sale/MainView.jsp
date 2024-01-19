@@ -28,17 +28,25 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="/Home/shoping">Thông tin cá nhân</a>
+                        <a class="nav-link" aria-current="page" href="/nhan_vien/create">QL NV</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="/Home/login">Login</a>
+                        <a class="nav-link" aria-current="page" href="/khach_hang/create">QL kH</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="/san_pham/create">Ql sản phẩm</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="/spct/create">QL SPCT</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="/mau_sac/create">QL mau sac</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="/kich_thuoc/create">QL kich thuoc</a>
                     </li>
                 </ul>
-                <form class="d-flex" role="search">
-                    <input class="form-control bg-light me-2" style="border:none" type="search"
-                           placeholder="Tìm kiếm" aria-label="Tìm kiếm">
-                    <button type="button" class="btn btn-danger">Search</button>
-                </form>
             </div>
         </div>
     </nav>
