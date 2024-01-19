@@ -3,6 +3,7 @@ package com.example.java4.controllers;
 import com.example.java4.dto.sale.NewHDCTRequest;
 import com.example.java4.model.*;
 import jakarta.validation.Valid;
+import org.apache.catalina.util.ToStringUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -26,11 +27,11 @@ public class SaleController {
     ArrayList<NhanVien> dsNhanVien;
     ArrayList<KhachHang> dsKhachHang;
     HoaDon hoaDonTemp;
+    String paymentStt;
     KhachHang kh;
     NhanVien nv;
 
     public ArrayList<KichThuoc> loadToKichThuocCbo() {
-        hoaDonTemp = new HoaDon();
         ArrayList<KichThuoc> lstKichThuoc = new ArrayList<>();
         lstKichThuoc.add(new KichThuoc("1", "kt1", "large", "available"));
         lstKichThuoc.add(new KichThuoc("2", "kt2", "min", "available"));
@@ -63,22 +64,22 @@ public class SaleController {
 
     public ArrayList<KhachHang> loadDsKhachHang() {
         ArrayList<KhachHang> lstKhachHang = new ArrayList<>();
-        lstKhachHang.add(new KhachHang("1", "Linh", "0333336666", "kh1", "active"));
-        lstKhachHang.add(new KhachHang("2", "Loc", "0333322222", "kh2", "active"));
-        lstKhachHang.add(new KhachHang("3", "Quang", "0333334535", "kh3", "active"));
-        lstKhachHang.add(new KhachHang("4", "Lan", "0333335353", "kh4", "active"));
-        lstKhachHang.add(new KhachHang("5", "Hung", "0333335353", "kh5", "active"));
-        lstKhachHang.add(new KhachHang("6", "Tai", "0333338878", "kh6", "active"));
+        lstKhachHang.add(new KhachHang("1", "Nguyễn Thị Linh", "0333336666", "kh1", "active"));
+        lstKhachHang.add(new KhachHang("2", "Nguyen Hữu Lộc", "0333322222", "kh2", "active"));
+        lstKhachHang.add(new KhachHang("3", "Phan Đắc Quang", "0333334535", "kh3", "active"));
+        lstKhachHang.add(new KhachHang("4", "Phạm Thị Lan", "0333335353", "kh4", "active"));
+        lstKhachHang.add(new KhachHang("5", "Nguyễn Phi Hùng", "0333335353", "kh5", "active"));
+        lstKhachHang.add(new KhachHang("6", "Vũ Trọng Tài", "0333338878", "kh6", "active"));
         return lstKhachHang;
     }
 
     public ArrayList<NhanVien> loadDsNhanVien() {
         ArrayList<NhanVien> lstNhanVien = new ArrayList<>();
-        lstNhanVien.add(new NhanVien("1", "Loc", "nv1", "phuclocub", "loc123", "working"));
-        lstNhanVien.add(new NhanVien("2", "Linh", "nv2", "linhnt01", "linh123", "working"));
-        lstNhanVien.add(new NhanVien("3", "Lan", "nv3", "lanvt02", "lan123", "working"));
-        lstNhanVien.add(new NhanVien("4", "Hung", "nv4", "hungtt05", "hung123", "working"));
-        lstNhanVien.add(new NhanVien("5", "Tai", "nv5", "tailv06", "tai123", "working"));
+        lstNhanVien.add(new NhanVien("1", "Nguyễn Phúc Lộc", "nv1", "phuclocub", "loc123", "working"));
+        lstNhanVien.add(new NhanVien("2", "Phạm Thị Linh", "nv2", "linhnt01", "linh123", "working"));
+        lstNhanVien.add(new NhanVien("3", "Nguyễn Thị Lan", "nv3", "lanvt02", "lan123", "working"));
+        lstNhanVien.add(new NhanVien("4", "Nguyễn Văn Hùng", "nv4", "hungtt05", "hung123", "working"));
+        lstNhanVien.add(new NhanVien("5", "Nguyễn Tuấn Tài", "nv5", "tailv06", "tai123", "working"));
         return lstNhanVien;
     }
 
@@ -97,14 +98,21 @@ public class SaleController {
 
     public ArrayList<HDCT> getHDCTByIDHoaDon(String idHD) {
         dsHDCTBucket = new ArrayList<>();
-        if (dsHDCT != null) {
+        if (dsHDCT!=null) {
             for (int i = 0; i < dsHDCT.size(); i++) {
-                if (dsHDCT.get(i).getId().equals(idHD)) {
+                if (dsHDCT.get(i).getHd().getId().equals(idHD)) {
                     dsHDCTBucket.add(dsHDCT.get(i));
                 }
             }
         }
+        System.out.println(dsHDCTBucket.size());
         return dsHDCTBucket;
+    }
+
+    public void addTodsHDCT(SPCT spct){
+        HDCT hdct = new HDCT(String.valueOf(dsHDCT.size()+1),hoaDonTemp,spct,1,spct.getDonGia(),"1");
+        dsHDCT.add(hdct);
+        System.out.println(dsHDCT.size());
     }
 
     public HDCT reqToModel(NewHDCTRequest req) {
@@ -134,6 +142,10 @@ public class SaleController {
         this.dsMauSac = loadMauSacCbo();
         this.dsSanPham = loadSanPhamCbo();
         this.dsHoaDon = loadHoaDon();
+        this.hoaDonTemp = new HoaDon();
+        this.kh = dsKhachHang.get(1);
+        this.nv = dsNhanVien.get(2);
+        this.paymentStt = "not yet";
         dsSPCT.add(new SPCT("1", "SPCT1", dsKichThuoc.get(1), dsMauSac.get(1), dsSanPham.get(1), 1, 150.5, "stocking"));
         dsSPCT.add(new SPCT("2", "SPCT2", dsKichThuoc.get(2), dsMauSac.get(2), dsSanPham.get(2), 3, 250.5, "stocking"));
         dsSPCT.add(new SPCT("3", "SPCT3", dsKichThuoc.get(3), dsMauSac.get(3), dsSanPham.get(3), 5, 50.5, "stocking"));
@@ -143,22 +155,27 @@ public class SaleController {
     }
 
     public void initHDCT(HoaDon hd) {
-        HDCT newHdct = new HDCT(String.valueOf(dsHDCT.size() + 1), hd, null, 0, 0.0, "success");
-        dsHDCT.add(newHdct);
+        if(hd.getId()!=null) {
+            HDCT newHdct = new HDCT(String.valueOf(dsHDCT.size() + 1), hd, null, 0, 0.0, "not yet");
+            dsHDCT.add(newHdct);
+        }
     }
 
     public void firstInitHDCT(HoaDon hd) {
-        HDCT newHdct = new HDCT(String.valueOf(1), hd, null, 0, 0.0, "success");
-        dsHDCT.add(newHdct);
+        if(hd.getId()!=null) {
+            HDCT newHdct = new HDCT(String.valueOf(1), hd, null, 0, 0.0, "not yet");
+            dsHDCT.add(newHdct);
+        }
     }
 
 
     @GetMapping("/create")
     public String create(Model model) {
-        if (hoaDonTemp != null && dsHDCT != null) {
+        if (hoaDonTemp.getId() != null && dsHDCT != null) {
             int flag = 0;
             for (int i = 0; i < dsHDCT.size(); i++) {
                 if (dsHDCT.get(i).getHd().equals(hoaDonTemp)) {
+                    System.out.println("dupplicate");
                     flag = 1;
                     break;
                 }
@@ -167,15 +184,54 @@ public class SaleController {
                 System.out.println("inint new hdct record");
                 initHDCT(hoaDonTemp);
             }
-        } else if(dsHDCT==null) {
-            System.out.println("inint new hdct record");
+        } else if(dsHDCT==null&&hoaDonTemp.getId()!=null) {
+            System.out.println("init new hdct record 2nd");
             firstInitHDCT(hoaDonTemp);
         }
+        if(hoaDonTemp.getId()!=null)
+        paymentStt = getHDCTByIDHoaDon(hoaDonTemp.getId()).get(0).getTrangThai();
+        model.addAttribute("hoaDon",hoaDonTemp);
         model.addAttribute("dsSPCT", dsSPCT);
         model.addAttribute("dsHoaDon", dsHoaDon);
         model.addAttribute("dsHDCT", getHDCTByIDHoaDon(hoaDonTemp.getId()));
+        model.addAttribute("trangThai",paymentStt);
         return "admin/sale/MainView";
     }
+
+    @GetMapping("/addNewHD")
+    public String addNewHD(Model model) {
+        dsHoaDon.add(new HoaDon(String.valueOf(dsHoaDon.size()+1),nv,kh, new Date(System.currentTimeMillis())));
+        return "redirect:/sale/create";
+    }
+
+    @GetMapping("/addToCart/{id}")
+    public String addToCart(Model model,@PathVariable(value = "id")String id) {
+        System.out.println("spct"+ id);
+        if(hoaDonTemp.getId()!=null){
+            for (int i = 0; i < dsSPCT.size() ; i++) {
+                if(dsSPCT.get(i).getId().equals(id)){
+                    System.out.println("found spct");
+                    addTodsHDCT(dsSPCT.get(i));
+                    break;
+                }
+            }
+        }
+        return "redirect:/sale/create";
+    }
+
+    @GetMapping("/check/{id}")
+    public String check(Model model,@PathVariable(value = "id")String id) {
+        System.out.println("spct"+ id);
+        if(hoaDonTemp.getId()!=null){
+            for (int i = 0; i < dsHDCT.size(); i++) {
+                if(dsHDCT.get(i).getHd().getId().equals(id)){
+                    dsHDCT.get(i).setTrangThai("checked");
+                }
+            }
+        }
+        return "redirect:/sale/create";
+    }
+
 
     @GetMapping("/index")
     public String index(Model model) {
@@ -185,6 +241,7 @@ public class SaleController {
 
     @GetMapping("/select/{id}")
     public String index(Model model, @PathVariable(value = "id") String id) {
+        System.out.println("hoa don:"+id);
         for (int i = 0; i < dsHoaDon.size(); i++) {
             if (dsHoaDon.get(i).getId().equals(id)) {
                 hoaDonTemp = dsHoaDon.get(i);

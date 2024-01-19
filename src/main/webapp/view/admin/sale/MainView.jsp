@@ -46,10 +46,10 @@
 <!-- <div class="col-f" style="width:700px;margin-left: auto;margin-right: auto;"> -->
 <main>
     <div class="row ms-3">
-    <div class="col-md-3" style="border: solid red">
+    <div class="col-md-3">
         <h2>Danh sách sản phẩm</h2>
         <c:forEach varStatus="i" items="${dsSPCT}" var="spct">
-            <div class="col-md-6" style="border: solid red">
+            <div class="col-md-6">
                 <div class="card" style="width: 18rem;">
                     <img src="https://bullsheathleather.com/cdn/shop/collections/Minimalist_Wallet.jpg?v=1648425217"
                          class="card-img-top" alt="..." style="width: 100%;height: 200px">
@@ -64,7 +64,7 @@
                             <p class="card-text ms-2">| Còn lại: ${spct.soLuong}</p>
                         </div>
                         <div class="input-group">
-                            <a href="/addToCart/${spct.id}" class="btn btn-warning ms-3">Add</a>
+                            <a href="addToCart/${spct.id}" class="btn btn-warning ms-3">Add</a>
                         </div>
                     </div>
                 </div>
@@ -101,44 +101,49 @@
                 </c:forEach>
                 </tbody>
             </table>
-            <a href="update/${spct.id}">
+            <a href="addNewHD">
                 <button type="button" class="btn btn-success ">Add new</button>
             </a>
         </div>
         <div class="col-md-4">
             <h2>Hóa đơn chi tiết</h2>
             <div class="d-flex flex-row mb-3">
-                <p1>IdHD:</p1>
-                <p1>Tên KH:</p1>
+                <p1>IdHD: ${hoaDon.id}</p1
+                <p1>|Tên KH: ${hoaDon.kh.ten}</p1>
             </div>
             <div class="d-flex flex-row mb-3">
-                <p1>Tên NV:</p1>
-                <p1>Ngày mua:</p1>
+                <p1>Tên NV: ${hoaDon.nv.ten}-${hoaDon.nv.maNV} </p1>
+                <p1>|Ngày mua:${hoaDon.ngayMua}</p1>
             </div>
                 <table class="table mt-5">
                 <thead>
                 <tr class="table-light">
                     <th scope="col">Stt</th>
-                    <th scope="col">Id</th>
+                    <th scope="col">idHoaDon</th>
                     <th scope="col">SPCT</th>
                     <th scope="col">Số lương</th>
                     <th scope="col">Đơn giá</th>
-                    <th scope="col">Trạng thái</th>
+                    <th scope="col">Tổng </th>
                 </tr>
                 </thead>
                 <tbody>
                 <c:forEach varStatus="i" items="${dsHDCT}" var="hdct">
                     <tr>
                         <td>1</td>
-                        <td>${hdct.id}</td>
+                        <td>${hdct.hd.id}</td>
                         <td>${hdct.spct.sanPham.ten}-${hdct.spct.maSPCT}</td>
                         <td>${hdct.soLuong}</td>
                         <td>${hdct.donGia}</td>
-                        <td>${hdct.trangThai}</td>
+                        <td>${hdct.soLuong*hdct.donGia}</td>
                     </tr>
                 </c:forEach>
                 </tbody>
             </table>
+            <p1>Trạng thái:${trangThai}</p1>
+            <br>
+            <a href="check/${hoaDon.id}">
+                <button type="button" class="btn btn-success ">Check</button>
+            </a>
         </div>
     </div>
 </main>
