@@ -17,7 +17,7 @@
     <title>Document</title>
 </head>
 
-<body>
+<body
 <header>
     <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
         <div class="container-fluid">
@@ -71,37 +71,46 @@
                                 >Id</label>
                                 <div class="input-group mb-2">
                                     <sf:input type="text" class="form-control" placeholder="#idSystem"
-                                           aria-label="Username" aria-describedby="basic-addon1" name="id" path="id"/>
+                                           aria-label="Username" aria-describedby="basic-addon1" name="id" path="id" readonly="true"/>
                                     <sf:errors path="id" cssStyle="color: red" />
                                 </div>
                             </div>
+
                             <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
                                 <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
-                                >Tên</label>
+                                >Khách hàng</label>
                                 <div class="input-group mb-2">
-                                    <sf:input type="text" class="form-control" placeholder="Tên"
-                                           aria-label="Username" aria-describedby="basic-addon1" name="ten" path="ten"/>
-                                    <sf:errors path="ten" cssStyle="color: red" />
+                                    <select class="form-select" id="inputGroupSelect02" name="idKH"
+                                            path="idKH">
+                                        <c:forEach varStatus="i" items="${dsKhachHang}" var="khachHang">
+                                            <option value=${khachHang.id}>${khachHang.ten} - ${khachHang.ma}</option>
+                                        </c:forEach>
+                                    </select>
+                                    <sf:errors path="idKH" cssStyle="color: red"/>
                                 </div>
                             </div>
 
                             <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
                                 <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
-                                >SDT</label>
+                                >Nhân viên</label>
                                 <div class="input-group mb-2">
-                                    <sf:input type="text" class="form-control" placeholder="SDT"
-                                              aria-label="Username" aria-describedby="basic-addon1" name="sdt" path="sdt"/>
-                                    <sf:errors path="sdt" cssStyle="color: red" />
+                                    <select class="form-select" id="inputGroupSelect02" name="idNV"
+                                            path="idNV">
+                                        <c:forEach varStatus="i" items="${dsNhanVien}" var="nhanVien">
+                                            <option value=${nhanVien.id}>${nhanVien.ten} - ${nhanVien.ma}</option>
+                                        </c:forEach>
+                                    </select>
+                                    <sf:errors path="idNV" cssStyle="color: red"/>
                                 </div>
                             </div>
 
                             <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
                                 <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
-                                >Mã KH</label>
+                                >Ngày mua hàng</label>
                                 <div class="input-group mb-2">
-                                    <sf:input type="text" class="form-control" placeholder="Mã KH"
-                                              aria-label="Username" aria-describedby="basic-addon1" name="maKH" path="maKH"/>
-                                    <sf:errors path="maKH" cssStyle="color: red" />
+                                    <sf:input type="date" class="form-control" placeholder="Ngày mua hàng"
+                                           aria-label="Username" aria-describedby="basic-addon1" name="ngayMuaHang" path="ngayMuaHang"/>
+                                    <sf:errors path="ngayMuaHang" cssStyle="color: red" />
                                 </div>
                             </div>
 
@@ -109,9 +118,9 @@
                                 <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
                                 >Trạng thái</label>
                                 <div class="input-group mb-2">
-                                    <sf:input type="text" class="form-control" placeholder="Trạng thái"
+                                    <sf:input type="number" class="form-control" placeholder="trangThai"
                                               aria-label="Username" aria-describedby="basic-addon1" name="trangThai" path="trangThai"/>
-                                    <sf:errors path="trangThai" cssStyle="color: red" />
+                                    <sf:errors path="trangThai" cssStyle="color: red"/>
                                 </div>
                             </div>
 
@@ -120,38 +129,6 @@
                                 <button type="submit" class="btn btn-primary" style="border-radius:0%;">Thêm
                                 </button>
                             </div>
-                            <table class="table mt-5">
-                                <thead>
-                                <tr class="table-light">
-                                    <th scope="col">Stt</th>
-                                    <th scope="col">Id</th>
-                                    <th scope="col">Mã</th>
-                                    <th scope="col">Tên</th>
-                                    <th scope="col">Hành động</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <c:forEach varStatus="i" items="${lstMauSac}" var="mauSac">
-                                    <tr>
-                                        <td>1</td>
-                                        <td>${mauSac.id}</td>
-                                        <td>${mauSac.ma}</td>
-                                        <td>${mauSac.ten}</td>
-                                        <td>
-                                            <a href="/Home/detail-mauSac?id=${mauSac.id}">
-                                                <button type="button" class="btn btn-primary">Detail</button>
-                                            </a>
-                                            <a href="/Home/routeUpdate-mauSac?id=${mauSac.id}">
-                                                <button type="button" class="btn btn-success ">Update</button>
-                                            </a>
-                                            <a href="/Home/delete-mauSac?id=${mauSac.id}">
-                                                <button type="button" class="btn btn-danger">Delete</button>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                </c:forEach>
-                                </tbody>
-                            </table>
                         </div>
                     </div>
                 </div>

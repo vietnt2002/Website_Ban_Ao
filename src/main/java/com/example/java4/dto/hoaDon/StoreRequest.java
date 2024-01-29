@@ -1,5 +1,5 @@
-package com.example.java4.entities;
-import jakarta.persistence.*;
+package com.example.java4.dto.hoaDon;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,19 +10,14 @@ import java.sql.Date;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@Table(name="HoaDon")
-public class HoaDon {
-    @Id
-    @Column(name="ID")
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+public class StoreRequest {
     private String id;
-    @Column(name="IdKH")
+    @NotNull(message = "do not empty this field")
     private Integer idKH;
-    @Column(name="IdNV")
+    @NotNull(message = "do not empty this field")
     private Integer idNV;
-    @Column(name="NgayMuaHang")
+    @NotNull(message = "do not empty this field")
     private Date ngayMuaHang;
-    @Column(name = "TrangThai")
+    @NotNull(message = "do not empty this field")
     private Integer trangThai;
 }

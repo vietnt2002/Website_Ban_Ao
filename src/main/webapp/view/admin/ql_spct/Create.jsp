@@ -94,7 +94,7 @@
                                 >Kích thước</label>
                                 <div class="input-group mb-2">
                                     <sf:select class="form-select" id="inputGroupSelect01" name="idKichThuoc"
-                                               path="kichThuoc">
+                                               path="idKichThuoc">
                                         <c:forEach varStatus="i" items="${dsKichThuoc}" var="kichThuoc">
                                             <option value=${kichThuoc.id}>${kichThuoc.ten} - ${kichThuoc.ma}</option>
                                         </c:forEach>

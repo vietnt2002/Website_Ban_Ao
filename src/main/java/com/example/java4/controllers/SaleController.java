@@ -84,12 +84,12 @@ public class SaleController {
         ArrayList<HoaDon> lstHoaDon = new ArrayList<>();
         dsNhanVien = loadDsNhanVien();
         dsKhachHang = loadDsKhachHang();
-        lstHoaDon.add(new HoaDon("1", dsNhanVien.get(1), dsKhachHang.get(1), new Date(System.currentTimeMillis())));
-        lstHoaDon.add(new HoaDon("2", dsNhanVien.get(2), dsKhachHang.get(2), new Date(System.currentTimeMillis())));
-        lstHoaDon.add(new HoaDon("3", dsNhanVien.get(3), dsKhachHang.get(3), new Date(System.currentTimeMillis())));
-        lstHoaDon.add(new HoaDon("4", dsNhanVien.get(1), dsKhachHang.get(2), new Date(System.currentTimeMillis())));
-        lstHoaDon.add(new HoaDon("5", dsNhanVien.get(2), dsKhachHang.get(1), new Date(System.currentTimeMillis())));
-        lstHoaDon.add(new HoaDon("6", dsNhanVien.get(3), dsKhachHang.get(2), new Date(System.currentTimeMillis())));
+//        lstHoaDon.add(new HoaDon("1", dsNhanVien.get(1), dsKhachHang.get(1), new Date(System.currentTimeMillis())));
+//        lstHoaDon.add(new HoaDon("2", dsNhanVien.get(2), dsKhachHang.get(2), new Date(System.currentTimeMillis())));
+//        lstHoaDon.add(new HoaDon("3", dsNhanVien.get(3), dsKhachHang.get(3), new Date(System.currentTimeMillis())));
+//        lstHoaDon.add(new HoaDon("4", dsNhanVien.get(1), dsKhachHang.get(2), new Date(System.currentTimeMillis())));
+//        lstHoaDon.add(new HoaDon("5", dsNhanVien.get(2), dsKhachHang.get(1), new Date(System.currentTimeMillis())));
+//        lstHoaDon.add(new HoaDon("6", dsNhanVien.get(3), dsKhachHang.get(2), new Date(System.currentTimeMillis())));
         return lstHoaDon;
     }
 
@@ -197,7 +197,7 @@ public class SaleController {
 
     @GetMapping("/addNewHD")
     public String addNewHD(Model model) {
-        dsHoaDon.add(new HoaDon(String.valueOf(dsHoaDon.size()+1),nv,kh, new Date(System.currentTimeMillis())));
+//        dsHoaDon.add(new HoaDon(String.valueOf(dsHoaDon.size()+1),nv,kh, new Date(System.currentTimeMillis())));
         return "redirect:/sale/create";
     }
 

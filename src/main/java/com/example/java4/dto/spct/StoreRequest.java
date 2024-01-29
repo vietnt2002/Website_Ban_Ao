@@ -1,4 +1,5 @@
 package com.example.java4.dto.spct;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,11 +12,11 @@ import org.hibernate.validator.constraints.NotBlank;
 @NoArgsConstructor
 public class StoreRequest {
     private Integer id;
-    @NotBlank(message = "Do not empty idKichThuoc")
+    @NotNull(message = "Do not empty idKichThuoc")
     private Integer idKichThuoc;
-    @NotBlank(message = "Do not empty idMauSac")
+    @NotNull(message = "Do not empty idMauSac")
     private Integer idMauSac;
-    @NotBlank(message = "Do not empty idSanPham")
+    @NotNull(message = "Do not empty idSanPham")
     private Integer idSanPham;
     @NotBlank(message = "Do not empty maSPCT")
     private String maSPCT;

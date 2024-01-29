@@ -51,54 +51,39 @@
 </header>
 <!-- <div class="col-f" style="width:700px;margin-left: auto;margin-right: auto;"> -->
 <main>
-    <form action="update-mauSac" method=post>
-        <div class="card bg-light text-white" style="height: 900px">
-            <div class="card-img-overlay">
-                <h5 class="card-title" style="color:darkblue; text-align: center; font-size: 36px;">Màu sắc
-                </h5>
-                <div class="d-flex justify-content-center bg-white"
-                     style="margin-left: auto;margin-right:auto;max-width:1280px">
-                    <div class="form bg-white m-auto" style="color:black;width:1280px;padding:56px;">
-                        <div class="row">
-                            <div class="col-md-12 fw-bold mb-3" style="color:darkblue;font-size: 20px;">
-                                <i class="bi bi-square-fill me-2" style="color:#f26522"></i>
-                                Chi tiết màu sắc
-                            </div>
-                            <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
-                                <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
-                                >Id</label>
-                                <div class="input-group mb-2">
-                                    <input type="text" class="form-control" placeholder="#idSystem"
-                                           aria-label="Username" aria-describedby="basic-addon1" name="idInp" value = "${mauSac.idMauSac}" readonly>
-                                </div>
-                            </div>
-                            <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
-                                <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
-                                >Mã</label>
-                                <div class="input-group mb-2">
-                                    <input type="text" class="form-control" placeholder="Tên"
-                                           aria-label="Username" aria-describedby="basic-addon1" name="maInp" value = "${mauSac.ma}">
-                                </div>
-                            </div>
-                            <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
-                                <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
-                                >Tên</label>
-                                <div class="input-group mb-2">
-                                    <input type="text" class="form-control" placeholder="Tên"
-                                           aria-label="Username" aria-describedby="basic-addon1" name="tenInp" value ="${mauSac.ten}">
-                                </div>
-                            </div>
-                            <div class="text-center ">
-                                <br><br><br>
-                                <button type="submit" class="btn btn-primary" style="border-radius:0%;">Update
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </form>
+    <table class="table mt-5">
+        <thead>
+        <tr class="table-light">
+            <th scope="col">STT</th>
+            <th scope="col">ID</th>
+            <th scope="col">Khách hàng</th>
+            <th scope="col">Nhân viên</th>
+            <th scope="col">Ngày mua hàng</th>
+            <th scope="col">Trạng thái</th>
+            <th scope="col">Hành động</th>
+        </tr>
+        </thead>
+        <tbody>
+        <c:forEach varStatus="i" items="${data}" var="hd">
+            <tr>
+                <td>1</td>
+                <td>${hd.id}</td>
+                <td>${hd.khachHang.ten}-${hd.khachHang.ma}</td>
+                <td>${hd.nhanVien.ten}-${hd.nhanVien.ma}</td>
+                <td>${hd.ngayMuaHang}</td>
+                <td>${hd.trangThai}</td>
+                <td>
+                    <a href="update/${hd.id}">
+                        <button type="button" class="btn btn-success ">Update</button>
+                    </a>
+                    <a href="delete/${hd.id}">
+                        <button type="button" class="btn btn-danger">Delete</button>
+                    </a>
+                </td>
+            </tr>
+        </c:forEach>
+        </tbody>
+    </table>
 </main>
 <footer id="footer" style="margin-top: 60px;">
     <div class="container">

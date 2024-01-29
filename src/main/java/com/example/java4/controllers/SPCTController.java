@@ -1,14 +1,8 @@
 package com.example.java4.controllers;
 
 import com.example.java4.dto.spct.StoreRequest;
-import com.example.java4.entities.KichThuoc;
-import com.example.java4.entities.MauSac;
-import com.example.java4.entities.SPCT;
-import com.example.java4.entities.SanPham;
-import com.example.java4.repositories.KichThuocRepository;
-import com.example.java4.repositories.MauSacRepository;
-import com.example.java4.repositories.SPCTRepository;
-import com.example.java4.repositories.SanPhamRepository;
+import com.example.java4.entities.*;
+import com.example.java4.repositories.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,6 +28,8 @@ public class SPCTController {
     MauSacRepository mauSacRepo;
     @Autowired
     SPCTRepository spctRepo;
+    @Autowired
+    SPCTfullRepository spcTfullRepository;
 //    public ArrayList<KichThuoc> loadToKichThuocCbo() {
 //        ArrayList<KichThuoc> lstKichThuoc = new ArrayList<>();
 //        lstKichThuoc.add(new KichThuoc(1, "kt1", "large", 1));
@@ -88,7 +84,7 @@ public class SPCTController {
 
     @GetMapping("/index")
     public String index(Model model) {
-        model.addAttribute("data",spctRepo.findAll());
+        model.addAttribute("data",spcTfullRepository.findAll());
         return "admin/ql_spct/Index";
     }
 

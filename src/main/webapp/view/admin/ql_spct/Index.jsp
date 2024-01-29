@@ -56,9 +56,9 @@
             <th scope="col">Stt</th>
             <th scope="col">Id</th>
             <th scope="col">Mã SPCT</th>
-            <th scope="col">idKích thước</th>
-            <th scope="col">idMàu sắc</th>
-            <th scope="col">idSản phẩm</th>
+            <th scope="col">Kích thước</th>
+            <th scope="col">Màu sắc</th>
+            <th scope="col">Sản phẩm</th>
             <th scope="col">Số lượng</th>
             <th scope="col">Đơn giá</th>
             <th scope="col">Trạng thái</th>
@@ -71,9 +71,9 @@
                 <td>1</td>
                 <td>${spct.id}</td>
                 <td>${spct.maSPCT}</td>
-                <td>${spct.idKichThuoc}</td>
-                <td>${spct.idMauSac}</td>
-                <td>${spct.idSanPham}</td>
+                <td>${spct.kichThuoc.ten}-${spct.kichThuoc.ma}</td>
+                <td>${spct.mauSac.ten}-${spct.mauSac.ma}</td>
+                <td>${spct.sanPham.ten}-${spct.sanPham.ten}</td>
                 <td>${spct.soLuong}</td>
                 <td>${spct.donGia}</td>
                 <td>${spct.trangThai}</td>

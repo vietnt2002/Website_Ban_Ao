@@ -6,21 +6,24 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Date;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name="HoaDon")
-public class HoaDon {
+public class HoaDonFull {
     @Id
     @Column(name="ID")
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private String id;
-    @Column(name="IdKH")
-    private Integer idKH;
-    @Column(name="IdNV")
-    private Integer idNV;
+    @ManyToOne
+    @JoinColumn(name = "IdKH")
+    private KhachHang khachHang;
+    @ManyToOne
+    @JoinColumn(name = "IdNV")
+    private NhanVien nhanVien;
     @Column(name="NgayMuaHang")
     private Date ngayMuaHang;
     @Column(name = "TrangThai")
