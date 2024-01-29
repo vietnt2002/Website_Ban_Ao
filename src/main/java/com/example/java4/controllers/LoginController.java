@@ -1,6 +1,6 @@
 package com.example.java4.controllers;
 import com.example.java4.dto.login.LoginRequest;
-import com.example.java4.model.Account;
+import com.example.java4.entities.Account;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;

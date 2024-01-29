@@ -71,8 +71,18 @@
                                 >Id</label>
                                 <div class="input-group mb-2">
                                     <sf:input type="text" class="form-control" placeholder="#idSystem"
-                                           aria-label="Username" aria-describedby="basic-addon1" name="id" path="id"/>
+                                           aria-label="Username" aria-describedby="basic-addon1" name="id" path="id" readonly="true"/>
                                     <sf:errors path="id" cssStyle="color: red" />
+                                </div>
+                            </div>
+
+                            <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
+                                <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
+                                >Mã</label>
+                                <div class="input-group mb-2">
+                                    <sf:input type="text" class="form-control" placeholder="Mã"
+                                              aria-label="Username" aria-describedby="basic-addon1" name="ma" path="ma"/>
+                                    <sf:errors path="ten" cssStyle="color: red" />
                                 </div>
                             </div>
 
@@ -95,22 +105,11 @@
                                     <sf:errors path="sdt" cssStyle="color: red" />
                                 </div>
                             </div>
-
-                            <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
-                                <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
-                                >Mã KH</label>
-                                <div class="input-group mb-2">
-                                    <sf:input type="text" class="form-control" placeholder="Mã KH"
-                                              aria-label="Username" aria-describedby="basic-addon1" name="maKH" path="maKH"/>
-                                    <sf:errors path="maKH" cssStyle="color: red" />
-                                </div>
-                            </div>
-
                             <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
                                 <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
                                 >Trạng thái</label>
                                 <div class="input-group mb-2">
-                                    <sf:input type="text" class="form-control" placeholder="Trạng thái"
+                                    <sf:input type="number" class="form-control" placeholder="Trạng thái"
                                               aria-label="Username" aria-describedby="basic-addon1" name="trangThai" path="trangThai"/>
                                     <sf:errors path="trangThai" cssStyle="color: red" />
                                 </div>

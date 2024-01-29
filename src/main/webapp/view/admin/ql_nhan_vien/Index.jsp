@@ -56,7 +56,7 @@
             <th scope="col">Stt</th>
             <th scope="col">Id</th>
             <th scope="col">Tên</th>
-            <th scope="col">Mã NV</th>
+            <th scope="col">Mã</th>
             <th scope="col">Tên đăng nhập</th>
             <th scope="col">Mật khẩu</th>
             <th scope="col">Trạng thái</th>
@@ -69,7 +69,7 @@
                 <td>1</td>
                 <td>${nhanVien.id}</td>
                 <td>${nhanVien.ten}</td>
-                <td>${nhanVien.maNV}</td>
+                <td>${nhanVien.ma}</td>
                 <td>${nhanVien.tenDangNhap}</td>
                 <td>${nhanVien.matKhau}</td>
                 <td>${nhanVien.trangThai}</td>

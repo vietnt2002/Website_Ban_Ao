@@ -1,17 +1,14 @@
 package com.example.java4.controllers;
 
 import com.example.java4.dto.sale.NewHDCTRequest;
-import com.example.java4.model.*;
+import com.example.java4.entities.*;
 import jakarta.validation.Valid;
-import org.apache.catalina.util.ToStringUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
 import java.sql.Date;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 @Controller
 @RequestMapping("sale")
@@ -33,53 +30,53 @@ public class SaleController {
 
     public ArrayList<KichThuoc> loadToKichThuocCbo() {
         ArrayList<KichThuoc> lstKichThuoc = new ArrayList<>();
-        lstKichThuoc.add(new KichThuoc("1", "kt1", "large", "available"));
-        lstKichThuoc.add(new KichThuoc("2", "kt2", "min", "available"));
-        lstKichThuoc.add(new KichThuoc("3", "kt3", "medium", "available"));
-        lstKichThuoc.add(new KichThuoc("4", "kt4", "average", "available"));
-        lstKichThuoc.add(new KichThuoc("5", "kt5", "oversize", "not available"));
+        lstKichThuoc.add(new KichThuoc(1, "kt1", "large", 1));
+        lstKichThuoc.add(new KichThuoc(2, "kt2", "min", 1));
+        lstKichThuoc.add(new KichThuoc(3, "kt3", "medium", 1));
+        lstKichThuoc.add(new KichThuoc(4, "kt4", "average", 2));
+        lstKichThuoc.add(new KichThuoc(5, "kt5", "oversize",1 ));
         return lstKichThuoc;
     }
 
     public ArrayList<MauSac> loadMauSacCbo() {
         ArrayList<MauSac> lstMauSac = new ArrayList<>();
-        lstMauSac.add(new MauSac("1", "bl1", "Black"));
-        lstMauSac.add(new MauSac("2", "Vi1", "Violet"));
-        lstMauSac.add(new MauSac("3", "Ye1", "Yellow"));
-        lstMauSac.add(new MauSac("4", "Pi1", "Pink"));
-        lstMauSac.add(new MauSac("5", "Gry1", "Gray"));
+        lstMauSac.add(new MauSac(1, "bl1", "Black",1));
+        lstMauSac.add(new MauSac(2, "Vi1", "Violet",2));
+        lstMauSac.add(new MauSac(3, "Ye1", "Yellow",1));
+        lstMauSac.add(new MauSac(4, "Pi1", "Pink",2));
+        lstMauSac.add(new MauSac(5, "Gry1", "Gray",3));
         return lstMauSac;
     }
 
     public ArrayList<SanPham> loadSanPhamCbo() {
         ArrayList<SanPham> lstSanPham = new ArrayList<>();
-        lstSanPham.add(new SanPham("001", "SP1", "Wallet", "Stocking"));
-        lstSanPham.add(new SanPham("002", "SP2", "Learther strap apple watch", "Stocking"));
-        lstSanPham.add(new SanPham("003", "SP3", "Clutch", "Stocking"));
-        lstSanPham.add(new SanPham("004", "SP4", "Belt", "Stocking"));
-        lstSanPham.add(new SanPham("005", "SP5", "Leather case", "Stocking"));
-        lstSanPham.add(new SanPham("006", "SP6", "Sticky leather(optional size)", "Stocking"));
+        lstSanPham.add(new SanPham(1, "SP1", "Wallet", "Stocking"));
+        lstSanPham.add(new SanPham(2, "SP2", "Learther strap apple watch", "Stocking"));
+        lstSanPham.add(new SanPham(3, "SP3", "Clutch", "Stocking"));
+        lstSanPham.add(new SanPham(4, "SP4", "Belt", "Stocking"));
+        lstSanPham.add(new SanPham(5, "SP5", "Leather case", "Stocking"));
+        lstSanPham.add(new SanPham(6, "SP6", "Sticky leather(optional size)", "Stocking"));
         return lstSanPham;
     }
 
     public ArrayList<KhachHang> loadDsKhachHang() {
         ArrayList<KhachHang> lstKhachHang = new ArrayList<>();
-        lstKhachHang.add(new KhachHang("1", "Nguyễn Thị Linh", "0333336666", "kh1", "active"));
-        lstKhachHang.add(new KhachHang("2", "Nguyen Hữu Lộc", "0333322222", "kh2", "active"));
-        lstKhachHang.add(new KhachHang("3", "Phan Đắc Quang", "0333334535", "kh3", "active"));
-        lstKhachHang.add(new KhachHang("4", "Phạm Thị Lan", "0333335353", "kh4", "active"));
-        lstKhachHang.add(new KhachHang("5", "Nguyễn Phi Hùng", "0333335353", "kh5", "active"));
-        lstKhachHang.add(new KhachHang("6", "Vũ Trọng Tài", "0333338878", "kh6", "active"));
+        lstKhachHang.add(new KhachHang(1, "Nguyễn Thị Linh","kh001", "0333336666", 1));
+        lstKhachHang.add(new KhachHang(2, "Nguyen Hữu Lộc","kh002", "0333322222", 0));
+        lstKhachHang.add(new KhachHang(3, "Phan Đắc Quang","kh003", "0333334535", 1));
+        lstKhachHang.add(new KhachHang(4, "Phạm Thị Lan","kh004", "0333335353", 0));
+        lstKhachHang.add(new KhachHang(5, "Nguyễn Phi Hùng","kh005", "0333335353", 1));
+        lstKhachHang.add(new KhachHang(6, "Vũ Trọng Tài","kh006", "0333338878", 1));
         return lstKhachHang;
     }
 
     public ArrayList<NhanVien> loadDsNhanVien() {
         ArrayList<NhanVien> lstNhanVien = new ArrayList<>();
-        lstNhanVien.add(new NhanVien("1", "Nguyễn Phúc Lộc", "nv1", "phuclocub", "loc123", "working"));
-        lstNhanVien.add(new NhanVien("2", "Phạm Thị Linh", "nv2", "linhnt01", "linh123", "working"));
-        lstNhanVien.add(new NhanVien("3", "Nguyễn Thị Lan", "nv3", "lanvt02", "lan123", "working"));
-        lstNhanVien.add(new NhanVien("4", "Nguyễn Văn Hùng", "nv4", "hungtt05", "hung123", "working"));
-        lstNhanVien.add(new NhanVien("5", "Nguyễn Tuấn Tài", "nv5", "tailv06", "tai123", "working"));
+        lstNhanVien.add(new NhanVien(1, "Nguyễn Phúc Lộc", "nv1", "phuclocub", "loc123", 1));
+        lstNhanVien.add(new NhanVien(2, "Phạm Thị Linh", "nv2", "linhnt01", "linh123", 2));
+        lstNhanVien.add(new NhanVien(3, "Nguyễn Thị Lan", "nv3", "lanvt02", "lan123", 1));
+        lstNhanVien.add(new NhanVien(4, "Nguyễn Văn Hùng", "nv4", "hungtt05", "hung123", 1));
+        lstNhanVien.add(new NhanVien(5, "Nguyễn Tuấn Tài", "nv5", "tailv06", "tai123", 0));
         return lstNhanVien;
     }
 
@@ -146,12 +143,12 @@ public class SaleController {
         this.kh = dsKhachHang.get(1);
         this.nv = dsNhanVien.get(2);
         this.paymentStt = "not yet";
-        dsSPCT.add(new SPCT("1", "SPCT1", dsKichThuoc.get(1), dsMauSac.get(1), dsSanPham.get(1), 1, 150.5, "stocking"));
-        dsSPCT.add(new SPCT("2", "SPCT2", dsKichThuoc.get(2), dsMauSac.get(2), dsSanPham.get(2), 3, 250.5, "stocking"));
-        dsSPCT.add(new SPCT("3", "SPCT3", dsKichThuoc.get(3), dsMauSac.get(3), dsSanPham.get(3), 5, 50.5, "stocking"));
-        dsSPCT.add(new SPCT("4", "SPCT4", dsKichThuoc.get(4), dsMauSac.get(4), dsSanPham.get(4), 6, 100.5, "stocking"));
-        dsSPCT.add(new SPCT("5", "SPCT5", dsKichThuoc.get(2), dsMauSac.get(1), dsSanPham.get(3), 7, 120.5, "stocking"));
-        dsSPCT.add(new SPCT("6", "SPCT6", dsKichThuoc.get(4), dsMauSac.get(3), dsSanPham.get(2), 3, 110.5, "stocking"));
+//        dsSPCT.add(new SPCT(1, "SPCT1", dsKichThuoc.get(1), dsMauSac.get(1), dsSanPham.get(1), 1, 150.5, "stocking"));
+//        dsSPCT.add(new SPCT(2, "SPCT2", dsKichThuoc.get(2), dsMauSac.get(2), dsSanPham.get(2), 3, 250.5, "stocking"));
+//        dsSPCT.add(new SPCT(3, "SPCT3", dsKichThuoc.get(3), dsMauSac.get(3), dsSanPham.get(3), 5, 50.5, "stocking"));
+//        dsSPCT.add(new SPCT(4, "SPCT4", dsKichThuoc.get(4), dsMauSac.get(4), dsSanPham.get(4), 6, 100.5, "stocking"));
+//        dsSPCT.add(new SPCT(5, "SPCT5", dsKichThuoc.get(2), dsMauSac.get(1), dsSanPham.get(3), 7, 120.5, "stocking"));
+//        dsSPCT.add(new SPCT(6, "SPCT6", dsKichThuoc.get(4), dsMauSac.get(3), dsSanPham.get(2), 3, 110.5, "stocking"));
     }
 
     public void initHDCT(HoaDon hd) {

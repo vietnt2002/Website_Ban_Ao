@@ -71,7 +71,7 @@
                                 >Id</label>
                                 <div class="input-group mb-2">
                                     <sf:input type="text" class="form-control" placeholder="#idSystem"
-                                              aria-label="Username" aria-describedby="basic-addon1" name="id" path="id"/>
+                                              aria-label="Username" aria-describedby="basic-addon1" name="id" path="id" readonly="true"/>
                                     <sf:errors path="id" cssStyle="color: red" />
                                 </div>
                             </div>
@@ -88,11 +88,11 @@
 
                             <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
                                 <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
-                                >Mã NV</label>
+                                >Mã</label>
                                 <div class="input-group mb-2">
                                     <sf:input type="text" class="form-control" placeholder="SDT"
-                                              aria-label="Username" aria-describedby="basic-addon1" name="maNV" path="maNV"/>
-                                    <sf:errors path="maNV" cssStyle="color: red" />
+                                              aria-label="Username" aria-describedby="basic-addon1" name="ma" path="ma"/>
+                                    <sf:errors path="ma" cssStyle="color: red" />
                                 </div>
                             </div>
 

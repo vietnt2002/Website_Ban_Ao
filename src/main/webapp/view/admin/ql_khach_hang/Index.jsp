@@ -56,8 +56,8 @@
         <tr class="table-light">
             <th scope="col">Stt</th>
             <th scope="col">Id</th>
+            <th scope="col">Mã</th>
             <th scope="col">Tên</th>
-            <th scope="col">Mã NV</th>
             <th scope="col">Tên đăng nhập</th>
             <th scope="col">Mật khẩu</th>
             <th scope="col">Trạng thái</th>
@@ -69,9 +69,9 @@
             <tr>
                 <td>1</td>
                 <td>${khachHang.id}</td>
+                <td>${khachHang.ma}</td>
                 <td>${khachHang.ten}</td>
                 <td>${khachHang.sdt}</td>
-                <td>${khachHang.maKH}</td>
                 <td>${khachHang.trangThai}</td>
                 <td>
                     <a href="update/${khachHang.id}">

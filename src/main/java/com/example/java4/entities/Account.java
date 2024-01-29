@@ -1,4 +1,4 @@
-package com.example.java4.model;
+package com.example.java4.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,9 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class SanPham {
-    private String id;
-    private String ma;
-    private String ten;
-    private String trangThai;
+public class Account {
+    private String email;
+    private String password;
 }

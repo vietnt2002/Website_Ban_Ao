@@ -71,7 +71,7 @@
                                 >Id</label>
                                 <div class="input-group mb-2">
                                     <sf:input type="text" class="form-control" placeholder="#idSystem"
-                                              aria-label="Username" aria-describedby="basic-addon1" name="id" path="id"/>
+                                              aria-label="Username" aria-describedby="basic-addon1" name="id" path="id" readonly="true"/>
                                     <sf:errors path="id" cssStyle="color: red" />
                                 </div>
                             </div>

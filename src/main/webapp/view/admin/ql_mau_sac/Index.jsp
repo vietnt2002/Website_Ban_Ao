@@ -71,10 +71,10 @@
                 <td>${nhanVien.ten}</td>
                 <td>${nhanVien.trangThai}</td>
                 <td>
-                    <a href="update/${nhanVien.id}">
+                    <a href="index/update-mauSac/${nhanVien.id}">
                         <button type="button" class="btn btn-success ">Update</button>
                     </a>
-                    <a href="delete/${nhanVien.id}">
+                    <a href="index/delete-mauSac/${nhanVien.id}">
                         <button type="button" class="btn btn-danger">Delete</button>
                     </a>
                 </td>

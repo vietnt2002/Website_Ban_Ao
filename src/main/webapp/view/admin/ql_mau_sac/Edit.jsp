@@ -93,6 +93,15 @@
                                     <sf:errors path="ten" cssStyle="color: red" />
                                 </div>
                             </div>
+                            <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
+                                <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
+                                >Trạng thái</label>
+                                <div class="input-group mb-2">
+                                    <sf:input type="number" class="form-control" placeholder="Tên"
+                                              aria-label="Username" aria-describedby="basic-addon1" name="trangThai" path="trangThai"/>
+                                    <sf:errors path="trangThai" cssStyle="color: red" />
+                                </div>
+                            </div>
                             <div class="text-center ">
                                 <br><br><br>
                                 <button type="submit" class="btn btn-primary" style="border-radius:0%;">Thêm

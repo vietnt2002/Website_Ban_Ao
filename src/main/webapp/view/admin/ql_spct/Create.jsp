@@ -93,13 +93,13 @@
                                 <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
                                 >Kích thước</label>
                                 <div class="input-group mb-2">
-                                    <sf:select class="form-select" id="inputGroupSelect01" name="kichThuoc"
+                                    <sf:select class="form-select" id="inputGroupSelect01" name="idKichThuoc"
                                                path="kichThuoc">
                                         <c:forEach varStatus="i" items="${dsKichThuoc}" var="kichThuoc">
                                             <option value=${kichThuoc.id}>${kichThuoc.ten} - ${kichThuoc.ma}</option>
                                         </c:forEach>
                                     </sf:select>
-                                    <sf:errors path="kichThuoc" cssStyle="color: red"/>
+                                    <sf:errors path="idKichThuoc" cssStyle="color: red"/>
                                 </div>
                             </div>
 
@@ -107,13 +107,13 @@
                                 <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
                                 >Màu sắc</label>
                                 <div class="input-group mb-2">
-                                    <select class="form-select" id="inputGroupSelect02" name="mauSac"
+                                    <select class="form-select" id="inputGroupSelect02" name="idMauSac"
                                             path="mauSac">
                                         <c:forEach varStatus="i" items="${dsMauSac}" var="mauSac">
                                             <option value=${mauSac.id}>${mauSac.ten} - ${mauSac.ma}</option>
                                         </c:forEach>
                                     </select>
-                                    <sf:errors path="mauSac" cssStyle="color: red"/>
+                                    <sf:errors path="idMauSac" cssStyle="color: red"/>
                                 </div>
                             </div>
 
@@ -121,13 +121,13 @@
                                 <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
                                 >Sản phẩm</label>
                                 <div class="input-group mb-2">
-                                    <sf:select class="form-select" id="inputGroupSelect03" name="sanPham"
-                                               path="sanPham">
+                                    <sf:select class="form-select" id="inputGroupSelect03" name="idSanPham"
+                                               path="idSanPham">
                                         <c:forEach varStatus="i" items="${dsSanPham}" var="sanPham">
                                             <option value=${sanPham.id}>${sanPham.ten} - ${sanPham.ma} </option>
                                         </c:forEach>
                                     </sf:select>
-                                    <sf:errors path="sanPham" cssStyle="color: red"/>
+                                    <sf:errors path="idSanPham" cssStyle="color: red"/>
                                 </div>
                             </div>
 

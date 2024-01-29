@@ -53,7 +53,7 @@
 </header>
 <!-- <div class="col-f" style="width:700px;margin-left: auto;margin-right: auto;"> -->
 <main>
-    <sf:form action="/mau_sac/update/${data.id}" method="POST" modelAttribute="data">
+    <sf:form action="/kich_thuoc/update/${data.id}" method="POST" modelAttribute="data">
         <div class="card bg-light text-white" style="height: 900px">
             <div class="card-img-overlay">
                 <h5 class="card-title" style="color:darkblue; text-align: center; font-size: 36px;">Quản lý kích thước
@@ -71,7 +71,7 @@
                                 >Id</label>
                                 <div class="input-group mb-2">
                                     <sf:input type="text" class="form-control" placeholder="#idSystem"
-                                              aria-label="Username" aria-describedby="basic-addon1" name="id" path="id"/>
+                                              aria-label="Username" aria-describedby="basic-addon1" name="id" path="id" readonly="true"/>
                                     <sf:errors path="id" cssStyle="color: red" />
                                 </div>
                             </div>
@@ -97,7 +97,7 @@
                                 <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
                                 >Trạng thái</label>
                                 <div class="input-group mb-2">
-                                    <sf:input type="text" class="form-control" placeholder="Tên"
+                                    <sf:input type="text" class="form-control" placeholder="Trạng thái"
                                               aria-label="Username" aria-describedby="basic-addon1" name="trangThai" path="trangThai"/>
                                     <sf:errors path="trangThai" cssStyle="color: red" />
                                 </div>

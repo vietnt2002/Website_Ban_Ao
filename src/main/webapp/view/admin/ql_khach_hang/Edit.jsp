@@ -78,6 +78,16 @@
 
                             <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
                                 <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
+                                >Mã</label>
+                                <div class="input-group mb-2">
+                                    <sf:input type="text" class="form-control" placeholder="Mã"
+                                              aria-label="Username" aria-describedby="basic-addon1" name="ma" path="ma"/>
+                                    <sf:errors path="ten" cssStyle="color: red" />
+                                </div>
+                            </div>
+
+                            <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
+                                <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
                                 >Tên</label>
                                 <div class="input-group mb-2">
                                     <sf:input type="text" class="form-control" placeholder="Tên"
@@ -93,16 +103,6 @@
                                     <sf:input type="text" class="form-control" placeholder="SDT"
                                               aria-label="Username" aria-describedby="basic-addon1" name="sdt" path="sdt"/>
                                     <sf:errors path="sdt" cssStyle="color: red" />
-                                </div>
-                            </div>
-
-                            <div class="col-xxl-3 col-xl-6 col-md-12 mb-2">
-                                <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
-                                >Mã KH</label>
-                                <div class="input-group mb-2">
-                                    <sf:input type="text" class="form-control" placeholder="Mã KH"
-                                              aria-label="Username" aria-describedby="basic-addon1" name="maKH" path="maKH"/>
-                                    <sf:errors path="maKH" cssStyle="color: red" />
                                 </div>
                             </div>
 

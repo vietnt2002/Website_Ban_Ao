@@ -93,13 +93,13 @@
                                 <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
                                 >Kích thước</label>
                                 <div class="input-group mb-2">
-                                    <sf:select class="form-select" id="inputGroupSelect01" name="kichThuoc"
-                                               path="kichThuoc">
+                                    <sf:select class="form-select" id="inputGroupSelect01" name="idKichThuoc"
+                                               path="idKichThuoc">
                                         <c:forEach varStatus="i" items="${dsKichThuoc}" var="kichThuoc">
-                                            <option value=${kichThuoc.id} <c:if test="${data.kichThuoc == kichThuoc.id }">selected</c:if>>${kichThuoc.ten} - ${kichThuoc.ma}</option>
+                                            <option value=${kichThuoc.id} <c:if test="${data.idKichThuoc == kichThuoc.id }">selected</c:if>>${kichThuoc.ten} - ${kichThuoc.ma}</option>
                                         </c:forEach>
                                     </sf:select>
-                                    <sf:errors path="kichThuoc" cssStyle="color: red"/>
+                                    <sf:errors path="idKichThuoc" cssStyle="color: red"/>
                                 </div>
                             </div>
 
@@ -107,13 +107,13 @@
                                 <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
                                 >Màu sắc</label>
                                 <div class="input-group mb-2">
-                                    <select class="form-select" id="inputGroupSelect02" name="mauSac"
-                                            path="mauSac">
+                                    <select class="form-select" id="inputGroupSelect02" name="idMauSac"
+                                            path="idMauSac">
                                         <c:forEach varStatus="i" items="${dsMauSac}" var="mauSac">
-                                            <option value=${mauSac.id} <c:if test="${data.mauSac == mauSac.id }">selected</c:if>>${mauSac.ten} - ${mauSac.ma}</option>
+                                            <option value=${mauSac.id} <c:if test="${data.idMauSac == mauSac.id }">selected</c:if>>${mauSac.ten} - ${mauSac.ma}</option>
                                         </c:forEach>
                                     </select>
-                                    <sf:errors path="mauSac" cssStyle="color: red"/>
+                                    <sf:errors path="idMauSac" cssStyle="color: red"/>
                                 </div>
                             </div>
 
@@ -121,13 +121,13 @@
                                 <label class="gfield_label fw-semibold" style="color:#374151;font-size: 14px;"
                                 >Sản phẩm</label>
                                 <div class="input-group mb-2">
-                                    <sf:select class="form-select" id="inputGroupSelect03" name="sanPham"
-                                               path="sanPham">
+                                    <sf:select class="form-select" id="inputGroupSelect03" name="idSanPham"
+                                               path="idSanPham">
                                         <c:forEach varStatus="i" items="${dsSanPham}" var="sanPham">
-                                            <option value=${sanPham.id} <c:if test="${data.sanPham == sanPham.id }">selected</c:if>>${sanPham.ten} - ${sanPham.ma} </option>
+                                            <option value=${sanPham.id} <c:if test="${data.idSanPham == sanPham.id }">selected</c:if>>${sanPham.ten} - ${sanPham.ma} </option>
                                         </c:forEach>
                                     </sf:select>
-                                    <sf:errors path="sanPham" cssStyle="color: red"/>
+                                    <sf:errors path="idSanPham" cssStyle="color: red"/>
                                 </div>
                             </div>
 
@@ -174,8 +174,6 @@
                 </div>
             </div>
         </div>
-
-        <h1>${data.kichThuoc==2}</h1>
     </sf:form>
 </main>
 </body>
