@@ -5,27 +5,31 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name="HoaDon")
-public class HoaDonFull {
+@Table(name="HoaDonChiTiet")
+public class HDCTfull {
     @Id
     @Column(name="ID")
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer id;
     @ManyToOne
-    @JoinColumn(name = "IdKH")
-    private KhachHang khachHang;
+    @JoinColumn(name="IdHoaDon")
+    private HoaDonFull hoaDon;
     @ManyToOne
-    @JoinColumn(name = "IdNV")
-    private NhanVien nhanVien;
-    @Column(name="NgayMuaHang")
-    private Date ngayMuaHang;
-    @Column(name = "TrangThai")
+    @JoinColumn(name="IdSPCT")
+    private SPCTfull spct;
+    @Column(name="SoLuong")
+    private int soLuong;
+    @Column(name="DonGia")
+    private int donGia;
+    @Column(name="ThoiGian")
+    private Timestamp thoiGian;
+    @Column(name="TrangThai")
     private Integer trangThai;
 }

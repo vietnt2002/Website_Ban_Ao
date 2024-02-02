@@ -54,27 +54,34 @@
     <table class="table mt-5">
         <thead>
         <tr class="table-light">
-            <th scope="col">Id</th>
-            <th scope="col">Mã</th>
-            <th scope="col">Tên</th>
-            <th scope="col">Sđt</th>
+            <th scope="col">STT</th>
+            <th scope="col">ID</th>
+            <th scope="col">Hóa đơn</th>
+            <th scope="col">SPCT</th>
+            <th scope="col">Số lượng</th>
+            <th scope="col">Đơn giá</th>
+            <th scope="col">Thời gian</th>
             <th scope="col">Trạng thái</th>
             <th scope="col">Hành động</th>
         </tr>
         </thead>
         <tbody>
-        <c:forEach varStatus="i" items="${data}" var="khachHang">
+        <c:forEach varStatus="i" items="${data}" var="hdct">
             <tr>
-                <td>${khachHang.id}</td>
-                <td>${khachHang.ma}</td>
-                <td>${khachHang.ten}</td>
-                <td>${khachHang.sdt}</td>
-                <td>${khachHang.trangThai}</td>
+                <td>1</td>
+                <td>${hdct.id}</td>
+                <td>${hdct.hoaDon.id}-${hdct.hoaDon.khachHang.ten}</td>
+                <td>${hdct.spct.sanPham.ten}-${hdct.spct.mauSac.ten}/${hdct.spct.mauSac.ma
+                }-${hdct.spct.kichThuoc.ten}/${hdct.spct.kichThuoc.ma}</td>
+                <td>${hdct.soLuong}</td>
+                <td>${hdct.donGia}</td>
+                <td>${hdct.thoiGian}</td>
+                <td>${hdct.trangThai}</td>
                 <td>
-                    <a href="update/${khachHang.id}">
+                    <a href="update/${hdct.id}">
                         <button type="button" class="btn btn-success ">Update</button>
                     </a>
-                    <a href="delete/${khachHang.id}">
+                    <a href="delete/${hdct.id}">
                         <button type="button" class="btn btn-danger">Delete</button>
                     </a>
                 </td>
@@ -83,5 +90,49 @@
         </tbody>
     </table>
 </main>
+<footer id="footer" style="margin-top: 60px;">
+    <div class="container">
+        <div class="row" style="width:750px;margin-left: auto;margin-right: auto;">
+            <div class="col-4 md-4">
+                <div class="useful-link">
+                    <h2 style="color:white;">Useful Links</h2>
+                    <div class="use-links">
+                        <li><a href=""><i class="fa-solid fa-angles-right"></i> Home</a></li>
+                        <li><a href=""><i class="fa-solid fa-angles-right"></i> About Us</a>
+                        </li>
+                        <li><a href=""><i class="fa-solid fa-angles-right"></i> Gallery</a>
+                        </li>
+                        <li><a href=""><i class="fa-solid fa-angles-right"></i> Contact</a>
+                        </li>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4 md-4">
+                <div class="social-links">
+                    <h2 style="color: white;">Follow Us</h2>
+                    <div class="social-icons">
+                        <li><a href=""><i class="fa-brands fa-facebook-f"></i> Facebook</a></li>
+                        <li><a href=""><i class="fa-brands fa-instagram"></i> Instagram</a></li>
+                        <li><a href=""><i class="fa-brands fa-linkedin-in"></i> Linkedin</a></li>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4 md-4">
+                <div class="address">
+                    <h2 style="color: white">Address</h2>
+                    <div class="address-links">
+                        <li class="address1"><i class="fa-solid fa-location-dot"></i>FPT
+                            Nam Từ Liêm-
+                            Hà Nội
+                            Việt Nam
+                        </li>
+                        <li><a href=""><i class="fa-solid fa-phone"></i> +84374223222</a></li>
+                        <li><a href=""><i class="fa-solid fa-envelope"></i> phucloc@gmail.com</a></li>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
 </body>
 </html>

@@ -54,34 +54,9 @@
 <!-- <div class="col-f" style="width:700px;margin-left: auto;margin-right: auto;"> -->
 <main>
     <div class="row ms-3">
-    <div class="col-md-3">
-        <h2>Danh sách sản phẩm</h2>
-        <c:forEach varStatus="i" items="${dsSPCT}" var="spct">
-            <div class="col-md-6">
-                <div class="card" style="width: 18rem;">
-                    <img src="https://bullsheathleather.com/cdn/shop/collections/Minimalist_Wallet.jpg?v=1648425217"
-                         class="card-img-top" alt="..." style="width: 100%;height: 200px">
-                    <div class="card-body">
-                        <h5 class="card-title">${spct.sanPham.ten}-${spct.maSPCT}</h5>
-                        <div class="d-flex flex-row mb-3">
-                            <p class="card-text">Giá bán: ${spct.donGia}</p>
-                            <p class="card-text ms-2">| Size: ${spct.kichThuoc.ten}</p>
-                        </div>
-                        <div class="d-flex flex-row mb-3">
-                            <p class="card-text">Màu sắc: ${spct.mauSac.ten}</p>
-                            <p class="card-text ms-2">| Còn lại: ${spct.soLuong}</p>
-                        </div>
-                        <div class="input-group">
-                            <a href="addToCart/${spct.id}" class="btn btn-warning ms-3">Add</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </c:forEach>
-    </div>
-        <div class="col-md-5">
+        <div class="col-md-6">
             <h2>Hóa đơn</h2>
-            <table class="table mt-5">
+            <table class="table mt-7">
                 <thead>
                 <tr class="table-light">
                     <th scope="col">Stt</th>
@@ -89,6 +64,7 @@
                     <th scope="col">Nhân viên</th>
                     <th scope="col">Khách hàng</th>
                     <th scope="col">Ngày mua hàng</th>
+                    <th scope="col">Trạng thái</th>
                     <th scope="col">Hành động</th>
                 </tr>
                 </thead>
@@ -97,9 +73,10 @@
                     <tr>
                         <td>1</td>
                         <td>${hoaDon.id}</td>
-                        <td>${hoaDon.nv.ten}-${hoaDon.nv.maNV}</td>
-                        <td>${hoaDon.kh.ten}-${hoaDon.kh.maKH}</td>
-                        <td>${hoaDon.ngayMua}</td>
+                        <td>${hoaDon.nhanVien.ten}-${hoaDon.nhanVien.ma}</td>
+                        <td>${hoaDon.khachHang.ten}-${hoaDon.khachHang.ma}</td>
+                        <td>${hoaDon.ngayMuaHang}</td>
+                        <td>${hoaDon.trangThai}</td>
                         <td>
                             <a href="select/${hoaDon.id}">
                                 <button type="button" class="btn btn-success ">Select</button>
@@ -110,35 +87,33 @@
                 </tbody>
             </table>
             <a href="addNewHD">
-                <button type="button" class="btn btn-success ">Add new</button>
+                <button type="button" class="btn btn-primary">Add new</button>
             </a>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-6">
             <h2>Hóa đơn chi tiết</h2>
             <div class="d-flex flex-row mb-3">
                 <p1>IdHD: ${hoaDon.id}</p1
-                <p1>|Tên KH: ${hoaDon.kh.ten}</p1>
+                <p1>|Tên KH: ${hoaDon.khachHang.ten}</p1>
             </div>
             <div class="d-flex flex-row mb-3">
-                <p1>Tên NV: ${hoaDon.nv.ten}-${hoaDon.nv.maNV} </p1>
-                <p1>|Ngày mua:${hoaDon.ngayMua}</p1>
+                <p1>Tên NV: ${hoaDon.nhanVien.ten}-${hoaDon.nhanVien.ma} </p1>
+                <p1>|Ngày mua:${hoaDon.ngayMuaHang}</p1>
             </div>
-                <table class="table mt-5">
+            <table class="table mt-5">
                 <thead>
                 <tr class="table-light">
-                    <th scope="col">Stt</th>
-                    <th scope="col">idHoaDon</th>
+                    <th scope="col">ID HD</th>
                     <th scope="col">SPCT</th>
                     <th scope="col">Số lương</th>
                     <th scope="col">Đơn giá</th>
-                    <th scope="col">Tổng </th>
+                    <th scope="col">Tổng</th>
                 </tr>
                 </thead>
                 <tbody>
                 <c:forEach varStatus="i" items="${dsHDCT}" var="hdct">
                     <tr>
-                        <td>1</td>
-                        <td>${hdct.hd.id}</td>
+                        <td>${hdct.hoaDon.id}</td>
                         <td>${hdct.spct.sanPham.ten}-${hdct.spct.maSPCT}</td>
                         <td>${hdct.soLuong}</td>
                         <td>${hdct.donGia}</td>
@@ -147,11 +122,51 @@
                 </c:forEach>
                 </tbody>
             </table>
-            <p1>Trạng thái:${trangThai}</p1>
+            <p1>Trạng thái: ${hoaDon.trangThai}</p1>
             <br>
             <a href="check/${hoaDon.id}">
                 <button type="button" class="btn btn-success ">Check</button>
             </a>
+        </div>
+        <div class="col-md-12">
+            <h2>Danh sách sản phẩm</h2>
+            <table class="table mt-5">
+                <thead>
+                <tr class="table-light">
+                    <th scope="col">ID</th>
+                    <th scope="col">Tên</th>
+                    <th scope="col">Đơn giá</th>
+                    <th scope="col">Kích thước</th>
+                    <th scope="col">Màu săc</th>
+                    <th scope="col">Số lượng</th>
+                    <th scope="col">Trạng thái</th>
+                    <th scope="col">Hành động</th>
+                </tr>
+                </thead>
+                <tbody>
+                <c:forEach varStatus="i" items="${pageData.content}" var="spct">
+                    <tr>
+                        <td>${spct.id}</td>
+                        <td>${spct.sanPham.ten}-${spct.maSPCT}</td>
+                        <td>${spct.donGia}</td>
+                        <td>${spct.kichThuoc.ten}</td>
+                        <td>${spct.mauSac.ten}</td>
+                        <td>${spct.soLuong}</td>
+                        <td>${spct.trangThai}</td>
+                        <td><a href="addToCart/${spct.id}" class="btn btn-warning ms-3">Add</a></td>
+                    </tr>
+                </c:forEach>
+                </tbody>
+            </table>
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    <li class="page-item"><a class="page-link"
+                                             href="/sale/create?page=${pageData.number-1}">Previous</a></li>
+                    <li class="page-item"><a class="page-link" href="#">${pageData.number+1}</a></li>
+                    <li class="page-item"><a class="page-link" href="/sale/create?page=${pageData.number+1}">Next</a>
+                    </li>
+                </ul>
+            </nav>
         </div>
     </div>
 </main>
