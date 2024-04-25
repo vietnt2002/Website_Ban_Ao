@@ -4,8 +4,11 @@ import com.example.java4.dto.hdct.StoreRequest;
 import com.example.java4.entities.HDCT;
 import com.example.java4.entities.SPCT;
 import com.example.java4.repositories.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,6 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 @Controller
 @RequestMapping("hdct")
@@ -71,9 +75,9 @@ public class HDCTController {
     }
 
     @GetMapping("/index")
-    public String index(Model model) {
+    public ResponseEntity<List<HDCT>> getIndex(Model model) {
         model.addAttribute("data", hdctFullRepository.findAll());
-        return "admin/ql_hdct/Index";
+        return ResponseEntity.ok(hdctRepository.findAll());
     }
 
     @GetMapping("/delete/{id}")

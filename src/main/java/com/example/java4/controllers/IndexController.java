@@ -17,8 +17,6 @@ public class IndexController {
 
     @PostMapping("view/admin")
     public String index(
-//        @RequestParam("email") Optional<String> username,
-//        @RequestParam("password") String pwd,
             LoginRequest req,
             Model model
     ) {

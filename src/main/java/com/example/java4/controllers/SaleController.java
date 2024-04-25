@@ -39,13 +39,8 @@ public class SaleController {
     HDCTRepository hdctBaseRepo;
     @Autowired
     SPCTRepository spctBaseRepo;
-
     public SaleController() {
-//         nv = nvRepo.findById(1);
-//         kh = khRepo.findById(1);
     }
-
-
     @GetMapping("/create")
     public String create(Model model, @RequestParam("page") Optional<Integer> pageParams) {
         int page = pageParams.orElse(0);

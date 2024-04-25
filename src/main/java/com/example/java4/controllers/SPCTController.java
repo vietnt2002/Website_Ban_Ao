@@ -30,44 +30,6 @@ public class SPCTController {
     SPCTRepository spctRepo;
     @Autowired
     SPCTfullRepository spcTfullRepository;
-//    public ArrayList<KichThuoc> loadToKichThuocCbo() {
-//        ArrayList<KichThuoc> lstKichThuoc = new ArrayList<>();
-//        lstKichThuoc.add(new KichThuoc(1, "kt1", "large", 1));
-//        lstKichThuoc.add(new KichThuoc(2, "kt2", "min", 1));
-//        lstKichThuoc.add(new KichThuoc(3, "kt3", "medium", 1));
-//        lstKichThuoc.add(new KichThuoc(4, "kt4", "average", 0));
-//        lstKichThuoc.add(new KichThuoc(5, "kt5", "oversize", 1));
-//        return lstKichThuoc;
-//    }
-//
-//    public ArrayList<MauSac> loadMauSacCbo() {
-//        ArrayList<MauSac> lstMauSac = new ArrayList<>();
-//        lstMauSac.add(new MauSac(1, "bl1", "Black",1));
-//        lstMauSac.add(new MauSac(2, "Vi1", "Violet",0));
-//        lstMauSac.add(new MauSac(3, "Ye1", "Yellow",1));
-//        lstMauSac.add(new MauSac(4, "Pi1", "Pink",0));
-//        lstMauSac.add(new MauSac(5, "Gry1", "Gray",0));
-//        return lstMauSac;
-//    }
-//
-//    public ArrayList<SanPham> loadSanPhamCbo() {
-//        ArrayList<SanPham> lstSanPham = new ArrayList<>();
-//        lstSanPham.add(new SanPham("001", "SP1", "Wallet", "Stocking"));
-//        lstSanPham.add(new SanPham("002", "SP2", "Learther strap apple watch", "Stocking"));
-//        lstSanPham.add(new SanPham("003", "SP3", "Clutch", "Stocking"));
-//        lstSanPham.add(new SanPham("004", "SP4", "Belt", "Stocking"));
-//        lstSanPham.add(new SanPham("005", "SP5", "Leather case", "Stocking"));
-//        lstSanPham.add(new SanPham("006", "SP6", "Sticky leather(optional size)", "Stocking"));
-//        return lstSanPham;
-//    }
-
-//    public SPCT reqToModel(StoreRequest streq) {
-//        Optional<KichThuoc> kichThuoc = ktRepo.findById(streq.getIdKichThuoc());;
-//        Optional<MauSac> mauSac = mauSacRepo.findById(streq.getIdMauSac());
-//        Optional<SanPham> sanPham = spRepo.findById(streq.getIdSanPham());
-//        SPCT spct = new SPCT(streq.getId(), mauSac.get().getId(), kichThuoc.get().getId(),sanPham.get().getId(), streq.getMaSPCT(), streq.getSoLuong(), streq.getDonGia(), streq.getTrangThai());
-//        return spct;
-//    }
 
     public SPCTController() {
         rem = new StoreRequest();
@@ -111,7 +73,6 @@ public class SPCTController {
             model.addAttribute("dsSanPham",spRepo.findAll());
             return "admin/ql_spct/Edit";
         } else {
-//            SPCT spctClone = reqToModel(req);
             spct.setMaSPCT(req.getMaSPCT());
             spct.setSoLuong(req.getSoLuong());
             spct.setTrangThai(req.getTrangThai());
