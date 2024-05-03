@@ -5,79 +5,107 @@ import com.example.java4.entities.MauSac;
 import com.example.java4.repositories.MauSacRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import java.util.ArrayList;
 
-@Controller
+import java.util.ArrayList;
+import java.util.List;
+
+@RestController
 @RequestMapping("mau_sac")
 public class MauSacController {
     ArrayList<StoreRequest> ds;
     MauSac msRem = new MauSac();
     StoreRequest msRemUpdate = new StoreRequest();
+
+
     @Autowired
     private MauSacRepository msRepo;
+
+
     public MauSacController() {
         System.out.println("start new cycle");
         this.ds = new ArrayList<>();
     }
 
-    @GetMapping("index")
-    public String index(Model model) {
-        model.addAttribute("data",msRepo.findAll());
-        return "admin/ql_mau_sac/Index";
+    //    Lấy tất cả các dữ liệu danh sách màu sắc
+    @GetMapping("/get-all")
+    public List<MauSac> index(Model model) {
+        return msRepo.findAll();
     }
 
-    @GetMapping("index/update-mauSac/{id}")
-    public String update(Model model, @PathVariable(value = "id") MauSac mauSac) {
-        StoreRequest hstrReq = new StoreRequest();
-        model.addAttribute("data", mauSac);
-        return "admin/ql_mau_sac/Edit";
+    // Lấy dữ liệu đối tượng Màu Sắc theo Id
+    @GetMapping("/detail/{id}")
+    public MauSac detail(@PathVariable("id") Integer id, Model model) {
+        return msRepo.findById(id).orElse(null);
     }
 
-    @PostMapping("index/update-mauSac/{id}")
-    public String doUpdate(
-            @Valid @ModelAttribute("data") StoreRequest req,
-            BindingResult result, @PathVariable(value = "id") MauSac ms
-    ) {
-        if (result.hasErrors()) return "admin/ql_mau_sac/Edit";
-        else{
-            msRemUpdate = req;
-            System.out.println("update post check id:"+ms.getId());
-            ms.setTen(req.getTen());
-            ms.setMa(req.getMa());
-            ms.setTrangThai(req.getTrangThai());
-            msRepo.save(ms);
-            return "redirect:/mau_sac/index";
-        }
+    //  Lấy danh sách Màu Sắc có phân trang, 5 phần tử trên 1 trang
+    @GetMapping("/phan-trang")
+    public List<MauSac> page(@RequestParam(value = "page", defaultValue = "0") Integer pageNumber, Model model) {
+        Pageable pageable = PageRequest.of(pageNumber, 5);
+        return msRepo.findByTrangThai(1, pageable).getContent();
     }
 
-    @GetMapping("index/delete-mauSac/{id}")
-    public String delete(Model model, @PathVariable(value = "id") MauSac ms) {
-        msRepo.delete(ms);
-        return "redirect:/mau_sac/index";
-    }
 
-    @GetMapping("/create")
-    public String getSanPhamForm(Model model) {
-        model.addAttribute("data", msRem);
-        return "admin/ql_mau_sac/Create";
-    }
-
-    @PostMapping("store")
+    //    Chức năng thêm mới màu sắc
+    @PostMapping("/create")
     public String create(
-            @Valid @ModelAttribute("data") StoreRequest req,
+            @RequestBody @Valid StoreRequest mauSacRequest,
             BindingResult result
     ) {
-        MauSac msCpy = new MauSac(req.getId(), req.getTen(), req.getMa(), req.getTrangThai());
-        msRem = msCpy;
-        if (result.hasErrors()) return "admin/ql_mau_sac/Create";
-        else{
-            MauSac ms = new MauSac(null, req.getTen(), req.getMa(),1);
-            msRepo.save(ms);
-            return "redirect:/mau_sac/index";
+
+        if (result.hasErrors()) {
+            System.out.println(result.getFieldError().getDefaultMessage());
+            return "Thêm mới màu sắc thất bại";
+        } else {
+            MauSac mauSac = new MauSac();
+            mauSac.setTen(mauSacRequest.getTen());
+            mauSac.setMa(mauSacRequest.getMa());
+            mauSac.setTrangThai(mauSacRequest.getTrangThai());
+            msRepo.save(mauSac);
+            return "Thêm mới màu sắc thành công";
         }
     }
+
+
+    //    Chức năng cập nhật màu sắc
+    @PutMapping("/update-mauSac")
+    public String doUpdate(
+            @RequestBody @Valid StoreRequest mauSacRequest,
+            BindingResult result
+    ) {
+        if (result.hasErrors()) {
+            System.out.println(result.getFieldError().getDefaultMessage());
+            return "Sửa màu sắc thất bại";
+        } else {
+
+            MauSac mauSac = new MauSac();
+            System.out.println("update post check id:" + mauSac.getId());
+            mauSac.setId(mauSacRequest.getId());
+            mauSac.setTen(mauSacRequest.getTen());
+            mauSac.setMa(mauSacRequest.getMa());
+            mauSac.setTrangThai(mauSacRequest.getTrangThai());
+            msRepo.save(mauSac);
+            return "Sửa màu sắc thành công";
+        }
+    }
+
+    //    Chức năng xóa màu sắc
+    @DeleteMapping("/delete-mauSac/{id}")
+    public String delete(@PathVariable(value = "id") MauSac ms) {
+
+        if (ms == null) {
+            return "Xóa màu sắc thất bại";
+        }
+
+        msRepo.delete(ms);
+        return "Xóa màu sắc thành công ";
+    }
+
+
 }
