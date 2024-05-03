@@ -19,10 +19,10 @@ public class KhachHang {
     private Integer id;
     @Column(name = "Ma")
     private String ma;
-    @Column(name="Ten")
+    @Column(name = "Ten")
     private String ten;
-    @Column(name="SDT")
+    @Column(name = "SDT")
     private String sdt;
-    @Column(name ="TrangThai")
+    @Column(name = "TrangThai")
     private Integer trangThai;
 }
