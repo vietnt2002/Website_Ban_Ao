@@ -1,16 +1,20 @@
 package com.example.java4.controllers;
 
 import com.example.java4.dto.nhan_vien.StoreRequest;
+import com.example.java4.entities.MauSac;
 import com.example.java4.entities.NhanVien;
 import com.example.java4.repositories.KhachHangRepository;
 import com.example.java4.repositories.NhanVienRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequestMapping("nhan_vien")
@@ -21,67 +25,84 @@ public class NhanVienController {
     public NhanVienController() {
         this.rem = new StoreRequest();
     }
-    @GetMapping("/create")
-    public String create(Model model) {
-        model.addAttribute("data", rem);
-        return "admin/ql_nhan_vien/Create";
+
+
+    //    Lấy tất cả các dữ liệu danh sách nhân viên
+    @GetMapping("/get-all")
+    public List<NhanVien> index(Model model) {
+        return nvRepo.findAll();
     }
 
-    @GetMapping("/index")
-    public String index(Model model) {
-        model.addAttribute("data",nvRepo.findAll());
-        return "admin/ql_nhan_vien/Index";
+    // Lấy dữ liệu đối tượng Nhân Viên theo Id
+    @GetMapping("/detail/{id}")
+    public NhanVien detail(@PathVariable("id") Integer id, Model model) {
+        return nvRepo.findById(id).orElse(null);
     }
 
-    @GetMapping("/delete/{id}")
-    public String delete(Model model, @PathVariable(value="id")NhanVien nv) {
-        nvRepo.delete(nv);
-        return "redirect:/nhan_vien/index";
+    //  Lấy danh sách Nhân Viên có phân trang, 5 phần tử trên 1 trang
+    @GetMapping("/phan-trang")
+    public List<NhanVien> page(@RequestParam(value = "page", defaultValue = "0") Integer pageNumber, Model model) {
+        Pageable pageable = PageRequest.of(pageNumber, 5);
+        return nvRepo.findByTrangThai(1, pageable).getContent();
     }
 
-    @GetMapping("/update/{id}")
-    public String getUpdate(Model model,@PathVariable(value ="id") NhanVien nv) {
-        model.addAttribute("data",nv);
-        return "admin/ql_nhan_vien/Edit";
-    }
 
-    @PostMapping("/update/{id}")
-    public String doUpdate(
-            @Valid @ModelAttribute("data") StoreRequest req,
-            BindingResult result,@PathVariable(value="id") NhanVien nv
-    ) {
-        if (result.hasErrors()) {
-            return "admin/ql_nhan_vien/Edit";
-        }
-        else{
-            nv.setMa(req.getMa());
-            nv.setTen(req.getTen());
-            nv.setTenDangNhap(req.getTenDangNhap());
-            nv.setMatKhau(req.getMatKhau());
-            nv.setTrangThai(req.getTrangThai());
-            nvRepo.save(nv);
-            return "redirect:/nhan_vien/index";
-        }
-    }
-    @PostMapping("store")
+    //    Chức năng thêm mới Nhân Viên
+    @PostMapping("/create")
     public String create(
-            @Valid @ModelAttribute("data") StoreRequest req,
+            @RequestBody @Valid StoreRequest nhanVienRequest,
             BindingResult result
     ) {
-        NhanVien newNV = new NhanVien();
+
         if (result.hasErrors()) {
-            return "admin/ql_nhan_vien/Create";
-        }
-        else{
-            rem = req;
-            newNV.setId(null);
-            newNV.setMa(req.getMa());
-            newNV.setTen(req.getTen());
-            newNV.setTenDangNhap(req.getTenDangNhap());
-            newNV.setMatKhau(req.getMatKhau());
-            newNV.setTrangThai(req.getTrangThai());
-            nvRepo.save(newNV);
-            return "redirect:/nhan_vien/index";
+            System.out.println(result.getFieldError().getDefaultMessage());
+            return "Thêm mới nhân viên thất bại";
+        } else {
+            NhanVien nhanVien = new NhanVien();
+            nhanVien.setMa(nhanVienRequest.getMa());
+            nhanVien.setTen(nhanVienRequest.getTen());
+            nhanVien.setTenDangNhap(nhanVienRequest.getTenDangNhap());
+            nhanVien.setMatKhau(nhanVienRequest.getMatKhau());
+            nhanVien.setTrangThai(nhanVienRequest.getTrangThai());
+            nvRepo.save(nhanVien);
+            return "Thêm mới nhân viên thành công";
         }
     }
+
+
+    //    Chức năng cập nhật nhân viên
+    @PutMapping("/update-nhanvien")
+    public String doUpdate(
+            @RequestBody @Valid StoreRequest nhanVienRequest,
+            BindingResult result
+    ) {
+        if (result.hasErrors()) {
+            System.out.println(result.getFieldError().getDefaultMessage());
+            return "Sửa nhân viên thất bại";
+        } else {
+
+            NhanVien nhanVien = new NhanVien();
+            nhanVien.setId(nhanVienRequest.getId());
+            nhanVien.setMa(nhanVienRequest.getMa());
+            nhanVien.setTen(nhanVienRequest.getTen());
+            nhanVien.setTenDangNhap(nhanVienRequest.getTenDangNhap());
+            nhanVien.setMatKhau(nhanVienRequest.getMatKhau());
+            nhanVien.setTrangThai(nhanVienRequest.getTrangThai());
+            nvRepo.save(nhanVien);
+            return "Sửa nhân viên thành công";
+        }
+    }
+
+    //    Chức năng xóa màu sắc
+    @DeleteMapping("/delete-mauSac/{id}")
+    public String delete(@PathVariable(value = "id") NhanVien nhanVien) {
+
+        if (nhanVien == null) {
+            return "Xóa nhân viên thất bại";
+        }
+
+        nvRepo.delete(nhanVien);
+        return "Xóa nhân viên thành công ";
+    }
+
 }

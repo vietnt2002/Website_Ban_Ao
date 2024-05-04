@@ -8,7 +8,5 @@ public class WebSpringBootApp {
         SpringApplication.run(WebSpringBootApp.class, args);
 
 
-        //sâsasass
-        //123456
     }
 }
