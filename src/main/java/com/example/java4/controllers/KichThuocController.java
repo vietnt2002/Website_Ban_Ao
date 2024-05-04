@@ -1,80 +1,109 @@
 package com.example.java4.controllers;
 import com.example.java4.dto.kich_thuoc.StoreRequest;
 import com.example.java4.entities.KichThuoc;
+import com.example.java4.entities.MauSac;
 import com.example.java4.repositories.KichThuocRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
-@Controller
-@RequestMapping("kich_thuoc")
+import java.util.List;
+
+@RestController
+@RequestMapping("/kich_thuoc")
 public class KichThuocController {
     //    @RequestMapping(name="login", method = RequestMethod.POST)
     StoreRequest rem;
     StoreRequest remUpdate;
+
+
     @Autowired
     KichThuocRepository ktRepo;
     public KichThuocController() {
         this.rem = new StoreRequest();
         this.remUpdate = new StoreRequest();
     }
-    @GetMapping("/create")
-    public String create(Model model)
-    {
-        model.addAttribute("data",rem);
-        return "admin/ql_kich_thuoc/Create";
+
+
+    //    Lấy tất cả các dữ liệu danh sách kích thước
+    @GetMapping("/get-all")
+    public List<KichThuoc> index(Model model) {
+        return ktRepo.findAll();
     }
 
-    @GetMapping("/index")
-        public String getIndexPage(Model model){
-        model.addAttribute("data",ktRepo.findAll());
-        return "admin/ql_kich_thuoc/Index";
-        }
-    @GetMapping("/delete/{id}")
-        public String delete(Model model, @PathVariable(value="id") KichThuoc kt){
-        ktRepo.delete(kt);
-        return "redirect:/kich_thuoc/index";
+    // Lấy dữ liệu đối tượng Kích Thước theo Id
+    @GetMapping("/detail/{id}")
+    public KichThuoc detail(@PathVariable("id") Integer id, Model model) {
+        return ktRepo.findById(id).orElse(null);
     }
 
-    @GetMapping("/update/{id}")
-    public String getUpdate(Model model,@PathVariable(value = "id") KichThuoc kt){
-        model.addAttribute("data",kt);
-        return "admin/ql_kich_thuoc/Edit";
+    //  Lấy danh sách Kích Thước  có phân trang, 5 phần tử trên 1 trang
+    @GetMapping("/phan-trang")
+    public List<KichThuoc> page(@RequestParam(value = "page", defaultValue = "0") Integer pageNumber, Model model) {
+        Pageable pageable = PageRequest.of(pageNumber, 5);
+        return ktRepo.findByTrangThai(1, pageable).getContent();
     }
 
-    @PostMapping("/update/{id}")
-    public String doUpdate(@Valid @ModelAttribute("data") StoreRequest req, BindingResult rs, @PathVariable(value="id")KichThuoc kt){
-        if(rs.hasErrors()){
-             return "admin/ql_kich_thuoc/Edit";
-        }
-        else {
-            kt.setMa(req.getMa());
-            kt.setTen(req.getTen());
-            kt.setTrangThai(req.getTrangThai());
-            ktRepo.save(kt);
-            return "redirect:/kich_thuoc/index";
-        }
-    }
 
-    @PostMapping("store")
-    public String store(
-            @Valid @ModelAttribute("data") StoreRequest req,
+
+
+    //    Chức năng thêm mới Kích Thước
+    @PostMapping("/create")
+    public String create(
+            @RequestBody @Valid StoreRequest kichThuocRequest,
             BindingResult result
     ) {
-        KichThuoc kt = new KichThuoc();
-        rem = req;
-        if(result.hasErrors()){
-            return "admin/ql_kich_thuoc/Create";
-        }
-        else{
-            kt.setMa(req.getMa());
-            kt.setTen(req.getTen());
-            kt.setTrangThai(req.getTrangThai());
-            ktRepo.save(kt);
-            return "redirect:/kich_thuoc/index";
+        if (result.hasErrors()) {
+            System.out.println(result.getFieldError().getDefaultMessage());
+            return "Thêm mới kích thước thất bại";
+        } else {
+            KichThuoc kichThuoc = new KichThuoc();
+            kichThuoc.setTen(kichThuocRequest.getTen());
+            kichThuoc.setMa(kichThuocRequest.getMa());
+            kichThuoc.setTrangThai(kichThuocRequest.getTrangThai());
+            ktRepo.save(kichThuoc);
+            return "Thêm mới  kích thước thành công";
         }
     }
+
+
+    //    Chức năng cập nhật Kích Thước
+    @PutMapping("/update-kichthuoc/{id}")
+    public String doUpdate(
+            @RequestBody @Valid StoreRequest kichThuocRequest ,
+            BindingResult result
+    ) {
+        if (result.hasErrors()) {
+            System.out.println(result.getFieldError().getDefaultMessage());
+            return "Sửa kích thước thất bại";
+        } else {
+
+            KichThuoc kichThuoc = new KichThuoc();
+            System.out.println("update post check id:" + kichThuoc.getId());
+            kichThuoc.setId(kichThuocRequest.getId());
+            kichThuoc.setTen(kichThuocRequest.getTen());
+            kichThuoc.setMa(kichThuocRequest.getMa());
+            kichThuoc.setTrangThai(kichThuocRequest.getTrangThai());
+            ktRepo.save(kichThuoc);
+            return "Sửa kích thước thành công";
+        }
+    }
+
+    //    Chức năng xóa Kích Thước
+    @DeleteMapping("/delete-kichthuoc")
+    public String delete(@PathVariable(value = "id") KichThuoc kichThuoc) {
+
+        if (kichThuoc == null) {
+            return "Xóa kích thước thất bại";
+        }
+
+        ktRepo.delete(kichThuoc);
+        return "Xóa kích thước thành công ";
+    }
+
 }
