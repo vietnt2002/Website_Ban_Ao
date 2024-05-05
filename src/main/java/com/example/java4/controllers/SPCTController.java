@@ -5,12 +5,15 @@ import com.example.java4.entities.*;
 import com.example.java4.repositories.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -109,4 +112,64 @@ public class SPCTController {
             return "redirect:/spct/index";
         }
     }
+
+    //API
+    @GetMapping("hien-thi")
+    public ResponseEntity<?> hienThi(){
+        return ResponseEntity.ok(spctRepo.findAll());
+    }
+
+    @PostMapping("create")
+    public ResponseEntity<?> create(@RequestBody @Valid StoreRequest req,
+                                    BindingResult result){
+        SPCT spct = new SPCT();
+        if (result.hasErrors()){
+            List<ObjectError> list = result.getAllErrors();
+            return ResponseEntity.ok(list);
+        }else {
+            spct.setMaSPCT(req.getMaSPCT());
+            spct.setSoLuong(req.getSoLuong());
+            spct.setTrangThai(req.getTrangThai());
+            spct.setDonGia(req.getDonGia());
+            spct.setIdMauSac(req.getIdMauSac());
+            spct.setIdSanPham(req.getIdSanPham());
+            spct.setIdKichThuoc(req.getIdKichThuoc());
+            spctRepo.save(spct);
+            return ResponseEntity.ok("Thêm thành công");
+        }
+    }
+
+    @PutMapping("update/{id}")
+    public ResponseEntity<?> update(@PathVariable Integer id,
+                                    @RequestBody @Valid StoreRequest req,
+                                    BindingResult result){
+        if (result.hasErrors()){
+            List<ObjectError> list = result.getAllErrors();
+            return ResponseEntity.ok(list);
+        }else {
+            Optional<SPCT> optional = spctRepo.findById(id);
+            SPCT spct = optional.get();
+            spct.setMaSPCT(req.getMaSPCT());
+            spct.setSoLuong(req.getSoLuong());
+            spct.setTrangThai(req.getTrangThai());
+            spct.setDonGia(req.getDonGia());
+            spct.setIdMauSac(req.getIdMauSac());
+            spct.setIdSanPham(req.getIdSanPham());
+            spct.setIdKichThuoc(req.getIdKichThuoc());
+            return ResponseEntity.ok(spctRepo.save(spct));
+        }
+    }
+
+    @DeleteMapping("delete/{id}")
+    public ResponseEntity<?> delete(@PathVariable Integer id){
+        Optional<SPCT> optional = spctRepo.findById(id);
+        if (optional.isPresent()){
+            SPCT spct = optional.get();
+            spctRepo.delete(spct);
+            return ResponseEntity.ok("Xóa OK");
+        }else {
+            return ResponseEntity.ok("Xóa thất bại");
+        }
+    }
+
 }
