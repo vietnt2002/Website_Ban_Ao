@@ -5,6 +5,7 @@ import com.example.java4.entities.HDCT;
 import com.example.java4.repositories.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +15,7 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
+@RequestMapping("hdct")
 public class
 HDCTController {
     //    @RequestMapping(name="login", method = RequestMethod.POST)
@@ -61,8 +63,8 @@ HDCTController {
     }
 
     @GetMapping("/getList")
-    public List<HDCT> getList() {
-        return hdctRepository.findAll();
+    public ResponseEntity<List<HDCT>> getList() {
+        return ResponseEntity.ok(hdctRepository.findAll());
     }
 
     @GetMapping("/detail/{id}")

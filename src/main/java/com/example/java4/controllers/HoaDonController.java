@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@RequestMapping("hoa_don")
 public class HoaDonController {
     ArrayList<com.example.java4.dto.hoaDon.StoreRequest> ds;
     HoaDon hdRem = new HoaDon();
