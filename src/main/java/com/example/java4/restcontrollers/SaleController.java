@@ -1,6 +1,6 @@
-package com.example.java4.controllers;
+package com.example.java4.restcontrollers;
 
-import com.example.java4.dto.sale.NewHDCTRequest;
+import com.example.java4.request.sale.NewHDCTRequest;
 import com.example.java4.entities.*;
 import com.example.java4.repositories.*;
 import jakarta.validation.Valid;
@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -24,11 +22,11 @@ import java.util.Optional;
 public class SaleController {
     Integer idHDState = null;
     @Autowired
-    HoaDonFullRepository hdRepo;
+    HoaDonRepository hdRepo;
     @Autowired
-    SPCTfullRepository spctRepo;
+    SPCTRepository spctRepo;
     @Autowired
-    HDCTfullRepository hdctRepo;
+    HDCTRepository hdctRepo;
     @Autowired
     NhanVienRepository nvRepo;
     @Autowired
@@ -45,7 +43,7 @@ public class SaleController {
     public String create(Model model, @RequestParam("page") Optional<Integer> pageParams) {
         int page = pageParams.orElse(0);
         Pageable p = PageRequest.of(page, 5);
-        Page<SPCTfull> pageData = spctRepo.findByTrangThai(MauSacRepository.ACTIVE, p);
+        Page<SPCT> pageData = spctRepo.findByTrangThai(MauSacRepository.ACTIVE, p);
         model.addAttribute("dsHoaDon", hdRepo.selectTop5());
         model.addAttribute("pageData", pageData);
         model.addAttribute("dsHDCT",hdctRepo.findAllByHoaDon_Id(idHDState));
@@ -90,7 +88,7 @@ public class SaleController {
     public String index(Model model, @RequestParam("page") Optional<Integer> pageParams) {
         int page = pageParams.orElse(0);
         Pageable p = PageRequest.of(page, 5);
-        Page<SPCTfull> pageData = spctRepo.findByTrangThai(MauSacRepository.ACTIVE, p);
+        Page<SPCT> pageData = spctRepo.findByTrangThai(MauSacRepository.ACTIVE, p);
         model.addAttribute("pageData", pageData);
         return "admin/ql_spct/Index";
     }

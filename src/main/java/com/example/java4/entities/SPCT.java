@@ -16,12 +16,15 @@ public class SPCT {
     @Column(name="ID")
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer id;
-    @Column(name="IdMauSac")
-    private Integer idMauSac;
-    @Column(name="IdKichThuoc")
-    private Integer idKichThuoc;
-    @Column(name="IdSanPham")
-    private Integer idSanPham;
+    @ManyToOne
+    @JoinColumn(name="idMauSac")
+    private MauSac mauSac;
+    @ManyToOne
+    @JoinColumn(name="idKichThuoc")
+    private KichThuoc kichThuoc;
+    @ManyToOne
+    @JoinColumn(name="idSanPham")
+    private SanPham sanPham;
     @Column(name="MaSPCT")
     private String maSPCT;
     @Column(name="soLuong")

@@ -1,6 +1,6 @@
-package com.example.java4.controllers;
+package com.example.java4.restcontrollers;
 
-import com.example.java4.dto.mau_sac.StoreRequest;
+import com.example.java4.request.mau_sac.StoreRequest;
 import com.example.java4.entities.MauSac;
 import com.example.java4.repositories.MauSacRepository;
 import jakarta.validation.Valid;
@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;

@@ -1,5 +1,4 @@
 package com.example.java4.entities;
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,17 +12,19 @@ import java.sql.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "HoaDon")
+@Table(name="HoaDon")
 public class HoaDon {
     @Id
-    @Column(name = "ID")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="ID")
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer id;
-    @Column(name = "IdKH")
-    private Integer idKH;
-    @Column(name = "IdNV")
-    private Integer idNV;
-    @Column(name = "NgayMuaHang")
+    @ManyToOne
+    @JoinColumn(name = "IdKH")
+    private KhachHang khachHang;
+    @ManyToOne
+    @JoinColumn(name = "IdNV")
+    private NhanVien nhanVien;
+    @Column(name="NgayMuaHang")
     private Date ngayMuaHang;
     @Column(name = "TrangThai")
     private Integer trangThai;

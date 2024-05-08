@@ -1,8 +1,6 @@
-package com.example.java4.controllers;
+package com.example.java4.restcontrollers;
 
-import com.example.java4.dto.hoaDon.StoreRequest;
-import com.example.java4.entities.HoaDon;
-import com.example.java4.repositories.HoaDonFullRepository;
+import com.example.java4.request.hoaDon.StoreRequest;
 import com.example.java4.repositories.HoaDonRepository;
 import com.example.java4.repositories.KhachHangRepository;
 import com.example.java4.repositories.NhanVienRepository;
@@ -17,7 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("hoa_don")
 public class HoaDonController {
-    ArrayList<com.example.java4.dto.hoaDon.StoreRequest> ds;
+    ArrayList<com.example.java4.request.hoaDon.StoreRequest> ds;
     HoaDon hdRem = new HoaDon();
     StoreRequest rem = new StoreRequest();
     @Autowired
@@ -27,7 +25,7 @@ public class HoaDonController {
     @Autowired
     private KhachHangRepository khRepo;
     @Autowired
-    private HoaDonFullRepository hdFullRepo;
+    private HoaDonRepository hdFullRepo;
 
     public HoaDonController() {
         System.out.println("start new cycle");
