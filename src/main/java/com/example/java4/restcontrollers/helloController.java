@@ -1,5 +1,5 @@
-package com.example.java4.controllers;
-import com.example.java4.dto.mau_sac.StoreRequest;
+package com.example.java4.restcontrollers;
+import com.example.java4.request.mau_sac.StoreRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;

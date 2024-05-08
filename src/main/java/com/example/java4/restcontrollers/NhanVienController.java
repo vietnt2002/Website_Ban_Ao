@@ -1,9 +1,7 @@
-package com.example.java4.controllers;
+package com.example.java4.restcontrollers;
 
-import com.example.java4.dto.nhan_vien.StoreRequest;
-import com.example.java4.entities.MauSac;
+import com.example.java4.request.nhan_vien.StoreRequest;
 import com.example.java4.entities.NhanVien;
-import com.example.java4.repositories.KhachHangRepository;
 import com.example.java4.repositories.NhanVienRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import java.util.ArrayList;
+
 import java.util.List;
 
 @Controller

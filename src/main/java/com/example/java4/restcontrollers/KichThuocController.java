@@ -1,17 +1,15 @@
-package com.example.java4.controllers;
-import com.example.java4.dto.kich_thuoc.StoreRequest;
+package com.example.java4.restcontrollers;
+import com.example.java4.request.kich_thuoc.StoreRequest;
 import com.example.java4.entities.KichThuoc;
-import com.example.java4.entities.MauSac;
 import com.example.java4.repositories.KichThuocRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import java.util.ArrayList;
+
 import java.util.List;
 
 @RestController

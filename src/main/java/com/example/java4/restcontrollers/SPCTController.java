@@ -1,6 +1,6 @@
-package com.example.java4.controllers;
+package com.example.java4.restcontrollers;
 
-import com.example.java4.dto.spct.StoreRequest;
+import com.example.java4.request.spct.StoreRequest;
 import com.example.java4.entities.*;
 import com.example.java4.repositories.*;
 import jakarta.validation.Valid;
@@ -12,7 +12,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,7 +31,7 @@ public class SPCTController {
     @Autowired
     SPCTRepository spctRepo;
     @Autowired
-    SPCTfullRepository spcTfullRepository;
+    SPCTRepository spcTfullRepository;
 
     public SPCTController() {
         rem = new StoreRequest();

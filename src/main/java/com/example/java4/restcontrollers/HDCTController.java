@@ -1,7 +1,6 @@
-package com.example.java4.controllers;
+package com.example.java4.restcontrollers;
 
-import com.example.java4.dto.hdct.StoreRequest;
-import com.example.java4.entities.HDCT;
+import com.example.java4.request.hdct.StoreRequest;
 import com.example.java4.repositories.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,15 +22,15 @@ HDCTController {
     @Autowired
     HoaDonRepository hdRepo;
     @Autowired
-    HoaDonFullRepository hdFullRepo;
+    HoaDonRepository hdFullRepo;
     @Autowired
-    SPCTfullRepository spctFullRepository;
+    SPCTRepository spctFullRepository;
     @Autowired
     SPCTRepository spctRepository;
     @Autowired
     HDCTRepository hdctRepository;
     @Autowired
-    HDCTfullRepository hdctFullRepository;
+    HDCTRepository hdctFullRepository;
 
     public HDCTController() {
         rem = new StoreRequest();
