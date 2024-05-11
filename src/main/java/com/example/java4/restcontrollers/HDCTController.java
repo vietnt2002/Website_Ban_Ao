@@ -1,6 +1,5 @@
 package com.example.java4.restcontrollers;
 
-import com.example.java4.request.hdct.StoreRequest;
 import com.example.java4.repositories.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,7 @@ import java.util.List;
 public class
 HDCTController {
     //    @RequestMapping(name="login", method = RequestMethod.POST)
-    StoreRequest rem;
+//    StoreRequest rem;
     @Autowired
     HoaDonRepository hdRepo;
     @Autowired
@@ -32,9 +31,9 @@ HDCTController {
     @Autowired
     HDCTRepository hdctFullRepository;
 
-    public HDCTController() {
-        rem = new StoreRequest();
-    }
+//    public HDCTController() {
+//        rem = new StoreRequest();
+//    }
 
     public Timestamp StringsToTimeStampt(String date, String time) {
         try {
@@ -61,52 +60,52 @@ HDCTController {
         }
     }
 
-    @GetMapping("/getList")
-    public ResponseEntity<List<HDCT>> getList() {
-        return ResponseEntity.ok(hdctRepository.findAll());
-    }
-
-    @GetMapping("/detail/{id}")
-    public HDCT detailHDCT(@PathVariable("id") Integer id) {
-        return hdctRepository.findById(id).get();
-    }
-
-    @PostMapping("/add")
-    public String addHDCT(@Valid @RequestBody StoreRequest request, BindingResult result) {
-        if (result.hasErrors()) {
-            System.out.println(result.getFieldError().getDefaultMessage());
-            return "Thêm thất bại";
-        } else {
-            HDCT hdct = new HDCT();
-            hdct.setIdHoaDon(request.getIdHoaDon());
-            hdct.setIdSPCT(request.getIdSPCT());
-            hdct.setSoLuong(request.getSoLuong());
-            hdct.setDonGia(request.getDonGia());
-            hdct.setThoiGian(request.getThoiGian());
-            hdct.setTrangThai(request.getTrangThai());
-            hdctRepository.save(hdct);
-            return "Thêm thành công";
-        }
-    }
-
-    @PutMapping("/update")
-    public String updateHDCT(@Valid @RequestBody StoreRequest request, BindingResult result) {
-        if (result.hasErrors()) {
-            System.out.println(result.getFieldError().getDefaultMessage());
-            return "Sửa thất bại";
-        } else {
-            HDCT hdct = new HDCT();
-            hdct.setId(request.getId());
-            hdct.setIdHoaDon(request.getIdHoaDon());
-            hdct.setIdSPCT(request.getIdSPCT());
-            hdct.setSoLuong(request.getSoLuong());
-            hdct.setDonGia(request.getDonGia());
-            hdct.setThoiGian(request.getThoiGian());
-            hdct.setTrangThai(request.getTrangThai());
-            hdctRepository.save(hdct);
-            return "Sửa thành công";
-        }
-    }
+//    @GetMapping("/getList")
+//    public ResponseEntity<List<HDCT>> getList() {
+//        return ResponseEntity.ok(hdctRepository.findAll());
+//    }
+//
+//    @GetMapping("/detail/{id}")
+//    public HDCT detailHDCT(@PathVariable("id") Integer id) {
+//        return hdctRepository.findById(id).get();
+//    }
+//
+//    @PostMapping("/add")
+//    public String addHDCT(@Valid @RequestBody StoreRequest request, BindingResult result) {
+//        if (result.hasErrors()) {
+//            System.out.println(result.getFieldError().getDefaultMessage());
+//            return "Thêm thất bại";
+//        } else {
+//            HDCT hdct = new HDCT();
+//            hdct.setIdHoaDon(request.getIdHoaDon());
+//            hdct.setIdSPCT(request.getIdSPCT());
+//            hdct.setSoLuong(request.getSoLuong());
+//            hdct.setDonGia(request.getDonGia());
+//            hdct.setThoiGian(request.getThoiGian());
+//            hdct.setTrangThai(request.getTrangThai());
+//            hdctRepository.save(hdct);
+//            return "Thêm thành công";
+//        }
+//    }
+//
+//    @PutMapping("/update")
+//    public String updateHDCT(@Valid @RequestBody StoreRequest request, BindingResult result) {
+//        if (result.hasErrors()) {
+//            System.out.println(result.getFieldError().getDefaultMessage());
+//            return "Sửa thất bại";
+//        } else {
+//            HDCT hdct = new HDCT();
+//            hdct.setId(request.getId());
+//            hdct.setIdHoaDon(request.getIdHoaDon());
+//            hdct.setIdSPCT(request.getIdSPCT());
+//            hdct.setSoLuong(request.getSoLuong());
+//            hdct.setDonGia(request.getDonGia());
+//            hdct.setThoiGian(request.getThoiGian());
+//            hdct.setTrangThai(request.getTrangThai());
+//            hdctRepository.save(hdct);
+//            return "Sửa thành công";
+//        }
+//    }
 
     @DeleteMapping("/delete/{id}")
     public String deleteHDCT(@PathVariable("id") Integer id) {

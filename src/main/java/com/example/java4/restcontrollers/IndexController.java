@@ -1,9 +1,9 @@
 package com.example.java4.restcontrollers;
-import com.example.java4.request.login.LoginRequest;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+
 @Controller
 public class IndexController {
     //    @RequestMapping(name="login", method = RequestMethod.POST)
@@ -15,15 +15,15 @@ public class IndexController {
         return "index";
     }
 
-    @PostMapping("view/admin")
-    public String index(
-            LoginRequest req,
-            Model model
-    ) {
-        System.out.println("LoginController@login");
-        System.out.println(req.getEmail());
-        System.out.println(req.getPassword());
-        model.addAttribute("name", req.getEmail());
-        return "index";
-    }
+//    @PostMapping("view/admin")
+//    public String index(
+//            LoginRequest req,
+//            Model model
+//    ) {
+//        System.out.println("LoginController@login");
+//        System.out.println(req.getEmail());
+//        System.out.println(req.getPassword());
+//        model.addAttribute("name", req.getEmail());
+//        return "index";
+//    }
 }

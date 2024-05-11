@@ -1,9 +1,8 @@
 package com.example.java4.restcontrollers;
 
-import com.example.java4.request.sale.NewHDCTRequest;
-import com.example.java4.entities.*;
+import com.example.java4.entities.HoaDon;
+import com.example.java4.entities.SanPhamChiTiet;
 import com.example.java4.repositories.*;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,8 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Date;
-import java.sql.Timestamp;
 import java.util.Optional;
 
 @Controller
@@ -43,7 +40,7 @@ public class SaleController {
     public String create(Model model, @RequestParam("page") Optional<Integer> pageParams) {
         int page = pageParams.orElse(0);
         Pageable p = PageRequest.of(page, 5);
-        Page<SPCT> pageData = spctRepo.findByTrangThai(MauSacRepository.ACTIVE, p);
+        Page<SanPhamChiTiet> pageData = spctRepo.findByTrangThai(MauSacRepository.ACTIVE, p);
         model.addAttribute("dsHoaDon", hdRepo.selectTop5());
         model.addAttribute("pageData", pageData);
         model.addAttribute("dsHDCT",hdctRepo.findAllByHoaDon_Id(idHDState));
@@ -60,18 +57,18 @@ public class SaleController {
 
     @GetMapping("/addNewHD")
     public String addNewHD(Model model) {
-        HoaDon hd = new HoaDon(null, 1, 1, new Date(System.currentTimeMillis()), 0);
-        hdBaseRepo.save(hd);
+//        HoaDon hd = new HoaDon(null, 1, 1, new Date(System.currentTimeMillis()), 0);
+//        hdBaseRepo.save(hd);
         return "redirect:/sale/create";
     }
 
     @GetMapping("/addToCart/{id}")
-    public String addToCart(Model model, @PathVariable(value = "id") SPCT spct) {
+    public String addToCart(Model model, @PathVariable(value = "id") SanPhamChiTiet spct) {
         Integer idSPCT = spct.getId();
         spct.setSoLuong(spct.getSoLuong()-1);
         System.out.println("test spct: "+spct.getId());
-        HDCT hdct = new HDCT(null, idHDState, idSPCT, 1, (int) spctBaseRepo.findById(idSPCT).get().getDonGia(), new Timestamp(System.currentTimeMillis()), 1);
-        hdctBaseRepo.save(hdct);
+//        HDCT hdct = new HDCT(null, idHDState, idSPCT, 1, (int) spctBaseRepo.findById(idSPCT).get().getDonGia(), new Timestamp(System.currentTimeMillis()), 1);
+//        hdctBaseRepo.save(hdct);
         spctBaseRepo.save(spct);
         return "redirect:/sale/create";
     }
@@ -88,7 +85,7 @@ public class SaleController {
     public String index(Model model, @RequestParam("page") Optional<Integer> pageParams) {
         int page = pageParams.orElse(0);
         Pageable p = PageRequest.of(page, 5);
-        Page<SPCT> pageData = spctRepo.findByTrangThai(MauSacRepository.ACTIVE, p);
+        Page<SanPhamChiTiet> pageData = spctRepo.findByTrangThai(MauSacRepository.ACTIVE, p);
         model.addAttribute("pageData", pageData);
         return "admin/ql_spct/Index";
     }
@@ -106,7 +103,7 @@ public class SaleController {
 
     @PostMapping("store")
     public String Store(
-            @Valid @ModelAttribute("data") NewHDCTRequest req,
+//            @Valid @ModelAttribute("data") NewHDCTRequest req,
             BindingResult result, Model model
     ) {
         return "redirect:/spct/create";

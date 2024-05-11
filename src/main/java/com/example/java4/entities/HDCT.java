@@ -23,7 +23,7 @@ public class HDCT {
     private HoaDon hoaDon;
     @ManyToOne
     @JoinColumn(name="IdSPCT")
-    private SPCT spct;
+    private SanPhamChiTiet spct;
     @Column(name="SoLuong")
     private int soLuong;
     @Column(name="DonGia")
