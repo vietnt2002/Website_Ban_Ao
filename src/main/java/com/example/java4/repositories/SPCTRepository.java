@@ -1,9 +1,10 @@
 package com.example.java4.repositories;
+
 import com.example.java4.entities.SPCT;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import org.springframework.data.domain.Pageable;
 @Repository
 public interface SPCTRepository
         extends JpaRepository<SPCT,Integer>
