@@ -1,20 +1,20 @@
-package com.example.java4.restcontrollers;
-
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-@Controller
-@RequestMapping("nhan_vien")
-public class NhanVienController {
+//package com.example.java4.restcontrollers;
+//
+//import org.springframework.stereotype.Controller;
+//import org.springframework.web.bind.annotation.RequestMapping;
+//
+//@Controller
+//@RequestMapping("nhan_vien")
+//public class NhanVienController {
 //    StoreRequest rem;
 //    @Autowired
 //    NhanVienRepository nvRepo;
 //    public NhanVienController() {
 //        this.rem = new StoreRequest();
 //    }
-
-
-    //    Lấy tất cả các dữ liệu danh sách nhân viên
+//
+//
+//        Lấy tất cả các dữ liệu danh sách nhân viên
 //    @GetMapping("/get-all")
 //    public List<NhanVien> index(Model model) {
 //        return nvRepo.findAll();
@@ -91,5 +91,5 @@ public class NhanVienController {
 //        nvRepo.delete(nhanVien);
 //        return "Xóa nhân viên thành công ";
 //    }
-
-}
+//
+//}

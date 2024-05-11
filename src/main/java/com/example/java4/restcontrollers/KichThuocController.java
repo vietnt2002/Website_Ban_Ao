@@ -1,19 +1,19 @@
-package com.example.java4.restcontrollers;
-
-import com.example.java4.entities.KichThuoc;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-@RestController
-@RequestMapping("/kich_thuoc")
-public class KichThuocController {
-    //    @RequestMapping(name="login", method = RequestMethod.POST)
+//package com.example.java4.restcontrollers;
+//
+//import com.example.java4.entities.KichThuoc;
+//import org.springframework.web.bind.annotation.DeleteMapping;
+//import org.springframework.web.bind.annotation.PathVariable;
+//import org.springframework.web.bind.annotation.RequestMapping;
+//import org.springframework.web.bind.annotation.RestController;
+//
+//@RestController
+//@RequestMapping("/kich_thuoc")
+//public class KichThuocController {
+//        @RequestMapping(name="login", method = RequestMethod.POST)
 //    StoreRequest rem;
 //    StoreRequest remUpdate;
-
-
+//
+//
 //    @Autowired
 //    KichThuocRepository ktRepo;
 //    public KichThuocController() {
@@ -85,8 +85,8 @@ public class KichThuocController {
 //            return "Sửa kích thước thành công";
 //        }
 //    }
-
-    //    Chức năng xóa Kích Thước
+//
+//        Chức năng xóa Kích Thước
 //    @DeleteMapping("/delete-kichthuoc")
 //    public String delete(@PathVariable(value = "id") KichThuoc kichThuoc) {
 //
@@ -97,5 +97,5 @@ public class KichThuocController {
 //        ktRepo.delete(kichThuoc);
 //        return "Xóa kích thước thành công ";
 //    }
-
-}
+//
+//}

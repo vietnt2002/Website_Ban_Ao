@@ -1,10 +1,10 @@
-package com.example.java4.restcontrollers;
-
-import org.springframework.stereotype.Controller;
-
-@Controller
-public class helloController {
-    //    @RequestMapping(name="login", method = RequestMethod.POST)
+//package com.example.java4.restcontrollers;
+//
+//import org.springframework.stereotype.Controller;
+//
+//@Controller
+//public class helloController {
+//        @RequestMapping(name="login", method = RequestMethod.POST)
 //    @Autowired
 //    @Qualifier("white")
 //    private StoreRequest req;
@@ -16,4 +16,4 @@ public class helloController {
 //        System.out.println(req.getTen());
 //        return "index";
 //    }
-}
+//}

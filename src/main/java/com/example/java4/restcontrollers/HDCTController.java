@@ -1,65 +1,65 @@
-package com.example.java4.restcontrollers;
-
-import com.example.java4.repositories.*;
-import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
-
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-
-@RestController
-@RequestMapping("hdct")
-public class
-HDCTController {
-    //    @RequestMapping(name="login", method = RequestMethod.POST)
+//package com.example.java4.restcontrollers;
+//
+//import com.example.java4.repositories.*;
+//import jakarta.validation.Valid;
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.http.ResponseEntity;
+//import org.springframework.validation.BindingResult;
+//import org.springframework.web.bind.annotation.*;
+//
+//import java.sql.Timestamp;
+//import java.text.SimpleDateFormat;
+//import java.util.Date;
+//import java.util.List;
+//
+//@RestController
+//@RequestMapping("hdct")
+//public class
+//HDCTController {
+//        @RequestMapping(name="login", method = RequestMethod.POST)
 //    StoreRequest rem;
-    @Autowired
-    HoaDonRepository hdRepo;
-    @Autowired
-    HoaDonRepository hdFullRepo;
-    @Autowired
-    SPCTRepository spctFullRepository;
-    @Autowired
-    SPCTRepository spctRepository;
-    @Autowired
-    HDCTRepository hdctRepository;
-    @Autowired
-    HDCTRepository hdctFullRepository;
-
+//    @Autowired
+//    HoaDonRepository hdRepo;
+//    @Autowired
+//    HoaDonRepository hdFullRepo;
+//    @Autowired
+//    SPCTRepository spctFullRepository;
+//    @Autowired
+//    SPCTRepository spctRepository;
+//    @Autowired
+//    HDCTRepository hdctRepository;
+//    @Autowired
+//    HDCTRepository hdctFullRepository;
+//
 //    public HDCTController() {
 //        rem = new StoreRequest();
 //    }
-
-    public Timestamp StringsToTimeStampt(String date, String time) {
-        try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
-            Date parsedDate = dateFormat.parse(date + " " + time + ":00.000");
-            Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
-            System.out.println("timestamp:" + timestamp);
-            return timestamp;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    public String[] TimeStampToStrings(Timestamp timeStampt) {
-        try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
-            String s = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS").format(timeStampt);
-            String[] parts = s.split(" ");
-            return parts;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
+//
+//    public Timestamp StringsToTimeStampt(String date, String time) {
+//        try {
+//            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
+//            Date parsedDate = dateFormat.parse(date + " " + time + ":00.000");
+//            Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
+//            System.out.println("timestamp:" + timestamp);
+//            return timestamp;
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return null;
+//        }
+//    }
+//
+//    public String[] TimeStampToStrings(Timestamp timeStampt) {
+//        try {
+//            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
+//            String s = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS").format(timeStampt);
+//            String[] parts = s.split(" ");
+//            return parts;
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return null;
+//        }
+//    }
+//
 //    @GetMapping("/getList")
 //    public ResponseEntity<List<HDCT>> getList() {
 //        return ResponseEntity.ok(hdctRepository.findAll());
@@ -106,10 +106,10 @@ HDCTController {
 //            return "Sửa thành công";
 //        }
 //    }
-
-    @DeleteMapping("/delete/{id}")
-    public String deleteHDCT(@PathVariable("id") Integer id) {
-        hdctRepository.deleteById(id);
-        return "Xóa thành công";
-    }
-}
+//
+//    @DeleteMapping("/delete/{id}")
+//    public String deleteHDCT(@PathVariable("id") Integer id) {
+//        hdctRepository.deleteById(id);
+//        return "Xóa thành công";
+//    }
+//}

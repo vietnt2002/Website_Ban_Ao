@@ -1,22 +1,22 @@
-package com.example.java4.restcontrollers;
-
-import com.example.java4.entities.KhachHang;
-import com.example.java4.repositories.KhachHangRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
-
-@RestController
-public class KhachHangController {
-    //    @RequestMapping(name="login", method = RequestMethod.POST)
-    List<KhachHang> ds;
+//package com.example.java4.restcontrollers;
+//
+//import com.example.java4.entities.KhachHang;
+//import com.example.java4.repositories.KhachHangRepository;
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.web.bind.annotation.DeleteMapping;
+//import org.springframework.web.bind.annotation.PathVariable;
+//import org.springframework.web.bind.annotation.RestController;
+//
+//import java.util.List;
+//
+//@RestController
+//public class KhachHangController {
+//        @RequestMapping(name="login", method = RequestMethod.POST)
+//    List<KhachHang> ds;
 //    StoreRequest rem;
-    @Autowired
-    KhachHangRepository khRepo;
-
+//    @Autowired
+//    KhachHangRepository khRepo;
+//
 //    public KhachHangController() {
 //        this.rem = new StoreRequest();
 //    }
@@ -63,10 +63,10 @@ public class KhachHangController {
 //            return "Sửa thành công";
 //        }
 //    }
-
-    @DeleteMapping("/delete/{id}")
-    public String deleteKhachHang(@PathVariable("id") Integer id) {
-        khRepo.deleteById(id);
-        return "Xóa thành công";
-    }
-}
+//
+//    @DeleteMapping("/delete/{id}")
+//    public String deleteKhachHang(@PathVariable("id") Integer id) {
+//        khRepo.deleteById(id);
+//        return "Xóa thành công";
+//    }
+//}
