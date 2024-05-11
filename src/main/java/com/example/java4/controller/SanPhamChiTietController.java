@@ -16,7 +16,7 @@ SanPhamChiTietController {
 
     @GetMapping("/index")
     public String index() {
-        return "/bootstrap-shop-template/detail.html";
+        return "/bootstrap-shop-template/detailSanPhamChiTiet.jsp";
     }
 
 }
