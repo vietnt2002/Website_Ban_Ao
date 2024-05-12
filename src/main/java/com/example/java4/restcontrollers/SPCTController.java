@@ -1,6 +1,6 @@
 //package com.example.java4.restcontrollers;
 //
-//import com.example.java4.entities.SanPhamChiTiet;
+//import com.example.java4.entities.SPCT;
 //import com.example.java4.repositories.SPCTRepository;
 //import com.example.java4.response.SanPhamChiTietResponse;
 //import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@
 //    }
 //
 //    @GetMapping("/detail")
-//    public SanPhamChiTiet detail(@RequestParam("id") Integer id) {
+//    public SPCT detail(@RequestParam("id") Integer id) {
 //        return spctRepo.findById(id).get();
 //    }
 //
