@@ -77,7 +77,7 @@ public class CartController {
         SPCT sanPhamChiTiet = this.spctRepository.findById(idSPCT).orElse(null);
 
         // Tìm và xóa chi tiết hóa đơn chứa sản phẩm cần xóa
-        HDCT hoaDonChiTiet = this.hdctRepository.findByHoaDonAndIdSanPhamChiTiet(2, sanPhamChiTiet);
+        HDCT hoaDonChiTiet = this.hdctRepository.findByHoaDonAndIdSanPhamChiTiet(2, sanPhamChiTiet );
 
         if (hoaDonChiTiet != null) {
 //            int soLuong = hoaDonChiTiet.getSoLuong(); // Số lượng sản phẩm sẽ được cập nhật lại trong hóa đơn

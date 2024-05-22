@@ -11,16 +11,20 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name ="KichThuoc")
+@Table(name = "KichThuoc")
+
 public class KichThuoc {
     @Id
-    @Column(name="ID")
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Column(name = "ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Column(name="Ma")
+
+    @Column(name = "Ma")
     private String ma;
-    @Column(name="Ten")
-    private String ten;
-    @Column(name="TrangThai")
+
+    @Column(name = "Ten")
+    private String tenKichThuoc;
+
+    @Column(name = "TrangThai")
     private Integer trangThai;
 }

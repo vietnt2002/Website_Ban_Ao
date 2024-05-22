@@ -1,4 +1,10 @@
 //package com.example.java4.restcontrollers;
+//
+//import org.springframework.stereotype.Controller;
+//
+//@Controller
+//public class helloController {
+//        @RequestMapping(name="login", method = RequestMethod.POST)
 //import com.example.java4.request.mau_sac.StoreRequest;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.beans.factory.annotation.Qualifier;
