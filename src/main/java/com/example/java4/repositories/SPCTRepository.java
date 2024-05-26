@@ -13,11 +13,11 @@ import java.util.List;
 @Repository
 public interface SPCTRepository extends JpaRepository<SPCT,Integer>{
 
-    @Query("select new com.example.java4.response.SanPhamChiTietResponse(spct.id, ms.tenMauSac, kt.tenKichThuoc, sp.tenSanPham, spct.maSPCT, spct.soLuong, spct.donGia, spct.trangThai)" +
-            "            from SPCT spct join MauSac ms on spct.id = ms.id" +
-            "            join KichThuoc kt on spct.id = kt.id \n" +
-            "            join SanPham sp on spct.id = sp.id")
-    List<SanPhamChiTietResponse> getList();
+//    @Query("select new com.example.java4.response.SanPhamChiTietResponse(spct.id, ms.tenMauSac, kt.tenKichThuoc, sp.ten, spct.maSPCT, spct.soLuong, spct.donGia, spct.trangThai)" +
+//            "            from SPCT spct join MauSac ms on spct.idMauSac.id = ms.id" +
+//            "            join KichThuoc kt on spct.idKichThuoc.id = kt.id \n" +
+//            "            join SanPham sp on spct.idSanPham.id = sp.id")
+//    List<SanPhamChiTietResponse> getList();
 
     public static final int ACTIVE  = 1;
     public static final int INACTIVE =0;
