@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class
 SanPhamChiTietController {
 
-    @Autowired
-    SPCTRepository spctRepo;
-
-    @GetMapping("/index")
-    public String index() {
-        return "/view/view_sang/detailSanPhamChiTiet.jsp";
-    }
+//    @Autowired
+//    SPCTRepository spctRepo;
+//
+//    @GetMapping("/index")
+//    public String index() {
+//        return "/view/view_sang/detailSanPhamChiTiet.jsp";
+//    }
 
 }
