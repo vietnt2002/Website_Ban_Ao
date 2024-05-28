@@ -27,7 +27,7 @@ public class HDCT {
     @Column(name="SoLuong")
     private int soLuong;
     @Column(name="DonGia")
-    private int donGia;
+    private double donGia;
     @Column(name="ThoiGian")
     private Timestamp thoiGian;
     @Column(name="TrangThai")
