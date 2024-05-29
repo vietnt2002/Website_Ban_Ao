@@ -32,5 +32,5 @@ public class SanPhamRequest {
     private Integer indx;
 
     @NotNull(message = "Không được để trống trạng thái")
-    private String trangThai;
+    private Integer trangThai;
 }

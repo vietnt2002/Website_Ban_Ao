@@ -20,5 +20,5 @@ public interface HoaDonRepository
     @Query(value = "SELECT TOP 5 * FROM HoaDon where trangThai = 0 ORDER BY ID DESC ",
             nativeQuery = true)
     public List<HoaDon>  selectTop5();
-    public Optional<HoaDon> findById(Integer id);
+    public Optional<HoaDon> findById(String id);
 };

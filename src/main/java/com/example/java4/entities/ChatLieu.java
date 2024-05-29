@@ -1,4 +1,4 @@
-package com.example.java4.entities.entity;
+package com.example.java4.entities;
 
 import jakarta.persistence.*;
 
@@ -6,7 +6,7 @@ import java.sql.Date;
 import java.util.Objects;
 
 @Entity
-public class KichThuoc {
+public class ChatLieu {
     private String id;
     private String ma;
     private String ten;
@@ -64,8 +64,8 @@ public class KichThuoc {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        KichThuoc kichThuoc = (KichThuoc) o;
-        return Objects.equals(id, kichThuoc.id) && Objects.equals(ma, kichThuoc.ma) && Objects.equals(ten, kichThuoc.ten) && Objects.equals(ngayTao, kichThuoc.ngayTao) && Objects.equals(trangThai, kichThuoc.trangThai);
+        ChatLieu chatLieu = (ChatLieu) o;
+        return Objects.equals(id, chatLieu.id) && Objects.equals(ma, chatLieu.ma) && Objects.equals(ten, chatLieu.ten) && Objects.equals(ngayTao, chatLieu.ngayTao) && Objects.equals(trangThai, chatLieu.trangThai);
     }
 
     @Override

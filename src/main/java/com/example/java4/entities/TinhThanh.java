@@ -1,16 +1,13 @@
-package com.example.java4.entities.entity;
+package com.example.java4.entities;
 
 import jakarta.persistence.*;
 
-import java.sql.Date;
 import java.util.Objects;
 
 @Entity
-public class ChatLieu {
+public class TinhThanh {
     private String id;
-    private String ma;
     private String ten;
-    private Date ngayTao;
     private Integer trangThai;
 
     @Id
@@ -24,15 +21,6 @@ public class ChatLieu {
         this.id = id;
     }
 
-    @Column(name = "Ma")
-    public String getMa() {
-        return ma;
-    }
-
-    public void setMa(String ma) {
-        this.ma = ma;
-    }
-
     @Column(name = "Ten")
     public String getTen() {
         return ten;
@@ -40,15 +28,6 @@ public class ChatLieu {
 
     public void setTen(String ten) {
         this.ten = ten;
-    }
-
-    @Column(name = "NgayTao")
-    public Date getNgayTao() {
-        return ngayTao;
-    }
-
-    public void setNgayTao(Date ngayTao) {
-        this.ngayTao = ngayTao;
     }
 
     @Column(name = "TrangThai")
@@ -64,12 +43,12 @@ public class ChatLieu {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ChatLieu chatLieu = (ChatLieu) o;
-        return Objects.equals(id, chatLieu.id) && Objects.equals(ma, chatLieu.ma) && Objects.equals(ten, chatLieu.ten) && Objects.equals(ngayTao, chatLieu.ngayTao) && Objects.equals(trangThai, chatLieu.trangThai);
+        TinhThanh tinhThanh = (TinhThanh) o;
+        return Objects.equals(id, tinhThanh.id) && Objects.equals(ten, tinhThanh.ten) && Objects.equals(trangThai, tinhThanh.trangThai);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, ma, ten, ngayTao, trangThai);
+        return Objects.hash(id, ten, trangThai);
     }
 }
