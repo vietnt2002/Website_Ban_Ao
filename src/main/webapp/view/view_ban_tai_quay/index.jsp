@@ -45,8 +45,8 @@
                     <tr>
                         <td>${i.index+1}</td>
                         <td>${hoaDon.id}</td>
-                        <td>${hoaDon.ngayMuaHang}</td>
-                        <td>${hoaDon.khachHang.ten}</td>
+                        <td>${hoaDon.ngayTao}</td>
+                        <td>${hoaDon.idKhachHang.hoTen}</td>
                         <td>${hoaDon.trangThai==0?"Chua thanh toan":"Da thanh toan"}</td>
                         <td>
                             <a href="/ban-hang/detail-hoa-don/${hoaDon.id}" class="btn btn-primary">View</a>
@@ -74,9 +74,9 @@
                 <c:forEach varStatus="i" items="${listHDCT}" var="hdct">
                     <tr>
                         <td>${i.index+1}</td>
-                        <td>${hdct.hoaDon.id}</td>
-                        <td>${hdct.spct.idSanPham.ma}</td>
-                        <td>${hdct.spct.idSanPham.ten}</td>
+                        <td>${hdct.idHoaDon.id}</td>
+                        <td>${hdct.idCTSP.idSanPham.ma}</td>
+                        <td>${hdct.idCTSP.idSanPham.ten}</td>
                         <td>${hdct.soLuong}</td>
                         <td>${hdct.donGia}</td>
                         <td>${hdct.soLuong*hdct.donGia}</td>
@@ -111,10 +111,10 @@
                         <td>${i.index+1}</td>
                         <td>${spct.idSanPham.ma}</td>
                         <td>${spct.idSanPham.ten}</td>
-                        <td>${spct.idMauSac.tenMauSac}</td>
-                        <td>${spct.idKichThuoc.tenKichThuoc}</td>
+                        <td>${spct.idMauSac.ten}</td>
+                        <td>${spct.idKichThuoc.ten}</td>
                         <td>${spct.soLuong}</td>
-                        <td>${spct.donGia}</td>
+                        <td>${spct.giaBan}</td>
                         <td>
                             <form action="/ban-hang/add-san-pham/${spct.id}" method="post"
                                   onsubmit="return validateBeforeAddToCart();">
@@ -144,7 +144,7 @@
                         <div class="row mb-3">
                             <label class="col-sm-4 col-form-label">Ngày tạo</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" name="ngayTao" value="${hoaDon.ngayMuaHang}">
+                                <input type="text" class="form-control" name="ngayTao" value="${hoaDon.ngayTao}">
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -153,7 +153,7 @@
                                 <select path="idKhachHang" class="form-select" aria-label="Default select example" name="idKhachHang">
                                     <c:forEach items="${listKH}" var="khachHang">
 
-                                        <option value="${khachHang.id}" ${hoaDon.khachHang.sdt==khachHang.sdt?"selected":""}>${khachHang.sdt}</option>
+                                        <option value="${khachHang.id}" ${hoaDon.idKhachHang.sdt==khachHang.sdt?"selected":""}>${khachHang.sdt}</option>
 
                                     </c:forEach>
                                 </select>

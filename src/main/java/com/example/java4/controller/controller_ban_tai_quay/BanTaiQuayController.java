@@ -1,5 +1,9 @@
 package com.example.java4.controller.controller_ban_tai_quay;
 
+import com.example.java4.entities.ChiTietHoaDon;
+import com.example.java4.entities.ChiTietSanPham;
+import com.example.java4.entities.HoaDon;
+import com.example.java4.entities.KhachHang;
 import com.example.java4.repositories.HDCTRepository;
 import com.example.java4.repositories.HoaDonRepository;
 import com.example.java4.repositories.KhachHangRepository;
@@ -34,8 +38,8 @@ public class BanTaiQuayController {
     private KhachHangRepository khachHangRepository;
 
     private List<HoaDon> listHoaDon;
-    private List<HDCT> listHDCT;
-    private List<SPCT> listCTSP;
+    private List<ChiTietHoaDon> listHDCT;
+    private List<ChiTietSanPham> listCTSP;
     private List<KhachHang> listKH;
 
     @GetMapping("")
@@ -59,7 +63,7 @@ public class BanTaiQuayController {
 //        khachHang.setId(1);
 //        hoaDon.setIdKhachHang(khachHang);
         hoaDon.setTrangThai(0);
-        hoaDon.setNgayMuaHang(new Date());
+        hoaDon.setNgayTao(new Date());
 
         hoaDonRepository.save(hoaDon);
 
@@ -67,7 +71,7 @@ public class BanTaiQuayController {
     }
 
     @GetMapping("detail-hoa-don/{idHD}")
-    public String detailHoaDon(@PathVariable Integer idHD, Model model){
+    public String detailHoaDon(@PathVariable String idHD, Model model){
         Optional<HoaDon> hoaDon = hoaDonRepository.findById(idHD);
         model.addAttribute("hoaDon",hoaDon.get());
 
@@ -82,14 +86,14 @@ public class BanTaiQuayController {
         model.addAttribute("listKH",listKH);
 
         //Lọc hóa đơn chi tiết theo id hóa đơn
-        List<HDCT> gioHangTheoHoaDon = new ArrayList<>();
-        for (HDCT ct:listHDCT){
-            if (ct.getHoaDon().getId()==idHD){
+        List<ChiTietHoaDon> gioHangTheoHoaDon = new ArrayList<>();
+        for (ChiTietHoaDon ct:listHDCT){
+            if (ct.getIdHoaDon().getId().equals(idHD)){
                 gioHangTheoHoaDon.add(ct);
 
                 //Tính tổng tiền từng hóa đơn
                 BigDecimal tongTien = BigDecimal.ZERO;
-                for (HDCT hd:gioHangTheoHoaDon){
+                for (ChiTietHoaDon hd:gioHangTheoHoaDon){
                     int sL = hd.getSoLuong();
                     BigDecimal donGia = BigDecimal.valueOf(hd.getDonGia());
                     BigDecimal thanhTien = donGia.multiply(BigDecimal.valueOf(sL));
@@ -105,17 +109,17 @@ public class BanTaiQuayController {
     }
 
     @PostMapping("add-san-pham/{idCTSP}")
-    public String addSanPhamVaoGioHang(@PathVariable Integer idCTSP,
-                                       @RequestParam Integer idHoaDon){
-        HDCT hdct = new HDCT();
+    public String addSanPhamVaoGioHang(@PathVariable String idCTSP,
+                                       @RequestParam String idHoaDon){
+        ChiTietHoaDon hdct = new ChiTietHoaDon();
 
         //Tìm sản phẩm trong giỏ hàng
         boolean spTonTaiTrongGioHang = false;
         Integer slBanDau = 1;
-        for (HDCT sp:listHDCT){
-            if (sp.getSpct().getId()==idCTSP && sp.getHoaDon().getId()==idHoaDon){
-                System.out.println("idCTSP"+sp.getSpct().getId());
-                System.out.println("ID hóa đơn"+sp.getHoaDon().getId());
+        for (ChiTietHoaDon sp:listHDCT){
+            if (sp.getIdCTSP().getId().equals(idCTSP) && sp.getIdHoaDon().getId().equals(idHoaDon)){
+                System.out.println("idCTSP"+sp.getIdCTSP().getId());
+                System.out.println("ID hóa đơn"+sp.getIdHoaDon().getId());
 
                 sp.setSoLuong(sp.getSoLuong()+1);
                 hoaDonChiTietRepository.save(sp);
@@ -128,21 +132,21 @@ public class BanTaiQuayController {
             }
         }
 
-        Double donGia = null;
+        Integer donGia = null;
         if (!spTonTaiTrongGioHang){
-            for (SPCT sp:listCTSP){
-                if (sp.getId()==idCTSP){
-                    donGia = sp.getDonGia();
+            for (ChiTietSanPham sp:listCTSP){
+                if (sp.getId().equals(idCTSP)){
+                    donGia = sp.getGiaBan();
                 }
             }
 
-            SPCT ctsp = new SPCT();
+            ChiTietSanPham ctsp = new ChiTietSanPham();
             ctsp.setId(idCTSP);
-            hdct.setSpct(ctsp);
+            hdct.setIdCTSP(ctsp);
 
             HoaDon hoaDon = new HoaDon();
             hoaDon.setId(idHoaDon);
-            hdct.setHoaDon(hoaDon);
+            hdct.setIdHoaDon(hoaDon);
             hdct.setSoLuong(1);
             hdct.setDonGia(donGia);
 
@@ -157,8 +161,8 @@ public class BanTaiQuayController {
     public String deleteHDCT(@PathVariable Integer idHDCT,
                              @RequestParam Integer idHoaDon){
 
-        for (HDCT hdct:listHDCT){
-            if (hdct.getId()==idHDCT){
+        for (ChiTietHoaDon hdct:listHDCT){
+            if (hdct.getId().equals(idHDCT)){
                 hoaDonChiTietRepository.delete(hdct);
             }
         }
@@ -168,20 +172,20 @@ public class BanTaiQuayController {
 
     //Thanh toán
     @PostMapping("/thanh-toan/{idHoaDon}")
-    public String thanhToanSanPham(@PathVariable Integer idHoaDon,
+    public String thanhToanSanPham(@PathVariable String idHoaDon,
                                    @RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") Date ngayTao,
-                                   @RequestParam Integer idKhachHang){
+                                   @RequestParam String idKhachHang){
 
         for (int i=0;i<listHoaDon.size();i++){
-            if (listHoaDon.get(i).getId()==idHoaDon){
+            if (listHoaDon.get(i).getId().equals(idHoaDon)){
                 HoaDon hoaDon = new HoaDon();
                 hoaDon.setId(idHoaDon);
                 KhachHang khachHang = new KhachHang();
                 khachHang.setId(idKhachHang);
-                hoaDon.setKhachHang(khachHang);
+                hoaDon.setIdKhachHang(khachHang);
                 capMhatSoLuong();
                 hoaDon.setTrangThai(1);
-                hoaDon.setNgayMuaHang(ngayTao);
+                hoaDon.setNgayTao(ngayTao);
                 hoaDonRepository.save(hoaDon);
             }
         }
@@ -191,11 +195,11 @@ public class BanTaiQuayController {
 
     //Cập nhật só lượng sau khi thanh toán
     public void capMhatSoLuong(){
-        for (HDCT hdct:listHDCT){
-            int idSPCT = hdct.getSpct().getId();
+        for (ChiTietHoaDon hdct:listHDCT){
+            String idSPCT = hdct.getIdCTSP().getId();
             int soLuong = hdct.getSoLuong();
-            for (SPCT sp:listCTSP){
-                if (sp.getId()==idSPCT){
+            for (ChiTietSanPham sp:listCTSP){
+                if (sp.getId().equals(idSPCT)){
                     sp.setSoLuong(sp.getSoLuong()-soLuong);
                     sanPhamChiTietRepository.save(sp);
                 }

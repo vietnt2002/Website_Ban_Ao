@@ -1,5 +1,6 @@
 package com.example.java4.repositories;
 
+import com.example.java4.entities.HoaDon;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -19,5 +20,5 @@ public interface HoaDonRepository
     @Query(value = "SELECT TOP 5 * FROM HoaDon where trangThai = 0 ORDER BY ID DESC ",
             nativeQuery = true)
     public List<HoaDon>  selectTop5();
-    public Optional<HoaDon> findById(Integer id);
+    public Optional<HoaDon> findById(String id);
 };

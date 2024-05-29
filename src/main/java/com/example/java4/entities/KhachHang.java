@@ -1,4 +1,4 @@
-package com.example.java4.entities.entity;
+package com.example.java4.entities;
 
 import jakarta.persistence.*;
 
@@ -6,11 +6,12 @@ import java.sql.Date;
 import java.util.Objects;
 
 @Entity
-public class NhanVien {
+public class KhachHang {
     private String id;
     private String hoTen;
     private Integer gioiTinh;
     private String sdt;
+    private Date ngaySinh;
     private String taiKhoan;
     private String matKhau;
     private String anhDaiDien;
@@ -54,6 +55,15 @@ public class NhanVien {
 
     public void setSdt(String sdt) {
         this.sdt = sdt;
+    }
+
+    @Column(name = "NgaySinh")
+    public Date getNgaySinh() {
+        return ngaySinh;
+    }
+
+    public void setNgaySinh(Date ngaySinh) {
+        this.ngaySinh = ngaySinh;
     }
 
     @Column(name = "TaiKhoan")
@@ -114,12 +124,12 @@ public class NhanVien {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        NhanVien nhanVien = (NhanVien) o;
-        return Objects.equals(id, nhanVien.id) && Objects.equals(hoTen, nhanVien.hoTen) && Objects.equals(gioiTinh, nhanVien.gioiTinh) && Objects.equals(sdt, nhanVien.sdt) && Objects.equals(taiKhoan, nhanVien.taiKhoan) && Objects.equals(matKhau, nhanVien.matKhau) && Objects.equals(anhDaiDien, nhanVien.anhDaiDien) && Objects.equals(ngayTao, nhanVien.ngayTao) && Objects.equals(ngaySua, nhanVien.ngaySua) && Objects.equals(trangThai, nhanVien.trangThai);
+        KhachHang khachHang = (KhachHang) o;
+        return Objects.equals(id, khachHang.id) && Objects.equals(hoTen, khachHang.hoTen) && Objects.equals(gioiTinh, khachHang.gioiTinh) && Objects.equals(sdt, khachHang.sdt) && Objects.equals(ngaySinh, khachHang.ngaySinh) && Objects.equals(taiKhoan, khachHang.taiKhoan) && Objects.equals(matKhau, khachHang.matKhau) && Objects.equals(anhDaiDien, khachHang.anhDaiDien) && Objects.equals(ngayTao, khachHang.ngayTao) && Objects.equals(ngaySua, khachHang.ngaySua) && Objects.equals(trangThai, khachHang.trangThai);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, hoTen, gioiTinh, sdt, taiKhoan, matKhau, anhDaiDien, ngayTao, ngaySua, trangThai);
+        return Objects.hash(id, hoTen, gioiTinh, sdt, ngaySinh, taiKhoan, matKhau, anhDaiDien, ngayTao, ngaySua, trangThai);
     }
 }

@@ -1,4 +1,4 @@
-package com.example.java4.entities.entity;
+package com.example.java4.entities;
 
 import jakarta.persistence.*;
 
@@ -6,10 +6,11 @@ import java.sql.Date;
 import java.util.Objects;
 
 @Entity
-public class KieuTay {
+public class SanPham {
     private String id;
     private String ma;
     private String ten;
+    private String hinhAnh;
     private Date ngayTao;
     private Integer trangThai;
 
@@ -42,6 +43,15 @@ public class KieuTay {
         this.ten = ten;
     }
 
+    @Column(name = "HinhAnh")
+    public String getHinhAnh() {
+        return hinhAnh;
+    }
+
+    public void setHinhAnh(String hinhAnh) {
+        this.hinhAnh = hinhAnh;
+    }
+
     @Column(name = "NgayTao")
     public Date getNgayTao() {
         return ngayTao;
@@ -64,12 +74,12 @@ public class KieuTay {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        KieuTay kieuTay = (KieuTay) o;
-        return Objects.equals(id, kieuTay.id) && Objects.equals(ma, kieuTay.ma) && Objects.equals(ten, kieuTay.ten) && Objects.equals(ngayTao, kieuTay.ngayTao) && Objects.equals(trangThai, kieuTay.trangThai);
+        SanPham sanPham = (SanPham) o;
+        return Objects.equals(id, sanPham.id) && Objects.equals(ma, sanPham.ma) && Objects.equals(ten, sanPham.ten) && Objects.equals(hinhAnh, sanPham.hinhAnh) && Objects.equals(ngayTao, sanPham.ngayTao) && Objects.equals(trangThai, sanPham.trangThai);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, ma, ten, ngayTao, trangThai);
+        return Objects.hash(id, ma, ten, hinhAnh, ngayTao, trangThai);
     }
 }
