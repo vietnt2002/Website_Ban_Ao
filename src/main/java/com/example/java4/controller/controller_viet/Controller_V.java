@@ -1,6 +1,5 @@
 package com.example.java4.controller.controller_viet;
 
-import com.example.java4.entities.SanPham;
 import com.example.java4.repositories.SanPhamRepository;
 import com.example.java4.request.req_viet.SanPhamRequest;
 import jakarta.validation.Valid;

@@ -45,8 +45,8 @@
                     <tr>
                         <td>${i.index+1}</td>
                         <td>${hoaDon.id}</td>
-                        <td>${hoaDon.ngayTao}</td>
-                        <td>${hoaDon.idKhachHang.ten}</td>
+                        <td>${hoaDon.ngayMuaHang}</td>
+                        <td>${hoaDon.khachHang.ten}</td>
                         <td>${hoaDon.trangThai==0?"Chua thanh toan":"Da thanh toan"}</td>
                         <td>
                             <a href="/ban-hang/detail-hoa-don/${hoaDon.id}" class="btn btn-primary">View</a>
@@ -74,12 +74,12 @@
                 <c:forEach varStatus="i" items="${listHDCT}" var="hdct">
                     <tr>
                         <td>${i.index+1}</td>
-                        <td>${hdct.idHoaDon.id}</td>
-                        <td>${hdct.idCTSP.idSanPham.maSP}</td>
-                        <td>${hdct.idCTSP.idSanPham.tenSP}</td>
-                        <td>${hdct.soLuongMua}</td>
-                        <td>${hdct.giaBan}</td>
-                        <td>${hdct.soLuongMua*hdct.giaBan}</td>
+                        <td>${hdct.hoaDon.id}</td>
+                        <td>${hdct.spct.idSanPham.ma}</td>
+                        <td>${hdct.spct.idSanPham.ten}</td>
+                        <td>${hdct.soLuong}</td>
+                        <td>${hdct.donGia}</td>
+                        <td>${hdct.soLuong*hdct.donGia}</td>
                         <td>
                             <form action="/ban-hang/delete-hdct/${hdct.id}" method="post">
                                 <input type="hidden" name="idHoaDon" value="${hoaDon.id}">
@@ -109,12 +109,12 @@
                 <c:forEach varStatus="i" items="${listCTSP}" var="spct">
                     <tr>
                         <td>${i.index+1}</td>
-                        <td>${spct.idSanPham.maSP}</td>
-                        <td>${spct.idSanPham.tenSP}</td>
-                        <td>${spct.idMauSac.tenMau}</td>
-                        <td>${spct.idSize.tenSize}</td>
+                        <td>${spct.idSanPham.ma}</td>
+                        <td>${spct.idSanPham.ten}</td>
+                        <td>${spct.idMauSac.tenMauSac}</td>
+                        <td>${spct.idKichThuoc.tenKichThuoc}</td>
                         <td>${spct.soLuong}</td>
-                        <td>${spct.giaBan}</td>
+                        <td>${spct.donGia}</td>
                         <td>
                             <form action="/ban-hang/add-san-pham/${spct.id}" method="post"
                                   onsubmit="return validateBeforeAddToCart();">
@@ -144,7 +144,7 @@
                         <div class="row mb-3">
                             <label class="col-sm-4 col-form-label">Ngày tạo</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" name="ngayTao" value="${hoaDon.ngayTao}">
+                                <input type="text" class="form-control" name="ngayTao" value="${hoaDon.ngayMuaHang}">
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -153,7 +153,7 @@
                                 <select path="idKhachHang" class="form-select" aria-label="Default select example" name="idKhachHang">
                                     <c:forEach items="${listKH}" var="khachHang">
 
-                                        <option value="${khachHang.id}" ${hoaDon.idKhachHang.sdt==khachHang.sdt?"selected":""}>${khachHang.sdt}</option>
+                                        <option value="${khachHang.id}" ${hoaDon.khachHang.sdt==khachHang.sdt?"selected":""}>${khachHang.sdt}</option>
 
                                     </c:forEach>
                                 </select>

@@ -1,6 +1,5 @@
 package com.example.java4.controller.controller_khang;
 
-import com.example.java4.entities.NhanVien;
 import com.example.java4.repositories.NhanVienRepository;
 import com.example.java4.request.req_khang.NhanVienRequest;
 import jakarta.validation.Valid;

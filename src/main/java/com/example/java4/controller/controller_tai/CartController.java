@@ -1,7 +1,5 @@
 package com.example.java4.controller.controller_tai;
 
-import com.example.java4.entities.HDCT;
-import com.example.java4.entities.SPCT;
 import com.example.java4.repositories.HDCTRepository;
 import com.example.java4.repositories.SPCTRepository;
 import com.example.java4.repositories.SanPhamRepository;

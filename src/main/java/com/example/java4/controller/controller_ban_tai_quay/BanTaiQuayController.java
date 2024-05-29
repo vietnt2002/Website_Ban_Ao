@@ -1,9 +1,5 @@
 package com.example.java4.controller.controller_ban_tai_quay;
 
-import com.example.java4.entities.HDCT;
-import com.example.java4.entities.HoaDon;
-import com.example.java4.entities.KhachHang;
-import com.example.java4.entities.SPCT;
 import com.example.java4.repositories.HDCTRepository;
 import com.example.java4.repositories.HoaDonRepository;
 import com.example.java4.repositories.KhachHangRepository;
@@ -52,7 +48,7 @@ public class BanTaiQuayController {
         model.addAttribute("listCTSP",listCTSP);
 //        model.addAttribute("listHDCT",listHDCT);
         model.addAttribute("listKH",listKH);
-        return "/ban-hang/index";
+        return "/view/view_ban_tai_quay/index";
     }
 
     @PostMapping("add-hoa-don")
@@ -105,7 +101,7 @@ public class BanTaiQuayController {
         }
 
 
-        return "/ban-hang/index";
+        return "/view/view_ban_tai_quay/index";
     }
 
     @PostMapping("add-san-pham/{idCTSP}")

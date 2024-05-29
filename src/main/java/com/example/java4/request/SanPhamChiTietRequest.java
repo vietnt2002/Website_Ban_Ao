@@ -1,8 +1,8 @@
 package com.example.java4.request;
 
-import com.example.java4.entities.KichThuoc;
-import com.example.java4.entities.MauSac;
-import com.example.java4.entities.SanPham;
+import com.example.java4.entities.entity.KichThuoc;
+import com.example.java4.entities.entity.MauSac;
+import com.example.java4.entities.entity.SanPham;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
