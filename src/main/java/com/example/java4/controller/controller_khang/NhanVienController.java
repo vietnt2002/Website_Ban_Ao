@@ -14,7 +14,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/nhan-vien")
-public class NhanVienController {
+public class cmdNhanVienController {
 
     @Autowired
     private NhanVienRepository nhanVienRepository;
