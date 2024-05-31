@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Repository
 public interface KhachHangRepository
-        extends JpaRepository<KhachHang,Integer>
+        extends JpaRepository<KhachHang,String>
 {
     public static final int ACTIVE  = 1;
     public static final int INACTIVE =0;

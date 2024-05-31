@@ -19,12 +19,16 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SanPhamRequest {
-    private UUID id;
+    private String id;
 
+    @NotBlank(message = "Không được để trống")
     private String ma;
 
     @NotBlank(message = "Không được để trống tên")
     private String Ten;
+
+    @NotBlank(message = "Không được để trống hình ảnh")
+    private String hinhAnh;
 
     @NotNull(message = "Không được để trống ngày tạo")
     private Date ngayTao;

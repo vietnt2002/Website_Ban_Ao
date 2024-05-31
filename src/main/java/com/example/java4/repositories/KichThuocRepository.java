@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface KichThuocRepository
-        extends JpaRepository<KichThuoc,Integer>
+        extends JpaRepository<KichThuoc,String>
 {
     public static final int ACTIVE  = 1;
     public static final int INACTIVE =0;

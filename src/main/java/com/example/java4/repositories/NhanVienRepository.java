@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Repository
 public interface NhanVienRepository
-        extends JpaRepository<NhanVien,Integer>
+        extends JpaRepository<NhanVien,String>
 {
     public static final int ACTIVE  = 1;
     public static final int INACTIVE =0;
