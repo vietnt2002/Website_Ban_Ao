@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/ban-hang")
+@RequestMapping("/ban-hang-disable")
 public class Test_BanTaiQuayController {
 
     @Autowired

@@ -334,7 +334,7 @@
             </nav>
 
             <div>
-                <a href="/ban-hang">
+                <a href="/ban-hang-tai-quay">
                     <i class="bi bi-house-door"></i>
                 </a>
             </div>
@@ -345,7 +345,7 @@
                         <div class="col-8">
                             <div>
                                 <h3 class="float-start">Hóa đơn</h3>
-                                <form action="/ban-hang/add-hoa-don" method="post" style="float: right;"
+                                <form action="/ban-hang-tai-quay/add-hoa-don" method="post" style="float: right;"
                                       class="float-end">
                                     <button type="submit" class="btn btn-success">+ Tạo hóa đơn</button>
                                 </form>
@@ -373,7 +373,7 @@
                                         <td>${hoaDon.ngayTao}</td>
                                         <td>${hoaDon.trangThai==0?"Chua thanh toan":"Da thanh toan"}</td>
                                         <td>
-                                            <a href="/ban-hang/detail-hoa-don/${hoaDon.id}"
+                                            <a href="/ban-hang-tai-quay/detail-hoa-don/${hoaDon.id}"
                                                class="btn btn-warning"><i class="bi bi-eye"></i></a>
                                         </td>
                                     </tr>
@@ -405,14 +405,14 @@
                                             <td>${hdct.idCTSP.idSanPham.ma}</td>
                                             <td>${hdct.idCTSP.idSanPham.ten}</td>
                                             <td style="display: flex; align-items: center;">
-                                                <form action="/ban-hang/giam-so-luong/${hdct.idCTSP.id}" method="post">
+                                                <form action="/ban-hang-tai-quay/giam-so-luong/${hdct.idCTSP.id}" method="post">
                                                     <input type="hidden" name="idHoaDon" value="${hoaDon.id}">
                                                     <button class="btn btn-light"
                                                             style="display: flex; width: 35px; height: 30px; align-items: center; justify-content: center"
                                                             type="submit"><i class="bi bi-caret-left"></i></button>
                                                 </form>
                                                     ${hdct.soLuong}
-                                                <form action="/ban-hang/them-so-luong/${hdct.idCTSP.id}" method="post">
+                                                <form action="/ban-hang-tai-quay/them-so-luong/${hdct.idCTSP.id}" method="post">
                                                     <input type="hidden" name="idHoaDon" value="${hoaDon.id}">
                                                     <button class="btn btn-light"
                                                             style="display: flex; width: 35px; height: 30px; align-items: center; justify-content: center"
@@ -422,7 +422,7 @@
                                             <td>${hdct.donGia}</td>
                                             <td>${hdct.soLuong*hdct.donGia}</td>
                                             <td>
-                                                <form action="/ban-hang/delete/${hdct.id}" method="get">
+                                                <form action="/ban-hang-tai-quay/delete/${hdct.id}" method="get">
                                                     <input type="hidden" name="idHoaDon" value="${hoaDon.id}">
                                                     <button class="btn btn-danger"
                                                             style="display: flex; width: 35px; height: 30px; align-items: center; justify-content: center"
@@ -522,7 +522,7 @@
                                         <td>${spct.soLuong}</td>
                                         <td>${spct.giaBan}</td>
                                         <td>
-                                            <form action="/ban-hang/add-san-pham/${spct.id}" method="post"
+                                            <form action="/ban-hang-tai-quay/add-san-pham/${spct.id}" method="post"
                                                   onsubmit="return validateBeforeAddToCart();">
                                                 <input type="hidden" name="idHoaDon" value="${hoaDon.id}"
                                                        id="selectedInvoiceId">
@@ -540,7 +540,7 @@
                             <div class="card">
                                 <div class="card-body">
                                     <h5 class="card-title">HÓA ĐƠN</h5>
-                                    <form method="POST" action="/ban-hang/thanh-toan/${hoaDon.id}">
+                                    <form method="POST" action="/ban-hang-tai-quay/thanh-toan/${hoaDon.id}">
                                         <div class="row mb-3">
                                             <label class="col-sm-4 col-form-label">ID hóa đơn</label>
                                             <div class="col-sm-8">

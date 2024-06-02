@@ -219,9 +219,6 @@ public class Controller_BanTaiQuay {
         }
     }
 
-
-
-
     //=====GHÉP=====
 
     //Search sản phẩm chi tiết

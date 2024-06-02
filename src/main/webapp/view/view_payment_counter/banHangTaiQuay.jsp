@@ -65,7 +65,7 @@
 
         <!-- Nav Item - Charts -->
         <li class="nav-item">
-            <a class="nav-link" href="/store/admin/ban-tai-quay">
+            <a class="nav-link" href="/ban-hang-tai-quay/admin/ban-tai-quay">
                 <i class="fas fa-fw fa-chart-area"></i>
                 <span>Bán hàng tại quầy</span></a>
         </li>
@@ -144,7 +144,6 @@
                         </div>
                     </div>
                 </form>
-
                 <!-- Topbar Navbar -->
                 <ul class="navbar-nav ml-auto">
 
@@ -338,7 +337,7 @@
                         <div class="col-8">
                             <div>
                                 <h3 class="float-start">Hóa đơn</h3>
-                                <form action="/store/add-hoa-don" method="post" style="float: right;" class="float-end">
+                                <form action="/ban-hang-tai-quay/add-hoa-don" method="post" style="float: right;" class="float-end">
                                     <button type="submit" class="btn btn-success">+ Tạo hóa đơn</button>
                                 </form>
                             </div>
@@ -364,7 +363,7 @@
                                         <td>${hoaDon.ngayTao}</td>
                                         <td>${hoaDon.trangThai==0?"Chua thanh toan":"Da thanh toan"}</td>
                                         <td>
-                                            <a href="/store/detail-hoa-don/${hoaDon.id}"
+                                            <a href="/ban-hang-tai-quay/detail-hoa-don/${hoaDon.id}"
                                                class="btn btn-primary">View</a>
                                         </td>
                                     </tr>
@@ -492,7 +491,7 @@
 
                             <div class="row">
                                 <div class="col col-5">
-                                    <form method="post" action="/store/search">
+                                    <form method="post" action="/ban-hang-tai-quay/search">
                                         <div class="input-group mb-3">
                                             <input type="text" name="search" class="form-control"
                                                    placeholder="Tìm kiếm theo mã sản phẩm, màu sắc,..."
@@ -505,7 +504,7 @@
                             </div>
 
 
-                            <form method="post" action="/store/filter">
+                            <form method="post" action="/ban-hang-tai-quay/filter">
                                 <div class="row">
                                     <div class="col col-md-2">
                                         <div class="input-group mb-3">
@@ -518,7 +517,7 @@
                                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                                     <c:forEach items="${listSanPham}" var="sanPham">
                                                         <li><a class="dropdown-item"
-                                                               href="/store/locSPCTBySanPham/${sanPham.id}">${sanPham.ten}</a>
+                                                               href="/ban-hang-tai-quay/locSPCTBySanPham/${sanPham.id}">${sanPham.ten}</a>
                                                         </li>
                                                     </c:forEach>
                                                 </ul>
@@ -533,7 +532,7 @@
                                             </button>
                                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
                                                 <c:forEach items="${listMauSac}" var="mauSac">
-                                                    <li><a class="dropdown-item" href="/store/locSPCTByMauSac/${mauSac.id}">${mauSac.ten}</a></li>
+                                                    <li><a class="dropdown-item" href="/ban-hang-tai-quay/locSPCTByMauSac/${mauSac.id}">${mauSac.ten}</a></li>
                                                 </c:forEach>
                                             </ul>
                                         </div>
@@ -546,7 +545,7 @@
                                             </button>
                                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton3">
                                                 <c:forEach items="${listKichThuoc}" var="kichThuoc">
-                                                    <li><a class="dropdown-item" href="/store/locSPCTByKichThuoc/${kichThuoc.id}">${kichThuoc.ten}</a></li>
+                                                    <li><a class="dropdown-item" href="/ban-hang-tai-quay/locSPCTByKichThuoc/${kichThuoc.id}">${kichThuoc.ten}</a></li>
                                                 </c:forEach>
                                             </ul>
                                         </div>
@@ -559,7 +558,7 @@
                                             </button>
                                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton4">
                                                 <c:forEach items="${listChatLieu}" var="chatLieu">
-                                                    <li><a class="dropdown-item" href="/store/locSPCTByChatLieu/${chatLieu.id}">${chatLieu.ten}</a></li>
+                                                    <li><a class="dropdown-item" href="/ban-hang-tai-quay/locSPCTByChatLieu/${chatLieu.id}">${chatLieu.ten}</a></li>
                                                 </c:forEach>
                                             </ul>
                                         </div>
@@ -572,7 +571,7 @@
                                             </button>
                                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton5">
                                                 <c:forEach items="${listKieuTay}" var="kieuTay">
-                                                    <li><a class="dropdown-item" href="/store/locSPCTByKieuTay/${kieuTay.id}">${kieuTay.ten}</a></li>
+                                                    <li><a class="dropdown-item" href="/ban-hang-tai-quay/locSPCTByKieuTay/${kieuTay.id}">${kieuTay.ten}</a></li>
                                                 </c:forEach>
                                             </ul>
                                         </div>
@@ -580,7 +579,7 @@
 
                                     <div class="col col-2">
                                         <button type="submit" class="btn btn-primary float-start">Lọc</button>
-                                        <a href="/store/ban-tai-quay" class="btn btn-danger float-start">Hủy</a>
+                                        <a href="/ban-hang-tai-quay/ban-tai-quay" class="btn btn-danger float-start">Hủy</a>
                                     </div>
 
                                 </div>
@@ -634,14 +633,14 @@
                                     <ul class="pagination">
                                         <c:if test="${listCTSP.number > 0}">
                                             <li class="page-item"><a class="page-link"
-                                                                     href="/store/ban-tai-quay?page=${listCTSP.number - 1}">Trước</a>
+                                                                     href="/ban-hang-tai-quay/ban-tai-quay?page=${listCTSP.number - 1}">Trước</a>
                                             </li>
                                         </c:if>
                                         <li class="page-item"><a class="page-link" href="#">${listCTSP.number + 1}</a>
                                         </li>
                                         <c:if test="${listCTSP.number+1 < listCTSP.totalPages}">
                                             <li class="page-item"><a class="page-link"
-                                                                     href="/store/ban-tai-quay?page=${listCTSP.number + 1}">Sau</a>
+                                                                     href="/ban-hang-tai-quay/ban-tai-quay?page=${listCTSP.number + 1}">Sau</a>
                                             </li>
                                         </c:if>
                                     </ul>

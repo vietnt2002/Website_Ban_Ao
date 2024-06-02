@@ -64,9 +64,8 @@ public interface SPCTRepository extends JpaRepository<ChiTietSanPham,String>, Jp
             "where idSanPham = :idSanPham and idMauSac = :idMauSac and idKichThuoc = :idKichThuoc " +
             "and idChatLieu = :idChatLieu and idKieuTay = :idKieuTay", nativeQuery = true)
     Page<ChiTietSanPham> filterCombobox(@Param("idSanPham")String idSanPham, @Param("idMauSac")String idMauSac, @Param("idKichThuoc")String idKichThuoc, @Param("idChatLieu")String idChatLieu, @Param("idKieuTay")String idKieuTay, Pageable pageable);
-
-
-
+    @Query("SELECT ctsp  FROM ChiTietSanPham ctsp WHERE ctsp.id = ?1 ")
+    ChiTietSanPham findByIdCTSP(String id);
 };
 
 
