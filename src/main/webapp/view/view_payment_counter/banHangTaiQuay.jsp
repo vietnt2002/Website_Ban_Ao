@@ -396,7 +396,7 @@
                                         <td>${hdct.donGia}</td>
                                         <td>${hdct.soLuong*hdct.donGia}</td>
                                         <td>
-                                            <form action="/ban-hang/delete-hdct/${hdct.id}" method="post">
+                                            <form action="/ban-hang-tai-quay/delete-hdct/${hdct.id}" method="post">
                                                 <input type="hidden" name="idHoaDon" value="${hoaDon.id}">
                                                 <button class="btn btn-danger" type="submit">Delete</button>
                                             </form>
@@ -411,7 +411,7 @@
                             <div class="card">
                                 <div class="card-body">
                                     <h5 class="card-title">HÓA ĐƠN</h5>
-                                    <form method="POST" action="/ban-hang/thanh-toan/${hoaDon.id}">
+                                    <form method="POST" action="/ban-hang-tai-quay/thanh-toan/${hoaDon.id}">
                                         <div class="row mb-3">
                                             <label class="col-sm-4 col-form-label">ID hóa đơn</label>
                                             <div class="col-sm-8">
@@ -577,10 +577,10 @@
                                         </div>
                                     </div>
 
-                                    <div class="col col-2">
-                                        <button type="submit" class="btn btn-primary float-start">Lọc</button>
-                                        <a href="/ban-hang-tai-quay/ban-tai-quay" class="btn btn-danger float-start">Hủy</a>
-                                    </div>
+<%--                                    <div class="col col-2">--%>
+<%--                                        <button type="submit" class="btn btn-primary float-start">Lọc</button>--%>
+<%--                                        <a href="/ban-hang-tai-quay/ban-tai-quay" class="btn btn-danger float-start">Hủy</a>--%>
+<%--                                    </div>--%>
 
                                 </div>
                             </form>
@@ -616,7 +616,7 @@
                                         <td>${spct.giaBan}</td>
                                         <td>${spct.trangThai==1?"Còn hàng":"Hết hàng"}</td>
                                         <td>
-                                            <form action="/ban-hang/add-san-pham/${spct.id}" method="post"
+                                            <form action="/ban-hang-tai-quay/add-san-pham/${spct.id}" method="post"
                                                   onsubmit="return validateBeforeAddToCart();">
                                                 <input type="hidden" name="idHoaDon" value="${hoaDon.id}"
                                                        id="selectedInvoiceId">
@@ -633,14 +633,14 @@
                                     <ul class="pagination">
                                         <c:if test="${listCTSP.number > 0}">
                                             <li class="page-item"><a class="page-link"
-                                                                     href="/ban-hang-tai-quay/ban-tai-quay?page=${listCTSP.number - 1}">Trước</a>
+                                                                     href="/ban-hang-tai-quay?page=${listCTSP.number - 1}">Trước</a>
                                             </li>
                                         </c:if>
                                         <li class="page-item"><a class="page-link" href="#">${listCTSP.number + 1}</a>
                                         </li>
                                         <c:if test="${listCTSP.number+1 < listCTSP.totalPages}">
                                             <li class="page-item"><a class="page-link"
-                                                                     href="/ban-hang-tai-quay/ban-tai-quay?page=${listCTSP.number + 1}">Sau</a>
+                                                                     href="/ban-hang-tai-quay?page=${listCTSP.number + 1}">Sau</a>
                                             </li>
                                         </c:if>
                                     </ul>
