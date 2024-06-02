@@ -69,7 +69,7 @@ public class Test_BanTaiQuayController {
     public String themHoaDon() {
         HoaDon hoaDon = new HoaDon();
         hoaDon.setTrangThai(0);
-        hoaDon.setNgayTao(new Date());
+//        hoaDon.setNgayTao(new Date());
 
         hoaDonRepository.save(hoaDon);
 
@@ -262,26 +262,26 @@ public class Test_BanTaiQuayController {
     }
 
     //Thanh toán
-    @PostMapping("/thanh-toan/{idHoaDon}")
-    public String thanhToanSanPham(@PathVariable String idHoaDon,
-                                   @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date ngayTao,
-                                   @RequestParam String idKhachHang) {
-
-        for (int i = 0; i < listHoaDon.size(); i++) {
-            if (listHoaDon.get(i).getId().equals(idHoaDon)) {
-                HoaDon hoaDon = new HoaDon();
-                hoaDon.setId(idHoaDon);
-                KhachHang khachHang = new KhachHang();
-                khachHang.setId(idKhachHang);
-                hoaDon.setIdKhachHang(khachHang);
-                capMhatSoLuong();
-                hoaDon.setTrangThai(1);
-                hoaDon.setNgayTao(ngayTao);
-                hoaDonRepository.save(hoaDon);
-            }
-        }
-        return "redirect:/ban-hang";
-    }
+//    @PostMapping("/thanh-toan/{idHoaDon}")
+//    public String thanhToanSanPham(@PathVariable String idHoaDon,
+//                                   @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date ngayTao,
+//                                   @RequestParam String idKhachHang) {
+//
+//        for (int i = 0; i < listHoaDon.size(); i++) {
+//            if (listHoaDon.get(i).getId().equals(idHoaDon)) {
+//                HoaDon hoaDon = new HoaDon();
+//                hoaDon.setId(idHoaDon);
+//                KhachHang khachHang = new KhachHang();
+//                khachHang.setId(idKhachHang);
+//                hoaDon.setIdKhachHang(khachHang);
+//                capMhatSoLuong();
+//                hoaDon.setTrangThai(1);
+//                hoaDon.setNgayTao(ngayTao);
+//                hoaDonRepository.save(hoaDon);
+//            }
+//        }
+//        return "redirect:/ban-hang";
+//    }
 
     //Cập nhật só lượng sau khi thanh toán
     public void capMhatSoLuong() {

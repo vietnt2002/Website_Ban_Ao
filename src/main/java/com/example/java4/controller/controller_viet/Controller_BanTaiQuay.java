@@ -65,22 +65,22 @@ public class Controller_BanTaiQuay {
         return "/view/view_viet/banHangTaiQuay.jsp";
     }
 
-    @PostMapping("add-hoa-don")
-    public String themHoaDon(){
-        HoaDon hoaDon = new HoaDon();
-
-//        KhachHang khachHang = new KhachHang();
-//        khachHang.setId(1);
-//        hoaDon.setIdKhachHang(khachHang);
-
-
-        hoaDon.setTrangThai(0);
-        hoaDon.setNgayTao(new Date());
-
-        hoaDonRepository.save(hoaDon);
-
-        return "redirect:/store/ban-tai-quay";
-    }
+//    @PostMapping("add-hoa-don")
+//    public String themHoaDon(){
+//        HoaDon hoaDon = new HoaDon();
+//
+////        KhachHang khachHang = new KhachHang();
+////        khachHang.setId(1);
+////        hoaDon.setIdKhachHang(khachHang);
+//
+//
+//        hoaDon.setTrangThai(0);
+//        hoaDon.setNgayTao(new Date());
+//
+//        hoaDonRepository.save(hoaDon);
+//
+//        return "redirect:/store/ban-tai-quay";
+//    }
 
     @GetMapping("detail-hoa-don/{idHD}")
     public String detailHoaDon(@PathVariable String idHD, Model model){
@@ -183,27 +183,27 @@ public class Controller_BanTaiQuay {
     }
 
     //Thanh toán
-    @PostMapping("/thanh-toan/{idHoaDon}")
-    public String thanhToanSanPham(@PathVariable String idHoaDon,
-                                   @RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") Date ngayTao,
-                                   @RequestParam String idKhachHang){
-
-        for (int i=0;i<listHoaDon.size();i++){
-            if (listHoaDon.get(i).getId().equals(idHoaDon)){
-                HoaDon hoaDon = new HoaDon();
-                hoaDon.setId(idHoaDon);
-                KhachHang khachHang = new KhachHang();
-                khachHang.setId(idKhachHang);
-                hoaDon.setIdKhachHang(khachHang);
-                capMhatSoLuong();
-                hoaDon.setTrangThai(1);
-                hoaDon.setNgayTao(ngayTao);
-                hoaDonRepository.save(hoaDon);
-            }
-        }
-
-        return "redirect:/ban-hang";
-    }
+//    @PostMapping("/thanh-toan/{idHoaDon}")
+//    public String thanhToanSanPham(@PathVariable String idHoaDon,
+//                                   @RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") Date ngayTao,
+//                                   @RequestParam String idKhachHang){
+//
+//        for (int i=0;i<listHoaDon.size();i++){
+//            if (listHoaDon.get(i).getId().equals(idHoaDon)){
+//                HoaDon hoaDon = new HoaDon();
+//                hoaDon.setId(idHoaDon);
+//                KhachHang khachHang = new KhachHang();
+//                khachHang.setId(idKhachHang);
+//                hoaDon.setIdKhachHang(khachHang);
+//                capMhatSoLuong();
+//                hoaDon.setTrangThai(1);
+//                hoaDon.setNgayTao(ngayTao);
+//                hoaDonRepository.save(hoaDon);
+//            }
+//        }
+//
+//        return "redirect:/ban-hang";
+//    }
 
     //Cập nhật só lượng sau khi thanh toán
     public void capMhatSoLuong(){

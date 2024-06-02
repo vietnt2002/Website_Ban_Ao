@@ -11,9 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
+import java.time.LocalDateTime;
 import java.math.BigDecimal;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -50,6 +49,9 @@ public class BanTaiQuayController {
     @Autowired
     KieuTayRepository kieuTayRepo;
 
+    @Autowired
+    NhanVienRepository nhanVienRepo;
+
     private List<HoaDon> listHoaDon;
     private List<ChiTietHoaDon> listHDCT;
     private List<ChiTietSanPham> listCTSP;
@@ -59,6 +61,7 @@ public class BanTaiQuayController {
     private List<SanPham> listSanPham;
     private List<KieuTay> listKieuTay;
     private List<ChatLieu> listChatLieu;
+    private String idNV = "FE755A99-83D6-4431-8FDE-4DF25C6B8BD0";
 //    @GetMapping("detail-hoa-don/{idHD}")
 //    public String detailHoaDon(@PathVariable String idHD, Model model){
 //        Optional<HoaDon> hoaDon = hoaDonRepository.findById(idHD);
@@ -169,14 +172,56 @@ public String hienThi(Model model,@RequestParam(value = "page",defaultValue ="0"
         return "redirect:/ban-hang-tai-quay/detail-hoa-don/" + idHoaDon;
     }
 
-    @PostMapping("add-hoa-don")
-    public String themHoaDon() {
+//    @PostMapping("add-hoa-don")
+//    public String themHoaDon() {
+//        String ma1="HD";
+//        Integer sum = hoaDonRepository.countHD() + 1;
+//        String ma = ma1 + sum;
+//        System.out.println("==============test hoa don:"+ma);
+//        HoaDon hoaDon = new HoaDon();
+//        Optional<NhanVien> nv = nhanVienRepo.findById(idNV);
+//        hoaDon.setIdNhanVien(nv.get());
+//        hoaDon.setMa(ma);
+//        hoaDon.setTrangThai(0);
+//        hoaDonRepository.save(hoaDon);
+//        return "redirect:/ban-hang-tai-quay";
+//    }
+
+
+    @PostMapping("/add-hoa-don")
+    public String themHoaDon(RedirectAttributes redirectAttributes) {
+        List<HoaDon> hoaDonList = this.hoaDonRepository.selectTop5();
+        int currentHoaDonCount = hoaDonList.size();
+        // Nếu số lượng hóa đơn lớn hơn 5, gửi dữ liệu Error từ Controller sang View(file.jsp)
+        if (currentHoaDonCount >= 5) {
+            redirectAttributes.addFlashAttribute("currentHoaDonCount", currentHoaDonCount);
+            redirectAttributes.addFlashAttribute("errorBillMax", "Bạn chỉ có thể tạo tối đa 5 đơn hàng");
+            return "redirect:/ban-hang-tai-quay";
+        }
+        String ma1="HD";
+        Integer sum = hoaDonRepository.countHD() + 1;
+        String ma = ma1 + sum;
+        System.out.println("==============test hoa don:"+ma);
+        LocalDateTime now =LocalDateTime.now();
         HoaDon hoaDon = new HoaDon();
+        //Tạo mã tự sinh
+        hoaDon.setNgayTao(now);
+        Optional<NhanVien> nv = nhanVienRepo.findById(idNV);
+        hoaDon.setIdNhanVien(nv.get());
+        hoaDon.setMa(ma);
         hoaDon.setTrangThai(0);
-        hoaDon.setNgayTao(new Date());
+        try {
+            //gửi dữ liệu success từ Controller sang View(file.jsp)
+            this.hoaDonRepository.save(hoaDon);
+            redirectAttributes.addFlashAttribute("success", "Hóa đơn được tạo thành công!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Đã xảy ra lỗi khi tạo hóa đơn.");
+        }
         hoaDonRepository.save(hoaDon);
         return "redirect:/ban-hang-tai-quay";
     }
+
+
 //    @PostMapping("add-hoa-don")
 //    public String themHoaDon(){
 //        HoaDon hoaDon = new HoaDon();
@@ -308,7 +353,6 @@ public String hienThi(Model model,@RequestParam(value = "page",defaultValue ="0"
                     donGia = sp.getGiaBan();
                 }
             }
-
             ChiTietSanPham ctsp = new ChiTietSanPham();
             ctsp.setId(idCTSP);
             hdct.setIdCTSP(ctsp);
@@ -389,7 +433,7 @@ public String hienThi(Model model,@RequestParam(value = "page",defaultValue ="0"
                 hoaDon.setIdKhachHang(khachHang);
                 capMhatSoLuong();
                 hoaDon.setTrangThai(1);
-                hoaDon.setNgayTao(ngayTao);
+                hoaDon.setNgayThanhToan(ngayTao);
                 hoaDonRepository.save(hoaDon);
             }
         }
@@ -507,15 +551,16 @@ public String hienThi(Model model,@RequestParam(value = "page",defaultValue ="0"
     ){
         Pageable pageable = PageRequest.of(pageParam.orElse(0), 10);
         Page<ChiTietSanPham> listCTSP = sanPhamChiTietRepository.locCTSPByIdKieuTay(idKieuTay,SPCTRepository.ACTIVE, pageable);
+        Optional<NhanVien> nv = nhanVienRepo.findById(idNV);
         model.addAttribute("listCTSP", listCTSP);
         model.addAttribute("listSanPham",sanPhamRepo.findAll());
         model.addAttribute("listMauSac",mauSacRepository.findAll());
         model.addAttribute("listKichThuoc",kichThuocRepo.findAll());
         model.addAttribute("listChatLieu",chatLieuRepo.findAll());
         model.addAttribute("listKieuTay",kieuTayRepo.findAll());
+        model.addAttribute("nhanVien", nv.get());
         return "/view/view_payment_counter/banHangTaiQuay.jsp";
     }
-
         //lọc sản phẩm chi tiết
     @PostMapping("filter")
     public String filter(
@@ -532,7 +577,6 @@ public String hienThi(Model model,@RequestParam(value = "page",defaultValue ="0"
         System.out.println("=========================================KICHTHUOC:===="+idKichThuoc);
         System.out.println("=========================================CHATLIEU:===="+idChatLieu);
         System.out.println("=========================================KIEUTAY:===="+idKieuTay);
-
         Pageable pageable = PageRequest.of(pageParam.orElse(0), 10);
 //        Page<ChiTietSanPham> listCTSP = sanPhamChiTietRepository.findOneCombobox(idSanPham, idMauSac, idKichThuoc, idChatLieu, idKieuTay, pageable);
 
@@ -544,7 +588,5 @@ public String hienThi(Model model,@RequestParam(value = "page",defaultValue ="0"
         model.addAttribute("listKH",listKH);
         return "/view/view_payment_counter/banHangTaiQuay.jsp";
     }
-
-
 
 }

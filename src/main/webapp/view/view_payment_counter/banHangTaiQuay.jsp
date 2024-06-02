@@ -298,7 +298,7 @@
                     <li class="nav-item dropdown no-arrow">
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
+                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Emily Brown</span>
                             <img class="img-profile rounded-circle"
                                  src="/view_admin/img/undraw_profile.svg">
                         </a>
@@ -358,7 +358,7 @@
                                     <tr>
                                         <td>${i.index+1}</td>
                                         <td>${hoaDon.ma}</td>
-                                        <td>${hoaDon.idNhanVien.ten}</td>
+                                        <td>${hoaDon.idNhanVien.hoTen}</td>
                                         <td>${hoaDon.idKhachHang.ten}</td>
                                         <td>${hoaDon.ngayTao}</td>
                                         <td>${hoaDon.trangThai==0?"Chua thanh toan":"Da thanh toan"}</td>
@@ -392,7 +392,21 @@
                                         <td>${hdct.idHoaDon.ma}</td>
                                         <td>${hdct.idCTSP.idSanPham.ma}</td>
                                         <td>${hdct.idCTSP.idSanPham.ten}</td>
-                                        <td>${hdct.soLuong}</td>
+                                        <td style="display: flex; align-items: center;">
+                                            <form action="/ban-hang-tai-quay/giam-so-luong/${hdct.idCTSP.id}" method="post">
+                                                <input type="hidden" name="idHoaDon" value="${hoaDon.id}">
+                                                <button class="btn btn-light"
+                                                        style="display: flex; width: 35px; height: 30px; align-items: center; justify-content: center"
+                                                        type="submit"><i class="bi bi-caret-left"></i></button>
+                                            </form>
+                                                ${hdct.soLuong}
+                                            <form action="/ban-hang-tai-quay/them-so-luong/${hdct.idCTSP.id}" method="post">
+                                                <input type="hidden" name="idHoaDon" value="${hoaDon.id}">
+                                                <button class="btn btn-light"
+                                                        style="display: flex; width: 35px; height: 30px; align-items: center; justify-content: center"
+                                                        type="submit"><i class="bi bi-caret-right"></i></button>
+                                            </form>
+                                        </td>
                                         <td>${hdct.donGia}</td>
                                         <td>${hdct.soLuong*hdct.donGia}</td>
                                         <td>

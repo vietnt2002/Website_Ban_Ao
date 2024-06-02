@@ -2,6 +2,7 @@ package com.example.java4.entities;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Objects;
 
@@ -13,7 +14,7 @@ public class HoaDon {
     private KhuyenMai idKhuyenMai;
     private NhanVien idNhanVien;
     private KhachHang idKhachHang;
-    private Date ngayTao;
+    private LocalDateTime ngayTao;
     private Date ngayThanhToan;
     private Integer tongTien;
     private Integer trangThai;
@@ -48,11 +49,11 @@ public class HoaDon {
     }
 
     @Column(name = "NgayTao")
-    public Date getNgayTao() {
+    public LocalDateTime getNgayTao() {
         return ngayTao;
     }
 
-    public void setNgayTao(Date ngayTao) {
+    public void setNgayTao(LocalDateTime ngayTao) {
         this.ngayTao = ngayTao;
     }
 
