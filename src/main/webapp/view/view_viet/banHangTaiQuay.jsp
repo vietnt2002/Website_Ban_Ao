@@ -245,7 +245,8 @@
                                 </div>
                                 <div class="font-weight-bold">
                                     <div class="text-truncate">Hi there! I am wondering if you can help me with a
-                                        problem I've been having.</div>
+                                        problem I've been having.
+                                    </div>
                                     <div class="small text-gray-500">Emily Fowler · 58m</div>
                                 </div>
                             </a>
@@ -257,7 +258,8 @@
                                 </div>
                                 <div>
                                     <div class="text-truncate">I have the photos that you ordered last month, how
-                                        would you like them sent to you?</div>
+                                        would you like them sent to you?
+                                    </div>
                                     <div class="small text-gray-500">Jae Chun · 1d</div>
                                 </div>
                             </a>
@@ -269,7 +271,8 @@
                                 </div>
                                 <div>
                                     <div class="text-truncate">Last month's report looks great, I am very happy with
-                                        the progress so far, keep up the good work!</div>
+                                        the progress so far, keep up the good work!
+                                    </div>
                                     <div class="small text-gray-500">Morgan Alvarez · 2d</div>
                                 </div>
                             </a>
@@ -281,7 +284,8 @@
                                 </div>
                                 <div>
                                     <div class="text-truncate">Am I a good boy? The reason I ask is because someone
-                                        told me that people say this to all dogs, even if they aren't good...</div>
+                                        told me that people say this to all dogs, even if they aren't good...
+                                    </div>
                                     <div class="small text-gray-500">Chicken the Dog · 2w</div>
                                 </div>
                             </a>
@@ -325,39 +329,43 @@
             </nav>
 
 
-
-
             <!-- Bán hàng tại quầy -->
             <div class="container-fluid">
                 <div class="container">
+
+
                     <div class="row">
                         <div class="col-8">
-                            <h3>Bán hàng</h3>
+                            <div>
+                                <h3 class="float-start">Hóa đơn</h3>
+                                <form action="/store/add-hoa-don" method="post" style="float: right;" class="float-end">
+                                    <button type="submit" class="btn btn-success">+ Tạo hóa đơn</button>
+                                </form>
+                            </div>
                             <table class="table table-hover">
                                 <thead>
                                 <tr>
                                     <th>STT</th>
-                                    <th>ID</th>
+                                    <th>Mã hóa đơn</th>
+                                    <th>Nhân viên</th>
+                                    <th>Khách hàng</th>
                                     <th>Ngày tạo</th>
-                                    <th>Tên khách hàng</th>
                                     <th>Trạng thái</th>
-                                    <th>Details
-                                        <form action="/ban-hang/add-hoa-don" method="post" style="float: right;">
-                                            <button type="submit" class="btn btn-success">+</button>
-                                        </form>
-                                    </th>
+                                    <th>Chi tiết</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <c:forEach varStatus="i" items="${listHoaDon}" var="hoaDon">
                                     <tr>
                                         <td>${i.index+1}</td>
-                                        <td>${hoaDon.id}</td>
-                                        <td>${hoaDon.ngayTao}</td>
+                                        <td>${hoaDon.ma}</td>
+                                        <td>${hoaDon.idNhanVien.ten}</td>
                                         <td>${hoaDon.idKhachHang.ten}</td>
+                                        <td>${hoaDon.ngayTao}</td>
                                         <td>${hoaDon.trangThai==0?"Chua thanh toan":"Da thanh toan"}</td>
                                         <td>
-                                            <a href="/ban-hang/detail-hoa-don/${hoaDon.id}" class="btn btn-primary">View</a>
+                                            <a href="/store/detail-hoa-don/${hoaDon.id}"
+                                               class="btn btn-primary">View</a>
                                         </td>
                                     </tr>
                                 </c:forEach>
@@ -369,7 +377,7 @@
                                 <thead>
                                 <tr>
                                     <th>STT</th>
-                                    <th>ID Hóa Đơn</th>
+                                    <th>Mã Hóa Đơn</th>
                                     <th>Mã SP</th>
                                     <th>Tên SP</th>
                                     <th>Số lượng</th>
@@ -382,12 +390,12 @@
                                 <c:forEach varStatus="i" items="${listHDCT}" var="hdct">
                                     <tr>
                                         <td>${i.index+1}</td>
-                                        <td>${hdct.idHoaDon.id}</td>
-                                        <td>${hdct.idCTSP.idSanPham.maSP}</td>
-                                        <td>${hdct.idCTSP.idSanPham.tenSP}</td>
-                                        <td>${hdct.soLuongMua}</td>
-                                        <td>${hdct.giaBan}</td>
-                                        <td>${hdct.soLuongMua*hdct.giaBan}</td>
+                                        <td>${hdct.idHoaDon.ma}</td>
+                                        <td>${hdct.idCTSP.idSanPham.ma}</td>
+                                        <td>${hdct.idCTSP.idSanPham.ten}</td>
+                                        <td>${hdct.soLuong}</td>
+                                        <td>${hdct.donGia}</td>
+                                        <td>${hdct.soLuong*hdct.donGia}</td>
                                         <td>
                                             <form action="/ban-hang/delete-hdct/${hdct.id}" method="post">
                                                 <input type="hidden" name="idHoaDon" value="${hoaDon.id}">
@@ -398,46 +406,8 @@
                                 </c:forEach>
                                 </tbody>
                             </table>
-                            <!-- Sản phẩm -->
-                            <h3>Chi tiết sản phẩm</h3>
-                            <table class="table table-hover">
-                                <thead>
-                                <tr>
-                                    <th>STT</th>
-                                    <th>Mã</th>
-                                    <th>Tên SP</th>
-                                    <th>Màu sắc</th>
-                                    <th>Size</th>
-                                    <th>Số lượng</th>
-                                    <th>Đơn giá</th>
-                                    <th>Thao tác</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <c:forEach varStatus="i" items="${listCTSP}" var="spct">
-                                    <tr>
-                                        <td>${i.index+1}</td>
-                                        <td>${spct.idSanPham.maSP}</td>
-                                        <td>${spct.idSanPham.tenSP}</td>
-                                        <td>${spct.idMauSac.tenMau}</td>
-                                        <td>${spct.idSize.tenSize}</td>
-                                        <td>${spct.soLuong}</td>
-                                        <td>${spct.giaBan}</td>
-                                        <td>
-                                            <form action="/ban-hang/add-san-pham/${spct.id}" method="post"
-                                                  onsubmit="return validateBeforeAddToCart();">
-                                                <input type="hidden" name="idHoaDon" value="${hoaDon.id}"
-                                                       id="selectedInvoiceId">
-                                                <button class="btn btn-success" type="submit">+</button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                </c:forEach>
-
-                                </tbody>
-                            </table>
-
                         </div>
+
                         <div class="col-4">
                             <div class="card">
                                 <div class="card-body">
@@ -446,19 +416,21 @@
                                         <div class="row mb-3">
                                             <label class="col-sm-4 col-form-label">ID hóa đơn</label>
                                             <div class="col-sm-8">
-                                                <input type="text" class="form-control" value="${hoaDon.id}" />
+                                                <input type="text" class="form-control" value="${hoaDon.id}"/>
                                             </div>
                                         </div>
                                         <div class="row mb-3">
                                             <label class="col-sm-4 col-form-label">Ngày tạo</label>
                                             <div class="col-sm-8">
-                                                <input type="text" class="form-control" name="ngayTao" value="${hoaDon.ngayTao}">
+                                                <input type="text" class="form-control" name="ngayTao"
+                                                       value="${hoaDon.ngayTao}">
                                             </div>
                                         </div>
                                         <div class="row mb-3">
                                             <label class="col-sm-4 col-form-label">Sđt khách hàng</label>
                                             <div class="col-sm-6">
-                                                <select path="idKhachHang" class="form-select" aria-label="Default select example" name="idKhachHang">
+                                                <select path="idKhachHang" class="form-select"
+                                                        aria-label="Default select example" name="idKhachHang">
                                                     <c:forEach items="${listKH}" var="khachHang">
 
                                                         <option value="${khachHang.id}" ${hoaDon.idKhachHang.sdt==khachHang.sdt?"selected":""}>${khachHang.sdt}</option>
@@ -466,15 +438,17 @@
                                                     </c:forEach>
                                                 </select>
                                             </div>
-                                            <a class="col-sm-2" data-bs-toggle="modal" data-bs-target="#exampleModal" href="#">
+                                            <a class="col-sm-2" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                                               href="#">
                                                 <i class=" bi bi-folder-plus col-3" style="font-size: 25px;"></i>
                                             </a>
                                         </div>
                                         <div class="row mb-3">
                                             <label class="col-sm-4 col-form-label">Tổng tiền</label>
                                             <div class="col-sm-8">
-                                                <input id="tongTien" type="number" class="form-control" value="${tongTien}"
-                                                       readonly />
+                                                <input id="tongTien" type="number" class="form-control"
+                                                       value="${tongTien}"
+                                                       readonly/>
                                             </div>
                                         </div>
                                         <div class="row mb-3">
@@ -492,7 +466,8 @@
                                         <div class="row mb-3">
                                             <label class="col-sm-4 col-form-label">Trả lại</label>
                                             <div class="col-sm-8">
-                                                <input id="tienTraLai" type="number" class="form-control" required readonly>
+                                                <input id="tienTraLai" type="number" class="form-control" required
+                                                       readonly>
 
                                             </div>
                                         </div>
@@ -505,8 +480,175 @@
                                     <!-- End General Form Elements -->
                                 </div>
                             </div><!-- End Recent Activity -->
-                            <!--  -->
                         </div>
+                    </div>
+
+
+                    <%--          --%>
+                    <div class="row">
+                        <div class="col col-12">
+                            <!-- Sản phẩm -->
+                            <h3>Chi tiết sản phẩm</h3>
+
+                            <div class="row">
+                                <div class="col col-5">
+                                    <form method="post" action="/store/search">
+                                        <div class="input-group mb-3">
+                                            <input type="text" name="search" class="form-control"
+                                                   placeholder="Tìm kiếm theo mã sản phẩm, màu sắc,..."
+                                                   aria-label="Recipient's username" aria-describedby="button-addon2">
+                                            <button class="btn btn-primary" type="submit" id="button-addon2">Tìm kiếm
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+
+                            <form method="post" action="/store/filter">
+                                <div class="row">
+                                    <div class="col col-md-2">
+                                        <div class="input-group mb-3">
+                                            <div class="dropdown">
+                                                <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                                        id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                                                        aria-expanded="false">
+                                                    Chọn sản phẩm
+                                                </button>
+                                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                                    <c:forEach items="${listSanPham}" var="sanPham">
+                                                        <li><a class="dropdown-item"
+                                                               href="/store/locSPCTBySanPham/${sanPham.id}">${sanPham.ten}</a>
+                                                        </li>
+                                                    </c:forEach>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col col-md-2">
+                                        <div class="dropdown">
+                                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
+                                                Chọn màu sắc
+                                            </button>
+                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                                                <c:forEach items="${listMauSac}" var="mauSac">
+                                                    <li><a class="dropdown-item" href="/store/locSPCTByMauSac/${mauSac.id}">${mauSac.ten}</a></li>
+                                                </c:forEach>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <div class="col col-md-2">
+                                        <div class="dropdown">
+                                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-expanded="false">
+                                                Chọn kích thước
+                                            </button>
+                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton3">
+                                                <c:forEach items="${listKichThuoc}" var="kichThuoc">
+                                                    <li><a class="dropdown-item" href="/store/locSPCTByKichThuoc/${kichThuoc.id}">${kichThuoc.ten}</a></li>
+                                                </c:forEach>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <div class="col col-md-2">
+                                        <div class="dropdown">
+                                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton4" data-bs-toggle="dropdown" aria-expanded="false">
+                                                Chọn chất liệu
+                                            </button>
+                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton4">
+                                                <c:forEach items="${listChatLieu}" var="chatLieu">
+                                                    <li><a class="dropdown-item" href="/store/locSPCTByChatLieu/${chatLieu.id}">${chatLieu.ten}</a></li>
+                                                </c:forEach>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <div class="col col-md-2">
+                                        <div class="dropdown">
+                                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton5" data-bs-toggle="dropdown" aria-expanded="false">
+                                                Chọn kiểu tay
+                                            </button>
+                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton5">
+                                                <c:forEach items="${listKieuTay}" var="kieuTay">
+                                                    <li><a class="dropdown-item" href="/store/locSPCTByKieuTay/${kieuTay.id}">${kieuTay.ten}</a></li>
+                                                </c:forEach>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <div class="col col-2">
+                                        <button type="submit" class="btn btn-primary float-start">Lọc</button>
+                                        <a href="/store/ban-tai-quay" class="btn btn-danger float-start">Hủy</a>
+                                    </div>
+
+                                </div>
+                            </form>
+
+
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th>STT</th>
+                                    <th>Mã</th>
+                                    <th>Tên SP</th>
+                                    <th>Màu sắc</th>
+                                    <th>Kích thước</th>
+                                    <th>Chất liệu</th>
+                                    <th>Kiểu tay</th>
+                                    <th>Số lượng</th>
+                                    <th>Đơn giá</th>
+                                    <th>Trạng thái</th>
+                                    <th>Thao tác</th>
+                                </tr>
+                                </thead>
+                                <tbody id="chiTietSanPhamTableBody">
+                                <c:forEach varStatus="i" items="${listCTSP.content}" var="spct">
+                                    <tr>
+                                        <td>${i.index+1}</td>
+                                        <td>${spct.idSanPham.ma}</td>
+                                        <td>${spct.idSanPham.ten}</td>
+                                        <td>${spct.idMauSac.ten}</td>
+                                        <td>${spct.idKichThuoc.ten}</td>
+                                        <td>${spct.idChatLieu.ten}</td>
+                                        <td>${spct.idKieuTay.ten}</td>
+                                        <td>${spct.soLuong}</td>
+                                        <td>${spct.giaBan}</td>
+                                        <td>${spct.trangThai==1?"Còn hàng":"Hết hàng"}</td>
+                                        <td>
+                                            <form action="/ban-hang/add-san-pham/${spct.id}" method="post"
+                                                  onsubmit="return validateBeforeAddToCart();">
+                                                <input type="hidden" name="idHoaDon" value="${hoaDon.id}"
+                                                       id="selectedInvoiceId">
+                                                <button class="btn btn-success" type="submit">+</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+
+                                </tbody>
+                            </table>
+                            <div class="float-end">
+                                <nav aria-label="Page navigation example">
+                                    <ul class="pagination">
+                                        <c:if test="${listCTSP.number > 0}">
+                                            <li class="page-item"><a class="page-link"
+                                                                     href="/store/ban-tai-quay?page=${listCTSP.number - 1}">Trước</a>
+                                            </li>
+                                        </c:if>
+                                        <li class="page-item"><a class="page-link" href="#">${listCTSP.number + 1}</a>
+                                        </li>
+                                        <c:if test="${listCTSP.number+1 < listCTSP.totalPages}">
+                                            <li class="page-item"><a class="page-link"
+                                                                     href="/store/ban-tai-quay?page=${listCTSP.number + 1}">Sau</a>
+                                            </li>
+                                        </c:if>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
 
@@ -573,23 +715,23 @@
 <script src="/view_admin/js/demo/chart-pie-demo.js"></script>
 
 </body>
-<script>
 
+<script>
     function calculateChange() {
         var tongTien = parseFloat('${tongTien}');
         var tienKhachDua = parseFloat(document.getElementById('tienKhachDua').value);
         var tienTraLai = tienKhachDua - tongTien;
-        var  thongBao = document.getElementById("errTraLai");
+        var thongBao = document.getElementById("errTraLai");
         if (isNaN(tienKhachDua)) {
-            thongBao.textContent="Vui lòng nhập số tiền hợp lệ.";
+            thongBao.textContent = "Vui lòng nhập số tiền hợp lệ.";
             // alert('Vui lòng nhập số tiền hợp lệ.');
             return false;
         }
 
         if (tienKhachDua < tongTien) {
-            thongBao.textContent="Số tiền khách đưa phải lớn hơn hoặc bằng tổng tiền.";
+            thongBao.textContent = "Số tiền khách đưa phải lớn hơn hoặc bằng tổng tiền.";
             // alert('Số tiền khách đưa phải lớn hơn hoặc bằng tổng tiền.');
-            document.getElementById('tienTraLai').value ="";
+            document.getElementById('tienTraLai').value = "";
             return false;
         }
 
@@ -601,9 +743,9 @@
         var tienKhachDua = document.getElementById("tienKhachDua").value;
         var tongTien = parseFloat('${tongTien}');
         if (tienKhachDua === "" || tienKhachDua < tongTien) {
-            thongBao.textContent= thongBao.textContent="Vui lòng nhập số tiền khách đưa hợp lệ."
+            thongBao.textContent = thongBao.textContent = "Vui lòng nhập số tiền khách đưa hợp lệ."
             // alert("Vui lòng nhập số tiền khách đưa hợp lệ.");
-            document.getElementById('tienTraLai').value ="";
+            document.getElementById('tienTraLai').value = "";
             return false;
         }
         return true;
@@ -620,7 +762,6 @@
 
         return true; // Cho phép thêm sản phẩm vào giỏ hàng nếu đã chọn hóa đơn
     }
-
 </script>
 
 </html>
