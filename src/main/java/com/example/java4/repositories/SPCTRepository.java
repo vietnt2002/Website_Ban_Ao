@@ -31,7 +31,7 @@ public interface SPCTRepository extends JpaRepository<ChiTietSanPham,String>, Jp
 
     public static final int ACTIVE  = 1;
     public static final int INACTIVE =0;
-    @Query("select ctsp from ChiTietSanPham ctsp where ctsp.trangThai=1 order by ctsp.id")
+    @Query("select ctsp from ChiTietSanPham ctsp where ctsp.trangThai=1 order by ctsp.id asc")
     public Page<ChiTietSanPham> findByTrangThai(int trangThai, Pageable pageable);
     // Tìm kiếm trên ô text
     @Query("select ctsp from ChiTietSanPham ctsp " +
