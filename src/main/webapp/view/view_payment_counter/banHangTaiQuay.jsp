@@ -2,6 +2,12 @@
 <%@ taglib prefix="f" uri="jakarta.tags.functions" %>
 <%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%--    Thêm thư viện SweetAlert2 để thiển thị thông báo--%>
+<!-- SweetAlert2 CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
+<!-- SweetAlert2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -331,8 +337,6 @@
             <!-- Bán hàng tại quầy -->
             <div class="container-fluid">
                 <div class="container">
-
-
                     <div class="row">
                         <div class="col-8">
                             <div>
@@ -427,9 +431,9 @@
                                     <h5 class="card-title">HÓA ĐƠN</h5>
                                     <form method="POST" action="/ban-hang-tai-quay/thanh-toan/${hoaDon.id}">
                                         <div class="row mb-3">
-                                            <label class="col-sm-4 col-form-label">ID hóa đơn</label>
+                                            <label class="col-sm-4 col-form-label">Mã hóa đơn</label>
                                             <div class="col-sm-8">
-                                                <input type="text" class="form-control" value="${hoaDon.id}"/>
+                                                <input type="text" class="form-control" value="${hoaDon.ma}"/>
                                             </div>
                                         </div>
                                         <div class="row mb-3">
@@ -776,5 +780,63 @@
         return true; // Cho phép thêm sản phẩm vào giỏ hàng nếu đã chọn hóa đơn
     }
 </script>
+<script>
+    // Hiển thị thông báo thêm thành công hoặc thất bại sử dụng thư viện Sweet Alert2
+    const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+        }
+    });
 
+    <c:if test="${not empty success}">
+    Toast.fire({
+        icon: "success",
+        title: "${success}"
+    });
+    </c:if>
+
+    <c:if test="${not empty error}">
+    Toast.fire({
+        icon: "error",
+        title: "${error}"
+    });
+    </c:if>
+
+    <c:if test="${not empty errorBillMax}">
+    Toast.fire({
+        icon: "warning",
+        title: "${errorBillMax}"
+    });
+    </c:if>
+
+
+    // document.addEventListener("DOMContentLoaded", function () {
+    //     const addButton = document.querySelector(".btn-bill");
+    //     const currentHoaDonCount = parseInt(document.getElementById("currentHoaDonCount").value);
+    //
+    //     addButton.addEventListener("click", function (event) {
+    //         event.preventDefault();
+    //
+    //         if (currentHoaDonCount >= 4) {
+    //             Swal.fire({
+    //                 icon: "warning",
+    //                 title: "Bạn chỉ có thể tạo tối đa 5 đơn hàng",
+    //                 toast: true,
+    //                 position: "top-end",
+    //                 showConfirmButton: false,
+    //                 timer: 3000,
+    //                 timerProgressBar: true
+    //             });
+    //         } else {
+    //             document.getElementById("addHoaDonForm").submit();
+    //         }
+    //     });
+    // });
+</script>
 </html>

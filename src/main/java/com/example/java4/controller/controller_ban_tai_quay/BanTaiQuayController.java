@@ -96,21 +96,22 @@ public class BanTaiQuayController {
 public String hienThi(Model model,@RequestParam(value = "page",defaultValue ="0") String pageParam ) {
     System.out.println("========================================= test paa"+pageParam);
     Pageable pageable = PageRequest.of(Integer.valueOf(pageParam), 10);
-    listHoaDon = hoaDonRepository.findAll();
-    Page<ChiTietSanPham> listCTSP = sanPhamChiTietRepository.findAll(pageable);
-    listHDCT = hoaDonChiTietRepository.findAll();
+    listHoaDon = hoaDonRepository.selectTop5();
+    Page<ChiTietSanPham> listCTSP = sanPhamChiTietRepository.findByTrangThai(1,pageable);
     listKH = khachHangRepository.findAll();
     listMauSac = mauSacRepository.findAll();
     listKichThuoc = kichThuocRepo.findAll();
-    model.addAttribute("listHoaDon", listHoaDon);
-    model.addAttribute("listCTSP", listCTSP);
-    model.addAttribute("listHDCT", listHDCT);
-    model.addAttribute("listKH", listKH);
+    listKieuTay = kieuTayRepo.findAll();
+    listSanPham = sanPhamRepo.findAll();
+    listChatLieu = chatLieuRepo.findAll();
     model.addAttribute("listMauSac", listMauSac);
     model.addAttribute("listKichThuoc", listKichThuoc);
     model.addAttribute("listChatLieu", listChatLieu);
     model.addAttribute("listKieuTay", listKieuTay);
     model.addAttribute("listSanPham", listSanPham);
+    model.addAttribute("listHoaDon", listHoaDon);
+    model.addAttribute("listCTSP", listCTSP);
+    model.addAttribute("listKH", listKH);
     System.out.println(listMauSac);
     return "/view/view_payment_counter/banHangTaiQuay.jsp";
 }
@@ -130,15 +131,25 @@ public String hienThi(Model model,@RequestParam(value = "page",defaultValue ="0"
     public String detailHoaDon(@PathVariable String idHD,@RequestParam Optional<Integer> pageParam, Model model) {
         Optional<HoaDon> hoaDon = hoaDonRepository.findById(idHD);
         model.addAttribute("hoaDon", hoaDon.get());
-        listHoaDon = hoaDonRepository.findAll();
+        listHoaDon = hoaDonRepository.selectTop5();
         listHDCT = hoaDonChiTietRepository.findAll();
         listKH = khachHangRepository.findAll();
+        listMauSac = mauSacRepository.findAll();
+        listKichThuoc = kichThuocRepo.findAll();
+        listKieuTay = kieuTayRepo.findAll();
+        listSanPham = sanPhamRepo.findAll();
+        listChatLieu = chatLieuRepo.findAll();
         Pageable pageable = PageRequest.of(pageParam.orElse(0), 10);
         Page<ChiTietSanPham> listCTSP = sanPhamChiTietRepository.findAll(pageable);
         model.addAttribute("listHoaDon", listHoaDon);
         model.addAttribute("listCTSP", listCTSP);
         model.addAttribute("listHDCT", listHDCT);
         model.addAttribute("listKH", listKH);
+        model.addAttribute("listMauSac", listMauSac);
+        model.addAttribute("listKichThuoc", listKichThuoc);
+        model.addAttribute("listChatLieu", listChatLieu);
+        model.addAttribute("listKieuTay", listKieuTay);
+        model.addAttribute("listSanPham", listSanPham);
         //Lọc hóa đơn chi tiết theo id hóa đơn
         List<ChiTietHoaDon> gioHangTheoHoaDon = new ArrayList<>();
         for (ChiTietHoaDon chiTietHoaDon : listHDCT) {
@@ -221,7 +232,6 @@ public String hienThi(Model model,@RequestParam(value = "page",defaultValue ="0"
         return "redirect:/ban-hang-tai-quay";
     }
 
-
 //    @PostMapping("add-hoa-don")
 //    public String themHoaDon(){
 //        HoaDon hoaDon = new HoaDon();
@@ -233,6 +243,32 @@ public String hienThi(Model model,@RequestParam(value = "page",defaultValue ="0"
 //        hoaDonRepository.save(hoaDon);
 //        return "redirect:/ban-hang";
 //    }
+    @PostMapping("giam-so-luong/{idCTSP}")
+    public String giamSoLuong(@PathVariable String idCTSP, @RequestParam String idHoaDon) {
+        //Giảm số lượng sản phẩm -1 khi ấn vào button giảm trong giỏ hàng
+        listCTSP = sanPhamChiTietRepository.findAll();
+        for (ChiTietHoaDon chiTietHoaDon : listHDCT) {
+            if (chiTietHoaDon.getIdCTSP().getId().equals(idCTSP) && chiTietHoaDon.getIdHoaDon().getId().equals(idHoaDon)) {
+                chiTietHoaDon.setSoLuong(chiTietHoaDon.getSoLuong() - 1);
+                hoaDonChiTietRepository.save(chiTietHoaDon);
+                //Khi số lượng sản phẩm trong giở hàng <= 0 thì set số lượng = 1
+                if (chiTietHoaDon.getSoLuong() <= 0) {
+                    chiTietHoaDon.setSoLuong(1);
+                    hoaDonChiTietRepository.save(chiTietHoaDon);
+                } else {
+                    //Số lượng của sản phẩm chi tiết được +1 khi ấn vào button thêm trong giỏ hàng
+                    for (ChiTietSanPham chiTietSanPham : listCTSP) {
+                        if (chiTietSanPham.getId().equals(idCTSP)) {
+                            chiTietSanPham.setSoLuong(chiTietSanPham.getSoLuong() + 1);
+                            sanPhamChiTietRepository.save(chiTietSanPham);
+                        }
+                    }
+                }
+            }
+        }
+        return "redirect:/ban-hang-tai-quay/detail-hoa-don/" + idHoaDon;
+    }
+
 
     @PostMapping("them-so-luong/{idCTSP}")
     public String themSoLuong(@PathVariable String idCTSP, @RequestParam String idHoaDon, RedirectAttributes redirectAttributes) {
@@ -260,31 +296,6 @@ public String hienThi(Model model,@RequestParam(value = "page",defaultValue ="0"
                     }
                 }
 
-            }
-        }
-        return "redirect:/ban-hang-tai-quay/detail-hoa-don/" + idHoaDon;
-    }
-
-    @PostMapping("giam-so-luong/{idCTSP}")
-    public String giamSoLuong(@PathVariable String idCTSP, @RequestParam String idHoaDon) {
-        //Giảm số lượng sản phẩm -1 khi ấn vào button giảm trong giỏ hàng
-        for (ChiTietHoaDon chiTietHoaDon : listHDCT) {
-            if (chiTietHoaDon.getIdCTSP().getId().equals(idCTSP) && chiTietHoaDon.getIdHoaDon().getId().equals(idHoaDon)) {
-                chiTietHoaDon.setSoLuong(chiTietHoaDon.getSoLuong() - 1);
-                hoaDonChiTietRepository.save(chiTietHoaDon);
-                //Khi số lượng sản phẩm trong giở hàng <= 0 thì set số lượng = 1
-                if (chiTietHoaDon.getSoLuong() <= 0) {
-                    chiTietHoaDon.setSoLuong(1);
-                    hoaDonChiTietRepository.save(chiTietHoaDon);
-                } else {
-                    //Số lượng của sản phẩm chi tiết được +1 khi ấn vào button thêm trong giỏ hàng
-                    for (ChiTietSanPham chiTietSanPham : listCTSP) {
-                        if (chiTietSanPham.getId().equals(idCTSP)) {
-                            chiTietSanPham.setSoLuong(chiTietSanPham.getSoLuong() + 1);
-                            sanPhamChiTietRepository.save(chiTietSanPham);
-                        }
-                    }
-                }
             }
         }
         return "redirect:/ban-hang-tai-quay/detail-hoa-don/" + idHoaDon;
@@ -422,16 +433,11 @@ public String hienThi(Model model,@RequestParam(value = "page",defaultValue ="0"
     //Thanh toán
     @PostMapping("/thanh-toan/{idHoaDon}")
     public String thanhToanSanPham(@PathVariable String idHoaDon,
-                                   @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date ngayTao,
-                                   @RequestParam String idKhachHang) {
+                                   @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date ngayTao) {
         for (int i = 0; i < listHoaDon.size(); i++) {
             if (listHoaDon.get(i).getId().equals(idHoaDon)) {
                 HoaDon hoaDon = new HoaDon();
                 hoaDon.setId(idHoaDon);
-                KhachHang khachHang = new KhachHang();
-                khachHang.setId(idKhachHang);
-                hoaDon.setIdKhachHang(khachHang);
-                capMhatSoLuong();
                 hoaDon.setTrangThai(1);
                 hoaDon.setNgayThanhToan(ngayTao);
                 hoaDonRepository.save(hoaDon);
@@ -442,6 +448,7 @@ public String hienThi(Model model,@RequestParam(value = "page",defaultValue ="0"
 
     //Cập nhật só lượng sau khi thanh toán
     public void capMhatSoLuong() {
+        listCTSP = sanPhamChiTietRepository.findAll();
         for (ChiTietHoaDon hdct : listHDCT) {
             String idSPCT = hdct.getIdCTSP().getId();
             int soLuong = hdct.getSoLuong();
@@ -480,6 +487,7 @@ public String hienThi(Model model,@RequestParam(value = "page",defaultValue ="0"
             @PathVariable("idSanPham") String idSanPham,
             @RequestParam("page") Optional<Integer> pageParam
     ){
+        listHoaDon = hoaDonRepository.selectTop5();
         Pageable pageable = PageRequest.of(pageParam.orElse(0), 10);
         Page<ChiTietSanPham> listCTSP = sanPhamChiTietRepository.locCTSPByIdSanPham(idSanPham,SPCTRepository.ACTIVE, pageable);
         model.addAttribute("listCTSP", listCTSP);
@@ -488,6 +496,7 @@ public String hienThi(Model model,@RequestParam(value = "page",defaultValue ="0"
         model.addAttribute("listKichThuoc",kichThuocRepo.findAll());
         model.addAttribute("listChatLieu",chatLieuRepo.findAll());
         model.addAttribute("listKieuTay",kieuTayRepo.findAll());
+        model.addAttribute("listHoaDon",  listHoaDon);
         return "/view/view_payment_counter/banHangTaiQuay.jsp";
     }
 
@@ -498,6 +507,7 @@ public String hienThi(Model model,@RequestParam(value = "page",defaultValue ="0"
             @PathVariable("idMauSac") String idMauSac,
             @RequestParam("page") Optional<Integer> pageParam
     ){
+        listHoaDon = hoaDonRepository.selectTop5();
         Pageable pageable = PageRequest.of(pageParam.orElse(0), 10);
         Page<ChiTietSanPham> listCTSP = sanPhamChiTietRepository.locCTSPByIdMauSac(idMauSac,SPCTRepository.ACTIVE, pageable);
         model.addAttribute("listCTSP", listCTSP);
@@ -506,6 +516,7 @@ public String hienThi(Model model,@RequestParam(value = "page",defaultValue ="0"
         model.addAttribute("listKichThuoc",kichThuocRepo.findAll());
         model.addAttribute("listChatLieu",chatLieuRepo.findAll());
         model.addAttribute("listKieuTay",kieuTayRepo.findAll());
+        model.addAttribute("listHoaDon",listHoaDon);
         return "/view/view_payment_counter/banHangTaiQuay.jsp";
     }
     //Lọc kích thước
@@ -515,6 +526,7 @@ public String hienThi(Model model,@RequestParam(value = "page",defaultValue ="0"
             @PathVariable("idKichThuoc") String idKichThuoc,
             @RequestParam("page") Optional<Integer> pageParam
     ){
+        listHoaDon = hoaDonRepository.selectTop5();
         Pageable pageable = PageRequest.of(pageParam.orElse(0), 10);
         Page<ChiTietSanPham> listCTSP = sanPhamChiTietRepository.locCTSPByIdKichThuoc(idKichThuoc,SPCTRepository.ACTIVE, pageable);
         model.addAttribute("listCTSP", listCTSP);
@@ -523,6 +535,7 @@ public String hienThi(Model model,@RequestParam(value = "page",defaultValue ="0"
         model.addAttribute("listKichThuoc",kichThuocRepo.findAll());
         model.addAttribute("listChatLieu",chatLieuRepo.findAll());
         model.addAttribute("listKieuTay",kieuTayRepo.findAll());
+        model.addAttribute("listHoaDon", listHoaDon);
         return "/view/view_payment_counter/banHangTaiQuay.jsp";
     }
     //Lọc chất liệu
@@ -532,6 +545,7 @@ public String hienThi(Model model,@RequestParam(value = "page",defaultValue ="0"
             @PathVariable("idChatLieu") String idChatLieu,
             @RequestParam("page") Optional<Integer> pageParam
     ){
+        listHoaDon = hoaDonRepository.selectTop5();
         Pageable pageable = PageRequest.of(pageParam.orElse(0), 10);
         Page<ChiTietSanPham> listCTSP = sanPhamChiTietRepository.locCTSPByIdChatLieu(idChatLieu,SPCTRepository.ACTIVE, pageable);
         model.addAttribute("listCTSP", listCTSP);
@@ -540,6 +554,7 @@ public String hienThi(Model model,@RequestParam(value = "page",defaultValue ="0"
         model.addAttribute("listKichThuoc",kichThuocRepo.findAll());
         model.addAttribute("listChatLieu",chatLieuRepo.findAll());
         model.addAttribute("listKieuTay",kieuTayRepo.findAll());
+        model.addAttribute("listHoaDon",listHoaDon);
         return "/view/view_payment_counter/banHangTaiQuay.jsp";
     }
     //Lọc kiểu tay
@@ -549,6 +564,7 @@ public String hienThi(Model model,@RequestParam(value = "page",defaultValue ="0"
             @PathVariable("idKieuTay") String idKieuTay,
             @RequestParam("page") Optional<Integer> pageParam
     ){
+        listHoaDon = hoaDonRepository.selectTop5();
         Pageable pageable = PageRequest.of(pageParam.orElse(0), 10);
         Page<ChiTietSanPham> listCTSP = sanPhamChiTietRepository.locCTSPByIdKieuTay(idKieuTay,SPCTRepository.ACTIVE, pageable);
         Optional<NhanVien> nv = nhanVienRepo.findById(idNV);
@@ -559,6 +575,7 @@ public String hienThi(Model model,@RequestParam(value = "page",defaultValue ="0"
         model.addAttribute("listChatLieu",chatLieuRepo.findAll());
         model.addAttribute("listKieuTay",kieuTayRepo.findAll());
         model.addAttribute("nhanVien", nv.get());
+        model.addAttribute("listHoaDon",listHoaDon);
         return "/view/view_payment_counter/banHangTaiQuay.jsp";
     }
         //lọc sản phẩm chi tiết
