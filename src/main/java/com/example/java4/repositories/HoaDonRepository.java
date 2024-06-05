@@ -17,10 +17,18 @@ public interface HoaDonRepository
     public static final int ACTIVE  = 1;
     public static final int INACTIVE =0;
     public Page<HoaDon> findByTrangThai(int trangThai, Pageable pageable);
+
+    //
+//    public Page<List> findByTrangThai(int trangThai, Pageable pageable);
+
     @Query(value = "SELECT TOP 5 * FROM HoaDon where trangThai = 0 ORDER BY ngayTao DESC",
             nativeQuery = true)
     public List<HoaDon>  selectTop5();
     public Optional<HoaDon> findById(String id);
     @Query(value = "SELECT COUNT(*) FROM dbo.HoaDon",nativeQuery = true)
     Integer countHD();
+
+
+
+
 };

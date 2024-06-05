@@ -362,8 +362,10 @@ public String hienThi(Model model,@RequestParam(value = "page",defaultValue ="0"
                                    @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date ngayTao) {
         for (int i = 0; i < listHoaDon.size(); i++) {
             if (listHoaDon.get(i).getId().equals(idHoaDon)) {
-                HoaDon hoaDon = new HoaDon();
+                HoaDon hoaDon = hoaDonRepository.findById(idHoaDon).get();
                 hoaDon.setId(idHoaDon);
+                hoaDon.setMa(hoaDon.getMa());
+                hoaDon.setTongTien(hoaDon.getTongTien());
                 hoaDon.setTrangThai(1);
                 hoaDon.setNgayThanhToan(ngayTao);
                 hoaDonRepository.save(hoaDon);
