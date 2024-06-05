@@ -2,6 +2,7 @@
 <%@ taglib prefix="f" uri="jakarta.tags.functions" %>
 <%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%--    Thêm thư viện SweetAlert2 để thiển thị thông báo--%>
 <!-- SweetAlert2 CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
@@ -447,7 +448,7 @@
                         <div class="tab-content mt-3" id="myTabContent">
                             <div class="tab-pane fade show active" id="all" role="tabpanel" aria-labelledby="all-tab">
                                 <%--  Danh sách tất cả các hóa đơn   --%>
-                                <table class="table table-bordered" width="100%" cellspacing="0">
+                                <table class="table table-bordered table-primary" width="100%" cellspacing="0">
                                     <thead>
                                     <tr>
                                         <th>STT</th>
@@ -464,21 +465,53 @@
                                     </thead>
 
                                     <tbody>
-                                    <tr>
-                                        <td>Tiger Nixon</td>
-                                        <td>System Architect</td>
-                                        <td>Edinburgh</td>
-                                        <td>61</td>
-                                        <td>2011/04/25</td>
-                                        <td>$320,800</td>
-                                        <td>$320,800</td>
-                                        <td>$320,800</td>
-                                        <td>$320,800</td>
-                                        <td>$320,800</td>
-                                    </tr>
+                                    <c:forEach var="hoaDon" items="${pageHD.content}" varStatus="i">
+                                        <tr>
+                                            <td>${i.index + 1}</td>
+                                            <td>${hoaDon.ma}</td>
+                                            <td>${hoaDon.idNhanVien.hoTen}</td>
+                                            <td>${hoaDon.idKhachHang.hoTen}</td>
+                                            <td>${hoaDon.idKhachHang.sdt}</td>
+                                            <td>Bán tại quầy</td>
+                                            <td>${hoaDon.tongTien}</td>
+                                            <td
+                                                <%--${hoaDon.ngayTao}--%>
+                                            </td>
+                                            <td>
+                                                 <span
+                                                         class="badge rounded-pill ${hoaDon.trangThai == 0 ? 'bg-danger' : 'bg-success'}">
+                                                         ${hoaDon.trangThai == 0 ? 'Chưa thanh toán' : 'Đã thanh toán'}
+                                                 </span>
+                                            </td>
+                                            <td>
+                                                <a href="/ban-hang-tai-quay/detail-hoa-don/${hoaDon.id}"
+                                                   class="btn btn-primary">View</a>
+                                            </td>
+
+                                        </tr>
+                                    </c:forEach>
 
                                     </tbody>
                                 </table>
+                                <%-- Phân trang của tất cả các hóa đơn  --%>
+                                <div class="float-end">
+                                    <nav aria-label="Page navigation example">
+                                        <ul class="pagination">
+                                            <c:if test="${pageHD.number > 0}">
+                                                <li class="page-item"><a class="page-link"
+                                                                         href="/hoa-don/hien-thi?page=${pageHD.number - 1}">&laquo;</a>
+                                                </li>
+                                            </c:if>
+                                            <li class="page-item"><a class="page-link" href="#">${pageHD.number + 1}</a>
+                                            </li>
+                                            <c:if test="${pageHD.number+1 < pageHD.totalPages}">
+                                                <li class="page-item"><a class="page-link"
+                                                                         href="/hoa-don/hien-thi?page=${pageHD.number + 1}">&raquo;</a>
+                                                </li>
+                                            </c:if>
+                                        </ul>
+                                    </nav>
+                                </div>
                             </div>
                             <div class="tab-pane fade" id="confimation" role="tabpanel"
                                  aria-labelledby="confimation-tab">
@@ -515,6 +548,25 @@
 
                                     </tbody>
                                 </table>
+                                <%-- Phân trang của hóa đơn chờ xác nhận  --%>
+                                <div class="float-end">
+                                    <nav aria-label="Page navigation example">
+                                        <ul class="pagination">
+                                            <c:if test="${pageHD.number > 0}">
+                                                <li class="page-item"><a class="page-link"
+                                                                         href="/hoa-don/hien-thi?page=${pageHD.number - 1}">&laquo;</a>
+                                                </li>
+                                            </c:if>
+                                            <li class="page-item"><a class="page-link" href="#">${pageHD.number + 1}</a>
+                                            </li>
+                                            <c:if test="${pageHD.number+1 < pageHD.totalPages}">
+                                                <li class="page-item"><a class="page-link"
+                                                                         href="/hoa-don/hien-thi?page=${pageHD.number + 1}">&raquo;</a>
+                                                </li>
+                                            </c:if>
+                                        </ul>
+                                    </nav>
+                                </div>
                             </div>
                             <div class="tab-pane fade" id="confirmed" role="tabpanel" aria-labelledby="confirmed-tab">
                                 <%-- Danh sách hóa đơn đã xác nhận     --%>
@@ -550,6 +602,25 @@
 
                                     </tbody>
                                 </table>
+                                <%-- Phân trang của hóa đơn đã xác nhận    --%>
+                                <div class="float-end">
+                                    <nav aria-label="Page navigation example">
+                                        <ul class="pagination">
+                                            <c:if test="${pageHD.number > 0}">
+                                                <li class="page-item"><a class="page-link"
+                                                                         href="/hoa-don/hien-thi?page=${pageHD.number - 1}">&laquo;</a>
+                                                </li>
+                                            </c:if>
+                                            <li class="page-item"><a class="page-link" href="#">${pageHD.number + 1}</a>
+                                            </li>
+                                            <c:if test="${pageHD.number+1 < pageHD.totalPages}">
+                                                <li class="page-item"><a class="page-link"
+                                                                         href="/hoa-don/hien-thi?page=${pageHD.number + 1}">&raquo;</a>
+                                                </li>
+                                            </c:if>
+                                        </ul>
+                                    </nav>
+                                </div>
                             </div>
                             <div class="tab-pane fade" id="delivery" role="tabpanel" aria-labelledby="delivery-tab">
                                 <%-- Danh sách hóa đơn chờ giao hàng    --%>
@@ -585,6 +656,25 @@
 
                                     </tbody>
                                 </table>
+                                <%-- Phân trang của hóa đơn chờ giao   --%>
+                                <div class="float-end">
+                                    <nav aria-label="Page navigation example">
+                                        <ul class="pagination">
+                                            <c:if test="${pageHD.number > 0}">
+                                                <li class="page-item"><a class="page-link"
+                                                                         href="/hoa-don/hien-thi?page=${pageHD.number - 1}">&laquo;</a>
+                                                </li>
+                                            </c:if>
+                                            <li class="page-item"><a class="page-link" href="#">${pageHD.number + 1}</a>
+                                            </li>
+                                            <c:if test="${pageHD.number+1 < pageHD.totalPages}">
+                                                <li class="page-item"><a class="page-link"
+                                                                         href="/hoa-don/hien-thi?page=${pageHD.number + 1}">&raquo;</a>
+                                                </li>
+                                            </c:if>
+                                        </ul>
+                                    </nav>
+                                </div>
                             </div>
                             <div class="tab-pane fade" id="delivered" role="tabpanel" aria-labelledby="delivered-tab">
                                 <%-- Danh sách hóa đơn đã giao hàng     --%>
@@ -620,6 +710,25 @@
 
                                     </tbody>
                                 </table>
+                                <%-- Phân trang của hóa đơn đã giao hàng   --%>
+                                <div class="float-end">
+                                    <nav aria-label="Page navigation example">
+                                        <ul class="pagination">
+                                            <c:if test="${pageHD.number > 0}">
+                                                <li class="page-item"><a class="page-link"
+                                                                         href="/hoa-don/hien-thi?page=${pageHD.number - 1}">&laquo;</a>
+                                                </li>
+                                            </c:if>
+                                            <li class="page-item"><a class="page-link" href="#">${pageHD.number + 1}</a>
+                                            </li>
+                                            <c:if test="${pageHD.number+1 < pageHD.totalPages}">
+                                                <li class="page-item"><a class="page-link"
+                                                                         href="/hoa-don/hien-thi?page=${pageHD.number + 1}">&raquo;</a>
+                                                </li>
+                                            </c:if>
+                                        </ul>
+                                    </nav>
+                                </div>
                             </div>
                             <div class="tab-pane fade" id="accomplished" role="tabpanel"
                                  aria-labelledby="accomplished-tab">
@@ -629,10 +738,11 @@
                                     <tr>
                                         <th>STT</th>
                                         <th>Mã Hóa Đơn</th>
-                                        <th>Mã Nhân Viên</th>
+                                        <th>Tên Nhân Viên</th>
                                         <th>Tên Khách Hàng</th>
                                         <th>SDT Khách Hàng</th>
                                         <th>Loại Hóa Đơn</th>
+                                        <th>Phương Thức Thanh Toán</th>
                                         <th>Tổng Tiền</th>
                                         <th>Ngày Tạo</th>
                                         <th>Trạng Thái</th>
@@ -641,20 +751,33 @@
                                     </thead>
 
                                     <tbody>
-                                    <c:forEach var="hoaDon" items="${pageHD.content}" varStatus="i">
+                                    <c:forEach var="hoaDon" items="${hoaDonPage}" varStatus="i">
                                         <tr>
                                             <td>${i.index + 1}</td>
                                             <td>${hoaDon.ma}</td>
-                                            <td>${hoaDon.idNhanVien.hoTen}</td>
-                                            <td>${hoaDon.idKhachHang.hoTen}</td>
-                                            <td>${hoaDon.idKhachHang.sdt}</td>
+                                            <td>${hoaDon.tenNhanVien}</td>
+                                            <td>${hoaDon.tenKhachHang}</td>
+                                            <td>${hoaDon.sdtKhachHang}</td>
                                             <td>Bán tại quầy</td>
+                                            <td>
+                                                  <span
+                                                          class="badge rounded-pill ${hoaDon.phuongThucThanhToan == 1 ? 'bg-primary' : 'bg-success'}">
+                                                          ${hoaDon.phuongThucThanhToan == 1 ? 'Tiền mặt' : 'Chuyển Khoản'}
+                                                  </span>
+                                            </td>
                                             <td>${hoaDon.tongTien}</td>
                                             <td>${hoaDon.ngayTao}</td>
-                                            <td>${hoaDon.trangThai}</td>
                                             <td>
-                                                <a href="/ban-hang-tai-quay/detail-hoa-don/${hoaDon.id}"
-                                                   class="btn btn-primary">View</a>
+                                                 <span
+                                                         class="badge rounded-pill ${hoaDon.trangThai == 0 ? 'bg-danger' : 'bg-success'}">
+                                                         ${hoaDon.trangThai == 0 ? 'Chưa thanh toán' : 'Đã thanh toán'}
+                                                 </span>
+                                            </td>
+                                            <td>
+                                                <!-- Button trigger modal -->
+                                                <a href="/hoa-don/detail/${hoaDon.id}" class="btn btn-primary">
+                                                    View
+                                                </a>
                                             </td>
 
                                         </tr>
@@ -662,6 +785,67 @@
 
                                     </tbody>
                                 </table>
+
+                                <%-- Modal hiển thị thông tin chi tiết của hóa đơn      --%>
+                                <!-- Modal -->
+                                <div class="modal fade" id="exampleModal" tabindex="-1"
+                                     aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="infor bill">Thông Tin Chi Tiết Hóa
+                                                    Đơn</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <table class="table">
+                                                    <thead>
+                                                    <tr>
+                                                        <th scope="col">STT</th>
+                                                        <th scope="col">Mã Hóa Đơn</th>
+                                                        <th scope="col">Tên Nhân Viên</th>
+                                                        <th scope="col">Tên Khách Hàng</th>
+                                                        <th scope="col">SDT Khách Hàng</th>
+                                                        <th scope="col">Loại Hóa Đơn</th>
+                                                        <th scope="col">Tổng Tiền</th>
+                                                        <th scope="col">Ngày Tạo</th>
+                                                        <th scope="col">Trạng Thái</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <!-- Dữ liệu hóa đơn sẽ được thêm vào đây từ mã JavaScript -->
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                    Close
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <%-- Phân trang của đơn đã hoàn thành   --%>
+                                <div class="float-end">
+                                    <nav aria-label="Page navigation example">
+                                        <ul class="pagination">
+                                            <c:if test="${pageHD.number > 0}">
+                                                <li class="page-item"><a class="page-link"
+                                                                         href="/hoa-don/hien-thi?page=${pageHD.number - 1}">&laquo;</a>
+                                                </li>
+                                            </c:if>
+                                            <li class="page-item"><a class="page-link" href="#">${pageHD.number + 1}</a>
+                                            </li>
+                                            <c:if test="${pageHD.number+1 < pageHD.totalPages}">
+                                                <li class="page-item"><a class="page-link"
+                                                                         href="/hoa-don/hien-thi?page=${pageHD.number + 1}">&raquo;</a>
+                                                </li>
+                                            </c:if>
+                                        </ul>
+                                    </nav>
+                                </div>
                             </div>
                             <div class="tab-pane fade" id="cancelled" role="tabpanel" aria-labelledby="cancelled-tab">
                                 <%-- Danh sách hóa đơn đã hủy     --%>
@@ -697,45 +881,25 @@
 
                                     </tbody>
                                 </table>
-                            </div>
-
-                            <%-- Phân  trang  --%>
-                            <div class="float-end">
-                                <nav aria-label="Page navigation example">
-                                    <ul class="pagination">
-                                        <li class="page-item">
-                                            <a class="page-link" href="#" aria-label="Previous">
-                                                <span aria-hidden="true">&laquo;</span>
-                                            </a>
-                                        </li>
-                                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="#" aria-label="Next">
-                                                <span aria-hidden="true">&raquo;</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </nav>
-
-
-                                <%--                                <nav aria-label="Page navigation example">--%>
-                                <%--                                    <ul class="pagination">--%>
-                                <%--&lt;%&ndash;                                        <c:if test="${listCTSP.number > 0}">&ndash;%&gt;--%>
-                                <%--                                            <li class="page-item"><a class="page-link"--%>
-                                <%--                                                                     href="/ban-hang-tai-quay?page=${listCTSP.number - 1}">Trước</a>--%>
-                                <%--                                            </li>--%>
-                                <%--                                        </c:if>--%>
-                                <%--                                        <li class="page-item"><a class="page-link" href="#">${listCTSP.number + 1}</a>--%>
-                                <%--                                        </li>--%>
-                                <%--                                        <c:if test="${listCTSP.number+1 < listCTSP.totalPages}">--%>
-                                <%--                                            <li class="page-item"><a class="page-link"--%>
-                                <%--                                                                     href="/ban-hang-tai-quay?page=${listCTSP.number + 1}">Sau</a>--%>
-                                <%--                                            </li>--%>
-                                <%--                                        </c:if>--%>
-                                <%--                                    </ul>--%>
-                                <%--                                </nav>--%>
+                                <%-- Phân trang của hóa đơn đã hủy    --%>
+                                <div class="float-end">
+                                    <nav aria-label="Page navigation example">
+                                        <ul class="pagination">
+                                            <c:if test="${pageHD.number > 0}">
+                                                <li class="page-item"><a class="page-link"
+                                                                         href="/hoa-don/hien-thi?page=${pageHD.number - 1}">&laquo;</a>
+                                                </li>
+                                            </c:if>
+                                            <li class="page-item"><a class="page-link" href="#">${pageHD.number + 1}</a>
+                                            </li>
+                                            <c:if test="${pageHD.number+1 < pageHD.totalPages}">
+                                                <li class="page-item"><a class="page-link"
+                                                                         href="/hoa-don/hien-thi?page=${pageHD.number + 1}">&raquo;</a>
+                                                </li>
+                                            </c:if>
+                                        </ul>
+                                    </nav>
+                                </div>
                             </div>
 
                         </div>
@@ -806,6 +970,65 @@
 
 <!-- Page level custom scripts -->
 <script src="js/demo/datatables-demo.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('.nav-link').click(function () {
+            // Loại bỏ lớp bg-primary từ tất cả các tab
+            $('.nav-link').removeClass('bg-warning');
+            // Thêm lớp bg-primary cho tab được nhấn
+            $(this).addClass('bg-warning');
+        });
+    });
+
+
+    // JavaScript để thêm dữ liệu hóa đơn vào Modal
+    // Ví dụ:
+    const invoiceDetails = [
+      {
+        STT: 1,
+        MaHoaDon: 'HD001',
+        MaNhanVien: 'NV001',
+        TenKhachHang: 'Khách hàng 1',
+        SDTKhachHang: '0123456789',
+        LoaiHoaDon: 'Bán tại quầy',
+        TongTien: 1000000,
+        NgayTao: '2024-06-05',
+        TrangThai: 'Chưa thanh toán'
+      }
+    ];
+
+    // Hàm để hiển thị dữ liệu hóa đơn trong Modal
+    function displayInvoiceDetails(invoiceDetails) {
+        const tbody = document.querySelector('.modal-body tbody');
+        tbody.innerHTML = '';
+
+        invoiceDetails.forEach((invoice, index) => {
+            const row = `
+        <tr>
+          <td>${index + 1}</td>
+          <td>${invoice.MaHoaDon}</td>
+          <td>${invoice.MaNhanVien}</td>
+          <td>${invoice.TenKhachHang}</td>
+          <td>${invoice.SDTKhachHang}</td>
+          <td>${invoice.LoaiHoaDon}</td>
+          <td>${invoice.TongTien}</td>
+          <td>${invoice.NgayTao}</td>
+          <td>${invoice.TrangThai}</td>
+        </tr>
+      `;
+            tbody.innerHTML += row;
+        });
+    }
+
+    // Khi Modal được hiển thị, thêm dữ liệu hóa đơn vào Modal
+    const modal = document.getElementById('exampleModal');
+    modal.addEventListener('shown.bs.modal', function () {
+        // Thêm dữ liệu hóa đơn vào Modal ở đây, ví dụ:
+        // displayInvoiceDetails(invoiceDetails);
+    });
+</script>
+
 
 </body>
 
