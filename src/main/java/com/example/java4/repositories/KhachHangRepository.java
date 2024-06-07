@@ -10,10 +10,10 @@ import java.util.Optional;
 
 @Repository
 public interface KhachHangRepository
-        extends JpaRepository<KhachHang,Integer>
+        extends JpaRepository<KhachHang,String>
 {
     public static final int ACTIVE  = 1;
     public static final int INACTIVE =0;
     public Page<KhachHang> findByTrangThai(int trangThai, Pageable pageable);
-    public Optional<KhachHang> findById(Integer id);
+//    public Optional<KhachHang> findById(Integer id);
 };

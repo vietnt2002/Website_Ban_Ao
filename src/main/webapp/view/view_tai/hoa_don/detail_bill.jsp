@@ -18,7 +18,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>MSStore_Tại quầy</title>
+    <title>MSStore_Quản lý hóa đơn</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -41,7 +41,6 @@
             href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
             rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
-
 
 
 </head>
@@ -344,6 +343,19 @@
 
             <!-- Begin Page Content -->
             <div class="container-fluid">
+                <%--              Hiển thị thông báo lỗi nếu không tìm thấy hóa đơn      --%>
+                <c:if test="${not empty errorMessage}">
+                    <div class="alert alert-danger" role="alert">
+                            ${errorMessage}
+                    </div>
+                </c:if>
+
+                <%--                Nút in ra Hóa Đơn theo dạng file PDF --%>
+                    <div class="d-flex justify-content-end">
+                        <a href="/in-hoa-don/pdf/${hoaDonDTO.id}" class="btn btn-primary my-3"><i class="bi bi-printer"></i> In hóa đơn</a>
+                    </div>
+
+
                 <%--Bảng theo dõi hóa đơn--%>
                 <%--                    <div class="card mb-3">--%>
 
@@ -436,210 +448,236 @@
 
                 <!-- Thông tin đơn hàng -->
 
-                <div class="row">
-                    <div class="col-7 mb-3 ">
-                        <div class="card">
+                <div class="row d-flex align-items-stretch">
+                    <div class="col-7 mb-3 d-flex align-items-stretch">
+                        <div class="card  w-100 h-100">
 
                             <div class="card-header">
-                                <h5 class="card-title ">Thông tin đơn hàng:</h5>
+                                <h5 class="card-title ">Thông tin đơn hàng:${hoaDonDTO.ma}</h5>
                             </div>
 
                             <div class="card-body">
-
+                                <%--   Thông tin chi tiết hóa đơn --%>
                                 <div>
                                     <div class="row mt-1">
                                         <div class="col-6">
                                             <div>
-                                                <p class="fw-bold mb-1 pb-3 small">Trạng thái:</p>
-                                                <p class="fw-bold mb-1 pb-3 small">Loại giao dịch:</p>
-                                                <p class="fw-bold mb-1 pb-3 small">Tên người nhận:</p>
-                                                <p class="fw-bold mb-1 pb-3 small">Địa chỉ:</p>
-                                                <p class="fw-bold mb-1 pb-3  small">Ghi chú:</p>
-                                                <p class="fw-bold mb-1  small">Người tạo:</p>
+                                                <p class="fw-bold mb-1 pb-3 small ">Trạng thái: <span class="fw-normal badge rounded-pill bg-primary">
+                                                    ${hoaDonDTO.trangThai == 0 ? "Chưa hoàn thành" : "Đã hoàn thành"}
+                                                </span>
+                                                </p>
+                                                <p class="fw-bold mb-1 pb-3 small">Loại giao dịch: </p>
+                                                <p class="fw-bold mb-1 pb-3 small">Tên người nhận: <span
+                                                        class="fw-normal">${hoaDonDTO.khachHang.hoTen}</span></p>
+                                                <p class="fw-bold mb-1 pb-3 small">Địa chỉ: </p>
+                                                <p class="fw-bold mb-1 pb-3 small">Ghi chú: </p>
+                                                <p class="fw-bold mb-1 small">Người tạo: <span
+                                                        class="fw-normal">${hoaDonDTO.nhanVien.hoTen}</span></p>
 
                                             </div>
                                         </div>
                                         <div class="col-6">
-                                            <p class="fw-bold mb-1 pb-3 small">Loại hóa đơn:</p>
-                                            <p class="fw-bold mb-1 pb-3 small">Phương thức thanh toán:</p>
-                                            <p class="fw-bold mb-1 pb-3 small">Số điện thoại:</p>
-                                            <p class="fw-bold mb-1 pb-3 small">Email:</p>
-                                            <p class="fw-bold mb-1 pb-3 small">Ngày dự kiến nhận:</p>
+                                            <p class="fw-bold mb-1 pb-3 small">Loại hóa đơn: <span
+                                                    class=" fw-normal badge rounded-pill bg-primary">Bán tại quầy</span>
+                                            </p>
+                                            <p class="fw-bold mb-1 pb-3 small">Phương thức thanh toán: <span
+                                                    class="fw-normal badge rounded-pill bg-primary">${hoaDonDTO.phuongThucThanhToan == 0 ? "Tiền mặt" : "Chuyển khoản"}</span>
+                                            </p>
+                                            <p class="fw-bold mb-1 pb-3 small">Số điện thoại: <span
+                                                    class="fw-normal">${hoaDonDTO.khachHang.sdt}</span></p>
+                                            <p class="fw-bold mb-1 pb-3 small">Email: </p>
+                                            <p class="fw-bold mb-1 pb-3 small">Ngày tạo: <span
+                                                    class="fw-normal">${hoaDonDTO.ngayTao}</span></p>
+                                            <p class="fw-bold mb-1  small">Ngày dự kiến nhận:</p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    <div class="col-5 mb-3 ">
-                        <div class="card">
+                    <%-- Chi phí của đơn hàng--%>
+                    <div class="col-5 mb-3 d-flex align-items-stretch">
+                        <div class="card w-100 h-100">
                             <div class="card-header">
                                 <h5 class="card-title">Chi phí đơn hàng</h5>
                             </div>
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-6">
-                                        <p class="fw-bold mb-1 pb-3 small">Tổng tiền đơn hàng:</p>
-                                        <p class="fw-bold mb-1 pb-3 small">Phí giao hàng:</p>
-                                        <p class="fw-bold mb-1 pb-3 small">Phiếu giảm giá:</p>
-
+                                    <div class="col-12">
+                                        <p class="fw-bold mb-1 pb-3 small d-flex justify-content-between">
+                                            <span>Tổng tiền đơn hàng:</span>
+                                            <span class="text-danger  "><fmt:formatNumber value="${hoaDonDTO.tongTien}"
+                                                                                          type="currency"
+                                                                                          currencySymbol="₫"
+                                                                                          groupingUsed="true"/></span>
+                                        </p>
+                                        <p class="fw-bold mb-1 pb-3 small d-flex justify-content-between">
+                                            <span>Phí giao hàng:</span>
+                                            <span class="fw-normal  "><fmt:formatNumber value="0" type="currency"
+                                                                                        currencySymbol="₫"
+                                                                                        groupingUsed="true"/></span>
+                                        </p>
+                                        <p class="fw-bold mb-1 pb-3 small d-flex justify-content-between">
+                                            <span>Phiếu giảm giá:</span>
+                                            <span class="fw-normal  "><fmt:formatNumber value="0" type="currency"
+                                                                                        currencySymbol="₫"
+                                                                                        groupingUsed="true"/></span>
+                                        </p>
                                         <div class="">
-                                            <p class="fw-bold mb-1 pb-3 small">Tổng tiền giảm:</p>
+                                            <p class="fw-bold mb-1 pb-3 small d-flex justify-content-between">
+                                                <span>Tổng tiền giảm:</span>
+                                                <span class="fw-normal  "><fmt:formatNumber
+                                                        value="${hoaDonDTO.tongTien}" type="currency" currencySymbol="₫"
+                                                        groupingUsed="true"/></span>
+                                            </p>
                                         </div>
-
                                     </div>
-                                    <div class="col-6"></div>
                                 </div>
-
-                                <!-- End General Form Elements -->
                             </div>
+                            <!-- End General Form Elements -->
 
                             <div class="card-footer">
-                                <p class="fw-bold mb-1 pb-3 small">Tổng tiền thanh toán:</p>
+                                <p class="fw-bold mb-1 pb-3 small d-flex justify-content-between">
+                                    <span>Tổng tiền thanh toán:</span>
+                                    <span class="text-danger "><fmt:formatNumber value="${hoaDonDTO.tongTien}"
+                                                                                 type="currency" currencySymbol="₫"
+                                                                                 groupingUsed="true"/></span>
+                                </p>
                             </div>
 
-
-                        </div><!-- End Recent Activity -->
-                    </div>
-                </div>
-
-                <div class="card shadow mb-4">
-
-
-                    <%-- Thông tin sản phẩm đã mua                --%>
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold ">Thông tin sản phẩm đã mua </h6>
                         </div>
 
-                        <div class="card-body">
 
-                            <table class="table table-bordered" width="100%" cellspacing="0">
-                                <thead>
-                                <tr>
-                                    <th>STT</th>
-                                    <th>Ảnh sản phẩm</th>
-                                    <th>Tên sản phẩm</th>
-                                    <th>Giá sản phẩm</th>
-                                    <th>Màu sắc</th>
-                                    <th>Số lượng</th>
-                                    <th>Tổng Tiền</th>
-                                </tr>
-                                </thead>
-
-                                <tbody>
-                                <%--                            <c:forEach var="hoaDon" items="${pageHD.content}" varStatus="i">--%>
-                                <%--                                <tr>--%>
-                                <%--                                    <td>${i.index + 1}</td>--%>
-                                <%--                                    <td>${hoaDon.ma}</td>--%>
-                                <%--                                    <td>${hoaDon.idNhanVien.hoTen}</td>--%>
-                                <%--                                    <td>${hoaDon.idKhachHang.hoTen}</td>--%>
-                                <%--                                    <td>${hoaDon.idKhachHang.sdt}</td>--%>
-                                <%--                                    <td>Bán tại quầy</td>--%>
-                                <%--                                    <td>${hoaDon.tongTien}</td>--%>
-                                <%--                                    <td--%>
-                                <%--                                        &lt;%&ndash;${hoaDon.ngayTao}&ndash;%&gt;--%>
-                                <%--                                    </td>--%>
-                                <%--                                    <td>--%>
-                                <%--                                                 <span--%>
-                                <%--                                                         class="badge rounded-pill ${hoaDon.trangThai == 0 ? 'bg-danger' : 'bg-success'}">--%>
-                                <%--                                                         ${hoaDon.trangThai == 0 ? 'Chưa thanh toán' : 'Đã thanh toán'}--%>
-                                <%--                                                 </span>--%>
-                                <%--                                    </td>--%>
-                                <%--                                    <td>--%>
-                                <%--                                        <a href="/ban-hang-tai-quay/detail-hoa-don/${hoaDon.id}"--%>
-                                <%--                                           class="btn btn-primary">View</a>--%>
-                                <%--                                    </td>--%>
-
-                                <%--                                </tr>--%>
-                                <%--                            </c:forEach>--%>
-
-                                </tbody>
-                            </table>
-
-                            <div>
-
-                            </div>
-                        </div>
-                    </div>
-
+                    </div><!-- End Recent Activity -->
                 </div>
-                <!-- /.container-fluid -->
+            </div>
+
+            <div>
 
             </div>
-            <!-- End of Main Content -->
 
-            <!-- Footer -->
-            <footer class="sticky-footer bg-white">
-                <div class="container my-auto">
-                    <div class="copyright text-center my-auto">
-                        <span>MS - Store</span>
+            <%-- Thông tin sản phẩm đã mua                --%>
+            <div class="card shadow mb-4 mx-2">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold ">Thông tin sản phẩm đã mua </h6>
+                </div>
+
+                <div class="card-body">
+
+                    <table class="table table-bordered" width="100%" cellspacing="0">
+                        <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Ảnh sản phẩm</th>
+                            <th>Tên sản phẩm</th>
+                            <th>Giá sản phẩm</th>
+                            <th>Màu sắc</th>
+                            <th>Số lượng</th>
+                            <th>Tổng Tiền</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <c:forEach var="chiTiet" items="${listHDCT}" varStatus="i">
+                            <tr>
+                                <td>${i.index + 1}</td>
+                                <td><img src="${chiTiet.idCTSP.idSanPham.hinhAnh}" alt="Ảnh sản phẩm" width="50"></td>
+                                <td>${chiTiet.idCTSP.idSanPham.ten}</td>
+                                <td>${chiTiet.donGia}</td>
+                                <td>${chiTiet.idCTSP.idMauSac.ten}</td>
+                                <td>${chiTiet.soLuong}</td>
+                                <td>${chiTiet.donGia * chiTiet.soLuong}</td>
+                            </tr>
+                        </c:forEach>
+                        </tbody>
+                    </table>
+
+                    <div>
+
                     </div>
                 </div>
-            </footer>
-            <!-- End of Footer -->
+            </div>
+
+
+            <!-- /.container-fluid -->
 
         </div>
-        <!-- End of Content Wrapper -->
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+        <footer class="sticky-footer bg-white">
+            <div class="container my-auto">
+                <div class="copyright text-center my-auto">
+                    <span>MS - Store</span>
+                </div>
+            </div>
+        </footer>
+        <!-- End of Footer -->
 
     </div>
-    <!-- End of Page Wrapper -->
+    <!-- End of Content Wrapper -->
 
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
+</div>
+<!-- End of Page Wrapper -->
 
-    <!-- Logout Modal-->
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
-                </div>
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
+
+<!-- Logout Modal-->
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-primary" href="login.html">Logout</a>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- Bootstrap core JavaScript-->
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+<!-- Core plugin JavaScript-->
+<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 
-    <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
+<!-- Custom scripts for all pages-->
+<script src="js/sb-admin-2.min.js"></script>
 
-    <!-- Page level plugins -->
-    <script src="vendor/datatables/jquery.dataTables.min.js"></script>
-    <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+<!-- Page level plugins -->
+<script src="vendor/datatables/jquery.dataTables.min.js"></script>
+<script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
 
-    <!-- Page level custom scripts -->
-    <script src="js/demo/datatables-demo.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            $('.nav-link').click(function () {
-                // Loại bỏ lớp bg-primary từ tất cả các tab
-                $('.nav-link').removeClass('bg-warning');
-                // Thêm lớp bg-primary cho tab được nhấn
-                $(this).addClass('bg-warning');
-            });
+<!-- Page level custom scripts -->
+<script src="js/demo/datatables-demo.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Thêm lớp bg-warning cho tab "Tất Cả" khi trang được tải
+        $('#all-tab').addClass('bg-warning');
+
+        // Khi click vào tab
+        $('#myTab .nav-link').click(function () {
+            // Loại bỏ lớp bg-warning từ tất cả các tab
+            $('#myTab .nav-link').removeClass('bg-warning');
+            // Thêm lớp bg-warning cho tab được nhấn
+            $(this).addClass('bg-warning');
         });
+    });
 
 
-    </script>
+</script>
 
 
 </body>

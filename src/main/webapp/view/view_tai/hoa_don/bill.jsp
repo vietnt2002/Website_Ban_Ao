@@ -18,7 +18,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>MSStore_Tại quầy</title>
+    <title>MSStore_Quản lý hóa đơn</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -40,7 +40,10 @@
     <link
             href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
             rel="stylesheet">
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
 
 </head>
 
@@ -448,12 +451,12 @@
                         <div class="tab-content mt-3" id="myTabContent">
                             <div class="tab-pane fade show active" id="all" role="tabpanel" aria-labelledby="all-tab">
                                 <%--  Danh sách tất cả các hóa đơn   --%>
-                                <table class="table table-bordered table-primary" width="100%" cellspacing="0">
-                                    <thead>
+                                <table class="table table-bordered " width="100%" cellspacing="0">
+                                    <thead class="">
                                     <tr>
                                         <th>STT</th>
                                         <th>Mã Hóa Đơn</th>
-                                        <th>Mã Nhân Viên</th>
+                                        <th>Tên Nhân Viên</th>
                                         <th>Tên Khách Hàng</th>
                                         <th>SDT Khách Hàng</th>
                                         <th>Loại Hóa Đơn</th>
@@ -465,18 +468,21 @@
                                     </thead>
 
                                     <tbody>
-                                    <c:forEach var="hoaDon" items="${pageHD.content}" varStatus="i">
+                                    <c:forEach var="hoaDon" items="${hoaDonPage}" varStatus="i">
                                         <tr>
                                             <td>${i.index + 1}</td>
                                             <td>${hoaDon.ma}</td>
-                                            <td>${hoaDon.idNhanVien.hoTen}</td>
-                                            <td>${hoaDon.idKhachHang.hoTen}</td>
-                                            <td>${hoaDon.idKhachHang.sdt}</td>
-                                            <td>Bán tại quầy</td>
-                                            <td>${hoaDon.tongTien}</td>
-                                            <td
-                                                <%--${hoaDon.ngayTao}--%>
+                                            <td>${hoaDon.nhanVien.hoTen}</td>
+                                            <td>${hoaDon.khachHang.hoTen}</td>
+                                            <td>${hoaDon.khachHang.sdt}</td>
+                                            <td>
+                                                <span class="badge rounded-pill bg-primary">Bán tại quầy</span>
                                             </td>
+                                            <td>
+                                                <fmt:formatNumber value="${hoaDon.tongTien}" type="currency"
+                                                                  currencySymbol="₫" groupingUsed="true"/>
+                                            </td>
+                                            <td>${hoaDon.ngayTao}</td>
                                             <td>
                                                  <span
                                                          class="badge rounded-pill ${hoaDon.trangThai == 0 ? 'bg-danger' : 'bg-success'}">
@@ -484,8 +490,10 @@
                                                  </span>
                                             </td>
                                             <td>
-                                                <a href="/ban-hang-tai-quay/detail-hoa-don/${hoaDon.id}"
-                                                   class="btn btn-primary">View</a>
+                                                <!-- Button trigger modal -->
+                                                <a href="/hoa-don/detail/${hoaDon.id}" class="btn btn-warning">
+                                                    <i class="bi bi-eye-fill"></i>
+                                                </a>
                                             </td>
 
                                         </tr>
@@ -742,7 +750,7 @@
                                         <th>Tên Khách Hàng</th>
                                         <th>SDT Khách Hàng</th>
                                         <th>Loại Hóa Đơn</th>
-                                        <th>Phương Thức Thanh Toán</th>
+                                        <th>Phương thức thanh toán</th>
                                         <th>Tổng Tiền</th>
                                         <th>Ngày Tạo</th>
                                         <th>Trạng Thái</th>
@@ -755,17 +763,22 @@
                                         <tr>
                                             <td>${i.index + 1}</td>
                                             <td>${hoaDon.ma}</td>
-                                            <td>${hoaDon.tenNhanVien}</td>
-                                            <td>${hoaDon.tenKhachHang}</td>
-                                            <td>${hoaDon.sdtKhachHang}</td>
-                                            <td>Bán tại quầy</td>
+                                            <td>${hoaDon.nhanVien.hoTen}</td>
+                                            <td>${hoaDon.khachHang.hoTen}</td>
+                                            <td>${hoaDon.khachHang.sdt}</td>
                                             <td>
-                                                  <span
-                                                          class="badge rounded-pill ${hoaDon.phuongThucThanhToan == 1 ? 'bg-primary' : 'bg-success'}">
-                                                          ${hoaDon.phuongThucThanhToan == 1 ? 'Tiền mặt' : 'Chuyển Khoản'}
-                                                  </span>
+                                                <span class="badge rounded-pill bg-primary">Bán tại quầy</span>
                                             </td>
-                                            <td>${hoaDon.tongTien}</td>
+                                            <td>
+                                                <span
+                                                        class="badge rounded-pill ${hoaDon.trangThai == 0 ? 'bg-danger' : 'bg-success'}">
+                                                        ${hoaDon.phuongThucThanhToan == 1 ? 'Tiền mặt' : 'Chuyển khoản'}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <fmt:formatNumber value="${hoaDon.tongTien}" type="currency"
+                                                                  currencySymbol="₫" groupingUsed="true"/>
+                                            </td>
                                             <td>${hoaDon.ngayTao}</td>
                                             <td>
                                                  <span
@@ -775,8 +788,8 @@
                                             </td>
                                             <td>
                                                 <!-- Button trigger modal -->
-                                                <a href="/hoa-don/detail/${hoaDon.id}" class="btn btn-primary">
-                                                    View
+                                                <a href="/hoa-don/detail/${hoaDon.id}" class="btn btn-warning">
+                                                    <i class="bi bi-eye-fill"></i>
                                                 </a>
                                             </td>
 
@@ -787,45 +800,7 @@
                                 </table>
 
                                 <%-- Modal hiển thị thông tin chi tiết của hóa đơn      --%>
-                                <!-- Modal -->
-                                <div class="modal fade" id="exampleModal" tabindex="-1"
-                                     aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="infor bill">Thông Tin Chi Tiết Hóa
-                                                    Đơn</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                        aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <table class="table">
-                                                    <thead>
-                                                    <tr>
-                                                        <th scope="col">STT</th>
-                                                        <th scope="col">Mã Hóa Đơn</th>
-                                                        <th scope="col">Tên Nhân Viên</th>
-                                                        <th scope="col">Tên Khách Hàng</th>
-                                                        <th scope="col">SDT Khách Hàng</th>
-                                                        <th scope="col">Loại Hóa Đơn</th>
-                                                        <th scope="col">Tổng Tiền</th>
-                                                        <th scope="col">Ngày Tạo</th>
-                                                        <th scope="col">Trạng Thái</th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    <!-- Dữ liệu hóa đơn sẽ được thêm vào đây từ mã JavaScript -->
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                                                    Close
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+
 
                                 <%-- Phân trang của đơn đã hoàn thành   --%>
                                 <div class="float-end">
@@ -973,60 +948,19 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
     $(document).ready(function () {
-        $('.nav-link').click(function () {
-            // Loại bỏ lớp bg-primary từ tất cả các tab
-            $('.nav-link').removeClass('bg-warning');
-            // Thêm lớp bg-primary cho tab được nhấn
+        // Thêm lớp bg-warning cho tab "Tất Cả" khi trang được tải
+        $('#all-tab').addClass('bg-warning');
+
+        // Khi click vào tab
+        $('#myTab .nav-link').click(function () {
+            // Loại bỏ lớp bg-warning từ tất cả các tab
+            $('#myTab .nav-link').removeClass('bg-warning');
+            // Thêm lớp bg-warning cho tab được nhấn
             $(this).addClass('bg-warning');
         });
     });
 
 
-    // JavaScript để thêm dữ liệu hóa đơn vào Modal
-    // Ví dụ:
-    const invoiceDetails = [
-      {
-        STT: 1,
-        MaHoaDon: 'HD001',
-        MaNhanVien: 'NV001',
-        TenKhachHang: 'Khách hàng 1',
-        SDTKhachHang: '0123456789',
-        LoaiHoaDon: 'Bán tại quầy',
-        TongTien: 1000000,
-        NgayTao: '2024-06-05',
-        TrangThai: 'Chưa thanh toán'
-      }
-    ];
-
-    // Hàm để hiển thị dữ liệu hóa đơn trong Modal
-    function displayInvoiceDetails(invoiceDetails) {
-        const tbody = document.querySelector('.modal-body tbody');
-        tbody.innerHTML = '';
-
-        invoiceDetails.forEach((invoice, index) => {
-            const row = `
-        <tr>
-          <td>${index + 1}</td>
-          <td>${invoice.MaHoaDon}</td>
-          <td>${invoice.MaNhanVien}</td>
-          <td>${invoice.TenKhachHang}</td>
-          <td>${invoice.SDTKhachHang}</td>
-          <td>${invoice.LoaiHoaDon}</td>
-          <td>${invoice.TongTien}</td>
-          <td>${invoice.NgayTao}</td>
-          <td>${invoice.TrangThai}</td>
-        </tr>
-      `;
-            tbody.innerHTML += row;
-        });
-    }
-
-    // Khi Modal được hiển thị, thêm dữ liệu hóa đơn vào Modal
-    const modal = document.getElementById('exampleModal');
-    modal.addEventListener('shown.bs.modal', function () {
-        // Thêm dữ liệu hóa đơn vào Modal ở đây, ví dụ:
-        // displayInvoiceDetails(invoiceDetails);
-    });
 </script>
 
 

@@ -1,6 +1,7 @@
 package com.example.java4.response;
 
 
+import com.example.java4.entities.DiaChi;
 import com.example.java4.entities.KhachHang;
 import com.example.java4.entities.KhuyenMai;
 import com.example.java4.entities.NhanVien;
@@ -21,26 +22,31 @@ public class HoaDonDTO {
 
     private String id;
     private String ma;
-    private String tenNhanVien;
-    private String tenKhachHang;
-    private String sdtKhachHang;
+    private KhachHang khachHang;
+    private NhanVien nhanVien;
+    private DiaChi diaChi;
     private String loaiHoaDon;
     private Integer phuongThucThanhToan;
     private Integer tongTien;
     private String ngayTao;
     private Integer trangThai;
 
-    public HoaDonDTO(String id, String ma, String tenNhanVien, String tenKhachHang, String sdtKhachHang, Integer phuongThucThanhToan, Integer tongTien, String ngayTao, Integer trangThai) {
+
+
+
+
+    public HoaDonDTO(String id, String ma, KhachHang khachHang, NhanVien nhanVien, Integer phuongThucThanhToan, Integer tongTien, String ngayTao, Integer trangThai) {
         this.id = id;
         this.ma = ma;
-        this.tenNhanVien = tenNhanVien;
-        this.tenKhachHang = tenKhachHang;
-        this.sdtKhachHang = sdtKhachHang;
+        this.khachHang = khachHang;
+        this.nhanVien = nhanVien;
         this.phuongThucThanhToan = phuongThucThanhToan;
         this.tongTien = tongTien;
         this.ngayTao = ngayTao;
         this.trangThai = trangThai;
     }
+
+
 }
 
 
