@@ -53,20 +53,34 @@ public class LoginUserController {
                 return "redirect:/home";
             } else {
                 // Thông báo lỗi nếu mật khẩu không đúng
-                model.addAttribute("errorPass", "Sai mật khẩu");
-                redirectAttributes.addFlashAttribute("errorPass", "Sai mật khẩu");
+                model.addAttribute("errorPassword", "Sai mật khẩu");
+                redirectAttributes.addFlashAttribute("errorPassword", "Sai mật khẩu");
                 redirectAttributes.addFlashAttribute("error", "Đăng nhập thất bại!");
 //                return "redirect:/dang-nhap/login";
                 return "/view/view_tai/login/login.jsp";
             }
         } else {
             // Thông báo lỗi nếu tài khoản không tồn tại
-            model.addAttribute("errorUser", "Tài khoản không tồn tại");
-            redirectAttributes.addFlashAttribute("errorUser", "Tài khoản không tồn tại");
+            model.addAttribute("errorUsername", "Tài khoản không tồn tại");
+            redirectAttributes.addFlashAttribute("errorUsername", "Tài khoản không tồn tại");
             redirectAttributes.addFlashAttribute("error", "Đăng nhập thất bại!");
 //            return "redirect:/dang-nhap/login";
             return "/view/view_tai/login/login.jsp";
         }
 
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        // Xóa thông tin người dùng đã đăng nhập khỏi session
+        session.removeAttribute("user");
+        // Điều hướng người dùng về trang đăng nhập
+        return "redirect:/dang-nhap/login";
+    }
+
+    @GetMapping("/dang-ky/register")
+    public String viewRegister(Model model) {
+        model.addAttribute("khachHangDTO", new KhachHangDTO());
+        return "/view/view_tai/login/register.jsp";
     }
 }

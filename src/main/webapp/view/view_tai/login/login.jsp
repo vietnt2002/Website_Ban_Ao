@@ -77,19 +77,15 @@
                                 <form:label path="taiKhoan" class="text-info">Username:</form:label><br>
                                 <form:input path="taiKhoan" class="form-control"/>
                                 <form:errors path="taiKhoan" cssStyle="color: red"></form:errors>
-                                <c:if test="${not empty errorUser}">
-                                    <small id="taiKhoanError" class="text-danger">
-                                            ${errorUser}
-                                    </small>
-                                </c:if>
+                                <small id="taiKhoanError" class="text-danger">
+
+                                </small>
                             </div>
                             <div class="form-group">
                                 <form:label path="matKhau" class="text-info">Password:</form:label><br>
                                 <form:password path="matKhau" class="form-control"/>
                                 <form:errors path="matKhau" cssStyle="color: red"></form:errors>
-                                <c:if test="${ not empty errorPass}">
-                                    <small id="matKhauError" class="text-danger">${errorPass}</small>
-                                </c:if>
+                                <small id="matKhauError" class="text-danger"></small>
                             </div>
                             <div class="form-group">
                                 <label for="remember-me" class="text-info"><span>Remember me</span> <span><input
@@ -133,65 +129,62 @@
     </c:if>
 
 
-    <%--$(document).ready(function () {--%>
-    <%--    // Bắt lỗi khi submit form--%>
-    <%--    $('#login-form').submit(function (event) {--%>
-    <%--        var username = $('#taiKhoan').val().trim();--%>
-    <%--        var password = $('#matKhau').val().trim();--%>
+    $(document).ready(function () {
+        // Bắt lỗi khi submit form
+        $('#login-form').submit(function (event) {
+            var username = $('#taiKhoan').val().trim();
+            var password = $('#matKhau').val().trim();
 
 
-    <%--        if (!username || !password) {--%>
-    <%--            event.preventDefault(); // Ngăn form submit--%>
-    <%--            if (!username) {--%>
-    <%--                $('#taiKhoanError').text('Vui lòng nhập username.');--%>
-    <%--                $('#taiKhoan').addClass('border-danger');--%>
-    <%--            } else {--%>
-    <%--                $('#taiKhoanError').text('');--%>
-    <%--                $('#taiKhoan').removeClass('border-danger');--%>
-    <%--                // $('#taiKhoanError').removeClass('bg-danger text-white'); // Xóa background màu đỏ và màu chữ trắng--%>
-    <%--            }--%>
-    <%--            if (!password) {--%>
-    <%--                $('#matKhauError').text('Vui lòng nhập password.');--%>
-    <%--                $('#matKhau').addClass('border-danger'); // Thêm border màu đỏ--%>
-    <%--            } else {--%>
-    <%--                $('#matKhauError').text(''); // Ẩn thông báo lỗi password nếu đã nhập đúng--%>
-    <%--                $('#matKhau').removeClass('border-danger'); // Xóa border màu đỏ--%>
-    <%--            }--%>
-    <%--        } else {--%>
-    <%--            $('#taiKhoanError').text('');--%>
-    <%--            $('#matKhauError').text('');--%>
-    <%--            $('#taiKhoan').removeClass('border-danger');--%>
-    <%--            $('#matKhau').removeClass('border-danger');--%>
-    <%--        }--%>
+            if (!username || !password) {
+                event.preventDefault(); // Ngăn form submit
+                if (!username) {
+                    $('#taiKhoanError').text('Vui lòng nhập username.');
+                    $('#taiKhoan').addClass('border-danger');
+                } else {
+                    $('#taiKhoanError').text('');
+                    $('#taiKhoan').removeClass('border-danger');
+                    // $('#taiKhoanError').removeClass('bg-danger text-white'); // Xóa background màu đỏ và màu chữ trắng
+                }
+                if (!password) {
+                    $('#matKhauError').text('Vui lòng nhập password.');
+                    $('#matKhau').addClass('border-danger'); // Thêm border màu đỏ
+                } else {
+                    $('#matKhauError').text(''); // Ẩn thông báo lỗi password nếu đã nhập đúng
+                    $('#matKhau').removeClass('border-danger'); // Xóa border màu đỏ
+                }
+            } else {
+                $('#taiKhoanError').text('');
+                $('#matKhauError').text('');
+                $('#taiKhoan').removeClass('border-danger');
+                $('#matKhau').removeClass('border-danger');
+            }
 
 
+        });
+
+        // Ẩn lỗi khi người dùng click vào trường input
+        $('input').focus(function () {
+            $(this).siblings('.text-danger').text(''); // Ẩn thông báo lỗi
+            $(this).removeClass('border-danger'); // Xóa border màu đỏ
+            // $(this).siblings('.text-danger').removeClass('bg-danger text-white'); // Xóa background màu đỏ và màu chữ trắng
+        });
+
+        // Hiển thị lỗi từ Controller (nếu có)
+        var errorUsername = '<%= request.getAttribute("errorUsername") %>';
+        var errorPassword = '<%= request.getAttribute("errorPassword") %>';
+
+        if (errorUsername && errorUsername !== 'null') {
+            $('#taiKhoanError').text(errorUsername);
+            $('#taiKhoan').addClass('border-danger');
+        }
+        if (errorPassword && errorPassword !== 'null') {
+            $('#matKhauError').text(errorPassword);
+            $('#matKhau').addClass('border-danger');
+        }
 
 
-    <%--    });--%>
-
-    <%--    // Ẩn lỗi khi người dùng click vào trường input--%>
-    <%--    $('input').focus(function () {--%>
-    <%--        $(this).siblings('.text-danger').text(''); // Ẩn thông báo lỗi--%>
-    <%--        $(this).removeClass('border-danger'); // Xóa border màu đỏ--%>
-    <%--        // $(this).siblings('.text-danger').removeClass('bg-danger text-white'); // Xóa background màu đỏ và màu chữ trắng--%>
-    <%--    });--%>
-
-    <%--    // Hiển thị lỗi từ Controller (nếu có)--%>
-    <%--    var errorUsername = '<%= request.getAttribute("errorUsername") %>';--%>
-    <%--    var errorPassword = '<%= request.getAttribute("errorPassword") %>';--%>
-
-    <%--    if (errorUsername && errorUsername !== 'null') {--%>
-    <%--        $('#taiKhoanError').text(errorUsername);--%>
-    <%--        $('#taiKhoan').addClass('border-danger');--%>
-    <%--    }--%>
-    <%--    if (errorPassword && errorPassword !== 'null') {--%>
-    <%--        $('#matKhauError').text(errorPassword);--%>
-    <%--        $('#matKhau').addClass('border-danger');--%>
-    <%--    }--%>
-
-
-
-    <%--});--%>
+    });
 
 
 </script>
