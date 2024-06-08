@@ -1,7 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="f" uri="jakarta.tags.functions" %>
-<%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form" %>
+<%--<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>--%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,7 +18,8 @@
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
+          rel="stylesheet">
 
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
@@ -29,16 +31,32 @@
     <link href="/view_ban_hang/css/style.css" rel="stylesheet">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+
+
+    <%--    Thêm thư viện SweetAlert2 để thiển thị thông báo--%>
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
-        .userCart{
+        .userCart {
             display: flex;
             align-items: center;
             justify-content: end;
         }
-        .dropdown ul li:hover{
+
+        .dropdown ul li:hover {
             text-decoration: underline;
+        }
+
+        .modal-dialog {
+            max-width: 500px;
+            margin: 100px auto;
         }
     </style>
 </head>
@@ -79,7 +97,8 @@
     <div class="row align-items-center py-3 px-xl-5">
         <div class="col-lg-3 d-none d-lg-block">
             <a href="" class="text-decoration-none">
-                <h1 class="m-0 display-5 font-weight-semi-bold"><span class="text-primary font-weight-bold border px-3 mr-1">MS</span>Store</h1>
+                <h1 class="m-0 display-5 font-weight-semi-bold"><span
+                        class="text-primary font-weight-bold border px-3 mr-1">MS</span>Store</h1>
             </a>
         </div>
         <div class="col-lg-6 col-6 text-left">
@@ -96,15 +115,38 @@
         </div>
         <div class="col-lg-3 col-6 text-right userCart">
             <div class="dropdown">
-                <button class="btn btn-secondary bg-light" style="padding: 4px; font-size: 19px; margin-right: 3px"  type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                <button class="btn btn-secondary bg-light" style="padding: 4px; font-size: 19px; margin-right: 3px"
+                        type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="bi bi-person-circle" style="color:#D19C97; margin: 5px"></i>
                 </button>
                 <ul class="dropdown-menu btn border" aria-labelledby="dropdownMenuButton1">
-                    <li><a class="dropdown-item text-center" href="#"><button class="btn btn-primary w-100">Đăng nhập</button></a></li>
-                    <li><a class="dropdown-item" href="#">Theo dõi đơn hàng</a></li>
-                    <li><a class="dropdown-item" href="#">Lịch sử mua hàng</a></li>
-                    <li><a class="dropdown-item" href="#">Quản lý tài khoản</a></li>
-                    <li><a class="dropdown-item" href="#">Đăng xuất</a></li>
+
+                    <c:choose>
+                        <c:when test="${empty sessionScope.user}">
+                            <!-- Hiển thị nút đăng nhập khi chưa đăng nhập -->
+                            <li><a class="dropdown-item text-center" href="#">
+                                <button class="btn btn-primary w-100" data-toggle="modal" data-target="#loginModal">Đăng nhập
+                                </button>
+                            </a></li>
+
+                            <li><a class="dropdown-item text-center mt-3" href="#">
+                                <button class="btn btn-primary w-100" data-toggle="modal" data-target="#loginModal">Đăng ký
+                                </button>
+                            </a></li>
+                        </c:when>
+                        <c:otherwise>
+
+                            <!-- Hiển thị nút đăng xuất khi đã đăng nhập -->
+                            <li><a class="dropdown-item" href="#">Theo dõi đơn hàng</a></li>
+                            <li><a class="dropdown-item" href="#">Lịch sử mua hàng</a></li>
+                            <li><a class="dropdown-item" href="#">Quản lý tài khoản</a></li>
+                            <li><a class="dropdown-item" href="/home/logout">Đăng xuất</a></li>
+                        </c:otherwise>
+                    </c:choose>
+
+
+
+
                 </ul>
             </div>
             <a href="" class="btn border">
@@ -116,19 +158,64 @@
 </div>
 <!-- Topbar End -->
 
+<!-- Login Modal Start -->
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
+     data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title text-center text-info w-100">Login</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <div class="login-form-wrapper">
+                    <form id="login-form" class="form" action="/home/login" method="post" modelAttribute="khachHangDTO">
+                        <div class="form-group">
+                            <label for="taiKhoan" class="text-info">Username:</label><br>
+                            <input placeholder="Username" type="text" id="taiKhoan" name="taiKhoan"
+                                   value="${khachHangDTO.taiKhoan}" class="form-control">
+                            <small id="taiKhoanError" class="text-danger"></small>
+                        </div>
+                        <div class="form-group">
+                            <label for="matKhau" class="text-info">Password:</label><br>
+                            <input placeholder="Password" type="password" id="matKhau" name="matKhau"
+                                   value="${khachHangDTO.matKhau}" class="form-control">
+                            <small id="matKhauError" class="text-danger"></small>
+                        </div>
+                        <div class="form-group">
+                            <label for="remember-me" class="text-info"><span>Remember me</span> <span><input
+                                    id="remember-me" name="remember-me" type="checkbox"></span></label><br>
+                            <input type="submit" name="submit" class="btn btn-info btn-md w-100" value="Submit">
+                        </div>
+                        <div id="register-link" class="text-right">
+                            <a href="/dang-ky/singup" class="text-info">Register here</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Login Modal End -->
 
 <!-- Navbar Start -->
 <div class="container-fluid">
     <div class="row border-top px-xl-5">
         <div class="col-lg-3 d-none d-lg-block">
-            <a class="btn shadow-none d-flex align-items-center justify-content-between bg-primary text-white w-100" data-toggle="collapse" style="height: 65px; margin-top: -1px; padding: 0 30px;">
+            <a class="btn shadow-none d-flex align-items-center justify-content-between bg-primary text-white w-100"
+               data-toggle="collapse" style="height: 65px; margin-top: -1px; padding: 0 30px;">
                 <h6 class="m-0 text-light">Trải nghiệm mua sắm chất lượng</h6>
             </a>
         </div>
         <div class="col-lg-9">
             <nav class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0">
                 <a href="" class="text-decoration-none d-block d-lg-none">
-                    <h1 class="m-0 display-5 font-weight-semi-bold"><span class="text-primary font-weight-bold border px-3 mr-1">MS</span>Store</h1>
+                    <h1 class="m-0 display-5 font-weight-semi-bold"><span
+                            class="text-primary font-weight-bold border px-3 mr-1">MS</span>Store</h1>
                 </a>
                 <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
                     <span class="navbar-toggler-icon"></span>
@@ -323,7 +410,8 @@
                             </div>
                         </form>
                         <div class="dropdown ml-4">
-                            <button class="btn border dropdown-toggle" type="button" id="triggerId" data-toggle="dropdown" aria-haspopup="true"
+                            <button class="btn border dropdown-toggle" type="button" id="triggerId"
+                                    data-toggle="dropdown" aria-haspopup="true"
                                     aria-expanded="false">
                                 Sort by
                             </button>
@@ -337,30 +425,32 @@
                 </div>
 
 
-
                 <c:forEach varStatus="i" items="${pageSP.content}" var="sp">
                     <a href="/store/detail-san-pham/${sp.idCTSP}" style="text-decoration: none">
                         <div class="col-lg-4 col-md-6 col-sm-12 pb-1">
                             <div class="card product-item border-0 mb-2">
                                 <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                                    <img style="width: 100%; height: 370px;" class="img-fluid w-100" src="/image/${sp.hinhAnh1}" alt="">
+                                    <img style="width: 100%; height: 370px;" class="img-fluid w-100"
+                                         src="/image/${sp.hinhAnh1}" alt="">
                                 </div>
-                                <div class="card-body border-left border-right text-center p-0 pt-4 pb-3" style="margin-top: -10px; margin-bottom: -12px">
+                                <div class="card-body border-left border-right text-center p-0 pt-4 pb-3"
+                                     style="margin-top: -10px; margin-bottom: -12px">
                                     <h6 class="text-truncate mb-2">${sp.tenSP}</h6>
                                     <h6 class="text-truncate mb-2" style="font-family: auto">${sp.maSP}</h6>
                                 </div>
-                                <div class="card-footer d-flex justify-content-between bg-light border float-start" style="margin-top: -3px; margin-bottom: -3px">
+                                <div class="card-footer d-flex justify-content-between bg-light border float-start"
+                                     style="margin-top: -3px; margin-bottom: -3px">
                                     <div class="d-flex justify-content-center mb-0" style="margin-bottom: 3px">
-                                        <h6>${sp.giaBan} <span style="font-size: 16px; text-decoration: underline">đ</span></h6>
+                                        <h6>${sp.giaBan} <span
+                                                style="font-size: 16px; text-decoration: underline">đ</span></h6>
                                     </div>
-                                    <a href="/store/detail-san-pham/${sp.idCTSP}" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>Chi tiết</a>
+                                    <a href="/store/detail-san-pham/${sp.idCTSP}" class="btn btn-sm text-dark p-0"><i
+                                            class="fas fa-eye text-primary mr-1"></i>Chi tiết</a>
                                 </div>
                             </div>
                         </div>
                     </a>
                 </c:forEach>
-
-
 
 
                 <div class="col-12 pb-1">
@@ -397,9 +487,11 @@
     <div class="row px-xl-5 pt-5">
         <div class="col-lg-4 col-md-12 mb-5 pr-3 pr-xl-5">
             <a href="" class="text-decoration-none">
-                <h1 class="mb-4 display-5 font-weight-semi-bold"><span class="text-primary font-weight-bold border border-white px-3 mr-1">MS</span>Store</h1>
+                <h1 class="mb-4 display-5 font-weight-semi-bold"><span
+                        class="text-primary font-weight-bold border border-white px-3 mr-1">MS</span>Store</h1>
             </a>
-            <p>Dolore erat dolor sit lorem vero amet. Sed sit lorem magna, ipsum no sit erat lorem et magna ipsum dolore amet erat.</p>
+            <p>Dolore erat dolor sit lorem vero amet. Sed sit lorem magna, ipsum no sit erat lorem et magna ipsum dolore
+                amet erat.</p>
             <p class="mb-2"><i class="fa fa-map-marker-alt text-primary mr-3"></i>123 Street, New York, USA</p>
             <p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i>info@example.com</p>
             <p class="mb-0"><i class="fa fa-phone-alt text-primary mr-3"></i>+012 345 67890</p>
@@ -411,9 +503,12 @@
                     <div class="d-flex flex-column justify-content-start">
                         <a class="text-dark mb-2" href="index.html"><i class="fa fa-angle-right mr-2"></i>Home</a>
                         <a class="text-dark mb-2" href="shop.html"><i class="fa fa-angle-right mr-2"></i>Our Shop</a>
-                        <a class="text-dark mb-2" href="detail.html"><i class="fa fa-angle-right mr-2"></i>Shop Detail</a>
-                        <a class="text-dark mb-2" href="cart.html"><i class="fa fa-angle-right mr-2"></i>Shopping Cart</a>
-                        <a class="text-dark mb-2" href="checkout.html"><i class="fa fa-angle-right mr-2"></i>Checkout</a>
+                        <a class="text-dark mb-2" href="detail.html"><i class="fa fa-angle-right mr-2"></i>Shop
+                            Detail</a>
+                        <a class="text-dark mb-2" href="cart.html"><i class="fa fa-angle-right mr-2"></i>Shopping
+                            Cart</a>
+                        <a class="text-dark mb-2" href="checkout.html"><i
+                                class="fa fa-angle-right mr-2"></i>Checkout</a>
                         <a class="text-dark" href="contact.html"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
                     </div>
                 </div>
@@ -422,9 +517,12 @@
                     <div class="d-flex flex-column justify-content-start">
                         <a class="text-dark mb-2" href="index.html"><i class="fa fa-angle-right mr-2"></i>Home</a>
                         <a class="text-dark mb-2" href="shop.html"><i class="fa fa-angle-right mr-2"></i>Our Shop</a>
-                        <a class="text-dark mb-2" href="detail.html"><i class="fa fa-angle-right mr-2"></i>Shop Detail</a>
-                        <a class="text-dark mb-2" href="cart.html"><i class="fa fa-angle-right mr-2"></i>Shopping Cart</a>
-                        <a class="text-dark mb-2" href="checkout.html"><i class="fa fa-angle-right mr-2"></i>Checkout</a>
+                        <a class="text-dark mb-2" href="detail.html"><i class="fa fa-angle-right mr-2"></i>Shop
+                            Detail</a>
+                        <a class="text-dark mb-2" href="cart.html"><i class="fa fa-angle-right mr-2"></i>Shopping
+                            Cart</a>
+                        <a class="text-dark mb-2" href="checkout.html"><i
+                                class="fa fa-angle-right mr-2"></i>Checkout</a>
                         <a class="text-dark" href="contact.html"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
                     </div>
                 </div>
@@ -432,11 +530,12 @@
                     <h5 class="font-weight-bold text-dark mb-4">Newsletter</h5>
                     <form action="">
                         <div class="form-group">
-                            <input type="text" class="form-control border-0 py-4" placeholder="Your Name" required="required" />
+                            <input type="text" class="form-control border-0 py-4" placeholder="Your Name"
+                                   required="required"/>
                         </div>
                         <div class="form-group">
                             <input type="email" class="form-control border-0 py-4" placeholder="Your Email"
-                                   required="required" />
+                                   required="required"/>
                         </div>
                         <div>
                             <button class="btn btn-primary btn-block border-0 py-3" type="submit">Subscribe Now</button>
@@ -479,6 +578,146 @@
 
 <!-- Template Javascript -->
 <script src="/view_ban_hang/js/main.js"></script>
+
+<%--Validate form--%>
+<script>
+    //  // Hiển thị thông báo thất bại nếu đăng nhập thất bại
+    const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+        }
+    });
+
+
+
+
+    <%--    Hiển thị thông báo thành công khi đăng nhập thất bại--%>
+    <c:if test="${not empty error}">
+    Toast.fire({
+        icon: "error",
+        title: "${error}"
+    });
+    </c:if>
+
+    <%--    Hiển thị thông báo thành công khi đăng nhập thành công--%>
+    <c:if test="${not empty successMessage}">
+    Toast.fire({
+        icon: "success",
+        title: "${successMessage}"
+    });
+    </c:if>
+
+
+
+
+    $(document).ready(function () {
+        // Bắt lỗi khi submit form
+        $('#login-form').submit(function (event) {
+            event.preventDefault(); // Ngăn form submit mặc định
+
+            var form = $(this);
+            var username = $('#taiKhoan').val().trim();
+            var password = $('#matKhau').val().trim();
+
+            var hasError = false;
+
+            if (!username) {
+                $('#taiKhoanError').text('Vui lòng nhập username.');
+                $('#taiKhoan').addClass('border-danger');
+                hasError = true;
+            } else {
+                $('#taiKhoanError').text('');
+                $('#taiKhoan').removeClass('border-danger');
+            }
+
+            if (!password) {
+                $('#matKhauError').text('Vui lòng nhập password.');
+                $('#matKhau').addClass('border-danger');
+                hasError = true;
+            } else {
+                $('#matKhauError').text('');
+                $('#matKhau').removeClass('border-danger');
+            }
+
+            if (!hasError) {
+                // Gửi yêu cầu đăng nhập bằng AJAX
+                $.ajax({
+                    type: 'POST',
+                    url: form.attr('action'),
+                    data: form.serialize(),
+                    success: function (response) {
+                        if (response.success) {
+                            // Đăng nhập thành công, điều hướng sang trang home
+                            Toast.fire({
+                                icon: "success",
+                                title: response.successMessage
+                            });
+
+                            setTimeout(function () {
+                                window.location.href = response.redirectUrl;
+                            }, 2000);
+                        } else {
+                            // Đăng nhập không thành công, hiển thị lỗi
+                            if (response.errorUsername) {
+                                $('#taiKhoanError').text(response.errorUsername);
+                                $('#taiKhoan').addClass('border-danger');
+                            }
+                            if (response.errorPassword) {
+                                $('#matKhauError').text(response.errorPassword);
+                                $('#matKhau').addClass('border-danger');
+                            }
+                            $('#loginModal').modal('show');
+
+                        }
+                    },
+                    error: function () {
+                        console.error('Đã xảy ra lỗi khi gửi yêu cầu đăng nhập.');
+                    }
+                });
+            } else {
+                $('#loginModal').modal('show');
+
+            }
+        });
+
+        // Ẩn lỗi khi người dùng click vào trường input
+        $('input').focus(function () {
+            $(this).siblings('.text-danger').text('');
+            $(this).removeClass('border-danger');
+        });
+
+        // Hiển thị lỗi từ Controller (nếu có)
+        var errorUsername = '<%= request.getAttribute("errorUsername") %>';
+        var errorPassword = '<%= request.getAttribute("errorPassword") %>';
+
+        if (errorUsername && errorUsername !== 'null') {
+            $('#taiKhoanError').text(errorUsername);
+            $('#taiKhoan').addClass('border-danger');
+        }
+        if (errorPassword && errorPassword !== 'null') {
+            $('#matKhauError').text(errorPassword);
+            $('#matKhau').addClass('border-danger');
+        }
+
+        // Đảm bảo modal backdrop được loại bỏ khi modal bị đóng
+        $('#loginModal').on('hidden.bs.modal', function () {
+            $('body').removeClass('modal-open');
+            $('.modal-backdrop').remove();
+        });
+
+    });
+
+
+
+</script>
+
+
 </body>
 
 </html>

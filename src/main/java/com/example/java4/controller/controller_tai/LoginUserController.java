@@ -26,8 +26,10 @@ public class LoginUserController {
     // Hiển thị giao diện đăng nhâp của User
     @GetMapping("/login")
     public String view(Model model) {
-        model.addAttribute("khachHangDTO", new KhachHangDTO());
-        return "/view/view_tai/login/login.jsp";
+        if (!model.containsAttribute("khachHangDTO")) {
+            model.addAttribute("khachHangDTO", new KhachHangDTO());
+        }
+        return "/view/view_tai/home/trangChu.jsp";
     }
 
     @PostMapping("/login")
@@ -40,7 +42,7 @@ public class LoginUserController {
         if (result.hasErrors()) {
             System.out.println("Có lỗi");
             model.addAttribute("khachHangDTO", khachHangDTO);
-            return "/view/view_tai/login/login.jsp";
+            return "/view/view_tai/home/trangChu.jsp";
         }
 
         // Lấy ra khách hàng theo tên đăng nhập
@@ -57,7 +59,7 @@ public class LoginUserController {
                 redirectAttributes.addFlashAttribute("errorPassword", "Sai mật khẩu");
                 redirectAttributes.addFlashAttribute("error", "Đăng nhập thất bại!");
 //                return "redirect:/dang-nhap/login";
-                return "/view/view_tai/login/login.jsp";
+                return "/view/view_tai/home/trangChu.jsp";
             }
         } else {
             // Thông báo lỗi nếu tài khoản không tồn tại
@@ -65,7 +67,7 @@ public class LoginUserController {
             redirectAttributes.addFlashAttribute("errorUsername", "Tài khoản không tồn tại");
             redirectAttributes.addFlashAttribute("error", "Đăng nhập thất bại!");
 //            return "redirect:/dang-nhap/login";
-            return "/view/view_tai/login/login.jsp";
+            return "/view/view_tai/home/trangChu.jsp";
         }
 
     }
