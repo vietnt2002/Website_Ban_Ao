@@ -14,6 +14,7 @@ public interface KhachHangRepository
 {
     public static final int ACTIVE  = 1;
     public static final int INACTIVE =0;
+    public static final int Lock =2;
     public Page<KhachHang> findByTrangThai(int trangThai, Pageable pageable);
     public Optional<KhachHang> findById(Integer id);
 

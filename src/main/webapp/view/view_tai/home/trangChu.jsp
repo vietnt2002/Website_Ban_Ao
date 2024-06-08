@@ -125,12 +125,12 @@
                         <c:when test="${empty sessionScope.user}">
                             <!-- Hiển thị nút đăng nhập khi chưa đăng nhập -->
                             <li><a class="dropdown-item text-center" href="#">
-                                <button class="btn btn-primary w-100" data-toggle="modal" data-target="#loginModal">Đăng nhập
+                                <button class="btn btn-primary w-100 px-5" data-toggle="modal" data-target="#loginModal">Đăng nhập
                                 </button>
                             </a></li>
 
-                            <li><a class="dropdown-item text-center mt-3" href="#">
-                                <button class="btn btn-primary w-100" data-toggle="modal" data-target="#loginModal">Đăng ký
+                            <li><a class="dropdown-item text-center mt-3 " href="#">
+                                <button class="btn btn-primary w-100 px-5" data-toggle="modal" data-target="#registerModal">Đăng ký
                                 </button>
                             </a></li>
                         </c:when>
@@ -158,19 +158,17 @@
 </div>
 <!-- Topbar End -->
 
-<!-- Login Modal Start -->
+<!-- Login Modal Start  (Modal Form đăng nhập)-->
 <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
-     data-backdrop="static" data-keyboard="false">
+     data-backdrop="true" data-keyboard="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <!-- Modal Header -->
             <div class="modal-header">
                 <h4 class="modal-title text-center text-info w-100">Login</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <!-- Modal Body -->
             <div class="modal-body">
                 <div class="login-form-wrapper">
                     <form id="login-form" class="form" action="/home/login" method="post" modelAttribute="khachHangDTO">
@@ -192,7 +190,7 @@
                             <input type="submit" name="submit" class="btn btn-info btn-md w-100" value="Submit">
                         </div>
                         <div id="register-link" class="text-right">
-                            <a href="/dang-ky/singup" class="text-info">Register here</a>
+                            <a href="#" class="text-info " data-toggle="modal" data-target="#registerModal" data-dismiss="modal">Register here</a>
                         </div>
                     </form>
                 </div>
@@ -201,6 +199,59 @@
     </div>
 </div>
 <!-- Login Modal End -->
+
+<!-- Registration Modal Start (Modal Form đăng ký) -->
+<div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel" aria-hidden="true"
+     data-backdrop="true" data-keyboard="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title text-center text-info w-100">Register</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="register-form-wrapper">
+                    <form id="register-form" class="form" action="/home/register" method="post"  modelAttribute="khachHangDTO">
+                        <div class="form-group">
+                            <label for="registerUsername" class="text-info">Username:</label><br>
+                            <input placeholder="Username" type="text" id="registerUsername" name="taiKhoan"
+                                   class="form-control"  value="${khachHangDTO.taiKhoan}">
+                            <small id="registerUsernameError" class="text-danger"></small>
+                        </div>
+                        <div class="form-group">
+                            <label for="registerEmail" class="text-info">Email:</label><br>
+                            <input placeholder="Email" type="email" id="registerEmail" name="email"
+                                   class="form-control" value="${khachHangDTO.email}">
+                            <small id="registerEmailError" class="text-danger"></small>
+                        </div>
+                        <div class="form-group">
+                            <label for="registerPhone" class="text-info">Phone:</label><br>
+                            <input placeholder="Phone" type="text" id="registerPhone" name="sdt"
+                                   class="form-control" value="${khachHangDTO.sdt}">
+                            <small id="registerPhoneError" class="text-danger"></small>
+                        </div>
+                        <div class="form-group">
+                            <label for="registerPassword" class="text-info">Password:</label><br>
+                            <input placeholder="Password" type="password" id="registerPassword" name="matKhau"
+                                   class="form-control"  value="${khachHangDTO.matKhau}">
+                            <small id="registerPasswordError" class="text-danger"></small>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" name="submit" class="btn btn-info btn-md w-100" value="Register">
+                        </div>
+                        <div id="login-link" class="text-right">
+                            <a href="#" class="text-info " data-toggle="modal" data-target="#loginModal" data-dismiss="modal">Back to Login</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Registration Modal End -->
+
 
 <!-- Navbar Start -->
 <div class="container-fluid">
@@ -312,6 +363,7 @@
                         <span class="badge border font-weight-normal">168</span>
                     </div>
                 </form>
+
             </div>
             <!-- Price End -->
 
@@ -615,7 +667,7 @@
 
 
 
-
+<%--Validate Form đăng nhặp--%>
     $(document).ready(function () {
         // Bắt lỗi khi submit form
         $('#login-form').submit(function (event) {
@@ -672,7 +724,6 @@
                                 $('#matKhauError').text(response.errorPassword);
                                 $('#matKhau').addClass('border-danger');
                             }
-                            $('#loginModal').modal('show');
 
                         }
                     },
@@ -680,11 +731,74 @@
                         console.error('Đã xảy ra lỗi khi gửi yêu cầu đăng nhập.');
                     }
                 });
-            } else {
-                $('#loginModal').modal('show');
-
             }
         });
+
+        // Xử lý lỗi và hiển thị modal khi submit form đăng ký
+        $('#register-form').submit(function (event) {
+            var form = $(this);
+            var hasError = false;
+
+            var username = $('#registerUsername').val().trim();
+            var email = $('#registerEmail').val().trim();
+            var phone = $('#registerPhone').val().trim();
+            var password = $('#registerPassword').val().trim();
+
+            // Clear previous errors
+            $('.text-danger').text('');
+            $('.form-control').removeClass('border-danger');
+
+            // Validate fields
+            if (!username) {
+                $('#registerUsernameError').text('Vui lòng nhập username.');
+                $('#registerUsername').addClass('border-danger');
+                hasError = true;
+            }
+            if (!email) {
+                $('#registerEmailError').text('Vui lòng nhập email.');
+                $('#registerEmail').addClass('border-danger');
+                hasError = true;
+            } else if (!isValidEmail(email)) {
+                $('#registerEmailError').text('Email không hợp lệ.');
+                $('#registerEmail').addClass('border-danger');
+                hasError = true;
+            }
+            if (!phone) {
+                $('#registerPhoneError').text('Vui lòng nhập số điện thoại.');
+                $('#registerPhone').addClass('border-danger');
+                hasError = true;
+            } else if (!isValidVietnamesePhoneNumber(phone)) {
+                $('#registerPhoneError').text('Số điện thoại không hợp lệ');
+                $('#registerPhone').addClass('border-danger');
+                hasError = true;
+            }
+            if (!password) {
+                $('#registerPasswordError').text('Vui lòng nhập mật khẩu.');
+                $('#registerPassword').addClass('border-danger');
+                hasError = true;
+            }
+            else if (password.length < 6) {
+            $('#registerPasswordError').text('Mật khẩu phải có ít nhất 6 ký tự.');
+            $('#registerPassword').addClass('border-danger');
+            hasError = true;
+        }
+
+
+            // Check if username already exists
+            <%--var registerErrors = '<%= request.getAttribute("registerErrors") %>';--%>
+            <%--if (registerErrors !== 'null') {--%>
+            <%--    $('#registerUsernameError').text(registerErrors);--%>
+            <%--    $('#registerUsername').addClass('border-danger');--%>
+            <%--    hasError = true;--%>
+            <%--}--%>
+
+            // If any validation errors exist, prevent form submission
+            if (hasError) {
+                event.preventDefault();
+            }
+        });
+
+
 
         // Ẩn lỗi khi người dùng click vào trường input
         $('input').focus(function () {
@@ -695,6 +809,7 @@
         // Hiển thị lỗi từ Controller (nếu có)
         var errorUsername = '<%= request.getAttribute("errorUsername") %>';
         var errorPassword = '<%= request.getAttribute("errorPassword") %>';
+        var errorUsernameExit= '<%= request.getAttribute("errorUsernameExit") %>';
 
         if (errorUsername && errorUsername !== 'null') {
             $('#taiKhoanError').text(errorUsername);
@@ -705,17 +820,47 @@
             $('#matKhau').addClass('border-danger');
         }
 
-        // Đảm bảo modal backdrop được loại bỏ khi modal bị đóng
+        if (errorUsernameExit !== 'null') {
+            $('#registerUsername').text(errorUsernameExit);
+            $('#taiKhoan').addClass('border-danger');
+        }
+
+
+
+        // Khi modal được mở, thêm class "modal-open" vào body
+        $('#loginModal').on('shown.bs.modal', function () {
+            $('body').addClass('modal-open');
+        });
+
+        // Khi modal được đóng, loại bỏ class "modal-open" khỏi body
         $('#loginModal').on('hidden.bs.modal', function () {
             $('body').removeClass('modal-open');
-            $('.modal-backdrop').remove();
         });
+
+
 
     });
 
+    // Hàm kiểm tra định dạng email
+    function isValidEmail(email) {
+        // Biểu thức chính quy để kiểm tra định dạng email
+        var regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return regex.test(email);
+    }
 
+    // Hàm kiểm tra định dạng số điện thoại
+    function isValidVietnamesePhoneNumber(phoneNumber) {
+        // Biểu thức chính quy để kiểm tra định dạng số điện thoại (theo quy định của Việt Nam)
+        var regex = /^(0|\+84)\d{9,10}$/;
+        return regex.test(phoneNumber);
+    }
 
 </script>
+
+
+
+
+
 
 
 </body>

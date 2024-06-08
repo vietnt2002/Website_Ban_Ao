@@ -15,6 +15,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,7 +48,7 @@ public class HomeController {
 
     @PostMapping("/login")
     @ResponseBody
-    public ResponseEntity<Map<String, Object>> login(@Valid @ModelAttribute("khachHangDTO") KhachHangDTO khachHangDTO,
+    public ResponseEntity<Map<String, Object>> login( @ModelAttribute("khachHangDTO") KhachHangDTO khachHangDTO,
                                                      HttpSession session,
                                                      BindingResult result) {
         Map<String, Object> response = new HashMap<>();
@@ -85,6 +87,35 @@ public class HomeController {
         session.removeAttribute("user");
         UserInfor.idKhachHang = null;
         redirectAttributes.addFlashAttribute("successMessage", "Đăng xuất thành công!");
+        return "redirect:/home";
+    }
+
+    @PostMapping("/register")
+    public String register( @ModelAttribute("khachHangDTO") KhachHangDTO khachHangDTO,
+                           BindingResult result,
+                           RedirectAttributes redirectAttributes) {
+        if (result.hasErrors()) {
+            redirectAttributes.addFlashAttribute("registerErrors", result.getAllErrors());
+            return "redirect:/home";
+        }
+
+        KhachHang existingUser = khachHangRepository.findByTaiKhoan(khachHangDTO.getTaiKhoan());
+        if (existingUser != null) {
+            redirectAttributes.addFlashAttribute("registerErrors", "Username already exists");
+            return "redirect:/home";
+        }
+
+        // Save the new user
+        KhachHang newUser = new KhachHang();
+        newUser.setTaiKhoan(khachHangDTO.getTaiKhoan());
+        newUser.setEmail(khachHangDTO.getEmail());
+        newUser.setSdt(khachHangDTO.getSdt());
+        newUser.setMatKhau(khachHangDTO.getMatKhau());
+        newUser.setNgayTao( LocalDateTime.now());
+        newUser.setTrangThai(khachHangRepository.ACTIVE);
+        khachHangRepository.save(newUser);
+
+        redirectAttributes.addFlashAttribute("successMessage", "Đăng ký thành công!");
         return "redirect:/home";
     }
 }
