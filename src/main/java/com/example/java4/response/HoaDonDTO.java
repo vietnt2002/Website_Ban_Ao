@@ -25,9 +25,9 @@ public class HoaDonDTO {
     private KhachHang khachHang;
     private NhanVien nhanVien;
     private DiaChi diaChi;
-    private String loaiHoaDon;
     private Integer phuongThucThanhToan;
     private Integer tongTien;
+    private Integer loaiHoaDon;
     private String ngayTao;
     private Integer trangThai;
 
@@ -35,13 +35,14 @@ public class HoaDonDTO {
 
 
 
-    public HoaDonDTO(String id, String ma, KhachHang khachHang, NhanVien nhanVien, Integer phuongThucThanhToan, Integer tongTien, String ngayTao, Integer trangThai) {
+    public HoaDonDTO(String id, String ma, KhachHang khachHang, NhanVien nhanVien, Integer phuongThucThanhToan, Integer tongTien,Integer loaiHoaDon, String ngayTao, Integer trangThai) {
         this.id = id;
         this.ma = ma;
         this.khachHang = khachHang;
         this.nhanVien = nhanVien;
         this.phuongThucThanhToan = phuongThucThanhToan;
         this.tongTien = tongTien;
+        this.loaiHoaDon = loaiHoaDon;
         this.ngayTao = ngayTao;
         this.trangThai = trangThai;
     }

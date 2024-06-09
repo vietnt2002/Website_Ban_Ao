@@ -2,6 +2,7 @@ package com.example.java4.controller.controller_tai;
 
 import com.example.java4.entities.*;
 import com.example.java4.repositories.*;
+import com.example.java4.repositories.repo_tai.IHoaDonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,6 +26,9 @@ public class BanTaiQuayController {
 
     @Autowired
     private HoaDonRepository hoaDonRepository;
+
+    @Autowired
+    private IHoaDonRepository _hoaDonRepo;
 
     @Autowired
     private HDCTRepository hoaDonChiTietRepository;
@@ -63,7 +67,7 @@ public class BanTaiQuayController {
     private List<SanPham> listSanPham;
     private List<KieuTay> listKieuTay;
     private List<ChatLieu> listChatLieu;
-    private String idNV = "FE755A99-83D6-4431-8FDE-4DF25C6B8BD0";
+    private String idNV = "2084A73E-F64A-4570-8362-D241442F2868";
 
 @GetMapping("")
 public String hienThi(Model model,@RequestParam(value = "page",defaultValue ="0") String pageParam ) {
@@ -360,18 +364,21 @@ public String hienThi(Model model,@RequestParam(value = "page",defaultValue ="0"
 //    }
     //Thanh toán
     @PostMapping("/thanh-toan/{idHoaDon}")
-    public String thanhToanSanPham(@PathVariable String idHoaDon,
-                                   @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date ngayTao) {
+    public String thanhToanSanPham(@PathVariable String idHoaDon
+                                  ) {
         for (int i = 0; i < listHoaDon.size(); i++) {
             if (listHoaDon.get(i).getId().equals(idHoaDon)) {
                 HoaDon hoaDon = hoaDonRepository.findById(idHoaDon).get();
                 hoaDon.setId(idHoaDon);
                 hoaDon.setMa(hoaDon.getMa());
                 hoaDon.setTongTien(hoaDonChiTietRepository.tinhGiaTriHD(idHoaDon));
-                hoaDon.setTrangThai(1);
-                hoaDon.setPhuongThucThanhToan(1);
-                hoaDon.setIdKhachHang(khachHangRepository.findById("DB45F5AA-6559-43B0-8F4A-B01E6FF471A1").get());
-                hoaDon.setNgayThanhToan(ngayTao);
+                hoaDon.setTrangThai(_hoaDonRepo.DA_HOAN_THANH);
+                hoaDon.setPhuongThucThanhToan(_hoaDonRepo.TIEN_MAT);
+                hoaDon.setIdKhachHang(khachHangRepository.findById("D280B435-7BD2-4872-85D6-DF0E8A8D7039").get());
+                hoaDon.setIdNhanVien(nhanVienRepo.findById("2084A73E-F64A-4570-8362-D241442F2868").get());
+                hoaDon.setNgayTao(LocalDateTime.now());
+                hoaDon.setNgayThanhToan(LocalDateTime.now());
+                hoaDon.setLoaiHoaDon(_hoaDonRepo.HOA_DON_OFF);
                 hoaDonRepository.save(hoaDon);
             }
         }

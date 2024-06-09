@@ -353,42 +353,46 @@
                 <!-- Bộ lộc và tìm kiếm-->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold ">Bộ Lọc</h6>
+                        <h6 class="m-0 font-weight-bold">Bộ Lọc</h6>
                     </div>
                     <div class="card-body">
-                        <form class="row g-3">
+                        <form class="row g-3" method="get" action="/hoa-don/tim-kiem">
                             <div class="col-md-6">
-                                <label for="inputEmail4" class="form-label">Tìm Kiếm</label>
-                                <input type="text" placeholder="Nhập thông tin đơn hàng cần tìm" class="form-control"
-                                       id="inputEmail4">
+                                <label for="searchKeyword" class="form-label">Tìm kiếm</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control bg-light border-0 small" id="searchKeyword" name="keyword"
+                                           placeholder="Nhập mã hóa đơn hoặc SĐT khách hàng" value="${keyword}"
+                                           aria-label="Search" aria-describedby="basic-addon2">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary" type="submit">
+                                            <i class="bi bi-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                             <div class="col-md-6">
-                                <label for="" class="form-label">Loại Hóa Đơn</label>
-                                <select id="inputState" class="form-select">
-                                    <option selected>Tất cả</option>
-                                    <option>...</option>
+                                <label for="inputLoaiHoaDon" class="form-label">Loại Hóa Đơn</label>
+                                <select id="inputLoaiHoaDon" class="form-select" name="loaiHoaDon">
+                                    <option value="">Tất cả</option>
+                                    <option value="0">Bán Online</option>
+                                    <option value="1">Bán tại quầy</option>
                                 </select>
                             </div>
 
-                            <div class="col-md-6">
-                                <label for="inputCity" class="form-label">Ngày Bắt Đầu</label>
-                                <input type="date" class="form-control" id="inputCity">
-                            </div>
-                            <div class="col-md-6">
-                                <label for="inputCity" class="form-label">Ngày Kết Thúc</label>
-                                <input type="date" class="form-control" id="">
-                            </div>
+                            <div class="row mt-3">
+                                <div class="col-md-6">
+                                    <label for="inputNgayTao" class="form-label">Ngày Tạo</label>
+                                    <input type="date" class="form-control" id="inputNgayTao" name="ngayTao">
+                                </div>
 
-                            <div class="col-6">
-                                <button type="submit" class="btn btn-success">Tìm Kiếm</button>
-                            </div>
-
-                            <div class="col-6">
-                                <button type="submit" class="btn btn-danger">Làm Mới</button>
+                                <div class="col-md-6 d-flex align-items-end">
+                                    <a href="/hoa-don/hien-thi"> <button type="btn" class="btn btn-danger ">Làm Mới</button></a>
+                                </div>
                             </div>
                         </form>
                     </div>
                 </div>
+
 
                 <!-- Danh sách hóa đơn -->
                 <div class="card shadow mb-4">
@@ -468,7 +472,7 @@
                                     </thead>
 
                                     <tbody>
-                                    <c:forEach var="hoaDon" items="${hoaDonPage}" varStatus="i">
+                                    <c:forEach var="hoaDon" items="${hoaDonPageAll}" varStatus="i">
                                         <tr>
                                             <td>${i.index + 1}</td>
                                             <td>${hoaDon.ma}</td>
@@ -476,7 +480,9 @@
                                             <td>${hoaDon.khachHang.hoTen}</td>
                                             <td>${hoaDon.khachHang.sdt}</td>
                                             <td>
-                                                <span class="badge rounded-pill bg-primary">Bán tại quầy</span>
+                                                <span class="badge rounded-pill ${hoaDon.loaiHoaDon == 0 ? 'bg-primary' : 'bg-success'}">
+                                                        ${hoaDon.loaiHoaDon == 1 ? "Bán tại quầy" : "Bán online"}
+                                                </span>
                                             </td>
                                             <td>
                                                 <fmt:formatNumber value="${hoaDon.tongTien}" type="currency"
@@ -505,16 +511,17 @@
                                 <div class="float-end">
                                     <nav aria-label="Page navigation example">
                                         <ul class="pagination">
-                                            <c:if test="${pageHD.number > 0}">
+                                            <c:if test="${pageHDALL.number > 0}">
                                                 <li class="page-item"><a class="page-link"
-                                                                         href="/hoa-don/hien-thi?page=${pageHD.number - 1}">&laquo;</a>
+                                                                         href="/hoa-don/hien-thi?page=${pageHDALL.number - 1}">&laquo;</a>
                                                 </li>
                                             </c:if>
-                                            <li class="page-item"><a class="page-link" href="#">${pageHD.number + 1}</a>
+                                            <li class="page-item"><a class="page-link"
+                                                                     href="#">${pageHDALL.number + 1}</a>
                                             </li>
-                                            <c:if test="${pageHD.number+1 < pageHD.totalPages}">
+                                            <c:if test="${pageHDALL.number+1 < pageHDALL.totalPages}">
                                                 <li class="page-item"><a class="page-link"
-                                                                         href="/hoa-don/hien-thi?page=${pageHD.number + 1}">&raquo;</a>
+                                                                         href="/hoa-don/hien-thi?page=${pageHDALL.number + 1}">&raquo;</a>
                                                 </li>
                                             </c:if>
                                         </ul>
@@ -541,19 +548,38 @@
                                     </thead>
 
                                     <tbody>
-                                    <tr>
-                                        <td>Tiger Nixon</td>
-                                        <td>System Architect</td>
-                                        <td>Edinburgh</td>
-                                        <td>61</td>
-                                        <td>2011/04/25</td>
-                                        <td>$320,800</td>
-                                        <td>$320,800</td>
-                                        <td>$320,800</td>
-                                        <td>$320,800</td>
-                                        <td>$320,800</td>
-                                    </tr>
-
+                                    <%--                                    <c:forEach var="hoaDon" items="${hoaDonPageXacNhan}" varStatus="i">--%>
+                                    <%--                                        <tr>--%>
+                                    <%--                                            <td>${i.index + 1}</td>--%>
+                                    <%--                                            <td>${hoaDon.ma}</td>--%>
+                                    <%--                                            <td>${hoaDon.idNhanVien.hoTen}</td>--%>
+                                    <%--                                            <td>${hoaDon.idKhachHang.hoTen}</td>--%>
+                                    <%--                                            <td>${hoaDon.idKhachHang.sdt}</td>--%>
+                                    <%--                                            <td>--%>
+                                    <%--                                                <span class="badge rounded-pill ${hoaDon.loaiHoaDon == 0 ? 'bg-primary' : 'bg-success'}">--%>
+                                    <%--                                                        ${hoaDon.loaiHoaDon == 0 ? "Bán online" : "Bán tại quầy"}--%>
+                                    <%--                                                </span>--%>
+                                    <%--                                            </td>--%>
+                                    <%--                                            <td>--%>
+                                    <%--                                                <fmt:formatNumber value="${hoaDon.tongTien}" type="currency"--%>
+                                    <%--                                                                  currencySymbol="₫" groupingUsed="true"/>--%>
+                                    <%--                                            </td>--%>
+                                    <%--                                            <td>--%>
+                                    <%--                                                <fmt:formatDate value="${hoaDon.ngayTao}" pattern="yyyy-MM-dd HH:mm:ss"/>--%>
+                                    <%--                                            </td>--%>
+                                    <%--                                            <td>--%>
+                                    <%--                                            <span class="badge rounded-pill ${hoaDon.trangThai == 0 ? 'bg-danger' : 'bg-success'}">--%>
+                                    <%--                                                    ${hoaDon.trangThai == 0 ? 'Chưa thanh toán' : 'Đã thanh toán'}--%>
+                                    <%--                                            </span>--%>
+                                    <%--                                            </td>--%>
+                                    <%--                                            <td>--%>
+                                    <%--                                                <!-- Button trigger modal -->--%>
+                                    <%--                                                <a href="/hoa-don/detail/${hoaDon.id}" class="btn btn-warning">--%>
+                                    <%--                                                    <i class="bi bi-eye-fill"></i>--%>
+                                    <%--                                                </a>--%>
+                                    <%--                                            </td>--%>
+                                    <%--                                        </tr>--%>
+                                    <%--                                    </c:forEach>--%>
                                     </tbody>
                                 </table>
                                 <%-- Phân trang của hóa đơn chờ xác nhận  --%>
@@ -767,7 +793,9 @@
                                             <td>${hoaDon.khachHang.hoTen}</td>
                                             <td>${hoaDon.khachHang.sdt}</td>
                                             <td>
-                                                <span class="badge rounded-pill bg-primary">Bán tại quầy</span>
+                                                <span class="badge rounded-pill ${hoaDon.loaiHoaDon == 0 ? 'bg-primary' : 'bg-success'}">
+                                                        ${hoaDon.loaiHoaDon == 0 ? "Bán online" : "Bán tại quầy"}
+                                                </span>
                                             </td>
                                             <td>
                                                 <span
@@ -947,6 +975,14 @@
 <script src="js/demo/datatables-demo.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
+
+    //Chức năng lọc hóa đơn
+    function filterHoaDon() {
+        var loaiHoaDon = document.getElementById("inputState").value;
+        window.location.href = "/hoa-don/filter?loaiHoaDon=" + loaiHoaDon;
+    }
+
+
     $(document).ready(function () {
         // Thêm lớp bg-warning cho tab "Tất Cả" khi trang được tải
         $('#all-tab').addClass('bg-warning');
