@@ -12,7 +12,6 @@ public class ChatLieu {
     private String ten;
     private Date ngayTao;
     private Integer trangThai;
-
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "ID")

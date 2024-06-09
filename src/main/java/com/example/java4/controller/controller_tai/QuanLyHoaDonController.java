@@ -30,6 +30,7 @@ import org.springframework.data.domain.Sort;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -55,8 +56,6 @@ public class QuanLyHoaDonController {
 
     @Autowired
     IHoaDonRepository _hoaDonRepository;
-
-
 
     // Hiển thị giao diện quản lý hóa đơn
     @GetMapping("/hien-thi")
@@ -103,7 +102,6 @@ public class QuanLyHoaDonController {
         model.addAttribute("hoaDonPageAll", listHoaDonALLDTO);
         model.addAttribute("hoaDonPageXacNhan",pageHD.getContent());
         return "/view/view_tai/hoa_don/bill.jsp";
-
     }
 
     // Chức năng xem thông tin chi tiết hóa đơn theo IDHD

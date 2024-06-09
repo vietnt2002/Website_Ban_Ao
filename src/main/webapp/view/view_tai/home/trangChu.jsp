@@ -58,6 +58,24 @@
             max-width: 500px;
             margin: 100px auto;
         }
+        .totalQuantityCart {
+            width: 15px;
+            height: 15px;
+            background: #db2121;
+            display: block;
+            text-align: center;
+            line-height: 14px;
+            border-radius: 100%;
+            color: #fff;
+            font-weight: 700;
+            font-size: 11px;
+            padding: 0 2px;
+            position: absolute;
+            top: 3px;
+            right: 17px;
+            margin: 0;
+            min-width: 0;
+        }
     </style>
 </head>
 
@@ -120,7 +138,6 @@
                     <i class="bi bi-person-circle" style="color:#D19C97; margin: 5px"></i>
                 </button>
                 <ul class="dropdown-menu btn border" aria-labelledby="dropdownMenuButton1">
-
                     <c:choose>
                         <c:when test="${empty sessionScope.user}">
                             <!-- Hiển thị nút đăng nhập khi chưa đăng nhập -->
@@ -135,7 +152,6 @@
                             </a></li>
                         </c:when>
                         <c:otherwise>
-
                             <!-- Hiển thị nút đăng xuất khi đã đăng nhập -->
                             <li><a class="dropdown-item" href="#">Theo dõi đơn hàng</a></li>
                             <li><a class="dropdown-item" href="#">Lịch sử mua hàng</a></li>
@@ -143,10 +159,6 @@
                             <li><a class="dropdown-item" href="/home/logout">Đăng xuất</a></li>
                         </c:otherwise>
                     </c:choose>
-
-
-
-
                 </ul>
             </div>
             <a href="" class="btn border">
@@ -286,40 +298,6 @@
 
 
 <!-- Page Header Start -->
-<div id="header-carousel" class="carousel slide" data-ride="carousel">
-    <div class="carousel-inner">
-        <div class="carousel-item active" style="height: 410px;">
-            <img class="img-fluid" src="/view_ban_hang/img/carousel-1.jpg" alt="Image">
-            <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
-                <div class="p-3" style="max-width: 700px;">
-                    <h4 class="text-light text-uppercase font-weight-medium mb-3">10% Off Your First Order</h4>
-                    <h3 class="display-4 text-white font-weight-semi-bold mb-4">Fashionable Dress</h3>
-                    <a href="" class="btn btn-light py-2 px-3">Shop Now</a>
-                </div>
-            </div>
-        </div>
-        <div class="carousel-item" style="height: 410px;">
-            <img class="img-fluid" src="/view_ban_hang/img/carousel-2.jpg" alt="Image">
-            <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
-                <div class="p-3" style="max-width: 700px;">
-                    <h4 class="text-light text-uppercase font-weight-medium mb-3">10% Off Your First Order</h4>
-                    <h3 class="display-4 text-white font-weight-semi-bold mb-4">Reasonable Price</h3>
-                    <a href="" class="btn btn-light py-2 px-3">Shop Now</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <a class="carousel-control-prev" href="#header-carousel" data-slide="prev">
-        <div class="btn btn-dark" style="width: 45px; height: 45px;">
-            <span class="carousel-control-prev-icon mb-n2"></span>
-        </div>
-    </a>
-    <a class="carousel-control-next" href="#header-carousel" data-slide="next">
-        <div class="btn btn-dark" style="width: 45px; height: 45px;">
-            <span class="carousel-control-next-icon mb-n2"></span>
-        </div>
-    </a>
-</div>
 <!-- Page Header End -->
 
 
@@ -475,7 +453,6 @@
                         </div>
                     </div>
                 </div>
-
 
                 <c:forEach varStatus="i" items="${pageSP.content}" var="sp">
                     <a href="/store/detail-san-pham/${sp.idCTSP}" style="text-decoration: none">
@@ -646,9 +623,6 @@
         }
     });
 
-
-
-
     <%--    Hiển thị thông báo thành công khi đăng nhập thất bại--%>
     <c:if test="${not empty error}">
     Toast.fire({
@@ -664,9 +638,6 @@
         title: "${successMessage}"
     });
     </c:if>
-
-
-
 <%--Validate Form đăng nhặp--%>
     $(document).ready(function () {
         // Bắt lỗi khi submit form
@@ -825,8 +796,6 @@
             $('#taiKhoan').addClass('border-danger');
         }
 
-
-
         // Khi modal được mở, thêm class "modal-open" vào body
         $('#loginModal').on('shown.bs.modal', function () {
             $('body').addClass('modal-open');
@@ -836,9 +805,6 @@
         $('#loginModal').on('hidden.bs.modal', function () {
             $('body').removeClass('modal-open');
         });
-
-
-
     });
 
     // Hàm kiểm tra định dạng email
@@ -854,15 +820,6 @@
         var regex = /^(0|\+84)\d{9,10}$/;
         return regex.test(phoneNumber);
     }
-
 </script>
-
-
-
-
-
-
-
 </body>
-
 </html>

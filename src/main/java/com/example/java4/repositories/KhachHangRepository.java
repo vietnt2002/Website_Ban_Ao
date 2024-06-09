@@ -18,7 +18,7 @@ public interface KhachHangRepository
     public static final int Lock =2;
     public Page<KhachHang> findByTrangThai(int trangThai, Pageable pageable);
 //    public Optional<KhachHang> findById(Integer id);
-    public Optional<KhachHang> findById(Integer id);
+    public Optional<KhachHang> findById(String id);
 
     // Lấy thông tin khách hàng theo Username và Password làm chức năng đăng nhập
     KhachHang findByTaiKhoanAndMatKhau(String taiKhoan, String matKhau);

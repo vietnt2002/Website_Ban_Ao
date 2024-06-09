@@ -11,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Repository
@@ -31,7 +32,7 @@ public interface HDCTRepository
 
         // Lấy ra tổng tiền trong hóa đơn chi tiết
         @Query("SELECT SUM (hdct.soLuong * hdct.donGia) FROM ChiTietHoaDon  hdct WHERE hdct.idHoaDon.id = :hoaDonId" )
-        public Integer tinhGiaTriHD(@Param("hoaDonId") String hoaDonId);
+        public BigDecimal tinhGiaTriHD(@Param("hoaDonId") String hoaDonId);
 
 //        public static final int ACTIVE = 1;
 //        public static final int INACTIVE = 0;

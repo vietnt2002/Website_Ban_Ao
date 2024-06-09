@@ -22,7 +22,6 @@ public class LoginUserController {
 
     @Autowired
     KhachHangRepository khachHangRepository;
-
     // Hiển thị giao diện đăng nhâp của User
     @GetMapping("/login")
     public String view(Model model) {

@@ -17,7 +17,6 @@ public interface HoaDonRepository
 {
     public static final int ACTIVE  = 1;
     public static final int INACTIVE =0;
-    public static final int INACTIVE = 0;
     public static final int HOA_DON_ONL = 0;
     public static final int HOA_DON_OFF = 1;
     public static final int CHO_THANH_TOAN = 0;
@@ -34,7 +33,6 @@ public interface HoaDonRepository
     public Optional<HoaDon> findById(String id);
     @Query(value = "SELECT COUNT(*) FROM dbo.HoaDon",nativeQuery = true)
     Integer countHD();
-    public Page<HoaDon> findByTrangThai(int trangThai, Pageable pageable);
     // Lấy ra Page danh sách hóa đơn theo trạng thái được sắp xếp theo ngày giờ mới nhất
     Page<HoaDon> findByTrangThaiOrderByNgayTaoDesc(int trangThai, Pageable pageable);
     //Lấy ra hóa đơn theo idKH, loại hóa đơn và trạng thái

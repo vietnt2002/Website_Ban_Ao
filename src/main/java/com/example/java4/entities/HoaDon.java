@@ -17,8 +17,6 @@ public class HoaDon {
     private KhachHang idKhachHang;
     private LocalDateTime ngayTao;
     private LocalDateTime ngayThanhToan;
-    private Integer tongTien;
-    private Date ngayThanhToan;
     private BigDecimal tongTien;
     private Integer loaiHoaDon;
     private Integer trangThai;

@@ -151,6 +151,99 @@
 </div>
 <!-- Topbar End -->
 
+<!-- Login Modal Start  (Modal Form đăng nhập)-->
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
+     data-backdrop="true" data-keyboard="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title text-center text-info w-100">Login</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="login-form-wrapper">
+                    <form id="login-form" class="form" action="login" method="post" modelAttribute="khachHangDTO">
+                        <div class="form-group">
+                            <label for="taiKhoan" class="text-info">Username:</label><br>
+                            <input placeholder="Username" type="text" id="taiKhoan" name="taiKhoan"
+                                   value="${khachHangDTO.taiKhoan}" class="form-control">
+                            <small id="taiKhoanError" class="text-danger"></small>
+                        </div>
+                        <div class="form-group">
+                            <label for="matKhau" class="text-info">Password:</label><br>
+                            <input placeholder="Password" type="password" id="matKhau" name="matKhau"
+                                   value="${khachHangDTO.matKhau}" class="form-control">
+                            <small id="matKhauError" class="text-danger"></small>
+                        </div>
+                        <div class="form-group">
+                            <label for="remember-me" class="text-info"><span>Remember me</span> <span><input
+                                    id="remember-me" name="remember-me" type="checkbox"></span></label><br>
+                            <input type="submit" name="submit" class="btn btn-info btn-md w-100" value="Submit">
+                        </div>
+                        <div id="register-link" class="text-right">
+                            <a href="#" class="text-info " data-toggle="modal" data-target="#registerModal" data-dismiss="modal">Register here</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Login Modal End -->
+
+<!-- Registration Modal Start (Modal Form đăng ký) -->
+<div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel" aria-hidden="true"
+     data-backdrop="true" data-keyboard="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title text-center text-info w-100">Register</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="register-form-wrapper">
+                    <form id="register-form" class="form" action="/home/register" method="post"  modelAttribute="khachHangDTO">
+                        <div class="form-group">
+                            <label for="registerUsername" class="text-info">Username:</label><br>
+                            <input placeholder="Username" type="text" id="registerUsername" name="taiKhoan"
+                                   class="form-control"  value="${khachHangDTO.taiKhoan}">
+                            <small id="registerUsernameError" class="text-danger"></small>
+                        </div>
+                        <div class="form-group">
+                            <label for="registerEmail" class="text-info">Email:</label><br>
+                            <input placeholder="Email" type="email" id="registerEmail" name="email"
+                                   class="form-control" value="${khachHangDTO.email}">
+                            <small id="registerEmailError" class="text-danger"></small>
+                        </div>
+                        <div class="form-group">
+                            <label for="registerPhone" class="text-info">Phone:</label><br>
+                            <input placeholder="Phone" type="text" id="registerPhone" name="sdt"
+                                   class="form-control" value="${khachHangDTO.sdt}">
+                            <small id="registerPhoneError" class="text-danger"></small>
+                        </div>
+                        <div class="form-group">
+                            <label for="registerPassword" class="text-info">Password:</label><br>
+                            <input placeholder="Password" type="password" id="registerPassword" name="matKhau"
+                                   class="form-control"  value="${khachHangDTO.matKhau}">
+                            <small id="registerPasswordError" class="text-danger"></small>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" name="submit" class="btn btn-info btn-md w-100" value="Register">
+                        </div>
+                        <div id="login-link" class="text-right">
+                            <a href="#" class="text-info " data-toggle="modal" data-target="#loginModal" data-dismiss="modal">Back to Login</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Registration Modal End -->
 
 <!-- Navbar Start -->
 <div class="container-fluid">
@@ -370,9 +463,6 @@
                         </div>
                     </div>
                 </div>
-
-
-
                 <c:forEach varStatus="i" items="${pageSP.content}" var="sp">
                     <a href="/store/detail-san-pham/${sp.idCTSP}" style="text-decoration: none">
                         <div class="col-lg-4 col-md-6 col-sm-12 pb-1">
@@ -394,10 +484,6 @@
                         </div>
                     </a>
                 </c:forEach>
-
-
-
-
                 <div class="col-12 pb-1">
                     <nav aria-label="Page navigation">
                         <ul class="pagination justify-content-center mb-3">
@@ -514,6 +600,218 @@
 
 <!-- Template Javascript -->
 <script src="/view_ban_hang/js/main.js"></script>
+<script>
+    //  // Hiển thị thông báo thất bại nếu đăng nhập thất bại
+    const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+        }
+    });
+
+    <%--    Hiển thị thông báo thành công khi đăng nhập thất bại--%>
+    <c:if test="${not empty error}">
+    Toast.fire({
+        icon: "error",
+        title: "${error}"
+    });
+    </c:if>
+
+    <%--    Hiển thị thông báo thành công khi đăng nhập thành công--%>
+    <c:if test="${not empty successMessage}">
+    Toast.fire({
+        icon: "success",
+        title: "${successMessage}"
+    });
+    </c:if>
+    <%--Validate Form đăng nhặp--%>
+    $(document).ready(function () {
+        // Bắt lỗi khi submit form
+        $('#login-form').submit(function (event) {
+            event.preventDefault(); // Ngăn form submit mặc định
+
+            var form = $(this);
+            var username = $('#taiKhoan').val().trim();
+            var password = $('#matKhau').val().trim();
+
+            var hasError = false;
+
+            if (!username) {
+                $('#taiKhoanError').text('Vui lòng nhập username.');
+                $('#taiKhoan').addClass('border-danger');
+                hasError = true;
+            } else {
+                $('#taiKhoanError').text('');
+                $('#taiKhoan').removeClass('border-danger');
+            }
+
+            if (!password) {
+                $('#matKhauError').text('Vui lòng nhập password.');
+                $('#matKhau').addClass('border-danger');
+                hasError = true;
+            } else {
+                $('#matKhauError').text('');
+                $('#matKhau').removeClass('border-danger');
+            }
+
+            if (!hasError) {
+                // Gửi yêu cầu đăng nhập bằng AJAX
+                $.ajax({
+                    type: 'POST',
+                    url: form.attr('action'),
+                    data: form.serialize(),
+                    success: function (response) {
+                        if (response.success) {
+                            // Đăng nhập thành công, điều hướng sang trang home
+                            Toast.fire({
+                                icon: "success",
+                                title: response.successMessage
+                            });
+
+                            setTimeout(function () {
+                                window.location.href = response.redirectUrl;
+                            }, 2000);
+                        } else {
+                            // Đăng nhập không thành công, hiển thị lỗi
+                            if (response.errorUsername) {
+                                $('#taiKhoanError').text(response.errorUsername);
+                                $('#taiKhoan').addClass('border-danger');
+                            }
+                            if (response.errorPassword) {
+                                $('#matKhauError').text(response.errorPassword);
+                                $('#matKhau').addClass('border-danger');
+                            }
+
+                        }
+                    },
+                    error: function () {
+                        console.error('Đã xảy ra lỗi khi gửi yêu cầu đăng nhập.');
+                    }
+                });
+            }
+        });
+
+        // Xử lý lỗi và hiển thị modal khi submit form đăng ký
+        $('#register-form').submit(function (event) {
+            var form = $(this);
+            var hasError = false;
+
+            var username = $('#registerUsername').val().trim();
+            var email = $('#registerEmail').val().trim();
+            var phone = $('#registerPhone').val().trim();
+            var password = $('#registerPassword').val().trim();
+
+            // Clear previous errors
+            $('.text-danger').text('');
+            $('.form-control').removeClass('border-danger');
+
+            // Validate fields
+            if (!username) {
+                $('#registerUsernameError').text('Vui lòng nhập username.');
+                $('#registerUsername').addClass('border-danger');
+                hasError = true;
+            }
+            if (!email) {
+                $('#registerEmailError').text('Vui lòng nhập email.');
+                $('#registerEmail').addClass('border-danger');
+                hasError = true;
+            } else if (!isValidEmail(email)) {
+                $('#registerEmailError').text('Email không hợp lệ.');
+                $('#registerEmail').addClass('border-danger');
+                hasError = true;
+            }
+            if (!phone) {
+                $('#registerPhoneError').text('Vui lòng nhập số điện thoại.');
+                $('#registerPhone').addClass('border-danger');
+                hasError = true;
+            } else if (!isValidVietnamesePhoneNumber(phone)) {
+                $('#registerPhoneError').text('Số điện thoại không hợp lệ');
+                $('#registerPhone').addClass('border-danger');
+                hasError = true;
+            }
+            if (!password) {
+                $('#registerPasswordError').text('Vui lòng nhập mật khẩu.');
+                $('#registerPassword').addClass('border-danger');
+                hasError = true;
+            }
+            else if (password.length < 6) {
+                $('#registerPasswordError').text('Mật khẩu phải có ít nhất 6 ký tự.');
+                $('#registerPassword').addClass('border-danger');
+                hasError = true;
+            }
+
+
+            // Check if username already exists
+            <%--var registerErrors = '<%= request.getAttribute("registerErrors") %>';--%>
+            <%--if (registerErrors !== 'null') {--%>
+            <%--    $('#registerUsernameError').text(registerErrors);--%>
+            <%--    $('#registerUsername').addClass('border-danger');--%>
+            <%--    hasError = true;--%>
+            <%--}--%>
+
+            // If any validation errors exist, prevent form submission
+            if (hasError) {
+                event.preventDefault();
+            }
+        });
+
+
+
+        // Ẩn lỗi khi người dùng click vào trường input
+        $('input').focus(function () {
+            $(this).siblings('.text-danger').text('');
+            $(this).removeClass('border-danger');
+        });
+
+        // Hiển thị lỗi từ Controller (nếu có)
+        var errorUsername = '<%= request.getAttribute("errorUsername") %>';
+        var errorPassword = '<%= request.getAttribute("errorPassword") %>';
+        var errorUsernameExit= '<%= request.getAttribute("errorUsernameExit") %>';
+
+        if (errorUsername && errorUsername !== 'null') {
+            $('#taiKhoanError').text(errorUsername);
+            $('#taiKhoan').addClass('border-danger');
+        }
+        if (errorPassword && errorPassword !== 'null') {
+            $('#matKhauError').text(errorPassword);
+            $('#matKhau').addClass('border-danger');
+        }
+
+        if (errorUsernameExit !== 'null') {
+            $('#registerUsername').text(errorUsernameExit);
+            $('#taiKhoan').addClass('border-danger');
+        }
+
+        // Khi modal được mở, thêm class "modal-open" vào body
+        $('#loginModal').on('shown.bs.modal', function () {
+            $('body').addClass('modal-open');
+        });
+
+        // Khi modal được đóng, loại bỏ class "modal-open" khỏi body
+        $('#loginModal').on('hidden.bs.modal', function () {
+            $('body').removeClass('modal-open');
+        });
+    });
+
+    // Hàm kiểm tra định dạng email
+    function isValidEmail(email) {
+        // Biểu thức chính quy để kiểm tra định dạng email
+        var regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return regex.test(email);
+    }
+
+    // Hàm kiểm tra định dạng số điện thoại
+    function isValidVietnamesePhoneNumber(phoneNumber) {
+        // Biểu thức chính quy để kiểm tra định dạng số điện thoại (theo quy định của Việt Nam)
+        var regex = /^(0|\+84)\d{9,10}$/;
+        return regex.test(phoneNumber);
+    }
+</script>
 </body>
 
 </html>

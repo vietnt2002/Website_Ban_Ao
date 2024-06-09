@@ -33,7 +33,6 @@ public class BanTaiQuayController {
     @Autowired
     private HDCTRepository hoaDonChiTietRepository;
 
-
     @Autowired
     private SPCTRepository sanPhamChiTietRepository;
 
@@ -124,7 +123,7 @@ public String hienThi(Model model,@RequestParam(value = "page",defaultValue ="0"
                 BigDecimal tongTien = BigDecimal.ZERO;
                 for (ChiTietHoaDon hd : gioHangTheoHoaDon) {
                     int sL = hd.getSoLuong();
-                    BigDecimal donGia = BigDecimal.valueOf(hd.getDonGia());
+                    BigDecimal donGia = hd.getDonGia();
                     BigDecimal thanhTien = donGia.multiply(BigDecimal.valueOf(sL));
                     tongTien = tongTien.add(thanhTien);
                 }
@@ -289,7 +288,7 @@ public String hienThi(Model model,@RequestParam(value = "page",defaultValue ="0"
             }
         }
 
-        Integer donGia = null;
+        BigDecimal donGia = null;
         if (!spTonTaiTrongGioHang) {
             for (ChiTietSanPham sp : listCTSP) {
                 if (sp.getId().equals(idCTSP)) {
