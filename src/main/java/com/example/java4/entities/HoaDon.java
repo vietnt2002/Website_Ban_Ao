@@ -2,6 +2,7 @@ package com.example.java4.entities;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Objects;
@@ -15,8 +16,11 @@ public class HoaDon {
     private NhanVien idNhanVien;
     private KhachHang idKhachHang;
     private LocalDateTime ngayTao;
-    private Date ngayThanhToan;
+    private LocalDateTime ngayThanhToan;
     private Integer tongTien;
+    private Date ngayThanhToan;
+    private BigDecimal tongTien;
+    private Integer loaiHoaDon;
     private Integer trangThai;
 
     @Id
@@ -58,21 +62,30 @@ public class HoaDon {
     }
 
     @Column(name = "NgayThanhToan")
-    public Date getNgayThanhToan() {
+    public LocalDateTime getNgayThanhToan() {
         return ngayThanhToan;
     }
 
-    public void setNgayThanhToan(Date ngayThanhToan) {
+    public void setNgayThanhToan(LocalDateTime ngayThanhToan) {
         this.ngayThanhToan = ngayThanhToan;
     }
 
     @Column(name = "TongTien")
-    public Integer getTongTien() {
+    public BigDecimal getTongTien() {
         return tongTien;
     }
 
-    public void setTongTien(Integer tongTien) {
+    public void setTongTien(BigDecimal tongTien) {
         this.tongTien = tongTien;
+    }
+
+    @Column(name = "LoaiHoaDon")
+    public Integer getLoaiHoaDon() {
+        return loaiHoaDon;
+    }
+
+    public void setLoaiHoaDon(Integer loaiHoaDon) {
+        this.loaiHoaDon = loaiHoaDon;
     }
 
     @Column(name = "TrangThai")
@@ -84,17 +97,19 @@ public class HoaDon {
         this.trangThai = trangThai;
     }
 
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         HoaDon hoaDon = (HoaDon) o;
-        return Objects.equals(id, hoaDon.id) && Objects.equals(ma, hoaDon.ma) && Objects.equals(phuongThucThanhToan, hoaDon.phuongThucThanhToan) && Objects.equals(ngayTao, hoaDon.ngayTao) && Objects.equals(ngayThanhToan, hoaDon.ngayThanhToan) && Objects.equals(tongTien, hoaDon.tongTien) && Objects.equals(trangThai, hoaDon.trangThai);
+        return Objects.equals(id, hoaDon.id) && Objects.equals(ma, hoaDon.ma) && Objects.equals(phuongThucThanhToan, hoaDon.phuongThucThanhToan) && Objects.equals(ngayTao, hoaDon.ngayTao) && Objects.equals(ngayThanhToan, hoaDon.ngayThanhToan) && Objects.equals(tongTien, hoaDon.tongTien) && Objects.equals(loaiHoaDon, hoaDon.loaiHoaDon) && Objects.equals(trangThai, hoaDon.trangThai);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, ma, phuongThucThanhToan, ngayTao, ngayThanhToan, tongTien, trangThai);
+        return Objects.hash(id, ma, phuongThucThanhToan, ngayTao, ngayThanhToan, tongTien, loaiHoaDon, trangThai);
     }
 
     @ManyToOne

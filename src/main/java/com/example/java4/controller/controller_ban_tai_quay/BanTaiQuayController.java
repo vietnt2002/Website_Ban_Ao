@@ -364,6 +364,10 @@
 //            if (listHoaDon.get(i).getId().equals(idHoaDon)) {
 //                HoaDon hoaDon = new HoaDon();
 //                hoaDon.setId(idHoaDon);
+//                HoaDon hoaDon = hoaDonRepository.findById(idHoaDon).get();
+//                hoaDon.setId(idHoaDon);
+//                hoaDon.setMa(hoaDon.getMa());
+//                hoaDon.setTongTien(hoaDon.getTongTien());
 //                hoaDon.setTrangThai(1);
 //                hoaDon.setNgayThanhToan(ngayTao);
 //                hoaDonRepository.save(hoaDon);
