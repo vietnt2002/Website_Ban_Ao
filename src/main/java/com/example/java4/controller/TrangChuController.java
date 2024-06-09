@@ -42,7 +42,6 @@ public class TrangChuController {
     HDCTRepository hdctRepo;
     @Autowired
     KhachHangRepository khachHangRepository;
-    String idKH = "C66D8750-F4AF-4E3B-925B-2AA946C931D6";
     //Test api địa chỉ
     @GetMapping("apiDiaChi")
     public String apiDC(){
@@ -67,11 +66,13 @@ public class TrangChuController {
             @RequestParam("page")Optional<Integer> pageParam
     ){
         if (!model.containsAttribute("khachHangDTO")) {
+            System.out.println("crette dto");
             model.addAttribute("khachHangDTO", new KhachHangDTO());
         }
         Pageable pageable = PageRequest.of(pageParam.orElse(0), 9);
         Page pageSP = spctRepo.getAllSP(pageable);
         model.addAttribute("pageSP", pageSP);
+        System.out.println("================================test user info :"+UserInfor.idKhachHang);
         return "/view/trangChu.jsp";
     }
 
@@ -124,7 +125,7 @@ public class TrangChuController {
         //Lấy ra kích thước theo tên kích thước
         KichThuoc kichThuoc = kichThuocRepo.findByTen(tenKichThuoc);
         //Lấy ra thông tin khách hàng đăng nhập
-        KhachHang khachHang = khachHangRepo.findByIdKH(idKH);
+        KhachHang khachHang = khachHangRepo.findByIdKH(UserInfor.idKhachHang);
         //Lấy ra chi tiết sản phẩm theo idCTSP đang có
         ChiTietSanPham ctsp = spctRepo.findById(idCTSP).get();
         //Lấy ra chi tiết sản phẩm đã chọn theo idSP, idMS, idKth
@@ -141,7 +142,7 @@ public class TrangChuController {
         }else {    //Nếu có đăng nhập thì tạo hóa đơn và lưu vào HDCT(Giỏ hàng)
 
             //Tìm hoá đơn theo idKH, loaiHD và trạng thái  ->  Check khách hàng đã có hóa đơn chưa
-            HoaDon hoaDonCuaKH = hoaDonRepo.findByidKHAndLoaiHoaDonAndTrangThai(idKH, HoaDonRepository.HOA_DON_ONL, HoaDonRepository.CHO_THANH_TOAN);
+            HoaDon hoaDonCuaKH = hoaDonRepo.findByidKHAndLoaiHoaDonAndTrangThai(UserInfor.idKhachHang, HoaDonRepository.HOA_DON_ONL, HoaDonRepository.CHO_THANH_TOAN);
 
             //Kiểm tra số lượng khách thêm giỏ hàng có nhiều hơn số lượng tồn của SPCT không
             if (soLuong > chiTietSanPham.getSoLuong()){
@@ -218,7 +219,6 @@ public class TrangChuController {
                                                      HttpSession session,
                                                      BindingResult result) {
         Map<String, Object> response = new HashMap<>();
-
         if (result.hasErrors()) {
             response.put("success", false);
             response.put("errors", result.getAllErrors());
@@ -233,7 +233,7 @@ public class TrangChuController {
                 System.out.println(UserInfor.idKhachHang);
                 response.put("success", true);
                 response.put("successMessage", "Đăng nhập thành công!");
-                response.put("redirectUrl", "/home");
+                response.put("redirectUrl", "/cua-hang/trang-chu");
                 return ResponseEntity.ok(response);
             } else {
                 response.put("success", false);
@@ -253,7 +253,7 @@ public class TrangChuController {
         session.removeAttribute("user");
         UserInfor.idKhachHang = null;
         redirectAttributes.addFlashAttribute("successMessage", "Đăng xuất thành công!");
-        return "redirect:/home";
+        return "redirect:/trang-chu";
     }
 
     @PostMapping("/register")
@@ -262,15 +262,13 @@ public class TrangChuController {
                             RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             redirectAttributes.addFlashAttribute("registerErrors", result.getAllErrors());
-            return "redirect:/home";
+            return "redirect:/trang-chu";
         }
-
         KhachHang existingUser = khachHangRepository.findByTaiKhoan(khachHangDTO.getTaiKhoan());
         if (existingUser != null) {
             redirectAttributes.addFlashAttribute("registerErrors", "Username already exists");
-            return "redirect:/home";
+            return "redirect:/trang-chu";
         }
-
         // Save the new user
         KhachHang newUser = new KhachHang();
         newUser.setTaiKhoan(khachHangDTO.getTaiKhoan());
@@ -280,9 +278,8 @@ public class TrangChuController {
         newUser.setNgayTao( LocalDateTime.now());
         newUser.setTrangThai(khachHangRepository.ACTIVE);
         khachHangRepository.save(newUser);
-
         redirectAttributes.addFlashAttribute("successMessage", "Đăng ký thành công!");
-        return "redirect:/home";
+        return "redirect:/trang-chu";
     }
 //    @Autowired
 //    SanPhamRepository sanPhamRepo;

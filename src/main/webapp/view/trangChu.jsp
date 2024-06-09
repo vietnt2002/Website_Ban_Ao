@@ -2,6 +2,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="f" uri="jakarta.tags.functions" %>
 <%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form" %>
+<%--<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>--%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -30,7 +32,12 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <%--    Thêm thư viện SweetAlert2 để thiển thị thông báo--%>
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         .userCart{
             display: flex;
@@ -39,6 +46,10 @@
         }
         .dropdown ul li:hover{
             text-decoration: underline;
+        }
+        .modal-dialog {
+            max-width: 500px;
+            margin: 100px auto;
         }
         .totalQuantityCart {
             width: 15px;
@@ -206,7 +217,7 @@
             </div>
             <div class="modal-body">
                 <div class="register-form-wrapper">
-                    <form id="register-form" class="form" action="/home/register" method="post"  modelAttribute="khachHangDTO">
+                    <form id="register-form" class="form" action="register" method="post"  modelAttribute="khachHangDTO">
                         <div class="form-group">
                             <label for="registerUsername" class="text-info">Username:</label><br>
                             <input placeholder="Username" type="text" id="registerUsername" name="taiKhoan"

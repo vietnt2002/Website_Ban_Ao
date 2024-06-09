@@ -1,12 +1,9 @@
 package com.example.java4.controller.controller_tai;
-
-
 import com.example.java4.config.UserInfor;
 import com.example.java4.entities.KhachHang;
 import com.example.java4.repositories.KhachHangRepository;
 import com.example.java4.request.req_tai.KhachHangDTO;
 import jakarta.servlet.http.HttpSession;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -14,8 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
