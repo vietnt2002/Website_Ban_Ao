@@ -8,7 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-@Repository
 public interface ChatLieuRepository extends JpaRepository<ChatLieu, String> {
     public static final int ACTIVE  = 1;
     public static final int INACTIVE =0;

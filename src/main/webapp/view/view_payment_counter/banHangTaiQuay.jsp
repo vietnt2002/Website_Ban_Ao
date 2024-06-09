@@ -30,7 +30,6 @@
 
     <%--Link Ajax --%>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-
     <!-- Latest compiled and minified CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -388,6 +387,7 @@
                                             <c:if test="${hoaDon.idKhachHang.id==null}">Khách lẻ</c:if>
                                             <c:if test="${hoaDon.idKhachHang.id!=null}">${hoaDon.idKhachHang.hoTen}</c:if>
                                         </td>
+                                        <td>${hoaDon.idKhachHang.ten}</td>
                                         <td>${hoaDon.ngayTao}</td>
                                         <td>${hoaDon.trangThai==0?"Chua thanh toan":"Da thanh toan"}</td>
                                         <td>
@@ -395,6 +395,7 @@
                                                class="btn btn-primary">
                                                 <i class="bi bi-eye-fill"></i>
                                             </a>
+                                               class="btn btn-primary">View</a>
                                         </td>
                                     </tr>
                                 </c:forEach>
@@ -447,6 +448,19 @@
 <%--                                                        style="display: flex; width: 35px; height: 30px; align-items: center; justify-content: center"--%>
 <%--                                                        type="submit"><i class="bi bi-caret-right"></i></button>--%>
 <%--                                            </form>--%>
+                                            <form action="/ban-hang-tai-quay/giam-so-luong/${hdct.idCTSP.id}" method="post">
+                                                <input type="hidden" name="idHoaDon" value="${hoaDon.id}">
+                                                <button class="btn btn-light"
+                                                        style="display: flex; width: 35px; height: 30px; align-items: center; justify-content: center"
+                                                        type="submit"><i class="bi bi-caret-left"></i></button>
+                                            </form>
+                                                ${hdct.soLuong}
+                                            <form action="/ban-hang-tai-quay/them-so-luong/${hdct.idCTSP.id}" method="post">
+                                                <input type="hidden" name="idHoaDon" value="${hoaDon.id}">
+                                                <button class="btn btn-light"
+                                                        style="display: flex; width: 35px; height: 30px; align-items: center; justify-content: center"
+                                                        type="submit"><i class="bi bi-caret-right"></i></button>
+                                            </form>
                                         </td>
                                         <td>${hdct.donGia}</td>
                                         <td>${hdct.soLuong*hdct.donGia}</td>
@@ -521,11 +535,28 @@
                                             </a>
                                         </div>
 
+                                            <label class="col-sm-4 col-form-label">Sđt khách hàng</label>
+                                            <div class="col-sm-6">
+                                                <select path="idKhachHang" class="form-select"
+                                                        aria-label="Default select example" name="idKhachHang">
+                                                    <c:forEach items="${listKH}" var="khachHang">
+
+                                                        <option value="${khachHang.id}" ${hoaDon.idKhachHang.sdt==khachHang.sdt?"selected":""}>${khachHang.sdt}</option>
+
+                                                    </c:forEach>
+                                                </select>
+                                            </div>
+                                            <a class="col-sm-2" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                                               href="#">
+                                                <i class=" bi bi-folder-plus col-3" style="font-size: 25px;"></i>
+                                            </a>
+                                        </div>
                                         <div class="row mb-3">
                                             <label class="col-sm-4 col-form-label">Tổng tiền</label>
                                             <div class="col-sm-8">
                                                 <input id="tongTien" type="number" class="form-control"
                                                        value="${tongTien-hoaDon.idKhuyenMai.soTienGiam}"
+                                                       value="${tongTien}"
                                                        readonly/>
                                             </div>
                                         </div>
@@ -904,7 +935,6 @@
             </div>
         </div>
         <%--End--%>
-
         <!-- Footer -->
         <footer class="sticky-footer bg-white">
             <div class="container my-auto">
@@ -1004,6 +1034,18 @@
         }
 
         if (tienKhachDua == "" || tienKhachDua < tongTien) {
+    function calculateChange() {
+        var tongTien = parseFloat('${tongTien}');
+        var tienKhachDua = parseFloat(document.getElementById('tienKhachDua').value);
+        var tienTraLai = tienKhachDua - tongTien;
+        var thongBao = document.getElementById("errTraLai");
+        if (isNaN(tienKhachDua)) {
+            thongBao.textContent = "Vui lòng nhập số tiền hợp lệ.";
+            // alert('Vui lòng nhập số tiền hợp lệ.');
+            return false;
+        }
+
+        if (tienKhachDua < tongTien) {
             thongBao.textContent = "Số tiền khách đưa phải lớn hơn hoặc bằng tổng tiền.";
             // alert('Số tiền khách đưa phải lớn hơn hoặc bằng tổng tiền.');
             document.getElementById('tienTraLai').value = "";
@@ -1029,6 +1071,22 @@
     <%--    thongBao.textContent="";--%>
     <%--    return true;--%>
     <%--}--%>
+
+=======
+        document.getElementById('tienTraLai').value = tienTraLai.toFixed(2);
+    }
+
+    function validatePayment() {
+        var tienKhachDua = document.getElementById("tienKhachDua").value;
+        var tongTien = parseFloat('${tongTien}');
+        if (tienKhachDua === "" || tienKhachDua < tongTien) {
+            thongBao.textContent = thongBao.textContent = "Vui lòng nhập số tiền khách đưa hợp lệ."
+            // alert("Vui lòng nhập số tiền khách đưa hợp lệ.");
+            document.getElementById('tienTraLai').value = "";
+            return false;
+        }
+        return true;
+    }
 
     function validateBeforeAddToCart() {
         // Kiểm tra xem hóa đơn đã được chọn chưa

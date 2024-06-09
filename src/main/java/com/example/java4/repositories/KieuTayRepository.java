@@ -15,5 +15,8 @@ public interface KieuTayRepository extends JpaRepository<KieuTay,String> {
     public static final int ACTIVE  = 1;
     public static final int INACTIVE =0;
     public Page<KieuTay> findByTrangThai(int trangThai, Pageable pageable);
-
+public interface KieuTayRepository extends JpaRepository<KieuTay, String> {
+    public static final int ACTIVE  = 1;
+    public static final int INACTIVE =0;
+    public Page<KieuTay> findByTrangThai(int trangThai, Pageable pageable);
 }

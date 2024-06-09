@@ -95,6 +95,7 @@ public String hienThi(Model model,@RequestParam(value = "page",defaultValue ="0"
     @GetMapping("detail-hoa-don/{idHD}")
     public String detailHoaDon(@PathVariable String idHD,@RequestParam Optional<Integer> pageParam,
             @RequestParam("page") Optional<Integer> pageParam2, Model model) {
+    public String detailHoaDon(@PathVariable String idHD,@RequestParam Optional<Integer> pageParam, Model model) {
         Optional<HoaDon> hoaDon = hoaDonRepository.findById(idHD);
         model.addAttribute("hoaDon", hoaDon.get());
         listHoaDon = hoaDonRepository.selectTop5();
@@ -113,7 +114,6 @@ public String hienThi(Model model,@RequestParam(value = "page",defaultValue ="0"
         model.addAttribute("pageData",pageData);
         int total = pageData.getTotalPages();
         model.addAttribute("total",total);
-
         Pageable pageable = PageRequest.of(pageParam.orElse(0), 10);
         Page<ChiTietSanPham> listCTSP = sanPhamChiTietRepository.findAll(pageable);
         model.addAttribute("listHoaDon", listHoaDon);
@@ -254,6 +254,11 @@ public String hienThi(Model model,@RequestParam(value = "page",defaultValue ="0"
                         sanPhamChiTietRepository.save(chiTietSanPham);
                     }
                 }
+            }
+        }
+        model.addAttribute("listHDCT", gioHangTheoHoaDon);
+        return "/view/view_payment_counter/banHangTaiQuay.jsp";
+    }
 
             }
         }
@@ -280,6 +285,113 @@ public String hienThi(Model model,@RequestParam(value = "page",defaultValue ="0"
           }
       }
 
+    @PostMapping("/delete-hdct/{idHDCT}")
+    public String deleteHDCT(@PathVariable String idHDCT){
+    HoaDon hd = new HoaDon();
+    int count = 0;
+    ChiTietSanPham ctsp = new ChiTietSanPham();
+        for (ChiTietHoaDon hdct:listHDCT){
+            if (hdct.getId().equals(idHDCT)){
+                hoaDonChiTietRepository.delete(hdct);
+                hd = hdct.getIdHoaDon();
+                ctsp = hdct.getIdCTSP();
+                count=hdct.getSoLuong();
+                System.out.println("test data :========================== ");
+            }
+        }
+        ctsp.setSoLuong(ctsp.getSoLuong()+count);
+        sanPhamChiTietRepository.save(ctsp);
+        return "redirect:/ban-hang-tai-quay/detail-hoa-don/" + hd.getId();
+    }
+
+    @PostMapping("/add-hoa-don")
+    public String themHoaDon(RedirectAttributes redirectAttributes) {
+        List<HoaDon> hoaDonList = this.hoaDonRepository.selectTop5();
+        int currentHoaDonCount = hoaDonList.size();
+        // Nếu số lượng hóa đơn lớn hơn 5, gửi dữ liệu Error từ Controller sang View(file.jsp)
+        if (currentHoaDonCount >= 5) {
+            redirectAttributes.addFlashAttribute("currentHoaDonCount", currentHoaDonCount);
+            redirectAttributes.addFlashAttribute("errorBillMax", "Bạn chỉ có thể tạo tối đa 5 đơn hàng");
+            return "redirect:/ban-hang-tai-quay";
+        }
+        String ma1="HD";
+        Integer sum = hoaDonRepository.countHD() + 1;
+        String ma = ma1 + sum;
+        System.out.println("==============test hoa don:"+ma);
+        LocalDateTime now =LocalDateTime.now();
+        HoaDon hoaDon = new HoaDon();
+        //Tạo mã tự sinh
+        hoaDon.setNgayTao(now);
+        Optional<NhanVien> nv = nhanVienRepo.findById(idNV);
+        hoaDon.setIdNhanVien(nv.get());
+        hoaDon.setMa(ma);
+        hoaDon.setTrangThai(0);
+        try {
+            //gửi dữ liệu success từ Controller sang View(file.jsp)
+            this.hoaDonRepository.save(hoaDon);
+            redirectAttributes.addFlashAttribute("success", "Hóa đơn được tạo thành công!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Đã xảy ra lỗi khi tạo hóa đơn.");
+        }
+        hoaDonRepository.save(hoaDon);
+        return "redirect:/ban-hang-tai-quay";
+    }
+
+    @PostMapping("giam-so-luong/{idCTSP}")
+    public String giamSoLuong(@PathVariable String idCTSP, @RequestParam String idHoaDon) {
+        //Giảm số lượng sản phẩm -1 khi ấn vào button giảm trong giỏ hàng
+        listCTSP = sanPhamChiTietRepository.findAll();
+        for (ChiTietHoaDon chiTietHoaDon : listHDCT) {
+            if (chiTietHoaDon.getIdCTSP().getId().equals(idCTSP) && chiTietHoaDon.getIdHoaDon().getId().equals(idHoaDon)) {
+                chiTietHoaDon.setSoLuong(chiTietHoaDon.getSoLuong() - 1);
+                hoaDonChiTietRepository.save(chiTietHoaDon);
+                //Khi số lượng sản phẩm trong giở hàng <= 0 thì set số lượng = 1
+                if (chiTietHoaDon.getSoLuong() <= 0) {
+                    chiTietHoaDon.setSoLuong(1);
+                    hoaDonChiTietRepository.save(chiTietHoaDon);
+                } else {
+                    //Số lượng của sản phẩm chi tiết được +1 khi ấn vào button thêm trong giỏ hàng
+                    for (ChiTietSanPham chiTietSanPham : listCTSP) {
+                        if (chiTietSanPham.getId().equals(idCTSP)) {
+                            chiTietSanPham.setSoLuong(chiTietSanPham.getSoLuong() + 1);
+                            sanPhamChiTietRepository.save(chiTietSanPham);
+                        }
+                    }
+                }
+            }
+        }
+        return "redirect:/ban-hang-tai-quay/detail-hoa-don/" + idHoaDon;
+    }
+
+
+    @PostMapping("them-so-luong/{idCTSP}")
+    public String themSoLuong(@PathVariable String idCTSP, @RequestParam String idHoaDon, RedirectAttributes redirectAttributes) {
+        ChiTietSanPham chiTietSanPham = sanPhamChiTietRepository.findByIdCTSP(idCTSP);
+        for (ChiTietHoaDon chiTietHoaDon : listHDCT) {
+            //Nếu số lượng trong spct = 0 thì không đưuọc thêm sản phẩm nữa
+            if (chiTietSanPham.getSoLuong() <= 0) {
+                chiTietHoaDon.setSoLuong(chiTietHoaDon.getSoLuong());
+                try {
+                    hoaDonChiTietRepository.save(chiTietHoaDon);
+                    redirectAttributes.addFlashAttribute("error", "Hết hàng");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                //Thêm số lượng sản phẩm +1 khi ấn vào button thêm trong giỏ hàng
+                if (chiTietHoaDon.getIdCTSP().getId().equals(idCTSP) && chiTietHoaDon.getIdHoaDon().getId().equals(idHoaDon)) {
+                    chiTietHoaDon.setSoLuong(chiTietHoaDon.getSoLuong() + 1);
+                    hoaDonChiTietRepository.save(chiTietHoaDon);
+
+                    //Số lượng của sản phẩm chi tiết -1 khi ấn vào button thêm trong giỏ hàng
+                    if (chiTietSanPham.getId().equals(idCTSP)) {
+                        chiTietSanPham.setSoLuong(chiTietSanPham.getSoLuong() - 1);
+                        sanPhamChiTietRepository.save(chiTietSanPham);
+                    }
+                }
+
+            }
+        }
         return "redirect:/ban-hang-tai-quay/detail-hoa-don/" + idHoaDon;
     }
 
@@ -575,7 +687,6 @@ public String hienThi(Model model,@RequestParam(value = "page",defaultValue ="0"
         return "/view/view_payment_counter/banHangTaiQuay.jsp";
     }
 
-
     //Find khách hàng
     @PostMapping("/find-kh/{idKH}")
     public String findKhachHangID(@PathVariable String idKH,
@@ -669,6 +780,5 @@ public String hienThi(Model model,@RequestParam(value = "page",defaultValue ="0"
 
         return "redirect:/ban-hang-tai-quay/detail-hoa-don/" + idHoaDon;
     }
-
 
 }

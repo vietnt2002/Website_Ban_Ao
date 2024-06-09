@@ -25,6 +25,8 @@ public interface KhachHangRepository
 
     @Query("select kh from KhachHang kh where (kh.hoTen like %?1% or kh.sdt like %?1%) and kh.trangThai=?2")
     public Page<KhachHang> timKiemKhachHang(String key,int trangThai,Pageable pageable);
-
-
+    public Page<KhachHang> findByTrangThai(int trangThai, Pageable pageable);
+    public Optional<KhachHang> findById(Integer id);
+    @Query("select kh from KhachHang kh where kh.id = ?1")
+    KhachHang findByIdKH(String idKH);
 };
