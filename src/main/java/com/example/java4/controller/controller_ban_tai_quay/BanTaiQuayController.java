@@ -28,7 +28,6 @@
 //    @Autowired
 //    private HDCTRepository hoaDonChiTietRepository;
 //
-//
 //    @Autowired
 //    private SPCTRepository sanPhamChiTietRepository;
 //
@@ -363,6 +362,8 @@
 //                                   @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date ngayTao) {
 //        for (int i = 0; i < listHoaDon.size(); i++) {
 //            if (listHoaDon.get(i).getId().equals(idHoaDon)) {
+//                HoaDon hoaDon = new HoaDon();
+//                hoaDon.setId(idHoaDon);
 //                HoaDon hoaDon = hoaDonRepository.findById(idHoaDon).get();
 //                hoaDon.setId(idHoaDon);
 //                hoaDon.setMa(hoaDon.getMa());

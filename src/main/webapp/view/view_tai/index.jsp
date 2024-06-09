@@ -1,7 +1,6 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="jakarta.tags.core" %>
-<%@ taglib prefix="f" uri="jakarta.tags.functions" %>
-<%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ page pageEncoding="UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,6 +14,12 @@
     <script src="js/main.js"></script>
     <link rel="stylesheet" href="css/style.css">
     <title>Document</title>
+    <%--    Thư viện Sweet Alert 2 để thông báo--%>
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -95,9 +100,33 @@
             </div>
         </div>
     </div>
-</footer>
-<main>
 
-</main>
+
+</footer>
+
+<%--Thông báo đăng nhập thành công--%>
+<%-- Thông báo đăng nhập thành công --%>
+    <script>
+        //  // Hiển thị thông báo thất bại nếu đăng nhập thất bại
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            }
+        });
+
+        <c:if test="${not empty successMessage}">
+        Toast.fire({
+            icon: "success",
+            title: "${successMessage}"
+        });
+        </c:if>
+    </script>
+    </script>
 </body>
 </html>
