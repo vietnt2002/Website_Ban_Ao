@@ -3,6 +3,7 @@ import com.example.java4.config.UserInfor;
 import com.example.java4.entities.*;
 import com.example.java4.repositories.*;
 import com.example.java4.request.req_tai.KhachHangDTO;
+import com.example.java4.response.GioHangResponse;
 import com.example.java4.response.KichThuocRespone;
 import com.example.java4.response.MauSacRespone;
 import com.example.java4.response.MauSizeSL;
@@ -19,10 +20,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+
 @Controller
 @RequestMapping("cua-hang")
 public class TrangChuController {
@@ -41,7 +40,14 @@ public class TrangChuController {
     @Autowired
     HDCTRepository hdctRepo;
     @Autowired
+    SanPhamRepository sanPhamRepo;
+    @Autowired
     KhachHangRepository khachHangRepository;
+    private List<ChiTietHoaDon> listHDCT = new ArrayList<>();
+    private List<ChiTietSanPham> listCTSP= new ArrayList<>();
+    private List<SanPham> listSanPham = new ArrayList<>();
+    private List<KhachHang> listKhachHang = new ArrayList<>();
+    private List<GioHangResponse> listGioHang;
     //Test api địa chỉ
     @GetMapping("apiDiaChi")
     public String apiDC(){
@@ -72,6 +78,7 @@ public class TrangChuController {
         Pageable pageable = PageRequest.of(pageParam.orElse(0), 9);
         Page pageSP = spctRepo.getAllSP(pageable);
         model.addAttribute("pageSP", pageSP);
+        model.addAttribute("soLuong", hdctRepo.findByKHnStt(khachHangRepo.findByIdKH(UserInfor.idKhachHang)));
         System.out.println("================================test user info :"+UserInfor.idKhachHang);
         return "/view/trangChu.jsp";
     }
@@ -211,7 +218,7 @@ public class TrangChuController {
                 }
             }
         }
-        return "redirect:/store/detail-san-pham/" + idCTSP;
+        return "redirect:/cua-hang/detail-san-pham/" + idCTSP;
     }
     @PostMapping("/login")
     @ResponseBody
@@ -281,6 +288,134 @@ public class TrangChuController {
         redirectAttributes.addFlashAttribute("successMessage", "Đăng ký thành công!");
         return "redirect:/trang-chu";
     }
+
+
+    @GetMapping("/gio-hang")
+    public String gioHang(Model model) {
+        listHDCT = hdctRepo.findByIdHoaDonByIDKH(UserInfor.idKhachHang);
+        listGioHang = hdctRepo.getAll(UserInfor.idKhachHang);
+        listCTSP = spctRepo.findAll();
+        listSanPham = sanPhamRepo.findAll();
+        boolean check = false;
+        System.out.println("====================================test id kh : "+UserInfor.idKhachHang);
+        if (listHDCT.isEmpty()) {
+            //Trong giỏ hàng không có sản phẩm sẽ hiển thị thông báo
+            check = true;
+            model.addAttribute("check", check);
+            return "/view/gioHang.jsp";
+        } else {
+            //Trong giỏ hàng có sản phẩm sẽ hiển thị danh sách
+            check = false;
+            model.addAttribute("listGioHang", listGioHang);
+            model.addAttribute("listCTSP", listCTSP);
+            model.addAttribute("listSanPham", listSanPham);
+            model.addAttribute("check", check);
+        }
+
+        //Tính tổng số lượng sản phẩm có trong giỏ hàng
+        Integer totalSoLuong = 0;
+        for (ChiTietHoaDon chiTietHoaDon : listHDCT) {
+            totalSoLuong += chiTietHoaDon.getSoLuong();
+        }
+        model.addAttribute("soLuong", hdctRepo.findByKHnStt(khachHangRepo.findByIdKH(UserInfor.idKhachHang)));
+
+        //Tính tổng giá tiền của giỏ hàng
+        BigDecimal tongTienBigDecimal  = new BigDecimal(0.0);
+        for (ChiTietHoaDon chiTietHoaDon : listHDCT) {
+            BigDecimal soLuongDecimal = new BigDecimal(chiTietHoaDon.getSoLuong());
+            tongTienBigDecimal.add(chiTietHoaDon.getDonGia().multiply(soLuongDecimal));
+            System.out.println("============================don gia: "+chiTietHoaDon.getDonGia());
+            System.out.println("============================so luong: "+ soLuongDecimal);
+            System.out.println("=======================test multiply "+chiTietHoaDon.getDonGia().multiply(soLuongDecimal));
+        }
+        model.addAttribute("tongTien", tongTienBigDecimal);
+        return "/view/gioHang.jsp";
+    }
+
+    //Giảm số lượng sản phẩm có trong giỏ hàng đi 1
+    @GetMapping("/giam-so-luong/{idHDCT}")
+    public String giamSoLuong(@PathVariable("idHDCT") String idHDCT) {
+        ChiTietHoaDon chiTietHoaDon = hdctRepo.findById(idHDCT).get();
+        //số lượng sản phẩm thấp nhất = 1
+        if (chiTietHoaDon.getSoLuong() <= 1) {
+            chiTietHoaDon.setSoLuong(1);
+            hdctRepo.save(chiTietHoaDon);
+        } else {
+            chiTietHoaDon.setSoLuong(chiTietHoaDon.getSoLuong() - 1);
+            hdctRepo.save(chiTietHoaDon);
+        }
+        return "redirect:/cua-hang/gio-hang";
+    }
+
+    //Tăng số lượng sản phẩm có trong giỏ hàng lên 1
+    @GetMapping("/tang-so-luong/{idHDCT}")
+    public String tangSoLuong(@PathVariable("idHDCT") String idHDCT) {
+        ChiTietHoaDon chiTietHoaDon = hdctRepo.findById(idHDCT).get();
+        //Số lượng sản phẩm cao nhất = 5
+        if (chiTietHoaDon.getSoLuong() >= 5) {
+            chiTietHoaDon.setSoLuong(chiTietHoaDon.getSoLuong());
+            hdctRepo.save(chiTietHoaDon);
+        } else {
+            chiTietHoaDon.setSoLuong(chiTietHoaDon.getSoLuong() + 1);
+            hdctRepo.save(chiTietHoaDon);
+        }
+        return "redirect:/cua-hang/gio-hang";
+    }
+
+    //Xóa sản phẩm ra khỏi giỏ hàng
+    @GetMapping("/delete/{idHDCT}")
+    public String deleteIDSPCT(@PathVariable String idHDCT, RedirectAttributes redirectAttributes) {
+        ChiTietHoaDon chiTietHoaDon = hdctRepo.findById(idHDCT).get();
+        try {
+            hdctRepo.delete(chiTietHoaDon);
+            redirectAttributes.addFlashAttribute("success", "Xóa sản phẩm thành công");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "redirect:/cua-hang/ gio-hang";
+    }
+
+//    @PostMapping("/thanh-toan")
+//    public String thanhToan(GiaoHangRequest ghRequest, @RequestParam("tenTinh") String idTinhThanh,
+//                            @RequestParam("tenQuan") String idQuanHuyen, @RequestParam("tenPhuong") String idPhuongXa) {
+//
+//        Integer tongTien = 0;
+//        for (ChiTietHoaDon chiTietHoaDon : listHDCT) {
+//            tongTien += chiTietHoaDon.getSoLuong() * chiTietHoaDon.getDonGia();
+//        }
+//
+//        HoaDon hoaDon = hoaDonRepo.findByIdKhachHang(idKH).get();
+//        hoaDon.setPhuongThucThanhToan(ghRequest.getPhuongThucThanhToan());
+//        hoaDon.setNgayThanhToan(LocalDateTime.now().withNano(0));
+//        hoaDon.setTongTien(tongTien);
+//        hoaDon.setTrangThai(HoaDonRepository.CHO_XAC_NHAN);
+//        hoaDon.setLoaiHoaDon(HoaDonRepository.HOA_DON_ONL);
+//        hoaDonRepo.save(hoaDon);
+//
+//        System.out.println(idTinhThanh);
+//        System.out.println(idQuanHuyen);
+//        System.out.println(idPhuongXa);
+//        System.out.println(hoaDon);
+//
+//
+//        GiaoHang giaoHang = new GiaoHang();
+//        giaoHang.setIdHoaDon(hoaDonRepo.findByIdKhachHang(idKH).get());
+//        giaoHang.setTenNguoiNhan(ghRequest.getTenNguoiNhan());
+//        giaoHang.setSdtNguoiNhan(ghRequest.getSdtNguoiNhan());
+//        giaoHang.setDiaChiChiTiet(ghRequest.getDiaChiChiTiet());
+//        giaoHang.setIdTinhThanh(idTinhThanh);
+//        giaoHang.setIdQuanHuyen(idQuanHuyen);
+//        giaoHang.setIdPhuongXa(idPhuongXa);
+//        giaoHang.setTrangThai(HoaDonRepository.CHO_XAC_NHAN);
+//        giaoHang.setGhiChu(ghRequest.getGhiChu());
+//        giaoHangRepo.save(giaoHang);
+//
+//        return "redirect:/gio-hang";
+//    }
+
+
+
+
 //    @Autowired
 //    SanPhamRepository sanPhamRepo;
 //    @GetMapping("/san-pham")

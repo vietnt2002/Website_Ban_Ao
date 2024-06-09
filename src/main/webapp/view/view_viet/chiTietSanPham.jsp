@@ -252,7 +252,7 @@
             </div>
 
 
-                <form method="post" action="/store/add-gio-hang">
+                <form method="post" action="/cua-hang/add-gio-hang">
                     <input type="hidden" name="idCTSP" value="${ctsp.id}">
                     <div class="d-flex mb-3">
                         <p class="text-dark font-weight-medium mb-0 mr-3">Kích thước:</p>

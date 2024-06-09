@@ -2,6 +2,8 @@ package com.example.java4.repositories;
 
 import com.example.java4.entities.ChiTietHoaDon;
 import com.example.java4.entities.ChiTietSanPham;
+import com.example.java4.entities.KhachHang;
+import com.example.java4.response.GioHangResponse;
 import com.example.java4.response.HoaDonChiTietDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,13 +25,9 @@ public interface HDCTRepository
         public Page<ChiTietHoaDon> findByTrangThai(int trangThai, Pageable pageable);
         @Query ("SELECT h FROM ChiTietHoaDon h WHERE h.idHoaDon.id = :hoaDon AND h.idCTSP = :sanPhamChiTiet")
         ChiTietHoaDon findByHoaDonAndIdSanPhamChiTiet(@PathVariable ("hoaDon") String hoaDon, @PathVariable ("sanPhamChiTiet") ChiTietSanPham sanPhamChiTiet);
-
-
-
         // Lấy ra danh sách HoaDonChiTiet theo ID hóa đơn
         @Query("SELECT hdct FROM ChiTietHoaDon hdct WHERE hdct.idHoaDon.id = :hoaDonId")
         List<ChiTietHoaDon> findAllByHoaDon_Id(@Param("hoaDonId") String hoaDonId);
-
         // Lấy ra tổng tiền trong hóa đơn chi tiết
         @Query("SELECT SUM (hdct.soLuong * hdct.donGia) FROM ChiTietHoaDon  hdct WHERE hdct.idHoaDon.id = :hoaDonId" )
         public BigDecimal tinhGiaTriHD(@Param("hoaDonId") String hoaDonId);
@@ -41,10 +39,22 @@ public interface HDCTRepository
 //        @Query ("SELECT h FROM ChiTietHoaDon h WHERE h.idHoaDon.id = :hoaDon AND h.idCTSP = :sanPhamChiTiet")
 //        ChiTietHoaDon findByHoaDonAndIdSanPhamChiTiet(@PathVariable ("hoaDon") String hoaDon, @PathVariable ("sanPhamChiTiet") ChiTietSanPham sanPhamChiTiet);
 //
-
+@Query("select cthd from ChiTietHoaDon cthd\n" +
+        "join HoaDon hd on hd.id = cthd.idHoaDon.id\n" +
+        "where hd.idKhachHang.id = ?1")
+List<ChiTietHoaDon> findByIdHoaDonByIDKH(String idKH);
     public static final int CHUA_THANH_TOAN = 0;
     public static final int DA_THANH_TOAN = 1;
 
+    @Query("select new com.example.java4.response.GioHangResponse(cthd.id, ctsp.idSanPham.ten, ha.hinhAnh1, ctsp.idMauSac.ten, ctsp.idKichThuoc.ten, cthd.soLuong, cthd.donGia) " +
+            "from ChiTietHoaDon cthd " +
+            "join ChiTietSanPham ctsp on ctsp.id = cthd.idCTSP.id " +
+            "join HinhAnh ha on ha.idCTSP.id = ctsp.id " +
+            "join HoaDon hd on hd.id = cthd.idHoaDon.id " +
+            "where hd.idKhachHang.id = ?1")
+    List<GioHangResponse> getAll(String idKH);
     @Query("select hdct from ChiTietHoaDon hdct where hdct.idHoaDon.id = ?1")
     List<ChiTietHoaDon> findHDCTByIdHoaDon(String idHD);
+    @Query("SELECT COUNT(*) from ChiTietHoaDon hdct where hdct.idHoaDon.idKhachHang = :idKH and hdct.trangThai=0")
+    public Long findByKHnStt(KhachHang idKH);
 };

@@ -332,203 +332,209 @@
 
 
 <!-- Shop Start -->
-<div class="container-fluid pt-5">
-    <div class="row px-xl-5">
-        <!-- Shop Sidebar Start -->
-        <div class="col-lg-3 col-md-12">
-            <!-- Price Start -->
-            <div class="border-bottom mb-4 pb-4">
-                <h5 class="font-weight-semi-bold mb-4">Filter by price</h5>
-                <form>
-                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" checked id="price-all">
-                        <label class="custom-control-label" for="price-all">All Price</label>
-                        <span class="badge border font-weight-normal">1000</span>
-                    </div>
-                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" id="price-1">
-                        <label class="custom-control-label" for="price-1">$0 - $100</label>
-                        <span class="badge border font-weight-normal">150</span>
-                    </div>
-                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" id="price-2">
-                        <label class="custom-control-label" for="price-2">$100 - $200</label>
-                        <span class="badge border font-weight-normal">295</span>
-                    </div>
-                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" id="price-3">
-                        <label class="custom-control-label" for="price-3">$200 - $300</label>
-                        <span class="badge border font-weight-normal">246</span>
-                    </div>
-                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" id="price-4">
-                        <label class="custom-control-label" for="price-4">$300 - $400</label>
-                        <span class="badge border font-weight-normal">145</span>
-                    </div>
-                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
-                        <input type="checkbox" class="custom-control-input" id="price-5">
-                        <label class="custom-control-label" for="price-5">$400 - $500</label>
-                        <span class="badge border font-weight-normal">168</span>
-                    </div>
-                </form>
-            </div>
-            <!-- Price End -->
-
-            <!-- Color Start -->
-            <div class="border-bottom mb-4 pb-4">
-                <h5 class="font-weight-semi-bold mb-4">Filter by color</h5>
-                <form>
-                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" checked id="color-all">
-                        <label class="custom-control-label" for="price-all">All Color</label>
-                        <span class="badge border font-weight-normal">1000</span>
-                    </div>
-                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" id="color-1">
-                        <label class="custom-control-label" for="color-1">Black</label>
-                        <span class="badge border font-weight-normal">150</span>
-                    </div>
-                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" id="color-2">
-                        <label class="custom-control-label" for="color-2">White</label>
-                        <span class="badge border font-weight-normal">295</span>
-                    </div>
-                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" id="color-3">
-                        <label class="custom-control-label" for="color-3">Red</label>
-                        <span class="badge border font-weight-normal">246</span>
-                    </div>
-                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" id="color-4">
-                        <label class="custom-control-label" for="color-4">Blue</label>
-                        <span class="badge border font-weight-normal">145</span>
-                    </div>
-                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
-                        <input type="checkbox" class="custom-control-input" id="color-5">
-                        <label class="custom-control-label" for="color-5">Green</label>
-                        <span class="badge border font-weight-normal">168</span>
-                    </div>
-                </form>
-            </div>
-            <!-- Color End -->
-
-            <!-- Size Start -->
-            <div class="mb-5">
-                <h5 class="font-weight-semi-bold mb-4">Filter by size</h5>
-                <form>
-                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" checked id="size-all">
-                        <label class="custom-control-label" for="size-all">All Size</label>
-                        <span class="badge border font-weight-normal">1000</span>
-                    </div>
-                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" id="size-1">
-                        <label class="custom-control-label" for="size-1">XS</label>
-                        <span class="badge border font-weight-normal">150</span>
-                    </div>
-                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" id="size-2">
-                        <label class="custom-control-label" for="size-2">S</label>
-                        <span class="badge border font-weight-normal">295</span>
-                    </div>
-                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" id="size-3">
-                        <label class="custom-control-label" for="size-3">M</label>
-                        <span class="badge border font-weight-normal">246</span>
-                    </div>
-                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" id="size-4">
-                        <label class="custom-control-label" for="size-4">L</label>
-                        <span class="badge border font-weight-normal">145</span>
-                    </div>
-                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
-                        <input type="checkbox" class="custom-control-input" id="size-5">
-                        <label class="custom-control-label" for="size-5">XL</label>
-                        <span class="badge border font-weight-normal">168</span>
-                    </div>
-                </form>
-            </div>
-            <!-- Size End -->
+<!-- Shop End -->
+<!-- Page Header Start -->
+<div class="container-fluid bg-secondary mb-5">
+    <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
+        <h1 class="font-weight-semi-bold text-uppercase mb-3">GIỎ HÀNG CỦA BẠN</h1>
+        <div class="d-inline-flex">
+            <p class="m-0"><a href="">Trang chủ</a></p>
+            <p class="m-0 px-2">-</p>
+            <p class="m-0">Giỏ hàng</p>
         </div>
-        <!-- Shop Sidebar End -->
-
-
-        <!-- Shop Product Start -->
-        <div class="col-lg-9 col-md-12">
-            <div class="row pb-3">
-                <div class="col-12 pb-1">
-                    <div class="d-flex align-items-center justify-content-between mb-4">
-                        <form action="">
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Search by name">
-                                <div class="input-group-append">
-                                        <span class="input-group-text bg-transparent text-primary">
-                                            <i class="fa fa-search"></i>
-                                        </span>
-                                </div>
-                            </div>
-                        </form>
-                        <div class="dropdown ml-4">
-                            <button class="btn border dropdown-toggle" type="button" id="triggerId" data-toggle="dropdown" aria-haspopup="true"
-                                    aria-expanded="false">
-                                Sort by
-                            </button>
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="triggerId">
-                                <a class="dropdown-item" href="#">Latest</a>
-                                <a class="dropdown-item" href="#">Popularity</a>
-                                <a class="dropdown-item" href="#">Best Rating</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <c:forEach varStatus="i" items="${pageSP.content}" var="sp">
-                    <a href="/cua-hang/detail-san-pham/${sp.idCTSP}" style="text-decoration: none">
-                        <div class="col-lg-4 col-md-6 col-sm-12 pb-1">
-                            <div class="card product-item border-0 mb-2">
-                                <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                                    <img style="width: 100%; height: 370px;" class="img-fluid w-100" src="/image/${sp.hinhAnh1}" alt="">
-                                </div>
-                                <div class="card-body border-left border-right text-center p-0 pt-4 pb-3" style="margin-top: -10px; margin-bottom: -12px">
-                                    <h6 class="text-truncate mb-2">${sp.tenSP}</h6>
-                                    <h6 class="text-truncate mb-2" style="font-family: auto">${sp.maSP}</h6>
-                                </div>
-                                <div class="card-footer d-flex justify-content-between bg-light border float-start" style="margin-top: -3px; margin-bottom: -3px">
-                                    <div class="d-flex justify-content-center mb-0" style="margin-bottom: 3px">
-                                        <h6>${sp.giaBan} <span style="font-size: 16px; text-decoration: underline">đ</span></h6>
-                                    </div>
-                                    <a href="/store/detail-san-pham/${sp.idCTSP}" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>Chi tiết</a>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </c:forEach>
-                <div class="col-12 pb-1">
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination justify-content-center mb-3">
-                            <li class="page-item disabled">
-                                <a class="page-link" href="#" aria-label="Previous">
-                                    <span aria-hidden="true">&laquo;</span>
-                                    <span class="sr-only">Previous</span>
-                                </a>
-                            </li>
-                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Next">
-                                    <span aria-hidden="true">&raquo;</span>
-                                    <span class="sr-only">Next</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-        </div>
-        <!-- Shop Product End -->
     </div>
 </div>
-<!-- Shop End -->
+<!-- Page Header End -->
+
+<!-- Giỏ hàng -->
+<form action="/thanh-toan" method="post" id="diaChiForm">
+    <c:if test="${check == false}">
+        <div class="container-fluid pt-7"
+             style="font-family: 'Roboto Condensed', 'Helvetica Neue', Helvetica, Arial, sans-serif;">
+
+            <div class="row px-xl-5">
+                <div class="col-lg table-responsive mb-5">
+                    <table class="table table-bordered text-center mb-0">
+                        <thead class="bg-secondary text-dark">
+                        <tr>
+                            <th>Sản phẩm</th>
+                            <th>Số lượng</th>
+                            <th>Màu sắc</th>
+                            <th>Kích thước</th>
+                            <th>Đơn giá</th>
+                            <th>Thành tiền</th>
+                            <th>Thao tác</th>
+                        </tr>
+                        </thead>
+                        <c:forEach var="i" items="${listGioHang}">
+                            <tbody class="align-middle">
+                            <tr>
+                                <td class="align-middle"><img src="/image/${i.hinhAnh1}" alt=""
+                                                              style="width: 50px;">
+                                        ${i.tenSanPham}
+                                </td>
+                                <td class="align-middle">
+                                    <div class="input-group quantity mx-auto" style="width: 100px;">
+                                        <div class="input-group-btn">
+                                            <a href="/cua-hang/giam-so-luong/${i.idHDCT}">
+                                                <button type="button" class="btn btn-sm btn-primary btn-minus">
+                                                    <i class="fa fa-minus"></i>
+                                                </button>
+                                            </a>
+                                        </div>
+                                        <input type="text" class="form-control form-control-sm bg-secondary text-center"
+                                               value="${i.soLuong}">
+                                        <div class="input-group-btn">
+                                            <a href="/cua-hang/tang-so-luong/${i.idHDCT}">
+                                                <button type="button" class="btn btn-sm btn-primary btn-plus">
+                                                    <i class="fa fa-plus"></i>
+                                                </button>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="align-middle">${i.tenMauSac}</td>
+                                <td class="align-middle">${i.tenKichThuoc}</td>
+                                <td class="align-middle">${i.donGia}</td>
+                                <td class="align-middle">${i.soLuong*i.donGia}</td>
+                                <td class="align-middle">
+                                    <a href="/cua-hang/delete/${i.idHDCT}">
+                                        <button type="button" class="btn btn-sm btn-primary">
+                                            <i class="fa fa-times"></i>
+                                        </button>
+                                    </a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </c:forEach>
+                    </table>
+                </div>
+            </div>
+            <!-- Thông tin giao hàng -->
+            <div class="row px-xl-5" style="margin-top: 100px">
+                <div class="col-lg-8 table-responsive">
+                    <div class="container-fluid mb-10">
+                        <h4 class="font-weight-semi-bold mb-4" style="margin-left: 50px">Thông tin giao hàng</h4>
+                        <div class="row px-xl-5">
+                            <div class="col-md-6 form-group">
+                                <label><b>Họ tên</b></label>
+                                <input class="form-control" type="text" name="tenNguoiNhan"
+                                       style="background-color: #f1f1f1; border: 2px solid #e4e4e4;"
+                                       placeholder="Họ tên">
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label><b>Số điện thoại</b></label>
+                                <input class="form-control" type="text" name="sdtNguoiNhan"
+                                       style="background-color: #f1f1f1; border: 2px solid #e4e4e4;"
+                                       placeholder="Số điện thoại">
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label><b>Địa chỉ</b></label>
+                                <input class="form-control" type="text" name="diaChiChiTiet"
+                                       style="background-color: #f1f1f1; border: 2px solid #e4e4e4;"
+                                       placeholder="Địa chỉ">
+                            </div>
+                            <div class="col-md-4 form-group">
+                                <label><b>Tỉnh/Thành phố</b></label>
+                                <select class="custom-select" id="tinh" name="tinh" title="Chọn Tỉnh Thành"
+                                        style="background-color: #f1f1f1; border: 1px solid #e4e4e4;">
+                                    <option value="0">Tỉnh Thành</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 form-group">
+                                <label><b>Quận/Huyện</b></label>
+                                <select class="custom-select" id="quan" name="quan" title="Chọn Quận Huyện"
+                                        style="background-color: #f1f1f1; border: 1px solid #e4e4e4;">
+                                    <option value="0">Quận Huyện</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 form-group">
+                                <label><b>Phường/Xã</b></label>
+                                <select class="custom-select" id="phuong" name="phuong" title="Chọn Phường Xã"
+                                        style="background-color: #f1f1f1; border: 1px solid #e4e4e4;">
+                                    <option value="0">Phường Xã</option>
+                                </select>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label><b>Ghi chú</b></label>
+                                <textarea class="form-control" type="textarea" name="ghiChu"
+                                          style="background-color: #f1f1f1; border: 1px solid #e4e4e4;"
+                                          placeholder="Ghi chú"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Checkout End -->
+
+                <div class="col-lg-4" style="background-color: white;">
+                    <form class="mb-5" action="">
+                        <div class="input-group mb-4">
+                            <input type="text" class="form-control p-4"
+                                   style="background-color: #f1f1f1; border: 1px solid #e4e4e4;"
+                                   placeholder="Mã ưu đãi">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary">Áp dụng</button>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="card mb-5">
+                        <div class="card-header bg-secondary border-0">
+                            <h4 class="font-weight-semi-bold m-0">Thông tin đơn hàng</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between mb-3 pt-1">
+                                <h6 class="font-weight-medium">Tổng sản phẩm: </h6>
+                                <h6 class="font-weight-medium" style="font-size: 18px">${soLuong}</h6>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <h6 class="font-weight-medium">Phí vận chuyển: </h6>
+                                <h6 class="font-weight-medium" style="font-size: 18px">0₫</h6>
+                            </div>
+                        </div>
+                        <div class="card border-secondary">
+                            <div class="card-header bg-secondary border-0">
+                                <h4 class="font-weight-semi-bold m-0">Phương thức thanh toán</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <div class="custom-control custom-radio">
+                                        <input class="custom-control-input" id="paypal" type="radio"
+                                               name="phuongThucThanhToan" value="0" checked>
+                                        <label class="custom-control-label" for="paypal">Thanh toán khi nhận
+                                            hàng</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="custom-control custom-radio">
+                                        <input class="custom-control-input" id="directcheck" type="radio"
+                                               name="phuongThucThanhToan" value="1">
+                                        <label class="custom-control-label" for="directcheck">QRCode qua VNPay</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="d-flex justify-content-between mt-2">
+                                <h5 class="font-weight-bold" style="margin-left: 18px">Tổng cộng:</h5>
+                                <h5 class="font-weight-bold"
+                                    style="margin-right: 18px; font-size: 22px">${tongTien}₫</h5>
+                            </div>
+
+                            <div class="card-footer border-secondary bg-transparent">
+                                <button type="submit" style="font-size: 26px"
+                                        class="btn btn-block btn-primary my-3 py-3">
+                                    <b>Đặt hàng ngay</b></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </c:if>
+    <c:if test="${check == true}">
+        <h3 style="text-align: center">Giỏ hàng không có sản phẩm</h3>
+    </c:if>
+</form>
+<!-- Cart End -->
 
 
 <!-- Footer Start -->
@@ -600,6 +606,11 @@
     </div>
 </div>
 <!-- Footer End -->
+
+
+
+
+
 
 
 <!-- Back to Top -->
