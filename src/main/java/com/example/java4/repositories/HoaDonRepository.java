@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -15,6 +16,7 @@ public interface HoaDonRepository
         extends JpaRepository<HoaDon,Integer>
 {
     public static final int ACTIVE  = 1;
+    public static final int INACTIVE =0;
     public static final int INACTIVE = 0;
     public static final int HOA_DON_ONL = 0;
     public static final int HOA_DON_OFF = 1;
@@ -32,8 +34,9 @@ public interface HoaDonRepository
     public Optional<HoaDon> findById(String id);
     @Query(value = "SELECT COUNT(*) FROM dbo.HoaDon",nativeQuery = true)
     Integer countHD();
-
-
+    public Page<HoaDon> findByTrangThai(int trangThai, Pageable pageable);
+    // Lấy ra Page danh sách hóa đơn theo trạng thái được sắp xếp theo ngày giờ mới nhất
+    Page<HoaDon> findByTrangThaiOrderByNgayTaoDesc(int trangThai, Pageable pageable);
     //Lấy ra hóa đơn theo idKH, loại hóa đơn và trạng thái
     @Query("select hd from HoaDon hd where hd.idKhachHang.id = ?1 and hd.loaiHoaDon = ?2 and hd.trangThai = ?3")
     HoaDon findByidKHAndLoaiHoaDonAndTrangThai(String idKH, Integer loaiHD, Integer trangThai);

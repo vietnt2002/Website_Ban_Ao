@@ -16,6 +16,8 @@ public class HoaDon {
     private NhanVien idNhanVien;
     private KhachHang idKhachHang;
     private LocalDateTime ngayTao;
+    private LocalDateTime ngayThanhToan;
+    private Integer tongTien;
     private Date ngayThanhToan;
     private BigDecimal tongTien;
     private Integer loaiHoaDon;
@@ -60,11 +62,11 @@ public class HoaDon {
     }
 
     @Column(name = "NgayThanhToan")
-    public Date getNgayThanhToan() {
+    public LocalDateTime getNgayThanhToan() {
         return ngayThanhToan;
     }
 
-    public void setNgayThanhToan(Date ngayThanhToan) {
+    public void setNgayThanhToan(LocalDateTime ngayThanhToan) {
         this.ngayThanhToan = ngayThanhToan;
     }
 
@@ -94,6 +96,8 @@ public class HoaDon {
     public void setTrangThai(Integer trangThai) {
         this.trangThai = trangThai;
     }
+
+
 
     @Override
     public boolean equals(Object o) {
