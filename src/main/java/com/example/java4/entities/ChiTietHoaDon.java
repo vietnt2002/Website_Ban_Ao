@@ -2,13 +2,14 @@ package com.example.java4.entities;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.util.Objects;
 
 @Entity
 public class ChiTietHoaDon {
     private String id;
     private Integer soLuong;
-    private Integer donGia;
+    private BigDecimal donGia;
     private Integer trangThai;
     private Integer hdctOld; // dùng để làm đổi trả
     private HoaDon idHoaDon;
@@ -35,11 +36,11 @@ public class ChiTietHoaDon {
     }
 
     @Column(name = "DonGia")
-    public Integer getDonGia() {
+    public BigDecimal getDonGia() {
         return donGia;
     }
 
-    public void setDonGia(Integer donGia) {
+    public void setDonGia(BigDecimal donGia) {
         this.donGia = donGia;
     }
 

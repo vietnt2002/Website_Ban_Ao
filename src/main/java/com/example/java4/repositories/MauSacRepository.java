@@ -1,10 +1,15 @@
 package com.example.java4.repositories;
 
 import com.example.java4.entities.MauSac;
+import com.example.java4.response.KichThuocRespone;
+import com.example.java4.response.MauSacRespone;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface MauSacRepository
@@ -13,4 +18,17 @@ public interface MauSacRepository
     public static final int ACTIVE  = 1;
     public static final int INACTIVE =0;
     public Page<MauSac> findByTrangThai(int trangThai, Pageable pageable);
+
+
+    //Lấy ra danh sách màu sắc theo idSP
+    @Query("select distinct new com.example.java4.response.MauSacRespone(ms.id, ms.ma, ms.ten)  " +
+            "from ChiTietSanPham ctsp " +
+            "join SanPham sp on sp.id = ctsp.idSanPham.id " +
+            "join MauSac ms on ms.id = ctsp.idMauSac.id " +
+            "where sp.id = ?1 " +
+            "order by ms.ma asc ")
+    List<MauSacRespone> getListMauSacByIdSP(String idSP);
+
+    //Lấy ra màu sắc theo tên màu sắc
+    MauSac findByTen(String tenMS);
 } ;
