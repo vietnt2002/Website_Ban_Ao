@@ -15,5 +15,5 @@ public interface NhanVienRepository
     public static final int ACTIVE  = 1;
     public static final int INACTIVE =0;
     public Page<NhanVien> findByTrangThai(int trangThai, Pageable pageable);
-    public Optional<NhanVien> findById(Integer id);
+    public Optional<NhanVien> findById(String id);
 };

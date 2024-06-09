@@ -6,9 +6,6 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 public class WebSpringBootApp {
     public static void   main(String[] args) {
         SpringApplication.run(WebSpringBootApp.class, args);
-
-
     }
-
     //agfdhjhfjj
 }

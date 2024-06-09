@@ -83,7 +83,7 @@ public class NhanVienController {
 
 
     @GetMapping("delete/{id}")
-    public String delete(@PathVariable("id") int idCanXoa)
+    public String delete(@PathVariable("id") String idCanXoa)
     {
         this.nhanVienRepository.deleteById(idCanXoa);
         return "redirect:/nhan-vien";
