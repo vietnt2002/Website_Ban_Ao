@@ -52,7 +52,7 @@
 
         ::-webkit-scrollbar {
             width: 10px;
-            background-color: light grey;
+            background-color: lightgray;
         }
 
         ::-webkit-scrollbar-thumb {
@@ -84,16 +84,16 @@
 
         <!-- Nav Item - Dashboard -->
         <li class="nav-item active">
-            <a class="nav-link" href="index.html">
+            <a class="nav-link" href="/ban-hang-tai-quay">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>Thống kê doanh thu</span></a>
+                <span>Bán hàng tại quầy</span></a>
         </li>
 
         <!-- Nav Item - Charts -->
         <li class="nav-item">
             <a class="nav-link" href="/ban-hang-tai-quay/admin/ban-tai-quay">
                 <i class="fas fa-fw fa-chart-area"></i>
-                <span>Bán hàng tại quầy</span></a>
+                <span>Thống kê doanh thu</span></a>
         </li>
 
         <!-- Nav Item - Charts -->
@@ -105,7 +105,7 @@
 
         <!-- Nav Item - Charts -->
         <li class="nav-item">
-            <a class="nav-link" href="charts.html">
+            <a class="nav-link" href="/hoa-don/hien-thi">
                 <i class="fas fa-fw fa-chart-area"></i>
                 <span>Quản lý hóa đơn</span></a>
         </li>
@@ -387,7 +387,6 @@
                                             <c:if test="${hoaDon.idKhachHang.id==null}">Khách lẻ</c:if>
                                             <c:if test="${hoaDon.idKhachHang.id!=null}">${hoaDon.idKhachHang.hoTen}</c:if>
                                         </td>
-                                        <td>${hoaDon.idKhachHang.ten}</td>
                                         <td>${hoaDon.ngayTao}</td>
                                         <td>${hoaDon.trangThai==0?"Chua thanh toan":"Da thanh toan"}</td>
                                         <td>
@@ -395,7 +394,6 @@
                                                class="btn btn-primary">
                                                 <i class="bi bi-eye-fill"></i>
                                             </a>
-                                               class="btn btn-primary">View</a>
                                         </td>
                                     </tr>
                                 </c:forEach>
@@ -424,15 +422,6 @@
                                         <td>${hdct.idCTSP.idSanPham.ma}</td>
                                         <td>${hdct.idCTSP.idSanPham.ten}</td>
                                         <td style="display: flex; align-items: center;">
-<%--                                            <form action="/ban-hang-tai-quay/giam-so-luong/${hdct.idCTSP.id}" method="post">--%>
-<%--                                                <input type="hidden" name="idHoaDon" value="${hoaDon.id}">--%>
-<%--                                                <button class="btn btn-light"--%>
-<%--                                                        style="display: flex; width: 35px; height: 30px; align-items: center; justify-content: center"--%>
-<%--                                                        type="submit"><i class="bi bi-caret-left"></i></button>--%>
-<%--                                            </form>--%>
-<%--                                                ${hdct.soLuong}--%>
-
-
                                                <form class="d-flex" method="post" action="/ban-hang-tai-quay/update-sl/${hdct.idCTSP.id}">
                                                    <input type="hidden" name="idHoaDon" value="${hoaDon.id}">
                                                    <input class="form-control me-2" type="text" name="soLuong" value="${hdct.soLuong}" style="width: 45px">
@@ -441,26 +430,6 @@
                                                    </button>
                                                </form>
 
-<%--                                            <form action="/ban-hang-tai-quay/them-so-luong/${hdct.idCTSP.id}" method="post">--%>
-<%--                                                <input type="hidden" name="idHoaDon" value="${hoaDon.id}">--%>
-<%--                                                <input class="form-control" type="type" name="soLuong" value="${hdct.soLuong}">--%>
-<%--                                                <button class="btn btn-light"--%>
-<%--                                                        style="display: flex; width: 35px; height: 30px; align-items: center; justify-content: center"--%>
-<%--                                                        type="submit"><i class="bi bi-caret-right"></i></button>--%>
-<%--                                            </form>--%>
-                                            <form action="/ban-hang-tai-quay/giam-so-luong/${hdct.idCTSP.id}" method="post">
-                                                <input type="hidden" name="idHoaDon" value="${hoaDon.id}">
-                                                <button class="btn btn-light"
-                                                        style="display: flex; width: 35px; height: 30px; align-items: center; justify-content: center"
-                                                        type="submit"><i class="bi bi-caret-left"></i></button>
-                                            </form>
-                                                ${hdct.soLuong}
-                                            <form action="/ban-hang-tai-quay/them-so-luong/${hdct.idCTSP.id}" method="post">
-                                                <input type="hidden" name="idHoaDon" value="${hoaDon.id}">
-                                                <button class="btn btn-light"
-                                                        style="display: flex; width: 35px; height: 30px; align-items: center; justify-content: center"
-                                                        type="submit"><i class="bi bi-caret-right"></i></button>
-                                            </form>
                                         </td>
                                         <td>${hdct.donGia}</td>
                                         <td>${hdct.soLuong*hdct.donGia}</td>
@@ -534,23 +503,34 @@
                                                + Chọn
                                             </a>
                                         </div>
+                                        <div class="row mb-3">
+                                            <label class="col-sm-4 col-form-label">Sđt</label>
+                                            <div class="col-sm-5">
 
-                                            <label class="col-sm-4 col-form-label">Sđt khách hàng</label>
-                                            <div class="col-sm-6">
-                                                <select path="idKhachHang" class="form-select"
-                                                        aria-label="Default select example" name="idKhachHang">
-                                                    <c:forEach items="${listKH}" var="khachHang">
+                                                <c:if test="${hoaDon.idKhachHang.id==null}">
 
-                                                        <option value="${khachHang.id}" ${hoaDon.idKhachHang.sdt==khachHang.sdt?"selected":""}>${khachHang.sdt}</option>
+                                                    <input type="text" class="form-control"  value="Khách lẻ" readonly>
+                                                </c:if>
 
-                                                    </c:forEach>
-                                                </select>
+                                                <c:if test="${hoaDon.idKhachHang.id!=null}">
+                                                    <input type="text" class="form-control"  value="${hoaDon.idKhachHang.sdt}" readonly>
+                                                </c:if>
+
+                                                <%--                                                <input type="text" class="form-control"  value="${hoaDon.idKhachHang.hoTen}" readonly>--%>
                                             </div>
-                                            <a class="col-sm-2" data-bs-toggle="modal" data-bs-target="#exampleModal"
-                                               href="#">
-                                                <i class=" bi bi-folder-plus col-3" style="font-size: 25px;"></i>
+
+                                            <%--   Modal thêm nhanh khách hàng--%>
+                                            <a class="col-sm-1 " data-bs-toggle="modal" data-bs-target="#exampleModal2"
+                                               style="padding-right: 0px;margin-top: 7px">
+                                                <i class="bi bi-person-plus" style="font-size: 25px;padding: 0px"></i>
+                                            </a>
+
+                                            <a class="col-sm-1" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                                               href="#" style="padding-right: 0px;margin-top: 7px">
+                                                <i class=" bi bi-folder-plus col-3" style="font-size: 25px;padding: 0px"></i>
                                             </a>
                                         </div>
+
                                         <div class="row mb-3">
                                             <label class="col-sm-4 col-form-label">Tổng tiền</label>
                                             <div class="col-sm-8">
@@ -768,13 +748,13 @@
         </div>
 
         <!-- Modal mã giảm giá -->
-        <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+        <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true"
              data-bs-backdrop="static" data-bs-keyboard="false" >
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
                         <div class="row">
-                            <h5 class="modal-title" id="exampleModalLabel">Mã giảm giá</h5>
+                            <h5 class="modal-title" id="exampleModalLabel2">Mã giảm giá</h5>
                         </div>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
@@ -830,13 +810,13 @@
 <%--        Modal thêm nhanh khách hàng--%>
 
         <!-- Modal khách hàng -->
-        <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+        <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel3" aria-hidden="true"
              data-bs-backdrop="static" data-bs-keyboard="false" >
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <div class="row">
-                            <h5 class="modal-title" id="exampleModalLabel">Thêm khách hàng</h5>
+                            <h5 class="modal-title" id="exampleModalLabel3">Thêm khách hàng</h5>
                         </div>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
@@ -866,13 +846,13 @@
         </div>
 
         <!-- Modal khách hàng -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel4" aria-hidden="true"
              data-bs-backdrop="static" data-bs-keyboard="false" >
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
                         <div class="row">
-                            <h5 class="modal-title" id="exampleModalLabel">Danh sách khách hàng</h5>
+                            <h5 class="modal-title" id="exampleModalLabel4">Danh sách khách hàng</h5>
                         </div>
 
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -955,12 +935,12 @@
 </a>
 
 <!-- Logout Modal-->
-<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                <h5 class="modal-title" id="exampleModalLabel1">Ready to Leave?</h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
@@ -1072,7 +1052,6 @@
     <%--    return true;--%>
     <%--}--%>
 
-=======
         document.getElementById('tienTraLai').value = tienTraLai.toFixed(2);
     }
 
@@ -1098,6 +1077,7 @@
         }
 
         return true; // Cho phép thêm sản phẩm vào giỏ hàng nếu đã chọn hóa đơn
+    }
     }
 </script>
 <script>

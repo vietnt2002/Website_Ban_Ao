@@ -22,16 +22,11 @@ public interface KhachHangRepository
 
     @Query("select kh from KhachHang kh where kh.trangThai=:trangThai")
     public Page<KhachHang> findByTrangThai(@Param("trangThai") int trangThai, Pageable pageable);
-
     @Query("select kh from KhachHang kh where (kh.hoTen like %?1% or kh.sdt like %?1%) and kh.trangThai=?2")
     public Page<KhachHang> timKiemKhachHang(String key,int trangThai,Pageable pageable);
-    public Page<KhachHang> findByTrangThai(int trangThai, Pageable pageable);
-    public Optional<KhachHang> findById(Integer id);
-    public static final int Lock =2;
-    public Page<KhachHang> findByTrangThai(int trangThai, Pageable pageable);
-//    public Optional<KhachHang> findById(Integer id);
     public Optional<KhachHang> findById(String id);
-
+    public static final int Lock =2;
+//    public Optional<KhachHang> findById(Integer id);
     // Lấy thông tin khách hàng theo Username và Password làm chức năng đăng nhập
     KhachHang findByTaiKhoanAndMatKhau(String taiKhoan, String matKhau);
     KhachHang findByTaiKhoan(String taiKhoan);

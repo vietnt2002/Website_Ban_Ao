@@ -69,7 +69,7 @@ public class BanTaiQuayController {
     private List<SanPham> listSanPham;
     private List<KieuTay> listKieuTay;
     private List<ChatLieu> listChatLieu;
-    private String idNV = "FE755A99-83D6-4431-8FDE-4DF25C6B8BD0";
+    private String idNV = "BF29DB87-6ED2-46E8-B34C-135B2EA4CCA6";
 
 @GetMapping("")
 public String hienThi(Model model,@RequestParam(value = "page",defaultValue ="0") String pageParam ) {
@@ -138,7 +138,7 @@ public String hienThi(Model model,@RequestParam(value = "page",defaultValue ="0"
                 BigDecimal tongTien = BigDecimal.ZERO;
                 for (ChiTietHoaDon hd : gioHangTheoHoaDon) {
                     int sL = hd.getSoLuong();
-                    BigDecimal donGia = BigDecimal.valueOf(hd.getDonGia());
+                    BigDecimal donGia = hd.getDonGia();
                     BigDecimal thanhTien = donGia.multiply(BigDecimal.valueOf(sL));
                     tongTien = tongTien.add(thanhTien);
                 }
@@ -250,59 +250,9 @@ public String hienThi(Model model,@RequestParam(value = "page",defaultValue ="0"
                   sanPhamChiTietRepository.save(chiTietSanPham);
               }
           }
-      }}
-
-    @PostMapping("/delete-hdct/{idHDCT}")
-    public String deleteHDCT(@PathVariable String idHDCT){
-    HoaDon hd = new HoaDon();
-    int count = 0;
-    ChiTietSanPham ctsp = new ChiTietSanPham();
-        for (ChiTietHoaDon hdct:listHDCT){
-            if (hdct.getId().equals(idHDCT)){
-                hoaDonChiTietRepository.delete(hdct);
-                hd = hdct.getIdHoaDon();
-                ctsp = hdct.getIdCTSP();
-                count=hdct.getSoLuong();
-                System.out.println("test data :========================== ");
-            }
-        }
-        ctsp.setSoLuong(ctsp.getSoLuong()+count);
-        sanPhamChiTietRepository.save(ctsp);
-        return "redirect:/ban-hang-tai-quay/detail-hoa-don/" + hd.getId();
-    }
-
-    @PostMapping("/add-hoa-don")
-    public String themHoaDon(RedirectAttributes redirectAttributes) {
-        List<HoaDon> hoaDonList = this.hoaDonRepository.selectTop5();
-        int currentHoaDonCount = hoaDonList.size();
-        // Nếu số lượng hóa đơn lớn hơn 5, gửi dữ liệu Error từ Controller sang View(file.jsp)
-        if (currentHoaDonCount >= 5) {
-            redirectAttributes.addFlashAttribute("currentHoaDonCount", currentHoaDonCount);
-            redirectAttributes.addFlashAttribute("errorBillMax", "Bạn chỉ có thể tạo tối đa 5 đơn hàng");
-            return "redirect:/ban-hang-tai-quay";
-        }
-        String ma1="HD";
-        Integer sum = hoaDonRepository.countHD() + 1;
-        String ma = ma1 + sum;
-        System.out.println("==============test hoa don:"+ma);
-        LocalDateTime now =LocalDateTime.now();
-        HoaDon hoaDon = new HoaDon();
-        //Tạo mã tự sinh
-        hoaDon.setNgayTao(now);
-        Optional<NhanVien> nv = nhanVienRepo.findById(idNV);
-        hoaDon.setIdNhanVien(nv.get());
-        hoaDon.setMa(ma);
-        hoaDon.setTrangThai(0);
-        try {
-            //gửi dữ liệu success từ Controller sang View(file.jsp)
-            this.hoaDonRepository.save(hoaDon);
-            redirectAttributes.addFlashAttribute("success", "Hóa đơn được tạo thành công!");
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", "Đã xảy ra lỗi khi tạo hóa đơn.");
-        }
-        hoaDonRepository.save(hoaDon);
-        return "redirect:/ban-hang-tai-quay";
-    }
+      }
+        return "redirect:/ban-hang-tai-quay/detail-hoa-don/" + idHoaDon;
+}
 
     @PostMapping("giam-so-luong/{idCTSP}")
     public String giamSoLuong(@PathVariable String idCTSP, @RequestParam String idHoaDon) {
