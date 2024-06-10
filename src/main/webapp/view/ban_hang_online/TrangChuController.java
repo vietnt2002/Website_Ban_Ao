@@ -114,7 +114,7 @@ public class TrangChuController {
         model.addAttribute("listMauSizeSL", listMauSizeSL);
         model.addAttribute("listMauSac", listMauSac);
         model.addAttribute("soLuong",hdctRepo.findByKHnStt(khachHangRepo.findByIdKH(UserInfor.idKhachHang)));
-        return "/view/ban_hang_online/chiTietSanPham.jsp";
+        return "/view/view_viet/chiTietSanPham.jsp";
     }
 
     //Thêm sản phẩm vào giỏ hàng
