@@ -1,5 +1,4 @@
 package com.example.java4.repositories;
-
 import com.example.java4.entities.ChiTietSanPham;
 import com.example.java4.response.MauSizeSL;
 import com.example.java4.response.SPCTResponse;
@@ -17,7 +16,6 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -59,12 +57,17 @@ public interface SPCTRepository extends JpaRepository<ChiTietSanPham,String>, Jp
 
     @Query("select ctsp from ChiTietSanPham ctsp where ctsp.idKieuTay.id = ?1 and ctsp.trangThai = ?2")
     Page<ChiTietSanPham> locCTSPByIdKieuTay(String idKieuTay, int trangThai, Pageable pageable);
-
     //Lọc cộng dồn sản phẩm(chưa được)
     @Query(value = "select * from ChiTietSanPham " +
             "where idSanPham = :idSanPham and idMauSac = :idMauSac and idKichThuoc = :idKichThuoc " +
             "and idChatLieu = :idChatLieu and idKieuTay = :idKieuTay", nativeQuery = true)
     Page<ChiTietSanPham> filterCombobox(@Param("idSanPham")String idSanPham, @Param("idMauSac")String idMauSac, @Param("idKichThuoc")String idKichThuoc, @Param("idChatLieu")String idChatLieu, @Param("idKieuTay")String idKieuTay, Pageable pageable);
+    @Query("SELECT ctsp  FROM ChiTietSanPham ctsp WHERE ctsp.id = ?1 ")
+    ChiTietSanPham findByIdCTSP(String id);
+};
+
+
+
 
     @Query("SELECT ctsp  FROM ChiTietSanPham ctsp WHERE ctsp.id = ?1 ")
     ChiTietSanPham findByIdCTSP(String id);
@@ -109,7 +112,6 @@ public interface SPCTRepository extends JpaRepository<ChiTietSanPham,String>, Jp
     @Query("select ctsp from ChiTietSanPham ctsp where ctsp.idSanPham.id = ?1 and ctsp.idMauSac.id = ?2 and ctsp.idKichThuoc.id = ?3")
     ChiTietSanPham findCTSPBySanPham_MauSac_KichThuoc(String idSP, String idMS, String idKth);
 };
-
 
 
 
