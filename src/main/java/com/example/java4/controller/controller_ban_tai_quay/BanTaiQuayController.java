@@ -12,8 +12,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.math.BigDecimal;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -96,7 +99,6 @@ public String hienThi(Model model,@RequestParam(value = "page",defaultValue ="0"
     @GetMapping("detail-hoa-don/{idHD}")
     public String detailHoaDon(@PathVariable String idHD,@RequestParam Optional<Integer> pageParam,
             @RequestParam("page") Optional<Integer> pageParam2, Model model) {
-    public String detailHoaDon(@PathVariable String idHD,@RequestParam Optional<Integer> pageParam, Model model) {
         Optional<HoaDon> hoaDon = hoaDonRepository.findById(idHD);
         model.addAttribute("hoaDon", hoaDon.get());
         listHoaDon = hoaDonRepository.selectTop5();
@@ -188,9 +190,6 @@ public String hienThi(Model model,@RequestParam(value = "page",defaultValue ="0"
         Optional<NhanVien> nv = nhanVienRepo.findById(idNV);
         hoaDon.setIdNhanVien(nv.get());
         hoaDon.setMa(ma);
-
-
-
         hoaDon.setTrangThai(0);
         try {
             //gửi dữ liệu success từ Controller sang View(file.jsp)
@@ -202,33 +201,6 @@ public String hienThi(Model model,@RequestParam(value = "page",defaultValue ="0"
         hoaDonRepository.save(hoaDon);
         return "redirect:/ban-hang-tai-quay";
     }
-
-    @PostMapping("giam-so-luong/{idCTSP}")
-    public String giamSoLuong(@PathVariable String idCTSP, @RequestParam String idHoaDon) {
-        //Giảm số lượng sản phẩm -1 khi ấn vào button giảm trong giỏ hàng
-        listCTSP = sanPhamChiTietRepository.findAll();
-        for (ChiTietHoaDon chiTietHoaDon : listHDCT) {
-            if (chiTietHoaDon.getIdCTSP().getId().equals(idCTSP) && chiTietHoaDon.getIdHoaDon().getId().equals(idHoaDon)) {
-                chiTietHoaDon.setSoLuong(chiTietHoaDon.getSoLuong() - 1);
-                hoaDonChiTietRepository.save(chiTietHoaDon);
-                //Khi số lượng sản phẩm trong giở hàng <= 0 thì set số lượng = 1
-                if (chiTietHoaDon.getSoLuong() <= 0) {
-                    chiTietHoaDon.setSoLuong(1);
-                    hoaDonChiTietRepository.save(chiTietHoaDon);
-                } else {
-                    //Số lượng của sản phẩm chi tiết được +1 khi ấn vào button thêm trong giỏ hàng
-                    for (ChiTietSanPham chiTietSanPham : listCTSP) {
-                        if (chiTietSanPham.getId().equals(idCTSP)) {
-                            chiTietSanPham.setSoLuong(chiTietSanPham.getSoLuong() + 1);
-                            sanPhamChiTietRepository.save(chiTietSanPham);
-                        }
-                    }
-                }
-            }
-        }
-        return "redirect:/ban-hang-tai-quay/detail-hoa-don/" + idHoaDon;
-    }
-
 
     @PostMapping("them-so-luong/{idCTSP}")
     public String themSoLuong(@PathVariable String idCTSP, @RequestParam String idHoaDon, RedirectAttributes redirectAttributes) {
@@ -257,12 +229,6 @@ public String hienThi(Model model,@RequestParam(value = "page",defaultValue ="0"
                 }
             }
         }
-        model.addAttribute("listHDCT", gioHangTheoHoaDon);
-        return "/view/view_payment_counter/banHangTaiQuay.jsp";
-    }
-
-            }
-        }
         return "redirect:/ban-hang-tai-quay/detail-hoa-don/" + idHoaDon;
     }
 
@@ -284,7 +250,7 @@ public String hienThi(Model model,@RequestParam(value = "page",defaultValue ="0"
                   sanPhamChiTietRepository.save(chiTietSanPham);
               }
           }
-      }
+      }}
 
     @PostMapping("/delete-hdct/{idHDCT}")
     public String deleteHDCT(@PathVariable String idHDCT){
@@ -365,39 +331,6 @@ public String hienThi(Model model,@RequestParam(value = "page",defaultValue ="0"
     }
 
 
-    @PostMapping("them-so-luong/{idCTSP}")
-    public String themSoLuong(@PathVariable String idCTSP, @RequestParam String idHoaDon, RedirectAttributes redirectAttributes) {
-        ChiTietSanPham chiTietSanPham = sanPhamChiTietRepository.findByIdCTSP(idCTSP);
-        for (ChiTietHoaDon chiTietHoaDon : listHDCT) {
-            //Nếu số lượng trong spct = 0 thì không đưuọc thêm sản phẩm nữa
-            if (chiTietSanPham.getSoLuong() <= 0) {
-                chiTietHoaDon.setSoLuong(chiTietHoaDon.getSoLuong());
-                try {
-                    hoaDonChiTietRepository.save(chiTietHoaDon);
-                    redirectAttributes.addFlashAttribute("error", "Hết hàng");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } else {
-                //Thêm số lượng sản phẩm +1 khi ấn vào button thêm trong giỏ hàng
-                if (chiTietHoaDon.getIdCTSP().getId().equals(idCTSP) && chiTietHoaDon.getIdHoaDon().getId().equals(idHoaDon)) {
-                    chiTietHoaDon.setSoLuong(chiTietHoaDon.getSoLuong() + 1);
-                    hoaDonChiTietRepository.save(chiTietHoaDon);
-
-                    //Số lượng của sản phẩm chi tiết -1 khi ấn vào button thêm trong giỏ hàng
-                    if (chiTietSanPham.getId().equals(idCTSP)) {
-                        chiTietSanPham.setSoLuong(chiTietSanPham.getSoLuong() - 1);
-                        sanPhamChiTietRepository.save(chiTietSanPham);
-                    }
-                }
-
-            }
-        }
-        return "redirect:/ban-hang-tai-quay/detail-hoa-don/" + idHoaDon;
-    }
-
-
-
     @PostMapping("add-san-pham/{idCTSP}")
     public String addSanPhamVaoGioHang(@PathVariable String idCTSP, @RequestParam("page") Optional<Integer> pageParam,
                                        @RequestParam String idHoaDon, RedirectAttributes redirectAttributes) {
@@ -438,8 +371,7 @@ public String hienThi(Model model,@RequestParam(value = "page",defaultValue ="0"
                 }
             }
         }
-
-        Integer donGia = null;
+        BigDecimal donGia =  new BigDecimal(0);
         if (!spTonTaiTrongGioHang) {
             for (ChiTietSanPham sp : listCTSP) {
                 if (sp.getId().equals(idCTSP)) {
@@ -898,12 +830,13 @@ public String hienThi(Model model,@RequestParam(value = "page",defaultValue ="0"
     @PostMapping("/thanh-toan/{idHoaDon}")
     public String thanhToanSanPham(@PathVariable String idHoaDon,
                                    @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date ngayTao) {
+        LocalDateTime ngayTaoLocalDateTime = ngayTao.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
         for (int i = 0; i < listHoaDon.size(); i++) {
             if (listHoaDon.get(i).getId().equals(idHoaDon)) {
                 HoaDon hoaDon = new HoaDon();
                 hoaDon.setId(idHoaDon);
                 hoaDon.setTrangThai(1);
-                hoaDon.setNgayThanhToan(ngayTao);
+                hoaDon.setNgayThanhToan(ngayTaoLocalDateTime);
                 hoaDonRepository.save(hoaDon);
             }
         }
