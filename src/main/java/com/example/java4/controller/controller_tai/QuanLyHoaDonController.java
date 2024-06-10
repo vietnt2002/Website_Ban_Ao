@@ -62,7 +62,6 @@ public class QuanLyHoaDonController {
     public String view(Model model, @RequestParam(value = "page", defaultValue = "0") String pageParam) {
         // Lấy ra 5 hóa đơn trong 1 Page
         Pageable pageable = PageRequest.of(Integer.valueOf(pageParam), 5, Sort.by(Sort.Direction.DESC, "ngayTao"));
-
         // Lấy ra danh sách hóa đơn có trạng thái là 1(Đã thanh toán)
         Page<HoaDon> pageHD = _hoaDonRepo.findByTrangThai(_hoaDonRepository.DA_HOAN_THANH, pageable);
         Page<HoaDon> pageHDAll = _hoaDonRepo.findAll(pageable);

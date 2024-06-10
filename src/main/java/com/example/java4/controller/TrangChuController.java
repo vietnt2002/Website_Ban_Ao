@@ -113,6 +113,7 @@ public class TrangChuController {
         model.addAttribute("listKichThuoc", listKichThuoc);
         model.addAttribute("listMauSizeSL", listMauSizeSL);
         model.addAttribute("listMauSac", listMauSac);
+        model.addAttribute("soLuong",hdctRepo.findByKHnStt(khachHangRepo.findByIdKH(UserInfor.idKhachHang)));
         return "/view/view_viet/chiTietSanPham.jsp";
     }
 
@@ -323,7 +324,7 @@ public class TrangChuController {
         BigDecimal tongTienBigDecimal  = new BigDecimal(0.0);
         for (ChiTietHoaDon chiTietHoaDon : listHDCT) {
             BigDecimal soLuongDecimal = new BigDecimal(chiTietHoaDon.getSoLuong());
-            tongTienBigDecimal.add(chiTietHoaDon.getDonGia().multiply(soLuongDecimal));
+            tongTienBigDecimal = tongTienBigDecimal.add(chiTietHoaDon.getDonGia().multiply(soLuongDecimal));
             System.out.println("============================don gia: "+chiTietHoaDon.getDonGia());
             System.out.println("============================so luong: "+ soLuongDecimal);
             System.out.println("=======================test multiply "+chiTietHoaDon.getDonGia().multiply(soLuongDecimal));
@@ -372,7 +373,7 @@ public class TrangChuController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return "redirect:/cua-hang/ gio-hang";
+        return "redirect:/cua-hang/gio-hang";
     }
 
 //    @PostMapping("/thanh-toan")
