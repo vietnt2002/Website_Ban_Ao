@@ -356,11 +356,12 @@
                         <h6 class="m-0 font-weight-bold">Bộ Lọc</h6>
                     </div>
                     <div class="card-body">
-                        <form class="row g-3" method="get" action="/hoa-don/tim-kiem">
+                        <form class="row g-3" method="get" action="/hoa-don/hien-thi">
                             <div class="col-md-6">
                                 <label for="searchKeyword" class="form-label">Tìm kiếm</label>
                                 <div class="input-group">
-                                    <input type="text" class="form-control bg-light border-0 small" id="searchKeyword" name="keyword"
+                                    <input type="text" class="form-control bg-light border-0 small" id="searchKeyword"
+                                           name="keyword"
                                            placeholder="Nhập mã hóa đơn hoặc SĐT khách hàng" value="${keyword}"
                                            aria-label="Search" aria-describedby="basic-addon2">
                                     <div class="input-group-append">
@@ -372,10 +373,10 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="inputLoaiHoaDon" class="form-label">Loại Hóa Đơn</label>
-                                <select id="inputLoaiHoaDon" class="form-select" name="loaiHoaDon">
+                                <select id="inputLoaiHoaDon" class="form-select" name="loaiHoaDon" onchange="this.form.submit()">
                                     <option value="">Tất cả</option>
-                                    <option value="0">Bán Online</option>
-                                    <option value="1">Bán tại quầy</option>
+                                    <option value="0" ${currentLoaiHoaDon == 0 ? 'selected' : ''}>Bán Online</option>
+                                    <option value="1" ${currentLoaiHoaDon == 1 ? 'selected' : ''}>Bán tại quầy</option>
                                 </select>
                             </div>
 
@@ -386,7 +387,9 @@
                                 </div>
 
                                 <div class="col-md-6 d-flex align-items-end">
-                                    <a href="/hoa-don/hien-thi"> <button type="btn" class="btn btn-danger ">Làm Mới</button></a>
+                                    <a href="/hoa-don/hien-thi">
+                                        <button type="btn" class="btn btn-danger ">Làm Mới</button>
+                                    </a>
                                 </div>
                             </div>
                         </form>
@@ -402,56 +405,88 @@
                     <div class="card-body">
 
                         <ul class="nav nav-tabs" id="myTab" role="tablist">
-                            <%--  Tab Danh sách hóa đơn với trạng thái là lấy tất cả  --%>
-                            <li class="nav-item" role="presentation">
+                            <li class="nav-item position-relative" role="presentation">
                                 <button class="nav-link active" id="all-tab" data-bs-toggle="tab" data-bs-target="#all"
-                                        type="button" role="tab" aria-controls="all" aria-selected="true">Tất Cả
+                                        type="button" role="tab" aria-controls="all" aria-selected="true"
+                                        data-status="all">
+                                    Tất Cả
+                                    <span class="position-absolute top-0 start-100
+                                    translate-middle badge rounded-pill bg-danger">
+                                             0
+<%--                                    <span class="visually-hidden">unread messages</span>--%>
+                                    </span>
                                 </button>
                             </li>
-                            <%--  Tab Danh sách hóa đơn với trạng thái là chờ xác nhận  --%>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="confimation-tab" data-bs-toggle="tab"
-                                        data-bs-target="#confimation" type="button" role="tab"
-                                        aria-controls="confimation" aria-selected="false">Chờ Xác Nhận
+                            <li class="nav-item position-relative" role="presentation">
+                                <button class="nav-link position-relative" id="confirmation-tab" data-bs-toggle="tab"
+                                        data-bs-target="#confirmation" type="button" role="tab"
+                                        aria-controls="confirmation" aria-selected="false" data-status="confirmation">
+                                    Chờ Xác Nhận
+                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    0
+<%--                                    <span class="visually-hidden">unread messages</span>--%>
+                                </span>
                                 </button>
                             </li>
-                            <%--  Tab Danh sách hóa đơn với trạng thái là đã xác nhận --%>
-                            <li class="nav-item" role="presentation">
+                            <li class="nav-item position-relative" role="presentation">
                                 <button class="nav-link" id="confirmed-tab" data-bs-toggle="tab"
                                         data-bs-target="#confirmed" type="button" role="tab" aria-controls="confirmed"
-                                        aria-selected="false">Đã Xác Nhận
+                                        aria-selected="false" data-status="confirmed">
+                                    Đã Xác Nhận
+                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                0
+                <span class="visually-hidden">unread messages</span>
+            </span>
                                 </button>
                             </li>
-                            <%--  Tab Danh sách hóa đơn với trạng thái là chờ giao hàng --%>
-                            <li class="nav-item" role="presentation">
+                            <li class="nav-item position-relative" role="presentation">
                                 <button class="nav-link" id="delivery-tab" data-bs-toggle="tab"
                                         data-bs-target="#delivery" type="button" role="tab" aria-controls="delivery"
-                                        aria-selected="false">Chờ Giao Hàng
+                                        aria-selected="false" data-status="delivery">
+                                    Chờ Giao Hàng
+                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                0
+                <span class="visually-hidden">unread messages</span>
+            </span>
                                 </button>
                             </li>
-                            <%--  Tab Danh sách hóa đơn với trạng thái là đã giao hàng  --%>
-                            <li class="nav-item" role="presentation">
+                            <li class="nav-item position-relative" role="presentation">
                                 <button class="nav-link" id="delivered-tab" data-bs-toggle="tab"
                                         data-bs-target="#delivered" type="button" role="tab" aria-controls="delivered"
-                                        aria-selected="false">Đã Giao Hàng
+                                        aria-selected="false" data-status="delivered">
+                                    Đã Giao Hàng
+                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                0
+                <span class="visually-hidden">unread messages</span>
+            </span>
                                 </button>
                             </li>
-                            <%--  Tab Danh sách hóa đơn với trạng thái là đã hoàn thành--%>
-                            <li class="nav-item" role="presentation">
+                            <li class="nav-item position-relative" role="presentation">
                                 <button class="nav-link" id="accomplished-tab" data-bs-toggle="tab"
                                         data-bs-target="#accomplished" type="button" role="tab"
-                                        aria-controls="accomplished" aria-selected="false">Đã Hoàn Thành
+                                        aria-controls="accomplished"
+                                        aria-selected="false" data-status="accomplished">
+                                    Đã Hoàn Thành
+                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                0
+                <span class="visually-hidden">unread messages</span>
+            </span>
                                 </button>
                             </li>
-                            <%--  Tab Danh sách hóa đơn với trạng thái là đã hủy --%>
-                            <li class="nav-item" role="presentation">
+                            <li class="nav-item position-relative" role="presentation">
                                 <button class="nav-link" id="cancelled-tab" data-bs-toggle="tab"
                                         data-bs-target="#cancelled" type="button" role="tab" aria-controls="cancelled"
-                                        aria-selected="false">Đã Hủy
+                                        aria-selected="false" data-status="cancelled">
+                                    Đã Hủy
+                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                        0
+                <span class="visually-hidden">unread messages</span>
+            </span>
                                 </button>
                             </li>
-
                         </ul>
+
+
                         <div class="tab-content mt-3" id="myTabContent">
                             <div class="tab-pane fade show active" id="all" role="tabpanel" aria-labelledby="all-tab">
                                 <%--  Danh sách tất cả các hóa đơn   --%>
@@ -472,7 +507,7 @@
                                     </thead>
 
                                     <tbody>
-                                    <c:forEach var="hoaDon" items="${hoaDonPageAll}" varStatus="i">
+                                    <c:forEach var="hoaDon" items="${hoaDonPage}" varStatus="i">
                                         <tr>
                                             <td>${i.index + 1}</td>
                                             <td>${hoaDon.ma}</td>
@@ -511,17 +546,17 @@
                                 <div class="float-end">
                                     <nav aria-label="Page navigation example">
                                         <ul class="pagination">
-                                            <c:if test="${pageHDALL.number > 0}">
+                                            <c:if test="${pageHD.number > 0}">
                                                 <li class="page-item"><a class="page-link"
-                                                                         href="/hoa-don/hien-thi?page=${pageHDALL.number - 1}">&laquo;</a>
+                                                                         href="/hoa-don/hien-thi?page=${pageHD.number - 1}">&laquo;</a>
                                                 </li>
                                             </c:if>
                                             <li class="page-item"><a class="page-link"
-                                                                     href="#">${pageHDALL.number + 1}</a>
+                                                                     href="#">${pageHD.number + 1}</a>
                                             </li>
-                                            <c:if test="${pageHDALL.number+1 < pageHDALL.totalPages}">
+                                            <c:if test="${pageHD.number+1 < pageHD.totalPages}">
                                                 <li class="page-item"><a class="page-link"
-                                                                         href="/hoa-don/hien-thi?page=${pageHDALL.number + 1}">&raquo;</a>
+                                                                         href="/hoa-don/hien-thi?page=${pageHD.number + 1}">&raquo;</a>
                                                 </li>
                                             </c:if>
                                         </ul>
@@ -984,8 +1019,18 @@
 
 
     $(document).ready(function () {
-        // Thêm lớp bg-warning cho tab "Tất Cả" khi trang được tải
-        $('#all-tab').addClass('bg-warning');
+        // Đọc giá trị của status từ URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const status = urlParams.get('status');
+
+        // Xác định tab dựa trên giá trị của status và thêm lớp bg-warning
+        if (status) {
+            $('#myTab .nav-link').removeClass('bg-warning');
+            $('#myTab .nav-link[data-status="' + status + '"]').addClass('bg-warning').tab('show');
+        } else {
+            // Nếu không có status, mặc định là tab "Tất Cả"
+            $('#all-tab').addClass('bg-warning');
+        }
 
         // Khi click vào tab
         $('#myTab .nav-link').click(function () {
@@ -993,6 +1038,16 @@
             $('#myTab .nav-link').removeClass('bg-warning');
             // Thêm lớp bg-warning cho tab được nhấn
             $(this).addClass('bg-warning');
+        });
+    });
+
+    // Xử lý load dữ liệu lên các tabs
+    document.querySelectorAll('.nav-link').forEach(button => {
+        button.addEventListener('click', function () {
+            let status = this.getAttribute('data-status');
+            let url = new URL(window.location.href);
+            url.searchParams.set('status', status);
+            window.location.href = url.toString();
         });
     });
 

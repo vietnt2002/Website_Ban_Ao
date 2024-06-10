@@ -25,6 +25,7 @@ public interface IHoaDonRepository   extends JpaRepository<HoaDon,String> {
     public static final int DANG_GIAO_HANG = 4;
     public static final int GIAO_HANG_THANH_CONG = 5;
     public static final int DA_HOAN_THANH = 6;
+    public static final int DA_HUY= 7;
 
     //Phương thức thanh toán
     public static final int TIEN_MAT = 0;
@@ -47,6 +48,9 @@ public interface IHoaDonRepository   extends JpaRepository<HoaDon,String> {
 
     // Tìm hóa đơn theo loại hóa đơn, chức năng lọc hóa đơn theo LoaiHoaDon
     Page<HoaDon> findByLoaiHoaDon(int loaiHoaDon, Pageable pageable);
+
+    // Tìm hóa đơn theo loại hóa đơn, chức năng lọc hóa đơn theo LoaiHoaDon và Trạng thái của hóa đơn
+    Page<HoaDon> findByTrangThaiAndLoaiHoaDon(Integer trangThai, Integer loaiHoaDon, Pageable pageable);
 
     //Chức năng tìm kiếm hóa đơn theo nhiều tiêu chí
 //    @Query("SELECT h FROM HoaDon h " +
