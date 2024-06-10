@@ -125,24 +125,39 @@
                 </div>
             </form>
         </div>
+<%--        usercarthere--%>
         <div class="col-lg-3 col-6 text-right userCart">
             <div class="dropdown">
-                <button class="btn btn-secondary bg-light" style="padding: 4px; font-size: 19px; margin-right: -20px"
+                <button class="btn btn-secondary bg-light" style="padding: 4px; font-size: 19px; margin-right: 3px"
                         type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="bi bi-person-circle" style="color:#D19C97; margin: 5px"></i>
                 </button>
                 <ul class="dropdown-menu btn border" aria-labelledby="dropdownMenuButton1">
-                    <li><a class="dropdown-item text-center" href="#">
-                        <button class="btn btn-primary w-100">Đăng nhập</button>
-                    </a></li>
-                    <li><a class="dropdown-item" href="#">Theo dõi đơn hàng</a></li>
-                    <li><a class="dropdown-item" href="#">Lịch sử mua hàng</a></li>
-                    <li><a class="dropdown-item" href="#">Quản lý tài khoản</a></li>
-                    <li><a class="dropdown-item" href="#">Đăng xuất</a></li>
+                    <c:choose>
+                        <c:when test="${empty sessionScope.user}">
+                            <!-- Hiển thị nút đăng nhập khi chưa đăng nhập -->
+                            <li><a class="dropdown-item text-center" href="#">
+                                <button class="btn btn-primary w-100 px-5" data-toggle="modal" data-target="#loginModal">Đăng nhập
+                                </button>
+                            </a></li>
+
+                            <li><a class="dropdown-item text-center mt-3 " href="#">
+                                <button class="btn btn-primary w-100 px-5" data-toggle="modal" data-target="#registerModal">Đăng ký
+                                </button>
+                            </a></li>
+                        </c:when>
+                        <c:otherwise>
+                            <!-- Hiển thị nút đăng xuất khi đã đăng nhập -->
+                            <li><a class="dropdown-item" href="#">Theo dõi đơn hàng</a></li>
+                            <li><a class="dropdown-item" href="#">Lịch sử mua hàng</a></li>
+                            <li><a class="dropdown-item" href="#">Quản lý tài khoản</a></li>
+                            <li><a class="dropdown-item" href="/home/logout">Đăng xuất</a></li>
+                        </c:otherwise>
+                    </c:choose>
                 </ul>
             </div>
             <div class="col-lg-3 col-6 text-right" style="position: relative">
-                <a href="" class="btn border">
+                <a href="/cua-hang/gio-hang" class="btn border">
                     <i class="fas fa-shopping-cart text-primary"></i>
                     <c:if test="${soLuong > 0}">
                         <span class="totalQuantityCart" style="display: flex; justify-content: center; align-items: center">${soLuong}</span>
@@ -252,7 +267,7 @@
             </div>
 
 
-                <form method="post" action="/store/add-gio-hang">
+                <form method="post" action="/cua-hang/add-gio-hang">
                     <input type="hidden" name="idCTSP" value="${ctsp.id}">
                     <div class="d-flex mb-3">
                         <p class="text-dark font-weight-medium mb-0 mr-3">Kích thước:</p>

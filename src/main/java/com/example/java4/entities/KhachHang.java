@@ -1,8 +1,10 @@
 package com.example.java4.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
@@ -14,9 +16,10 @@ public class KhachHang {
     private Date ngaySinh;
     private String taiKhoan;
     private String matKhau;
+    private String email;
     private String anhDaiDien;
-    private Date ngayTao;
-    private Date ngaySua;
+    private LocalDateTime ngayTao;
+    private LocalDateTime ngaySua;
     private Integer trangThai;
 
     @Id
@@ -84,6 +87,15 @@ public class KhachHang {
         this.matKhau = matKhau;
     }
 
+    @Column(name = "Email")
+    public String getEmail() {
+        return this.email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     @Column(name = "AnhDaiDien")
     public String getAnhDaiDien() {
         return anhDaiDien;
@@ -94,20 +106,20 @@ public class KhachHang {
     }
 
     @Column(name = "NgayTao")
-    public Date getNgayTao() {
+    public LocalDateTime getNgayTao() {
         return ngayTao;
     }
 
-    public void setNgayTao(Date ngayTao) {
+    public void setNgayTao(LocalDateTime ngayTao) {
         this.ngayTao = ngayTao;
     }
 
     @Column(name = "NgaySua")
-    public Date getNgaySua() {
+    public LocalDateTime getNgaySua() {
         return ngaySua;
     }
 
-    public void setNgaySua(Date ngaySua) {
+    public void setNgaySua(LocalDateTime ngaySua) {
         this.ngaySua = ngaySua;
     }
 
