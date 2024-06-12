@@ -364,17 +364,12 @@
                                            name="keyword"
                                            placeholder="Nhập mã hóa đơn hoặc SĐT khách hàng" value="${keyword}"
                                            aria-label="Search" aria-describedby="basic-addon2">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-primary" type="submit">
-                                            <i class="bi bi-search"></i>
-                                        </button>
-                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <label for="inputLoaiHoaDon" class="form-label">Loại Hóa Đơn</label>
                                 <select id="inputLoaiHoaDon" class="form-select" name="loaiHoaDon" onchange="this.form.submit()">
-                                    <option value="null" ${currentLoaiHoaDon == null ? 'selected' : ''} >Tất cả</option>
+                                    <option value="-1" ${currentLoaiHoaDon == 2 ? 'selected' : ''} >Tất cả</option>
                                     <option value="0" ${currentLoaiHoaDon == 0 ? 'selected' : ''}>Bán Online</option>
                                     <option value="1" ${currentLoaiHoaDon == 1 ? 'selected' : ''}>Bán tại quầy</option>
                                 </select>
@@ -387,9 +382,16 @@
                                 </div>
 
                                 <div class="col-md-6 d-flex align-items-end">
-                                    <a href="/hoa-don/hien-thi">
-                                        <button type="btn" class="btn btn-danger ">Làm Mới</button>
-                                    </a>
+                                    <div class="mr-3">
+<%--                                        <a href="/hoa-don/hien-thi">&ndash;%&gt;--%>
+                                            <button type="submit" class="btn btn-success ">Tìm kiếm</button>
+                                            <%--                                    </a>--%>
+                                    </div>
+                                   <div>
+                                       <a href="/hoa-don/hien-thi">
+                                           <button type="btn" class="btn btn-danger ">Làm Mới</button>
+                                       </a>
+                                   </div>
                                 </div>
                             </div>
                         </form>
@@ -1088,11 +1090,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
 
-    //Chức năng lọc hóa đơn
-    function filterHoaDon() {
-        var loaiHoaDon = document.getElementById("inputState").value;
-        window.location.href = "/hoa-don/filter?loaiHoaDon=" + loaiHoaDon;
-    }
+
 
 
     $(document).ready(function () {

@@ -351,9 +351,10 @@
                 </c:if>
 
                 <%--                Nút in ra Hóa Đơn theo dạng file PDF --%>
-                    <div class="d-flex justify-content-end">
-                        <a href="/in-hoa-don/pdf/${hoaDonDTO.id}" class="btn btn-primary my-3"><i class="bi bi-printer"></i> In hóa đơn</a>
-                    </div>
+                <div class="d-flex justify-content-end">
+                    <a href="/in-hoa-don/pdf/${hoaDonDTO.id}" class="btn btn-primary my-3"><i class="bi bi-printer"></i>
+                        In hóa đơn</a>
+                </div>
 
 
                 <%--Bảng theo dõi hóa đơn--%>
@@ -462,14 +463,16 @@
                                     <div class="row mt-1">
                                         <div class="col-6">
                                             <div>
-                                                <p class="fw-bold mb-1 pb-3 small ">Trạng thái: <span class="fw-normal badge rounded-pill bg-primary">
+                                                <p class="fw-bold mb-1 pb-3 small ">Trạng thái: <span
+                                                        class="fw-normal badge rounded-pill bg-primary">
                                                     ${hoaDonDTO.trangThai == 0 ? "Chưa hoàn thành" : "Đã hoàn thành"}
                                                 </span>
                                                 </p>
                                                 <p class="fw-bold mb-1 pb-3 small">Loại giao dịch: </p>
                                                 <p class="fw-bold mb-1 pb-3 small">Tên người nhận: <span
                                                         class="fw-normal">${hoaDonDTO.khachHang.hoTen}</span></p>
-                                                <p class="fw-bold mb-1 pb-3 small">Địa chỉ: </p>
+                                                <p class="fw-bold mb-1 pb-3 small">Địa chỉ: <span
+                                                        class="fw-normal">${diaChiKhachHang.diaChiChiTiet}</span> </p>
                                                 <p class="fw-bold mb-1 pb-3 small">Ghi chú: </p>
                                                 <p class="fw-bold mb-1 small">Người tạo: <span
                                                         class="fw-normal">${hoaDonDTO.nhanVien.hoTen}</span></p>
@@ -478,17 +481,33 @@
                                         </div>
                                         <div class="col-6">
                                             <p class="fw-bold mb-1 pb-3 small">Loại hóa đơn: <span
-                                                    class=" fw-normal badge rounded-pill bg-primary">Bán tại quầy</span>
+                                                    class=" fw-normal badge rounded-pill ${hoaDonDTO.loaiHoaDon == 0 ? 'bg-primary' : 'bg-success'}">
+                                                ${hoaDonDTO.loaiHoaDon == 0 ? "Bán online" :"Bán tại quầy"}</span>
                                             </p>
                                             <p class="fw-bold mb-1 pb-3 small">Phương thức thanh toán: <span
                                                     class="fw-normal badge rounded-pill bg-primary">${hoaDonDTO.phuongThucThanhToan == 0 ? "Tiền mặt" : "Chuyển khoản"}</span>
                                             </p>
                                             <p class="fw-bold mb-1 pb-3 small">Số điện thoại: <span
                                                     class="fw-normal">${hoaDonDTO.khachHang.sdt}</span></p>
-                                            <p class="fw-bold mb-1 pb-3 small">Email:${hoaDonDTO.khachHang.email} </p>
+
+
+                                            <p class="fw-bold mb-1 pb-3 small">Email:
+                                                <span
+                                                        class="fw-normal"> ${hoaDonDTO.khachHang.email}
+                                                </span>
+                                            </p>
                                             <p class="fw-bold mb-1 pb-3 small">Ngày tạo: <span
                                                     class="fw-normal">${hoaDonDTO.ngayTao}</span></p>
-                                            <p class="fw-bold mb-1  small">Ngày dự kiến nhận:</p>
+
+                                            <c:choose>
+                                                <c:when test=" ${hoaDonDTO.loaiHoaDon == 1}">
+
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <p class="fw-bold mb-1  small">Ngày dự kiến nhận:</p>
+                                                </c:otherwise>
+                                            </c:choose>
+
                                         </div>
                                     </div>
                                 </div>
@@ -581,7 +600,8 @@
                         <c:forEach var="chiTiet" items="${listHDCT}" varStatus="i">
                             <tr>
                                 <td>${i.index + 1}</td>
-                                <td><img src="${chiTiet.idCTSP.idSanPham.hinhAnh}" alt="Ảnh sản phẩm" width="50"></td>
+                                <td><img src="/image/${chiTiet.idCTSP.idSanPham.hinhAnh}" alt="Ảnh sản phẩm" width="50">
+                                </td>
                                 <td>${chiTiet.idCTSP.idSanPham.ten}</td>
                                 <td>${chiTiet.donGia}</td>
                                 <td>${chiTiet.idCTSP.idMauSac.ten}</td>

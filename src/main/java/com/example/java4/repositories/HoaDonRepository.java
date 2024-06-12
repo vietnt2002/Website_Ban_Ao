@@ -17,9 +17,10 @@ public interface HoaDonRepository
 {
     public static final int ACTIVE  = 1;
     public static final int INACTIVE =0;
-    public static final int INACTIVE = 0;
+
     public static final int HOA_DON_ONL = 0;
     public static final int HOA_DON_OFF = 1;
+
     public static final int CHO_THANH_TOAN = 0;
     public static final int CHO_XAC_NHAN = 1;
     public static final int DA_XAC_NHAN = 2;
@@ -27,7 +28,7 @@ public interface HoaDonRepository
     public static final int DANG_GIAO_HANG = 4;
     public static final int GIAO_HANG_THANH_CONG = 5;
     public static final int DA_HOAN_THANH = 6;
-    public Page<HoaDon> findByTrangThai(int trangThai, Pageable pageable);
+    public static final int DA_HUY= 7;
     @Query(value = "SELECT TOP 5 * FROM HoaDon where trangThai = 0 ORDER BY ngayTao DESC",
             nativeQuery = true)
     public List<HoaDon>  selectTop5();

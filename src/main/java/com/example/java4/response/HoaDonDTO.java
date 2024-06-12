@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -26,7 +27,7 @@ public class HoaDonDTO {
     private NhanVien nhanVien;
     private DiaChi diaChi;
     private Integer phuongThucThanhToan;
-    private Integer tongTien;
+    private BigDecimal tongTien;
     private Integer loaiHoaDon;
     private String ngayTao;
     private Integer trangThai;
@@ -35,7 +36,7 @@ public class HoaDonDTO {
 
 
 
-    public HoaDonDTO(String id, String ma, KhachHang khachHang, NhanVien nhanVien, Integer phuongThucThanhToan, Integer tongTien,Integer loaiHoaDon, String ngayTao, Integer trangThai) {
+    public HoaDonDTO(String id, String ma, KhachHang khachHang, NhanVien nhanVien, Integer phuongThucThanhToan, BigDecimal tongTien,Integer loaiHoaDon, String ngayTao, Integer trangThai) {
         this.id = id;
         this.ma = ma;
         this.khachHang = khachHang;
