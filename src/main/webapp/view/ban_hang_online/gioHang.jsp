@@ -38,6 +38,11 @@
 
     <!-- SweetAlert2 JS -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<%--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">--%>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <style>
         .userCart{
             display: flex;
@@ -68,6 +73,22 @@
             right: 17px;
             margin: 0;
             min-width: 0;
+        }
+    </style>
+    <style>
+        .table-responsive {
+            max-height: 420px; /* Adjust height based on row height to fit 5 products */
+            overflow-y: auto;
+        }
+        .table tbody {
+            display: block;
+            height: 135px; /* Adjust height to fit 5 rows */
+            overflow-y: auto;
+        }
+        .table thead, .table tbody tr {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
         }
     </style>
 </head>

@@ -38,4 +38,7 @@ public interface HoaDonRepository
     //Lấy ra hóa đơn theo idKH, loại hóa đơn và trạng thái
     @Query("select hd from HoaDon hd where hd.idKhachHang.id = ?1 and hd.loaiHoaDon = ?2 and hd.trangThai = ?3")
     HoaDon findByidKHAndLoaiHoaDonAndTrangThai(String idKH, Integer loaiHD, Integer trangThai);
+
+    @Query("select hd from HoaDon hd where hd.idKhachHang = ?1")
+    HoaDon findByIdKhachHang(String idKH);
 };
