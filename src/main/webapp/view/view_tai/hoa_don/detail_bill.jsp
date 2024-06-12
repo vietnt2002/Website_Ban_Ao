@@ -485,7 +485,7 @@
                                             </p>
                                             <p class="fw-bold mb-1 pb-3 small">Số điện thoại: <span
                                                     class="fw-normal">${hoaDonDTO.khachHang.sdt}</span></p>
-                                            <p class="fw-bold mb-1 pb-3 small">Email: </p>
+                                            <p class="fw-bold mb-1 pb-3 small">Email:${hoaDonDTO.khachHang.email} </p>
                                             <p class="fw-bold mb-1 pb-3 small">Ngày tạo: <span
                                                     class="fw-normal">${hoaDonDTO.ngayTao}</span></p>
                                             <p class="fw-bold mb-1  small">Ngày dự kiến nhận:</p>
@@ -527,7 +527,7 @@
                                             <p class="fw-bold mb-1 pb-3 small d-flex justify-content-between">
                                                 <span>Tổng tiền giảm:</span>
                                                 <span class="fw-normal  "><fmt:formatNumber
-                                                        value="${hoaDonDTO.tongTien}" type="currency" currencySymbol="₫"
+                                                        value="0" type="currency" currencySymbol="₫"
                                                         groupingUsed="true"/></span>
                                             </p>
                                         </div>

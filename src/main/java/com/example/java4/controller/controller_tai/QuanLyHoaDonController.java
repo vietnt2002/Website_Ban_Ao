@@ -10,10 +10,7 @@ import com.example.java4.repositories.NhanVienRepository;
 import com.example.java4.repositories.repo_tai.IHoaDonRepository;
 import com.example.java4.response.HoaDonChiTietDTO;
 import com.example.java4.response.HoaDonDTO;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.PdfWriter;
+
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -102,9 +99,9 @@ public class QuanLyHoaDonController {
 
         }
 
-//        if(loaiHoaDon != null){
-//            pageHD = _hoaDonRepository.findByLoaiHoaDon(loaiHoaDon,pageable);
-//        }
+        if(loaiHoaDon == null){
+            pageHD = _hoaDonRepository.findAll(pageable);
+        }
 
         System.out.println(loaiHoaDon);
         System.out.println(status);
@@ -126,7 +123,7 @@ public class QuanLyHoaDonController {
 
         model.addAttribute("hoaDonPage", listHoaDonDTO);
         model.addAttribute("pageHD", pageHD);
-        model.addAttribute("currentStatus", status);
+        model.addAttribute("currentStatus", loaiHoaDon);
         return "/view/view_tai/hoa_don/bill.jsp";
     }
 
@@ -180,60 +177,60 @@ public class QuanLyHoaDonController {
     }
 
     // Lọc hóa đơn theo loại hóa đơn
-    @GetMapping("/filter")
-    public String filterHoaDon(Model model, @RequestParam("status") String status, @RequestParam(value = "page", defaultValue = "0") int page) {
-        Pageable pageable = PageRequest.of(page, 5, Sort.by(Sort.Direction.DESC, "ngayTao"));
-        Page<HoaDon> pageHD;
-
-        // Lọc hóa đơn theo trạng thái
-        switch (status) {
-            case "all":
-                pageHD = _hoaDonRepository.findAll(pageable);
-                break;
-            case "confirmation":
-                pageHD = _hoaDonRepository.findByTrangThai(_hoaDonRepository.CHO_XAC_NHAN, pageable);
-                break;
-            case "confirmed":
-                pageHD = _hoaDonRepository.findByTrangThai(_hoaDonRepository.DA_XAC_NHAN, pageable);
-                break;
-            case "delivery":
-                pageHD = _hoaDonRepository.findByTrangThai(_hoaDonRepository.CHO_GIAO_HANG, pageable);
-                break;
-            case "delivered":
-                pageHD = _hoaDonRepository.findByTrangThai(_hoaDonRepository.DANG_GIAO_HANG, pageable);
-                break;
-            case "accomplished":
-                pageHD = _hoaDonRepository.findByTrangThai(_hoaDonRepository.DA_HOAN_THANH, pageable);
-                break;
-            case "cancelled":
-                pageHD = _hoaDonRepository.findByTrangThai(_hoaDonRepository.DA_HUY, pageable);
-                break;
-            default:
-                pageHD = _hoaDonRepository.findAll(pageable);
-                break;
-        }
-
-        // Convert từ Page<HoaDon> sang list<HoaDonDTO>
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-        List<HoaDonDTO> listHoaDonDTO = pageHD.stream()
-                .map(hoaDon -> new HoaDonDTO(
-                        hoaDon.getId().toString(),
-                        hoaDon.getMa(),
-                        hoaDon.getIdKhachHang(),
-                        hoaDon.getIdNhanVien(),
-                        hoaDon.getPhuongThucThanhToan(),
-                        hoaDon.getTongTien(),
-                        hoaDon.getLoaiHoaDon(),
-                        hoaDon.getNgayTao() != null ? hoaDon.getNgayTao().format(dateTimeFormatter) : null,
-                        hoaDon.getTrangThai()))
-                .collect(Collectors.toList());
-
-        // Đặt các thuộc tính vào model để truyền sang JSP
-        model.addAttribute("hoaDonPage", listHoaDonDTO);
-        model.addAttribute("pageHD", pageHD);
-        model.addAttribute("currentStatus", status);
-        return "/view/view_tai/hoa_don/bill.jsp";
-    }
+//    @GetMapping("/filter")
+//    public String filterHoaDon(Model model, @RequestParam("status") String status, @RequestParam(value = "page", defaultValue = "0") int page) {
+//        Pageable pageable = PageRequest.of(page, 5, Sort.by(Sort.Direction.DESC, "ngayTao"));
+//        Page<HoaDon> pageHD;
+//
+//        // Lọc hóa đơn theo trạng thái
+//        switch (status) {
+//            case "all":
+//                pageHD = _hoaDonRepository.findAll(pageable);
+//                break;
+//            case "confirmation":
+//                pageHD = _hoaDonRepository.findByTrangThai(_hoaDonRepository.CHO_XAC_NHAN, pageable);
+//                break;
+//            case "confirmed":
+//                pageHD = _hoaDonRepository.findByTrangThai(_hoaDonRepository.DA_XAC_NHAN, pageable);
+//                break;
+//            case "delivery":
+//                pageHD = _hoaDonRepository.findByTrangThai(_hoaDonRepository.CHO_GIAO_HANG, pageable);
+//                break;
+//            case "delivered":
+//                pageHD = _hoaDonRepository.findByTrangThai(_hoaDonRepository.DANG_GIAO_HANG, pageable);
+//                break;
+//            case "accomplished":
+//                pageHD = _hoaDonRepository.findByTrangThai(_hoaDonRepository.DA_HOAN_THANH, pageable);
+//                break;
+//            case "cancelled":
+//                pageHD = _hoaDonRepository.findByTrangThai(_hoaDonRepository.DA_HUY, pageable);
+//                break;
+//            default:
+//                pageHD = _hoaDonRepository.findAll(pageable);
+//                break;
+//        }
+//
+//        // Convert từ Page<HoaDon> sang list<HoaDonDTO>
+//        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+//        List<HoaDonDTO> listHoaDonDTO = pageHD.stream()
+//                .map(hoaDon -> new HoaDonDTO(
+//                        hoaDon.getId().toString(),
+//                        hoaDon.getMa(),
+//                        hoaDon.getIdKhachHang(),
+//                        hoaDon.getIdNhanVien(),
+//                        hoaDon.getPhuongThucThanhToan(),
+//                        hoaDon.getTongTien(),
+//                        hoaDon.getLoaiHoaDon(),
+//                        hoaDon.getNgayTao() != null ? hoaDon.getNgayTao().format(dateTimeFormatter) : null,
+//                        hoaDon.getTrangThai()))
+//                .collect(Collectors.toList());
+//
+//        // Đặt các thuộc tính vào model để truyền sang JSP
+//        model.addAttribute("hoaDonPage", listHoaDonDTO);
+//        model.addAttribute("pageHD", pageHD);
+//        model.addAttribute("currentStatus", status);
+//        return "/view/view_tai/hoa_don/bill.jsp";
+//    }
 
 
     // Chức năng tìm kiếm hóa đơn

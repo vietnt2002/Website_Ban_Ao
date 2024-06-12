@@ -374,7 +374,7 @@
                             <div class="col-md-6">
                                 <label for="inputLoaiHoaDon" class="form-label">Loại Hóa Đơn</label>
                                 <select id="inputLoaiHoaDon" class="form-select" name="loaiHoaDon" onchange="this.form.submit()">
-                                    <option value="">Tất cả</option>
+                                    <option value="null" ${currentLoaiHoaDon == null ? 'selected' : ''} >Tất cả</option>
                                     <option value="0" ${currentLoaiHoaDon == 0 ? 'selected' : ''}>Bán Online</option>
                                     <option value="1" ${currentLoaiHoaDon == 1 ? 'selected' : ''}>Bán tại quầy</option>
                                 </select>
@@ -566,57 +566,58 @@
                             <div class="tab-pane fade" id="confimation" role="tabpanel"
                                  aria-labelledby="confimation-tab">
                                 <%-- Danh sách hóa đơn chờ xác nhận     --%>
-                                <table class="table table-bordered" id="Paid" width="100%" cellspacing="0">
-                                    <thead>
-                                    <tr>
-                                        <th>STT</th>
-                                        <th>Mã Hóa Đơn</th>
-                                        <th>Mã Nhân Viên</th>
-                                        <th>Tên Khách Hàng</th>
-                                        <th>SDT Khách Hàng</th>
-                                        <th>Loại Hóa Đơn</th>
-                                        <th>Tổng Tiền</th>
-                                        <th>Ngày Tạo</th>
-                                        <th>Trạng Thái</th>
-                                        <th>Thao Tác</th>
-                                    </tr>
-                                    </thead>
+                                    <table class="table table-bordered " width="100%" cellspacing="0">
+                                        <thead class="">
+                                        <tr>
+                                            <th>STT</th>
+                                            <th>Mã Hóa Đơn</th>
+                                            <th>Tên Nhân Viên</th>
+                                            <th>Tên Khách Hàng</th>
+                                            <th>SDT Khách Hàng</th>
+                                            <th>Loại Hóa Đơn</th>
+                                            <th>Tổng Tiền</th>
+                                            <th>Ngày Tạo</th>
+                                            <th>Trạng Thái</th>
+                                            <th>Thao Tác</th>
+                                        </tr>
+                                        </thead>
 
-                                    <tbody>
-                                    <%--                                    <c:forEach var="hoaDon" items="${hoaDonPageXacNhan}" varStatus="i">--%>
-                                    <%--                                        <tr>--%>
-                                    <%--                                            <td>${i.index + 1}</td>--%>
-                                    <%--                                            <td>${hoaDon.ma}</td>--%>
-                                    <%--                                            <td>${hoaDon.idNhanVien.hoTen}</td>--%>
-                                    <%--                                            <td>${hoaDon.idKhachHang.hoTen}</td>--%>
-                                    <%--                                            <td>${hoaDon.idKhachHang.sdt}</td>--%>
-                                    <%--                                            <td>--%>
-                                    <%--                                                <span class="badge rounded-pill ${hoaDon.loaiHoaDon == 0 ? 'bg-primary' : 'bg-success'}">--%>
-                                    <%--                                                        ${hoaDon.loaiHoaDon == 0 ? "Bán online" : "Bán tại quầy"}--%>
-                                    <%--                                                </span>--%>
-                                    <%--                                            </td>--%>
-                                    <%--                                            <td>--%>
-                                    <%--                                                <fmt:formatNumber value="${hoaDon.tongTien}" type="currency"--%>
-                                    <%--                                                                  currencySymbol="₫" groupingUsed="true"/>--%>
-                                    <%--                                            </td>--%>
-                                    <%--                                            <td>--%>
-                                    <%--                                                <fmt:formatDate value="${hoaDon.ngayTao}" pattern="yyyy-MM-dd HH:mm:ss"/>--%>
-                                    <%--                                            </td>--%>
-                                    <%--                                            <td>--%>
-                                    <%--                                            <span class="badge rounded-pill ${hoaDon.trangThai == 0 ? 'bg-danger' : 'bg-success'}">--%>
-                                    <%--                                                    ${hoaDon.trangThai == 0 ? 'Chưa thanh toán' : 'Đã thanh toán'}--%>
-                                    <%--                                            </span>--%>
-                                    <%--                                            </td>--%>
-                                    <%--                                            <td>--%>
-                                    <%--                                                <!-- Button trigger modal -->--%>
-                                    <%--                                                <a href="/hoa-don/detail/${hoaDon.id}" class="btn btn-warning">--%>
-                                    <%--                                                    <i class="bi bi-eye-fill"></i>--%>
-                                    <%--                                                </a>--%>
-                                    <%--                                            </td>--%>
-                                    <%--                                        </tr>--%>
-                                    <%--                                    </c:forEach>--%>
-                                    </tbody>
-                                </table>
+                                        <tbody>
+                                        <c:forEach var="hoaDon" items="${hoaDonPage}" varStatus="i">
+                                            <tr>
+                                                <td>${i.index + 1}</td>
+                                                <td>${hoaDon.ma}</td>
+                                                <td>${hoaDon.nhanVien.hoTen}</td>
+                                                <td>${hoaDon.khachHang.hoTen}</td>
+                                                <td>${hoaDon.khachHang.sdt}</td>
+                                                <td>
+                                                <span class="badge rounded-pill ${hoaDon.loaiHoaDon == 0 ? 'bg-primary' : 'bg-success'}">
+                                                        ${hoaDon.loaiHoaDon == 1 ? "Bán tại quầy" : "Bán online"}
+                                                </span>
+                                                </td>
+                                                <td>
+                                                    <fmt:formatNumber value="${hoaDon.tongTien}" type="currency"
+                                                                      currencySymbol="₫" groupingUsed="true"/>
+                                                </td>
+                                                <td>${hoaDon.ngayTao}</td>
+                                                <td>
+                                                 <span
+                                                         class="badge rounded-pill ${hoaDon.trangThai == 0 ? 'bg-danger' : 'bg-success'}">
+                                                         ${hoaDon.trangThai == 0 ? 'Chưa thanh toán' : 'Đã thanh toán'}
+                                                 </span>
+                                                </td>
+                                                <td>
+                                                    <!-- Button trigger modal -->
+                                                    <a href="/hoa-don/detail/${hoaDon.id}" class="btn btn-warning">
+                                                        <i class="bi bi-eye-fill"></i>
+                                                    </a>
+                                                </td>
+
+                                            </tr>
+                                        </c:forEach>
+
+                                        </tbody>
+                                    </table>
                                 <%-- Phân trang của hóa đơn chờ xác nhận  --%>
                                 <div class="float-end">
                                     <nav aria-label="Page navigation example">
@@ -639,38 +640,58 @@
                             </div>
                             <div class="tab-pane fade" id="confirmed" role="tabpanel" aria-labelledby="confirmed-tab">
                                 <%-- Danh sách hóa đơn đã xác nhận     --%>
-                                <table class="table table-bordered" id="Paid" width="100%" cellspacing="0">
-                                    <thead>
-                                    <tr>
-                                        <th>STT</th>
-                                        <th>Mã Hóa Đơn</th>
-                                        <th>Mã Nhân Viên</th>
-                                        <th>Tên Khách Hàng</th>
-                                        <th>SDT Khách Hàng</th>
-                                        <th>Loại Hóa Đơn</th>
-                                        <th>Tổng Tiền</th>
-                                        <th>Ngày Tạo</th>
-                                        <th>Trạng Thái</th>
-                                        <th>Thao Tác</th>
-                                    </tr>
-                                    </thead>
+                                    <table class="table table-bordered " width="100%" cellspacing="0">
+                                        <thead class="">
+                                        <tr>
+                                            <th>STT</th>
+                                            <th>Mã Hóa Đơn</th>
+                                            <th>Tên Nhân Viên</th>
+                                            <th>Tên Khách Hàng</th>
+                                            <th>SDT Khách Hàng</th>
+                                            <th>Loại Hóa Đơn</th>
+                                            <th>Tổng Tiền</th>
+                                            <th>Ngày Tạo</th>
+                                            <th>Trạng Thái</th>
+                                            <th>Thao Tác</th>
+                                        </tr>
+                                        </thead>
 
-                                    <tbody>
-                                    <tr>
-                                        <td>Tiger Nixon</td>
-                                        <td>System Architect</td>
-                                        <td>Edinburgh</td>
-                                        <td>61</td>
-                                        <td>2011/04/25</td>
-                                        <td>$320,800</td>
-                                        <td>$320,800</td>
-                                        <td>$320,800</td>
-                                        <td>$320,800</td>
-                                        <td>$320,800</td>
-                                    </tr>
+                                        <tbody>
+                                        <c:forEach var="hoaDon" items="${hoaDonPage}" varStatus="i">
+                                            <tr>
+                                                <td>${i.index + 1}</td>
+                                                <td>${hoaDon.ma}</td>
+                                                <td>${hoaDon.nhanVien.hoTen}</td>
+                                                <td>${hoaDon.khachHang.hoTen}</td>
+                                                <td>${hoaDon.khachHang.sdt}</td>
+                                                <td>
+                                                <span class="badge rounded-pill ${hoaDon.loaiHoaDon == 0 ? 'bg-primary' : 'bg-success'}">
+                                                        ${hoaDon.loaiHoaDon == 1 ? "Bán tại quầy" : "Bán online"}
+                                                </span>
+                                                </td>
+                                                <td>
+                                                    <fmt:formatNumber value="${hoaDon.tongTien}" type="currency"
+                                                                      currencySymbol="₫" groupingUsed="true"/>
+                                                </td>
+                                                <td>${hoaDon.ngayTao}</td>
+                                                <td>
+                                                 <span
+                                                         class="badge rounded-pill ${hoaDon.trangThai == 0 ? 'bg-danger' : 'bg-success'}">
+                                                         ${hoaDon.trangThai == 0 ? 'Chưa thanh toán' : 'Đã thanh toán'}
+                                                 </span>
+                                                </td>
+                                                <td>
+                                                    <!-- Button trigger modal -->
+                                                    <a href="/hoa-don/detail/${hoaDon.id}" class="btn btn-warning">
+                                                        <i class="bi bi-eye-fill"></i>
+                                                    </a>
+                                                </td>
 
-                                    </tbody>
-                                </table>
+                                            </tr>
+                                        </c:forEach>
+
+                                        </tbody>
+                                    </table>
                                 <%-- Phân trang của hóa đơn đã xác nhận    --%>
                                 <div class="float-end">
                                     <nav aria-label="Page navigation example">
@@ -693,38 +714,58 @@
                             </div>
                             <div class="tab-pane fade" id="delivery" role="tabpanel" aria-labelledby="delivery-tab">
                                 <%-- Danh sách hóa đơn chờ giao hàng    --%>
-                                <table class="table table-bordered" id="Paid" width="100%" cellspacing="0">
-                                    <thead>
-                                    <tr>
-                                        <th>STT</th>
-                                        <th>Mã Hóa Đơn</th>
-                                        <th>Mã Nhân Viên</th>
-                                        <th>Tên Khách Hàng</th>
-                                        <th>SDT Khách Hàng</th>
-                                        <th>Loại Hóa Đơn</th>
-                                        <th>Tổng Tiền</th>
-                                        <th>Ngày Tạo</th>
-                                        <th>Trạng Thái</th>
-                                        <th>Thao Tác</th>
-                                    </tr>
-                                    </thead>
+                                    <table class="table table-bordered " width="100%" cellspacing="0">
+                                        <thead class="">
+                                        <tr>
+                                            <th>STT</th>
+                                            <th>Mã Hóa Đơn</th>
+                                            <th>Tên Nhân Viên</th>
+                                            <th>Tên Khách Hàng</th>
+                                            <th>SDT Khách Hàng</th>
+                                            <th>Loại Hóa Đơn</th>
+                                            <th>Tổng Tiền</th>
+                                            <th>Ngày Tạo</th>
+                                            <th>Trạng Thái</th>
+                                            <th>Thao Tác</th>
+                                        </tr>
+                                        </thead>
 
-                                    <tbody>
-                                    <tr>
-                                        <td>Tiger Nixon</td>
-                                        <td>System Architect</td>
-                                        <td>Edinburgh</td>
-                                        <td>61</td>
-                                        <td>2011/04/25</td>
-                                        <td>$320,800</td>
-                                        <td>$320,800</td>
-                                        <td>$320,800</td>
-                                        <td>$320,800</td>
-                                        <td>$320,800</td>
-                                    </tr>
+                                        <tbody>
+                                        <c:forEach var="hoaDon" items="${hoaDonPage}" varStatus="i">
+                                            <tr>
+                                                <td>${i.index + 1}</td>
+                                                <td>${hoaDon.ma}</td>
+                                                <td>${hoaDon.nhanVien.hoTen}</td>
+                                                <td>${hoaDon.khachHang.hoTen}</td>
+                                                <td>${hoaDon.khachHang.sdt}</td>
+                                                <td>
+                                                <span class="badge rounded-pill ${hoaDon.loaiHoaDon == 0 ? 'bg-primary' : 'bg-success'}">
+                                                        ${hoaDon.loaiHoaDon == 1 ? "Bán tại quầy" : "Bán online"}
+                                                </span>
+                                                </td>
+                                                <td>
+                                                    <fmt:formatNumber value="${hoaDon.tongTien}" type="currency"
+                                                                      currencySymbol="₫" groupingUsed="true"/>
+                                                </td>
+                                                <td>${hoaDon.ngayTao}</td>
+                                                <td>
+                                                 <span
+                                                         class="badge rounded-pill ${hoaDon.trangThai == 0 ? 'bg-danger' : 'bg-success'}">
+                                                         ${hoaDon.trangThai == 0 ? 'Chưa thanh toán' : 'Đã thanh toán'}
+                                                 </span>
+                                                </td>
+                                                <td>
+                                                    <!-- Button trigger modal -->
+                                                    <a href="/hoa-don/detail/${hoaDon.id}" class="btn btn-warning">
+                                                        <i class="bi bi-eye-fill"></i>
+                                                    </a>
+                                                </td>
 
-                                    </tbody>
-                                </table>
+                                            </tr>
+                                        </c:forEach>
+
+                                        </tbody>
+                                    </table>
                                 <%-- Phân trang của hóa đơn chờ giao   --%>
                                 <div class="float-end">
                                     <nav aria-label="Page navigation example">
@@ -747,38 +788,58 @@
                             </div>
                             <div class="tab-pane fade" id="delivered" role="tabpanel" aria-labelledby="delivered-tab">
                                 <%-- Danh sách hóa đơn đã giao hàng     --%>
-                                <table class="table table-bordered" id="Paid" width="100%" cellspacing="0">
-                                    <thead>
-                                    <tr>
-                                        <th>STT</th>
-                                        <th>Mã Hóa Đơn</th>
-                                        <th>Mã Nhân Viên</th>
-                                        <th>Tên Khách Hàng</th>
-                                        <th>SDT Khách Hàng</th>
-                                        <th>Loại Hóa Đơn</th>
-                                        <th>Tổng Tiền</th>
-                                        <th>Ngày Tạo</th>
-                                        <th>Trạng Thái</th>
-                                        <th>Thao Tác</th>
-                                    </tr>
-                                    </thead>
+                                    <table class="table table-bordered " width="100%" cellspacing="0">
+                                        <thead class="">
+                                        <tr>
+                                            <th>STT</th>
+                                            <th>Mã Hóa Đơn</th>
+                                            <th>Tên Nhân Viên</th>
+                                            <th>Tên Khách Hàng</th>
+                                            <th>SDT Khách Hàng</th>
+                                            <th>Loại Hóa Đơn</th>
+                                            <th>Tổng Tiền</th>
+                                            <th>Ngày Tạo</th>
+                                            <th>Trạng Thái</th>
+                                            <th>Thao Tác</th>
+                                        </tr>
+                                        </thead>
 
-                                    <tbody>
-                                    <tr>
-                                        <td>Tiger Nixon</td>
-                                        <td>System Architect</td>
-                                        <td>Edinburgh</td>
-                                        <td>61</td>
-                                        <td>2011/04/25</td>
-                                        <td>$320,800</td>
-                                        <td>$320,800</td>
-                                        <td>$320,800</td>
-                                        <td>$320,800</td>
-                                        <td>$320,800</td>
-                                    </tr>
+                                        <tbody>
+                                        <c:forEach var="hoaDon" items="${hoaDonPage}" varStatus="i">
+                                            <tr>
+                                                <td>${i.index + 1}</td>
+                                                <td>${hoaDon.ma}</td>
+                                                <td>${hoaDon.nhanVien.hoTen}</td>
+                                                <td>${hoaDon.khachHang.hoTen}</td>
+                                                <td>${hoaDon.khachHang.sdt}</td>
+                                                <td>
+                                                <span class="badge rounded-pill ${hoaDon.loaiHoaDon == 0 ? 'bg-primary' : 'bg-success'}">
+                                                        ${hoaDon.loaiHoaDon == 1 ? "Bán tại quầy" : "Bán online"}
+                                                </span>
+                                                </td>
+                                                <td>
+                                                    <fmt:formatNumber value="${hoaDon.tongTien}" type="currency"
+                                                                      currencySymbol="₫" groupingUsed="true"/>
+                                                </td>
+                                                <td>${hoaDon.ngayTao}</td>
+                                                <td>
+                                                 <span
+                                                         class="badge rounded-pill ${hoaDon.trangThai == 0 ? 'bg-danger' : 'bg-success'}">
+                                                         ${hoaDon.trangThai == 0 ? 'Chưa thanh toán' : 'Đã thanh toán'}
+                                                 </span>
+                                                </td>
+                                                <td>
+                                                    <!-- Button trigger modal -->
+                                                    <a href="/hoa-don/detail/${hoaDon.id}" class="btn btn-warning">
+                                                        <i class="bi bi-eye-fill"></i>
+                                                    </a>
+                                                </td>
 
-                                    </tbody>
-                                </table>
+                                            </tr>
+                                        </c:forEach>
+
+                                        </tbody>
+                                    </table>
                                 <%-- Phân trang của hóa đơn đã giao hàng   --%>
                                 <div class="float-end">
                                     <nav aria-label="Page navigation example">
@@ -861,10 +922,6 @@
 
                                     </tbody>
                                 </table>
-
-                                <%-- Modal hiển thị thông tin chi tiết của hóa đơn      --%>
-
-
                                 <%-- Phân trang của đơn đã hoàn thành   --%>
                                 <div class="float-end">
                                     <nav aria-label="Page navigation example">
@@ -887,38 +944,58 @@
                             </div>
                             <div class="tab-pane fade" id="cancelled" role="tabpanel" aria-labelledby="cancelled-tab">
                                 <%-- Danh sách hóa đơn đã hủy     --%>
-                                <table class="table table-bordered" id="Paid" width="100%" cellspacing="0">
-                                    <thead>
-                                    <tr>
-                                        <th>STT</th>
-                                        <th>Mã Hóa Đơn</th>
-                                        <th>Mã Nhân Viên</th>
-                                        <th>Tên Khách Hàng</th>
-                                        <th>SDT Khách Hàng</th>
-                                        <th>Loại Hóa Đơn</th>
-                                        <th>Tổng Tiền</th>
-                                        <th>Ngày Tạo</th>
-                                        <th>Trạng Thái</th>
-                                        <th>Thao Tác</th>
-                                    </tr>
-                                    </thead>
+                                    <table class="table table-bordered " width="100%" cellspacing="0">
+                                        <thead class="">
+                                        <tr>
+                                            <th>STT</th>
+                                            <th>Mã Hóa Đơn</th>
+                                            <th>Tên Nhân Viên</th>
+                                            <th>Tên Khách Hàng</th>
+                                            <th>SDT Khách Hàng</th>
+                                            <th>Loại Hóa Đơn</th>
+                                            <th>Tổng Tiền</th>
+                                            <th>Ngày Tạo</th>
+                                            <th>Trạng Thái</th>
+                                            <th>Thao Tác</th>
+                                        </tr>
+                                        </thead>
 
-                                    <tbody>
-                                    <tr>
-                                        <td>Tiger Nixon</td>
-                                        <td>System Architect</td>
-                                        <td>Edinburgh</td>
-                                        <td>61</td>
-                                        <td>2011/04/25</td>
-                                        <td>$320,800</td>
-                                        <td>$320,800</td>
-                                        <td>$320,800</td>
-                                        <td>$320,800</td>
-                                        <td>$320,800</td>
-                                    </tr>
+                                        <tbody>
+                                        <c:forEach var="hoaDon" items="${hoaDonPage}" varStatus="i">
+                                            <tr>
+                                                <td>${i.index + 1}</td>
+                                                <td>${hoaDon.ma}</td>
+                                                <td>${hoaDon.nhanVien.hoTen}</td>
+                                                <td>${hoaDon.khachHang.hoTen}</td>
+                                                <td>${hoaDon.khachHang.sdt}</td>
+                                                <td>
+                                                <span class="badge rounded-pill ${hoaDon.loaiHoaDon == 0 ? 'bg-primary' : 'bg-success'}">
+                                                        ${hoaDon.loaiHoaDon == 1 ? "Bán tại quầy" : "Bán online"}
+                                                </span>
+                                                </td>
+                                                <td>
+                                                    <fmt:formatNumber value="${hoaDon.tongTien}" type="currency"
+                                                                      currencySymbol="₫" groupingUsed="true"/>
+                                                </td>
+                                                <td>${hoaDon.ngayTao}</td>
+                                                <td>
+                                                 <span
+                                                         class="badge rounded-pill ${hoaDon.trangThai == 0 ? 'bg-danger' : 'bg-success'}">
+                                                         ${hoaDon.trangThai == 0 ? 'Chưa thanh toán' : 'Đã thanh toán'}
+                                                 </span>
+                                                </td>
+                                                <td>
+                                                    <!-- Button trigger modal -->
+                                                    <a href="/hoa-don/detail/${hoaDon.id}" class="btn btn-warning">
+                                                        <i class="bi bi-eye-fill"></i>
+                                                    </a>
+                                                </td>
 
-                                    </tbody>
-                                </table>
+                                            </tr>
+                                        </c:forEach>
+
+                                        </tbody>
+                                    </table>
                                 <%-- Phân trang của hóa đơn đã hủy    --%>
                                 <div class="float-end">
                                     <nav aria-label="Page navigation example">
