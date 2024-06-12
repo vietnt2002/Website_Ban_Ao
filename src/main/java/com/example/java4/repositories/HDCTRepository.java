@@ -33,4 +33,17 @@ public interface HDCTRepository
         @Query("SELECT SUM (hdct.soLuong * hdct.donGia) FROM ChiTietHoaDon  hdct WHERE hdct.idHoaDon.id = :hoaDonId" )
         public Integer tinhGiaTriHD(@Param("hoaDonId") String hoaDonId);
 
+//        public static final int ACTIVE = 1;
+//        public static final int INACTIVE = 0;
+//        public Page<ChiTietHoaDon> findByTrangThai(int trangThai, Pageable pageable);
+//        public List<ChiTietHoaDon> findAllByHoaDon_Id(String id);
+//        @Query ("SELECT h FROM ChiTietHoaDon h WHERE h.idHoaDon.id = :hoaDon AND h.idCTSP = :sanPhamChiTiet")
+//        ChiTietHoaDon findByHoaDonAndIdSanPhamChiTiet(@PathVariable ("hoaDon") String hoaDon, @PathVariable ("sanPhamChiTiet") ChiTietSanPham sanPhamChiTiet);
+//
+
+    public static final int CHUA_THANH_TOAN = 0;
+    public static final int DA_THANH_TOAN = 1;
+
+    @Query("select hdct from ChiTietHoaDon hdct where hdct.idHoaDon.id = ?1")
+    List<ChiTietHoaDon> findHDCTByIdHoaDon(String idHD);
 };
