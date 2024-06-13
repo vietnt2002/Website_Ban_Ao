@@ -157,7 +157,7 @@
                 </ul>
             </div>
             <div class="col-lg-3 col-6 text-right" style="position: relative">
-                <a href="/cua-hang/gio-hang" class="btn border">
+                <a href="/store/gio-hang" class="btn border">
                     <i class="fas fa-shopping-cart text-primary"></i>
                     <c:if test="${soLuong > 0}">
                         <span class="totalQuantityCart" style="display: flex; justify-content: center; align-items: center">${soLuong}</span>
@@ -257,6 +257,11 @@
             </div>
             <h3 class="font-weight-semi-bold mb-4">${ctsp.giaBan} <span
                     style="font-size: 25px; text-decoration: underline">đ</span></h3>
+
+            <h3 class="font-weight-semi-bold mb-4">
+                <fmt:formatNumber value="${ctsp.giaBan}" type="currency" currencySymbol="₫"/>
+            </h3>
+
             <p class="mb-4">${ctsp.moTa}</p>
 
             <div class="d-flex mb-3">
@@ -267,7 +272,7 @@
             </div>
 
 
-                <form method="post" action="/cua-hang/add-gio-hang">
+                <form method="post" action="/store/add-gio-hang">
                     <input type="hidden" name="idCTSP" value="${ctsp.id}">
                     <div class="d-flex mb-3">
                         <p class="text-dark font-weight-medium mb-0 mr-3">Kích thước:</p>
