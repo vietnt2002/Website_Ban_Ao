@@ -358,88 +358,88 @@
 
 
                 <%--Bảng theo dõi hóa đơn--%>
-                <%--                    <div class="card mb-3">--%>
+                                    <div class="card mb-3">
 
-                <%--                        <div class="card-header">--%>
-                <%--                            <h5 class="card-title ">Theo dõi đơn hàng:</h5>--%>
-                <%--                        </div>--%>
+                                        <div class="card-header">
+                                            <h5 class="card-title ">Theo dõi đơn hàng:</h5>
+                                        </div>
 
-                <%--                        <div class="card-body">--%>
-
-
-                <%--                        </div>--%>
-                <%--                        <div class="card-footer">--%>
-                <%--                            <div>--%>
-                <%--                                <div>--%>
-                <%--                                    <button type="button" class="btn btn-primary">Xác nhận</button>--%>
-                <%--                                </div>--%>
-                <%--                                <div>--%>
-                <%--                                    <button type="button" class="btn btn-danger">Hủy</button>--%>
-                <%--                                </div>--%>
-                <%--                                <div class="float-end">--%>
-                <%--                                    <button type="button" class="btn btn-success ">Lịc sử</button>--%>
-                <%--                                </div>--%>
+                                        <div class="card-body">
 
 
-                <%--                            </div>--%>
-                <%--                        </div>--%>
-                <%--                    </div>--%>
-                <%--Bảng lịch sử thanh toán                --%>
-                <%--                    <div class="card mb-3">--%>
+                                        </div>
+                                        <div class="card-footer">
+                                            <div>
+                                                <div>
+                                                    <button type="button" class="btn btn-primary">Xác nhận</button>
+                                                </div>
+                                                <div>
+                                                    <button type="button" class="btn btn-danger">Hủy</button>
+                                                </div>
+                                                <div class="float-end">
+                                                    <button type="button" class="btn btn-success ">Lịc sử</button>
+                                                </div>
 
-                <%--                        <div class="card-header">--%>
-                <%--                            <h5 class="card-title ">Lịch sử thanh toán:</h5>--%>
-                <%--                        </div>--%>
 
-                <%--                        <div class="card-body">--%>
-                <%--                            <table class="table table-bordered" width="100%" cellspacing="0">--%>
-                <%--                                <thead>--%>
-                <%--                                <tr>--%>
-                <%--                                    <th>STT</th>--%>
-                <%--                                    <th>Mã GD</th>--%>
-                <%--                                    <th>Số tiền</th>--%>
-                <%--                                    <th>Trạng thái</th>--%>
-                <%--                                    <th>Thời gian</th>--%>
-                <%--                                    <th>Loại giao dịch</th>--%>
-                <%--                                    <th>Phương thức thanh toán</th>--%>
-                <%--                                    <th>Người tạo</th>--%>
-                <%--                                    <th>Ghi chú</th>--%>
-                <%--                                </tr>--%>
-                <%--                                </thead>--%>
+                                            </div>
+                                        </div>
+                                    </div>
+<%--                                    Bảng lịch sử thanh toán--%>
+                                    <div class="card mb-3">
 
-                <%--                                <tbody>--%>
-                <%--                                &lt;%&ndash;                            <c:forEach var="hoaDon" items="${pageHD.content}" varStatus="i">&ndash;%&gt;--%>
-                <%--                                &lt;%&ndash;                                <tr>&ndash;%&gt;--%>
-                <%--                                &lt;%&ndash;                                    <td>${i.index + 1}</td>&ndash;%&gt;--%>
-                <%--                                &lt;%&ndash;                                    <td>${hoaDon.ma}</td>&ndash;%&gt;--%>
-                <%--                                &lt;%&ndash;                                    <td>${hoaDon.idNhanVien.hoTen}</td>&ndash;%&gt;--%>
-                <%--                                &lt;%&ndash;                                    <td>${hoaDon.idKhachHang.hoTen}</td>&ndash;%&gt;--%>
-                <%--                                &lt;%&ndash;                                    <td>${hoaDon.idKhachHang.sdt}</td>&ndash;%&gt;--%>
-                <%--                                &lt;%&ndash;                                    <td>Bán tại quầy</td>&ndash;%&gt;--%>
-                <%--                                &lt;%&ndash;                                    <td>${hoaDon.tongTien}</td>&ndash;%&gt;--%>
-                <%--                                &lt;%&ndash;                                    <td&ndash;%&gt;--%>
-                <%--                                &lt;%&ndash;                                        &lt;%&ndash;${hoaDon.ngayTao}&ndash;%&gt;&ndash;%&gt;--%>
-                <%--                                &lt;%&ndash;                                    </td>&ndash;%&gt;--%>
-                <%--                                &lt;%&ndash;                                    <td>&ndash;%&gt;--%>
-                <%--                                &lt;%&ndash;                                                 <span&ndash;%&gt;--%>
-                <%--                                &lt;%&ndash;                                                         class="badge rounded-pill ${hoaDon.trangThai == 0 ? 'bg-danger' : 'bg-success'}">&ndash;%&gt;--%>
-                <%--                                &lt;%&ndash;                                                         ${hoaDon.trangThai == 0 ? 'Chưa thanh toán' : 'Đã thanh toán'}&ndash;%&gt;--%>
-                <%--                                &lt;%&ndash;                                                 </span>&ndash;%&gt;--%>
-                <%--                                &lt;%&ndash;                                    </td>&ndash;%&gt;--%>
-                <%--                                &lt;%&ndash;                                    <td>&ndash;%&gt;--%>
-                <%--                                &lt;%&ndash;                                        <a href="/ban-hang-tai-quay/detail-hoa-don/${hoaDon.id}"&ndash;%&gt;--%>
-                <%--                                &lt;%&ndash;                                           class="btn btn-primary">View</a>&ndash;%&gt;--%>
-                <%--                                &lt;%&ndash;                                    </td>&ndash;%&gt;--%>
+                                        <div class="card-header">
+                                            <h5 class="card-title ">Lịch sử thanh toán:</h5>
+                                        </div>
 
-                <%--                                &lt;%&ndash;                                </tr>&ndash;%&gt;--%>
-                <%--                                &lt;%&ndash;                            </c:forEach>&ndash;%&gt;--%>
+                                        <div class="card-body">
+                                            <table class="table table-bordered" width="100%" cellspacing="0">
+                                                <thead>
+                                                <tr>
+                                                    <th>STT</th>
+                                                    <th>Mã GD</th>
+                                                    <th>Số tiền</th>
+                                                    <th>Trạng thái</th>
+                                                    <th>Thời gian</th>
+                                                    <th>Loại giao dịch</th>
+                                                    <th>Phương thức thanh toán</th>
+                                                    <th>Người tạo</th>
+                                                    <th>Ghi chú</th>
+                                                </tr>
+                                                </thead>
 
-                <%--                                </tbody>--%>
-                <%--                            </table>--%>
+                                                <tbody>
+                                                <%--                            <c:forEach var="hoaDon" items="${pageHD.content}" varStatus="i">--%>
+                                                <%--                                <tr>--%>
+                                                <%--                                    <td>${i.index + 1}</td>--%>
+                                                <%--                                    <td>${hoaDon.ma}</td>--%>
+                                                <%--                                    <td>${hoaDon.idNhanVien.hoTen}</td>--%>
+                                                <%--                                    <td>${hoaDon.idKhachHang.hoTen}</td>--%>
+                                                <%--                                    <td>${hoaDon.idKhachHang.sdt}</td>--%>
+                                                <%--                                    <td>Bán tại quầy</td>--%>
+                                                <%--                                    <td>${hoaDon.tongTien}</td>--%>
+                                                <%--                                    <td--%>
+                                                <%--                                        &lt;%&ndash;${hoaDon.ngayTao}&ndash;%&gt;--%>
+                                                <%--                                    </td>--%>
+                                                <%--                                    <td>--%>
+                                                <%--                                                 <span--%>
+                                                <%--                                                         class="badge rounded-pill ${hoaDon.trangThai == 0 ? 'bg-danger' : 'bg-success'}">--%>
+                                                <%--                                                         ${hoaDon.trangThai == 0 ? 'Chưa thanh toán' : 'Đã thanh toán'}--%>
+                                                <%--                                                 </span>--%>
+                                                <%--                                    </td>--%>
+                                                <%--                                    <td>--%>
+                                                <%--                                        <a href="/ban-hang-tai-quay/detail-hoa-don/${hoaDon.id}"--%>
+                                                <%--                                           class="btn btn-primary">View</a>--%>
+                                                <%--                                    </td>--%>
 
-                <%--                        </div>--%>
+                                                <%--                                </tr>--%>
+                                                <%--                            </c:forEach>--%>
 
-                <%--                    </div>--%>
+                                                </tbody>
+                                            </table>
+
+                                        </div>
+
+                                    </div>
 
 
                 <!-- Page Heading -->

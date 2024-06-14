@@ -369,31 +369,27 @@
                             <div class="col-md-6">
                                 <label for="inputLoaiHoaDon" class="form-label">Loại Hóa Đơn</label>
                                 <select id="inputLoaiHoaDon" class="form-select" name="loaiHoaDon" onchange="this.form.submit()">
-                                    <option value="-1" ${currentLoaiHoaDon == 2 ? 'selected' : ''} >Tất cả</option>
+                                    <option value="-1" ${currentLoaiHoaDon == -1 ? 'selected' : ''} >Tất cả</option>
                                     <option value="0" ${currentLoaiHoaDon == 0 ? 'selected' : ''}>Bán Online</option>
                                     <option value="1" ${currentLoaiHoaDon == 1 ? 'selected' : ''}>Bán tại quầy</option>
                                 </select>
                             </div>
 
-                            <div class="row mt-3">
-                                <div class="col-md-6">
-                                    <label for="inputNgayTao" class="form-label">Ngày Tạo</label>
-                                    <input type="date" class="form-control" id="inputNgayTao" name="ngayTao">
-                                </div>
 
-                                <div class="col-md-6 d-flex align-items-end">
-                                    <div class="mr-3">
-<%--                                        <a href="/hoa-don/hien-thi">&ndash;%&gt;--%>
-                                            <button type="submit" class="btn btn-success ">Tìm kiếm</button>
-                                            <%--                                    </a>--%>
-                                    </div>
-                                   <div>
-                                       <a href="/hoa-don/hien-thi">
-                                           <button type="btn" class="btn btn-danger ">Làm Mới</button>
-                                       </a>
-                                   </div>
-                                </div>
+                            <div class="col-md-6 mt-3">
+                                <label for="startDate" class="form-label">Ngày bắt đầu</label>
+                                <input type="date" class="form-control" id="startDate" name="startDate" value="${startDate}">
                             </div>
+                            <div class="col-md-6 mt-3">
+                                <label for="endDate" class="form-label">Ngày kết thúc</label>
+                                <input type="date" class="form-control" id="endDate" name="endDate" value="${endDate}">
+                            </div>
+                            <div class="col-md-12 mt-3 d-flex justify-content-end">
+                                <button type="submit" class="btn btn-success mr-2">Tìm kiếm</button>
+                                <button type="button" class="btn btn-danger" onclick="resetForm()">Làm Mới</button>
+                            </div>
+
+
                         </form>
                     </div>
                 </div>
@@ -548,17 +544,21 @@
                                 <div class="float-end">
                                     <nav aria-label="Page navigation example">
                                         <ul class="pagination">
-                                            <c:if test="${pageHD.number > 0}">
+                                            <c:if test="${pageHD.hasPrevious()}">
                                                 <li class="page-item"><a class="page-link"
-                                                                         href="/hoa-don/hien-thi?page=${pageHD.number - 1}">&laquo;</a>
+                                                                         href="?page=${pageHD.number - 1}">&laquo;</a>
                                                 </li>
                                             </c:if>
-                                            <li class="page-item"><a class="page-link"
-                                                                     href="#">${pageHD.number + 1}</a>
-                                            </li>
-                                            <c:if test="${pageHD.number+1 < pageHD.totalPages}">
+                                            <c:if test="${pageHD.totalPages > 0}">
+                                                <c:forEach var="i" begin="0" end="${pageHD.totalPages - 1}">
+                                                    <li class="page-item ${pageHD.number == i ? 'active' : ''}">
+                                                        <a class="page-link" href="?page=${i}">${i + 1}</a>
+                                                    </li>
+                                                </c:forEach>
+                                            </c:if>
+                                            <c:if test="${pageHD.hasNext()}">
                                                 <li class="page-item"><a class="page-link"
-                                                                         href="/hoa-don/hien-thi?page=${pageHD.number + 1}">&raquo;</a>
+                                                                         href="?page=${pageHD.number + 1}">&raquo;</a>
                                                 </li>
                                             </c:if>
                                         </ul>
@@ -1125,6 +1125,30 @@
             window.location.href = url.toString();
         });
     });
+
+    // Reset lại form tìm kiếm và lọc
+    function resetForm() {
+        document.getElementById("searchKeyword").value = "";
+        document.getElementById("inputLoaiHoaDon").selectedIndex = 0;
+        document.getElementById("startDate").value = "";
+        document.getElementById("endDate").value = "";
+
+        // Lấy trang hiện tại
+        var currentUrl = window.location.href;
+        var cleanUrl = currentUrl.split('?')[0]; // Lấy phần URL trước dấu '?'
+
+        // Lấy tham số page nếu có
+        var params = new URLSearchParams(window.location.search);
+        var pageParam = params.get('page');
+
+        // Nếu có tham số page, thêm lại vào URL
+        if (pageParam) {
+            cleanUrl += '?page=' + pageParam;
+        }
+
+        // Đặt lại URL
+        window.location.href = cleanUrl;
+    }
 
 
 </script>
