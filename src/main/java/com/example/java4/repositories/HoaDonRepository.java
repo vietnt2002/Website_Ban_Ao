@@ -42,4 +42,7 @@ public interface HoaDonRepository
 
     @Query("select hd from HoaDon hd where hd.idKhachHang.id = ?1 and hd.trangThai = ?2")
     HoaDon findByIdKhachHang(String idKH, Integer trangThai);
+    @Query(value = "SELECT TOP 5 * FROM HoaDon where trangThai = 1 ORDER BY ngayTao DESC",
+            nativeQuery = true)
+    public Page<HoaDon>  findByTrangThai(int trangThai,Pageable pageable);
 };

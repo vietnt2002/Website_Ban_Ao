@@ -1,4 +1,4 @@
-package com.example.java4.request;
+package com.example.java4.request.Areq_fixed;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -11,7 +11,8 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class QuanHuyenRequest {
+public class TinhThanhRequest
+{
 
     private String id;
 

@@ -23,7 +23,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 @Controller
-@RequestMapping("cua-hang")
+@RequestMapping("cua-hang-sang")
 public class TrangChuController_Sang {
     @Autowired
     SPCTRepository spctRepo;

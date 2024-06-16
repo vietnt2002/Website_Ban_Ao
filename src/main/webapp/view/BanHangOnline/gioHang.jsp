@@ -335,7 +335,7 @@
                 </button>
                 <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                     <div class="navbar-nav mr-auto py-0">
-                        <a href="/store/trang-chu" class="nav-item nav-link active">Trang chủ</a>
+                        <a href="/cua-hang/trang-chu" class="nav-item nav-link active">Trang chủ</a>
                         <a href="detail.html" class="nav-item nav-link">Giới thiệu</a>
                         <a href="contact.html" class="nav-item nav-link">Liên hệ</a>
                     </div>
@@ -470,7 +470,7 @@
                                 <div class="col-md-4 form-group">
                                     <label><b>Tỉnh/Thành phố</b></label>
                                     <select class="custom-select"
-                                        <%--                                            id="tinhThanh" name="tinhThanh"--%>
+                                            id="tinhModal" name="tinhThanh"
                                             title="Chọn Tỉnh Thành"
                                             style="background-color: #f1f1f1; border: 1px solid #e4e4e4;">
                                         <option value="0">Chọn tỉnh thành</option>
@@ -480,7 +480,7 @@
                                 <div class="col-md-4 form-group">
                                     <label><b>Quận/Huyện</b></label>
                                     <select class="custom-select"
-                                        <%--                                            id="quanHuyen" name="quanHuyen"--%>
+                                            id="quanModal" name="quanHuyen"
                                             title="Chọn Quận Huyện"
                                             style="background-color: #f1f1f1; border: 1px solid #e4e4e4;">
                                         <option value="0">Chọn quận huyện</option>
@@ -490,7 +490,7 @@
                                 <div class="col-md-4 form-group">
                                     <label><b>Phường/Xã</b></label>
                                     <select class="custom-select"
-                                        <%--                                            id="phuongXa" name="phuongXa"--%>
+                                            id="phuongModal" name="phuongXa"
                                             title="Chọn Phường Xã"
                                             style="background-color: #f1f1f1; border: 1px solid #e4e4e4;">
                                         <option value="0">Chọn phường xã</option>
@@ -1000,6 +1000,41 @@
                             $("#phuong").html('<option value="0">Phường Xã</option>');
                             $.each(data_phuong.data, function (key_phuong, val_phuong) {
                                 $("#phuong").append('<option value="' + val_phuong.WardCode + '">' + val_phuong.WardName + '</option>');
+                            });
+                        });
+                    });
+                });
+            });
+        });
+        // Lấy tỉnh thành modal
+        getJSONWithToken('https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/province', function (data_tinh) {
+            // Sắp xếp theo ProvinceID tăng dần
+            data_tinh.data.sort(function (a, b) {
+                return a.ProvinceID - b.ProvinceID;
+            });
+
+            $.each(data_tinh.data, function (key_tinh, val_tinh) {
+                $("#tinhModal").append('<option value="' + val_tinh.ProvinceID + '" name="' + val_tinh.ProvinceName + '">' + val_tinh.ProvinceName + '</option>');
+            });
+
+            $("#tinhModal").change(function (e) {
+                var idtinh = $(this).val();
+
+                // Lấy quận huyện
+                getJSONWithToken('https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/district?province_id=' + idtinh, function (data_quan) {
+                    $("#quanModal").html('<option value="0">Quận Huyện</option>');
+                    $("#phuongModal").html('<option value="0">Phường Xã</option>');
+                    $.each(data_quan.data, function (key_quan, val_quan) {
+                        $("#quanModal").append('<option value="' + val_quan.DistrictID + '">' + val_quan.DistrictName + '</option>');
+                    });
+
+                    // Lấy phường xã
+                    $("#quanModal").change(function (e) {
+                        var idquan = $(this).val();
+                        getJSONWithToken('https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id=' + idquan, function (data_phuong) {
+                            $("#phuongModal").html('<option value="0">Phường Xã</option>');
+                            $.each(data_phuong.data, function (key_phuong, val_phuong) {
+                                $("#phuongModal").append('<option value="' + val_phuong.WardCode + '">' + val_phuong.WardName + '</option>');
                             });
                         });
                     });

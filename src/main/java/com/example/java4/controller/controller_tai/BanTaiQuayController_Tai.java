@@ -22,8 +22,8 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/ban-hang-tai-quay")
-public class BanTaiQuayController {
+@RequestMapping("/ban-hang-tai-quay-mrtai")
+public class BanTaiQuayController_Tai {
 
     @Autowired
     private HoaDonRepository hoaDonRepository;
@@ -91,7 +91,7 @@ public String hienThi(Model model,@RequestParam(value = "page",defaultValue ="0"
     model.addAttribute("listCTSP", listCTSP);
     model.addAttribute("listKH", listKH);
     System.out.println(listMauSac);
-    return "/view/view_payment_counter/banHangTaiQuay.jsp";
+    return "/view/view_payment_counter/banHangTaiQuayOld.jsp";
 }
     @GetMapping("detail-hoa-don/{idHD}")
     public String detailHoaDon(@PathVariable String idHD,@RequestParam Optional<Integer> pageParam, Model model) {
@@ -133,7 +133,7 @@ public String hienThi(Model model,@RequestParam(value = "page",defaultValue ="0"
             }
         }
         model.addAttribute("listHDCT", gioHangTheoHoaDon);
-        return "/view/view_payment_counter/banHangTaiQuay.jsp";
+        return "/view/view_payment_counter/banHangTaiQuayOld.jsp";
     }
 
 
@@ -313,7 +313,7 @@ public String hienThi(Model model,@RequestParam(value = "page",defaultValue ="0"
             }
         }
         return "redirect:/ban-hang-tai-quay/detail-hoa-don/" + idHoaDon;
-    }
+    }}
 //package com.example.java4.controller.controller_tai;
 //
 //import com.example.java4.entities.*;
@@ -403,7 +403,7 @@ public String hienThi(Model model,@RequestParam(value = "page",defaultValue ="0"
 //    model.addAttribute("listCTSP", listCTSP);
 //    model.addAttribute("listKH", listKH);
 //    System.out.println(listMauSac);
-//    return "/view/view_payment_counter/banHangTaiQuay.jsp";
+//    return "/view/view_payment_counter/banHangTaiQuayOld.jsp";
 //}
 //    @GetMapping("detail-hoa-don/{idHD}")
 //    public String detailHoaDon(@PathVariable String idHD,@RequestParam Optional<Integer> pageParam, Model model) {
@@ -445,7 +445,7 @@ public String hienThi(Model model,@RequestParam(value = "page",defaultValue ="0"
 //            }
 //        }
 //        model.addAttribute("listHDCT", gioHangTheoHoaDon);
-//        return "/view/view_payment_counter/banHangTaiQuay.jsp";
+//        return "/view/view_payment_counter/banHangTaiQuayOld.jsp";
 //    }
 //
 //
@@ -729,7 +729,7 @@ public String hienThi(Model model,@RequestParam(value = "page",defaultValue ="0"
 //        model.addAttribute("listHoaDon",listHoaDon);
 //        model.addAttribute("listCTSP",listCTSP);
 //        model.addAttribute("listKH",listKH);
-//        return "/view/view_payment_counter/banHangTaiQuay.jsp";
+//        return "/view/view_payment_counter/banHangTaiQuayOld.jsp";
 //    }
 //
 //    //Lọc sản phẩm
@@ -749,7 +749,7 @@ public String hienThi(Model model,@RequestParam(value = "page",defaultValue ="0"
 //        model.addAttribute("listChatLieu",chatLieuRepo.findAll());
 //        model.addAttribute("listKieuTay",kieuTayRepo.findAll());
 //        model.addAttribute("listHoaDon",  listHoaDon);
-//        return "/view/view_payment_counter/banHangTaiQuay.jsp";
+//        return "/view/view_payment_counter/banHangTaiQuayOld.jsp";
 //    }
 //
 //    //Lọc màu sắc
@@ -769,7 +769,7 @@ public String hienThi(Model model,@RequestParam(value = "page",defaultValue ="0"
 //        model.addAttribute("listChatLieu",chatLieuRepo.findAll());
 //        model.addAttribute("listKieuTay",kieuTayRepo.findAll());
 //        model.addAttribute("listHoaDon",listHoaDon);
-//        return "/view/view_payment_counter/banHangTaiQuay.jsp";
+//        return "/view/view_payment_counter/banHangTaiQuayOld.jsp";
 //    }
 //    //Lọc kích thước
 //    @GetMapping("locSPCTByKichThuoc/{idKichThuoc}")
@@ -788,7 +788,7 @@ public String hienThi(Model model,@RequestParam(value = "page",defaultValue ="0"
 //        model.addAttribute("listChatLieu",chatLieuRepo.findAll());
 //        model.addAttribute("listKieuTay",kieuTayRepo.findAll());
 //        model.addAttribute("listHoaDon", listHoaDon);
-//        return "/view/view_payment_counter/banHangTaiQuay.jsp";
+//        return "/view/view_payment_counter/banHangTaiQuayOld.jsp";
 //    }
 //    //Lọc chất liệu
 //    @GetMapping("locSPCTByChatLieu/{idChatLieu}")
@@ -807,7 +807,7 @@ public String hienThi(Model model,@RequestParam(value = "page",defaultValue ="0"
 //        model.addAttribute("listChatLieu",chatLieuRepo.findAll());
 //        model.addAttribute("listKieuTay",kieuTayRepo.findAll());
 //        model.addAttribute("listHoaDon",listHoaDon);
-//        return "/view/view_payment_counter/banHangTaiQuay.jsp";
+//        return "/view/view_payment_counter/banHangTaiQuayOld.jsp";
 //    }
 //    //Lọc kiểu tay
 //    @GetMapping("locSPCTByKieuTay/{idKieuTay}")
@@ -828,7 +828,7 @@ public String hienThi(Model model,@RequestParam(value = "page",defaultValue ="0"
 //        model.addAttribute("listKieuTay",kieuTayRepo.findAll());
 //        model.addAttribute("nhanVien", nv.get());
 //        model.addAttribute("listHoaDon",listHoaDon);
-//        return "/view/view_payment_counter/banHangTaiQuay.jsp";
+//        return "/view/view_payment_counter/banHangTaiQuayOld.jsp";
 //    }
 //        //lọc sản phẩm chi tiết
 //    @PostMapping("filter")
@@ -855,7 +855,7 @@ public String hienThi(Model model,@RequestParam(value = "page",defaultValue ="0"
 //        model.addAttribute("listHoaDon",listHoaDon);
 //        model.addAttribute("listCTSP",listCTSP);
 //        model.addAttribute("listKH",listKH);
-//        return "/view/view_payment_counter/banHangTaiQuay.jsp";
+//        return "/view/view_payment_counter/banHangTaiQuayOld.jsp";
 //    }
 //
 //}

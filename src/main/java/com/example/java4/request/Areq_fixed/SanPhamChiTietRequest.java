@@ -1,4 +1,4 @@
-package com.example.java4.request;
+package com.example.java4.request.Areq_fixed;
 
 import com.example.java4.entities.KichThuoc;
 import com.example.java4.entities.MauSac;

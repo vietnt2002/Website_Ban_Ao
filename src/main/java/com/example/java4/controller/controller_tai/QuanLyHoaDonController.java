@@ -61,10 +61,6 @@ public class QuanLyHoaDonController {
     @Autowired
     IDiaChiRepository _diaChiRepository;
 
-
-
-
-
 //    @GetMapping("/hien-thi")
 //    public String view(Model model,
 //                       @RequestParam(value = "page", defaultValue = "0") int page,
@@ -157,109 +153,97 @@ public class QuanLyHoaDonController {
 //
 
 
-    @GetMapping("/hien-thi")
-    public String view(Model model,
-                       @RequestParam(value = "page", defaultValue = "0") int page,
-                       @RequestParam(value = "status", required = false) String status,
-                       @RequestParam(value = "loaiHoaDon", required = false) Integer loaiHoaDon,
-                       @RequestParam(value = "keyword", required = false) String keyword,
-                       @RequestParam(value = "startDate", required = false) String startDateStr,
-                       @RequestParam(value = "endDate", required = false) String endDateStr) {
-        Pageable pageable = PageRequest.of(page, 5, Sort.by(Sort.Direction.DESC, "ngayTao"));
-
-        // Xử lý ngày tạo
-        LocalDateTime startDate = null;
-        LocalDateTime endDate = null;
-        if (startDateStr != null && !startDateStr.isEmpty()) {
-            startDate = LocalDate.parse(startDateStr).atStartOfDay();
-        }
-        if (endDateStr != null && !endDateStr.isEmpty()) {
-            endDate = LocalDate.parse(endDateStr).atTime(LocalTime.MAX);
-        }
-
-
-
-
-        Page<HoaDon> pageHD;
-        //Tìm kiếm theo từ khóa
-        if (keyword != null && !keyword.isEmpty()) {
-            pageHD = hoaDonRepository.searchByKeywordAndDate(keyword, startDate, endDate, pageable);
-        }
-        // Tìm kiếm theo ngày tạo
-//        else if(ngayTao != null){
-//            pageHD = hoaDonRepository.findByNgayTaoBetween(startOfDay, endOfDay, pageable);
+//    @GetMapping("/hien-thi")
+//    public String view(Model model,
+//                       @RequestParam(value = "page", defaultValue = "0") int page,
+//                       @RequestParam(value = "status", required = false) String status,
+//                       @RequestParam(value = "loaiHoaDon", required = false) Integer loaiHoaDon,
+//                       @RequestParam(value = "keyword", required = false) String keyword,
+//                       @RequestParam(value = "startDate", required = false) String startDateStr,
+//                       @RequestParam(value = "endDate", required = false) String endDateStr) {
+//        Pageable pageable = PageRequest.of(page, 5, Sort.by(Sort.Direction.DESC, "ngayTao"));
+//
+//        // Xử lý ngày tạo
+//        LocalDateTime startDate = null;
+//        LocalDateTime endDate = null;
+//        if (startDateStr != null && !startDateStr.isEmpty()) {
+//            startDate = LocalDate.parse(startDateStr).atStartOfDay();
 //        }
-        else {
-            if (status != null && !status.isEmpty()) {
-                switch (status) {
-                    case "all":
-                        pageHD = (loaiHoaDon != null) ? hoaDonRepository.findByLoaiHoaDon(loaiHoaDon, pageable) : hoaDonRepository.findAll(pageable);
-                        break;
-                    case "confimation":
-                        pageHD = (loaiHoaDon != null) ? hoaDonRepository.findByTrangThaiAndLoaiHoaDon(IHoaDonRepository.CHO_XAC_NHAN, loaiHoaDon, pageable) : hoaDonRepository.findByTrangThai(IHoaDonRepository.CHO_XAC_NHAN, pageable);
-                        break;
-                    case "confirmed":
-                        pageHD = (loaiHoaDon != null) ? hoaDonRepository.findByTrangThaiAndLoaiHoaDon(IHoaDonRepository.DA_XAC_NHAN, loaiHoaDon, pageable) : hoaDonRepository.findByTrangThai(IHoaDonRepository.DA_XAC_NHAN, pageable);
-                        break;
-                    case "delivery":
-                        pageHD = (loaiHoaDon != null) ? hoaDonRepository.findByTrangThaiAndLoaiHoaDon(IHoaDonRepository.CHO_GIAO_HANG, loaiHoaDon, pageable) : hoaDonRepository.findByTrangThai(IHoaDonRepository.CHO_GIAO_HANG, pageable);
-                        break;
-                    case "delivered":
-                        pageHD = (loaiHoaDon != null) ? hoaDonRepository.findByTrangThaiAndLoaiHoaDon(IHoaDonRepository.DANG_GIAO_HANG, loaiHoaDon, pageable) : hoaDonRepository.findByTrangThai(IHoaDonRepository.DANG_GIAO_HANG, pageable);
-                        break;
-                    case "accomplished":
-                        pageHD = (loaiHoaDon != null) ? hoaDonRepository.findByTrangThaiAndLoaiHoaDon(IHoaDonRepository.DA_HOAN_THANH, loaiHoaDon, pageable) : hoaDonRepository.findByTrangThai(IHoaDonRepository.DA_HOAN_THANH, pageable);
-                        break;
-                    case "cancelled":
-                        pageHD = (loaiHoaDon != null) ? hoaDonRepository.findByTrangThaiAndLoaiHoaDon(IHoaDonRepository.DA_HUY, loaiHoaDon, pageable) : hoaDonRepository.findByTrangThai(IHoaDonRepository.DA_HUY, pageable);
-                        break;
-                    default:
-                        pageHD = (loaiHoaDon != null) ? hoaDonRepository.findByLoaiHoaDon(loaiHoaDon, pageable) : hoaDonRepository.findAll(pageable);
-                        break;
-                }
-            } else {
-                pageHD = (loaiHoaDon != null && loaiHoaDon != -1) ? hoaDonRepository.findByLoaiHoaDon(loaiHoaDon, pageable) : hoaDonRepository.findAll(pageable);
-            }
-        }
-
-    // Hiển thị giao diện quản lý hóa đơn
-    @GetMapping("/hien-thi")
-    public String view(Model model, @RequestParam(value = "page", defaultValue = "0") String pageParam) {
-        // Lấy ra 5 hóa đơn trong 1 Page
-        Pageable pageable = PageRequest.of(Integer.valueOf(pageParam), 5, Sort.by(Sort.Direction.DESC, "ngayTao"));
-        // Lấy ra danh sách hóa đơn có trạng thái là 1(Đã thanh toán)
-        Page<HoaDon> pageHD = _hoaDonRepo.findByTrangThai(_hoaDonRepository.DA_HOAN_THANH, pageable);
-        Page<HoaDon> pageHDAll = _hoaDonRepo.findAll(pageable);
-        // Chuyển Đổi từ Page<HoaDon> sang list<HoaDonDTO> để trả về view
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-        List<HoaDonDTO> listHoaDonDTO = pageHD.stream()
-                .map(hoaDon -> new HoaDonDTO(
-                        hoaDon.getId().toString(),
-                        hoaDon.getMa(),
-                        hoaDon.getIdKhachHang(),
-                        hoaDon.getIdNhanVien(),
-                        hoaDon.getPhuongThucThanhToan(),
-                        hoaDon.getTongTien(),
-                        hoaDon.getLoaiHoaDon(),
-                        hoaDon.getNgayTao() != null ? hoaDon.getNgayTao().format(dateTimeFormatter) : null,
-                        hoaDon.getTrangThai()))
-                .collect(Collectors.toList());
-
-        model.addAttribute("hoaDonPage", listHoaDonDTO);
-        model.addAttribute("pageHD", pageHD);
-        model.addAttribute("currentStatus", status);
-        model.addAttribute("currentLoaiHoaDon", loaiHoaDon);
-        model.addAttribute("keyword", keyword);
-        model.addAttribute("startDate", startDateStr);
-        model.addAttribute("endDate", endDateStr);
-//        model.addAttribute("ngayTao", ngayTaoStr);
-
-        model.addAttribute("pageHDALL", pageHDAll);
-        model.addAttribute("hoaDonPageAll", listHoaDonALLDTO);
-        model.addAttribute("hoaDonPageXacNhan",pageHD.getContent());
-        return "/view/view_tai/hoa_don/bill.jsp";
-    }
-
+//        if (endDateStr != null && !endDateStr.isEmpty()) {
+//            endDate = LocalDate.parse(endDateStr).atTime(LocalTime.MAX);
+//        }
+//
+//        Page<HoaDon> pageHD;
+//        //Tìm kiếm theo từ khóa
+//        if (keyword != null && !keyword.isEmpty()) {
+//            pageHD = hoaDonRepository.searchByKeywordAndDate(keyword, startDate, endDate, pageable);
+//        }
+//        // Tìm kiếm theo ngày tạo
+////        else if(ngayTao != null){
+////            pageHD = hoaDonRepository.findByNgayTaoBetween(startOfDay, endOfDay, pageable);
+////        }
+//        else {
+//            if (status != null && !status.isEmpty()) {
+//                switch (status) {
+//                    case "all":
+//                        pageHD = (loaiHoaDon != null) ? hoaDonRepository.findByLoaiHoaDon(loaiHoaDon, pageable) : hoaDonRepository.findAll(pageable);
+//                        break;
+//                    case "confimation":
+//                        pageHD = (loaiHoaDon != null) ? hoaDonRepository.findByTrangThaiAndLoaiHoaDon(IHoaDonRepository.CHO_XAC_NHAN, loaiHoaDon, pageable) : hoaDonRepository.findByTrangThai(IHoaDonRepository.CHO_XAC_NHAN, pageable);
+//                        break;
+//                    case "confirmed":
+//                        pageHD = (loaiHoaDon != null) ? hoaDonRepository.findByTrangThaiAndLoaiHoaDon(IHoaDonRepository.DA_XAC_NHAN, loaiHoaDon, pageable) : hoaDonRepository.findByTrangThai(IHoaDonRepository.DA_XAC_NHAN, pageable);
+//                        break;
+//                    case "delivery":
+//                        pageHD = (loaiHoaDon != null) ? hoaDonRepository.findByTrangThaiAndLoaiHoaDon(IHoaDonRepository.CHO_GIAO_HANG, loaiHoaDon, pageable) : hoaDonRepository.findByTrangThai(IHoaDonRepository.CHO_GIAO_HANG, pageable);
+//                        break;
+//                    case "delivered":
+//                        pageHD = (loaiHoaDon != null) ? hoaDonRepository.findByTrangThaiAndLoaiHoaDon(IHoaDonRepository.DANG_GIAO_HANG, loaiHoaDon, pageable) : hoaDonRepository.findByTrangThai(IHoaDonRepository.DANG_GIAO_HANG, pageable);
+//                        break;
+//                    case "accomplished":
+//                        pageHD = (loaiHoaDon != null) ? hoaDonRepository.findByTrangThaiAndLoaiHoaDon(IHoaDonRepository.DA_HOAN_THANH, loaiHoaDon, pageable) : hoaDonRepository.findByTrangThai(IHoaDonRepository.DA_HOAN_THANH, pageable);
+//                        break;
+//                    case "cancelled":
+//                        pageHD = (loaiHoaDon != null) ? hoaDonRepository.findByTrangThaiAndLoaiHoaDon(IHoaDonRepository.DA_HUY, loaiHoaDon, pageable) : hoaDonRepository.findByTrangThai(IHoaDonRepository.DA_HUY, pageable);
+//                        break;
+//                    default:
+//                        pageHD = (loaiHoaDon != null) ? hoaDonRepository.findByLoaiHoaDon(loaiHoaDon, pageable) : hoaDonRepository.findAll(pageable);
+//                        break;
+//                }
+//            } else {
+//                pageHD = (loaiHoaDon != null && loaiHoaDon != -1) ? hoaDonRepository.findByLoaiHoaDon(loaiHoaDon, pageable) : hoaDonRepository.findAll(pageable);
+//            }
+//        }
+//        // Lấy ra danh sách hóa đơn có trạng thái là 1(Đã thanh toán)
+//        Page<HoaDon> pageHDAll = _hoaDonRepo.findAll(pageable);
+//        // Chuyển Đổi từ Page<HoaDon> sang list<HoaDonDTO> để trả về view
+//        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+//        List<HoaDonDTO> listHoaDonDTO = pageHD.stream()
+//                .map(hoaDon -> new HoaDonDTO(
+//                        hoaDon.getId().toString(),
+//                        hoaDon.getMa(),
+//                        hoaDon.getIdKhachHang(),
+//                        hoaDon.getIdNhanVien(),
+//                        hoaDon.getPhuongThucThanhToan(),
+//                        hoaDon.getTongTien(),
+//                        hoaDon.getLoaiHoaDon(),
+//                        hoaDon.getNgayTao() != null ? hoaDon.getNgayTao().format(dateTimeFormatter) : null,
+//                        hoaDon.getTrangThai()))
+//                .collect(Collectors.toList());
+//
+//        model.addAttribute("hoaDonPage", listHoaDonDTO);
+//        model.addAttribute("pageHD", pageHD);
+//        model.addAttribute("currentStatus", status);
+//        model.addAttribute("currentLoaiHoaDon", loaiHoaDon);
+//        model.addAttribute("keyword", keyword);
+//        model.addAttribute("startDate", startDateStr);
+//        model.addAttribute("endDate", endDateStr);
+////        model.addAttribute("ngayTao", ngayTaoStr);
+//        model.addAttribute("pageHDALL", pageHDAll);
+//        model.addAttribute("hoaDonPageAll", listHoaDonALLDTO);
+//        model.addAttribute("hoaDonPageXacNhan",pageHD.getContent());
+//        return "/view/view_tai/hoa_don/bill.jsp";
+//    }
 
 
 
