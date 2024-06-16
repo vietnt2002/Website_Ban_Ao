@@ -41,9 +41,9 @@
             href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
             rel="stylesheet">
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+<%--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">--%>
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
 </head>
 
@@ -352,7 +352,8 @@
 
                 <!-- Bộ lộc và tìm kiếm-->
                 <div class="card shadow mb-4">
-                    <div class="card-header py-3">
+                    <div class="card-header py-3 d-flex align-items-center">
+                        <i class="bi bi-funnel mr-3"></i>
                         <h6 class="m-0 font-weight-bold">Bộ Lọc</h6>
                     </div>
                     <div class="card-body">
@@ -397,8 +398,9 @@
 
                 <!-- Danh sách hóa đơn -->
                 <div class="card shadow mb-4">
-                    <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold ">Danh Sách Hóa Đơn</h6>
+                    <div class="card-header py-3 d-flex align-items-center">
+                        <i class="bi bi-card-list mr-3"></i>
+                        <h6 class="m-0 font-weight-bold">Danh Sách Hóa Đơn</h6>
                     </div>
                     <div class="card-body">
 

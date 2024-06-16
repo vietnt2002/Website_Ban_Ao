@@ -42,6 +42,100 @@
             rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
 
+    <style>
+        /*.card-header {*/
+        /*    background-color: #007bff;*/
+        /*    color: white;*/
+        /*}*/
+
+        .custom-card-body {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .custom-table {
+            margin-bottom: 0;
+        }
+
+        .custom-table img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .custom-card-body::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .custom-card-body::-webkit-scrollbar-thumb {
+            background-color: #007bff;
+            border-radius: 4px;
+        }
+
+        .custom-card-body::-webkit-scrollbar-track {
+            background-color: #f1f1f1;
+        }
+
+
+        .stepper-horizontal {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            margin-bottom: 40px;
+        }
+
+        .step {
+            text-align: center;
+            position: relative;
+            flex: 1;
+        }
+
+        .step-icon-wrapper {
+            background-color: #007bff; /* Bootstrap primary color */
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 10px auto;
+        }
+
+        .step-icon {
+            font-size: 24px;
+            color: #fff; /* White color */
+        }
+
+        .step-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .step-date {
+            font-size: 14px;
+            color: #6c757d; /* Bootstrap secondary color */
+        }
+
+        .connector {
+            height: 2px;
+            background-color: #007bff; /* Bootstrap primary color */
+            position: absolute;
+            top: 25px; /* Align with step icon middle */
+            left: 50%;
+            z-index: -1;
+        }
+
+        .step + .connector {
+            width: calc(100% - 50px); /* Space between steps minus one icon width */
+            left: 50px; /* Icon width */
+        }
+
+        .stepper-horizontal.hide {
+            display: none;
+        }
+
+    </style>
 
 </head>
 
@@ -358,88 +452,151 @@
 
 
                 <%--Bảng theo dõi hóa đơn--%>
-                                    <div class="card mb-3">
+                <div class="card mb-3">
 
-                                        <div class="card-header">
-                                            <h5 class="card-title ">Theo dõi đơn hàng:</h5>
+                    <div class="card-header">
+                        <h5 class="card-title ">Theo dõi đơn hàng:</h5>
+                    </div>
+
+                    <div class="card-body">
+                        <c:choose>
+                            <%-- Hiển thị stepper cho bán hàng tại quầy (LoaiHD == 1) --%>
+                            <c:when test="${LoaiHD == 1}">
+                                <div class="stepper-horizontal" id="stepper_offline">
+                                    <div class="step" id="step_offline_1">
+                                        <div class="step-icon-wrapper">
+                                            <i class="bi bi-card-text"></i>
                                         </div>
-
-                                        <div class="card-body">
-
-
-                                        </div>
-                                        <div class="card-footer">
-                                            <div>
-                                                <div>
-                                                    <button type="button" class="btn btn-primary">Xác nhận</button>
-                                                </div>
-                                                <div>
-                                                    <button type="button" class="btn btn-danger">Hủy</button>
-                                                </div>
-                                                <div class="float-end">
-                                                    <button type="button" class="btn btn-success ">Lịc sử</button>
-                                                </div>
-
-
-                                            </div>
-                                        </div>
+                                        <div class="step-title">Tạo hóa đơn</div>
+                                        <div class="step-date">01/01/2023</div>
                                     </div>
-<%--                                    Bảng lịch sử thanh toán--%>
-                                    <div class="card mb-3">
-
-                                        <div class="card-header">
-                                            <h5 class="card-title ">Lịch sử thanh toán:</h5>
+                                    <div class="step" id="step_offline_2">
+                                        <div class="step-icon-wrapper">
+                                            <i class="bi bi-check-circle step-icon"></i>
                                         </div>
-
-                                        <div class="card-body">
-                                            <table class="table table-bordered" width="100%" cellspacing="0">
-                                                <thead>
-                                                <tr>
-                                                    <th>STT</th>
-                                                    <th>Mã GD</th>
-                                                    <th>Số tiền</th>
-                                                    <th>Trạng thái</th>
-                                                    <th>Thời gian</th>
-                                                    <th>Loại giao dịch</th>
-                                                    <th>Phương thức thanh toán</th>
-                                                    <th>Người tạo</th>
-                                                    <th>Ghi chú</th>
-                                                </tr>
-                                                </thead>
-
-                                                <tbody>
-                                                <%--                            <c:forEach var="hoaDon" items="${pageHD.content}" varStatus="i">--%>
-                                                <%--                                <tr>--%>
-                                                <%--                                    <td>${i.index + 1}</td>--%>
-                                                <%--                                    <td>${hoaDon.ma}</td>--%>
-                                                <%--                                    <td>${hoaDon.idNhanVien.hoTen}</td>--%>
-                                                <%--                                    <td>${hoaDon.idKhachHang.hoTen}</td>--%>
-                                                <%--                                    <td>${hoaDon.idKhachHang.sdt}</td>--%>
-                                                <%--                                    <td>Bán tại quầy</td>--%>
-                                                <%--                                    <td>${hoaDon.tongTien}</td>--%>
-                                                <%--                                    <td--%>
-                                                <%--                                        &lt;%&ndash;${hoaDon.ngayTao}&ndash;%&gt;--%>
-                                                <%--                                    </td>--%>
-                                                <%--                                    <td>--%>
-                                                <%--                                                 <span--%>
-                                                <%--                                                         class="badge rounded-pill ${hoaDon.trangThai == 0 ? 'bg-danger' : 'bg-success'}">--%>
-                                                <%--                                                         ${hoaDon.trangThai == 0 ? 'Chưa thanh toán' : 'Đã thanh toán'}--%>
-                                                <%--                                                 </span>--%>
-                                                <%--                                    </td>--%>
-                                                <%--                                    <td>--%>
-                                                <%--                                        <a href="/ban-hang-tai-quay/detail-hoa-don/${hoaDon.id}"--%>
-                                                <%--                                           class="btn btn-primary">View</a>--%>
-                                                <%--                                    </td>--%>
-
-                                                <%--                                </tr>--%>
-                                                <%--                            </c:forEach>--%>
-
-                                                </tbody>
-                                            </table>
-
-                                        </div>
-
+                                        <div class="step-title">Đã hoàn thành</div>
+                                        <div class="step-date">02/01/2023</div>
                                     </div>
+                                </div>
+                            </c:when>
+                            <%-- Hiển thị stepper cho bán hàng online (LoaiHD != 1) --%>
+                            <c:otherwise>
+                                <div class="stepper-horizontal" id="stepper_online">
+                                    <div class="step" id="step_online_1">
+                                        <div class="step-icon-wrapper">
+                                            <i class="bi bi-hourglass-split step-icon"></i>
+                                        </div>
+                                        <div class="step-title">Chờ xác nhận</div>
+                                        <div class="step-date">01/01/2023</div>
+                                    </div>
+                                    <div class="step" id="step_online_2">
+                                        <div class="step-icon-wrapper">
+                                            <i class="bi bi-check-circle step-icon"></i>
+                                        </div>
+                                        <div class="step-title">Đã xác nhận</div>
+                                        <div class="step-date">02/01/2023</div>
+                                    </div>
+                                    <div class="step" id="step_online_3">
+                                        <div class="step-icon-wrapper">
+                                            <i class="bi bi-truck step-icon"></i>
+                                        </div>
+                                        <div class="step-title">Chờ giao hàng</div>
+                                        <div class="step-date">03/01/2023</div>
+                                    </div>
+                                    <div class="step" id="step_online_5">
+                                        <div class="step-icon-wrapper">
+                                            <i class="bi bi-box-seam step-icon"></i>
+                                        </div>
+                                        <div class="step-title">Đang giao hàng</div>
+                                        <div class="step-date">05/01/2023</div>
+                                    </div>
+                                    <div class="step" id="step_online_4">
+                                        <div class="step-icon-wrapper">
+                                            <i class="bi bi-box step-icon"></i>
+                                        </div>
+                                        <div class="step-title">Đã giao hàng</div>
+                                        <div class="step-date">04/01/2023</div>
+                                    </div>
+                                    <div class="step" id="step_online_6">
+                                        <div class="step-icon-wrapper">
+                                            <i class="bi bi-credit-card-2-back"></i>
+                                        </div>
+                                        <div class="step-title">Đã hoàn thành</div>
+                                        <div class="step-date">06/01/2023</div>
+                                    </div>
+                                </div>
+
+                            </c:otherwise>
+                        </c:choose>
+                    </div>
+
+
+                    <div class="card-footer">
+                        <div>
+                            <div class="row">
+                                <div>
+                                    <button type="button" class="btn btn-primary mr-3">Xác nhận</button>
+                                </div>
+                                <div>
+                                    <button type="button" class="btn btn-danger">Hủy</button>
+                                </div>
+                            </div>
+                            <div class="float-end">
+                                <button type="button" class="btn btn-success ">Lịc sử</button>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+                <%--                                    Bảng lịch sử thanh toán--%>
+                <div class="card mb-3">
+
+                    <div class="card-header">
+                        <h5 class="card-title ">Lịch sử thanh toán:</h5>
+                    </div>
+
+                    <div class="card-body">
+                        <table class="table table-bordered" width="100%" cellspacing="0">
+                            <thead>
+                            <tr>
+                                <th>STT</th>
+                                <%--                                                    <th>Mã GD</th>--%>
+                                <th>Số tiền</th>
+                                <th>Trạng thái</th>
+                                <th>Thời gian</th>
+                                <th>Loại giao dịch</th>
+                                <th>Phương thức thanh toán</th>
+                                <th>Người xác nhận</th>
+                                <th>Ghi chú</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td><fmt:formatNumber value="${hoaDonDTO.tongTien}" type="currency" currencySymbol="₫"
+                                                      groupingUsed="true"/>
+                                </td>
+                                <td><span
+                                        class="badge rounded-pill bg-success">${hoaDonDTO.trangThai == 0 ? "Chưa hoàn thành" : "Đã hoàn thành"}</span>
+                                </td>
+                                <td>${hoaDonDTO.ngayTao}</td>
+                                <td><span class="badge rounded-pill bg-warning">Thanh toán</span></td>
+                                <td>
+                                    <span class="badge rounded-pill bg-primary">${hoaDonDTO.phuongThucThanhToan == 0 ? "Tiền mặt" :"Chuyển khoản"}</span>
+                                </td>
+                                <td>${hoaDonDTO.nhanVien.hoTen}</td>
+                                <td></td>
+
+                            </tr>
+
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                </div>
 
 
                 <!-- Page Heading -->
@@ -451,10 +608,17 @@
 
                 <div class="row d-flex align-items-stretch">
                     <div class="col-7 mb-3 d-flex align-items-stretch">
-                        <div class="card  w-100 h-100">
-
-                            <div class="card-header">
-                                <h5 class="card-title ">Thông tin đơn hàng:${hoaDonDTO.ma}</h5>
+                        <div class="card w-100 h-100">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="card-title">Thông tin đơn hàng: ${hoaDonDTO.ma}</h5>
+                                <%--                                <c:choose>--%>
+                                <%--                                    <c:when test="${hoaDonDTO.loaiHoaDon == 0}">--%>
+                                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                        data-bs-target="#updateModal">
+                                    Thay đổi
+                                </button>
+                                <%--                                    </c:when>--%>
+                                <%--                                </c:choose>--%>
                             </div>
 
                             <div class="card-body">
@@ -468,11 +632,13 @@
                                                     ${hoaDonDTO.trangThai == 0 ? "Chưa hoàn thành" : "Đã hoàn thành"}
                                                 </span>
                                                 </p>
-                                                <p class="fw-bold mb-1 pb-3 small">Loại giao dịch: </p>
+                                                <p class="fw-bold mb-1 pb-3 small">Loại giao dịch: <span
+                                                        class=" fw-normal badge rounded-pill  bg-primary">Thanh toán</span>
+                                                </p>
                                                 <p class="fw-bold mb-1 pb-3 small">Tên người nhận: <span
                                                         class="fw-normal">${hoaDonDTO.khachHang.hoTen}</span></p>
                                                 <p class="fw-bold mb-1 pb-3 small">Địa chỉ: <span
-                                                        class="fw-normal">${diaChiKhachHang.diaChiChiTiet}</span> </p>
+                                                        class="fw-normal">${diaChiKhachHang.diaChiChiTiet}</span></p>
                                                 <p class="fw-bold mb-1 pb-3 small">Ghi chú: </p>
                                                 <p class="fw-bold mb-1 small">Người tạo: <span
                                                         class="fw-normal">${hoaDonDTO.nhanVien.hoTen}</span></p>
@@ -500,12 +666,9 @@
                                                     class="fw-normal">${hoaDonDTO.ngayTao}</span></p>
 
                                             <c:choose>
-                                                <c:when test=" ${hoaDonDTO.loaiHoaDon == 1}">
-
+                                                <c:when test="${hoaDonDTO.loaiHoaDon == 0}">
+                                                    <p class="fw-bold mb-1 small">Ngày dự kiến nhận:</p>
                                                 </c:when>
-                                                <c:otherwise>
-                                                    <p class="fw-bold mb-1  small">Ngày dự kiến nhận:</p>
-                                                </c:otherwise>
                                             </c:choose>
 
                                         </div>
@@ -521,6 +684,8 @@
                                 <h5 class="card-title">Chi phí đơn hàng</h5>
                             </div>
                             <div class="card-body">
+                                <c:set var="giamGia" value="0"/>
+                                <c:set var="phiVanChuyen" value="0"/>
                                 <div class="row">
                                     <div class="col-12">
                                         <p class="fw-bold mb-1 pb-3 small d-flex justify-content-between">
@@ -531,23 +696,29 @@
                                                                                           groupingUsed="true"/></span>
                                         </p>
                                         <p class="fw-bold mb-1 pb-3 small d-flex justify-content-between">
-                                            <span>Phí giao hàng:</span>
-                                            <span class="fw-normal  "><fmt:formatNumber value="0" type="currency"
-                                                                                        currencySymbol="₫"
-                                                                                        groupingUsed="true"/></span>
+                                            <span> Phí Giảm giá:</span>
+                                            <span class="fw-normal">
+                                                <fmt:formatNumber value="${giamGia}" type="currency" currencySymbol="₫"
+                                                                  groupingUsed="true"/>
+                                            </span>
                                         </p>
                                         <p class="fw-bold mb-1 pb-3 small d-flex justify-content-between">
-                                            <span>Phiếu giảm giá:</span>
-                                            <span class="fw-normal  "><fmt:formatNumber value="0" type="currency"
-                                                                                        currencySymbol="₫"
-                                                                                        groupingUsed="true"/></span>
+                                            <span>Phí vận chuyển:</span>
+                                            <span class="fw-normal">
+                                                <fmt:formatNumber value="${phiVanChuyen}" type="currency"
+                                                                  currencySymbol="₫" groupingUsed="true"/>
+                                             </span>
                                         </p>
+
                                         <div class="">
                                             <p class="fw-bold mb-1 pb-3 small d-flex justify-content-between">
                                                 <span>Tổng tiền giảm:</span>
-                                                <span class="fw-normal  "><fmt:formatNumber
-                                                        value="0" type="currency" currencySymbol="₫"
-                                                        groupingUsed="true"/></span>
+                                                <span class="fw-normal">
+                                                    <fmt:formatNumber
+                                                            value="${hoaDonDTO.tongTien - giamGia - phiVanChuyen}"
+                                                            type="currency"
+                                                            currencySymbol="₫" groupingUsed="true"/>
+                                                </span>
                                             </p>
                                         </div>
                                     </div>
@@ -571,19 +742,68 @@
                 </div>
             </div>
 
-            <div>
-
+            <!-- Modal để cập nhật thông tin khách hàng -->
+            <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="updateModalLabel">Cập nhật thông tin khách hàng</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="updateForm">
+                                <div class="mb-3">
+                                    <label for="hoTen" class="form-label">Họ tên</label>
+                                    <input type="text" class="form-control" id="hoTen" name="hoTen"
+                                           value="${hoaDonDTO.khachHang.hoTen}">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="sdt" class="form-label">Số điện thoại</label>
+                                    <input type="text" class="form-control" id="sdt" name="sdt"
+                                           value="${hoaDonDTO.khachHang.sdt}">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="diaChi" class="form-label">Địa chỉ</label>
+                                    <input type="text" class="form-control" id="diaChi" name="diaChi"
+                                           value="${diaChiKhachHang.diaChiChiTiet}">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="tinh" class="form-label">Tỉnh</label>
+                                    <select class="form-select" id="tinh" name="tinh">
+                                        <!-- Thêm các tùy chọn tỉnh -->
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="huyen" class="form-label">Huyện</label>
+                                    <select class="form-select" id="huyen" name="huyen">
+                                        <!-- Thêm các tùy chọn huyện -->
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="xa" class="form-label">Xã</label>
+                                    <select class="form-select" id="xa" name="xa">
+                                        <!-- Thêm các tùy chọn xã -->
+                                    </select>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                            <button type="button" class="btn btn-primary" id="updateButton">Cập nhật</button>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <%-- Thông tin sản phẩm đã mua                --%>
-            <div class="card shadow mb-4 mx-2">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold ">Thông tin sản phẩm đã mua </h6>
+            <div class="card shadow mb-4 mx-2" id="custom-card">
+                <div class="card-header py-3 custom-card-header">
+                    <h6 class="m-0 font-weight-bold">Thông tin sản phẩm đã mua</h6>
                 </div>
 
-                <div class="card-body">
-
-                    <table class="table table-bordered" width="100%" cellspacing="0">
+                <div class="card-body custom-card-body">
+                    <table class="table table-bordered custom-table" width="100%" cellspacing="0">
                         <thead>
                         <tr>
                             <th>STT</th>
@@ -591,6 +811,7 @@
                             <th>Tên sản phẩm</th>
                             <th>Giá sản phẩm</th>
                             <th>Màu sắc</th>
+                            <th>Kích thước</th>
                             <th>Số lượng</th>
                             <th>Tổng Tiền</th>
                         </tr>
@@ -603,18 +824,17 @@
                                 <td><img src="/image/${chiTiet.idCTSP.idSanPham.hinhAnh}" alt="Ảnh sản phẩm" width="50">
                                 </td>
                                 <td>${chiTiet.idCTSP.idSanPham.ten}</td>
-                                <td>${chiTiet.donGia}</td>
+                                <td><fmt:formatNumber value="${chiTiet.donGia}" type="currency" currencySymbol="₫"
+                                                      groupingUsed="true"/></td>
                                 <td>${chiTiet.idCTSP.idMauSac.ten}</td>
+                                <td>${chiTiet.idCTSP.idKichThuoc.ten}</td>
                                 <td>${chiTiet.soLuong}</td>
-                                <td>${chiTiet.donGia * chiTiet.soLuong}</td>
+                                <td><fmt:formatNumber value="${chiTiet.donGia * chiTiet.soLuong}" type="currency"
+                                                      currencySymbol="₫" groupingUsed="true"/></td>
                             </tr>
                         </c:forEach>
                         </tbody>
                     </table>
-
-                    <div>
-
-                    </div>
                 </div>
             </div>
 
