@@ -39,6 +39,6 @@ public interface HoaDonRepository
     @Query("select hd from HoaDon hd where hd.idKhachHang.id = ?1 and hd.loaiHoaDon = ?2 and hd.trangThai = ?3")
     HoaDon findByidKHAndLoaiHoaDonAndTrangThai(String idKH, Integer loaiHD, Integer trangThai);
 
-    @Query("select hd from HoaDon hd where hd.idKhachHang = ?1")
-    HoaDon findByIdKhachHang(String idKH);
+    @Query("select hd from HoaDon hd where hd.idKhachHang.id = ?1 and hd.trangThai = ?2")
+    HoaDon findByIdKhachHang(String idKH, Integer trangThai);
 };

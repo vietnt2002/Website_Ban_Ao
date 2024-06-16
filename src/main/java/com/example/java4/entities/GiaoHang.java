@@ -12,13 +12,14 @@ public class GiaoHang {
     private String tenNguoiNhan;
     private String sdtNguoiNhan;
     private String diaChiChiTiet;
-    private PhuongXa idPhuongXa;
-    private QuanHuyen idQuanHuyen;
-    private TinhThanh idTinhThanh;
+    private String idPhuongXa;
+    private String idQuanHuyen;
+    private String idTinhThanh;
     private Date ngayShip;
     private Date ngayNhan;
     private Integer phiShip;
     private Integer trangThai;
+    private String ghiChu;
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -58,6 +59,34 @@ public class GiaoHang {
         this.diaChiChiTiet = diaChiChiTiet;
     }
 
+    @Column(name = "IdPhuongXa")
+    public String getIdPhuongXa() {
+        return idPhuongXa;
+    }
+
+    public void setIdPhuongXa(String idPhuongXa) {
+        this.idPhuongXa = idPhuongXa;
+    }
+
+    @Column(name = "IdQuanHuyen")
+    public String getIdQuanHuyen() {
+        return idQuanHuyen;
+    }
+
+    public void setIdQuanHuyen(String idQuanHuyen) {
+
+        this.idQuanHuyen = idQuanHuyen;
+    }
+
+    @Column(name = "IdTinhThanh")
+    public String getIdTinhThanh() {
+        return idTinhThanh;
+    }
+
+    public void setIdTinhThanh(String idTinhThanh) {
+        this.idTinhThanh = idTinhThanh;
+    }
+
     @Column(name = "NgayShip")
     public Date getNgayShip() {
         return ngayShip;
@@ -94,12 +123,21 @@ public class GiaoHang {
         this.trangThai = trangThai;
     }
 
+    @Column(name = "GhiChu")
+    public String getGhiChu() {
+        return ghiChu;
+    }
+
+    public void setGhiChu(String ghiChu) {
+        this.ghiChu = ghiChu;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         GiaoHang giaoHang = (GiaoHang) o;
-        return Objects.equals(id, giaoHang.id) && Objects.equals(tenNguoiNhan, giaoHang.tenNguoiNhan) && Objects.equals(sdtNguoiNhan, giaoHang.sdtNguoiNhan) && Objects.equals(diaChiChiTiet, giaoHang.diaChiChiTiet) && Objects.equals(ngayShip, giaoHang.ngayShip) && Objects.equals(ngayNhan, giaoHang.ngayNhan) && Objects.equals(phiShip, giaoHang.phiShip) && Objects.equals(trangThai, giaoHang.trangThai);
+        return Objects.equals(id, giaoHang.id) && Objects.equals(tenNguoiNhan, giaoHang.tenNguoiNhan) && Objects.equals(sdtNguoiNhan, giaoHang.sdtNguoiNhan) && Objects.equals(diaChiChiTiet, giaoHang.diaChiChiTiet) && Objects.equals(idPhuongXa, giaoHang.idPhuongXa) && Objects.equals(idQuanHuyen, giaoHang.idQuanHuyen) && Objects.equals(idTinhThanh, giaoHang.idTinhThanh) && Objects.equals(ngayShip, giaoHang.ngayShip) && Objects.equals(ngayNhan, giaoHang.ngayNhan) && Objects.equals(phiShip, giaoHang.phiShip) && Objects.equals(trangThai, giaoHang.trangThai) && Objects.equals(ghiChu, giaoHang.ghiChu);
     }
 
     @Override
@@ -115,35 +153,5 @@ public class GiaoHang {
 
     public void setIdHoaDon(HoaDon hoaDonByIdHoaDon) {
         this.idHoaDon = hoaDonByIdHoaDon;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "IdPhuongXa", referencedColumnName = "ID")
-    public PhuongXa getIdPhuongXa() {
-        return idPhuongXa;
-    }
-
-    public void setIdPhuongXa(PhuongXa phuongXaByIdPhuongXa) {
-        this.idPhuongXa = phuongXaByIdPhuongXa;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "IdQuanHuyen", referencedColumnName = "ID")
-    public QuanHuyen getIdQuanHuyen() {
-        return idQuanHuyen;
-    }
-
-    public void setIdQuanHuyen(QuanHuyen quanHuyenByIdQuanHuyen) {
-        this.idQuanHuyen = quanHuyenByIdQuanHuyen;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "IdTinhThanh", referencedColumnName = "ID")
-    public TinhThanh getIdTinhThanh() {
-        return idTinhThanh;
-    }
-
-    public void setIdTinhThanh(TinhThanh tinhThanhByIdTinhThanh) {
-        this.idTinhThanh = tinhThanhByIdTinhThanh;
     }
 }

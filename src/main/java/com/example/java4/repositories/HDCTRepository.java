@@ -55,8 +55,8 @@ public interface HDCTRepository
             "join ChiTietSanPham ctsp on ctsp.id = cthd.idCTSP.id " +
             "join HinhAnh ha on ha.idCTSP.id = ctsp.id " +
             "join HoaDon hd on hd.id = cthd.idHoaDon.id " +
-            "where hd.idKhachHang.id = ?1")
-    List<GioHangResponse> getAll(String idKH);
+            "where hd.idKhachHang.id = ?1 and hd.trangThai = ?2")
+    List<GioHangResponse> getAll(String idKH, Integer trangThai);
 
     @Query("select hdct from ChiTietHoaDon hdct where hdct.idHoaDon.id = ?1")
     List<ChiTietHoaDon> findHDCTByIdHoaDon(String idHD);
@@ -68,4 +68,9 @@ public interface HDCTRepository
             "join ChiTietSanPham ctsp on ctsp.id = cthd.idCTSP.id\n" +
             "where cthd.id = ?1")
     Integer  getSoLuong_SPCTByIdHDCT(String idHD);
+
+    @Query("select cthd from ChiTietHoaDon cthd\n" +
+            "join HoaDon hd on hd.id = cthd.idHoaDon.id\n" +
+            "where hd.idKhachHang.id = ?1")
+    ChiTietHoaDon findByIdHoaDonByidKH(String idKH);
 };

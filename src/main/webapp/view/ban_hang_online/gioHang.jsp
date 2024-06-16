@@ -19,7 +19,8 @@
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
+          rel="stylesheet">
 
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
@@ -31,7 +32,9 @@
     <link href="/view_ban_hang/css/style.css" rel="stylesheet">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
     <%--    Thêm thư viện SweetAlert2 để thiển thị thông báo--%>
     <!-- SweetAlert2 CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
@@ -39,23 +42,26 @@
     <!-- SweetAlert2 JS -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<%--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">--%>
+    <%--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">--%>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <style>
-        .userCart{
+        .userCart {
             display: flex;
             align-items: center;
             justify-content: end;
         }
-        .dropdown ul li:hover{
+
+        .dropdown ul li:hover {
             text-decoration: underline;
         }
+
         .modal-dialog {
             max-width: 500px;
             margin: 100px auto;
         }
+
         .totalQuantityCart {
             width: 15px;
             height: 15px;
@@ -76,19 +82,35 @@
         }
     </style>
     <style>
-        .table-responsive {
-            max-height: 420px; /* Adjust height based on row height to fit 5 products */
-            overflow-y: auto;
+        /*.table-responsive {*/
+        /*    max-height: 420px;*/
+        /*    overflow-y: auto;*/
+        /*}*/
+
+        /*.table tbody {*/
+        /*    display: block;*/
+        /*    height: 135px;*/
+        /*    overflow-y: auto;*/
+        /*}*/
+
+        /*.table thead, .table tbody tr {*/
+        /*    display: table;*/
+        /*    width: 100%;*/
+        /*    table-layout: fixed;*/
+        /*}*/
+
+        .align-middle {
+            vertical-align: middle !important;
         }
-        .table tbody {
-            display: block;
-            height: 135px; /* Adjust height to fit 5 rows */
-            overflow-y: auto;
+
+        .align-center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
-        .table thead, .table tbody tr {
-            display: table;
-            width: 100%;
-            table-layout: fixed;
+
+        .align-center img {
+            margin-right: 10px;
         }
     </style>
 </head>
@@ -129,7 +151,8 @@
     <div class="row align-items-center py-3 px-xl-5">
         <div class="col-lg-3 d-none d-lg-block">
             <a href="" class="text-decoration-none">
-                <h1 class="m-0 display-5 font-weight-semi-bold"><span class="text-primary font-weight-bold border px-3 mr-1">MS</span>Store</h1>
+                <h1 class="m-0 display-5 font-weight-semi-bold"><span
+                        class="text-primary font-weight-bold border px-3 mr-1">MS</span>Store</h1>
             </a>
         </div>
         <div class="col-lg-6 col-6 text-left">
@@ -155,12 +178,14 @@
                         <c:when test="${empty sessionScope.user}">
                             <!-- Hiển thị nút đăng nhập khi chưa đăng nhập -->
                             <li><a class="dropdown-item text-center" href="#">
-                                <button class="btn btn-primary w-100 px-5" data-toggle="modal" data-target="#loginModal">Đăng nhập
+                                <button class="btn btn-primary w-100 px-5" data-toggle="modal"
+                                        data-target="#loginModal">Đăng nhập
                                 </button>
                             </a></li>
 
                             <li><a class="dropdown-item text-center mt-3 " href="#">
-                                <button class="btn btn-primary w-100 px-5" data-toggle="modal" data-target="#registerModal">Đăng ký
+                                <button class="btn btn-primary w-100 px-5" data-toggle="modal"
+                                        data-target="#registerModal">Đăng ký
                                 </button>
                             </a></li>
                         </c:when>
@@ -178,10 +203,12 @@
                 <a href="gio-hang" class="btn border">
                     <i class="fas fa-shopping-cart text-primary"></i>
                     <c:if test="${soLuong > 0}">
-                        <span class="totalQuantityCart" style="display: flex; justify-content: center; align-items: center">${soLuong}</span>
+                        <span class="totalQuantityCart"
+                              style="display: flex; justify-content: center; align-items: center">${soLuong}</span>
                     </c:if>
                     <c:if test="${soLuong == null}">
-                        <span class="totalQuantityCart" style="display: flex; justify-content: center; align-items: center">0</span>
+                        <span class="totalQuantityCart"
+                              style="display: flex; justify-content: center; align-items: center">0</span>
                     </c:if>
                 </a>
             </div>
@@ -191,7 +218,8 @@
 <!-- Topbar End -->
 
 <!-- Login Modal Start  (Modal Form đăng nhập)-->
-<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true"
      data-backdrop="true" data-keyboard="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -222,7 +250,8 @@
                             <input type="submit" name="submit" class="btn btn-info btn-md w-100" value="Submit">
                         </div>
                         <div id="register-link" class="text-right">
-                            <a href="#" class="text-info " data-toggle="modal" data-target="#registerModal" data-dismiss="modal">Register here</a>
+                            <a href="#" class="text-info " data-toggle="modal" data-target="#registerModal"
+                               data-dismiss="modal">Register here</a>
                         </div>
                     </form>
                 </div>
@@ -233,7 +262,8 @@
 <!-- Login Modal End -->
 
 <!-- Registration Modal Start (Modal Form đăng ký) -->
-<div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel" aria-hidden="true"
+<div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel"
+     aria-hidden="true"
      data-backdrop="true" data-keyboard="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -245,11 +275,11 @@
             </div>
             <div class="modal-body">
                 <div class="register-form-wrapper">
-                    <form id="register-form" class="form" action="register" method="post"  modelAttribute="khachHangDTO">
+                    <form id="register-form" class="form" action="register" method="post" modelAttribute="khachHangDTO">
                         <div class="form-group">
                             <label for="registerUsername" class="text-info">Username:</label><br>
                             <input placeholder="Username" type="text" id="registerUsername" name="taiKhoan"
-                                   class="form-control"  value="${khachHangDTO.taiKhoan}">
+                                   class="form-control" value="${khachHangDTO.taiKhoan}">
                             <small id="registerUsernameError" class="text-danger"></small>
                         </div>
                         <div class="form-group">
@@ -267,14 +297,15 @@
                         <div class="form-group">
                             <label for="registerPassword" class="text-info">Password:</label><br>
                             <input placeholder="Password" type="password" id="registerPassword" name="matKhau"
-                                   class="form-control"  value="${khachHangDTO.matKhau}">
+                                   class="form-control" value="${khachHangDTO.matKhau}">
                             <small id="registerPasswordError" class="text-danger"></small>
                         </div>
                         <div class="form-group">
                             <input type="submit" name="submit" class="btn btn-info btn-md w-100" value="Register">
                         </div>
                         <div id="login-link" class="text-right">
-                            <a href="#" class="text-info " data-toggle="modal" data-target="#loginModal" data-dismiss="modal">Back to Login</a>
+                            <a href="#" class="text-info " data-toggle="modal" data-target="#loginModal"
+                               data-dismiss="modal">Back to Login</a>
                         </div>
                     </form>
                 </div>
@@ -288,14 +319,16 @@
 <div class="container-fluid">
     <div class="row border-top px-xl-5">
         <div class="col-lg-3 d-none d-lg-block">
-            <a class="btn shadow-none d-flex align-items-center justify-content-between bg-primary text-white w-100" data-toggle="collapse" style="height: 65px; margin-top: -1px; padding: 0 30px;">
+            <a class="btn shadow-none d-flex align-items-center justify-content-between bg-primary text-white w-100"
+               data-toggle="collapse" style="height: 65px; margin-top: -1px; padding: 0 30px;">
                 <h6 class="m-0 text-light">Trải nghiệm mua sắm chất lượng</h6>
             </a>
         </div>
         <div class="col-lg-9">
             <nav class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0">
                 <a href="" class="text-decoration-none d-block d-lg-none">
-                    <h1 class="m-0 display-5 font-weight-semi-bold"><span class="text-primary font-weight-bold border px-3 mr-1">MS</span>Store</h1>
+                    <h1 class="m-0 display-5 font-weight-semi-bold"><span
+                            class="text-primary font-weight-bold border px-3 mr-1">MS</span>Store</h1>
                 </a>
                 <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
                     <span class="navbar-toggler-icon"></span>
@@ -330,70 +363,155 @@
 <!-- Page Header End -->
 
 <!-- Giỏ hàng -->
-<form action="/thanh-toan" method="post" id="diaChiForm">
-    <c:if test="${check == false}">
-        <div class="container-fluid pt-7"
-             style="font-family: 'Roboto Condensed', 'Helvetica Neue', Helvetica, Arial, sans-serif;">
 
-            <div class="row px-xl-5">
-                <div class="col-lg table-responsive mb-5">
-                    <table class="table table-bordered text-center mb-0">
-                        <thead class="bg-secondary text-dark">
+<c:if test="${check == false}">
+    <div class="container-fluid pt-7"
+         style="font-family: 'Roboto Condensed', 'Helvetica Neue', Helvetica, Arial, sans-serif;">
+
+        <div class="row px-xl-5">
+            <div class="col-lg table-responsive mb-5">
+                <table class="table table-bordered text-center mb-0">
+                    <thead class="bg-secondary text-dark">
+                    <tr>
+                        <th>Sản phẩm</th>
+                        <th>Số lượng</th>
+                        <th>Màu sắc</th>
+                        <th>Kích thước</th>
+                        <th>Đơn giá</th>
+                        <th>Thành tiền</th>
+                        <th>Thao tác</th>
+                    </tr>
+                    </thead>
+                    <c:forEach var="i" items="${listGioHang}">
+                        <tbody class="align-middle">
                         <tr>
-                            <th>Sản phẩm</th>
-                            <th>Số lượng</th>
-                            <th>Màu sắc</th>
-                            <th>Kích thước</th>
-                            <th>Đơn giá</th>
-                            <th>Thành tiền</th>
-                            <th>Thao tác</th>
-                        </tr>
-                        </thead>
-                        <c:forEach var="i" items="${listGioHang}">
-                            <tbody class="align-middle">
-                            <tr>
-                                <td class="align-middle"><img src="/image/${i.hinhAnh1}" alt=""
-                                                              style="width: 50px;">
-                                        ${i.tenSanPham}
-                                </td>
-                                <td class="align-middle">
-                                    <div class="input-group quantity mx-auto" style="width: 100px;">
-                                        <div class="input-group-btn">
-                                            <a href="/cua-hang/giam-so-luong/${i.idHDCT}">
-                                                <button type="button" class="btn btn-sm btn-primary btn-minus">
-                                                    <i class="fa fa-minus"></i>
-                                                </button>
-                                            </a>
-                                        </div>
-                                        <input type="text" class="form-control form-control-sm bg-secondary text-center"
-                                               value="${i.soLuong}">
-                                        <div class="input-group-btn">
-                                            <a href="/cua-hang/tang-so-luong/${i.idHDCT}">
-                                                <button type="button" class="btn btn-sm btn-primary btn-plus">
-                                                    <i class="fa fa-plus"></i>
-                                                </button>
-                                            </a>
-                                        </div>
+                            <td class="align-middle align-center"><img src="/image/${i.hinhAnh1}" alt=""
+                                                                       style="width: 50px;">
+                                    ${i.tenSanPham}
+                            </td>
+                            <td class="align-middle">
+                                <div class="input-group quantity mx-auto" style="width: 100px;">
+                                    <div class="input-group-btn">
+                                        <a href="/cua-hang/giam-so-luong/${i.idHDCT}">
+                                            <button type="button" class="btn btn-sm btn-primary btn-minus">
+                                                <i class="fa fa-minus"></i>
+                                            </button>
+                                        </a>
                                     </div>
-                                </td>
-                                <td class="align-middle">${i.tenMauSac}</td>
-                                <td class="align-middle">${i.tenKichThuoc}</td>
-                                <td class="align-middle">${i.donGia}</td>
-                                <td class="align-middle">${i.soLuong*i.donGia}</td>
-                                <td class="align-middle">
-                                    <a href="/cua-hang/delete/${i.idHDCT}">
-                                        <button type="button" class="btn btn-sm btn-primary">
-                                            <i class="fa fa-times"></i>
-                                        </button>
-                                    </a>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </c:forEach>
-                    </table>
+                                    <input type="text" class="form-control form-control-sm bg-secondary text-center"
+                                           value="${i.soLuong}">
+                                    <div class="input-group-btn">
+                                        <a href="/cua-hang/tang-so-luong/${i.idHDCT}">
+                                            <button type="button" class="btn btn-sm btn-primary btn-plus">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                        </a>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="align-middle">${i.tenMauSac}</td>
+                            <td class="align-middle">${i.tenKichThuoc}</td>
+                            <td class="align-middle">${i.donGia}</td>
+                            <td class="align-middle">${i.soLuong*i.donGia}</td>
+                            <td class="align-middle">
+                                <a href="/cua-hang/delete/${i.idHDCT}">
+                                    <button type="button" class="btn btn-sm btn-primary">
+                                        <i class="fa fa-times"></i>
+                                    </button>
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </c:forEach>
+                </table>
+            </div>
+        </div>
+        <!-- Test modal -->
+        <button type="button" class="btn btn-primary mb-3" data-toggle="modal"
+                data-target="#addAddressModal1">
+            Thêm địa chỉ
+        </button>
+        <div class="modal fade" id="addAddressModal1" tabindex="-1" role="dialog"
+             aria-labelledby="addAddressModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addAddressModalLabel">Thêm địa chỉ mới</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="/cua-hang/them-dia-chi-GH" method="post" id="themDiaChi">
+                            <div class="row px-xl-5">
+                                <div class="col-md-6 form-group">
+                                    <label><b>Họ tên</b></label>
+                                    <input class="form-control" type="text" name="tenNguoiNhan" id="tenNguoiNhan1"
+                                           style="background-color: #f1f1f1; border: 2px solid #e4e4e4;"
+                                           placeholder="Họ tên">
+                                    <span id="tenNguoiNhan1Error" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label><b>Số điện thoại</b></label>
+                                    <input class="form-control" type="number" name="sdtNguoiNhan" id="sdtNguoiNhan1"
+                                           style="background-color: #f1f1f1; border: 2px solid #e4e4e4;"
+                                           placeholder="Số điện thoại">
+                                    <span id="sdtNguoiNhan1Error" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <label><b>Địa chỉ</b></label>
+                                    <input class="form-control" type="text" name="diaChiChiTiet"
+                                           id="diaChiChiTiet1"
+                                           style="background-color: #f1f1f1; border: 2px solid #e4e4e4;"
+                                           placeholder="Địa chỉ">
+                                    <span id="diaChiChiTiet1Error" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label><b>Tỉnh/Thành phố</b></label>
+                                    <select class="custom-select"
+                                        <%--                                            id="tinhThanh" name="tinhThanh"--%>
+                                            title="Chọn Tỉnh Thành"
+                                            style="background-color: #f1f1f1; border: 1px solid #e4e4e4;">
+                                        <option value="0">Chọn tỉnh thành</option>
+                                    </select>
+                                    <span id="tinhThanhError" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label><b>Quận/Huyện</b></label>
+                                    <select class="custom-select"
+                                        <%--                                            id="quanHuyen" name="quanHuyen"--%>
+                                            title="Chọn Quận Huyện"
+                                            style="background-color: #f1f1f1; border: 1px solid #e4e4e4;">
+                                        <option value="0">Chọn quận huyện</option>
+                                    </select>
+                                    <span id="quanHuyenError" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label><b>Phường/Xã</b></label>
+                                    <select class="custom-select"
+                                        <%--                                            id="phuongXa" name="phuongXa"--%>
+                                            title="Chọn Phường Xã"
+                                            style="background-color: #f1f1f1; border: 1px solid #e4e4e4;">
+                                        <option value="0">Chọn phường xã</option>
+                                    </select>
+                                    <span id="phuongXaError" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                            <%--                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>--%>
+                            <%--                        <button type="button" id="submitForm" class=" btn btn-primary">Thêm--%>
+                        </button>
+                    </div>
                 </div>
             </div>
-            <!-- Thông tin giao hàng -->
+        </div>
+
+        <!-- End modal -->
+        <!-- Thông tin giao hàng -->
+        <form action="/cua-hang/thanh-toan" method="post" id="diaChiForm">
             <div class="row px-xl-5" style="margin-top: 100px">
                 <div class="col-lg-8 table-responsive">
                     <div class="container-fluid mb-10">
@@ -401,42 +519,51 @@
                         <div class="row px-xl-5">
                             <div class="col-md-6 form-group">
                                 <label><b>Họ tên</b></label>
-                                <input class="form-control" type="text" name="tenNguoiNhan"
+                                <input class="form-control" type="text" name="tenNguoiNhan" id="tenNguoiNhan"
+                                       value="${response.hoTen}"
                                        style="background-color: #f1f1f1; border: 2px solid #e4e4e4;"
                                        placeholder="Họ tên">
+                                <span id="tenNguoiNhanError" class="text-danger"></span>
                             </div>
                             <div class="col-md-6 form-group">
                                 <label><b>Số điện thoại</b></label>
-                                <input class="form-control" type="text" name="sdtNguoiNhan"
+                                <input class="form-control" type="number" name="sdtNguoiNhan" id="sdtNguoiNhan"
+                                       value="${response.sdt}"
                                        style="background-color: #f1f1f1; border: 2px solid #e4e4e4;"
                                        placeholder="Số điện thoại">
+                                <span id="sdtNguoiNhanError" class="text-danger"></span>
                             </div>
                             <div class="col-md-12 form-group">
                                 <label><b>Địa chỉ</b></label>
-                                <input class="form-control" type="text" name="diaChiChiTiet"
+                                <input class="form-control" type="text" name="diaChiChiTiet" id="diaChiChiTiet"
+                                       value="${response.diaChiChiTiet}"
                                        style="background-color: #f1f1f1; border: 2px solid #e4e4e4;"
                                        placeholder="Địa chỉ">
+                                <span id="diaChiChiTietError" class="text-danger"></span>
                             </div>
                             <div class="col-md-4 form-group">
                                 <label><b>Tỉnh/Thành phố</b></label>
                                 <select class="custom-select" id="tinh" name="tinh" title="Chọn Tỉnh Thành"
                                         style="background-color: #f1f1f1; border: 1px solid #e4e4e4;">
-                                    <option value="0">Tỉnh Thành</option>
+                                    <option value="${response.idTinhThanh}">${response.idTinhThanh}</option>
                                 </select>
+                                <span id="tinhError" class="text-danger"></span>
                             </div>
                             <div class="col-md-4 form-group">
                                 <label><b>Quận/Huyện</b></label>
                                 <select class="custom-select" id="quan" name="quan" title="Chọn Quận Huyện"
                                         style="background-color: #f1f1f1; border: 1px solid #e4e4e4;">
-                                    <option value="0">Quận Huyện</option>
+                                    <option value="${response.idQuanHuyen}">${response.idQuanHuyen}</option>
                                 </select>
+                                <span id="quanError" class="text-danger"></span>
                             </div>
                             <div class="col-md-4 form-group">
                                 <label><b>Phường/Xã</b></label>
                                 <select class="custom-select" id="phuong" name="phuong" title="Chọn Phường Xã"
                                         style="background-color: #f1f1f1; border: 1px solid #e4e4e4;">
-                                    <option value="0">Phường Xã</option>
+                                    <option value="${response.idPhuongXa}">${response.idPhuongXa}</option>
                                 </select>
+                                <span id="phuongError" class="text-danger"></span>
                             </div>
                             <div class="col-md-12 form-group">
                                 <label><b>Ghi chú</b></label>
@@ -511,12 +638,13 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </c:if>
-    <c:if test="${check == true}">
-        <h3 style="text-align: center">Giỏ hàng không có sản phẩm</h3>
-    </c:if>
-</form>
+        </form>
+    </div>
+</c:if>
+<c:if test="${check == true}">
+    <h3 style="text-align: center">Giỏ hàng không có sản phẩm</h3>
+</c:if>
+
 <!-- Cart End -->
 
 
@@ -525,9 +653,11 @@
     <div class="row px-xl-5 pt-5">
         <div class="col-lg-4 col-md-12 mb-5 pr-3 pr-xl-5">
             <a href="" class="text-decoration-none">
-                <h1 class="mb-4 display-5 font-weight-semi-bold"><span class="text-primary font-weight-bold border border-white px-3 mr-1">MS</span>Store</h1>
+                <h1 class="mb-4 display-5 font-weight-semi-bold"><span
+                        class="text-primary font-weight-bold border border-white px-3 mr-1">MS</span>Store</h1>
             </a>
-            <p>Dolore erat dolor sit lorem vero amet. Sed sit lorem magna, ipsum no sit erat lorem et magna ipsum dolore amet erat.</p>
+            <p>Dolore erat dolor sit lorem vero amet. Sed sit lorem magna, ipsum no sit erat lorem et magna ipsum dolore
+                amet erat.</p>
             <p class="mb-2"><i class="fa fa-map-marker-alt text-primary mr-3"></i>123 Street, New York, USA</p>
             <p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i>info@example.com</p>
             <p class="mb-0"><i class="fa fa-phone-alt text-primary mr-3"></i>+012 345 67890</p>
@@ -539,9 +669,12 @@
                     <div class="d-flex flex-column justify-content-start">
                         <a class="text-dark mb-2" href="index.html"><i class="fa fa-angle-right mr-2"></i>Home</a>
                         <a class="text-dark mb-2" href="shop.html"><i class="fa fa-angle-right mr-2"></i>Our Shop</a>
-                        <a class="text-dark mb-2" href="detail.html"><i class="fa fa-angle-right mr-2"></i>Shop Detail</a>
-                        <a class="text-dark mb-2" href="cart.html"><i class="fa fa-angle-right mr-2"></i>Shopping Cart</a>
-                        <a class="text-dark mb-2" href="checkout.html"><i class="fa fa-angle-right mr-2"></i>Checkout</a>
+                        <a class="text-dark mb-2" href="detail.html"><i class="fa fa-angle-right mr-2"></i>Shop
+                            Detail</a>
+                        <a class="text-dark mb-2" href="cart.html"><i class="fa fa-angle-right mr-2"></i>Shopping
+                            Cart</a>
+                        <a class="text-dark mb-2" href="checkout.html"><i
+                                class="fa fa-angle-right mr-2"></i>Checkout</a>
                         <a class="text-dark" href="contact.html"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
                     </div>
                 </div>
@@ -550,9 +683,12 @@
                     <div class="d-flex flex-column justify-content-start">
                         <a class="text-dark mb-2" href="index.html"><i class="fa fa-angle-right mr-2"></i>Home</a>
                         <a class="text-dark mb-2" href="shop.html"><i class="fa fa-angle-right mr-2"></i>Our Shop</a>
-                        <a class="text-dark mb-2" href="detail.html"><i class="fa fa-angle-right mr-2"></i>Shop Detail</a>
-                        <a class="text-dark mb-2" href="cart.html"><i class="fa fa-angle-right mr-2"></i>Shopping Cart</a>
-                        <a class="text-dark mb-2" href="checkout.html"><i class="fa fa-angle-right mr-2"></i>Checkout</a>
+                        <a class="text-dark mb-2" href="detail.html"><i class="fa fa-angle-right mr-2"></i>Shop
+                            Detail</a>
+                        <a class="text-dark mb-2" href="cart.html"><i class="fa fa-angle-right mr-2"></i>Shopping
+                            Cart</a>
+                        <a class="text-dark mb-2" href="checkout.html"><i
+                                class="fa fa-angle-right mr-2"></i>Checkout</a>
                         <a class="text-dark" href="contact.html"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
                     </div>
                 </div>
@@ -560,11 +696,12 @@
                     <h5 class="font-weight-bold text-dark mb-4">Newsletter</h5>
                     <form action="">
                         <div class="form-group">
-                            <input type="text" class="form-control border-0 py-4" placeholder="Your Name" required="required" />
+                            <input type="text" class="form-control border-0 py-4" placeholder="Your Name"
+                                   required="required"/>
                         </div>
                         <div class="form-group">
                             <input type="email" class="form-control border-0 py-4" placeholder="Your Email"
-                                   required="required" />
+                                   required="required"/>
                         </div>
                         <div>
                             <button class="btn btn-primary btn-block border-0 py-3" type="submit">Subscribe Now</button>
@@ -744,8 +881,7 @@
                 $('#registerPasswordError').text('Vui lòng nhập mật khẩu.');
                 $('#registerPassword').addClass('border-danger');
                 hasError = true;
-            }
-            else if (password.length < 6) {
+            } else if (password.length < 6) {
                 $('#registerPasswordError').text('Mật khẩu phải có ít nhất 6 ký tự.');
                 $('#registerPassword').addClass('border-danger');
                 hasError = true;
@@ -767,7 +903,6 @@
         });
 
 
-
         // Ẩn lỗi khi người dùng click vào trường input
         $('input').focus(function () {
             $(this).siblings('.text-danger').text('');
@@ -777,7 +912,7 @@
         // Hiển thị lỗi từ Controller (nếu có)
         var errorUsername = '<%= request.getAttribute("errorUsername") %>';
         var errorPassword = '<%= request.getAttribute("errorPassword") %>';
-        var errorUsernameExit= '<%= request.getAttribute("errorUsernameExit") %>';
+        var errorUsernameExit = '<%= request.getAttribute("errorUsernameExit") %>';
 
         if (errorUsername && errorUsername !== 'null') {
             $('#taiKhoanError').text(errorUsername);
@@ -817,6 +952,228 @@
         var regex = /^(0|\+84)\d{9,10}$/;
         return regex.test(phoneNumber);
     }
+
+    //Hiển thị tên tỉnh, huyện, xã
+    $(document).ready(function () {
+        var token = '4787bafa-2157-11ef-a90d-aaf29aa34580';
+
+        // Function to get JSON with token
+        function getJSONWithToken(url, callback) {
+            $.ajax({
+                url: url,
+                headers: {
+                    'Token': token
+                },
+                success: callback,
+                error: function (xhr, status, error) {
+                    console.error("Error: " + error);
+                }
+            });
+        }
+
+        // Lấy tỉnh thành
+        getJSONWithToken('https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/province', function (data_tinh) {
+            // Sắp xếp theo ProvinceID tăng dần
+            data_tinh.data.sort(function (a, b) {
+                return a.ProvinceID - b.ProvinceID;
+            });
+
+            $.each(data_tinh.data, function (key_tinh, val_tinh) {
+                $("#tinh").append('<option value="' + val_tinh.ProvinceID + '" name="' + val_tinh.ProvinceName + '">' + val_tinh.ProvinceName + '</option>');
+            });
+
+            $("#tinh").change(function (e) {
+                var idtinh = $(this).val();
+
+                // Lấy quận huyện
+                getJSONWithToken('https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/district?province_id=' + idtinh, function (data_quan) {
+                    $("#quan").html('<option value="0">Quận Huyện</option>');
+                    $("#phuong").html('<option value="0">Phường Xã</option>');
+                    $.each(data_quan.data, function (key_quan, val_quan) {
+                        $("#quan").append('<option value="' + val_quan.DistrictID + '">' + val_quan.DistrictName + '</option>');
+                    });
+
+                    // Lấy phường xã
+                    $("#quan").change(function (e) {
+                        var idquan = $(this).val();
+                        getJSONWithToken('https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id=' + idquan, function (data_phuong) {
+                            $("#phuong").html('<option value="0">Phường Xã</option>');
+                            $.each(data_phuong.data, function (key_phuong, val_phuong) {
+                                $("#phuong").append('<option value="' + val_phuong.WardCode + '">' + val_phuong.WardName + '</option>');
+                            });
+                        });
+                    });
+                });
+            });
+        });
+
+        $("#diaChiForm").submit(function (e) {
+            // Ngăn chặn gửi biểu mẫu ngay lập tức
+            e.preventDefault();
+
+            // Xóa các thông báo lỗi trước đó
+            $(".text-danger").text("");
+
+            var tenTinh = $("#tinh option:selected").text();
+            var tenQuan = $("#quan option:selected").text();
+            var tenPhuong = $("#phuong option:selected").text();
+
+            $("<input>").attr({
+                type: "hidden",
+                name: "tenTinh",
+                value: tenTinh
+            }).appendTo("#diaChiForm");
+
+            $("<input>").attr({
+                type: "hidden",
+                name: "tenQuan",
+                value: tenQuan
+            }).appendTo("#diaChiForm");
+
+            $("<input>").attr({
+                type: "hidden",
+                name: "tenPhuong",
+                value: tenPhuong
+            }).appendTo("#diaChiForm");
+
+            // Thêm phần kiểm tra tính hợp lệ của biểu mẫu
+            var isValid = true;
+
+            // Kiểm tra định dạng số điện thoại
+            var phonePattern = /^(03|05|07|08|09)+([0-9]{8})$/; // Định dạng số điện thoại 10 số bắt đầu 03, 05, 07, 08, 09.
+
+            // Kiểm tra các trường bắt buộc
+            if (!$("#tenNguoiNhan").val()) {
+                isValid = false;
+                $("#tenNguoiNhanError").text("Vui lòng nhập họ tên");
+            } else if (!$("#sdtNguoiNhan").val()) {
+                isValid = false;
+                $("#sdtNguoiNhanError").text("Vui lòng nhập số điện thoại");
+            } else if (!phonePattern.test($("#sdtNguoiNhan").val())) {
+                isValid = false;
+                $("#sdtNguoiNhanError").text("Số điện thoại không hợp lệ. Vui lòng nhập lại");
+            } else if (!$("#diaChiChiTiet").val()) {
+                isValid = false;
+                $("#diaChiChiTietError").text("Vui lòng nhập địa chỉ");
+            } else if ($("#tinh").val() === "0") {
+                isValid = false;
+                $("#tinhError").text("Vui lòng chọn tỉnh/thành phố");
+            } else if ($("#quan").val() === "0") {
+                isValid = false;
+                $("#quanError").text("Vui lòng chọn quận/huyện");
+            } else if ($("#phuong").val() === "0") {
+                isValid = false;
+                $("#phuongError").text("Vui lòng chọn phường/xã");
+            }
+
+            if (isValid) {
+                // Nếu hợp lệ, gửi biểu mẫu
+                $("#diaChiForm")[0].submit();
+            }
+        });
+
+        $("#submitForm").click(function () {
+
+            // Xóa các thông báo lỗi trước đó
+            $(".text-danger").text("");
+
+            var isValid = true;
+
+            // Kiểm tra định dạng số điện thoại
+            var phonePattern = /^(03|05|07|08|09)+([0-9]{8})$/; // Định dạng số điện thoại 10 số bắt đầu 03, 05, 07, 08, 09.
+
+            // Kiểm tra các trường bắt buộc
+            if (!$("#tenNguoiNhan1").val()) {
+                isValid = false;
+                $("#tenNguoiNhan1Error").text("Vui lòng nhập họ tên");
+            } else if (!$("#sdtNguoiNhan1").val()) {
+                isValid = false;
+                $("#sdtNguoiNhan1Error").text("Vui lòng nhập số điện thoại");
+            } else if (!phonePattern.test($("#sdtNguoiNhan").val())) {
+                isValid = false;
+                $("#sdtNguoiNhan1Error").text("Số điện thoại không hợp lệ. Vui lòng nhập lại");
+            } else if (!$("#diaChiChiTiet1").val()) {
+                isValid = false;
+                $("#diaChiChiTiet1Error").text("Vui lòng nhập địa chỉ");
+            } else if ($("#tinhThanh").val() === "0") {
+                isValid = false;
+                $("#tinhThanhError").text("Vui lòng chọn tỉnh/thành phố");
+            } else if ($("#quanHuyen").val() === "0") {
+                isValid = false;
+                $("#quanHuyenError").text("Vui lòng chọn quận/huyện");
+            } else if ($("#phuongXa").val() === "0") {
+                isValid = false;
+                $("#phuongXaError").text("Vui lòng chọn phường/xã");
+            }
+
+            // Xóa các thông báo lỗi trước đó
+            $(".text-danger").text("");
+
+            var isValid = true;
+
+            // Kiểm tra Tên người nhận
+            if ($("#tenNguoiNhan1").val().trim() === "") {
+                $("#tenNguoiNhan1Error").text("Tên người nhận không được để trống.");
+                isValid = false;
+            }
+
+            // Kiểm tra SĐT người nhận
+            if ($("#sdtNguoiNhan1").val() === "0") {
+                $("#sdtNguoiNhan1Error").text("SĐT người nhận không được để trống");
+                isValid = false;
+            }
+
+            // Kiểm tra Địa chỉ
+            if ($("#diaChiChiTiet1").val().trim() === "") {
+                $("#diaChiChiTiet1Error").text("Địa chỉ không được để trống.");
+                isValid = false;
+            }
+
+            // Kiểm tra Tỉnh/Thành phố
+            if ($("#tinhThanh").val() === "0") {
+                $("#tinhThanhError").text("Vui lòng chọn Tỉnh/Thành phố.");
+                isValid = false;
+            }
+
+            // Kiểm tra Quận/Huyện
+            if ($("#quanHuyen").val() === "0") {
+                $("#quanHuyenError").text("Vui lòng chọn Quận/Huyện.");
+                isValid = false;
+            }
+
+            // Kiểm tra Phường/Xã
+            if ($("#phuongXa").val() === "0") {
+                $("#phuongXaError").text("Vui lòng chọn Phường/Xã.");
+                isValid = false;
+            }
+
+            if (isValid) {
+                var tenTinhThanh = $("#tinh option:selected").text();
+                var tenQuanHuyen = $("#quan option:selected").text();
+                var tenPhuongXa = $("#phuong option:selected").text();
+
+                $("<input>").attr({
+                    type: "hidden",
+                    name: "tenTinhThanh",
+                    value: tenTinhThanh
+                }).appendTo("#themDiaChi");
+
+                $("<input>").attr({
+                    type: "hidden",
+                    name: "tenQuanHuyen",
+                    value: tenQuanHuyen
+                }).appendTo("#themDiaChi");
+
+                $("<input>").attr({
+                    type: "hidden",
+                    name: "tenPhuongXa",
+                    value: tenPhuongXa
+                }).appendTo("#themDiaChi");
+
+                $("#themDiaChi").submit();
+            }
+        });
+    });
 </script>
 </body>
 

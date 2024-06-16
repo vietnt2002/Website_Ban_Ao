@@ -8,9 +8,9 @@ import java.util.Objects;
 public class DiaChi {
     private String id;
     private String diaChiChiTiet;
-    private PhuongXa idPhuongXa;
-    private QuanHuyen idQuanHuyen;
-    private TinhThanh idTinhThanh;
+    private String idPhuongXa;
+    private String idQuanHuyen;
+    private String idTinhThanh;
     private NhanVien idNhanVien;
     private KhachHang idKhachHang;
     private Integer trangThai;
@@ -43,47 +43,44 @@ public class DiaChi {
         this.trangThai = trangThai;
     }
 
+    @Column(name = "IdPhuongXa")
+    public String getIdPhuongXa() {
+        return idPhuongXa;
+    }
+
+    public void setIdPhuongXa(String idPhuongXa) {
+        this.idPhuongXa = idPhuongXa;
+    }
+
+    @Column(name = "IdQuanHuyen")
+    public String getIdQuanHuyen() {
+        return idQuanHuyen;
+    }
+
+    public void setIdQuanHuyen(String idQuanHuyen) {
+        this.idQuanHuyen = idQuanHuyen;
+    }
+
+    @Column(name = "IdTinhThanh")
+    public String getIdTinhThanh() {
+        return idTinhThanh;
+    }
+
+    public void setIdTinhThanh(String idTinhThanh) {
+        this.idTinhThanh = idTinhThanh;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         DiaChi diaChi = (DiaChi) o;
-        return Objects.equals(id, diaChi.id) && Objects.equals(diaChiChiTiet, diaChi.diaChiChiTiet) && Objects.equals(trangThai, diaChi.trangThai);
+        return Objects.equals(id, diaChi.id) && Objects.equals(diaChiChiTiet, diaChi.diaChiChiTiet) && Objects.equals(idPhuongXa, diaChi.idPhuongXa) && Objects.equals(idQuanHuyen, diaChi.idQuanHuyen) && Objects.equals(idTinhThanh, diaChi.idTinhThanh) && Objects.equals(trangThai, diaChi.trangThai);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(id, diaChiChiTiet, trangThai);
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "IdPhuongXa", referencedColumnName = "ID")
-    public PhuongXa getIdPhuongXa() {
-        return idPhuongXa;
-    }
-
-    public void setIdPhuongXa(PhuongXa phuongXaByIdPhuongXa) {
-        this.idPhuongXa = phuongXaByIdPhuongXa;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "IdQuanHuyen", referencedColumnName = "ID")
-    public QuanHuyen getIdQuanHuyen() {
-        return idQuanHuyen;
-    }
-
-    public void setIdQuanHuyen(QuanHuyen quanHuyenByIdQuanHuyen) {
-        this.idQuanHuyen = quanHuyenByIdQuanHuyen;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "IdTinhThanh", referencedColumnName = "ID")
-    public TinhThanh getIdTinhThanh() {
-        return idTinhThanh;
-    }
-
-    public void setIdTinhThanh(TinhThanh tinhThanhByIdTinhThanh) {
-        this.idTinhThanh = tinhThanhByIdTinhThanh;
     }
 
     @ManyToOne
