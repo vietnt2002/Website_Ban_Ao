@@ -30,6 +30,7 @@ public class HoaDonDTO {
     private BigDecimal tongTien;
     private Integer loaiHoaDon;
     private String ngayTao;
+    private String ngayThanhToan;
     private Integer trangThai;
 
     public HoaDonDTO(String id, String ma, KhachHang khachHang, NhanVien nhanVien, Integer phuongThucThanhToan, BigDecimal tongTien,Integer loaiHoaDon, String ngayTao, Integer trangThai) {
@@ -43,6 +44,20 @@ public class HoaDonDTO {
         this.ngayTao = ngayTao;
         this.trangThai = trangThai;
     }
+
+    public HoaDonDTO(String id, String ma, KhachHang khachHang, NhanVien nhanVien, Integer phuongThucThanhToan, BigDecimal tongTien,Integer loaiHoaDon, String ngayTao,String ngayThanhToan, Integer trangThai) {
+        this.id = id;
+        this.ma = ma;
+        this.khachHang = khachHang;
+        this.nhanVien = nhanVien;
+        this.phuongThucThanhToan = phuongThucThanhToan;
+        this.tongTien = tongTien;
+        this.loaiHoaDon = loaiHoaDon;
+        this.ngayTao = ngayTao;
+        this.ngayThanhToan = ngayThanhToan;
+        this.trangThai = trangThai;
+    }
+
 }
 
 

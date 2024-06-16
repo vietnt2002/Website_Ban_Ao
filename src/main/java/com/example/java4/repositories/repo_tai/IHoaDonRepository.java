@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,6 +26,7 @@ public interface IHoaDonRepository   extends JpaRepository<HoaDon,String> {
     public static final int DANG_GIAO_HANG = 4;
     public static final int GIAO_HANG_THANH_CONG = 5;
     public static final int DA_HOAN_THANH = 6;
+    public static final int DA_HUY= 7;
 
     //Phương thức thanh toán
     public static final int TIEN_MAT = 0;
@@ -48,18 +50,9 @@ public interface IHoaDonRepository   extends JpaRepository<HoaDon,String> {
     // Tìm hóa đơn theo loại hóa đơn, chức năng lọc hóa đơn theo LoaiHoaDon
     Page<HoaDon> findByLoaiHoaDon(int loaiHoaDon, Pageable pageable);
 
-    //Chức năng tìm kiếm hóa đơn theo nhiều tiêu chí
-//    @Query("SELECT h FROM HoaDon h " +
-//            "JOIN h.idKhachHang kh " +
-//            "WHERE (:keyword IS NULL OR LOWER(h.ma) LIKE LOWER(CONCAT('%', :keyword, '%')) " +
-//            "OR LOWER(kh.sdt) LIKE LOWER(CONCAT('%', :keyword, '%'))) " +
-//            "AND (:loaiHoaDon IS NULL OR h.loaiHoaDon = :loaiHoaDon) " +
-//            "AND (:ngayTao IS NULL OR FUNCTION('DATE', h.ngayTao) = :ngayTao) " +
-//            "ORDER BY h.ngayTao DESC")
-//    Page<HoaDon> searchHoaDon(@Param("keyword") String keyword,
-//                              @Param("loaiHoaDon") Integer loaiHoaDon,
-//                              @Param("ngayTao") LocalDate ngayTao,
-//                              Pageable pageable);
+    // Tìm hóa đơn theo loại hóa đơn, chức năng lọc hóa đơn theo LoaiHoaDon và Trạng thái của hóa đơn
+    Page<HoaDon> findByTrangThaiAndLoaiHoaDon(Integer trangThai, Integer loaiHoaDon, Pageable pageable);
+
 
     @Query("SELECT h FROM HoaDon h " +
             "JOIN h.idKhachHang kh " +
@@ -67,10 +60,20 @@ public interface IHoaDonRepository   extends JpaRepository<HoaDon,String> {
             "OR LOWER(kh.sdt) LIKE LOWER(CONCAT('%', :keyword, '%'))")
     Page<HoaDon> searchByKeyword(@Param("keyword") String keyword, Pageable pageable);
 
-//    @Query("SELECT h FROM HoaDon h " +
-//            "JOIN h.idKhachHang kh " +
-//            "WHERE h.ma LIKE :keyword " +
-//            "OR kh.sdt LIKE :keyword  ")
-//    Page<HoaDon> searchByKeyword(@Param("keyword") String keyword, Pageable pageable);
+    Page<HoaDon> findByTrangThaiAndLoaiHoaDonOrderByNgayTaoDesc(int trangThai, int loaiHoaDon, Pageable pageable);
+
+//    Page<HoaDon> findByNgayTaoBetween(LocalDateTime start, LocalDateTime end, Pageable pageable);
+
+    @Query("SELECT h FROM HoaDon h " +
+            "JOIN h.idKhachHang kh " +
+            "WHERE (LOWER(h.ma) LIKE LOWER(CONCAT('%', :keyword, '%')) " +
+            "OR LOWER(kh.sdt) LIKE LOWER(CONCAT('%', :keyword, '%'))) " +
+            "AND (:startDate IS NULL OR h.ngayTao >= :startDate) " +
+            "AND (:endDate IS NULL OR h.ngayTao <= :endDate)")
+    Page<HoaDon> searchByKeywordAndDate(@Param("keyword") String keyword,
+                                        @Param("startDate") LocalDateTime startDate,
+                                        @Param("endDate") LocalDateTime endDate,
+                                        Pageable pageable);
+
 
 }

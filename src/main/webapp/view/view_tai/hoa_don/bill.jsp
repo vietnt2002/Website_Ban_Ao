@@ -41,9 +41,9 @@
             href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
             rel="stylesheet">
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+<%--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">--%>
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
 </head>
 
@@ -352,43 +352,45 @@
 
                 <!-- Bộ lộc và tìm kiếm-->
                 <div class="card shadow mb-4">
-                    <div class="card-header py-3">
+                    <div class="card-header py-3 d-flex align-items-center">
+                        <i class="bi bi-funnel mr-3"></i>
                         <h6 class="m-0 font-weight-bold">Bộ Lọc</h6>
                     </div>
                     <div class="card-body">
-                        <form class="row g-3" method="get" action="/hoa-don/tim-kiem">
+                        <form class="row g-3" method="get" action="/hoa-don/hien-thi">
                             <div class="col-md-6">
                                 <label for="searchKeyword" class="form-label">Tìm kiếm</label>
                                 <div class="input-group">
-                                    <input type="text" class="form-control bg-light border-0 small" id="searchKeyword" name="keyword"
+                                    <input type="text" class="form-control bg-light border-0 small" id="searchKeyword"
+                                           name="keyword"
                                            placeholder="Nhập mã hóa đơn hoặc SĐT khách hàng" value="${keyword}"
                                            aria-label="Search" aria-describedby="basic-addon2">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-primary" type="submit">
-                                            <i class="bi bi-search"></i>
-                                        </button>
-                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <label for="inputLoaiHoaDon" class="form-label">Loại Hóa Đơn</label>
-                                <select id="inputLoaiHoaDon" class="form-select" name="loaiHoaDon">
-                                    <option value="">Tất cả</option>
-                                    <option value="0">Bán Online</option>
-                                    <option value="1">Bán tại quầy</option>
+                                <select id="inputLoaiHoaDon" class="form-select" name="loaiHoaDon" onchange="this.form.submit()">
+                                    <option value="-1" ${currentLoaiHoaDon == -1 ? 'selected' : ''} >Tất cả</option>
+                                    <option value="0" ${currentLoaiHoaDon == 0 ? 'selected' : ''}>Bán Online</option>
+                                    <option value="1" ${currentLoaiHoaDon == 1 ? 'selected' : ''}>Bán tại quầy</option>
                                 </select>
                             </div>
 
-                            <div class="row mt-3">
-                                <div class="col-md-6">
-                                    <label for="inputNgayTao" class="form-label">Ngày Tạo</label>
-                                    <input type="date" class="form-control" id="inputNgayTao" name="ngayTao">
-                                </div>
 
-                                <div class="col-md-6 d-flex align-items-end">
-                                    <a href="/hoa-don/hien-thi"> <button type="btn" class="btn btn-danger ">Làm Mới</button></a>
-                                </div>
+                            <div class="col-md-6 mt-3">
+                                <label for="startDate" class="form-label">Ngày bắt đầu</label>
+                                <input type="date" class="form-control" id="startDate" name="startDate" value="${startDate}">
                             </div>
+                            <div class="col-md-6 mt-3">
+                                <label for="endDate" class="form-label">Ngày kết thúc</label>
+                                <input type="date" class="form-control" id="endDate" name="endDate" value="${endDate}">
+                            </div>
+                            <div class="col-md-12 mt-3 d-flex justify-content-end">
+                                <button type="submit" class="btn btn-success mr-2">Tìm kiếm</button>
+                                <button type="button" class="btn btn-danger" onclick="resetForm()">Làm Mới</button>
+                            </div>
+
+
                         </form>
                     </div>
                 </div>
@@ -396,62 +398,95 @@
 
                 <!-- Danh sách hóa đơn -->
                 <div class="card shadow mb-4">
-                    <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold ">Danh Sách Hóa Đơn</h6>
+                    <div class="card-header py-3 d-flex align-items-center">
+                        <i class="bi bi-card-list mr-3"></i>
+                        <h6 class="m-0 font-weight-bold">Danh Sách Hóa Đơn</h6>
                     </div>
                     <div class="card-body">
 
                         <ul class="nav nav-tabs" id="myTab" role="tablist">
-                            <%--  Tab Danh sách hóa đơn với trạng thái là lấy tất cả  --%>
-                            <li class="nav-item" role="presentation">
+                            <li class="nav-item position-relative" role="presentation">
                                 <button class="nav-link active" id="all-tab" data-bs-toggle="tab" data-bs-target="#all"
-                                        type="button" role="tab" aria-controls="all" aria-selected="true">Tất Cả
+                                        type="button" role="tab" aria-controls="all" aria-selected="true"
+                                        data-status="all">
+                                    Tất Cả
+                                    <span class="position-absolute top-0 start-100
+                                    translate-middle badge rounded-pill bg-danger">
+                                             0
+<%--                                    <span class="visually-hidden">unread messages</span>--%>
+                                    </span>
                                 </button>
                             </li>
-                            <%--  Tab Danh sách hóa đơn với trạng thái là chờ xác nhận  --%>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="confimation-tab" data-bs-toggle="tab"
-                                        data-bs-target="#confimation" type="button" role="tab"
-                                        aria-controls="confimation" aria-selected="false">Chờ Xác Nhận
+                            <li class="nav-item position-relative" role="presentation">
+                                <button class="nav-link position-relative" id="confirmation-tab" data-bs-toggle="tab"
+                                        data-bs-target="#confirmation" type="button" role="tab"
+                                        aria-controls="confirmation" aria-selected="false" data-status="confirmation">
+                                    Chờ Xác Nhận
+                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    0
+<%--                                    <span class="visually-hidden">unread messages</span>--%>
+                                </span>
                                 </button>
                             </li>
-                            <%--  Tab Danh sách hóa đơn với trạng thái là đã xác nhận --%>
-                            <li class="nav-item" role="presentation">
+                            <li class="nav-item position-relative" role="presentation">
                                 <button class="nav-link" id="confirmed-tab" data-bs-toggle="tab"
                                         data-bs-target="#confirmed" type="button" role="tab" aria-controls="confirmed"
-                                        aria-selected="false">Đã Xác Nhận
+                                        aria-selected="false" data-status="confirmed">
+                                    Đã Xác Nhận
+                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                0
+                <span class="visually-hidden">unread messages</span>
+            </span>
                                 </button>
                             </li>
-                            <%--  Tab Danh sách hóa đơn với trạng thái là chờ giao hàng --%>
-                            <li class="nav-item" role="presentation">
+                            <li class="nav-item position-relative" role="presentation">
                                 <button class="nav-link" id="delivery-tab" data-bs-toggle="tab"
                                         data-bs-target="#delivery" type="button" role="tab" aria-controls="delivery"
-                                        aria-selected="false">Chờ Giao Hàng
+                                        aria-selected="false" data-status="delivery">
+                                    Chờ Giao Hàng
+                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                0
+                <span class="visually-hidden">unread messages</span>
+            </span>
                                 </button>
                             </li>
-                            <%--  Tab Danh sách hóa đơn với trạng thái là đã giao hàng  --%>
-                            <li class="nav-item" role="presentation">
+                            <li class="nav-item position-relative" role="presentation">
                                 <button class="nav-link" id="delivered-tab" data-bs-toggle="tab"
                                         data-bs-target="#delivered" type="button" role="tab" aria-controls="delivered"
-                                        aria-selected="false">Đã Giao Hàng
+                                        aria-selected="false" data-status="delivered">
+                                    Đã Giao Hàng
+                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                0
+                <span class="visually-hidden">unread messages</span>
+            </span>
                                 </button>
                             </li>
-                            <%--  Tab Danh sách hóa đơn với trạng thái là đã hoàn thành--%>
-                            <li class="nav-item" role="presentation">
+                            <li class="nav-item position-relative" role="presentation">
                                 <button class="nav-link" id="accomplished-tab" data-bs-toggle="tab"
                                         data-bs-target="#accomplished" type="button" role="tab"
-                                        aria-controls="accomplished" aria-selected="false">Đã Hoàn Thành
+                                        aria-controls="accomplished"
+                                        aria-selected="false" data-status="accomplished">
+                                    Đã Hoàn Thành
+                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                0
+                <span class="visually-hidden">unread messages</span>
+            </span>
                                 </button>
                             </li>
-                            <%--  Tab Danh sách hóa đơn với trạng thái là đã hủy --%>
-                            <li class="nav-item" role="presentation">
+                            <li class="nav-item position-relative" role="presentation">
                                 <button class="nav-link" id="cancelled-tab" data-bs-toggle="tab"
                                         data-bs-target="#cancelled" type="button" role="tab" aria-controls="cancelled"
-                                        aria-selected="false">Đã Hủy
+                                        aria-selected="false" data-status="cancelled">
+                                    Đã Hủy
+                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                        0
+                <span class="visually-hidden">unread messages</span>
+            </span>
                                 </button>
                             </li>
-
                         </ul>
+
+
                         <div class="tab-content mt-3" id="myTabContent">
                             <div class="tab-pane fade show active" id="all" role="tabpanel" aria-labelledby="all-tab">
                                 <%--  Danh sách tất cả các hóa đơn   --%>
@@ -472,7 +507,7 @@
                                     </thead>
 
                                     <tbody>
-                                    <c:forEach var="hoaDon" items="${hoaDonPageAll}" varStatus="i">
+                                    <c:forEach var="hoaDon" items="${hoaDonPage}" varStatus="i">
                                         <tr>
                                             <td>${i.index + 1}</td>
                                             <td>${hoaDon.ma}</td>
@@ -511,17 +546,21 @@
                                 <div class="float-end">
                                     <nav aria-label="Page navigation example">
                                         <ul class="pagination">
-                                            <c:if test="${pageHDALL.number > 0}">
+                                            <c:if test="${pageHD.hasPrevious()}">
                                                 <li class="page-item"><a class="page-link"
-                                                                         href="/hoa-don/hien-thi?page=${pageHDALL.number - 1}">&laquo;</a>
+                                                                         href="?page=${pageHD.number - 1}">&laquo;</a>
                                                 </li>
                                             </c:if>
-                                            <li class="page-item"><a class="page-link"
-                                                                     href="#">${pageHDALL.number + 1}</a>
-                                            </li>
-                                            <c:if test="${pageHDALL.number+1 < pageHDALL.totalPages}">
+                                            <c:if test="${pageHD.totalPages > 0}">
+                                                <c:forEach var="i" begin="0" end="${pageHD.totalPages - 1}">
+                                                    <li class="page-item ${pageHD.number == i ? 'active' : ''}">
+                                                        <a class="page-link" href="?page=${i}">${i + 1}</a>
+                                                    </li>
+                                                </c:forEach>
+                                            </c:if>
+                                            <c:if test="${pageHD.hasNext()}">
                                                 <li class="page-item"><a class="page-link"
-                                                                         href="/hoa-don/hien-thi?page=${pageHDALL.number + 1}">&raquo;</a>
+                                                                         href="?page=${pageHD.number + 1}">&raquo;</a>
                                                 </li>
                                             </c:if>
                                         </ul>
@@ -531,57 +570,58 @@
                             <div class="tab-pane fade" id="confimation" role="tabpanel"
                                  aria-labelledby="confimation-tab">
                                 <%-- Danh sách hóa đơn chờ xác nhận     --%>
-                                <table class="table table-bordered" id="Paid" width="100%" cellspacing="0">
-                                    <thead>
-                                    <tr>
-                                        <th>STT</th>
-                                        <th>Mã Hóa Đơn</th>
-                                        <th>Mã Nhân Viên</th>
-                                        <th>Tên Khách Hàng</th>
-                                        <th>SDT Khách Hàng</th>
-                                        <th>Loại Hóa Đơn</th>
-                                        <th>Tổng Tiền</th>
-                                        <th>Ngày Tạo</th>
-                                        <th>Trạng Thái</th>
-                                        <th>Thao Tác</th>
-                                    </tr>
-                                    </thead>
+                                    <table class="table table-bordered " width="100%" cellspacing="0">
+                                        <thead class="">
+                                        <tr>
+                                            <th>STT</th>
+                                            <th>Mã Hóa Đơn</th>
+                                            <th>Tên Nhân Viên</th>
+                                            <th>Tên Khách Hàng</th>
+                                            <th>SDT Khách Hàng</th>
+                                            <th>Loại Hóa Đơn</th>
+                                            <th>Tổng Tiền</th>
+                                            <th>Ngày Tạo</th>
+                                            <th>Trạng Thái</th>
+                                            <th>Thao Tác</th>
+                                        </tr>
+                                        </thead>
 
-                                    <tbody>
-                                    <%--                                    <c:forEach var="hoaDon" items="${hoaDonPageXacNhan}" varStatus="i">--%>
-                                    <%--                                        <tr>--%>
-                                    <%--                                            <td>${i.index + 1}</td>--%>
-                                    <%--                                            <td>${hoaDon.ma}</td>--%>
-                                    <%--                                            <td>${hoaDon.idNhanVien.hoTen}</td>--%>
-                                    <%--                                            <td>${hoaDon.idKhachHang.hoTen}</td>--%>
-                                    <%--                                            <td>${hoaDon.idKhachHang.sdt}</td>--%>
-                                    <%--                                            <td>--%>
-                                    <%--                                                <span class="badge rounded-pill ${hoaDon.loaiHoaDon == 0 ? 'bg-primary' : 'bg-success'}">--%>
-                                    <%--                                                        ${hoaDon.loaiHoaDon == 0 ? "Bán online" : "Bán tại quầy"}--%>
-                                    <%--                                                </span>--%>
-                                    <%--                                            </td>--%>
-                                    <%--                                            <td>--%>
-                                    <%--                                                <fmt:formatNumber value="${hoaDon.tongTien}" type="currency"--%>
-                                    <%--                                                                  currencySymbol="₫" groupingUsed="true"/>--%>
-                                    <%--                                            </td>--%>
-                                    <%--                                            <td>--%>
-                                    <%--                                                <fmt:formatDate value="${hoaDon.ngayTao}" pattern="yyyy-MM-dd HH:mm:ss"/>--%>
-                                    <%--                                            </td>--%>
-                                    <%--                                            <td>--%>
-                                    <%--                                            <span class="badge rounded-pill ${hoaDon.trangThai == 0 ? 'bg-danger' : 'bg-success'}">--%>
-                                    <%--                                                    ${hoaDon.trangThai == 0 ? 'Chưa thanh toán' : 'Đã thanh toán'}--%>
-                                    <%--                                            </span>--%>
-                                    <%--                                            </td>--%>
-                                    <%--                                            <td>--%>
-                                    <%--                                                <!-- Button trigger modal -->--%>
-                                    <%--                                                <a href="/hoa-don/detail/${hoaDon.id}" class="btn btn-warning">--%>
-                                    <%--                                                    <i class="bi bi-eye-fill"></i>--%>
-                                    <%--                                                </a>--%>
-                                    <%--                                            </td>--%>
-                                    <%--                                        </tr>--%>
-                                    <%--                                    </c:forEach>--%>
-                                    </tbody>
-                                </table>
+                                        <tbody>
+                                        <c:forEach var="hoaDon" items="${hoaDonPage}" varStatus="i">
+                                            <tr>
+                                                <td>${i.index + 1}</td>
+                                                <td>${hoaDon.ma}</td>
+                                                <td>${hoaDon.nhanVien.hoTen}</td>
+                                                <td>${hoaDon.khachHang.hoTen}</td>
+                                                <td>${hoaDon.khachHang.sdt}</td>
+                                                <td>
+                                                <span class="badge rounded-pill ${hoaDon.loaiHoaDon == 0 ? 'bg-primary' : 'bg-success'}">
+                                                        ${hoaDon.loaiHoaDon == 1 ? "Bán tại quầy" : "Bán online"}
+                                                </span>
+                                                </td>
+                                                <td>
+                                                    <fmt:formatNumber value="${hoaDon.tongTien}" type="currency"
+                                                                      currencySymbol="₫" groupingUsed="true"/>
+                                                </td>
+                                                <td>${hoaDon.ngayTao}</td>
+                                                <td>
+                                                 <span
+                                                         class="badge rounded-pill ${hoaDon.trangThai == 0 ? 'bg-danger' : 'bg-success'}">
+                                                         ${hoaDon.trangThai == 0 ? 'Chưa thanh toán' : 'Đã thanh toán'}
+                                                 </span>
+                                                </td>
+                                                <td>
+                                                    <!-- Button trigger modal -->
+                                                    <a href="/hoa-don/detail/${hoaDon.id}" class="btn btn-warning">
+                                                        <i class="bi bi-eye-fill"></i>
+                                                    </a>
+                                                </td>
+
+                                            </tr>
+                                        </c:forEach>
+
+                                        </tbody>
+                                    </table>
                                 <%-- Phân trang của hóa đơn chờ xác nhận  --%>
                                 <div class="float-end">
                                     <nav aria-label="Page navigation example">
@@ -604,38 +644,58 @@
                             </div>
                             <div class="tab-pane fade" id="confirmed" role="tabpanel" aria-labelledby="confirmed-tab">
                                 <%-- Danh sách hóa đơn đã xác nhận     --%>
-                                <table class="table table-bordered" id="Paid" width="100%" cellspacing="0">
-                                    <thead>
-                                    <tr>
-                                        <th>STT</th>
-                                        <th>Mã Hóa Đơn</th>
-                                        <th>Mã Nhân Viên</th>
-                                        <th>Tên Khách Hàng</th>
-                                        <th>SDT Khách Hàng</th>
-                                        <th>Loại Hóa Đơn</th>
-                                        <th>Tổng Tiền</th>
-                                        <th>Ngày Tạo</th>
-                                        <th>Trạng Thái</th>
-                                        <th>Thao Tác</th>
-                                    </tr>
-                                    </thead>
+                                    <table class="table table-bordered " width="100%" cellspacing="0">
+                                        <thead class="">
+                                        <tr>
+                                            <th>STT</th>
+                                            <th>Mã Hóa Đơn</th>
+                                            <th>Tên Nhân Viên</th>
+                                            <th>Tên Khách Hàng</th>
+                                            <th>SDT Khách Hàng</th>
+                                            <th>Loại Hóa Đơn</th>
+                                            <th>Tổng Tiền</th>
+                                            <th>Ngày Tạo</th>
+                                            <th>Trạng Thái</th>
+                                            <th>Thao Tác</th>
+                                        </tr>
+                                        </thead>
 
-                                    <tbody>
-                                    <tr>
-                                        <td>Tiger Nixon</td>
-                                        <td>System Architect</td>
-                                        <td>Edinburgh</td>
-                                        <td>61</td>
-                                        <td>2011/04/25</td>
-                                        <td>$320,800</td>
-                                        <td>$320,800</td>
-                                        <td>$320,800</td>
-                                        <td>$320,800</td>
-                                        <td>$320,800</td>
-                                    </tr>
+                                        <tbody>
+                                        <c:forEach var="hoaDon" items="${hoaDonPage}" varStatus="i">
+                                            <tr>
+                                                <td>${i.index + 1}</td>
+                                                <td>${hoaDon.ma}</td>
+                                                <td>${hoaDon.nhanVien.hoTen}</td>
+                                                <td>${hoaDon.khachHang.hoTen}</td>
+                                                <td>${hoaDon.khachHang.sdt}</td>
+                                                <td>
+                                                <span class="badge rounded-pill ${hoaDon.loaiHoaDon == 0 ? 'bg-primary' : 'bg-success'}">
+                                                        ${hoaDon.loaiHoaDon == 1 ? "Bán tại quầy" : "Bán online"}
+                                                </span>
+                                                </td>
+                                                <td>
+                                                    <fmt:formatNumber value="${hoaDon.tongTien}" type="currency"
+                                                                      currencySymbol="₫" groupingUsed="true"/>
+                                                </td>
+                                                <td>${hoaDon.ngayTao}</td>
+                                                <td>
+                                                 <span
+                                                         class="badge rounded-pill ${hoaDon.trangThai == 0 ? 'bg-danger' : 'bg-success'}">
+                                                         ${hoaDon.trangThai == 0 ? 'Chưa thanh toán' : 'Đã thanh toán'}
+                                                 </span>
+                                                </td>
+                                                <td>
+                                                    <!-- Button trigger modal -->
+                                                    <a href="/hoa-don/detail/${hoaDon.id}" class="btn btn-warning">
+                                                        <i class="bi bi-eye-fill"></i>
+                                                    </a>
+                                                </td>
 
-                                    </tbody>
-                                </table>
+                                            </tr>
+                                        </c:forEach>
+
+                                        </tbody>
+                                    </table>
                                 <%-- Phân trang của hóa đơn đã xác nhận    --%>
                                 <div class="float-end">
                                     <nav aria-label="Page navigation example">
@@ -658,38 +718,58 @@
                             </div>
                             <div class="tab-pane fade" id="delivery" role="tabpanel" aria-labelledby="delivery-tab">
                                 <%-- Danh sách hóa đơn chờ giao hàng    --%>
-                                <table class="table table-bordered" id="Paid" width="100%" cellspacing="0">
-                                    <thead>
-                                    <tr>
-                                        <th>STT</th>
-                                        <th>Mã Hóa Đơn</th>
-                                        <th>Mã Nhân Viên</th>
-                                        <th>Tên Khách Hàng</th>
-                                        <th>SDT Khách Hàng</th>
-                                        <th>Loại Hóa Đơn</th>
-                                        <th>Tổng Tiền</th>
-                                        <th>Ngày Tạo</th>
-                                        <th>Trạng Thái</th>
-                                        <th>Thao Tác</th>
-                                    </tr>
-                                    </thead>
+                                    <table class="table table-bordered " width="100%" cellspacing="0">
+                                        <thead class="">
+                                        <tr>
+                                            <th>STT</th>
+                                            <th>Mã Hóa Đơn</th>
+                                            <th>Tên Nhân Viên</th>
+                                            <th>Tên Khách Hàng</th>
+                                            <th>SDT Khách Hàng</th>
+                                            <th>Loại Hóa Đơn</th>
+                                            <th>Tổng Tiền</th>
+                                            <th>Ngày Tạo</th>
+                                            <th>Trạng Thái</th>
+                                            <th>Thao Tác</th>
+                                        </tr>
+                                        </thead>
 
-                                    <tbody>
-                                    <tr>
-                                        <td>Tiger Nixon</td>
-                                        <td>System Architect</td>
-                                        <td>Edinburgh</td>
-                                        <td>61</td>
-                                        <td>2011/04/25</td>
-                                        <td>$320,800</td>
-                                        <td>$320,800</td>
-                                        <td>$320,800</td>
-                                        <td>$320,800</td>
-                                        <td>$320,800</td>
-                                    </tr>
+                                        <tbody>
+                                        <c:forEach var="hoaDon" items="${hoaDonPage}" varStatus="i">
+                                            <tr>
+                                                <td>${i.index + 1}</td>
+                                                <td>${hoaDon.ma}</td>
+                                                <td>${hoaDon.nhanVien.hoTen}</td>
+                                                <td>${hoaDon.khachHang.hoTen}</td>
+                                                <td>${hoaDon.khachHang.sdt}</td>
+                                                <td>
+                                                <span class="badge rounded-pill ${hoaDon.loaiHoaDon == 0 ? 'bg-primary' : 'bg-success'}">
+                                                        ${hoaDon.loaiHoaDon == 1 ? "Bán tại quầy" : "Bán online"}
+                                                </span>
+                                                </td>
+                                                <td>
+                                                    <fmt:formatNumber value="${hoaDon.tongTien}" type="currency"
+                                                                      currencySymbol="₫" groupingUsed="true"/>
+                                                </td>
+                                                <td>${hoaDon.ngayTao}</td>
+                                                <td>
+                                                 <span
+                                                         class="badge rounded-pill ${hoaDon.trangThai == 0 ? 'bg-danger' : 'bg-success'}">
+                                                         ${hoaDon.trangThai == 0 ? 'Chưa thanh toán' : 'Đã thanh toán'}
+                                                 </span>
+                                                </td>
+                                                <td>
+                                                    <!-- Button trigger modal -->
+                                                    <a href="/hoa-don/detail/${hoaDon.id}" class="btn btn-warning">
+                                                        <i class="bi bi-eye-fill"></i>
+                                                    </a>
+                                                </td>
 
-                                    </tbody>
-                                </table>
+                                            </tr>
+                                        </c:forEach>
+
+                                        </tbody>
+                                    </table>
                                 <%-- Phân trang của hóa đơn chờ giao   --%>
                                 <div class="float-end">
                                     <nav aria-label="Page navigation example">
@@ -712,38 +792,58 @@
                             </div>
                             <div class="tab-pane fade" id="delivered" role="tabpanel" aria-labelledby="delivered-tab">
                                 <%-- Danh sách hóa đơn đã giao hàng     --%>
-                                <table class="table table-bordered" id="Paid" width="100%" cellspacing="0">
-                                    <thead>
-                                    <tr>
-                                        <th>STT</th>
-                                        <th>Mã Hóa Đơn</th>
-                                        <th>Mã Nhân Viên</th>
-                                        <th>Tên Khách Hàng</th>
-                                        <th>SDT Khách Hàng</th>
-                                        <th>Loại Hóa Đơn</th>
-                                        <th>Tổng Tiền</th>
-                                        <th>Ngày Tạo</th>
-                                        <th>Trạng Thái</th>
-                                        <th>Thao Tác</th>
-                                    </tr>
-                                    </thead>
+                                    <table class="table table-bordered " width="100%" cellspacing="0">
+                                        <thead class="">
+                                        <tr>
+                                            <th>STT</th>
+                                            <th>Mã Hóa Đơn</th>
+                                            <th>Tên Nhân Viên</th>
+                                            <th>Tên Khách Hàng</th>
+                                            <th>SDT Khách Hàng</th>
+                                            <th>Loại Hóa Đơn</th>
+                                            <th>Tổng Tiền</th>
+                                            <th>Ngày Tạo</th>
+                                            <th>Trạng Thái</th>
+                                            <th>Thao Tác</th>
+                                        </tr>
+                                        </thead>
 
-                                    <tbody>
-                                    <tr>
-                                        <td>Tiger Nixon</td>
-                                        <td>System Architect</td>
-                                        <td>Edinburgh</td>
-                                        <td>61</td>
-                                        <td>2011/04/25</td>
-                                        <td>$320,800</td>
-                                        <td>$320,800</td>
-                                        <td>$320,800</td>
-                                        <td>$320,800</td>
-                                        <td>$320,800</td>
-                                    </tr>
+                                        <tbody>
+                                        <c:forEach var="hoaDon" items="${hoaDonPage}" varStatus="i">
+                                            <tr>
+                                                <td>${i.index + 1}</td>
+                                                <td>${hoaDon.ma}</td>
+                                                <td>${hoaDon.nhanVien.hoTen}</td>
+                                                <td>${hoaDon.khachHang.hoTen}</td>
+                                                <td>${hoaDon.khachHang.sdt}</td>
+                                                <td>
+                                                <span class="badge rounded-pill ${hoaDon.loaiHoaDon == 0 ? 'bg-primary' : 'bg-success'}">
+                                                        ${hoaDon.loaiHoaDon == 1 ? "Bán tại quầy" : "Bán online"}
+                                                </span>
+                                                </td>
+                                                <td>
+                                                    <fmt:formatNumber value="${hoaDon.tongTien}" type="currency"
+                                                                      currencySymbol="₫" groupingUsed="true"/>
+                                                </td>
+                                                <td>${hoaDon.ngayTao}</td>
+                                                <td>
+                                                 <span
+                                                         class="badge rounded-pill ${hoaDon.trangThai == 0 ? 'bg-danger' : 'bg-success'}">
+                                                         ${hoaDon.trangThai == 0 ? 'Chưa thanh toán' : 'Đã thanh toán'}
+                                                 </span>
+                                                </td>
+                                                <td>
+                                                    <!-- Button trigger modal -->
+                                                    <a href="/hoa-don/detail/${hoaDon.id}" class="btn btn-warning">
+                                                        <i class="bi bi-eye-fill"></i>
+                                                    </a>
+                                                </td>
 
-                                    </tbody>
-                                </table>
+                                            </tr>
+                                        </c:forEach>
+
+                                        </tbody>
+                                    </table>
                                 <%-- Phân trang của hóa đơn đã giao hàng   --%>
                                 <div class="float-end">
                                     <nav aria-label="Page navigation example">
@@ -826,10 +926,6 @@
 
                                     </tbody>
                                 </table>
-
-                                <%-- Modal hiển thị thông tin chi tiết của hóa đơn      --%>
-
-
                                 <%-- Phân trang của đơn đã hoàn thành   --%>
                                 <div class="float-end">
                                     <nav aria-label="Page navigation example">
@@ -852,38 +948,58 @@
                             </div>
                             <div class="tab-pane fade" id="cancelled" role="tabpanel" aria-labelledby="cancelled-tab">
                                 <%-- Danh sách hóa đơn đã hủy     --%>
-                                <table class="table table-bordered" id="Paid" width="100%" cellspacing="0">
-                                    <thead>
-                                    <tr>
-                                        <th>STT</th>
-                                        <th>Mã Hóa Đơn</th>
-                                        <th>Mã Nhân Viên</th>
-                                        <th>Tên Khách Hàng</th>
-                                        <th>SDT Khách Hàng</th>
-                                        <th>Loại Hóa Đơn</th>
-                                        <th>Tổng Tiền</th>
-                                        <th>Ngày Tạo</th>
-                                        <th>Trạng Thái</th>
-                                        <th>Thao Tác</th>
-                                    </tr>
-                                    </thead>
+                                    <table class="table table-bordered " width="100%" cellspacing="0">
+                                        <thead class="">
+                                        <tr>
+                                            <th>STT</th>
+                                            <th>Mã Hóa Đơn</th>
+                                            <th>Tên Nhân Viên</th>
+                                            <th>Tên Khách Hàng</th>
+                                            <th>SDT Khách Hàng</th>
+                                            <th>Loại Hóa Đơn</th>
+                                            <th>Tổng Tiền</th>
+                                            <th>Ngày Tạo</th>
+                                            <th>Trạng Thái</th>
+                                            <th>Thao Tác</th>
+                                        </tr>
+                                        </thead>
 
-                                    <tbody>
-                                    <tr>
-                                        <td>Tiger Nixon</td>
-                                        <td>System Architect</td>
-                                        <td>Edinburgh</td>
-                                        <td>61</td>
-                                        <td>2011/04/25</td>
-                                        <td>$320,800</td>
-                                        <td>$320,800</td>
-                                        <td>$320,800</td>
-                                        <td>$320,800</td>
-                                        <td>$320,800</td>
-                                    </tr>
+                                        <tbody>
+                                        <c:forEach var="hoaDon" items="${hoaDonPage}" varStatus="i">
+                                            <tr>
+                                                <td>${i.index + 1}</td>
+                                                <td>${hoaDon.ma}</td>
+                                                <td>${hoaDon.nhanVien.hoTen}</td>
+                                                <td>${hoaDon.khachHang.hoTen}</td>
+                                                <td>${hoaDon.khachHang.sdt}</td>
+                                                <td>
+                                                <span class="badge rounded-pill ${hoaDon.loaiHoaDon == 0 ? 'bg-primary' : 'bg-success'}">
+                                                        ${hoaDon.loaiHoaDon == 1 ? "Bán tại quầy" : "Bán online"}
+                                                </span>
+                                                </td>
+                                                <td>
+                                                    <fmt:formatNumber value="${hoaDon.tongTien}" type="currency"
+                                                                      currencySymbol="₫" groupingUsed="true"/>
+                                                </td>
+                                                <td>${hoaDon.ngayTao}</td>
+                                                <td>
+                                                 <span
+                                                         class="badge rounded-pill ${hoaDon.trangThai == 0 ? 'bg-danger' : 'bg-success'}">
+                                                         ${hoaDon.trangThai == 0 ? 'Chưa thanh toán' : 'Đã thanh toán'}
+                                                 </span>
+                                                </td>
+                                                <td>
+                                                    <!-- Button trigger modal -->
+                                                    <a href="/hoa-don/detail/${hoaDon.id}" class="btn btn-warning">
+                                                        <i class="bi bi-eye-fill"></i>
+                                                    </a>
+                                                </td>
 
-                                    </tbody>
-                                </table>
+                                            </tr>
+                                        </c:forEach>
+
+                                        </tbody>
+                                    </table>
                                 <%-- Phân trang của hóa đơn đã hủy    --%>
                                 <div class="float-end">
                                     <nav aria-label="Page navigation example">
@@ -976,16 +1092,22 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
 
-    //Chức năng lọc hóa đơn
-    function filterHoaDon() {
-        var loaiHoaDon = document.getElementById("inputState").value;
-        window.location.href = "/hoa-don/filter?loaiHoaDon=" + loaiHoaDon;
-    }
+
 
 
     $(document).ready(function () {
-        // Thêm lớp bg-warning cho tab "Tất Cả" khi trang được tải
-        $('#all-tab').addClass('bg-warning');
+        // Đọc giá trị của status từ URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const status = urlParams.get('status');
+
+        // Xác định tab dựa trên giá trị của status và thêm lớp bg-warning
+        if (status) {
+            $('#myTab .nav-link').removeClass('bg-warning');
+            $('#myTab .nav-link[data-status="' + status + '"]').addClass('bg-warning').tab('show');
+        } else {
+            // Nếu không có status, mặc định là tab "Tất Cả"
+            $('#all-tab').addClass('bg-warning');
+        }
 
         // Khi click vào tab
         $('#myTab .nav-link').click(function () {
@@ -995,6 +1117,40 @@
             $(this).addClass('bg-warning');
         });
     });
+
+    // Xử lý load dữ liệu lên các tabs
+    document.querySelectorAll('.nav-link').forEach(button => {
+        button.addEventListener('click', function () {
+            let status = this.getAttribute('data-status');
+            let url = new URL(window.location.href);
+            url.searchParams.set('status', status);
+            window.location.href = url.toString();
+        });
+    });
+
+    // Reset lại form tìm kiếm và lọc
+    function resetForm() {
+        document.getElementById("searchKeyword").value = "";
+        document.getElementById("inputLoaiHoaDon").selectedIndex = 0;
+        document.getElementById("startDate").value = "";
+        document.getElementById("endDate").value = "";
+
+        // Lấy trang hiện tại
+        var currentUrl = window.location.href;
+        var cleanUrl = currentUrl.split('?')[0]; // Lấy phần URL trước dấu '?'
+
+        // Lấy tham số page nếu có
+        var params = new URLSearchParams(window.location.search);
+        var pageParam = params.get('page');
+
+        // Nếu có tham số page, thêm lại vào URL
+        if (pageParam) {
+            cleanUrl += '?page=' + pageParam;
+        }
+
+        // Đặt lại URL
+        window.location.href = cleanUrl;
+    }
 
 
 </script>

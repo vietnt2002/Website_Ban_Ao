@@ -105,6 +105,17 @@ public class KhachHang {
         this.anhDaiDien = anhDaiDien;
     }
 
+
+    @Column(name = "Email")
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+
     @Column(name = "NgayTao")
     public LocalDateTime getNgayTao() {
         return ngayTao;
