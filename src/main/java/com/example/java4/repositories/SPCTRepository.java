@@ -105,6 +105,10 @@ public interface SPCTRepository extends JpaRepository<ChiTietSanPham,String>, Jp
     //Lấy ra STSP theo idSP, idMS, idKth
     @Query("select ctsp from ChiTietSanPham ctsp where ctsp.idSanPham.id = ?1 and ctsp.idMauSac.id = ?2 and ctsp.idKichThuoc.id = ?3")
     ChiTietSanPham findCTSPBySanPham_MauSac_KichThuoc(String idSP, String idMS, String idKth);
+
+    @Query("select spct.soLuong from ChiTietSanPham spct where spct.id = ?1")
+    Integer findBySoLuong(String idSPCT);
+
 };
 
 

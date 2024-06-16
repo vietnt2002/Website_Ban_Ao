@@ -377,26 +377,7 @@
                                     <th>Chi tiết</th>
                                 </tr>
                                 </thead>
-                                <tbody>
-                                <c:forEach varStatus="i" items="${listHoaDon}" var="hoaDon">
-                                    <tr>
-                                        <td>${i.index+1}</td>
-                                        <td>${hoaDon.ma}</td>
-                                        <td>${hoaDon.idNhanVien.hoTen}</td>
-                                        <td>
-                                            <c:if test="${hoaDon.idKhachHang.id==null}">Khách lẻ</c:if>
-                                            <c:if test="${hoaDon.idKhachHang.id!=null}">${hoaDon.idKhachHang.hoTen}</c:if>
-                                        </td>
-                                        <td>${hoaDon.ngayTao}</td>
-                                        <td>${hoaDon.trangThai==0?"Chua thanh toan":"Da thanh toan"}</td>
-                                        <td>
-                                            <a href="/ban-hang-tai-quay/detail-hoa-don/${hoaDon.id}"
-                                               class="btn btn-primary">
-                                                <i class="bi bi-eye-fill"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                </c:forEach>
+                                <tbody id="tbl_hd_cho">
                                 </tbody>
                             </table>
                             <!-- Giỏ hàng -->
@@ -706,12 +687,7 @@
                                         <td>${spct.giaBan}</td>
                                         <td>${spct.trangThai==1?"Còn hàng":"Hết hàng"}</td>
                                         <td>
-                                            <form action="/ban-hang-tai-quay/add-san-pham/${spct.id}" method="post"
-                                                  onsubmit="return validateBeforeAddToCart();">
-                                                <input type="hidden" name="idHoaDon" value="${hoaDon.id}"
-                                                       id="selectedInvoiceId">
-                                                <button class="btn btn-success" type="submit">+</button>
-                                            </form>
+                                            <button class="btn btn-success" id="add_sp_gio_hang_${spct.id}">+</button>
                                         </td>
                                     </tr>
                                 </c:forEach>
@@ -974,6 +950,57 @@
 </body>
 
 <script>
+
+
+    const loadDsHDCho = () => {
+        fetch("/ban-hang-tai-quay/api/load-hd-cho", {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        }).then(response => response.json())
+        .then(resp => {
+
+
+            let html = '';
+            for (let i = 0; i < resp.length; i++) {
+                const hd = resp[i];
+                html += `<tr>
+                    <td>${i + 1}</td>
+                    <td>${hd.ma}</td>
+                    <td>${hd.idNhanVien}</td>
+                    <td>Khach le</td>
+                    <td>${hd.ngayTao}</td>
+                    <td>${hd.trangThai==0 ? "Chua thanh toan" : "Da thanh toan"}</td>
+                    <td>
+                        <a href="#"
+                           class="btn btn-primary">
+                            <i class="bi bi-eye-fill"></i>
+                        </a>
+                    </td>
+                </tr>`;
+            }
+
+            console.log(html)
+            $("#tbl_hd_cho").html(html)
+        });
+    }
+
+    loadDsHDCho();
+    $("button[id^='add_sp_gio_hang_']").on('click', e => {
+        e.preventDefault();
+        const spctid = e.currentTarget.id.replace("add_sp_gio_hang_", "");
+        console.log("---", e.currentTarget.id, spctid)
+        fetch("/ban-hang-tai-quay/api/add-san-pham/" + spctid, {
+            method: "post",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        }).then( (response) => {
+            console.log(response);
+        });
+    })
 
     function searchByName(param){
         var txtSearch = param.value;

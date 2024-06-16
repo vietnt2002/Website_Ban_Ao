@@ -1,6 +1,7 @@
 package com.example.java4.repositories;
 
 import com.example.java4.entities.KhachHang;
+import com.example.java4.response.ThongTinGiaohangResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -33,4 +34,9 @@ public interface KhachHangRepository
     KhachHang findByTaiKhoan(String taiKhoan);
     @Query("select kh from KhachHang kh where kh.id = ?1")
     KhachHang findByIdKH(String idKH);
+
+    @Query("select new com.example.java4.response.ThongTinGiaohangResponse(kh.hoTen, kh.sdt, dc.diaChiChiTiet, dc.idPhuongXa, dc.idQuanHuyen, dc.idTinhThanh) from KhachHang kh\n" +
+            "join DiaChi dc on dc.idKhachHang.id = kh.id\n" +
+            "where kh.id = ?1")
+    ThongTinGiaohangResponse getThongTinGiaoHang(String idKH);
 };
