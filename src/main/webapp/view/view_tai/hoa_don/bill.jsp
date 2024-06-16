@@ -516,7 +516,7 @@
                                             <td>${hoaDon.khachHang.sdt}</td>
                                             <td>
                                                 <span class="badge rounded-pill ${hoaDon.loaiHoaDon == 0 ? 'bg-primary' : 'bg-success'}">
-                                                        ${hoaDon.loaiHoaDon == 1 ? "Bán tại quầy" : "Bán online"}
+                                                        ${hoaDon.loaiHoaDon == 0 ? "Bán tại quầy" : "Bán online"}
                                                 </span>
                                             </td>
                                             <td>

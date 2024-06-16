@@ -33,10 +33,6 @@ public class HoaDonDTO {
     private String ngayThanhToan;
     private Integer trangThai;
 
-
-
-
-
     public HoaDonDTO(String id, String ma, KhachHang khachHang, NhanVien nhanVien, Integer phuongThucThanhToan, BigDecimal tongTien,Integer loaiHoaDon, String ngayTao, Integer trangThai) {
         this.id = id;
         this.ma = ma;
@@ -61,7 +57,6 @@ public class HoaDonDTO {
         this.ngayThanhToan = ngayThanhToan;
         this.trangThai = trangThai;
     }
-
 
 }
 

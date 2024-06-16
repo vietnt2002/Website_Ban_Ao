@@ -5,6 +5,8 @@ import com.example.java4.entities.SanPham;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 public interface ChatLieuRepository extends JpaRepository<ChatLieu, String> {
     public static final int ACTIVE  = 1;

@@ -29,6 +29,7 @@ import org.springframework.data.domain.Sort;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -59,8 +60,6 @@ public class QuanLyHoaDonController {
 
     @Autowired
     IDiaChiRepository _diaChiRepository;
-
-
 
 
 
@@ -223,6 +222,15 @@ public class QuanLyHoaDonController {
             }
         }
 
+    // Hiển thị giao diện quản lý hóa đơn
+    @GetMapping("/hien-thi")
+    public String view(Model model, @RequestParam(value = "page", defaultValue = "0") String pageParam) {
+        // Lấy ra 5 hóa đơn trong 1 Page
+        Pageable pageable = PageRequest.of(Integer.valueOf(pageParam), 5, Sort.by(Sort.Direction.DESC, "ngayTao"));
+        // Lấy ra danh sách hóa đơn có trạng thái là 1(Đã thanh toán)
+        Page<HoaDon> pageHD = _hoaDonRepo.findByTrangThai(_hoaDonRepository.DA_HOAN_THANH, pageable);
+        Page<HoaDon> pageHDAll = _hoaDonRepo.findAll(pageable);
+        // Chuyển Đổi từ Page<HoaDon> sang list<HoaDonDTO> để trả về view
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         List<HoaDonDTO> listHoaDonDTO = pageHD.stream()
                 .map(hoaDon -> new HoaDonDTO(
@@ -246,6 +254,9 @@ public class QuanLyHoaDonController {
         model.addAttribute("endDate", endDateStr);
 //        model.addAttribute("ngayTao", ngayTaoStr);
 
+        model.addAttribute("pageHDALL", pageHDAll);
+        model.addAttribute("hoaDonPageAll", listHoaDonALLDTO);
+        model.addAttribute("hoaDonPageXacNhan",pageHD.getContent());
         return "/view/view_tai/hoa_don/bill.jsp";
     }
 

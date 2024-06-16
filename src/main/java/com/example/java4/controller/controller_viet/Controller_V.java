@@ -39,9 +39,7 @@ public class Controller_V {
     HoaDonRepository hoaDonRepo;
     @Autowired
     HDCTRepository hdctRepo;
-
     String idKH = "C66D8750-F4AF-4E3B-925B-2AA946C931D6";
-
     //Test api địa chỉ
     @GetMapping("apiDiaChi")
     public String apiDC(){
@@ -58,7 +56,6 @@ public class Controller_V {
         System.out.println("Quận: "+quan);
         System.out.println("Phường: "+phuong);
     }
-
 
     //Bán onl
     @GetMapping("/trang-chu")
@@ -156,7 +153,6 @@ public class Controller_V {
                     hoaDon.setTrangThai(HoaDonRepository.CHO_THANH_TOAN);
                     hoaDon.setLoaiHoaDon(HoaDonRepository.HOA_DON_ONL);
                     hoaDonRepo.save(hoaDon);
-
                     ChiTietHoaDon chiTietHoaDon = new ChiTietHoaDon();
                     chiTietHoaDon.setIdHoaDon(hoaDon);
                     chiTietHoaDon.setIdCTSP(chiTietSanPham);
@@ -169,7 +165,6 @@ public class Controller_V {
                     e.printStackTrace();
                 }
             }else {  //Nếu có hóa đơn rồi thì thêm sản phẩm vào giỏ hàng
-
                 //Lấy ra danh sách chi tiết hóa đơn theo hóa đơn của khách hàng
                 List<ChiTietHoaDon> listHDCT = hdctRepo.findHDCTByIdHoaDon(hoaDonCuaKH.getId());
                 boolean flag = false;
@@ -211,32 +206,6 @@ public class Controller_V {
         }
         return "redirect:/store/detail-san-pham/" + idCTSP;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 //    @Autowired
 //    SanPhamRepository sanPhamRepo;

@@ -28,6 +28,8 @@
     <!-- Custom styles for this template-->
     <link href="/view_admin/css/sb-admin-2.min.css" rel="stylesheet">
 
+    <%--Link Ajax --%>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <!-- Latest compiled and minified CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -40,6 +42,24 @@
             href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
             rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+
+
+    <style>
+        .table-scroll{
+            height: 340px;
+            overflow: scroll;
+        }
+
+        ::-webkit-scrollbar {
+            width: 10px;
+            background-color: lightgray;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: rgb(238, 234, 234);
+            border-radius: 5px;
+        }
+    </style>
 
 </head>
 
@@ -64,16 +84,16 @@
 
         <!-- Nav Item - Dashboard -->
         <li class="nav-item active">
-            <a class="nav-link" href="index.html">
+            <a class="nav-link" href="/ban-hang-tai-quay">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>Thống kê doanh thu</span></a>
+                <span>Bán hàng tại quầy</span></a>
         </li>
 
         <!-- Nav Item - Charts -->
         <li class="nav-item">
             <a class="nav-link" href="/ban-hang-tai-quay/admin/ban-tai-quay">
                 <i class="fas fa-fw fa-chart-area"></i>
-                <span>Bán hàng tại quầy</span></a>
+                <span>Thống kê doanh thu</span></a>
         </li>
 
         <!-- Nav Item - Charts -->
@@ -85,7 +105,7 @@
 
         <!-- Nav Item - Charts -->
         <li class="nav-item">
-            <a class="nav-link" href="charts.html">
+            <a class="nav-link" href="/hoa-don/hien-thi">
                 <i class="fas fa-fw fa-chart-area"></i>
                 <span>Quản lý hóa đơn</span></a>
         </li>
@@ -363,12 +383,17 @@
                                         <td>${i.index+1}</td>
                                         <td>${hoaDon.ma}</td>
                                         <td>${hoaDon.idNhanVien.hoTen}</td>
-                                        <td>${hoaDon.idKhachHang.ten}</td>
+                                        <td>
+                                            <c:if test="${hoaDon.idKhachHang.id==null}">Khách lẻ</c:if>
+                                            <c:if test="${hoaDon.idKhachHang.id!=null}">${hoaDon.idKhachHang.hoTen}</c:if>
+                                        </td>
                                         <td>${hoaDon.ngayTao}</td>
                                         <td>${hoaDon.trangThai==0?"Chua thanh toan":"Da thanh toan"}</td>
                                         <td>
                                             <a href="/ban-hang-tai-quay/detail-hoa-don/${hoaDon.id}"
-                                               class="btn btn-primary">View</a>
+                                               class="btn btn-primary">
+                                                <i class="bi bi-eye-fill"></i>
+                                            </a>
                                         </td>
                                     </tr>
                                 </c:forEach>
@@ -397,19 +422,14 @@
                                         <td>${hdct.idCTSP.idSanPham.ma}</td>
                                         <td>${hdct.idCTSP.idSanPham.ten}</td>
                                         <td style="display: flex; align-items: center;">
-                                            <form action="/ban-hang-tai-quay/giam-so-luong/${hdct.idCTSP.id}" method="post">
-                                                <input type="hidden" name="idHoaDon" value="${hoaDon.id}">
-                                                <button class="btn btn-light"
-                                                        style="display: flex; width: 35px; height: 30px; align-items: center; justify-content: center"
-                                                        type="submit"><i class="bi bi-caret-left"></i></button>
-                                            </form>
-                                                ${hdct.soLuong}
-                                            <form action="/ban-hang-tai-quay/them-so-luong/${hdct.idCTSP.id}" method="post">
-                                                <input type="hidden" name="idHoaDon" value="${hoaDon.id}">
-                                                <button class="btn btn-light"
-                                                        style="display: flex; width: 35px; height: 30px; align-items: center; justify-content: center"
-                                                        type="submit"><i class="bi bi-caret-right"></i></button>
-                                            </form>
+                                               <form class="d-flex" method="post" action="/ban-hang-tai-quay/update-sl/${hdct.idCTSP.id}">
+                                                   <input type="hidden" name="idHoaDon" value="${hoaDon.id}">
+                                                   <input class="form-control me-2" type="text" name="soLuong" value="${hdct.soLuong}" style="width: 45px">
+                                                   <button class="btn btn-light" type="submit">
+                                                       <i class="bi bi-pencil"></i>
+                                                   </button>
+                                               </form>
+
                                         </td>
                                         <td>${hdct.donGia}</td>
                                         <td>${hdct.soLuong*hdct.donGia}</td>
@@ -444,26 +464,78 @@
                                             </div>
                                         </div>
                                         <div class="row mb-3">
-                                            <label class="col-sm-4 col-form-label">Sđt khách hàng</label>
-                                            <div class="col-sm-6">
-                                                <select path="idKhachHang" class="form-select"
-                                                        aria-label="Default select example" name="idKhachHang">
-                                                    <c:forEach items="${listKH}" var="khachHang">
+                                            <label class="col-sm-4 col-form-label">Tên khách hàng</label>
+                                            <div class="col-sm-5">
 
-                                                        <option value="${khachHang.id}" ${hoaDon.idKhachHang.sdt==khachHang.sdt?"selected":""}>${khachHang.sdt}</option>
+                                            <c:if test="${hoaDon.idKhachHang.id==null}">
 
-                                                    </c:forEach>
-                                                </select>
+                                                <input type="text" class="form-control"  value="Khách lẻ" readonly>
+                                            </c:if>
+
+                                                <c:if test="${hoaDon.idKhachHang.id!=null}">
+                                                    <input type="text" class="form-control"  value="${hoaDon.idKhachHang.hoTen}" readonly>
+                                                </c:if>
+
+<%--                                                <input type="text" class="form-control"  value="${hoaDon.idKhachHang.hoTen}" readonly>--%>
                                             </div>
-                                            <a class="col-sm-2" data-bs-toggle="modal" data-bs-target="#exampleModal"
-                                               href="#">
-                                                <i class=" bi bi-folder-plus col-3" style="font-size: 25px;"></i>
+
+                                         <%--   Modal thêm nhanh khách hàng--%>
+                                            <a class="col-sm-1 " data-bs-toggle="modal" data-bs-target="#exampleModal2"
+                                               style="padding-right: 0px;margin-top: 7px">
+                                                <i class="bi bi-person-plus" style="font-size: 25px;padding: 0px"></i>
+                                            </a>
+
+                                            <a class="col-sm-1" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                                               href="#" style="padding-right: 0px;margin-top: 7px">
+                                                <i class=" bi bi-folder-plus col-3" style="font-size: 25px;padding: 0px"></i>
                                             </a>
                                         </div>
+
+                                        <div class="row mb-3">
+                                            <label class="col-sm-4 col-form-label">Mã giảm giá</label>
+                                            <div class="col-sm-5">
+                                                <input type="text" class="form-control"
+                                                       value="${hoaDon.idKhuyenMai.ma}" readonly>
+                                            </div>
+                                        <%--  Modal chọn mã giảm giá  --%>
+                                            <a class="col-sm-3 btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal3"
+                                            style="height: 38px;width: 79px;">
+                                               + Chọn
+                                            </a>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <label class="col-sm-4 col-form-label">Sđt</label>
+                                            <div class="col-sm-5">
+
+                                                <c:if test="${hoaDon.idKhachHang.id==null}">
+
+                                                    <input type="text" class="form-control"  value="Khách lẻ" readonly>
+                                                </c:if>
+
+                                                <c:if test="${hoaDon.idKhachHang.id!=null}">
+                                                    <input type="text" class="form-control"  value="${hoaDon.idKhachHang.sdt}" readonly>
+                                                </c:if>
+
+                                                <%--                                                <input type="text" class="form-control"  value="${hoaDon.idKhachHang.hoTen}" readonly>--%>
+                                            </div>
+
+                                            <%--   Modal thêm nhanh khách hàng--%>
+                                            <a class="col-sm-1 " data-bs-toggle="modal" data-bs-target="#exampleModal2"
+                                               style="padding-right: 0px;margin-top: 7px">
+                                                <i class="bi bi-person-plus" style="font-size: 25px;padding: 0px"></i>
+                                            </a>
+
+                                            <a class="col-sm-1" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                                               href="#" style="padding-right: 0px;margin-top: 7px">
+                                                <i class=" bi bi-folder-plus col-3" style="font-size: 25px;padding: 0px"></i>
+                                            </a>
+                                        </div>
+
                                         <div class="row mb-3">
                                             <label class="col-sm-4 col-form-label">Tổng tiền</label>
                                             <div class="col-sm-8">
                                                 <input id="tongTien" type="number" class="form-control"
+                                                       value="${tongTien-hoaDon.idKhuyenMai.soTienGiam}"
                                                        value="${tongTien}"
                                                        readonly/>
                                             </div>
@@ -675,6 +747,174 @@
 
         </div>
 
+        <!-- Modal mã giảm giá -->
+        <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true"
+             data-bs-backdrop="static" data-bs-keyboard="false" >
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="row">
+                            <h5 class="modal-title" id="exampleModalLabel2">Mã giảm giá</h5>
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th>Mã</th>
+                                <th>Tên</th>
+                                <th>Giảm tối đa</th>
+<%--                                <th>Áp dụng</th>--%>
+                                <th>Chọn</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <c:forEach items="${listKM}" var="km">
+                                <tr>
+                                    <td>${km.ma}</td>
+                                    <td>${km.ten}</td>
+                                    <td>${km.soTienGiam}</td>
+<%--                                    <td>--%>
+<%--                                        <c:if test="${km.soTienGiam==200}">--%>
+<%--                                           2.000.000 VNĐ--%>
+<%--                                        </c:if>--%>
+<%--                                        <c:if test="${km.soTienGiam==100}">--%>
+<%--                                            1.000.000 VNĐ--%>
+<%--                                        </c:if>--%>
+<%--                                        <c:if test="${km.soTienGiam==20}">--%>
+<%--                                            500.000 VNĐ--%>
+<%--                                        </c:if>--%>
+<%--                                    </td>--%>
+                                    <td>
+                                        <form action="/ban-hang-tai-quay/find-khuyen-mai/${km.id}" method="post">
+                                            <input type="hidden" name="idHoaDon" value="${hoaDon.id}">
+<%--                                            <input type="hidden" name="maHoaDon" value="${hoaDon.ma}">--%>
+<%--                                            <input type="hidden" class="form-control" name="ngayTao" value="${hoaDon.ngayTao}">--%>
+                                            <button class="btn btn-primary" type="submit">
+                                                <i class="bi bi-plus-square"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+<%--        Modal thêm nhanh khách hàng--%>
+
+        <!-- Modal khách hàng -->
+        <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel3" aria-hidden="true"
+             data-bs-backdrop="static" data-bs-keyboard="false" >
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="row">
+                            <h5 class="modal-title" id="exampleModalLabel3">Thêm khách hàng</h5>
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+
+                        <form method="post" action="/ban-hang-tai-quay/create">
+                            <div class="mb-3 mt-3">
+                                <label for="email" class="form-label">Họ tên khách hàng:</label>
+                                <input type="text" class="form-control" id="email" name="hoTen">
+                            </div>
+                            <div class="mb-3">
+                                <label for="pwd" class="form-label">Số điện thoại:</label>
+                                <input type="text" class="form-control" id="pwd" name="sdt">
+                            </div>
+
+                            <input type="hidden" name="idHoaDon" value="${hoaDon.id}">
+
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal khách hàng -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel4" aria-hidden="true"
+             data-bs-backdrop="static" data-bs-keyboard="false" >
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="row">
+                            <h5 class="modal-title" id="exampleModalLabel4">Danh sách khách hàng</h5>
+                        </div>
+
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+
+                    </div>
+                    <div class="modal-body">
+                        <input oninput="searchByName(this)" type="text" name="txt" class="form-control" placeholder="Tìm kiếm theo tên khách hàng,số điện thoại"
+                               aria-label="Recipient's username" aria-describedby="button-addon2" style="margin-bottom: 20px">
+
+                        <div class="table-scroll">
+                            <table class="table table-hover" id="contentAjax">
+                                <thead>
+                                <tr>
+                                    <th>Tên khách hàng</th>
+                                    <th>Số điện thoại</th>
+                                    <th>Chọn</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <c:forEach items="${pageData.content}" var="kh">
+                                    <tr>
+                                        <td>${kh.hoTen}</td>
+                                        <td>${kh.sdt}</td>
+                                        <td>
+                                            <form action="/ban-hang-tai-quay/find-kh/${kh.id}" method="post">
+                                                <input type="hidden" name="idHoaDon" value="${hoaDon.id}">
+                                                <input type="hidden" name="maHoaDon" value="${hoaDon.ma}">
+                                                <input type="hidden" class="form-control" name="ngayTao" value="${hoaDon.ngayTao}">
+                                                <button class="btn btn-primary" type="submit">
+                                                    <i class="bi bi-plus-square"></i>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <%--                Phân trang--%>
+
+<%--                        <div>--%>
+<%--                            <ul class="pagination">--%>
+<%--                                <c:if test="${pageData.number>0}">--%>
+<%--                                    <li class="page-item" ><a id="modalLink" class="page-link" href="/ban-hang-tai-quay/detail-hoa-don/${hoaDon.id}?page=${pageData.number - 1}" >Previous</a></li>--%>
+<%--                                </c:if>--%>
+<%--                                <c:forEach begin="1" end="${total}" var="i">--%>
+<%--                                    <li class="page-item ${pageData.number==i-1?"active":""}"><a id="modalLinkYoutube" href="/ban-hang-tai-quay/detail-hoa-don/${hoaDon.id}?page=${i-1}" id="modalLink2" class="page-link">${i}</a></li>--%>
+<%--                                </c:forEach>--%>
+
+<%--                                <c:if test="${pageData.number<total-1}">--%>
+<%--                                    <li class="page-item"><a class="page-link" href="/ban-hang-tai-quay/detail-hoa-don/${hoaDon.id}?page=${pageData.number + 1}" id="modalLink3" >Next</a></li>--%>
+<%--                                </c:if>--%>
+<%--                            </ul>--%>
+<%--                        </div>--%>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <%--End--%>
         <!-- Footer -->
         <footer class="sticky-footer bg-white">
             <div class="container my-auto">
@@ -695,12 +935,12 @@
 </a>
 
 <!-- Logout Modal-->
-<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                <h5 class="modal-title" id="exampleModalLabel1">Ready to Leave?</h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
@@ -734,6 +974,46 @@
 </body>
 
 <script>
+
+    function searchByName(param){
+        var txtSearch = param.value;
+        console.log(txtSearch);
+        $.ajax({
+            url: "/ban-hang-tai-quay/search/${hoaDon.id}",
+            type: "POST",
+            data: {
+                txt:txtSearch
+            },
+            success: function (data) {
+                // var row = document.getElementById("content");
+                // row.innerHTML = data;
+                $('#contentAjax').empty()
+                $('#contentAjax').append(data);
+
+                console.log(data);
+            },
+            error: function (xhr) {
+                //Do Something to handle error
+            }
+        });
+    }
+
+<%--    --%>
+    function calculateChange() {
+        var tongTien = parseInt('${tongTien}');
+        var tienKhachDua = parseInt(document.getElementById('tienKhachDua').value);
+        console.log(tongTien);
+        console.log(tienKhachDua);
+
+        var tienTraLai = tienKhachDua - tongTien;
+        console.log(tienTraLai);
+        var thongBao = document.getElementById("errTraLai");
+        if (isNaN(tienKhachDua)) {
+            thongBao.textContent = "Vui lòng nhập số tiền hợp lệ.";
+            return false;
+        }
+
+        if (tienKhachDua == "" || tienKhachDua < tongTien) {
     function calculateChange() {
         var tongTien = parseFloat('${tongTien}');
         var tienKhachDua = parseFloat(document.getElementById('tienKhachDua').value);
@@ -753,6 +1033,25 @@
         }
 
         // Hiển thị số tiền trả lại trong trường "Trả lại"
+
+        document.getElementById('tienTraLai').value = tienTraLai;
+        thongBao.textContent="";
+        return true;
+    }
+
+    <%--function validatePayment() {--%>
+    <%--    var tienKhachDua = document.getElementById("tienKhachDua").value;--%>
+    <%--    var tongTien = parseFloat('${tongTien}');--%>
+    <%--    if (tienKhachDua === "" || tienKhachDua < tongTien) {--%>
+    <%--        thongBao.textContent = thongBao.textContent = "Vui lòng nhập số tiền khách đưa hợp lệ."--%>
+    <%--        // alert("Vui lòng nhập số tiền khách đưa hợp lệ.");--%>
+    <%--        document.getElementById('tienTraLai').value = "";--%>
+    <%--        return false;--%>
+    <%--    }--%>
+    <%--    thongBao.textContent="";--%>
+    <%--    return true;--%>
+    <%--}--%>
+
         document.getElementById('tienTraLai').value = tienTraLai.toFixed(2);
     }
 
@@ -778,6 +1077,7 @@
         }
 
         return true; // Cho phép thêm sản phẩm vào giỏ hàng nếu đã chọn hóa đơn
+    }
     }
 </script>
 <script>

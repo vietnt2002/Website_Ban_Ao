@@ -1,6 +1,7 @@
 package com.example.java4.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 import java.sql.Date;
 import java.time.LocalDateTime;
@@ -84,6 +85,15 @@ public class KhachHang {
 
     public void setMatKhau(String matKhau) {
         this.matKhau = matKhau;
+    }
+
+    @Column(name = "Email")
+    public String getEmail() {
+        return this.email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Column(name = "AnhDaiDien")
