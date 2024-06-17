@@ -975,38 +975,51 @@
 </body>
 
 <script>
-    const loadDsHDCho = () => {
-        <%--fetch("/ban-hang-tai-quay/api/load-hd-cho", {--%>
-        <%--    headers: {--%>
-        <%--        'Accept': 'application/json',--%>
-        <%--        'Content-Type': 'application/json'--%>
-        <%--    }--%>
-        <%--}).then(response => response.json())--%>
-        <%--    .then(resp => {--%>
+    const loadDsHDCho = (idHD,hdctcpy) => {
+        // get api + scpt.id
+        console.log("test hoa don :" + idHD);
+        let datatest = "data testing";
+        fetch("/ban-hang-tai-quay/api/lst-hdct/${idHD}", {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        }).then(response => response.json())
+            .then(resp => {
+                console.log("test response: ", resp);
+                let html = '';
+                resp.map((hdct,i)=>{
+                    const text = "html${hdct.id}";
+                    const id = hdct.id || 'N/A';
+                    const maSanPham = hdct.idCTSP && hdct.idCTSP.idSanPham ? hdct.idCTSP.idSanPham.ma : 'N/A';
+                    const tenSanPham = hdct.idCTSP && hdct.idCTSP.idSanPham ? hdct.idCTSP.idSanPham.ten : 'N/A';
+                    const soLuong = hdct ? hdct.soLuong : 'N/A';
+                    const giaBan = hdct.idCTSP ? hdct.idCTSP.giaBan : 'N/A';
+                    const thanhTien = soLuong*giaBan;
+                    const maHD = hdct.idHoaDon ? hdct.idHoaDon.ma : 'N/A';
+                    html +=  '<tr>' +
+                        '<td>' + (i + 1) + '</td>' +
+                        '<td>' + maHD + '</td>'+
+                        '<td>' + maSanPham + '</td>' +
+                        '<td>' + tenSanPham + '</td>' +
+                        '<td>' + soLuong + '</td>' +
+                        '<td>' + giaBan + '</td>' +
+                        '<td>' + thanhTien + '</td>' +
+                        '<td>' +
+                        '<a href="#" class="btn btn-primary">' +
+                        '<i class="bi bi-eye-fill"></i>' +
+                        '</a>' +//editing
+                        '</td>' +
+                        '</tr>';
 
 
-        <%--        let html = '';--%>
-        <%--        for (let i = 0; i < resp.length; i++) {--%>
-        <%--            const hd = resp[i];--%>
-        <%--            html += `<tr>--%>
-        <%--            <td>${i + 1}</td>--%>
-        <%--            <td>${hd.ma}</td>--%>
-        <%--            <td>${hd.idNhanVien}</td>--%>
-        <%--            <td>Khach le</td>--%>
-        <%--            <td>${hd.ngayTao}</td>--%>
-        <%--            <td>${hd.trangThai==0 ? "Chua thanh toan" : "Da thanh toan"}</td>--%>
-        <%--            <td>--%>
-        <%--                <a href="#"--%>
-        <%--                   class="btn btn-primary">--%>
-        <%--                    <i class="bi bi-eye-fill"></i>--%>
-        <%--                </a>--%>
-        <%--            </td>--%>
-        <%--        </tr>`;--%>
-        <%--        }--%>
 
-        <%--        console.log(html)--%>
-        <%--        $("#tbl_hd_cho").html(html)--%>
-        <%--    });--%>
+                    console.log("test html: ", html);
+                    console.log("test context: ", text);
+                });
+                console.log(html)
+                $("#tbl_hd_cho").html(html)
+            });
         console.log("================================================load hd ajax: ");
     }
 
@@ -1024,7 +1037,9 @@
         // }).then( (response) => {
         //     console.log(response);
         // });
-        loadDsHDCho();
+        const queryString = window.location.search;
+        console.log("params :", queryString);
+        loadDsHDCho(queryString,null);
     })
     function searchByName(param){
         var txtSearch = param.value;

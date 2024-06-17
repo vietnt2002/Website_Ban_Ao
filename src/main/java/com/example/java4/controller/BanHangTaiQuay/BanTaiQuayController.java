@@ -673,6 +673,11 @@ public class BanTaiQuayController {
     public ResponseEntity<List<HoaDon>> hienThi(@RequestParam(value = "page",defaultValue ="0") String pageParam ) {
         return ResponseEntity.ok(hoaDonRepository.selectTop5());
     }
-
-
+    @CrossOrigin
+    @GetMapping("api/lst-hdct/{idHoaDon}")
+    public ResponseEntity<List<ChiTietHoaDon>> getLstSPCT(@PathVariable("idHoaDon") String idHoaDon){
+        String trimmedString = idHoaDon.replaceAll("\\d{5}$", "");
+        System.out.println("test paraam : "+trimmedString);
+        return ResponseEntity.ok(hoaDonChiTietRepository.findAllByHoaDon_Id(idHoaDon));
+    }
 }

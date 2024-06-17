@@ -960,8 +960,6 @@
             }
         }).then(response => response.json())
         .then(resp => {
-
-
             let html = '';
             for (let i = 0; i < resp.length; i++) {
                 const hd = resp[i];
