@@ -952,7 +952,7 @@
 </body>
 
 <script>
-    const loadDsHDCho = (idHD) => {
+    const loadDsHDCT = (idHD) => {
         // get api + scpt.id
         let datatest = "data testing";
         fetch("/ban-hang-tai-quay/api/lst-hdct/${idHD}", {
@@ -1041,7 +1041,7 @@
                 $("#tbl_ds_spct").html(html)
             });
     }
-    loadDsHDCho();
+    loadDsHDCT();
     loadDsCTSP();
     $(document).on('click', "button[id^='add_sp_gio_hang_']", e => {
         e.preventDefault();
@@ -1069,7 +1069,7 @@
                     }
                 }).then( (response) => {
                     console.log(response);
-                    loadDsHDCho(variable1);
+                    loadDsHDCT(variable1);
                     loadDsCTSP()
                 });
             });

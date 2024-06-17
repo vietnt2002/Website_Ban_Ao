@@ -73,4 +73,8 @@ public interface HDCTRepository
             "join HoaDon hd on hd.id = cthd.idHoaDon.id\n" +
             "where hd.idKhachHang.id = ?1")
     ChiTietHoaDon findByIdHoaDonByidKH(String idKH);
+
+
+//    @Query("SELECT c FROM ChiTietHoaDon c WHERE c.hoaDon.id = :idHoaDon GROUP BY c.hoaDon.id, c.chiTietSanPham.id, c.donGia")
+//    List<ChiTietHoaDon> findDistinctByHoaDon_Id(@Param("idHoaDon") String idHoaDon);
 };
