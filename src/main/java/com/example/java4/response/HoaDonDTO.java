@@ -32,18 +32,8 @@ public class HoaDonDTO {
     private String ngayTao;
     private String ngayThanhToan;
     private Integer trangThai;
-
-    public HoaDonDTO(String id, String ma, KhachHang khachHang, NhanVien nhanVien, Integer phuongThucThanhToan, BigDecimal tongTien,Integer loaiHoaDon, String ngayTao, Integer trangThai) {
-        this.id = id;
-        this.ma = ma;
-        this.khachHang = khachHang;
-        this.nhanVien = nhanVien;
-        this.phuongThucThanhToan = phuongThucThanhToan;
-        this.tongTien = tongTien;
-        this.loaiHoaDon = loaiHoaDon;
-        this.ngayTao = ngayTao;
-        this.trangThai = trangThai;
-    }
+    private String trangThaiText;
+    private String maMau;
 
     public HoaDonDTO(String id, String ma, KhachHang khachHang, NhanVien nhanVien, Integer phuongThucThanhToan, BigDecimal tongTien,Integer loaiHoaDon, String ngayTao,String ngayThanhToan, Integer trangThai) {
         this.id = id;
@@ -57,6 +47,20 @@ public class HoaDonDTO {
         this.ngayThanhToan = ngayThanhToan;
         this.trangThai = trangThai;
     }
+//    public HoaDonDTO(String id, String ma, KhachHang khachHang, NhanVien nhanVien, Integer phuongThucThanhToan, BigDecimal tongTien,Integer loaiHoaDon, String ngayTao,String ngayThanhToan, Integer trangThai,String maText) {
+//        this.id = id;
+//        this.ma = ma;
+//        this.khachHang = khachHang;
+//        this.nhanVien = nhanVien;
+//        this.phuongThucThanhToan = phuongThucThanhToan;
+//        this.tongTien = tongTien;
+//        this.loaiHoaDon = loaiHoaDon;
+//        this.ngayTao = ngayTao;
+//        this.ngayThanhToan = ngayThanhToan;
+//        this.trangThai = trangThai;
+//        this.trangThaiText=maText;
+//    }
+
 
 }
 

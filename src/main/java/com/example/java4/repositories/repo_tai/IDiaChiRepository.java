@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface IDiaChiRepository extends JpaRepository<DiaChi,String> {
 
-//    DiaChi findByIdKhachHang(String idKH);
+    DiaChi findByIdKhachHang_Id(String idKH);
 
 }

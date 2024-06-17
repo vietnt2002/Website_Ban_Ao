@@ -75,7 +75,7 @@
             background-color: #f1f1f1;
         }
 
-
+        /* Stepper container */
         .stepper-horizontal {
             display: flex;
             justify-content: space-between;
@@ -84,54 +84,59 @@
             margin-bottom: 40px;
         }
 
+        /* Step styling */
         .step {
             text-align: center;
             position: relative;
             flex: 1;
         }
 
+        /* Step icon wrapper */
         .step-icon-wrapper {
             background-color: #007bff; /* Bootstrap primary color */
             border-radius: 50%;
-            width: 50px;
-            height: 50px;
+            width: 50px; /* Decreased size */
+            height: 50px; /* Decreased size */
             display: flex;
             justify-content: center;
             align-items: center;
             margin: 0 auto 10px auto;
+            border: 2px solid #007bff; /* Border to make it stand out */
         }
 
         .step-icon {
-            font-size: 24px;
-            color: #fff; /* White color */
+            font-size: 24px; /* Decreased icon size */
+            color: #fff;
         }
 
         .step-title {
-            font-size: 16px;
+            font-size: 16px; /* Decreased text size for title */
             font-weight: bold;
             margin-bottom: 5px;
         }
 
         .step-date {
             font-size: 14px;
-            color: #6c757d; /* Bootstrap secondary color */
+            color: #6c757d;
         }
 
+        /* Connector styling */
         .connector {
             height: 2px;
-            background-color: #007bff; /* Bootstrap primary color */
+            background-color: #adb5bd; /* Light primary color */
             position: absolute;
-            top: 25px; /* Align with step icon middle */
+            top: 25px; /* Adjusted to align with smaller icon */
             left: 50%;
             z-index: -1;
+            width: calc(100% - 50px); /* Adjust width between steps */
         }
 
+        /* Connector position adjustment */
         .step + .connector {
-            width: calc(100% - 50px); /* Space between steps minus one icon width */
-            left: 50px; /* Icon width */
+            left: calc(50% - 25px); /* Adjusted center position relative to smaller steps */
         }
 
-        .stepper-horizontal.hide {
+        .hide {
             display: none;
         }
 
@@ -444,38 +449,51 @@
                     </div>
                 </c:if>
 
-                <%--                Nút in ra Hóa Đơn theo dạng file PDF --%>
                 <div class="d-flex justify-content-end">
-                    <a href="/in-hoa-don/pdf/${hoaDonDTO.id}" class="btn btn-primary my-3"><i class="bi bi-printer"></i>
-                        In hóa đơn</a>
+                    <!-- Nút in ra phiếu giao hàng theo dạng file PDF -->
+<%--                    <c:if test="${hoaDonDTO.loaiHoaDon == 0}">--%>
+                    <div class="d-flex ms-auto">
+                        <button id="printDeliveryButton" class="btn btn-primary my-3">
+                            <i class="bi bi-printer"></i> In phiếu giao hàng
+                        </button>
+                    </div>
+<%--                    </c:if>--%>
+
+                    <!-- Nút in ra Hóa Đơn theo dạng file PDF -->
+                    <div class="d-flex ms-3">
+                        <a href="/in-hoa-don/pdf/${hoaDonDTO.id}" class="btn btn-primary my-3"><i
+                                class="bi bi-printer"></i>
+                            In hóa đơn
+                        </a>
+                    </div>
                 </div>
 
 
                 <%--Bảng theo dõi hóa đơn--%>
+                <%--Bảng theo dõi hóa đơn--%>
                 <div class="card mb-3">
-
                     <div class="card-header">
-                        <h5 class="card-title ">Theo dõi đơn hàng:</h5>
+                        <h5 class="card-title ">Quản lý đơn hàng:</h5>
                     </div>
-
                     <div class="card-body">
                         <c:choose>
                             <%-- Hiển thị stepper cho bán hàng tại quầy (LoaiHD == 1) --%>
-                            <c:when test="${LoaiHD == 1}">
+                            <c:when test="${hoaDonDTO.loaiHoaDon == 1}">
                                 <div class="stepper-horizontal" id="stepper_offline">
                                     <div class="step" id="step_offline_1">
                                         <div class="step-icon-wrapper">
-                                            <i class="bi bi-card-text"></i>
+                                            <i class="bi bi-card-text step-icon"></i>
                                         </div>
                                         <div class="step-title">Tạo hóa đơn</div>
-                                        <div class="step-date">01/01/2023</div>
+                                        <div class="step-date">${hoaDonDTO.ngayTao}</div>
+                                        <div class="connector"></div>
                                     </div>
                                     <div class="step" id="step_offline_2">
                                         <div class="step-icon-wrapper">
                                             <i class="bi bi-check-circle step-icon"></i>
                                         </div>
                                         <div class="step-title">Đã hoàn thành</div>
-                                        <div class="step-date">02/01/2023</div>
+                                        <div class="step-date">${hoaDonDTO.ngayThanhToan}</div>
                                     </div>
                                 </div>
                             </c:when>
@@ -488,6 +506,7 @@
                                         </div>
                                         <div class="step-title">Chờ xác nhận</div>
                                         <div class="step-date">01/01/2023</div>
+                                        <div class="connector"></div>
                                     </div>
                                     <div class="step" id="step_online_2">
                                         <div class="step-icon-wrapper">
@@ -495,6 +514,7 @@
                                         </div>
                                         <div class="step-title">Đã xác nhận</div>
                                         <div class="step-date">02/01/2023</div>
+                                        <div class="connector"></div>
                                     </div>
                                     <div class="step" id="step_online_3">
                                         <div class="step-icon-wrapper">
@@ -502,6 +522,7 @@
                                         </div>
                                         <div class="step-title">Chờ giao hàng</div>
                                         <div class="step-date">03/01/2023</div>
+                                        <div class="connector"></div>
                                     </div>
                                     <div class="step" id="step_online_5">
                                         <div class="step-icon-wrapper">
@@ -509,51 +530,129 @@
                                         </div>
                                         <div class="step-title">Đang giao hàng</div>
                                         <div class="step-date">05/01/2023</div>
-                                    </div>
-                                    <div class="step" id="step_online_4">
-                                        <div class="step-icon-wrapper">
-                                            <i class="bi bi-box step-icon"></i>
-                                        </div>
-                                        <div class="step-title">Đã giao hàng</div>
-                                        <div class="step-date">04/01/2023</div>
+                                        <div class="connector"></div>
                                     </div>
                                     <div class="step" id="step_online_6">
                                         <div class="step-icon-wrapper">
-                                            <i class="bi bi-credit-card-2-back"></i>
+                                            <i class="bi bi-credit-card-2-back step-icon"></i>
                                         </div>
                                         <div class="step-title">Đã hoàn thành</div>
                                         <div class="step-date">06/01/2023</div>
                                     </div>
                                 </div>
-
                             </c:otherwise>
                         </c:choose>
                     </div>
 
-
                     <div class="card-footer">
-                        <div>
-                            <div class="row">
-                                <div>
-                                    <button type="button" class="btn btn-primary mr-3">Xác nhận</button>
-                                </div>
-                                <div>
-                                    <button type="button" class="btn btn-danger">Hủy</button>
-                                </div>
-                            </div>
-                            <div class="float-end">
-                                <button type="button" class="btn btn-success ">Lịc sử</button>
-                            </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <c:if test="${hoaDonDTO.loaiHoaDon == 0}">
+                                    <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal"
+                                            data-bs-target="#confirmModal">
+                                        Xác nhận
+                                    </button>
+                                    <button type="button" class="btn btn-danger" id="cancelButton">
+                                        Hủy
+                                    </button>
+                                </c:if>
 
-
+                            </div>
+                            <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                                    data-bs-target="#historyModal">
+                                <i class="bi bi-clock-history text-white"></i> Lịch sử
+                            </button>
                         </div>
                     </div>
                 </div>
-                <%--                                    Bảng lịch sử thanh toán--%>
+
+                <!-- Modal xác nhận -->
+                <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="confirmModalLabel">Xác nhận</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <label for="description" class="form-label">Mô tả</label>
+                                    <input type="text" class="form-control" id="description" placeholder="Nhập mô tả">
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                                <button type="button" class="btn btn-primary">Xác nhận</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- Modal lịch sử -->
+                <div class="modal fade" id="historyModal" tabindex="-1" aria-labelledby="historyModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="historyModalLabel">Lịch sử trạng thái hóa đơn</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <table class="table table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th>STT</th>
+                                        <th>Trạng thái</th>
+                                        <th>Ngày xác nhận</th>
+                                        <th>Người xác nhận</th>
+                                        <th>Ghi chú</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>Chờ xác nhận</td>
+                                        <td>01/01/2023</td>
+                                        <td>Nguyễn Văn A</td>
+                                        <td>Ghi chú 1</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>Đã xác nhận</td>
+                                        <td>02/01/2023</td>
+                                        <td>Nguyễn Văn B</td>
+                                        <td>Ghi chú 2</td>
+                                    </tr>
+                                    <!-- Thêm các dòng khác nếu cần -->
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <%--    Bảng lịch sử thanh toán--%>
                 <div class="card mb-3">
 
-                    <div class="card-header">
-                        <h5 class="card-title ">Lịch sử thanh toán:</h5>
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="card-title mb-0">Lịch sử thanh toán:</h5>
+
+
+                        <c:if test="${hoaDonDTO.loaiHoaDon == 0}">
+                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                    data-bs-target="#paymentModal"
+                                    >
+                                <i class="bi bi-plus-lg"></i> Thanh Toán
+                            </button>
+                        </c:if>
                     </div>
 
                     <div class="card-body">
@@ -599,6 +698,57 @@
                 </div>
 
 
+                <!-- Modal thanh toán -->
+                <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="paymentModalLabel">Thanh toán</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <%--@declare id="totalAmount"--%>
+                                    <label for="totalAmount" class="form-label">Tổng tiền:</label>
+                                    <fmt:formatNumber value="${hoaDonDTO.tongTien}" type="currency" currencySymbol="₫"/>
+                                </div>
+                                <div class="mb-3">
+                                    <%--@declare id="paidamount"--%><label for="paidAmount" class="form-label">Đã thanh
+                                    toán:</label>
+                                    <input type="text" class="form-control" id="paidAmountInput"
+                                           placeholder="Nhập số tiền đã thanh toán">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-check-label">Hình thức thanh toán:</label><br>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="paymentMethod" id="cashRadio"
+                                               value="0" checked>
+                                        <label class="form-check-label" for="cashRadio">Tiền mặt</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="paymentMethod"
+                                               id="transferRadio" value="1">
+                                        <label class="form-check-label" for="transferRadio">Chuyển khoản</label>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <%--@declare id="note"--%>
+                                    <label for="note" class="form-label">Ghi chú:</label>
+                                    <textarea class="form-control" id="noteInput" rows="3"></textarea>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                                <button type="button" class="btn btn-primary" id="confirmPaymentButton">Xác nhận
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
                 <!-- Page Heading -->
                 <%--Thông tin hóa đơn    --%>
                 <%--                <h1 class="h3 mb-3 text-gray-800">Thông tin chi tiết hóa đơn</h1>--%>
@@ -613,10 +763,13 @@
                                 <h5 class="card-title">Thông tin đơn hàng: ${hoaDonDTO.ma}</h5>
                                 <%--                                <c:choose>--%>
                                 <%--                                    <c:when test="${hoaDonDTO.loaiHoaDon == 0}">--%>
-                                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                        data-bs-target="#updateModal">
-                                    Thay đổi
-                                </button>
+                                <c:if test="${hoaDonDTO.loaiHoaDon == 0}">
+                                    <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#updateModal"
+                                            >
+                                        Thay đổi
+                                    </button>
+                                </c:if>
                                 <%--                                    </c:when>--%>
                                 <%--                                </c:choose>--%>
                             </div>
@@ -638,7 +791,7 @@
                                                 <p class="fw-bold mb-1 pb-3 small">Tên người nhận: <span
                                                         class="fw-normal">${hoaDonDTO.khachHang.hoTen}</span></p>
                                                 <p class="fw-bold mb-1 pb-3 small">Địa chỉ: <span
-                                                        class="fw-normal">${diaChiKhachHang.diaChiChiTiet}</span></p>
+                                                        class="fw-normal">${diaChiKhachHang.diaChiChiTiet}, ${diaChiKhachHang.idPhuongXa}, ${diaChiKhachHang.idQuanHuyen}, ${diaChiKhachHang.idTinhThanh}    </span></p>
                                                 <p class="fw-bold mb-1 pb-3 small">Ghi chú: </p>
                                                 <p class="fw-bold mb-1 small">Người tạo: <span
                                                         class="fw-normal">${hoaDonDTO.nhanVien.hoTen}</span></p>
@@ -913,6 +1066,111 @@
             $('#myTab .nav-link').removeClass('bg-warning');
             // Thêm lớp bg-warning cho tab được nhấn
             $(this).addClass('bg-warning');
+        });
+    });
+
+
+    // Ẩn hiển trạng thái Hóa đơn
+    document.addEventListener("DOMContentLoaded", function () {
+        const confirmBtn = document.getElementById('confirmBtn');
+        const undoBtn = document.getElementById('undoBtn');
+        const modalConfirmBtn = document.getElementById('modalConfirmBtn');
+        const stepperOnline = document.getElementById('stepper_online');
+        const stepsOnline = stepperOnline.querySelectorAll('.step');
+
+        let currentStep = 0;
+
+        // Show the first step
+        if (stepsOnline.length > 0) {
+            stepsOnline[currentStep].classList.remove('hide');
+        }
+
+        confirmBtn.addEventListener('click', function () {
+            const confirmModal = new bootstrap.Modal(document.getElementById('confirmModal'));
+            confirmModal.show();
+        });
+
+        modalConfirmBtn.addEventListener('click', function () {
+            const confirmModal = bootstrap.Modal.getInstance(document.getElementById('confirmModal'));
+            confirmModal.hide();
+
+            // Move to the next step
+            if (currentStep < stepsOnline.length - 1) {
+                stepsOnline[currentStep].classList.add('hide');
+                currentStep++;
+                stepsOnline[currentStep].classList.remove('hide');
+            }
+
+            // Show the undo button
+            undoBtn.style.display = 'inline-block';
+        });
+
+        undoBtn.addEventListener('click', function () {
+            if (currentStep > 0) {
+                stepsOnline[currentStep].classList.add('hide');
+                currentStep--;
+                stepsOnline[currentStep].classList.remove('hide');
+            }
+
+            // Hide the undo button if we're back at the first step
+            if (currentStep === 0) {
+                undoBtn.style.display = 'none';
+            }
+        });
+    });
+
+    // Cofirm hủy hóa đơn
+    document.getElementById('cancelButton').addEventListener('click', function () {
+        Swal.fire({
+            title: 'Bạn có chắc chắn muốn hủy?',
+            text: "Bạn sẽ không thể hoàn tác lại thao tác này!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Có, hủy nó!',
+            cancelButtonText: 'Không, giữ lại'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire(
+                    'Đã hủy!',
+                    'Hóa đơn của bạn đã được hủy.',
+                    'success'
+                )
+            }
+        })
+    });
+
+    // Nút in ra phiếu giao hàng
+    document.getElementById('printDeliveryButton').addEventListener('click', function() {
+        const idHD = '${hoaDonDTO.id}';
+        alert(idHD);
+        $.ajax({
+            url: '/hoa-don/in-phieu-giao-hang/' + idHD,
+            method: 'GET',
+            success: function(data) {
+                const newWindow = window.open();
+                newWindow.document.write(data);
+
+                newWindow.onload = function() {
+                    const element = newWindow.document.querySelector('.container');
+                    const opt = {
+                        margin: 1,
+                        filename: 'phieu_giao_hang.pdf',
+                        image: { type: 'jpeg', quality: 0.98 },
+                        html2canvas: { scale: 2 },
+                        jsPDF: { unit: 'cm', format: 'a4', orientation: 'landscape' }
+                    };
+
+                    html2pdf().from(element).set(opt).save().then(() => {
+                        newWindow.close();
+                        window.location.href = '/hoa-don/detail/' + idHD;
+                    });
+                };
+            },
+            error: function() {
+                alert('Error generating PDF');
+            }
         });
     });
 
