@@ -19,7 +19,6 @@ public interface HoaDonRepository
     public static final int INACTIVE =0;
     public static final int HOA_DON_ONL = 0;
     public static final int HOA_DON_OFF = 1;
-
     public static final int CHO_THANH_TOAN = 0;
     public static final int CHO_XAC_NHAN = 1;
     public static final int DA_XAC_NHAN = 2;
@@ -39,7 +38,6 @@ public interface HoaDonRepository
     //Lấy ra hóa đơn theo idKH, loại hóa đơn và trạng thái
     @Query("select hd from HoaDon hd where hd.idKhachHang.id = ?1 and hd.loaiHoaDon = ?2 and hd.trangThai = ?3")
     HoaDon findByidKHAndLoaiHoaDonAndTrangThai(String idKH, Integer loaiHD, Integer trangThai);
-
     @Query("select hd from HoaDon hd where hd.idKhachHang.id = ?1 and hd.trangThai = ?2")
     HoaDon findByIdKhachHang(String idKH, Integer trangThai);
     @Query(value = "SELECT TOP 5 * FROM HoaDon where trangThai = 1 ORDER BY ngayTao DESC",
