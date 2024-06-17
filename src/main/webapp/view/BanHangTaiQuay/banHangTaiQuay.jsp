@@ -1002,13 +1002,24 @@
                         '<td>' + maHD + '</td>'+
                         '<td>' + maSanPham + '</td>' +
                         '<td>' + tenSanPham + '</td>' +
-                        '<td>' + soLuong + '</td>' +
+                        '<td style="display: flex; align-items: center;">' +
+                        '<form class="d-flex" method="post" action="/ban-hang-tai-quay/update-sl/' + (hdct.idCTSP ? hdct.idCTSP.id : 'N/A') + '">' +
+                        '<input type="hidden" name="idHoaDon" value="' + idHoaDon + '">' +
+                        '<input class="form-control me-2" type="text" name="soLuong" value="' + (hdct.idCTSP ? hdct.idCTSP.soLuong : 'N/A') + '" style="width: 45px">' +
+                        '<button class="btn btn-light" type="submit">' +
+                        '<i class="bi bi-pencil"></i>' +
+                        '</button>' +
+                        '</form>' +
+                        '</td>' +
                         '<td>' + giaBan + '</td>' +
                         '<td>' + thanhTien + '</td>' +
                         '<td>' +
-                        '<a href="#" class="btn btn-primary">' +
-                        '<i class="bi bi-eye-fill"></i>' +
-                        '</a>' +//editing
+                        '<td>' +
+                        '<form action="/ban-hang-tai-quay/delete-hdct/' + id + '" method="post">' +
+                        '<input type="hidden" name="idHoaDon" value="' + idHoaDon + '">' +
+                        '<button class="btn btn-danger" type="submit">Delete</button>' +
+                        '</form>' +
+                        '</td>' +//editing
                         '</td>' +
                         '</tr>';
 
