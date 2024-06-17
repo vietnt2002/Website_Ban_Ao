@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -159,7 +160,7 @@ public class BanTaiQuayController {
         }
         ctsp.setSoLuong(ctsp.getSoLuong()+count);
         sanPhamChiTietRepository.save(ctsp);
-        return "redirect:/BanHangTaiQuay/detail-hoa-don/" + hd.getId();
+        return "redirect:/ban-hang-tai-quay/detail-hoa-don/" + hd.getId();
     }
 
     @PostMapping("/add-hoa-don")
@@ -605,5 +606,73 @@ public class BanTaiQuayController {
         khachHangRepository.save(khachHang);
         return "redirect:/ban-hang-tai-quay/detail-hoa-don/" + idHoaDon;
     }
+
+    @PostMapping("/api/add-san-pham/{idCTSP}")
+    @ResponseBody
+    public ResponseEntity<String> addSanPhamVaoGioHangAPI(@PathVariable String idCTSP, @RequestParam String idHoaDon) {
+        ChiTietHoaDon hdct = new ChiTietHoaDon();
+        //Tìm sản phẩm trong giỏ hàng
+        boolean spTonTaiTrongGioHang = false;
+//        SELECT hdct FROM HoaDonChiTiet hdct WHERE idHoaDon = :idHoaDon AND idSPCT = :idSPCT
+        Integer slBanDau = 1;
+        ChiTietSanPham chiTietSanPham = sanPhamChiTietRepository.findByIdCTSP(idCTSP);
+        for (ChiTietHoaDon chiTietHoaDon : listHDCT) {
+            //Nếu số lượng trong spct = 0 thì không đưuọc thêm sản phẩm nữa
+            if (chiTietSanPham.getSoLuong() <= 0) {
+                chiTietHoaDon.setSoLuong(chiTietHoaDon.getSoLuong());
+                try {
+                    hoaDonChiTietRepository.save(chiTietHoaDon);
+                    spTonTaiTrongGioHang = true;
+                    hdct.setSoLuong(hdct.getSoLuong()+1);
+                    hoaDonChiTietRepository.save(hdct);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+            } else {
+                if (chiTietHoaDon.getIdCTSP().getId().equals(idCTSP) && chiTietHoaDon.getIdHoaDon().getId().equals(idHoaDon)) {
+                    //Thêm số lượng sản phẩm +1 khi ấn vào button thêm trong giỏ hàng
+                    chiTietHoaDon.setSoLuong(chiTietHoaDon.getSoLuong() + 1);
+                    hoaDonChiTietRepository.save(chiTietHoaDon);
+
+                    //Số lượng của sản phẩm chi tiết bị -1 khi ấn vào button thêm trong giỏ hàng
+                    if (chiTietSanPham.getId().equals(idCTSP)) {
+                        chiTietSanPham.setSoLuong(chiTietSanPham.getSoLuong() - 1);
+                        sanPhamChiTietRepository.save(chiTietSanPham);
+                    }
+                    spTonTaiTrongGioHang = true;
+                    break;
+                }
+            }
+        }
+        BigDecimal donGia =  new BigDecimal(0);
+        if (!spTonTaiTrongGioHang) {
+            for (ChiTietSanPham sp : listCTSP) {
+                if (sp.getId().equals(idCTSP)) {
+                    donGia = sp.getGiaBan();
+                }
+            }
+            ChiTietSanPham ctsp = new ChiTietSanPham();
+            ctsp.setId(idCTSP);
+            hdct.setIdCTSP(ctsp);
+            HoaDon hoaDon = new HoaDon();
+            hoaDon.setId(idHoaDon);
+            hdct.setIdHoaDon(hoaDon);
+            hdct.setSoLuong(1);
+            hdct.setDonGia(donGia);
+            hoaDonChiTietRepository.save(hdct);
+            //Số lượng của sản phẩm chi tiết bị giảm 1 khi ấn vào button thêm trong giỏ hàng
+            if (chiTietSanPham.getId().equals(idCTSP)) {
+                chiTietSanPham.setSoLuong(chiTietSanPham.getSoLuong() - 1);
+                sanPhamChiTietRepository.save(chiTietSanPham);
+            }
+        }
+        return ResponseEntity.ok("ok");
+    }
+    @GetMapping("api/load-hd-cho")
+    public ResponseEntity<List<HoaDon>> hienThi(@RequestParam(value = "page",defaultValue ="0") String pageParam ) {
+        return ResponseEntity.ok(hoaDonRepository.selectTop5());
+    }
+
 
 }

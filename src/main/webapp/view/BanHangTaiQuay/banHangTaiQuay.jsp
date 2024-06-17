@@ -414,33 +414,33 @@
                                     <th>Thao tác</th>
                                 </tr>
                                 </thead>
-                                <tbody>
-                                <c:forEach varStatus="i" items="${listHDCT}" var="hdct">
-                                    <tr>
-                                        <td>${i.index+1}</td>
-                                        <td>${hdct.idHoaDon.ma}</td>
-                                        <td>${hdct.idCTSP.idSanPham.ma}</td>
-                                        <td>${hdct.idCTSP.idSanPham.ten}</td>
-                                        <td style="display: flex; align-items: center;">
-                                            <form class="d-flex" method="post" action="/ban-hang-tai-quay/update-sl/${hdct.idCTSP.id}">
-                                                <input type="hidden" name="idHoaDon" value="${hoaDon.id}">
-                                                <input class="form-control me-2" type="text" name="soLuong" value="${hdct.soLuong}" style="width: 45px">
-                                                <button class="btn btn-light" type="submit">
-                                                    <i class="bi bi-pencil"></i>
-                                                </button>
-                                            </form>
+                                <tbody id="tbl_hd_cho">
+<%--                                <c:forEach varStatus="i" items="${listHDCT}" var="hdct">--%>
+<%--                                    <tr>--%>
+<%--                                        <td>${i.index+1}</td>--%>
+<%--                                        <td>${hdct.idHoaDon.ma}</td>--%>
+<%--                                        <td>${hdct.idCTSP.idSanPham.ma}</td>--%>
+<%--                                        <td>${hdct.idCTSP.idSanPham.ten}</td>--%>
+<%--                                        <td style="display: flex; align-items: center;">--%>
+<%--                                            <form class="d-flex" method="post" action="/ban-hang-tai-quay/update-sl/${hdct.idCTSP.id}">--%>
+<%--                                                <input type="hidden" name="idHoaDon" value="${hoaDon.id}">--%>
+<%--                                                <input class="form-control me-2" type="text" name="soLuong" value="${hdct.soLuong}" style="width: 45px">--%>
+<%--                                                <button class="btn btn-light" type="submit">--%>
+<%--                                                    <i class="bi bi-pencil"></i>--%>
+<%--                                                </button>--%>
+<%--                                            </form>--%>
 
-                                        </td>
-                                        <td>${hdct.donGia}</td>
-                                        <td>${hdct.soLuong*hdct.donGia}</td>
-                                        <td>
-                                            <form action="/ban-hang-tai-quay/delete-hdct/${hdct.id}" method="post">
-                                                <input type="hidden" name="idHoaDon" value="${hoaDon.id}">
-                                                <button class="btn btn-danger" type="submit">Delete</button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                </c:forEach>
+<%--                                        </td>--%>
+<%--                                        <td>${hdct.donGia}</td>--%>
+<%--                                        <td>${hdct.soLuong*hdct.donGia}</td>--%>
+<%--                                        <td>--%>
+<%--                                            <form action="/ban-hang-tai-quay/delete-hdct/${hdct.id}" method="post">--%>
+<%--                                                <input type="hidden" name="idHoaDon" value="${hoaDon.id}">--%>
+<%--                                                <button class="btn btn-danger" type="submit">Delete</button>--%>
+<%--                                            </form>--%>
+<%--                                        </td>--%>
+<%--                                    </tr>--%>
+<%--                                </c:forEach>--%>
                                 </tbody>
                             </table>
                         </div>
@@ -705,14 +705,15 @@
                                         <td>${spct.soLuong}</td>
                                         <td>${spct.giaBan}</td>
                                         <td>${spct.trangThai==1?"Còn hàng":"Hết hàng"}</td>
-                                        <td>
-                                            <form action="/ban-hang-tai-quay/add-san-pham/${spct.id}" method="post"
-                                                  onsubmit="return validateBeforeAddToCart();">
-                                                <input type="hidden" name="idHoaDon" value="${hoaDon.id}"
-                                                       id="selectedInvoiceId">
-                                                <button class="btn btn-success" type="submit">+</button>
-                                            </form>
-                                        </td>
+<%--                                        <td>--%>
+<%--                                            <form action="/ban-hang-tai-quay/add-san-pham/${spct.id}" method="post"--%>
+<%--                                                  onsubmit="return validateBeforeAddToCart();">--%>
+<%--                                                <input type="hidden" name="idHoaDon" value="${hoaDon.id}"--%>
+<%--                                                       id="selectedInvoiceId">--%>
+<%--                                                <button class="btn btn-success" type="submit">+</button>--%>
+<%--                                            </form>--%>
+<%--                                        </td>--%>
+                                        <td><Button id="add_sp_gio_hang_${spct.id}">test ajax</Button></td>
                                     </tr>
                                 </c:forEach>
 
@@ -974,7 +975,57 @@
 </body>
 
 <script>
+    const loadDsHDCho = () => {
+        <%--fetch("/ban-hang-tai-quay/api/load-hd-cho", {--%>
+        <%--    headers: {--%>
+        <%--        'Accept': 'application/json',--%>
+        <%--        'Content-Type': 'application/json'--%>
+        <%--    }--%>
+        <%--}).then(response => response.json())--%>
+        <%--    .then(resp => {--%>
 
+
+        <%--        let html = '';--%>
+        <%--        for (let i = 0; i < resp.length; i++) {--%>
+        <%--            const hd = resp[i];--%>
+        <%--            html += `<tr>--%>
+        <%--            <td>${i + 1}</td>--%>
+        <%--            <td>${hd.ma}</td>--%>
+        <%--            <td>${hd.idNhanVien}</td>--%>
+        <%--            <td>Khach le</td>--%>
+        <%--            <td>${hd.ngayTao}</td>--%>
+        <%--            <td>${hd.trangThai==0 ? "Chua thanh toan" : "Da thanh toan"}</td>--%>
+        <%--            <td>--%>
+        <%--                <a href="#"--%>
+        <%--                   class="btn btn-primary">--%>
+        <%--                    <i class="bi bi-eye-fill"></i>--%>
+        <%--                </a>--%>
+        <%--            </td>--%>
+        <%--        </tr>`;--%>
+        <%--        }--%>
+
+        <%--        console.log(html)--%>
+        <%--        $("#tbl_hd_cho").html(html)--%>
+        <%--    });--%>
+        console.log("================================================load hd ajax: ");
+    }
+
+    loadDsHDCho();
+    $("button[id^='add_sp_gio_hang_']").on('click', e => {
+        e.preventDefault();
+        // const spctid = e.currentTarget.id.replace("add_sp_gio_hang_", "");
+        // console.log("---", e.currentTarget.id, spctid)
+        // fetch("/ban-hang-tai-quay/api/add-san-pham/" + spctid, {
+        //     method: "post",
+        //     headers: {
+        //         'Accept': 'application/json',
+        //         'Content-Type': 'application/json'
+        //     }
+        // }).then( (response) => {
+        //     console.log(response);
+        // });
+        loadDsHDCho();
+    })
     function searchByName(param){
         var txtSearch = param.value;
         console.log(txtSearch);
