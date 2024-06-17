@@ -408,7 +408,7 @@
                                     <th>Mã Hóa Đơn</th>
                                     <th>Mã SP</th>
                                     <th>Tên SP</th>
-                                    <th>Số lượng</th>
+                                    <th colspan="2">Số lượng</th>
                                     <th>Đơn giá</th>
                                     <th>Thành tiền</th>
                                     <th>Thao tác</th>
@@ -692,30 +692,7 @@
                                     <th>Thao tác</th>
                                 </tr>
                                 </thead>
-                                <tbody id="chiTietSanPhamTableBody">
-                                <c:forEach varStatus="i" items="${listCTSP.content}" var="spct">
-                                    <tr>
-                                        <td>${i.index+1}</td>
-                                        <td>${spct.idSanPham.ma}</td>
-                                        <td>${spct.idSanPham.ten}</td>
-                                        <td>${spct.idMauSac.ten}</td>
-                                        <td>${spct.idKichThuoc.ten}</td>
-                                        <td>${spct.idChatLieu.ten}</td>
-                                        <td>${spct.idKieuTay.ten}</td>
-                                        <td>${spct.soLuong}</td>
-                                        <td>${spct.giaBan}</td>
-                                        <td>${spct.trangThai==1?"Còn hàng":"Hết hàng"}</td>
-<%--                                        <td>--%>
-<%--                                            <form action="/ban-hang-tai-quay/add-san-pham/${spct.id}" method="post"--%>
-<%--                                                  onsubmit="return validateBeforeAddToCart();">--%>
-<%--                                                <input type="hidden" name="idHoaDon" value="${hoaDon.id}"--%>
-<%--                                                       id="selectedInvoiceId">--%>
-<%--                                                <button class="btn btn-success" type="submit">+</button>--%>
-<%--                                            </form>--%>
-<%--                                        </td>--%>
-                                        <td><Button id="add_sp_gio_hang_${spct.id}">test ajax</Button></td>
-                                    </tr>
-                                </c:forEach>
+                                <tbody id="tbl_ds_spct">
 
                                 </tbody>
                             </table>
@@ -975,7 +952,7 @@
 </body>
 
 <script>
-    const loadDsHDCho = (idHD,hdctcpy) => {
+    const loadDsHDCho = (idHD) => {
         // get api + scpt.id
         console.log("test hoa don :" + idHD);
         let datatest = "data testing";
@@ -997,15 +974,17 @@
                     const giaBan = hdct.idCTSP ? hdct.idCTSP.giaBan : 'N/A';
                     const thanhTien = soLuong*giaBan;
                     const maHD = hdct.idHoaDon ? hdct.idHoaDon.ma : 'N/A';
+                    const idCTSP = hdct.idCTSP ? hdct.idCTSP.id : 'N/A';
+                    const idHoaDon = hdct.idHoaDon ? hdct.idHoaDon.id : 'N/A';
                     html +=  '<tr>' +
                         '<td>' + (i + 1) + '</td>' +
                         '<td>' + maHD + '</td>'+
                         '<td>' + maSanPham + '</td>' +
                         '<td>' + tenSanPham + '</td>' +
-                        '<td style="display: flex; align-items: center;">' +
-                        '<form class="d-flex" method="post" action="/ban-hang-tai-quay/update-sl/' + (hdct.idCTSP ? hdct.idCTSP.id : 'N/A') + '">' +
+                        '<td colspan="2" style="display: flex; align-items: center;">' +
+                        '<form class="d-flex" method="post" action="/ban-hang-tai-quay/update-sl/' + (idCTSP) + '">' +
                         '<input type="hidden" name="idHoaDon" value="' + idHoaDon + '">' +
-                        '<input class="form-control me-2" type="text" name="soLuong" value="' + (hdct.idCTSP ? hdct.idCTSP.soLuong : 'N/A') + '" style="width: 45px">' +
+                        '<input class="form-control me-2" type="text" name="soLuong" value="' + (soLuong) + '" style="width: 45px">' +
                         '<button class="btn btn-light" type="submit">' +
                         '<i class="bi bi-pencil"></i>' +
                         '</button>' +
@@ -1022,21 +1001,62 @@
                         '</td>' +//editing
                         '</td>' +
                         '</tr>';
-
-
-
                     console.log("test html: ", html);
                     console.log("test context: ", text);
+                });
+                console.log(html)
+                $("#tbl_ds_spct").html(html)
+            });
+        console.log("================================================load hd ajax: ");
+    }
+    const loadDsCTSP = (idHD) => {
+        // get api + scpt.id
+        console.log("test hoa don :" + idHD);
+        let datatest = "data testing";
+        fetch("/ban-hang-tai-quay/api/lst-hdct/${idHD}", {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        }).then(response => response.json())
+            .then(resp => {
+                console.log("test response: ", resp);
+                let html = '';
+                resp.map((spct,i)=>{
+                    const maSanPham = spct.idSanPham && spct.idSanPham.ma || 'N/A';
+                    const tenSanPham = spct.idSanPham && spct.idSanPham.ten || 'N/A';
+                    const tenMauSac = spct.idMauSac && spct.idMauSac.ten || 'N/A';
+                    const tenKichThuoc = spct.idKichThuoc && spct.idKichThuoc.ten || 'N/A';
+                    const tenChatLieu = spct.idChatLieu && spct.idChatLieu.ten || 'N/A';
+                    const tenKieuTay = spct.idKieuTay && spct.idKieuTay.ten || 'N/A';
+                    const soLuong = spct.soLuong || 'N/A';
+                    const giaBan = spct.giaBan || 'N/A';
+                    const trangThai = spct.trangThai == 1 ? "Còn hàng" : "Hết hàng";
+                    html += '<tr>' +
+                        '<td>' + (i + 1) + '</td>' +
+                        '<td>' + maSanPham + '</td>' +
+                        '<td>' + tenSanPham + '</td>' +
+                        '<td>' + tenMauSac + '</td>' +
+                        '<td>' + tenKichThuoc + '</td>' +
+                        '<td>' + tenChatLieu + '</td>' +
+                        '<td>' + tenKieuTay + '</td>' +
+                        '<td>' + soLuong + '</td>' +
+                        '<td>' + giaBan + '</td>' +
+                        '<td>' + trangThai + '</td>' +
+                        '<td><button id="add_sp_gio_hang_' + spct.id + '" class="btn btn-success">+</button></td>' +
+                        '</tr>';
+                    console.log("test html: ", html);
                 });
                 console.log(html)
                 $("#tbl_hd_cho").html(html)
             });
         console.log("================================================load hd ajax: ");
     }
-
     loadDsHDCho();
     $("button[id^='add_sp_gio_hang_']").on('click', e => {
         e.preventDefault();
+        const queryString = window.location.search;
+        console.log("params :", queryString);
         // const spctid = e.currentTarget.id.replace("add_sp_gio_hang_", "");
         // console.log("---", e.currentTarget.id, spctid)
         // fetch("/ban-hang-tai-quay/api/add-san-pham/" + spctid, {
@@ -1048,9 +1068,7 @@
         // }).then( (response) => {
         //     console.log(response);
         // });
-        const queryString = window.location.search;
-        console.log("params :", queryString);
-        loadDsHDCho(queryString,null);
+        loadDsHDCho(queryString);
     })
     function searchByName(param){
         var txtSearch = param.value;
