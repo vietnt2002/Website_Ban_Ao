@@ -987,6 +987,8 @@
     loadDsHDCho();
     $("button[id^='add_sp_gio_hang_']").on('click', e => {
         e.preventDefault();
+        const queryString = window.location.search;
+        console.log("path variable: ",queryString);
         const spctid = e.currentTarget.id.replace("add_sp_gio_hang_", "");
         console.log("---", e.currentTarget.id, spctid)
         fetch("/ban-hang-tai-quay/api/add-san-pham/" + spctid, {

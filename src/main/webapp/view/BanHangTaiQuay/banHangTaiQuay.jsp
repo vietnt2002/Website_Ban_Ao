@@ -954,7 +954,6 @@
 <script>
     const loadDsHDCho = (idHD) => {
         // get api + scpt.id
-        console.log("test hoa don :" + idHD);
         let datatest = "data testing";
         fetch("/ban-hang-tai-quay/api/lst-hdct/${idHD}", {
             headers: {
@@ -963,7 +962,6 @@
             }
         }).then(response => response.json())
             .then(resp => {
-                console.log("test response: ", resp);
                 let html = '';
                 resp.map((hdct,i)=>{
                     const text = "html${hdct.id}";
@@ -1001,26 +999,20 @@
                         '</td>' +//editing
                         '</td>' +
                         '</tr>';
-                    console.log("test html: ", html);
-                    console.log("test context: ", text);
                 });
-                console.log(html)
-                $("#tbl_ds_spct").html(html)
+                $("#tbl_hd_cho").html(html)
             });
-        console.log("================================================load hd ajax: ");
     }
-    const loadDsCTSP = (idHD) => {
+    const loadDsCTSP = () => {
         // get api + scpt.id
-        console.log("test hoa don :" + idHD);
         let datatest = "data testing";
-        fetch("/ban-hang-tai-quay/api/lst-hdct/${idHD}", {
+        fetch("/ban-hang-tai-quay/api/lst-spct", {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             }
         }).then(response => response.json())
             .then(resp => {
-                console.log("test response: ", resp);
                 let html = '';
                 resp.map((spct,i)=>{
                     const maSanPham = spct.idSanPham && spct.idSanPham.ma || 'N/A';
@@ -1045,30 +1037,44 @@
                         '<td>' + trangThai + '</td>' +
                         '<td><button id="add_sp_gio_hang_' + spct.id + '" class="btn btn-success">+</button></td>' +
                         '</tr>';
-                    console.log("test html: ", html);
                 });
-                console.log(html)
-                $("#tbl_hd_cho").html(html)
+                $("#tbl_ds_spct").html(html)
             });
-        console.log("================================================load hd ajax: ");
     }
     loadDsHDCho();
-    $("button[id^='add_sp_gio_hang_']").on('click', e => {
+    loadDsCTSP();
+    $(document).on('click', "button[id^='add_sp_gio_hang_']", e => {
         e.preventDefault();
-        const queryString = window.location.search;
-        console.log("params :", queryString);
-        // const spctid = e.currentTarget.id.replace("add_sp_gio_hang_", "");
-        // console.log("---", e.currentTarget.id, spctid)
-        // fetch("/ban-hang-tai-quay/api/add-san-pham/" + spctid, {
-        //     method: "post",
-        //     headers: {
-        //         'Accept': 'application/json',
-        //         'Content-Type': 'application/json'
-        //     }
-        // }).then( (response) => {
-        //     console.log(response);
-        // });
-        loadDsHDCho(queryString);
+        const queryString = window.location.pathname;
+        const pathParts = queryString.split('/');
+        const variable1 = pathParts[pathParts.length - 1];
+        const spctid = e.currentTarget.id.replace("add_sp_gio_hang_", "");
+        const apiGet = "/ban-hang-tai-quay/api/get-spct/"+spctid;
+        let spctLocal = [];
+        fetch(apiGet, {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        }).then(response => response.json())
+            .then(resp => {
+                console.log("test response spct: ", resp);
+                spctLocal =resp;
+                const apiAdd = "/ban-hang-tai-quay/api/add-hdct/"+variable1+"/"+spctid+"/"+resp.giaBan;
+                fetch(apiAdd, {
+                    method: "post",
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                }).then( (response) => {
+                    console.log(response);
+                    loadDsHDCho(variable1);
+                    loadDsCTSP()
+                });
+            });
+        console.log("test spct local: ", spctLocal);
+
     })
     function searchByName(param){
         var txtSearch = param.value;

@@ -680,11 +680,14 @@ public class BanTaiQuayController {
     }
 
     @CrossOrigin
-    @PostMapping("api/add-hdct/{idHoaDon}/{idSPCT}")
-    public ResponseEntity<Boolean> addLstHDCT(@PathVariable("idHoaDon") String idHoaDon,@PathVariable("idSPCT") String idSPCT ){
+    @PostMapping("api/add-hdct/{idHoaDon}/{idSPCT}/{donGia}")
+    public ResponseEntity<Boolean> addLstHDCT(@PathVariable("idHoaDon") String idHoaDon,@PathVariable("idSPCT") String idSPCT,@PathVariable("donGia") String donGia ){
+        System.out.println("test post mapping ajax+++++++++++++++++++++++++++++++++++++++++: ");
             ChiTietHoaDon cthd = new ChiTietHoaDon();
+            BigDecimal big = new BigDecimal(donGia);
             cthd.setIdHoaDon(hoaDonRepository.findById(idHoaDon).get());
             cthd.setIdCTSP(sanPhamChiTietRepository.findByIdCTSP(idSPCT));
+            cthd.setDonGia(big);
             cthd.setSoLuong(1);
             cthd.setTrangThai(0);
             hoaDonChiTietRepository.save(cthd);
@@ -693,9 +696,15 @@ public class BanTaiQuayController {
 
     @CrossOrigin
     @GetMapping("api/lst-spct")
-    public ResponseEntity<Page<ChiTietSanPham>> getLstSPCT(@RequestParam(value = "page",defaultValue ="0") String pageParam){
+    public ResponseEntity<List<ChiTietSanPham>> getLstSPCT(@RequestParam(value = "page",defaultValue ="0") String pageParam){
         Pageable pageable = PageRequest.of(Integer.valueOf(pageParam), 10);
-        return ResponseEntity.ok(sanPhamChiTietRepository.findByTrangThai(1,pageable));
+        return ResponseEntity.ok(sanPhamChiTietRepository.findByTrangThai(1,pageable).getContent());
+    }
+
+    @CrossOrigin
+    @GetMapping("api/get-spct/{idSPCT}")
+    public ResponseEntity<ChiTietSanPham> getSPCT(@PathVariable("idSPCT") String idSPCT){
+        return ResponseEntity.ok(sanPhamChiTietRepository.findById(idSPCT).get());
     }
 
 }
