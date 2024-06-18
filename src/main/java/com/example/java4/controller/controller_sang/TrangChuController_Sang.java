@@ -3,9 +3,13 @@ package com.example.java4.controller.controller_sang;
 import com.example.java4.config.UserInfor;
 import com.example.java4.entities.*;
 import com.example.java4.repositories.*;
+import com.example.java4.request.req_sang.DiaChiRequest;
 import com.example.java4.request.req_sang.GiaoHangRequest;
 import com.example.java4.request.req_tai.KhachHangDTO;
-import com.example.java4.response.*;
+import com.example.java4.response.GioHangResponse;
+import com.example.java4.response.KichThuocRespone;
+import com.example.java4.response.MauSacRespone;
+import com.example.java4.response.MauSizeSL;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -53,26 +57,7 @@ public class TrangChuController_Sang {
     private List<SanPham> listSanPham = new ArrayList<>();
     private List<KhachHang> listKhachHang = new ArrayList<>();
     private List<GioHangResponse> listGioHang;
-    private List<GiaoHangRequest> listGiaoHang;
-    private List<ThongTinGiaohangResponse> listTTGH;
     private List<DiaChi> listDiaChi = new ArrayList<>();
-
-//    @PostMapping("/them-dia-chi-GH")
-//    public String themDiaChiByidKH(GiaoHangRequest request, @RequestParam("tenTinhThanh") String idTinh,
-//                                   @RequestParam("tenQuanHuyen") String idQuan,
-//                                   @RequestParam("tenPhuongXa") String idPhuong) {
-//
-//        GiaoHang giaoHang = new GiaoHang();
-//        giaoHang.setTenNguoiNhan(request.getTenNguoiNhan());
-//        giaoHang.setSdtNguoiNhan(request.getSdtNguoiNhan());
-//        giaoHang.setDiaChiChiTiet(request.getDiaChiChiTiet());
-//        giaoHang.setIdTinhThanh(idTinh);
-//        giaoHang.setIdQuanHuyen(idQuan);
-//        giaoHang.setIdPhuongXa(idPhuong);
-//        giaoHang.setTrangThai(GiaoHangRepo.MAC_DINH);
-//        giaoHangRepo.save(giaoHang);
-//        return "redirect:/cua-hang/gio-hang";
-//    }
 
     //Bán onl
     @GetMapping("/trang-chu")
@@ -327,7 +312,8 @@ public class TrangChuController_Sang {
         listGioHang = hdctRepo.getAll(UserInfor.idKhachHang, HoaDonRepository.CHO_THANH_TOAN);
         listCTSP = spctRepo.findAll();
         listSanPham = sanPhamRepo.findAll();
-        ThongTinGiaohangResponse response = khachHangRepo.getThongTinGiaoHang(UserInfor.idKhachHang);
+        DiaChi diaChi = diaChiRepo.getDiaChiByIdKhachHangAndTrangThai(UserInfor.idKhachHang, DiaChiRepository.MAC_DINH);
+        listDiaChi = diaChiRepo.getAllDiaChi();
         boolean check = false;
         System.out.println("====================================test id kh : " + UserInfor.idKhachHang);
         if (listHDCT.isEmpty()) {
@@ -341,7 +327,8 @@ public class TrangChuController_Sang {
             model.addAttribute("listGioHang", listGioHang);
             model.addAttribute("listCTSP", listCTSP);
             model.addAttribute("listSanPham", listSanPham);
-            model.addAttribute("response", response);
+            model.addAttribute("diaChi", diaChi);
+            model.addAttribute("listDiaChi", listDiaChi);
             model.addAttribute("check", check);
         }
 
@@ -361,6 +348,39 @@ public class TrangChuController_Sang {
         model.addAttribute("tongTien", tongTienBigDecimal);
 
         return "/view/ban_hang_online/gioHang.jsp";
+    }
+
+    @PostMapping("/them-dia-chi")
+    public String themDiaChiByidKH(DiaChiRequest request, @RequestParam("tenTinhThanh") String idTinh,
+                                   @RequestParam("tenQuanHuyen") String idQuan,
+                                   @RequestParam("tenPhuongXa") String idPhuong) {
+        KhachHang khachHang = khachHangRepo.findByIdKH(UserInfor.idKhachHang);
+        listDiaChi = diaChiRepo.findAll();
+
+        DiaChi diaChi = new DiaChi();
+        diaChi.setTenNguoiNhan(request.getTenNguoiNhan());
+        diaChi.setSdtNguoiNhan(request.getSdtNguoiNhan());
+        diaChi.setDiaChiChiTiet(request.getDiaChiChiTiet());
+        diaChi.setIdTinhThanh(idTinh);
+        diaChi.setIdQuanHuyen(idQuan);
+        diaChi.setIdPhuongXa(idPhuong);
+        diaChi.setIdKhachHang(khachHang);
+        if (listDiaChi != null && !listDiaChi.isEmpty()) {
+            diaChi.setTrangThai(DiaChiRepository.TUY_CHON);
+        } else {
+            diaChi.setTrangThai(DiaChiRepository.MAC_DINH);
+        }
+        diaChiRepo.save(diaChi);
+        return "redirect:/cua-hang/gio-hang";
+    }
+
+    @GetMapping("/xoa-dia-chi/{id}")
+    public String xoaDiaChi(@PathVariable("id") String id, RedirectAttributes redirectAttributes) {
+        DiaChi diaChi = diaChiRepo.findDiaChiByID(id);
+        diaChiRepo.delete(diaChi);
+        redirectAttributes.addFlashAttribute("successMessage", "Xóa sản phẩm thành công");
+
+        return "redirect:/cua-hang/gio-hang";
     }
 
     //Giảm số lượng sản phẩm có trong giỏ hàng đi 1
