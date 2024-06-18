@@ -1281,7 +1281,7 @@
                 $("#diaChiChiTiet1Error").text("Địa chỉ không được để trống.");
                 isValid = false;
             }
-
+//check
             // Kiểm tra Tỉnh/Thành phố
             if ($("#tinhThanh").val() === "0") {
                 $("#tinhThanhError").text("Vui lòng chọn Tỉnh/Thành phố.");
