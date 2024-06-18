@@ -1107,25 +1107,48 @@
 
 
     $(document).ready(function () {
-        // Đọc giá trị của status từ URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const status = urlParams.get('status');
-
-        // Xác định tab dựa trên giá trị của status và thêm lớp bg-warning
-        if (status) {
-            $('#myTab .nav-link').removeClass('bg-warning');
-            $('#myTab .nav-link[data-status="' + status + '"]').addClass('bg-warning').tab('show');
-        } else {
-            // Nếu không có status, mặc định là tab "Tất Cả"
-            $('#all-tab').addClass('bg-warning');
+        // Function to get status from URL
+        function getStatusFromUrl() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('status');
         }
 
-        // Khi click vào tab
-        $('#myTab .nav-link').click(function () {
-            // Loại bỏ lớp bg-warning từ tất cả các tab
+        // Function to set and highlight the correct tab
+        function setStatusAndHighlightTab(status) {
+            if (status === null || status === '' || status === 'null') {
+                status = 'all';
+            }
+
+            // Remove the bg-warning class from all tabs
             $('#myTab .nav-link').removeClass('bg-warning');
-            // Thêm lớp bg-warning cho tab được nhấn
+
+            // Highlight the appropriate tab
+            if (status === 'all') {
+                $('#all-tab').addClass('bg-warning');
+            } else {
+                $('#myTab .nav-link[data-status="' + status + '"]').addClass('bg-warning').tab('show');
+            }
+        }
+
+        // Initial setup
+        let status = getStatusFromUrl();
+        setStatusAndHighlightTab(status);
+
+        // When clicking on a tab
+        $('#myTab .nav-link').click(function () {
+            // Remove the bg-warning class from all tabs
+            $('#myTab .nav-link').removeClass('bg-warning');
+            // Add the bg-warning class to the clicked tab
             $(this).addClass('bg-warning');
+        });
+
+        // When clicking on any a tag
+        $('a').click(function () {
+            status = getStatusFromUrl();
+            if (status === null) {
+                status = 'all';
+            }
+            setStatusAndHighlightTab('all');
         });
     });
 
@@ -1163,49 +1186,7 @@
         window.location.href = cleanUrl;
     }
 
-    // Lấy ra trạng thái và thêm màu vào class
-    function getStatusName(status) {
-        switch(status) {
-            case 0:
-                return 'Chờ thanh toán';
-            case 1:
-                return 'Chờ xác nhận';
-            case 2:
-                return 'Đã xác nhận';
-            case 3:
-                return 'Chờ giao hàng';
-            case 4:
-                return 'Đang giao hàng';
-            case 5:
-                return 'Giao hàng thành công';
-            case 6:
-                return 'Đã hoàn thành';
-            case 7:
-                return 'Đã hủy';
-            default:
-                return 'Không xác định';
-        }
-    }
 
-    function getStatusClass(status) {
-        switch(status) {
-            case 0:
-                return 'bg-danger';
-            case 1:
-                return 'bg-danger';
-            case 3:
-                return 'bg-warning';
-            case 4:
-                return 'bg-warning';
-            case 5:
-            case 6:
-                return 'bg-success';
-            case 7:
-                return 'bg-secondary';
-            default:
-                return 'bg-primary';
-        }
-    }
 
 
 </script>

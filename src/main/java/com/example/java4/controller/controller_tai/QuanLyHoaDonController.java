@@ -16,15 +16,14 @@ import com.example.java4.response.HoaDonDTO;
 
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Sort;
 
 import java.io.ByteArrayInputStream;
@@ -212,7 +211,6 @@ public class QuanLyHoaDonController {
         // Thêm các thông tin vào model để truyền sang JSP
         model.addAttribute("hoaDonDTO", hoaDonDTO);
         model.addAttribute("listHDCT", listHDCT);
-        System.out.println(diaChiKhachHang.getDiaChiChiTiet());
         model.addAttribute("diaChiKhachHang", diaChiKhachHang);
 
         return "/view/view_tai/hoa_don/detail_bill.jsp";
@@ -263,6 +261,9 @@ public class QuanLyHoaDonController {
     }
 
 
+
+
+
     // Chức năng in phiếu giao hàng
     @GetMapping("/in-phieu-giao-hang/{idHD}")
     public String printDelivery(Model model,
@@ -308,6 +309,33 @@ public class QuanLyHoaDonController {
         model.addAttribute("listHDCT", listHDCT);
         model.addAttribute("diaChiKhachHang", diaChiKhachHang);
         return "/view/view_tai/hoa_don/in_phieu_giao_hang.jsp";
+    }
+
+    // Chức năng xác nhận đơn hàng
+    @PostMapping("/xac-nhan/{idHD}")
+    public String confirmBill(@PathVariable("idHD") String idHD,
+                              @RequestParam("trangThai") int trangThai,
+                              @RequestParam("moTa") String moTa,
+                              Model model) {
+        try {
+            HoaDon hoaDon = _hoaDonRepo.findById(idHD).orElse(null);
+            HoaDonDTO  hoaDonDTO = new HoaDonDTO();
+
+            if (hoaDon == null) {
+                model.addAttribute("errorMessage", "Không tìm thấy hóa đơn.");
+                return "redirect:/hoa-don/detail/" + idHD;
+            }
+
+            // Cập nhật trạng thái và mô tả
+            hoaDon.setTrangThai(trangThai);
+//            hoaDon.setG(moTa);
+            _hoaDonRepo.save(hoaDon);
+
+            model.addAttribute("confirmSuccess", "Cập nhật trạng thái đơn hàng thành công.");
+        } catch (Exception e) {
+            model.addAttribute("confirmerror", "Có lỗi xảy ra khi cập nhật trạng thái đơn hàng.");
+        }
+        return "redirect:/hoa-don/detail/" + idHD;
     }
 
 

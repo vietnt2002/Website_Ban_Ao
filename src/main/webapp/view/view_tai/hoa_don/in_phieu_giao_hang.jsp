@@ -1,4 +1,5 @@
 
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="f" uri="jakarta.tags.functions" %>
 <%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form" %>
@@ -10,88 +11,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Phiếu Giao Hàng</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            width: 21cm; /* Chiều rộng A4 */
-            height: auto; /* Chiều cao tự động điều chỉnh */
-            padding: 20px;
-            margin: auto;
-            background-color: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        .header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .section {
-            margin-bottom: 20px;
-        }
-        .section-title {
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-        .info {
-            margin-bottom: 10px;
-        }
-        .table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-        }
-        .table th, .table td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-        .footer {
-            text-align: right;
-            margin-top: 20px;
-        }
-        .signature {
-            float: right;
-            margin-top: 20px;
-            text-align: center;
-        }
-        .payment {
-            font-weight: bold;
-            display: flex;
-            margin-top: 20px;
-            /* justify-content: space-between; */
-        }
-        .payment .monney{
-            padding-left: 20px;
-        }
+
     </style>
 </head>
 <body>
-<div class="container">
-    <div class="header">
+<div class="container mt-5 p-4 shadow delivery">
+    <div class="text-center mb-4">
         <h1>Phiếu Giao Hàng</h1>
     </div>
 
-    <div class="section">
-        <div class="section-title">Thông tin Bên Gửi:</div>
-        <div class="info">Người gửi: MS-STORE</div>
-        <div class="info">Địa chỉ: Tòa nhà FPT Polytechnic,Phố Trịnh Văn Bô, Xuân Phương, Nam Từ Liêm, Hà Nội</div>
-        <div class="info">Số điện thoại: 0123 456 789</div>
+    <div class="mb-4">
+        <h5>Thông tin Bên Gửi:</h5>
+        <p>Người gửi: MS-STORE</p>
+        <p>Địa chỉ: Tòa nhà FPT Polytechnic, Phố Trịnh Văn Bô, Xuân Phương, Nam Từ Liêm, Hà Nội</p>
+        <p>Số điện thoại: 0123 456 789</p>
     </div>
 
-    <div class="section">
-        <div class="section-title">Thông tin Bên Nhận:</div>
-        <div class="info">Người nhận: ${hoaDonDTO.khachHang.hoTen}</div>
-        <div class="info">Địa chỉ: ${diaChiKhachHang.diaChiChiTiet}, ${diaChiKhachHang.idPhuongXa}, ${diaChiKhachHang.idQuanHuyen}, ${diaChiKhachHang.idTinhThanh}</div>
-        <div class="info">Số điện thoại: ${hoaDonDTO.khachHang.sdt}</div>
+    <div class="mb-4">
+        <h5>Thông tin Bên Nhận:</h5>
+        <p>Người nhận: ${hoaDonDTO.khachHang.hoTen}</p>
+        <p>Địa chỉ: ${diaChiKhachHang.diaChiChiTiet}, ${diaChiKhachHang.idPhuongXa}, ${diaChiKhachHang.idQuanHuyen}, ${diaChiKhachHang.idTinhThanh}</p>
+        <p>Số điện thoại: ${hoaDonDTO.khachHang.sdt}</p>
     </div>
 
-    <div class="section">
-        <div class="section-title">Nội dung đơn hàng</div>
-        <table class="table">
-            <thead>
+    <div class="mb-4">
+        <h5>Nội dung đơn hàng</h5>
+        <table class="table table-bordered">
+            <thead class="thead-light">
             <tr>
                 <th>Tên Sản Phẩm</th>
                 <th>Màu Sắc</th>
@@ -102,55 +51,57 @@
             </tr>
             </thead>
             <tbody>
-                <c:forEach var="chiTiet" items="${listHDCT}" varStatus="i">
-                        <tr>
-                            <td>${chiTiet.idCTSP.idSanPham.ten}</td>
-                            <td>${chiTiet.idCTSP.idMauSac.ten}</td>
-                            <td>${chiTiet.idCTSP.idKichThuoc.ten}</td>
-                            <td>${chiTiet.soLuong}</td>
-                            <td><fmt:formatNumber value="${chiTiet.donGia}" type="currency" currencySymbol="₫"
-                                                  groupingUsed="true"/></td>
-                            <td><fmt:formatNumber value="${chiTiet.donGia * chiTiet.soLuong}" type="currency"
-                                                  currencySymbol="₫" groupingUsed="true"/></td>
-                        </tr>
-                </c:forEach>
+            <c:forEach var="chiTiet" items="${listHDCT}" varStatus="i">
+                <tr>
+                    <td>${chiTiet.idCTSP.idSanPham.ten}</td>
+                    <td>${chiTiet.idCTSP.idMauSac.ten}</td>
+                    <td>${chiTiet.idCTSP.idKichThuoc.ten}</td>
+                    <td>${chiTiet.soLuong}</td>
+                    <td><fmt:formatNumber value="${chiTiet.donGia}" type="currency" currencySymbol="₫" groupingUsed="true"/></td>
+                    <td><fmt:formatNumber value="${chiTiet.donGia * chiTiet.soLuong}" type="currency" currencySymbol="₫" groupingUsed="true"/></td>
+                </tr>
+            </c:forEach>
             </tbody>
         </table>
-
-        <div class="section payment">
-            <div class="section-title my-5 pr-3">Tiền thu hộ:</div>
-            <div class="pl-3 monney"><fmt:formatNumber value="${hoaDonDTO.tongTien}"
-                                                       type="currency" currencySymbol="₫"
-                                                       groupingUsed="true"/>
-            </div>
-        </div>
-
     </div>
 
-    <div class="footer">
-        <div class="signature">
-            <p class="m-0 p-0">Chữ ký người nhận</p>
-            <p class="m-0 p-0">(Xác nhận hàng nguyên vẹn, không móp, méo)</p>
+    <div class="d-flex justify-content-between align-items-start mb-4">
+        <div>
+            <h5 class="mb-0">Tiền thu hộ: <span>200VND</span></h5>
+<%--            <p class="font-weight-bold mb-0">--%>
+<%--                <fmt:formatNumber value="${hoaDonDTO.tongTien}" type="currency" currencySymbol="₫" groupingUsed="true"/>--%>
+<%--            </p>--%>
+        </div>
+        <div class="text-right mr-5">
+            <p class="mb-1 mr-5">Chữ ký người nhận</p>
+            <p class="mb-0">(Xác nhận hàng nguyên vẹn, không móp, méo)</p>
         </div>
     </div>
 </div>
 
-<button id="downloadPdf">Download PDF</button>
+<div class="text-center mt-4">
+    <button id="downloadPdf" class="btn btn-primary">
+        <i class="bi bi-printer"></i> Download PDF
+    </button>
+</div>
 
+<!-- jQuery and Bootstrap Bundle (includes Popper) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<!-- html2pdf.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
-<%--<script>--%>
-<%--    document.getElementById('downloadPdf').addEventListener('click', () => {--%>
-<%--        const element = document.querySelector('.container');--%>
-<%--        const opt = {--%>
-<%--            margin: 1,--%>
-<%--            filename: 'phieu_giao_hang.pdf',--%>
-<%--            image: { type: 'jpeg', quality: 0.98 },--%>
-<%--            html2canvas: { scale: 2 },--%>
-<%--            jsPDF: { unit: 'cm', format: 'a4', orientation: 'landscape' }--%>
-<%--        };--%>
-<%--        html2pdf().from(element).set(opt).save();--%>
-<%--    });--%>
-<%--</script>--%>
+<script>
+    document.getElementById('downloadPdf').addEventListener('click', () => {
+        const element = document.querySelector('.container');
+        const opt = {
+            margin: 1,
+            filename: 'phieu_giao_hang.pdf',
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: 'cm', format: 'a4', orientation: 'landscape' }
+        };
+        html2pdf().from(element).set(opt).save();
+    });
+</script>
 </body>
 </html>
-
