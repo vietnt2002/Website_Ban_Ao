@@ -412,9 +412,8 @@
                                         data-status="all">
                                     Tất Cả
                                     <span class="position-absolute top-0 start-100
-                                    translate-middle badge rounded-pill bg-danger">
-                                             0
-<%--                                    <span class="visually-hidden">unread messages</span>--%>
+            translate-middle badge rounded-pill bg-danger">
+                                        ${countAll}
                                     </span>
                                 </button>
                             </li>
@@ -424,9 +423,8 @@
                                         aria-controls="confirmation" aria-selected="false" data-status="confirmation">
                                     Chờ Xác Nhận
                                     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                    0
-<%--                                    <span class="visually-hidden">unread messages</span>--%>
-                                </span>
+                                        ${countChoXacNhan}
+                                    </span>
                                 </button>
                             </li>
                             <li class="nav-item position-relative" role="presentation">
@@ -435,9 +433,8 @@
                                         aria-selected="false" data-status="confirmed">
                                     Đã Xác Nhận
                                     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                0
-                <span class="visually-hidden">unread messages</span>
-            </span>
+                                        ${countDaXacNhan}
+                                    </span>
                                 </button>
                             </li>
                             <li class="nav-item position-relative" role="presentation">
@@ -446,9 +443,8 @@
                                         aria-selected="false" data-status="delivery">
                                     Chờ Giao Hàng
                                     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                0
-                <span class="visually-hidden">unread messages</span>
-            </span>
+                                        ${countChoGiaoHang}
+                                    </span>
                                 </button>
                             </li>
                             <li class="nav-item position-relative" role="presentation">
@@ -457,21 +453,18 @@
                                         aria-selected="false" data-status="delivered">
                                     Đã Giao Hàng
                                     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                0
-                <span class="visually-hidden">unread messages</span>
-            </span>
+                                        ${countDangGiaoHang}
+                                    </span>
                                 </button>
                             </li>
                             <li class="nav-item position-relative" role="presentation">
                                 <button class="nav-link" id="accomplished-tab" data-bs-toggle="tab"
                                         data-bs-target="#accomplished" type="button" role="tab"
-                                        aria-controls="accomplished"
-                                        aria-selected="false" data-status="accomplished">
+                                        aria-controls="accomplished" aria-selected="false" data-status="accomplished">
                                     Đã Hoàn Thành
                                     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                0
-                <span class="visually-hidden">unread messages</span>
-            </span>
+                                        ${countDaHoanThanh}
+                                    </span>
                                 </button>
                             </li>
                             <li class="nav-item position-relative" role="presentation">
@@ -480,12 +473,12 @@
                                         aria-selected="false" data-status="cancelled">
                                     Đã Hủy
                                     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                        0
-                <span class="visually-hidden">unread messages</span>
-            </span>
+                                        ${countDaHuy}
+                                    </span>
                                 </button>
                             </li>
                         </ul>
+
 
 
                         <div class="tab-content mt-3" id="myTabContent">
@@ -567,8 +560,8 @@
                                     </nav>
                                 </div>
                             </div>
-                            <div class="tab-pane fade" id="confimation" role="tabpanel"
-                                 aria-labelledby="confimation-tab">
+                            <div class="tab-pane fade" id="confirmation" role="tabpanel"
+                                 aria-labelledby="confirmation-tab">
                                 <%-- Danh sách hóa đơn chờ xác nhận     --%>
                                     <table class="table table-bordered " width="100%" cellspacing="0">
                                         <thead class="">

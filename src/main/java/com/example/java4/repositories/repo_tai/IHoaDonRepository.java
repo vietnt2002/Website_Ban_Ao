@@ -75,5 +75,10 @@ public interface IHoaDonRepository   extends JpaRepository<HoaDon,String> {
                                         @Param("endDate") LocalDateTime endDate,
                                         Pageable pageable);
 
+    // Các phương thức đếm số lượng hóa đơn theo trạng thái
+    @Query("SELECT COUNT(h) FROM HoaDon h WHERE h.trangThai = :trangThai")
+    int countByTrangThai(@Param("trangThai") int trangThai);
 
+    @Query("SELECT COUNT(h) FROM HoaDon h")
+    int countAll();
 }

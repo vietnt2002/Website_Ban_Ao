@@ -525,57 +525,165 @@
                                 <%-- Hiển thị stepper cho bán hàng online (LoaiHD != 1) --%>
                                 <c:otherwise>
                                     <div class="stepper-horizontal" id="stepper_online">
-                                        <div class="step" id="step_online_1">
-                                            <div class="step-icon-wrapper">
-                                                <i class="bi bi-hourglass-split step-icon"></i>
-                                            </div>
-                                            <div class="step-title">Chờ xác nhận</div>
-                                            <div class="step-date">01/01/2023</div>
-                                            <div class="connector"></div>
-                                        </div>
-                                        <div class="step-arrow">
-                                            <i class="bi bi-arrow-right"></i>
-                                        </div>
-                                        <div class="step" id="step_online_2">
-                                            <div class="step-icon-wrapper">
-                                                <i class="bi bi-check-circle step-icon"></i>
-                                            </div>
-                                            <div class="step-title">Đã xác nhận</div>
-                                            <div class="step-date">02/01/2023</div>
-                                            <div class="connector"></div>
-                                        </div>
-                                        <div class="step-arrow">
-                                            <i class="bi bi-arrow-right"></i>
-                                        </div>
-                                        <div class="step" id="step_online_3">
-                                            <div class="step-icon-wrapper">
-                                                <i class="bi bi-truck step-icon"></i>
-                                            </div>
-                                            <div class="step-title">Chờ giao hàng</div>
-                                            <div class="step-date">03/01/2023</div>
-                                            <div class="connector"></div>
-                                        </div>
-                                        <div class="step-arrow">
-                                            <i class="bi bi-arrow-right"></i>
-                                        </div>
-                                        <div class="step" id="step_online_5">
-                                            <div class="step-icon-wrapper">
-                                                <i class="bi bi-box-seam step-icon"></i>
-                                            </div>
-                                            <div class="step-title">Đang giao hàng</div>
-                                            <div class="step-date">05/01/2023</div>
-                                            <div class="connector"></div>
-                                        </div>
-                                        <div class="step-arrow">
-                                            <i class="bi bi-arrow-right"></i>
-                                        </div>
-                                        <div class="step" id="step_online_6">
-                                            <div class="step-icon-wrapper">
-                                                <i class="bi bi-credit-card-2-back step-icon"></i>
-                                            </div>
-                                            <div class="step-title">Đã hoàn thành</div>
-                                            <div class="step-date">06/01/2023</div>
-                                        </div>
+
+                                        <c:choose>
+                                            <c:when test="${step == 'confirmation'}">
+                                                <div class="step active" id="step_online_1">
+                                                    <div class="step-icon-wrapper">
+                                                        <i class="bi bi-hourglass-split step-icon"></i>
+                                                    </div>
+                                                    <div class="step-title">Chờ xác nhận</div>
+                                                    <div class="step-date">${hoaDonDTO.ngayTao}</div>
+                                                </div>
+                                            </c:when>
+                                            <c:when test="${step == 'confirmed'}">
+                                                <div class="step active" id="step_online_1">
+                                                    <div class="step-icon-wrapper">
+                                                        <i class="bi bi-hourglass-split step-icon"></i>
+                                                    </div>
+                                                    <div class="step-title">Chờ xác nhận</div>
+                                                    <div class="step-date">${hoaDonDTO.ngayTao}</div>
+                                                </div>
+                                                <div class="step-arrow">
+                                                    <i class="bi bi-arrow-right"></i>
+                                                </div>
+                                                <div class="step active" id="step_online_2">
+                                                    <div class="step-icon-wrapper">
+                                                        <i class="bi bi-check-circle step-icon"></i>
+                                                    </div>
+                                                    <div class="step-title">Đã xác nhận</div>
+                                                    <div class="step-date">${hoaDonDTO.ngayTao}</div>
+                                                </div>
+                                            </c:when>
+                                            <c:when test="${step == 'delivery'}">
+                                                <div class="step active" id="step_online_1">
+                                                    <div class="step-icon-wrapper">
+                                                        <i class="bi bi-hourglass-split step-icon"></i>
+                                                    </div>
+                                                    <div class="step-title">Chờ xác nhận</div>
+                                                    <div class="step-date">${hoaDonDTO.ngayTao}</div>
+                                                </div>
+                                                <div class="step-arrow">
+                                                    <i class="bi bi-arrow-right"></i>
+                                                </div>
+                                                <div class="step active" id="step_online_2">
+                                                    <div class="step-icon-wrapper">
+                                                        <i class="bi bi-check-circle step-icon"></i>
+                                                    </div>
+                                                    <div class="step-title">Đã xác nhận</div>
+                                                    <div class="step-date">${hoaDonDTO.ngayTao}</div>
+                                                </div>
+                                                <div class="step-arrow">
+                                                    <i class="bi bi-arrow-right"></i>
+                                                </div>
+                                                <div class="step active" id="step_online_3">
+                                                    <div class="step-icon-wrapper">
+                                                        <i class="bi bi-truck step-icon"></i>
+                                                    </div>
+                                                    <div class="step-title">Chờ giao hàng</div>
+                                                    <div class="step-date">${hoaDonDTO.ngayTao}</div>
+                                                </div>
+                                            </c:when>
+                                            <c:when test="${step == 'delivered'}">
+                                                <div class="step active" id="step_online_1">
+                                                    <div class="step-icon-wrapper">
+                                                        <i class="bi bi-hourglass-split step-icon"></i>
+                                                    </div>
+                                                    <div class="step-title">Chờ xác nhận</div>
+                                                    <div class="step-date">${hoaDonDTO.ngayTao}</div>
+                                                </div>
+                                                <div class="step-arrow">
+                                                    <i class="bi bi-arrow-right"></i>
+                                                </div>
+                                                <div class="step active" id="step_online_2">
+                                                    <div class="step-icon-wrapper">
+                                                        <i class="bi bi-check-circle step-icon"></i>
+                                                    </div>
+                                                    <div class="step-title">Đã xác nhận</div>
+                                                    <div class="step-date">${hoaDonDTO.ngayTao}</div>
+                                                </div>
+                                                <div class="step-arrow">
+                                                    <i class="bi bi-arrow-right"></i>
+                                                </div>
+                                                <div class="step active" id="step_online_3">
+                                                    <div class="step-icon-wrapper">
+                                                        <i class="bi bi-truck step-icon"></i>
+                                                    </div>
+                                                    <div class="step-title">Chờ giao hàng</div>
+                                                    <div class="step-date">${hoaDonDTO.ngayTao}</div>
+                                                </div>
+                                                <div class="step-arrow">
+                                                    <i class="bi bi-arrow-right"></i>
+                                                </div>
+                                                <div class="step active" id="step_online_4">
+                                                    <div class="step-icon-wrapper">
+                                                        <i class="bi bi-box-seam step-icon"></i>
+                                                    </div>
+                                                    <div class="step-title">Đang giao hàng</div>
+                                                    <div class="step-date">${hoaDonDTO.ngayTao}</div>
+                                                </div>
+                                            </c:when>
+                                            <c:when test="${step == 'accomplished'}">
+                                                <div class="step active" id="step_online_1">
+                                                    <div class="step-icon-wrapper">
+                                                        <i class="bi bi-hourglass-split step-icon"></i>
+                                                    </div>
+                                                    <div class="step-title">Chờ xác nhận</div>
+                                                    <div class="step-date">${hoaDonDTO.ngayTao}</div>
+                                                </div>
+                                                <div class="step-arrow">
+                                                    <i class="bi bi-arrow-right"></i>
+                                                </div>
+                                                <div class="step active" id="step_online_2">
+                                                    <div class="step-icon-wrapper">
+                                                        <i class="bi bi-check-circle step-icon"></i>
+                                                    </div>
+                                                    <div class="step-title">Đã xác nhận</div>
+                                                    <div class="step-date">${hoaDonDTO.ngayTao}</div>
+                                                </div>
+                                                <div class="step-arrow">
+                                                    <i class="bi bi-arrow-right"></i>
+                                                </div>
+                                                <div class="step active" id="step_online_3">
+                                                    <div class="step-icon-wrapper">
+                                                        <i class="bi bi-truck step-icon"></i>
+                                                    </div>
+                                                    <div class="step-title">Chờ giao hàng</div>
+                                                    <div class="step-date">${hoaDonDTO.ngayTao}</div>
+                                                </div>
+                                                <div class="step-arrow">
+                                                    <i class="bi bi-arrow-right"></i>
+                                                </div>
+                                                <div class="step active" id="step_online_4">
+                                                    <div class="step-icon-wrapper">
+                                                        <i class="bi bi-box-seam step-icon"></i>
+                                                    </div>
+                                                    <div class="step-title">Đang giao hàng</div>
+                                                    <div class="step-date">${hoaDonDTO.ngayTao}</div>
+                                                </div>
+                                                <div class="step-arrow">
+                                                    <i class="bi bi-arrow-right"></i>
+                                                </div>
+                                                <div class="step active" id="step_online_5">
+                                                    <div class="step-icon-wrapper">
+                                                        <i class="bi bi-credit-card-2-back step-icon"></i>
+                                                    </div>
+                                                    <div class="step-title">Đã hoàn thành</div>
+                                                    <div class="step-date">${hoaDonDTO.ngayTao}</div>
+                                                </div>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <div class="step" id="step_online_1">
+                                                    <div class="step-icon-wrapper">
+                                                        <i class="bi bi-hourglass-split step-icon"></i>
+                                                    </div>
+                                                    <div class="step-title">Chờ xác nhận</div>
+                                                    <div class="step-date">${hoaDonDTO.ngayTao}</div>
+                                                </div>
+                                            </c:otherwise>
+                                        </c:choose>
+
+
                                     </div>
                                 </c:otherwise>
                             </c:choose>
@@ -601,32 +709,29 @@
 
 
                     <!-- Modal xác nhận -->
-                <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel"
-                     aria-hidden="true">
-                    <div class="modal-dialog">
-                        <form action="" method="post">
+                    <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
                             <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="confirmModalLabel">Xác nhận</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="mb-3">
-                                        <label for="description" class="form-label">Mô tả</label>
-                                        <input type="text" class="form-control" id="description" placeholder="Nhập mô tả">
+                                <form method="post" action="/hoa-don/xac-nhan/${hoaDonDTO.id}">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="confirmModalLabel">Xác nhận đơn hàng</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                                    <button type="button" class="btn btn-primary">Xác nhận</button>
-                                </div>
+                                    <div class="modal-body">
+                                        <input type="hidden" name="trangThai" value="${hoaDonDTO.trangThai + 1}">
+                                        <div class="mb-3">
+                                            <label for="moTa" class="form-label">Mô tả</label>
+                                            <textarea class="form-control" id="moTa" name="moTa" rows="3"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                        <button type="submit" class="btn btn-primary">Xác nhận</button>
+                                    </div>
+                                </form>
                             </div>
-
-                        </form>
-
+                        </div>
                     </div>
-                </div>
 
                 <%--    Bảng lịch sử thanh toán--%>
                 <div class="card mb-3">
@@ -1140,76 +1245,23 @@
         }
     });
 
-    <c:if test="${not empty error}">
+    <c:if test="${not empty confirmSuccess}">
     Toast.fire({
         icon: "success",
         title: "${confirmSuccess}"
     });
     </c:if>
 
-    <c:if test="${not empty errorMessage}">
+    <c:if test="${not empty confirmError}">
     Toast.fire({
         icon: "error",
-        title: "${errorMessage}"
+        title: "${confirmError}"
     });
     </c:if>
 
 
 
 
-
-
-
-
-
-    // Ẩn hiển trạng thái Hóa đơn
-    document.addEventListener("DOMContentLoaded", function () {
-        const confirmBtn = document.getElementById('confirmBtn');
-        const undoBtn = document.getElementById('undoBtn');
-        const modalConfirmBtn = document.getElementById('modalConfirmBtn');
-        const stepperOnline = document.getElementById('stepper_online');
-        const stepsOnline = stepperOnline.querySelectorAll('.step');
-
-        let currentStep = 0;
-
-        // Show the first step
-        if (stepsOnline.length > 0) {
-            stepsOnline[currentStep].classList.remove('hide');
-        }
-
-        confirmBtn.addEventListener('click', function () {
-            const confirmModal = new bootstrap.Modal(document.getElementById('confirmModal'));
-            confirmModal.show();
-        });
-
-        modalConfirmBtn.addEventListener('click', function () {
-            const confirmModal = bootstrap.Modal.getInstance(document.getElementById('confirmModal'));
-            confirmModal.hide();
-
-            // Move to the next step
-            if (currentStep < stepsOnline.length - 1) {
-                stepsOnline[currentStep].classList.add('hide');
-                currentStep++;
-                stepsOnline[currentStep].classList.remove('hide');
-            }
-
-            // Show the undo button
-            undoBtn.style.display = 'inline-block';
-        });
-
-        undoBtn.addEventListener('click', function () {
-            if (currentStep > 0) {
-                stepsOnline[currentStep].classList.add('hide');
-                currentStep--;
-                stepsOnline[currentStep].classList.remove('hide');
-            }
-
-            // Hide the undo button if we're back at the first step
-            if (currentStep === 0) {
-                undoBtn.style.display = 'none';
-            }
-        });
-    });
 
     // Cofirm hủy hóa đơn
     document.getElementById('cancelButton').addEventListener('click', function () {
@@ -1244,6 +1296,43 @@
             jsPDF: {unit: 'cm', format: 'a4', orientation: 'portrait'}
         };
         html2pdf().from(element).set(opt).save();
+    });
+
+    // Chuyển đổi trạng thái
+    document.addEventListener("DOMContentLoaded", function() {
+        var trangThai = ${hoaDonDTO.trangThai};
+        var stepCount = 1;
+        for (var i = 1; i <= 5; i++) {
+            document.getElementById("step_online_" + i).style.display = "none";
+            document.getElementById("arrow_" + i).style.display = "none";
+        }
+
+        switch (trangThai) {
+            case 0: // Chờ xác nhận
+                stepCount = 1;
+                break;
+            case 1: // Đã xác nhận
+                stepCount = 2;
+                break;
+            case 2: // Chờ giao hàng
+                stepCount = 3;
+                break;
+            case 3: // Đang giao hàng
+                stepCount = 4;
+                break;
+            case 4: // Đã hoàn thành
+                stepCount = 5;
+                break;
+            default:
+                stepCount = 1;
+                break;
+        }
+        for (var i = 1; i <= stepCount; i++) {
+            document.getElementById("step_online_" + i).style.display = "block";
+            if (i < stepCount) {
+                document.getElementById("arrow_" + i).style.display = "block";
+            }
+        }
     });
 
 

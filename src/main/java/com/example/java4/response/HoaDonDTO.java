@@ -1,10 +1,7 @@
 package com.example.java4.response;
 
 
-import com.example.java4.entities.DiaChi;
-import com.example.java4.entities.KhachHang;
-import com.example.java4.entities.KhuyenMai;
-import com.example.java4.entities.NhanVien;
+import com.example.java4.entities.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,6 +31,8 @@ public class HoaDonDTO {
     private Integer trangThai;
     private String trangThaiText;
     private String maMau;
+    private String ngayCapNhat;
+    private String ghiChu;
 
     public HoaDonDTO(String id, String ma, KhachHang khachHang, NhanVien nhanVien, Integer phuongThucThanhToan, BigDecimal tongTien,Integer loaiHoaDon, String ngayTao,String ngayThanhToan, Integer trangThai) {
         this.id = id;
@@ -47,7 +46,24 @@ public class HoaDonDTO {
         this.ngayThanhToan = ngayThanhToan;
         this.trangThai = trangThai;
     }
-//    public HoaDonDTO(String id, String ma, KhachHang khachHang, NhanVien nhanVien, Integer phuongThucThanhToan, BigDecimal tongTien,Integer loaiHoaDon, String ngayTao,String ngayThanhToan, Integer trangThai,String maText) {
+
+    public HoaDonDTO(String id, String ma, KhachHang khachHang, NhanVien nhanVien, Integer phuongThucThanhToan, BigDecimal tongTien, Integer loaiHoaDon, String ngayTao, String ngayThanhToan, Integer trangThai, String ngayCapNhat, String ghiChu) {
+        this.id = id;
+        this.ma = ma;
+        this.khachHang = khachHang;
+        this.nhanVien = nhanVien;
+        this.phuongThucThanhToan = phuongThucThanhToan;
+        this.tongTien = tongTien;
+        this.loaiHoaDon = loaiHoaDon;
+        this.ngayTao = ngayTao;
+        this.ngayThanhToan = ngayThanhToan;
+        this.trangThai = trangThai;
+        this.ngayCapNhat = ngayCapNhat;
+        this.ghiChu = ghiChu;
+    }
+
+
+    //    public HoaDonDTO(String id, String ma, KhachHang khachHang, NhanVien nhanVien, Integer phuongThucThanhToan, BigDecimal tongTien,Integer loaiHoaDon, String ngayTao,String ngayThanhToan, Integer trangThai,String maText) {
 //        this.id = id;
 //        this.ma = ma;
 //        this.khachHang = khachHang;
@@ -60,6 +76,36 @@ public class HoaDonDTO {
 //        this.trangThai = trangThai;
 //        this.trangThaiText=maText;
 //    }
+
+    public static HoaDonDTO fromEntity(HoaDon hoaDon) {
+        return new HoaDonDTO(
+                hoaDon.getId(),
+                hoaDon.getMa(),
+                hoaDon.getIdKhachHang(),
+                hoaDon.getIdNhanVien(),
+                hoaDon.getPhuongThucThanhToan(),
+                hoaDon.getTongTien(),
+                hoaDon.getLoaiHoaDon(),
+                hoaDon.getNgayTao() != null ? hoaDon.getNgayTao().toString() : null,
+                hoaDon.getNgayThanhToan() != null ? hoaDon.getNgayThanhToan().toString() : null,
+                hoaDon.getTrangThai()
+        );
+    }
+
+    public HoaDon toEntity() {
+        HoaDon hoaDon = new HoaDon();
+        hoaDon.setId(this.id);
+        hoaDon.setMa(this.ma);
+        hoaDon.setIdKhachHang(this.khachHang);
+        hoaDon.setIdNhanVien(this.nhanVien);
+        hoaDon.setPhuongThucThanhToan(this.phuongThucThanhToan);
+        hoaDon.setTongTien(this.tongTien);
+        hoaDon.setLoaiHoaDon(this.loaiHoaDon);
+        hoaDon.setNgayTao(LocalDateTime.parse(this.ngayTao));
+        hoaDon.setNgayThanhToan(this.ngayThanhToan != null ? LocalDateTime.parse(this.ngayThanhToan) : null);
+        hoaDon.setTrangThai(this.trangThai);
+        return hoaDon;
+    }
 
 
 }

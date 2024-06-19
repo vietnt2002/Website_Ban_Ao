@@ -25,6 +25,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Sort;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -59,6 +60,9 @@ public class QuanLyHoaDonController {
 
     @Autowired
     IDiaChiRepository _diaChiRepository;
+
+
+
 
     @GetMapping("/hien-thi")
     public String view(Model model,
@@ -99,7 +103,7 @@ public class QuanLyHoaDonController {
                     case "all":
                         pageHD = (loaiHoaDon != null) ? hoaDonRepository.findByLoaiHoaDon(loaiHoaDon, pageable) : hoaDonRepository.findAll(pageable);
                         break;
-                    case "confimation":
+                    case "confirmation":
                         pageHD = (loaiHoaDon != null) ? hoaDonRepository.findByTrangThaiAndLoaiHoaDon(IHoaDonRepository.CHO_XAC_NHAN, loaiHoaDon, pageable) : hoaDonRepository.findByTrangThai(IHoaDonRepository.CHO_XAC_NHAN, pageable);
                         break;
                     case "confirmed":
@@ -147,6 +151,27 @@ public class QuanLyHoaDonController {
                 })
 
                 .collect(Collectors.toList());
+
+        // Đếm số lượng các hóa đơn theo trạng thái
+        int countAll = hoaDonRepository.countAll();
+        int countChoXacNhan = hoaDonRepository.countByTrangThai(IHoaDonRepository.CHO_XAC_NHAN);
+        int countDaXacNhan = hoaDonRepository.countByTrangThai(IHoaDonRepository.DA_XAC_NHAN);
+        int countChoGiaoHang = hoaDonRepository.countByTrangThai(IHoaDonRepository.CHO_GIAO_HANG);
+        int countDangGiaoHang = hoaDonRepository.countByTrangThai(IHoaDonRepository.DANG_GIAO_HANG);
+        int countDaHoanThanh = hoaDonRepository.countByTrangThai(IHoaDonRepository.DA_HOAN_THANH);
+        int countDaHuy = hoaDonRepository.countByTrangThai(IHoaDonRepository.DA_HUY);
+
+        // Đưa các số lượng này vào model
+        model.addAttribute("countAll", countAll);
+        model.addAttribute("countChoXacNhan", countChoXacNhan);
+        model.addAttribute("countDaXacNhan", countDaXacNhan);
+        model.addAttribute("countChoGiaoHang", countChoGiaoHang);
+        model.addAttribute("countDangGiaoHang", countDangGiaoHang);
+        model.addAttribute("countDaHoanThanh", countDaHoanThanh);
+        model.addAttribute("countDaHuy", countDaHuy);
+
+
+
 
         model.addAttribute("hoaDonPage", listHoaDonDTO);
         model.addAttribute("pageHD", pageHD);
@@ -213,6 +238,30 @@ public class QuanLyHoaDonController {
         model.addAttribute("listHDCT", listHDCT);
         model.addAttribute("diaChiKhachHang", diaChiKhachHang);
 
+
+        switch (hoaDon.getTrangThai()) {
+            case IHoaDonRepository.CHO_XAC_NHAN:
+                model.addAttribute("step", "confirmation");
+                break;
+            case IHoaDonRepository.DA_XAC_NHAN:
+                model.addAttribute("step", "confirmed");
+                break;
+            case IHoaDonRepository.CHO_GIAO_HANG:
+                model.addAttribute("step", "delivery");
+                break;
+            case IHoaDonRepository.DANG_GIAO_HANG:
+                model.addAttribute("step", "delivered");
+                break;
+            case IHoaDonRepository.DA_HOAN_THANH:
+                model.addAttribute("step", "accomplished");
+                break;
+            default:
+                model.addAttribute("step", "default");
+                break;
+        }
+
+
+
         return "/view/view_tai/hoa_don/detail_bill.jsp";
     }
 
@@ -264,76 +313,68 @@ public class QuanLyHoaDonController {
 
 
 
-    // Chức năng in phiếu giao hàng
-    @GetMapping("/in-phieu-giao-hang/{idHD}")
-    public String printDelivery(Model model,
-                                @PathVariable("idHD") String idHD){
 
-        //Convert String sang UUId
-        try {
-            UUID uuid = UUID.fromString(idHD);
-        } catch (IllegalArgumentException e) {
-            // Handle the invalid UUID format
-            model.addAttribute("errorMessage", "ID hóa đơn không hợp lệ.");
-            return "/view/view_tai/hoa_don/detail_bill.jsp";
-        }
-
-        // Lấy danh sách chi tiết hóa đơn
-        List<ChiTietHoaDon> listHDCT = _hoaDonChiTietRepo.findAllByHoaDon_Id(idHD);
-        // Lấy ra hóa đơn theo ID
-        HoaDon hoaDon = _hoaDonRepo.findById(idHD).orElse(null);
-        DiaChi diaChiKhachHang = _diaChiRepository.findByIdKhachHang_Id(hoaDon.getIdKhachHang().getId());
-        if (hoaDon == null || diaChiKhachHang == null) {
-            model.addAttribute("errorMessage", "Không tìm thấy hóa đơn hoặc khách hàng chưa có địa chỉ.");
-            return "/view/view_tai/hoa_don/detail_bill.jsp";
-        }
-
-        // Chuyển đổi từ HoaDon sang HoaDonDTO
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-        HoaDonDTO hoaDonDTO = new HoaDonDTO(
-                hoaDon.getId().toString(),
-                hoaDon.getMa(),
-                hoaDon.getIdKhachHang(),
-                hoaDon.getIdNhanVien(),
-                hoaDon.getPhuongThucThanhToan(),
-                hoaDon.getTongTien(),
-                hoaDon.getLoaiHoaDon(),
-                hoaDon.getNgayTao() != null ? hoaDon.getNgayTao().format(dateTimeFormatter) : null,
-                hoaDon.getNgayThanhToan() != null ? hoaDon.getNgayThanhToan().format(dateTimeFormatter) : null,
-                hoaDon.getTrangThai()
-        );
-
-
-        // Thêm các thông tin vào model để truyền sang JSP
-        model.addAttribute("hoaDonDTO", hoaDonDTO);
-        model.addAttribute("listHDCT", listHDCT);
-        model.addAttribute("diaChiKhachHang", diaChiKhachHang);
-        return "/view/view_tai/hoa_don/in_phieu_giao_hang.jsp";
-    }
 
     // Chức năng xác nhận đơn hàng
     @PostMapping("/xac-nhan/{idHD}")
     public String confirmBill(@PathVariable("idHD") String idHD,
                               @RequestParam("trangThai") int trangThai,
                               @RequestParam("moTa") String moTa,
-                              Model model) {
+                              Model model,
+                              RedirectAttributes redirectAttributes) {
         try {
-            HoaDon hoaDon = _hoaDonRepo.findById(idHD).orElse(null);
-            HoaDonDTO  hoaDonDTO = new HoaDonDTO();
+           HoaDon hoaDon = _hoaDonRepo.findById(idHD).orElse(null);
+
 
             if (hoaDon == null) {
                 model.addAttribute("errorMessage", "Không tìm thấy hóa đơn.");
+                redirectAttributes.addAttribute("confirmError", "Không tìm thấy hóa đơn.");
                 return "redirect:/hoa-don/detail/" + idHD;
             }
 
-            // Cập nhật trạng thái và mô tả
-            hoaDon.setTrangThai(trangThai);
-//            hoaDon.setG(moTa);
-            _hoaDonRepo.save(hoaDon);
+            HoaDonDTO hoaDonDTO = HoaDonDTO.fromEntity(hoaDon);
 
-            model.addAttribute("confirmSuccess", "Cập nhật trạng thái đơn hàng thành công.");
+            // Cập nhật trạng thái và mô tả
+//            hoaDon.setTrangThai(trangThai);
+//            hoaDon.setGhiChu(moTa); // Assuming the description is stored in `ghiChu`
+//            hoaDon.setNgayCapNhat(LocalDateTime.now()); // Update the last update date
+//            hoaDonRepo.save(hoaDon);
+
+            switch (hoaDon.getTrangThai()) {
+                case IHoaDonRepository.CHO_XAC_NHAN:
+                    hoaDon.setTrangThai(IHoaDonRepository.DA_XAC_NHAN);
+//                    hoaDon.set("Đã xác nhận: " + moTa);
+                    hoaDon.setNgayTao(LocalDateTime.now());
+                    break;
+                case IHoaDonRepository.DA_XAC_NHAN:
+                    hoaDon.setTrangThai(IHoaDonRepository.CHO_GIAO_HANG);
+                    hoaDon.setNgayTao(LocalDateTime.now());
+                    break;
+                case IHoaDonRepository.CHO_GIAO_HANG:
+                    hoaDon.setTrangThai(IHoaDonRepository.DANG_GIAO_HANG);
+                    hoaDon.setNgayTao(LocalDateTime.now());
+                    break;
+                case IHoaDonRepository.DANG_GIAO_HANG:
+                    hoaDon.setTrangThai(IHoaDonRepository.DA_HOAN_THANH);
+                    hoaDon.setNgayTao(LocalDateTime.now());
+                    break;
+                default:
+                    model.addAttribute("errorMessage", "Trạng thái không hợp lệ.");
+                    return "redirect:/hoa-don/detail/" + idHD;
+            }
+
+            // Lưu lại thay đổi
+            _hoaDonRepo.save(hoaDon);
+            // Chuyển đổi HoaDon sang HoaDonDTO sau khi cập nhật và thêm vào model
+            hoaDonDTO = HoaDonDTO.fromEntity(hoaDon);
+            model.addAttribute("hoaDonDTO", hoaDonDTO);
+            redirectAttributes.addAttribute("hoaDonDTO", hoaDonDTO);
+
+
+            redirectAttributes.addAttribute("confirmSuccess", "Cập nhật trạng thái đơn hàng thành công.");
         } catch (Exception e) {
-            model.addAttribute("confirmerror", "Có lỗi xảy ra khi cập nhật trạng thái đơn hàng.");
+            e.printStackTrace();
+            redirectAttributes.addAttribute("confirmError", "Có lỗi xảy ra khi cập nhật trạng thái đơn hàng.");
         }
         return "redirect:/hoa-don/detail/" + idHD;
     }
