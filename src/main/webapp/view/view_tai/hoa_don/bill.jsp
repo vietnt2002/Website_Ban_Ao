@@ -370,7 +370,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="inputLoaiHoaDon" class="form-label">Loại Hóa Đơn</label>
-                                <select id="inputLoaiHoaDon" class="form-select" name="loaiHoaDon" onchange="this.form.submit()">
+                                <select id="inputLoaiHoaDon" class="form-select" name="loaiHoaDon" >
                                     <option value="-1" ${currentLoaiHoaDon == -1 ? 'selected' : ''} >Tất cả</option>
                                     <option value="0" ${currentLoaiHoaDon == 0 ? 'selected' : ''}>Bán Online</option>
                                     <option value="1" ${currentLoaiHoaDon == 1 ? 'selected' : ''}>Bán tại quầy</option>
@@ -411,8 +411,7 @@
                                         type="button" role="tab" aria-controls="all" aria-selected="true"
                                         data-status="all">
                                     Tất Cả
-                                    <span class="position-absolute top-0 start-100
-            translate-middle badge rounded-pill bg-danger">
+                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="z-index: 1000;">
                                         ${countAll}
                                     </span>
                                 </button>
@@ -422,7 +421,7 @@
                                         data-bs-target="#confirmation" type="button" role="tab"
                                         aria-controls="confirmation" aria-selected="false" data-status="confirmation">
                                     Chờ Xác Nhận
-                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="z-index: 1000;">
                                         ${countChoXacNhan}
                                     </span>
                                 </button>
@@ -432,7 +431,7 @@
                                         data-bs-target="#confirmed" type="button" role="tab" aria-controls="confirmed"
                                         aria-selected="false" data-status="confirmed">
                                     Đã Xác Nhận
-                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="z-index: 1000;">
                                         ${countDaXacNhan}
                                     </span>
                                 </button>
@@ -442,7 +441,7 @@
                                         data-bs-target="#delivery" type="button" role="tab" aria-controls="delivery"
                                         aria-selected="false" data-status="delivery">
                                     Chờ Giao Hàng
-                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="z-index: 1000;">
                                         ${countChoGiaoHang}
                                     </span>
                                 </button>
@@ -452,7 +451,7 @@
                                         data-bs-target="#delivered" type="button" role="tab" aria-controls="delivered"
                                         aria-selected="false" data-status="delivered">
                                     Đã Giao Hàng
-                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="z-index: 1000;">
                                         ${countDangGiaoHang}
                                     </span>
                                 </button>
@@ -462,7 +461,7 @@
                                         data-bs-target="#accomplished" type="button" role="tab"
                                         aria-controls="accomplished" aria-selected="false" data-status="accomplished">
                                     Đã Hoàn Thành
-                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="z-index: 1000;">
                                         ${countDaHoanThanh}
                                     </span>
                                 </button>
@@ -472,12 +471,13 @@
                                         data-bs-target="#cancelled" type="button" role="tab" aria-controls="cancelled"
                                         aria-selected="false" data-status="cancelled">
                                     Đã Hủy
-                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="z-index: 1000;">
                                         ${countDaHuy}
                                     </span>
                                 </button>
                             </li>
                         </ul>
+
 
 
 
