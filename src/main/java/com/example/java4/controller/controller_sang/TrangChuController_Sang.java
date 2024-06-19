@@ -411,6 +411,8 @@ public class TrangChuController_Sang {
                 chiTietHoaDon.setSoLuong(chiTietHoaDon.getSoLuong() + 1);
                 hdctRepo.save(chiTietHoaDon);
             }
+
+            // Hello
         }
 
         return "redirect:/cua-hang/gio-hang";
