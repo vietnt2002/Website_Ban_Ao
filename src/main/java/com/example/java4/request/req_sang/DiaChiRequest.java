@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class GiaoHangRequest {
+public class DiaChiRequest {
 
     private Integer phuongThucThanhToan;
     private String tenNguoiNhan;
