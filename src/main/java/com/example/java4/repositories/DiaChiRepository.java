@@ -9,6 +9,7 @@ import java.util.List;
 
 @Repository
 public interface DiaChiRepository extends JpaRepository<DiaChi,String> {
+
     public static final int MAC_DINH  = 1;
     public static final int TUY_CHON = 0;
 

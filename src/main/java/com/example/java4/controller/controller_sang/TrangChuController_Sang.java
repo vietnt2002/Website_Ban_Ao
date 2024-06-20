@@ -6,7 +6,10 @@ import com.example.java4.repositories.*;
 import com.example.java4.request.req_sang.DiaChiRequest;
 import com.example.java4.request.req_sang.GiaoHangRequest;
 import com.example.java4.request.req_tai.KhachHangDTO;
-import com.example.java4.response.*;
+import com.example.java4.response.GioHangResponse;
+import com.example.java4.response.KichThuocRespone;
+import com.example.java4.response.MauSacRespone;
+import com.example.java4.response.MauSizeSL;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -54,42 +57,7 @@ public class TrangChuController_Sang {
     private List<SanPham> listSanPham = new ArrayList<>();
     private List<KhachHang> listKhachHang = new ArrayList<>();
     private List<GioHangResponse> listGioHang;
-    private List<GiaoHangRequest> listGiaoHang;
-    private List<ThongTinGiaohangResponse> listTTGH;
     private List<DiaChi> listDiaChi = new ArrayList<>();
-
-    @PostMapping("/them-dia-chi")
-    public String themDiaChiByidKH(DiaChiRequest request, @RequestParam("tenTinhThanh") String idTinh,
-                                   @RequestParam("tenQuanHuyen") String idQuan,
-                                   @RequestParam("tenPhuongXa") String idPhuong) {
-        KhachHang khachHang = khachHangRepo.findByIdKH(UserInfor.idKhachHang);
-        listDiaChi = diaChiRepo.findAll();
-
-        DiaChi diaChi = new DiaChi();
-        diaChi.setTenNguoiNhan(request.getTenNguoiNhan());
-        diaChi.setSdtNguoiNhan(request.getSdtNguoiNhan());
-        diaChi.setDiaChiChiTiet(request.getDiaChiChiTiet());
-        diaChi.setIdTinhThanh(idTinh);
-        diaChi.setIdQuanHuyen(idQuan);
-        diaChi.setIdPhuongXa(idPhuong);
-        diaChi.setIdKhachHang(khachHang);
-        if (listDiaChi != null && !listDiaChi.isEmpty()) {
-            diaChi.setTrangThai(DiaChiRepository.TUY_CHON);
-        } else {
-            diaChi.setTrangThai(DiaChiRepository.MAC_DINH);
-        }
-        diaChiRepo.save(diaChi);
-        return "redirect:/cua-hang/gio-hang";
-    }
-
-    @GetMapping("/xoa-dia-chi/{id}")
-    public String xoaDiaChi(@PathVariable("id") String id, RedirectAttributes redirectAttributes) {
-        DiaChi diaChi = diaChiRepo.findDiaChiByID(id);
-        diaChiRepo.delete(diaChi);
-        redirectAttributes.addFlashAttribute("successMessage", "Xóa sản phẩm thành công");
-
-        return "redirect:/cua-hang/gio-hang";
-    }
 
 
     //Bán onl
@@ -117,7 +85,8 @@ public class TrangChuController_Sang {
         }
         model.addAttribute("soLuong", totalSoLuong);
 
-        return "/view/ban_hang_online/trangChu.jsp";
+        return "/view/BanHangOnline/trangChu.jsp";
+        System.out.println("--------");
     }
 
     //Hiển thị chi tiết sản phẩm đã chọn
@@ -381,6 +350,39 @@ public class TrangChuController_Sang {
         model.addAttribute("tongTien", tongTienBigDecimal);
 
         return "/view/view_sang/gioHang.jsp";
+    }
+
+    @PostMapping("/them-dia-chi")
+    public String themDiaChiByidKH(DiaChiRequest request, @RequestParam("tenTinhThanh") String idTinh,
+                                   @RequestParam("tenQuanHuyen") String idQuan,
+                                   @RequestParam("tenPhuongXa") String idPhuong) {
+        KhachHang khachHang = khachHangRepo.findByIdKH(UserInfor.idKhachHang);
+        listDiaChi = diaChiRepo.findAll();
+
+        DiaChi diaChi = new DiaChi();
+        diaChi.setTenNguoiNhan(request.getTenNguoiNhan());
+        diaChi.setSdtNguoiNhan(request.getSdtNguoiNhan());
+        diaChi.setDiaChiChiTiet(request.getDiaChiChiTiet());
+        diaChi.setIdTinhThanh(idTinh);
+        diaChi.setIdQuanHuyen(idQuan);
+        diaChi.setIdPhuongXa(idPhuong);
+        diaChi.setIdKhachHang(khachHang);
+        if (listDiaChi != null && !listDiaChi.isEmpty()) {
+            diaChi.setTrangThai(DiaChiRepository.TUY_CHON);
+        } else {
+            diaChi.setTrangThai(DiaChiRepository.MAC_DINH);
+        }
+        diaChiRepo.save(diaChi);
+        return "redirect:/cua-hang/gio-hang";
+    }
+
+    @GetMapping("/xoa-dia-chi/{id}")
+    public String xoaDiaChi(@PathVariable("id") String id, RedirectAttributes redirectAttributes) {
+        DiaChi diaChi = diaChiRepo.findDiaChiByID(id);
+        diaChiRepo.delete(diaChi);
+        redirectAttributes.addFlashAttribute("successMessage", "Xóa sản phẩm thành công");
+
+        return "redirect:/cua-hang/gio-hang";
     }
 
     //Giảm số lượng sản phẩm có trong giỏ hàng đi 1

@@ -12,6 +12,7 @@ import lombok.Setter;
 public class DiaChiRequest {
 
     private Integer phuongThucThanhToan;
+
     private String tenNguoiNhan;
     private String sdtNguoiNhan;
     private String diaChiChiTiet;
