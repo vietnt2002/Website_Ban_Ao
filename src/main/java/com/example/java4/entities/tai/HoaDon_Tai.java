@@ -26,6 +26,10 @@ public class HoaDon_Tai {
     private Integer loaiHoaDon;
     private Integer trangThai;
     private String ghiChu;
+    private LocalDateTime ngayDaXacNhan;
+    private LocalDateTime ngayChoGiaoHang;
+    private LocalDateTime ngayDangGiaoHang;
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -101,7 +105,7 @@ public class HoaDon_Tai {
         this.trangThai = trangThai;
     }
 
-    @Column(name = "ngayCapNhat")
+    @Column(name = "NgayCapNhat")
     public LocalDateTime getNgayCapNhat() {
         return ngayCapNhat;
     }
@@ -110,14 +114,43 @@ public class HoaDon_Tai {
         this.ngayCapNhat = ngayCapNhat;
     }
 
-    @Column(name = "ghiChu")
+    @Column(name = "GhiChu")
     public String getGhiChu() {
         return ghiChu;
     }
-
     public void setGhiChu(String ghiChu) {
         this.ghiChu = ghiChu;
     }
+
+    @Column(name = "NgayDaXacNhan")
+    public LocalDateTime getNgayDaXacNhan() {
+        return ngayDaXacNhan;
+    }
+
+    public void setNgayDaXacNhan(LocalDateTime ngayDaXacNhan) {
+        this.ngayDaXacNhan = ngayDaXacNhan;
+    }
+
+    @Column(name = "NgayChoGiaoHang")
+    public LocalDateTime getNgayChoGiaoHang() {
+        return ngayChoGiaoHang;
+    }
+
+    public void setNgayChoGiaoHang(LocalDateTime ngayChoGiaoHang) {
+        this.ngayChoGiaoHang = ngayChoGiaoHang;
+    }
+
+    @Column(name = "NgayDangGiaoHang")
+    public LocalDateTime getNgayDangGiaoHang() {
+        return ngayDangGiaoHang;
+    }
+
+    public void setNgayDangGiaoHang(LocalDateTime ngayDangGiaoHang) {
+        this.ngayDangGiaoHang = ngayDangGiaoHang;
+    }
+
+
+
 
     @Override
     public boolean equals(Object o) {

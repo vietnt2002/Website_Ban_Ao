@@ -171,6 +171,19 @@
             font-size: 40px;
         }
 
+
+        #addProductModal .modal-xl {
+            max-width: 1100px !important;
+        }
+
+        #addProductModal .modal-body {
+            max-height: 600px; /* Đặt chiều cao tối đa của phần thân modal */
+            overflow-y: auto; /* Cho phép cuộn nếu nội dung vượt quá chiều cao */
+        }
+
+
+
+
     </style>
 
 </head>
@@ -482,7 +495,7 @@
 
                 <div class="d-flex justify-content-end">
                     <!-- Nút in ra phiếu hóa đơn khi giao hàng theo dạng file PDF -->
-                    <c:if test="${hoaDonDTO.loaiHoaDon == 0 && hoaDonDTO.trangThai == 2}">
+                    <c:if test="${hoaDonDTO.loaiHoaDon == 0 }">
                         <div class="d-flex ms-auto">
                             <button id="printDeliveryButton" class="btn btn-primary my-3">
                                 <i class="bi bi-printer"></i> In hóa đơn
@@ -551,7 +564,7 @@
                                                     <i class="bi bi-check-circle step-icon"></i>
                                                 </div>
                                                 <div class="step-title">Đã xác nhận</div>
-                                                <div class="step-date">${hoaDonDTO.ngayCapNhat}</div>
+                                                <div class="step-date">${hoaDonDTO.ngayDaXacNhan}</div>
                                             </div>
                                         </c:when>
                                         <c:when test="${step == 'delivery'}">
@@ -560,7 +573,7 @@
                                                     <i class="bi bi-hourglass-split step-icon"></i>
                                                 </div>
                                                 <div class="step-title">Chờ xác nhận</div>
-                                                <div class="step-date">${hoaDonDTO.ngayCapNhat}</div>
+                                                <div class="step-date">${hoaDonDTO.ngayTao}</div>
                                             </div>
                                             <div class="step-arrow">
                                                 <i class="bi bi-arrow-right"></i>
@@ -570,7 +583,7 @@
                                                     <i class="bi bi-check-circle step-icon"></i>
                                                 </div>
                                                 <div class="step-title">Đã xác nhận</div>
-                                                <div class="step-date">${hoaDonDTO.ngayCapNhat}</div>
+                                                <div class="step-date">${hoaDonDTO.ngayDaXacNhan}</div>
                                             </div>
                                             <div class="step-arrow">
                                                 <i class="bi bi-arrow-right"></i>
@@ -580,7 +593,7 @@
                                                     <i class="bi bi-truck step-icon"></i>
                                                 </div>
                                                 <div class="step-title">Chờ giao hàng</div>
-                                                <div class="step-date">${hoaDonDTO.ngayCapNhat}</div>
+                                                <div class="step-date">${hoaDonDTO.ngayChoGiaoHang}</div>
                                             </div>
                                         </c:when>
                                         <c:when test="${step == 'delivered'}">
@@ -589,7 +602,7 @@
                                                     <i class="bi bi-hourglass-split step-icon"></i>
                                                 </div>
                                                 <div class="step-title">Chờ xác nhận</div>
-                                                <div class="step-date">${hoaDonDTO.ngayCapNhat}</div>
+                                                <div class="step-date">${hoaDonDTO.ngayTao}</div>
                                             </div>
                                             <div class="step-arrow">
                                                 <i class="bi bi-arrow-right"></i>
@@ -599,7 +612,7 @@
                                                     <i class="bi bi-check-circle step-icon"></i>
                                                 </div>
                                                 <div class="step-title">Đã xác nhận</div>
-                                                <div class="step-date">${hoaDonDTO.ngayCapNhat}</div>
+                                                <div class="step-date">${hoaDonDTO.ngayDaXacNhan}</div>
                                             </div>
                                             <div class="step-arrow">
                                                 <i class="bi bi-arrow-right"></i>
@@ -609,7 +622,7 @@
                                                     <i class="bi bi-truck step-icon"></i>
                                                 </div>
                                                 <div class="step-title">Chờ giao hàng</div>
-                                                <div class="step-date">${hoaDonDTO.ngayCapNhat}</div>
+                                                <div class="step-date">${hoaDonDTO.ngayChoGiaoHang}</div>
                                             </div>
                                             <div class="step-arrow">
                                                 <i class="bi bi-arrow-right"></i>
@@ -619,7 +632,7 @@
                                                     <i class="bi bi-box-seam step-icon"></i>
                                                 </div>
                                                 <div class="step-title">Đang giao hàng</div>
-                                                <div class="step-date">${hoaDonDTO.ngayCapNhat}</div>
+                                                <div class="step-date">${hoaDonDTO.ngayDangGiaoHang}</div>
                                             </div>
                                         </c:when>
                                         <c:when test="${step == 'accomplished'}">
@@ -628,7 +641,7 @@
                                                     <i class="bi bi-hourglass-split step-icon"></i>
                                                 </div>
                                                 <div class="step-title">Chờ xác nhận</div>
-                                                <div class="step-date">${hoaDonDTO.ngayCapNhat}</div>
+                                                <div class="step-date">${hoaDonDTO.ngayTao}</div>
                                             </div>
                                             <div class="step-arrow">
                                                 <i class="bi bi-arrow-right"></i>
@@ -638,7 +651,7 @@
                                                     <i class="bi bi-check-circle step-icon"></i>
                                                 </div>
                                                 <div class="step-title">Đã xác nhận</div>
-                                                <div class="step-date">${hoaDonDTO.ngayCapNhat}</div>
+                                                <div class="step-date">${hoaDonDTO.ngayDaXacNhan}</div>
                                             </div>
                                             <div class="step-arrow">
                                                 <i class="bi bi-arrow-right"></i>
@@ -648,7 +661,7 @@
                                                     <i class="bi bi-truck step-icon"></i>
                                                 </div>
                                                 <div class="step-title">Chờ giao hàng</div>
-                                                <div class="step-date">${hoaDonDTO.ngayCapNhat}</div>
+                                                <div class="step-date">${hoaDonDTO.ngayChoGiaoHang}</div>
                                             </div>
                                             <div class="step-arrow">
                                                 <i class="bi bi-arrow-right"></i>
@@ -658,7 +671,7 @@
                                                     <i class="bi bi-box-seam step-icon"></i>
                                                 </div>
                                                 <div class="step-title">Đang giao hàng</div>
-                                                <div class="step-date">${hoaDonDTO.ngayCapNhat}</div>
+                                                <div class="step-date">${hoaDonDTO.ngayDangGiaoHang}</div>
                                             </div>
                                             <div class="step-arrow">
                                                 <i class="bi bi-arrow-right"></i>
@@ -668,7 +681,7 @@
                                                     <i class="bi bi-credit-card-2-back step-icon"></i>
                                                 </div>
                                                 <div class="step-title">Đã hoàn thành</div>
-                                                <div class="step-date">${hoaDonDTO.ngayCapNhat}</div>
+                                                <div class="step-date">${hoaDonDTO.ngayThanhToan}</div>
                                             </div>
                                         </c:when>
                                         <c:otherwise>
@@ -690,44 +703,45 @@
 
                     <c:if test="${hoaDonDTO.loaiHoaDon == 0 && hoaDonDTO.trangThai != 6}">
                         <div class="card-footer">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <c:if test="${hoaDonDTO.loaiHoaDon == 0}">
-                                    <c:if test="${hoaDonDTO.trangThai != 6}">
-                                    <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal"
-                                            data-bs-target="#confirmModal">
-                                        Xác nhận
-                                    </button>
-                                        <c:if test="${hoaDonDTO.trangThai == 1}">
-                                            <button type="button" class="btn btn-danger" id="cancelButton">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <c:if test="${hoaDonDTO.loaiHoaDon == 0}">
+                                        <c:if test="${hoaDonDTO.trangThai != 6}">
+                                            <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal"
+                                                    data-bs-target="#confirmModal">
+                                                Xác nhận
+                                            </button>
+
+                                            <button type="button" class="btn btn-danger" id="cancelButton"
+                                                    <c:if test="${hoaDonDTO.trangThai == 2}">disabled </c:if>
+                                            >
                                                 Hủy
                                             </button>
+
+                                        </c:if>
+
+                                        <c:if test="${hoaDonDTO.trangThai != 1 && hoaDonDTO.trangThai != 6}">
+                                            <a href="/hoa-don/hoan-tac/${hoaDonDTO.id}">
+                                                <button type="button" class="btn btn-warning" id="">
+                                                    Hoàn tác
+                                                </button>
+                                            </a>
                                         </c:if>
                                     </c:if>
-
-                                    <c:if test="${hoaDonDTO.trangThai != 1 && hoaDonDTO.trangThai != 6}">
-                                        <a href="/hoa-don/hoan-tac/${hoaDonDTO.id}">
-                                            <button type="button" class="btn btn-warning" id="">
-                                                Hoàn tác
-                                            </button>
-                                        </a>
-                                    </c:if>
-                                </c:if>
+                                </div>
                             </div>
                         </div>
-                    </div>
                     </c:if>
 
                 </div>
 
 
-
-                    <!-- Modal xác nhận -->
+                <!-- Modal xác nhận -->
                 <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel"
                      aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
-                            <form method="post" action="/hoa-don/xac-nhan/${hoaDonDTO.id}">
+                            <form id="confirmForm" method="post" action="/hoa-don/xac-nhan/${hoaDonDTO.id}">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="confirmModalLabel">Xác nhận đơn hàng</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
@@ -737,7 +751,10 @@
                                     <input type="hidden" name="trangThai" value="${hoaDonDTO.trangThai + 1}">
                                     <div class="mb-3">
                                         <label for="moTa" class="form-label">Mô tả</label>
-                                        <textarea class="form-control" id="moTa" name="moTa" rows="3"></textarea>
+                                        <textarea value="" placeholder="Nhập nội dung mô tả..." class="form-control" id="moTa"
+                                                  name="moTa" rows="3"></textarea>
+                                        <div id="moTaError" class="text-danger" style="display: none;">Vui lòng điền mô tả.
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
@@ -749,6 +766,9 @@
                         </div>
                     </div>
                 </div>
+
+
+
 
                 <%--    Bảng lịch sử thanh toán--%>
                 <div class="card mb-3">
@@ -767,7 +787,6 @@
                     </div>
 
                     <div class="card-body">
-                        <c:if test="${hoaDonDTO.trangThai == 6}">
                             <table class="table table-bordered" width="100%" cellspacing="0">
                                 <thead>
                                 <tr>
@@ -776,7 +795,6 @@
                                     <th>Số tiền</th>
                                     <th>Trạng thái</th>
                                     <th>Thời gian</th>
-                                    <th>Loại giao dịch</th>
                                     <th>Phương thức thanh toán</th>
                                     <th>Người xác nhận</th>
                                     <th>Ghi chú</th>
@@ -784,6 +802,8 @@
                                 </thead>
 
                                 <tbody>
+                                <c:if test="${hoaDonDTO.trangThai == 6}">
+
                                 <tr>
                                     <td>1</td>
                                     <td><fmt:formatNumber value="${hoaDonDTO.tongTien}" type="currency"
@@ -796,18 +816,31 @@
                                     </span>
                                     </td>
                                     <td>${hoaDonDTO.ngayTao}</td>
-                                    <td><span class="badge rounded-pill bg-warning">Thanh toán</span></td>
                                     <td>
                                         <span class="badge rounded-pill bg-primary">${hoaDonDTO.phuongThucThanhToan == 0 ? "Tiền mặt" :"Chuyển khoản"}</span>
                                     </td>
-                                    <td>${hoaDonDTO.nhanVien.hoTen}</td>
-                                    <td></td>
+
+                                    <td>
+
+                                        <c:choose>
+                                            <c:when test="${hoaDonDTO.trangThai == 1 && hoaDonDTO.loaiHoaDon == 0}">
+
+                                            </c:when>
+                                            <c:otherwise>
+                                                ${hoaDonDTO.nhanVien.hoTen}
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </td>
+                                    <td>
+                                    </td>
 
                                 </tr>
 
+                                </c:if>
+
                                 </tbody>
+
                             </table>
-                        </c:if>
 
                     </div>
 
@@ -876,7 +909,7 @@
                     <div class="col-7 mb-3 d-flex align-items-stretch">
                         <div class="card w-100 h-100">
                             <div class="card-header d-flex justify-content-between align-items-center">
-                                <h5 class="m-0 font-weight-bold">Thông tin hóa đơn: ${hoaDonDTO.ma}</h5>
+                                <h5 class="m-0 font-weight-bold">Thông tin đơn hàng: ${hoaDonDTO.ma}</h5>
 
                                 <c:if test="${hoaDonDTO.loaiHoaDon == 0}">
                                     <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
@@ -895,23 +928,32 @@
                                     <div class="row mt-1">
                                         <div class="col-6">
                                             <div>
-                                                <p class="fw-bold mb-1 pb-3 small ">Trạng thái: <span
-                                                        class="fw-normal badge rounded-pill bg-primary">
-                                                    ${hoaDonDTO.trangThai == 0 ? "Chưa hoàn thành" : "Đã hoàn thành"}
-                                                </span>
+                                                <p class="fw-bold mb-1 pb-3 small ">Trạng thái:
+                                                    <span class="badge rounded-pill ${hoaDonDTO.maMau}">
+                                                        ${hoaDonDTO.trangThaiText}
+                                                    </span>
+
                                                 </p>
-                                                <p class="fw-bold mb-1 pb-3 small">Loại giao dịch: <span
-                                                        class=" fw-normal badge rounded-pill  bg-primary">Thanh toán</span>
-                                                </p>
-                                                <p class="fw-bold mb-1 pb-3 small">Tên người nhận: <span
+                                                <p class="fw-bold mb-1 pb-3 small">Tên khách hàng: <span
                                                         class="fw-normal">${hoaDonDTO.khachHang.hoTen}</span></p>
                                                 <p class="fw-bold mb-1 pb-3 small">Địa chỉ: <span
                                                         class="fw-normal">${diaChiKhachHang.diaChiChiTiet}, ${diaChiKhachHang.idPhuongXa}, ${diaChiKhachHang.idQuanHuyen}, ${diaChiKhachHang.idTinhThanh}    </span>
                                                 </p>
-                                                <p class="fw-bold mb-1 pb-3 small">Ghi chú: </p>
-                                                <p class="fw-bold mb-1 small">Người tạo: <span
-                                                        class="fw-normal">${hoaDonDTO.nhanVien.hoTen}</span></p>
+                                                <p class="fw-bold mb-1 pb-3 small">Ghi chú:
+                                                    <span
+                                                            class="fw-normal">${hoaDonDTO.ghiChu}</span>
+                                                </p>
 
+                                                <c:if test="${hoaDonDTO.loaiHoaDon == 1}">
+                                                    <p class="fw-bold mb-1 small">Người tạo: <span
+                                                            class="fw-normal">${hoaDonDTO.nhanVien.hoTen}</span></p>
+                                                </c:if>
+
+                                                <c:choose>
+                                                    <c:when test="${hoaDonDTO.loaiHoaDon == 0}">
+                                                        <p class="fw-bold mb-1 small">Ngày dự kiến nhận:</p>
+                                                    </c:when>
+                                                </c:choose>
                                             </div>
                                         </div>
                                         <div class="col-6">
@@ -934,11 +976,6 @@
                                             <p class="fw-bold mb-1 pb-3 small">Ngày tạo: <span
                                                     class="fw-normal">${hoaDonDTO.ngayTao}</span></p>
 
-                                            <c:choose>
-                                                <c:when test="${hoaDonDTO.loaiHoaDon == 0}">
-                                                    <p class="fw-bold mb-1 small">Ngày dự kiến nhận:</p>
-                                                </c:when>
-                                            </c:choose>
 
                                         </div>
                                     </div>
@@ -1072,17 +1109,17 @@
 
                     <c:if test="${hoaDonDTO.loaiHoaDon == 0}">
                         <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
-                                data-bs-target="#updateModal"
+                                data-bs-target="#addProductModal"
                                 <c:if test="${hoaDonDTO.trangThai != 1}">
                                     disabled
                                 </c:if>>
-                           Thêm sản phẩm
+                            Thêm sản phẩm
                         </button>
                     </c:if>
                 </div>
 
                 <div class="card-body custom-card-body">
-                    <table class="table table-bordered custom-table" width="100%" cellspacing="0">
+                    <table class="table table-bordered custom-table" >
                         <thead>
                         <tr>
                             <th>STT</th>
@@ -1117,7 +1154,8 @@
                                     <c:if test="${hoaDonDTO.loaiHoaDon == 0}">
                                         <c:choose>
                                             <c:when test="${hoaDonDTO.trangThai != 1}">
-                                                <input type="number" value="${chiTiet.soLuong}" disabled style="width: 50px;">
+                                                <input type="number" value="${chiTiet.soLuong}" disabled
+                                                       style="width: 50px;">
                                             </c:when>
                                             <c:otherwise>
                                                 <input type="number" value="${chiTiet.soLuong}" style="width: 50px;">
@@ -1140,7 +1178,139 @@
         </div>
         <!-- End of Main Content -->
 
-        <%--  Phiếu hóa đơn để giao hàng --%>
+
+
+
+<%--       Modal Thêm sản sản vào hóa đơn--%>
+        <div class="modal fade" name="addProductModal" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addProductModalLabel">Thêm sản phẩm</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Phần input tìm kiếm và các select -->
+                        <div class="mb-3 p-3" style="background-color: #f0f0f0;">
+                            <!-- Phần input tìm kiếm và nút tìm kiếm -->
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="searchInput" placeholder="Nhập từ khóa tìm kiếm...">
+                                <button class="btn btn-outline-secondary" type="button" id="searchButton">Tìm kiếm</button>
+                            </div>
+
+                            <!-- Các select -->
+                            <div class="row mt-3">
+                                <div class="col-md-3">
+                                    <label for="colorSelect" class="form-label">Màu sắc</label>
+                                    <select class="form-select" id="colorSelect">
+                                        <c:forEach var="mauSac" items="${listMauSac}">
+                                            <option value="${mauSac.id}">${mauSac.ten}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="sizeSelect" class="form-label">Kích thước</label>
+                                    <select class="form-select" id="sizeSelect">
+                                        <c:forEach var="kichThuoc" items="${listKichThuoc}">
+                                            <option value="${kichThuoc.id}">${kichThuoc.ten}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="materialSelect" class="form-label">Chất liệu</label>
+                                    <select class="form-select" id="materialSelect">
+                                        <c:forEach var="chatLieu" items="${listChatLieu}">
+                                            <option value="${chatLieu.id}">${chatLieu.ten}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+
+
+                                <div class="col-md-3">
+                                    <label for="materialSelect" class="form-label">Kiểu tay</label>
+                                    <select class="form-select" id="sleeveSelect">
+                                        <c:forEach var="kieuTay" items="${listKieuTay}">
+                                            <option value="${kieuTay.id}">${kieuTay.ten}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- Bảng thông tin sản phẩm -->
+                        <table class="table table-hover table-bordered custom-table ">
+                            <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th>Tên sản phẩm</th>
+                                <th>Ảnh sản phẩm</th>
+                                <th>Màu sắc</th>
+                                <th>Kích thước</th>
+                                <th>Số lượng</th>
+                                <th>Đơn giá</th>
+                                <th>Trạng thái</th>
+                                <th>Thao tác</th>
+                            </tr>
+                            </thead>
+                            <tbody id="tbl_ds_spct">
+                            <c:forEach var="product" items="${listCTSP.content}" varStatus="status">
+                                <tr>
+                                    <td>${status.index + 1}</td>
+                                    <td>${product.idSanPham.ten}</td>
+                                    <td><img src="/image/${product.idSanPham.hinhAnh}" alt="Hình ảnh sản phẩm" style="width: 50px; height: 50px;"></td>
+                                    <td>${product.idMauSac.ten}</td>
+                                    <td>${product.idKichThuoc.ten}</td>
+                                    <td>${product.soLuong}</td>
+                                    <td>${product.giaNhap}</td>
+                                    <td><span  class=" fw-normal badge rounded-pill ${product.trangThai == 0 ? 'bg-danger' : 'bg-success'}">
+                                            ${product.trangThai == 0 ? "Hết hàng" : "Còn hàng"}
+                                    </span></td>
+                                    <td>
+                                        <!-- Thao tác, ví dụ như nút sửa, xóa -->
+                                        <button class="btn btn-primary btn-sm">Sửa</button>
+                                        <button class="btn btn-danger btn-sm">Xóa</button>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                            </tbody>
+                        </table>
+
+                    </div>
+                    <div class="modal-footer">
+                        <div class="float-end">
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination">
+                                    <!-- Thêm phân trang nếu cần -->
+                                    <c:if test="${pageCTSP.hasPrevious()}">
+                                        <li class="page-item"><a class="page-link"
+                                                                 href="?page=${pageCTSP.number - 1}">&laquo;</a>
+                                        </li>
+                                    </c:if>
+                                    <c:if test="${pageCTSP.totalPages > 0}">
+                                        <c:forEach var="i" begin="0" end="${pageCTSP.totalPages - 1}">
+                                            <li class="page-item ${pageCTSP.number == i ? 'active' : ''}">
+                                                <a class="page-link" href="?page=${i}">${i + 1}</a>
+                                            </li>
+                                        </c:forEach>
+                                    </c:if>
+                                    <c:if test="${pageCTSP.hasNext()}">
+                                        <li class="page-item"><a class="page-link"
+                                                                 href="?page=${pageCTSP.number + 1}">&raquo;</a>
+                                        </li>
+                                    </c:if>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+    <%--  Phiếu hóa đơn để giao hàng --%>
         <div class="delivery" style="display: none">
             <div class="container mt-5 p-4 shadow delivery">
                 <div class="row">
@@ -1345,6 +1515,45 @@
         };
         html2pdf().from(element).set(opt).save();
     });
+
+    // Validate ô input mô tả xác nhận
+    $(document).ready(function () {
+        // Validate form xác nhận
+        $('#confirmForm').submit(function (event) {
+            // Ngăn chặn submit mặc định
+            event.preventDefault();
+
+            var moTa = $('#moTa').val().trim();
+
+            var hasError = false;
+            if (moTa === '' || moTa == null) {
+                $('#moTaError').text('Vui lòng điền mô tả.').show();
+                $('#moTa').addClass('border-danger');
+                hasError = true;
+            } else {
+                $('#moTaError').hide();
+                $('#moTa').removeClass('border-danger');
+            }
+
+            // Nếu không có lỗi, cho phép submit form
+            if (!hasError) {
+                this.submit();
+            }
+        });
+
+        // Ẩn lỗi khi người dùng click vào trường input
+        $('#moTa').focus(function () {
+            $('#moTaError').hide();
+            $(this).removeClass('border-danger');
+        });
+    });
+
+    // Đợi khi modal được hiển thị
+    $('#confirmModal').on('shown.bs.modal', function () {
+        // Đặt giá trị của textarea là rỗng khi modal được hiển thị
+        document.getElementById('moTa').value = '';
+    });
+
 
 
 

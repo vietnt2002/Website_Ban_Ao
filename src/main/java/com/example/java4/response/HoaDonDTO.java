@@ -2,6 +2,7 @@ package com.example.java4.response;
 
 
 import com.example.java4.entities.*;
+import com.example.java4.entities.tai.HoaDon_Tai;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,6 +34,10 @@ public class HoaDonDTO {
     private String maMau;
     private String ngayCapNhat;
     private String ghiChu;
+    private String ngayDaXacNhan;
+    private String ngayChoGiaoHang;
+    private String ngayDangGiaoHang;
+
 
     public HoaDonDTO(String id, String ma, KhachHang khachHang, NhanVien nhanVien, Integer phuongThucThanhToan, BigDecimal tongTien,Integer loaiHoaDon, String ngayTao,String ngayThanhToan, Integer trangThai) {
         this.id = id;
@@ -47,7 +52,7 @@ public class HoaDonDTO {
         this.trangThai = trangThai;
     }
 
-    public HoaDonDTO(String id, String ma, KhachHang khachHang, NhanVien nhanVien, Integer phuongThucThanhToan, BigDecimal tongTien, Integer loaiHoaDon, String ngayTao, String ngayThanhToan, Integer trangThai, String ngayCapNhat, String ghiChu) {
+    public HoaDonDTO(String id, String ma, KhachHang khachHang, NhanVien nhanVien, Integer phuongThucThanhToan, BigDecimal tongTien, Integer loaiHoaDon, String ngayTao, String ngayThanhToan, Integer trangThai, String ngayCapNhat, String ghiChu,String ngayDaXacNhan,String ngayChoGiaoHang,String ngayDangGiaoHang) {
         this.id = id;
         this.ma = ma;
         this.khachHang = khachHang;
@@ -60,6 +65,9 @@ public class HoaDonDTO {
         this.trangThai = trangThai;
         this.ngayCapNhat = ngayCapNhat;
         this.ghiChu = ghiChu;
+        this.ngayDaXacNhan = ngayDaXacNhan;
+        this.ngayChoGiaoHang = ngayChoGiaoHang;
+        this.ngayDangGiaoHang = ngayDangGiaoHang;
     }
 
 
@@ -77,7 +85,7 @@ public class HoaDonDTO {
 //        this.trangThaiText=maText;
 //    }
 
-    public static HoaDonDTO fromEntity(HoaDon hoaDon) {
+    public static HoaDonDTO fromEntity(HoaDon_Tai hoaDon) {
         return new HoaDonDTO(
                 hoaDon.getId(),
                 hoaDon.getMa(),
@@ -88,7 +96,12 @@ public class HoaDonDTO {
                 hoaDon.getLoaiHoaDon(),
                 hoaDon.getNgayTao() != null ? hoaDon.getNgayTao().toString() : null,
                 hoaDon.getNgayThanhToan() != null ? hoaDon.getNgayThanhToan().toString() : null,
-                hoaDon.getTrangThai()
+                hoaDon.getTrangThai(),
+                hoaDon.getNgayCapNhat() != null ? hoaDon.getNgayCapNhat().toString() : null,
+                hoaDon.getGhiChu(),
+                hoaDon.getNgayDaXacNhan() != null ? hoaDon.getNgayDaXacNhan().toString() : null,
+                hoaDon.getNgayChoGiaoHang() != null ? hoaDon.getNgayChoGiaoHang().toString() : null,
+                hoaDon.getNgayDangGiaoHang() != null ? hoaDon.getNgayDangGiaoHang().toString() : null
         );
     }
 
