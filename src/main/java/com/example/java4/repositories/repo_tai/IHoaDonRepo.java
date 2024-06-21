@@ -1,5 +1,6 @@
 package com.example.java4.repositories.repo_tai;
 
+import com.example.java4.entities.ChiTietHoaDon;
 import com.example.java4.entities.HoaDon;
 import com.example.java4.entities.tai.HoaDon_Tai;
 import org.springframework.data.domain.Page;

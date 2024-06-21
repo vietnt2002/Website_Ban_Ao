@@ -5,9 +5,8 @@ import com.example.java4.config.HoaDonUtil;
 import com.example.java4.entities.*;
 import com.example.java4.entities.tai.HoaDon_Tai;
 import com.example.java4.repositories.*;
-import com.example.java4.repositories.repo_tai.IDiaChiRepository;
-import com.example.java4.repositories.repo_tai.IHoaDonRepo;
-import com.example.java4.repositories.repo_tai.IHoaDonRepository;
+import com.example.java4.repositories.repo_tai.*;
+import com.example.java4.response.GiaoHangDTO;
 import com.example.java4.response.HoaDonChiTietDTO;
 import com.example.java4.response.HoaDonDTO;
 
@@ -33,6 +32,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -40,8 +40,8 @@ import java.util.stream.Collectors;
 @RequestMapping("/hoa-don")
 public class QuanLyHoaDonController {
 
-    @Autowired
-    HoaDonRepository _hoaDonRepo;
+//    @Autowired
+//    HoaDonRepository _hoaDonRepo;
 
     @Autowired
     KhachHangRepository _khachHangRepo;
@@ -84,6 +84,12 @@ public class QuanLyHoaDonController {
     @Autowired
      MauSacRepository mauSacRepository;
 
+    @Autowired
+    IGiaoHangRepository _giaoHangRepo;
+
+    @Autowired
+    IChiTietSanPhamRepository _chiTietSanPhamRepo;
+
 
 
 
@@ -93,6 +99,7 @@ public class QuanLyHoaDonController {
     private List<KieuTay> listKieuTay;
     private List<ChatLieu> listChatLieu;
     private List<KhuyenMai> listKhuyenMai;
+    private List<ChiTietSanPham> listChiTietSanPham;
 
 
 
@@ -311,6 +318,26 @@ public class QuanLyHoaDonController {
         // Lấy ra danh sách chi tiết sản phẩm để hiển thị lên modal Thêm sản phẩm
         Pageable pageable = PageRequest.of(Integer.valueOf(pageParam), 10);
         Page<ChiTietSanPham> listCTSP = _sanPhamChiTietRepo.findByTrangThai(1,pageable);
+
+        for (ChiTietSanPham ctsp : listCTSP){
+            if(ctsp.getSoLuong() <= 0 ){
+                listCTSP = _sanPhamChiTietRepo.findByTrangThai(_sanPhamChiTietRepo.INACTIVE,pageable);
+            }
+        }
+
+        // Lấy ra đối tượng giao hàng theo IdHoaDon
+        GiaoHang giaoHang = _giaoHangRepo.findByIdHoaDon_Id(idHD);
+        if(giaoHang == null){
+            model.addAttribute("errorDelivery","Không tìm thấy đối tượng giao hàng");
+        }
+
+        GiaoHangDTO giaoHangDTO = GiaoHangDTO.toDTO(giaoHang);
+        if(giaoHangDTO == null){
+            model.addAttribute("errorDelivery","Không tìm thấy đối tượng giao hàng");
+        }
+        model.addAttribute("giaoHangDTO",giaoHangDTO);
+
+
         listMauSac = mauSacRepository.findAll();
         listKichThuoc = kichThuocRepo.findAll();
         listKieuTay = kieuTayRepo.findAll();
@@ -385,6 +412,7 @@ public class QuanLyHoaDonController {
 
         try {
             HoaDon_Tai hoaDon = _hoaDonRepoTai.findById(idHD).orElse(null);
+//            ChiTietHoaDon chiTietHoaDon = _hoaDonChiTietRepo.findHDCTByIdHoaDon(idHD);
 
             if (hoaDon == null) {
                 model.addAttribute("errorMessage", "Không tìm thấy hóa đơn.");
@@ -398,25 +426,50 @@ public class QuanLyHoaDonController {
                 case IHoaDonRepository.CHO_XAC_NHAN:
                     hoaDon.setTrangThai(IHoaDonRepository.DA_XAC_NHAN);
                     hoaDon.setNgayDaXacNhan(LocalDateTime.now());
-                    System.out.println(moTa);
+
+                    // Lấy ra danh sách Chi tiết hóa đơn theo IDHoaDon
+                    List<ChiTietHoaDon> chiTietList = _hoaDonChiTietRepo.findAllByHoaDon_Id(idHD);
+
+                    for (ChiTietHoaDon chiTietHD : chiTietList) {
+                        String idChiTietHoaDon = chiTietHD.getId();
+                        // Lấy ra đối tượng chi tiết sản phẩm từ repository
+                        Optional<ChiTietSanPham> chiTietSanPhamOptional = _chiTietSanPhamRepo.findByHoaDonChiTietId(idChiTietHoaDon);
+                        if (chiTietSanPhamOptional.isPresent()) {
+                            ChiTietSanPham chiTietSanPham = chiTietSanPhamOptional.get();
+
+                            // Kiểm tra và cập nhật số lượng sản phẩm chi tiết
+                            int soLuongConLai = chiTietSanPham.getSoLuong() - chiTietHD.getSoLuong();
+                            if (soLuongConLai >= 0) {
+                                chiTietSanPham.setSoLuong(soLuongConLai);
+                                _chiTietSanPhamRepo.save(chiTietSanPham);
+                                redirectAttributes.addFlashAttribute("confirmSuccess", "Cập nhật số lượng thành công");
+
+
+                            } else {
+                                redirectAttributes.addFlashAttribute("errorProductDetail", "Không đủ số lượng sản phẩm trong kho");
+                                return "redirect:/hoa-don/detail/" + idHD;
+                            }
+                        } else {
+                            redirectAttributes.addFlashAttribute("errorProductDetail", "Không tìm thấy chi tiết sản phẩm có ID = " + idChiTietHoaDon);
+                            return "redirect:/hoa-don/detail/" + idHD;
+                        }
+                    }
+
 
                     break;
                 case IHoaDonRepository.DA_XAC_NHAN:
                     hoaDon.setTrangThai(IHoaDonRepository.CHO_GIAO_HANG);
                     hoaDon.setNgayChoGiaoHang(LocalDateTime.now());
-                    System.out.println(moTa);
 
                     break;
                 case IHoaDonRepository.CHO_GIAO_HANG:
                     hoaDon.setTrangThai(IHoaDonRepository.DANG_GIAO_HANG);
                     hoaDon.setNgayDangGiaoHang(LocalDateTime.now());
-                    System.out.println(moTa);
 
                     break;
                 case IHoaDonRepository.DANG_GIAO_HANG:
                     hoaDon.setTrangThai(IHoaDonRepository.DA_HOAN_THANH);
                     hoaDon.setNgayThanhToan(LocalDateTime.now());
-                    System.out.println(moTa);
 
                     break;
                 default:
@@ -429,7 +482,7 @@ public class QuanLyHoaDonController {
                 return "redirect:/hoa-don/detail/" + idHD;
             }
 
-            hoaDon.setGhiChu(moTa);
+//            hoaDon.setGhiChu(moTa);
             _hoaDonRepoTai.save(hoaDon);
             HoaDonDTO hoaDonDTO = HoaDonDTO.fromEntity(hoaDon);
             redirectAttributes.addFlashAttribute("hoaDonDTO",hoaDonDTO);
@@ -498,6 +551,32 @@ public class QuanLyHoaDonController {
         }
         return "redirect:/hoa-don/detail/" + idHD;
     }
+
+
+    // Cập nhật thông tin khách hàng
+//    @PostMapping("/them-dia-chi")
+//    public String themDiaChiByidKH(DiaChiRequest request, @RequestParam("tenTinhThanh") String idTinh,
+//                                   @RequestParam("tenQuanHuyen") String idQuan,
+//                                   @RequestParam("tenPhuongXa") String idPhuong) {
+//        KhachHang khachHang = khachHangRepo.findByIdKH(UserInfor.idKhachHang);
+//        listDiaChi = diaChiRepo.findAll();
+//
+//        DiaChi diaChi = new DiaChi();
+//        diaChi.setTenNguoiNhan(request.getTenNguoiNhan());
+//        diaChi.setSdtNguoiNhan(request.getSdtNguoiNhan());
+//        diaChi.setDiaChiChiTiet(request.getDiaChiChiTiet());
+//        diaChi.setIdTinhThanh(idTinh);
+//        diaChi.setIdQuanHuyen(idQuan);
+//        diaChi.setIdPhuongXa(idPhuong);
+//        diaChi.setIdKhachHang(khachHang);
+//        if (listDiaChi != null && !listDiaChi.isEmpty()) {
+//            diaChi.setTrangThai(DiaChiRepository.TUY_CHON);
+//        } else {
+//            diaChi.setTrangThai(DiaChiRepository.MAC_DINH);
+//        }
+//        diaChiRepo.save(diaChi);
+//         return "redirect:/hoa-don/detail/" + idHD;
+//    }
 
 
 

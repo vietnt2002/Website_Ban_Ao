@@ -181,7 +181,15 @@
             overflow-y: auto; /* Cho phép cuộn nếu nội dung vượt quá chiều cao */
         }
 
+        .form-select {
+            width: 100%;
+        }
 
+        @media (min-width: 768px) {
+            .modal-lg {
+                max-width: 80%;
+            }
+        }
 
 
     </style>
@@ -751,9 +759,11 @@
                                     <input type="hidden" name="trangThai" value="${hoaDonDTO.trangThai + 1}">
                                     <div class="mb-3">
                                         <label for="moTa" class="form-label">Mô tả</label>
-                                        <textarea value="" placeholder="Nhập nội dung mô tả..." class="form-control" id="moTa"
+                                        <textarea value="" placeholder="Nhập nội dung mô tả..." class="form-control"
+                                                  id="moTa"
                                                   name="moTa" rows="3"></textarea>
-                                        <div id="moTaError" class="text-danger" style="display: none;">Vui lòng điền mô tả.
+                                        <div id="moTaError" class="text-danger" style="display: none;">Vui lòng điền mô
+                                            tả.
                                         </div>
                                     </div>
                                 </div>
@@ -766,8 +776,6 @@
                         </div>
                     </div>
                 </div>
-
-
 
 
                 <%--    Bảng lịch sử thanh toán--%>
@@ -787,22 +795,22 @@
                     </div>
 
                     <div class="card-body">
-                            <table class="table table-bordered" width="100%" cellspacing="0">
-                                <thead>
-                                <tr>
-                                    <th>STT</th>
-                                        <%--                                                    <th>Mã GD</th>--%>
-                                    <th>Số tiền</th>
-                                    <th>Trạng thái</th>
-                                    <th>Thời gian</th>
-                                    <th>Phương thức thanh toán</th>
-                                    <th>Người xác nhận</th>
-                                    <th>Ghi chú</th>
-                                </tr>
-                                </thead>
+                        <table class="table table-bordered" width="100%" cellspacing="0">
+                            <thead>
+                            <tr>
+                                <th>STT</th>
+                                <%--                                                    <th>Mã GD</th>--%>
+                                <th>Số tiền</th>
+                                <th>Trạng thái</th>
+                                <th>Thời gian</th>
+                                <th>Phương thức thanh toán</th>
+                                <th>Người xác nhận</th>
+                                <th>Ghi chú</th>
+                            </tr>
+                            </thead>
 
-                                <tbody>
-                                <c:if test="${hoaDonDTO.trangThai == 6}">
+                            <tbody>
+                            <c:if test="${hoaDonDTO.trangThai == 6}">
 
                                 <tr>
                                     <td>1</td>
@@ -836,11 +844,11 @@
 
                                 </tr>
 
-                                </c:if>
+                            </c:if>
 
-                                </tbody>
+                            </tbody>
 
-                            </table>
+                        </table>
 
                     </div>
 
@@ -1048,49 +1056,67 @@
                 </div>
             </div>
 
-            <!-- Modal để cập nhật thông tin khách hàng -->
+            <!-- Modal cập nhật thông tin khách hàng -->
             <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel"
                  aria-hidden="true">
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="updateModalLabel">Cập nhật thông tin khách hàng</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form id="updateForm">
+                            <form id="updateForm" method="post" action="/hoa-don/">
                                 <div class="mb-3">
                                     <label for="hoTen" class="form-label">Họ tên</label>
                                     <input type="text" class="form-control" id="hoTen" name="hoTen"
                                            value="${hoaDonDTO.khachHang.hoTen}">
+                                    <div id="hoTenError" class="text-danger"></div>
                                 </div>
                                 <div class="mb-3">
                                     <label for="sdt" class="form-label">Số điện thoại</label>
                                     <input type="text" class="form-control" id="sdt" name="sdt"
                                            value="${hoaDonDTO.khachHang.sdt}">
+                                    <div id="sdtError" class="text-danger"></div>
                                 </div>
                                 <div class="mb-3">
                                     <label for="diaChi" class="form-label">Địa chỉ</label>
                                     <input type="text" class="form-control" id="diaChi" name="diaChi"
                                            value="${diaChiKhachHang.diaChiChiTiet}">
+                                    <div id="diaChiError" class="text-danger"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4 mb-3">
+                                        <label for="tinh" class="form-label">Tỉnh/Thành Phố</label>
+                                        <select class="form-select" id="tinh" name="tinh">
+                                            <option value="" selected>Chọn tỉnh thành</option>
+                                        </select>
+                                        <div id="tinhError" class="text-danger"></div>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label for="huyen" class="form-label">Quận/Huyện</label>
+                                        <select class="form-select" id="huyen" name="huyen">
+                                            <option value="" selected>Chọn quận huyện</option>
+                                        </select>
+                                        <div id="huyenError" class="text-danger"></div>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label for="xa" class="form-label">Phường/Xã</label>
+                                        <select class="form-select" id="xa" name="xa">
+                                            <option value="" selected>Chọn phường xã</option>
+                                        </select>
+                                        <div id="xaError" class="text-danger"></div>
+                                    </div>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="tinh" class="form-label">Tỉnh</label>
-                                    <select class="form-select" id="tinh" name="tinh">
-                                        <!-- Thêm các tùy chọn tỉnh -->
-                                    </select>
+                                    <label for="phiShip" class="form-label">Phí ship</label>
+                                    <input type="text" class="form-control" id="phiShip" name="phiShip">
+                                    <div id="phiShipError" class="text-danger"></div>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="huyen" class="form-label">Huyện</label>
-                                    <select class="form-select" id="huyen" name="huyen">
-                                        <!-- Thêm các tùy chọn huyện -->
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="xa" class="form-label">Xã</label>
-                                    <select class="form-select" id="xa" name="xa">
-                                        <!-- Thêm các tùy chọn xã -->
-                                    </select>
+                                    <label for="ghiChu" class="form-label">Ghi chú</label>
+                                    <textarea class="form-control" id="ghiChu" name="ghiChu"></textarea>
+                                    <div id="ghiChuError" class="text-danger"></div>
                                 </div>
                             </form>
                         </div>
@@ -1101,6 +1127,7 @@
                     </div>
                 </div>
             </div>
+
 
             <%-- Thông tin sản phẩm đã mua                --%>
             <div class="card shadow mb-4 mx-2" id="custom-card">
@@ -1119,7 +1146,7 @@
                 </div>
 
                 <div class="card-body custom-card-body">
-                    <table class="table table-bordered custom-table" >
+                    <table class="table table-bordered custom-table">
                         <thead>
                         <tr>
                             <th>STT</th>
@@ -1165,6 +1192,14 @@
                                 </td>
                                 <td><fmt:formatNumber value="${chiTiet.donGia * chiTiet.soLuong}" type="currency"
                                                       currencySymbol="₫" groupingUsed="true"/></td>
+                                <c:if test="${hoaDonDTO.loaiHoaDon == 0}">
+                                    <td>
+                                        <button type="button" class="btn btn-warning">Sửa</button>
+                                        <button type="button" class="btn btn-danger">Xóa</button>
+                                    </td>
+                                </c:if>
+
+
                             </tr>
                         </c:forEach>
                         </tbody>
@@ -1179,10 +1214,9 @@
         <!-- End of Main Content -->
 
 
-
-
-<%--       Modal Thêm sản sản vào hóa đơn--%>
-        <div class="modal fade" name="addProductModal" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
+        <%--       Modal Thêm sản sản vào hóa đơn--%>
+        <div class="modal fade" name="addProductModal" id="addProductModal" tabindex="-1"
+             aria-labelledby="addProductModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-xl">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -1194,8 +1228,10 @@
                         <div class="mb-3 p-3" style="background-color: #f0f0f0;">
                             <!-- Phần input tìm kiếm và nút tìm kiếm -->
                             <div class="input-group">
-                                <input type="text" class="form-control" id="searchInput" placeholder="Nhập từ khóa tìm kiếm...">
-                                <button class="btn btn-outline-secondary" type="button" id="searchButton">Tìm kiếm</button>
+                                <input type="text" class="form-control" id="searchInput"
+                                       placeholder="Nhập từ khóa tìm kiếm...">
+                                <button class="btn btn-outline-secondary" type="button" id="searchButton">Tìm kiếm
+                                </button>
                             </div>
 
                             <!-- Các select -->
@@ -1256,22 +1292,25 @@
                             <tbody id="tbl_ds_spct">
                             <c:forEach var="product" items="${listCTSP.content}" varStatus="status">
                                 <tr>
+                                <c:if test="${product.soLuong > 0 }">
                                     <td>${status.index + 1}</td>
                                     <td>${product.idSanPham.ten}</td>
-                                    <td><img src="/image/${product.idSanPham.hinhAnh}" alt="Hình ảnh sản phẩm" style="width: 50px; height: 50px;"></td>
+                                    <td><img src="/image/${product.idSanPham.hinhAnh}" alt="Hình ảnh sản phẩm"
+                                             style="width: 50px; height: 50px;"></td>
                                     <td>${product.idMauSac.ten}</td>
                                     <td>${product.idKichThuoc.ten}</td>
                                     <td>${product.soLuong}</td>
                                     <td>${product.giaNhap}</td>
-                                    <td><span  class=" fw-normal badge rounded-pill ${product.trangThai == 0 ? 'bg-danger' : 'bg-success'}">
+                                    <td><span
+                                            class=" fw-normal badge rounded-pill ${product.trangThai == 0 ? 'bg-danger' : 'bg-success'}">
                                             ${product.trangThai == 0 ? "Hết hàng" : "Còn hàng"}
                                     </span></td>
                                     <td>
                                         <!-- Thao tác, ví dụ như nút sửa, xóa -->
-                                        <button class="btn btn-primary btn-sm">Sửa</button>
-                                        <button class="btn btn-danger btn-sm">Xóa</button>
+                                        <button class="btn btn-primary btn-sm">Chọn</button>
                                     </td>
-                                </tr>
+                                    </tr>
+                                </c:if>
                             </c:forEach>
                             </tbody>
                         </table>
@@ -1308,9 +1347,7 @@
         </div>
 
 
-
-
-    <%--  Phiếu hóa đơn để giao hàng --%>
+        <%--  Phiếu hóa đơn để giao hàng --%>
         <div class="delivery" style="display: none">
             <div class="container mt-5 p-4 shadow delivery">
                 <div class="row">
@@ -1477,6 +1514,13 @@
     });
     </c:if>
 
+    <c:if test="${not empty errorProductDetail}">
+    Toast.fire({
+        icon: "error",
+        title: "${errorProductDetail}"
+    });
+    </c:if>
+
 
 
 
@@ -1554,7 +1598,173 @@
         document.getElementById('moTa').value = '';
     });
 
+    // Validate form  Thay đổi thông tin khách hàng
+    $(document).ready(function () {
+        var token = '4787bafa-2157-11ef-a90d-aaf29aa34580'; // Thay bằng token thực tế của bạn
 
+        // Function to get JSON with token
+        function getJSONWithToken(url, callback) {
+            $.ajax({
+                url: url,
+                headers: {
+                    'Token': token
+                },
+                success: callback,
+                error: function (xhr, status, error) {
+                    console.error("Lỗi: " + error);
+                }
+            });
+        }
+
+        // Lấy danh sách tỉnh
+        getJSONWithToken('https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/province', function (data_tinh) {
+            // Sắp xếp theo ProvinceID tăng dần
+            data_tinh.data.sort(function (a, b) {
+                return a.ProvinceID - b.ProvinceID;
+            });
+
+            $.each(data_tinh.data, function (key_tinh, val_tinh) {
+                $("#tinh").append('<option value="' + val_tinh.ProvinceID + '">' + val_tinh.ProvinceName + '</option>');
+            });
+
+            // Khi thay đổi tỉnh
+            $("#tinh").change(function () {
+                var idtinh = $(this).val();
+                $("#huyen").html('<option value="">Chọn Huyện</option>');
+                $("#xa").html('<option value="">Chọn Xã</option>');
+
+                // Lấy danh sách huyện
+                getJSONWithToken('https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/district?province_id=' + idtinh, function (data_quan) {
+                    $.each(data_quan.data, function (key_quan, val_quan) {
+                        $("#huyen").append('<option value="' + val_quan.DistrictID + '">' + val_quan.DistrictName + '</option>');
+                    });
+
+                    // Khi thay đổi huyện
+                    $("#huyen").change(function () {
+                        var idquan = $(this).val();
+                        $("#xa").html('<option value="">Chọn Xã</option>');
+
+                        // Lấy danh sách xã
+                        getJSONWithToken('https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id=' + idquan, function (data_phuong) {
+                            $.each(data_phuong.data, function (key_phuong, val_phuong) {
+                                $("#xa").append('<option value="' + val_phuong.WardCode + '">' + val_phuong.WardName + '</option>');
+                            });
+                        });
+                    });
+                });
+            });
+        });
+
+        function clearErrors() {
+            $(".text-danger").text("");
+            $(".form-control").removeClass("border-danger");
+        }
+
+        function addError(inputId, errorMessage) {
+            $(inputId).addClass("border-danger");
+            $(inputId + "Error").text(errorMessage);
+        }
+
+        $("#updateButton").click(function () {
+            clearErrors();
+
+            var isValid = true;
+
+            // Validate customer name
+            if ($("#hoTen").val().trim() === "") {
+                addError("#hoTen", "Họ tên không được để trống.");
+                isValid = false;
+            }
+
+            // Validate customer phone
+            if ($("#sdt").val().trim() === "") {
+                addError("#sdt", "Số điện thoại không được để trống.");
+                isValid = false;
+            }
+
+            // Validate address
+            if ($("#diaChi").val().trim() === "") {
+                addError("#diaChi", "Địa chỉ không được để trống.");
+                isValid = false;
+            }
+
+            // Validate province
+            if ($("#tinh").val() === "") {
+                addError("#tinh", "Vui lòng chọn Tỉnh/Thành Phố.");
+                isValid = false;
+            }
+
+            // Validate district
+            if ($("#huyen").val() === "") {
+                addError("#huyen", "Vui lòng chọn Quận/Huyện.");
+                isValid = false;
+            }
+
+            // Validate ward
+            if ($("#xa").val() === "") {
+                addError("#xa", "Vui lòng chọn Phường/Xã.");
+                isValid = false;
+            }
+
+            // Validate phiShip
+            if ($("#phiShip").val().trim() === "") {
+                addError("#phiShip", "Phí ship không được để trống.");
+                isValid = false;
+            }
+
+            // Validate ghiChu (optional, only if you want to validate it)
+            if ($("#ghiChu").val().trim() === "") {
+                addError("#ghiChu", "Ghi chú không được để trống.");
+                isValid = false;
+            }
+
+            if (isValid) {
+                var tenTinhThanh = $("#tinh option:selected").text();
+                var tenQuanHuyen = $("#huyen option:selected").text();
+                var tenPhuongXa = $("#xa option:selected").text();
+
+                $("<input>").attr({
+                    type: "hidden",
+                    name: "tenTinhThanh",
+                    value: tenTinhThanh
+                }).appendTo("#updateForm");
+
+                $("<input>").attr({
+                    type: "hidden",
+                    name: "tenQuanHuyen",
+                    value: tenQuanHuyen
+                }).appendTo("#updateForm");
+
+                $("<input>").attr({
+                    type: "hidden",
+                    name: "tenPhuongXa",
+                    value: tenPhuongXa
+                }).appendTo("#updateForm");
+
+                $("#updateForm").submit();
+            }
+        });
+
+        $(".form-control").on("input", function () {
+            $(this).removeClass("border-danger");
+            $("#" + $(this).attr("id") + "Error").text("");
+        });
+
+        $(".form-select").on("change", function () {
+            $(this).removeClass("border-danger");
+            $("#" + $(this).attr("id") + "Error").text("");
+        });
+
+        $(".form-control").on("focus", function () {
+            $(this).removeClass("border-danger");
+            $("#" + $(this).attr("id") + "Error").text("");
+        });
+
+        $(".form-select").on("click", function () {
+            $(this).removeClass("border-danger");
+            $("#" + $(this).attr("id") + "Error").text("");
+        });
+    });
 
 
 </script>
