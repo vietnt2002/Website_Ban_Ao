@@ -11,8 +11,8 @@ import lombok.Setter;
 @AllArgsConstructor
 public class DiaChiRequest {
 
+    private String id;
     private Integer phuongThucThanhToan;
-
     private String tenNguoiNhan;
     private String sdtNguoiNhan;
     private String diaChiChiTiet;

@@ -444,7 +444,6 @@
                         </button>
                     </div>
                     <div class="modal-body">
-<<<<<<< HEAD:src/main/webapp/view/BanHangOnline/gioHang.jsp
                         <form action="/cua-hang/them-dia-chi-GH" method="post" id="themDiaChi">
                             <div class="row px-xl-5">
                                 <div class="col-md-6 form-group">
@@ -498,7 +497,6 @@
                                         <option value="0">Chọn phường xã</option>
                                     </select>
                                     <span id="phuongXaError" class="text-danger"></span>
-=======
                         <c:forEach var="i" items="${listDiaChi}">
                             <div class="container">
                                 <div class="row">
@@ -515,7 +513,6 @@
                                         </c:if>
                                     </div>
                                     <div class="col-3">
-<%--                                        <a style="color: #147bff" href="">Cập nhật</a>--%>
                                         <a style="color: #147bff" data-toggle="modal"
                                                 data-target="#addAddressModal2">
                                             Cập nhật
@@ -600,7 +597,6 @@
                                         </div>
                                         <a style="color: #ff3818" href="/cua-hang/xoa-dia-chi/${i.id}">Xóa</a>
                                     </div>
->>>>>>> cba182ba08cc98e720720f1965f40714bad1dfad:src/main/webapp/view/ban_hang_online/gioHang.jsp
                                 </div>
                             </div>
                         </c:forEach>

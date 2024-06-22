@@ -465,11 +465,11 @@
                                         </c:if>
                                     </div>
                                     <div class="col-3">
-                                        <button type="button" class="update-address-link" style="color: #1571ff;"
+                                        <a href="" class="update-address-link" style="color: #1571ff;"
                                                 data-toggle="modal"
                                                 data-target="#updateAddressModal${i.id}" data-address-id="1">
                                             Cập nhật
-                                        </button>
+                                        </a>
                                         <div class="modal fade" id="updateAddressModal${i.id}" tabindex="-1"
                                              role="dialog"
                                              aria-labelledby="updateAddressModalLabel${i.id}" aria-hidden="true">
@@ -485,82 +485,80 @@
                                                     </div>
                                                     <div class="modal-body">
                                                         <form action="/cua-hang/cap-nhat-dia-chi/${i.id}" method="post"
-                                                              id="suaDiaChi">
+                                                              id="suaDiaChi${i.id}">
                                                             <div class="row px-xl-5">
                                                                 <div class="col-md-6 form-group">
                                                                     <label><b>Họ tên</b></label>
                                                                     <input class="form-control" type="text"
                                                                            name="tenNguoiNhan" value="${i.tenNguoiNhan}"
-                                                                           id="tenNguoiNhan2"
                                                                            style="background-color: #f1f1f1; border: 2px solid #e4e4e4;"
                                                                            placeholder="Họ tên">
-                                                                    <span id="tenNguoiNhan2Error"
-                                                                          class="text-danger"></span>
+                                                                    <span class="error-message"
+                                                                          style="color: red"></span>
                                                                 </div>
                                                                 <div class="col-md-6 form-group">
                                                                     <label><b>Số điện thoại</b></label>
                                                                     <input class="form-control" type="number"
                                                                            name="sdtNguoiNhan" value="${i.sdtNguoiNhan}"
-                                                                           id="sdtNguoiNhan2"
                                                                            style="background-color: #f1f1f1; border: 2px solid #e4e4e4;"
                                                                            placeholder="Số điện thoại">
-                                                                    <span id="sdtNguoiNhan2Error"
-                                                                          class="text-danger"></span>
+                                                                    <span class="error-message"
+                                                                          style="color: red"></span>
                                                                 </div>
                                                                 <div class="col-md-12 form-group">
                                                                     <label><b>Địa chỉ</b></label>
                                                                     <input class="form-control" type="text"
                                                                            name="diaChiChiTiet"
                                                                            value="${i.diaChiChiTiet}"
-                                                                           id="diaChiChiTiet2"
                                                                            style="background-color: #f1f1f1; border: 2px solid #e4e4e4;"
                                                                            placeholder="Địa chỉ">
-                                                                    <span id="diaChiChiTiet2Error"
-                                                                          class="text-danger"></span>
+                                                                    <span class="error-message"
+                                                                          style="color: red"></span>
                                                                 </div>
                                                                 <div class="col-md-4 form-group">
                                                                     <label><b>Tỉnh/Thành phố</b></label>
                                                                     <select class="custom-select"
-                                                                            id="tinhThanh1" name="tinhThanh1"
+                                                                            id="tenTT${i.id}" name="tenTT"
                                                                             title="Chọn Tỉnh Thành"
                                                                             style="background-color: #f1f1f1; border: 1px solid #e4e4e4;">
                                                                         <option value="${i.idTinhThanh}">${i.idTinhThanh}</option>
                                                                     </select>
-                                                                    <span id="tinhThanh1Error"
-                                                                          class="text-danger"></span>
+                                                                    <span class="error-message"
+                                                                          style="color: red"></span>
                                                                 </div>
                                                                 <div class="col-md-4 form-group">
                                                                     <label><b>Quận/Huyện</b></label>
                                                                     <select class="custom-select"
-                                                                            id="quanHuyen1" name="quanHuyen1"
+                                                                            id="tenQH${i.id}" name="tenQH"
                                                                             title="Chọn Quận Huyện"
                                                                             style="background-color: #f1f1f1; border: 1px solid #e4e4e4;">
                                                                         <option value="${i.idQuanHuyen}">${i.idQuanHuyen}</option>
                                                                     </select>
-                                                                    <span id="quanHuyen1Error"
-                                                                          class="text-danger"></span>
+                                                                    <span class="error-message"
+                                                                          style="color: red"></span>
                                                                 </div>
                                                                 <div class="col-md-4 form-group">
                                                                     <label><b>Phường/Xã</b></label>
                                                                     <select class="custom-select"
-                                                                            id="phuongXa1" name="phuongXa1"
+                                                                            id="tenPX${i.id}" name="tenPX"
                                                                             title="Chọn Phường Xã"
                                                                             style="background-color: #f1f1f1; border: 1px solid #e4e4e4;">
                                                                         <option value="${i.idPhuongXa}">${i.idPhuongXa}</option>
                                                                     </select>
-                                                                    <span id="phuongXa1Error"
-                                                                          class="text-danger"></span>
+                                                                    <span class="error-message"
+                                                                          style="color: red"></span>
                                                                 </div>
                                                             </div>
+                                                            <button type="submit" id="" class=" btn btn-primary">
+                                                                Cập nhật
+                                                            </button>
                                                         </form>
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary"
                                                                 data-dismiss="modal">Quay lại
                                                         </button>
-                                                        <button type="button" id="submitForm1" class=" btn btn-primary">
-                                                            Cập nhật
-                                                        </button>
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -736,9 +734,9 @@
                     <div class="input-group mb-4">
                         <input type="text" class="form-control p-4"
                                style="background-color: #f1f1f1; border: 1px solid #e4e4e4;"
-                               placeholder="Mã ưu đãi">
+                               placeholder="Mã giảm giá">
                         <div class="input-group-append">
-                            <button class="btn btn-primary">Áp dụng</button>
+                            <button type="button" class="btn btn-primary">Áp dụng</button>
                         </div>
                     </div>
                 </form>
@@ -899,7 +897,7 @@
 <!-- Template Javascript -->
 <script src="/view_ban_hang/js/main.js"></script>
 <script>
-    //  // Hiển thị thông báo thất bại nếu đăng nhập thất bại
+    // Hiển thị thông báo thất bại nếu đăng nhập thất bại
     const Toast = Swal.mixin({
         toast: true,
         position: "top-end",
@@ -1108,7 +1106,7 @@
         return regex.test(phoneNumber);
     }
 
-    //Hiển thị tên tỉnh, huyện, xã
+    //Thông tin giao hàng
     $(document).ready(function () {
         var token = '4787bafa-2157-11ef-a90d-aaf29aa34580';
 
@@ -1209,7 +1207,7 @@
                 $("#sdtNguoiNhanError").text("Số điện thoại không hợp lệ. Vui lòng nhập lại");
             } else if (!$("#diaChiChiTiet").val()) {
                 isValid = false;
-                $("#diaChiChiTietError").text("Vui lòng nhập địa chỉ");
+                $("#diaChiChiTietError").text("Vui lòng nhập địa chỉ chi tiết");
             } else if ($("#tinh").val() === "0") {
                 isValid = false;
                 $("#tinhError").text("Vui lòng chọn tỉnh/thành phố");
@@ -1290,19 +1288,19 @@
 
             // Kiểm tra Tên người nhận
             if ($("#tenNguoiNhan1").val().trim() === "") {
-                $("#tenNguoiNhan1Error").text("Tên người nhận không được để trống.");
+                $("#tenNguoiNhan1Error").text("Vui lòng nhập họ tên");
                 isValid = false;
             }
 
             // Kiểm tra SĐT người nhận
-            if ($("#sdtNguoiNhan1").val() === "0") {
-                $("#sdtNguoiNhan1Error").text("SĐT người nhận không được để trống");
+            if ($("#sdtNguoiNhan1").val().trim() === "") {
+                $("#sdtNguoiNhan1Error").text("Vui lòng nhập số điện thoại");
                 isValid = false;
             }
 
             // Kiểm tra Địa chỉ
             if ($("#diaChiChiTiet1").val().trim() === "") {
-                $("#diaChiChiTiet1Error").text("Địa chỉ không được để trống.");
+                $("#diaChiChiTiet1Error").text("Vui lòng nhập địa chỉ chi tiết");
                 isValid = false;
             }
 
@@ -1352,130 +1350,150 @@
         });
     });
 
-
     //Sửa địa chỉ
-    // $(document).ready(function () {
-    //     var token = '4787bafa-2157-11ef-a90d-aaf29aa34580';
-    //
-    //     // Function to get JSON with token
-    //     function getJSONWithToken(url, callback) {
-    //         $.ajax({
-    //             url: url,
-    //             headers: {
-    //                 'Token': token
-    //             },
-    //             success: callback,
-    //             error: function (xhr, status, error) {
-    //                 console.error("Lỗi: " + error);
-    //             }
-    //         });
-    //     }
-    //
-    //     //Lấy tỉnh thành
-    //     getJSONWithToken('https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/province', function (data_tinh) {
-    //         // Sắp xếp theo ProvinceID tăng dần
-    //         data_tinh.data.sort(function (a, b) {
-    //             return a.ProvinceID - b.ProvinceID;
-    //         });
-    //
-    //         $.each(data_tinh.data, function (key_tinh, val_tinh) {
-    //             $("#tinhThanh1").append('<option value="' + val_tinh.ProvinceID + '" name="' + val_tinh.ProvinceName + '">' + val_tinh.ProvinceName + '</option>');
-    //         });
-    //
-    //         $("#tinhThanh1").change(function (e) {
-    //             var idtinh = $(this).val();
-    //
-    //             // Lấy quận huyện
-    //             getJSONWithToken('https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/district?province_id=' + idtinh, function (data_quan) {
-    //                 $("#quanHuyen1").html('<option value="0">Quận Huyện</option>');
-    //                 $("#phuongXa1").html('<option value="0">Phường Xã</option>');
-    //                 $.each(data_quan.data, function (key_quan, val_quan) {
-    //                     $("#quanHuyen1").append('<option value="' + val_quan.DistrictID + '">' + val_quan.DistrictName + '</option>');
-    //                 });
-    //
-    //                 // Lấy phường xã
-    //                 $("#quanHuyen1").change(function (e) {
-    //                     var idquan = $(this).val();
-    //                     getJSONWithToken('https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id=' + idquan, function (data_phuong) {
-    //                         $("#phuongXa1").html('<option value="0">Phường Xã</option>');
-    //                         $.each(data_phuong.data, function (key_phuong, val_phuong) {
-    //                             $("#phuongXa1").append('<option value="' + val_phuong.WardCode + '">' + val_phuong.WardName + '</option>');
-    //                         });
-    //                     });
-    //                 });
-    //             });
-    //         });
-    //     });
-    //
-    //     $("#submitForm1").click(function () {
-    //         // Xóa các thông báo lỗi trước đó
-    //         $(".text-danger").text("");
-    //
-    //         var isValid = true;
-    //
-    //         // Kiểm tra Tên người nhận
-    //         if ($("#tenNguoiNhan2").val().trim() === "") {
-    //             $("#tenNguoiNhan2Error").text("Tên người nhận không được để trống.");
-    //             isValid = false;
-    //         }
-    //
-    //         // Kiểm tra SĐT người nhận
-    //         if ($("#sdtNguoiNhan2").val() === "0") {
-    //             $("#sdtNguoiNhan2Error").text("SĐT người nhận không được để trống");
-    //             isValid = false;
-    //         }
-    //
-    //         // Kiểm tra Địa chỉ
-    //         if ($("#diaChiChiTiet2").val().trim() === "") {
-    //             $("#diaChiChiTiet2Error").text("Địa chỉ không được để trống.");
-    //             isValid = false;
-    //         }
-    //
-    //         // Kiểm tra Tỉnh/Thành phố
-    //         if ($("#tinhThanh1").val() === "0") {
-    //             $("#tinhThanh1Error").text("Vui lòng chọn Tỉnh/Thành phố.");
-    //             isValid = false;
-    //         }
-    //
-    //         // Kiểm tra Quận/Huyện
-    //         if ($("#quanHuyen1").val() === "0") {
-    //             $("#quanHuyen1Error").text("Vui lòng chọn Quận/Huyện.");
-    //             isValid = false;
-    //         }
-    //
-    //         // Kiểm tra Phường/Xã
-    //         if ($("#phuongXa1").val() === "0") {
-    //             $("#phuongXa1Error").text("Vui lòng chọn Phường/Xã.");
-    //             isValid = false;
-    //         }
-    //
-    //         if (isValid) {
-    //             var tenTinhThanh1 = $("#tinhThanh1 option:selected").text();
-    //             var tenQuanHuyen1 = $("#quanHuyen1 option:selected").text();
-    //             var tenPhuongXa1 = $("#phuongXa1 option:selected").text();
-    //
-    //             $("<input>").attr({
-    //                 type: "hidden",
-    //                 name: "tenTinhThanh1",
-    //                 value: tenTinhThanh1
-    //             }).appendTo("#suaDiaChi");
-    //
-    //             $("<input>").attr({
-    //                 type: "hidden",
-    //                 name: "tenQuanHuyen1",
-    //                 value: tenQuanHuyen1
-    //             }).appendTo("#suaDiaChi");
-    //
-    //             $("<input>").attr({
-    //                 type: "hidden",
-    //                 name: "tenPhuongXa1",
-    //                 value: tenPhuongXa1
-    //             }).appendTo("#suaDiaChi");
-    //
-    //             $("#suaDiaChi").submit();
-    //         }
-    //     });
-    // });
+    $(document).ready(function () {
+        var token = '4787bafa-2157-11ef-a90d-aaf29aa34580';
+
+        function getJSONWithToken(url, callback) {
+            $.ajax({
+                url: url,
+                headers: {
+                    'Token': token
+                },
+                success: callback,
+                error: function (xhr, status, error) {
+                    console.error("Lỗi: " + error);
+                }
+            });
+        }
+
+        $('body').on('show.bs.modal', '.modal', function () {
+
+            var modalId = $(this).attr('id');
+            var provinceSelect = $("#" + modalId + " select[name='tenTT']");
+            var districtSelect = $("#" + modalId + " select[name='tenQH']");
+            var wardSelect = $("#" + modalId + " select[name='tenPX']");
+
+            // Gọi API để lấy danh sách tỉnh/thành phố
+            getJSONWithToken('https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/province', function (data_tinh) {
+                // Đổ danh sách tỉnh/thành phố vào dropdown
+                data_tinh.data.sort(function (a, b) {
+                    return a.ProvinceID - b.ProvinceID;
+                });
+                $.each(data_tinh.data, function (key_tinh, val_tinh) {
+                    provinceSelect.append('<option value="' + val_tinh.ProvinceID + '" name="' + val_tinh.ProvinceName + '">' + val_tinh.ProvinceName + '</option>');
+                });
+
+                provinceSelect.change(function (e) {
+                    var idtinh = $(this).val();
+
+                    // Lấy quận huyện
+                    getJSONWithToken('https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/district?province_id=' + idtinh, function (data_quan) {
+                        districtSelect.html('<option value="0">Quận Huyện</option>');
+                        wardSelect.html('<option value="0">Phường Xã</option>');
+                        $.each(data_quan.data, function (key_quan, val_quan) {
+                            districtSelect.append('<option value="' + val_quan.DistrictID + '">' + val_quan.DistrictName + '</option>');
+                        });
+
+                        // Lấy phường xã
+                        districtSelect.change(function (e) {
+                            var idquan = $(this).val();
+                            getJSONWithToken('https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id=' + idquan, function (data_phuong) {
+                                wardSelect.html('<option value="0">Phường Xã</option>');
+                                $.each(data_phuong.data, function (key_phuong, val_phuong) {
+                                    wardSelect.append('<option value="' + val_phuong.WardCode + '">' + val_phuong.WardName + '</option>');
+                                });
+                            });
+                        });
+                    });
+                });
+            });
+        });
+        $('form[id^="suaDiaChi"]').submit(function (e) {
+            var modalId = $(this).closest('.modal').attr('id');
+            var tenTinh = $("#" + modalId + " select[name='tenTT'] option:selected").text();
+            var tenQuan = $("#" + modalId + " select[name='tenQH'] option:selected").text();
+            var tenPhuong = $("#" + modalId + " select[name='tenPX'] option:selected").text();
+
+            $("<input>").attr({
+                type: "hidden",
+                name: "tenTinh",
+                value: tenTinh
+            }).appendTo(this);
+
+            $("<input>").attr({
+                type: "hidden",
+                name: "tenQuan",
+                value: tenQuan
+            }).appendTo(this);
+
+            $("<input>").attr({
+                type: "hidden",
+                name: "tenPhuong",
+                value: tenPhuong
+            }).appendTo(this);
+
+            return true;
+        });
+    });
+
+    //Check validate cập nhật địa chỉ
+    $(document).ready(function () {
+        // Lắng nghe sự kiện submit form
+        $('form[id^="suaDiaChi"]').submit(function (e) {
+            var modalId = $(this).closest('.modal').attr('id');
+            var isValid = true;
+
+            // Reset thông báo lỗi
+            $("#" + modalId + " .error-message").text('');
+
+            // Validate Họ tên
+            var tenNguoiNhan = $("#" + modalId + " input[name='tenNguoiNhan']").val().trim();
+            if (tenNguoiNhan === '') {
+                $("#" + modalId + " input[name='tenNguoiNhan']").next('.error-message').text('Vui lòng nhập họ tên');
+                isValid = false;
+            }
+
+            // Validate Số điện thoại
+            var sdtNguoiNhan = $("#" + modalId + " input[name='sdtNguoiNhan']").val().trim();
+            if (sdtNguoiNhan === '') {
+                $("#" + modalId + " input[name='sdtNguoiNhan']").next('.error-message').text('Vui lòng nhập số điện thoại');
+                isValid = false;
+            }
+
+            // Validate địa chỉ chi tiết
+            var diaChiChiTiet = $("#" + modalId + " input[name='diaChiChiTiet']").val().trim();
+            if (diaChiChiTiet === '') {
+                $("#" + modalId + " input[name='diaChiChiTiet']").next('.error-message').text('Vui lòng nhập địa chỉ chi tiết');
+                isValid = false;
+            }
+
+            // Validate Tỉnh/Thành phố
+            var tenTT = $("#" + modalId + " select[name='tenTT']").val();
+            if (!tenTT || tenTT === '0') {
+                $("#" + modalId + " select[name='tenTT']").next('.error-message').text('Vui lòng chọn Tỉnh/Thành phố');
+                isValid = false;
+            }
+
+            // Validate Quận/Huyện
+            var tenQH = $("#" + modalId + " select[name='tenQH']").val();
+            if (!tenQH || tenQH === '0') {
+                $("#" + modalId + " select[name='tenQH']").next('.error-message').text('Vui lòng chọn Quận/Huyện');
+                isValid = false;
+            }
+
+            // Validate Phường/Xã
+            var tenPX = $("#" + modalId + " select[name='tenPX']").val();
+            if (!tenPX || tenPX === '0') {
+                $("#" + modalId + " select[name='tenPX']").next('.error-message').text('Vui lòng chọn Phường/Xã');
+                isValid = false;
+            }
+
+            // Nếu các trường đều hợp lệ, tiến hành submit form
+            return isValid;
+        });
+    });
+
 
 </script>
 
