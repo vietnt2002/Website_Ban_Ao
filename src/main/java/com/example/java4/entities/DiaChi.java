@@ -7,11 +7,13 @@ import java.util.Objects;
 @Entity
 public class DiaChi {
     private String id;
+    private String tenNguoiNhan;
+    private String sdtNguoiNhan;
     private String diaChiChiTiet;
     private String idPhuongXa;
     private String idQuanHuyen;
     private String idTinhThanh;
-    private NhanVien idNhanVien;
+    private String idNhanVien;
     private KhachHang idKhachHang;
     private Integer trangThai;
 
@@ -21,8 +23,27 @@ public class DiaChi {
     public String getId() {
         return id;
     }
+
     public void setId(String id) {
         this.id = id;
+    }
+
+    @Column(name = "TenNguoiNhan")
+    public String getTenNguoiNhan() {
+        return tenNguoiNhan;
+    }
+
+    public void setTenNguoiNhan(String tenNguoiNhan) {
+        this.tenNguoiNhan = tenNguoiNhan;
+    }
+
+    @Column(name = "SDTNguoiNhan")
+    public String getSdtNguoiNhan() {
+        return sdtNguoiNhan;
+    }
+
+    public void setSdtNguoiNhan(String sdtNguoiNhan) {
+        this.sdtNguoiNhan = sdtNguoiNhan;
     }
 
     @Column(name = "DiaChiChiTiet")
@@ -70,12 +91,21 @@ public class DiaChi {
         this.idTinhThanh = idTinhThanh;
     }
 
+    @Column(name = "IdNV")
+    public String getIdNhanVien() {
+        return idNhanVien;
+    }
+
+    public void setIdNhanVien(String idNhanVien) {
+        this.idNhanVien = idNhanVien;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         DiaChi diaChi = (DiaChi) o;
-        return Objects.equals(id, diaChi.id) && Objects.equals(diaChiChiTiet, diaChi.diaChiChiTiet) && Objects.equals(idPhuongXa, diaChi.idPhuongXa) && Objects.equals(idQuanHuyen, diaChi.idQuanHuyen) && Objects.equals(idTinhThanh, diaChi.idTinhThanh) && Objects.equals(trangThai, diaChi.trangThai);
+        return Objects.equals(id, diaChi.id) && Objects.equals(tenNguoiNhan, diaChi.tenNguoiNhan) && Objects.equals(sdtNguoiNhan, diaChi.sdtNguoiNhan) && Objects.equals(diaChiChiTiet, diaChi.diaChiChiTiet) && Objects.equals(idPhuongXa, diaChi.idPhuongXa) && Objects.equals(idQuanHuyen, diaChi.idQuanHuyen) && Objects.equals(idTinhThanh, diaChi.idTinhThanh) && Objects.equals(idNhanVien, diaChi.idNhanVien) && Objects.equals(trangThai, diaChi.trangThai);
     }
 
     @Override
@@ -83,15 +113,6 @@ public class DiaChi {
         return Objects.hash(id, diaChiChiTiet, trangThai);
     }
 
-    @ManyToOne
-    @JoinColumn(name = "IdNV", referencedColumnName = "ID")
-    public NhanVien getIdNhanVien() {
-        return idNhanVien;
-    }
-
-    public void setIdNhanVien(NhanVien nhanVienByIdNv) {
-        this.idNhanVien = nhanVienByIdNv;
-    }
 
     @ManyToOne
     @JoinColumn(name = "IdKH", referencedColumnName = "ID")
