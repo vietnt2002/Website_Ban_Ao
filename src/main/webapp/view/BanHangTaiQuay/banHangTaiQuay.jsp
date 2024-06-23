@@ -512,11 +512,11 @@
                             <div class="card">
                                 <div class="card-body">
                                     <h5 class="card-title">HÓA ĐƠN</h5>
-                                    <form method="POST" action="/ban-hang-tai-quay/thanh-toan/${hoaDon.id}">
                                         <div class="row mb-3">
                                             <label class="col-sm-4 col-form-label">Mã hóa đơn</label>
                                             <div class="col-sm-8">
                                                 <input type="text" class="form-control" value="${hoaDon.ma}"/>
+                                                <input type="hidden" class="form-control" name="idHD"  value="${hoaDon.id}" readonly>
                                             </div>
                                         </div>
                                         <div class="row mb-3">
@@ -532,19 +532,16 @@
                                                     <input type="text" class="form-control"  value="${hoaDon.idKhachHang.hoTen}" readonly>
                                                     <input type="hidden" class="form-control" name="idKH"  value="${hoaDon.idKhachHang.id}" readonly>
                                             </div>
-
                                             <%--   Modal thêm nhanh khách hàng--%>
                                             <a class="col-sm-1 " data-bs-toggle="modal" data-bs-target="#exampleModal2"
                                                style="padding-right: 0px;margin-top: 7px">
                                                 <i class="bi bi-person-plus" style="font-size: 25px;padding: 0px"></i>
                                             </a>
-
                                             <a class="col-sm-1" data-bs-toggle="modal" data-bs-target="#exampleModal"
                                                href="#" style="padding-right: 0px;margin-top: 7px">
                                                 <i class=" bi bi-folder-plus col-3" style="font-size: 25px;padding: 0px"></i>
                                             </a>
                                         </div>
-
                                         <div class="row mb-3">
                                             <label class="col-sm-4 col-form-label">Mã giảm giá</label>
                                             <div class="col-sm-5">
@@ -559,14 +556,12 @@
                                                 + Chọn
                                             </a>
                                         </div>
-
                                         <div class="row mb-3">
                                             <label class="col-sm-4 col-form-label">Số tiền giảm</label>
                                             <div class="col-sm-5">
                                                 <p>${hoaDon.idKhuyenMai.soTienGiam}</p>
                                             </div>
                                         </div>
-
                                         <div class="row mb-3">
                                             <label class="col-sm-4 col-form-label">Tổng tiền</label>
                                             <div class="col-sm-8">
@@ -577,7 +572,6 @@
                                                 </c:if>
                                             </div>
                                         </div>
-
                                         <div class="row mb-3">
                                             <label class="col-sm-4 col-form-label">Tiền khách đưa</label>
                                             <div class="col-sm-6">
@@ -587,9 +581,7 @@
 
                                             <i id="calculateChangeButton" class=" col-sm-2 bi bi-chevron-double-down"
                                                style="font-size: 20px" onclick="calculateChange()"></i>
-
                                         </div>
-
                                         <div class="row mb-3">
                                             <label class="col-sm-4 col-form-label">Trả lại</label>
                                             <div class="col-sm-8">
@@ -600,10 +592,9 @@
                                         </div>
                                         <div class="row mb-3 mt-4 justify-content-end text-end">
                                             <div class="col-sm-10">
-                                                <button type="submit" class="btn btn-success ">THANH TOÁN</button>
+                                                <button id="checkBtn" idhd =${hoaDon.id} type="submit" class="btn btn-success ">THANH TOÁN</button>
                                             </div>
                                         </div>
-                                    </form>
                                     <!-- End General Form Elements -->
                                 </div>
                             </div><!-- End Recent Activity -->
@@ -688,7 +679,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <div class="row">
-                            <h5 class="modal-title" id="exampleModalLabel">Thêm khách hàng</h5>
+                            <h5 class="modal-title" id="exampleModalLabel1">Thêm khách hàng</h5>
                         </div>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
@@ -724,7 +715,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <div class="row">
-                            <h5 class="modal-title" id="exampleModalLabel">Danh sách khách hàng</h5>
+                            <h5 class="modal-title" id="exampleModalLabel2">Danh sách khách hàng</h5>
                         </div>
 
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -969,7 +960,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                <h5 class="modal-title" id="exampleModalLabel3">Ready to Leave?</h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
@@ -1007,8 +998,8 @@
         button.addEventListener('click', function() {
             const form = this.closest('.delete-form');
             Swal.fire({
-                title: 'Bạn có muốn xóa không??',
-                text: "Bạn sẽ không thể khôi phục lại dữ liệu này!",
+                title: 'Bạn có muốn hủy không??',
+                text: "Dữ liệu này sẽ được lưu trữ lại để đối chiếu!",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -1135,116 +1126,13 @@
 
         return true; // Cho phép thêm sản phẩm vào giỏ hàng nếu đã chọn hóa đơn
     }
-    //---------------------------------------------------//
 
-    <%--const loadDsHDCT = () => {--%>
-    <%--    // get api + scpt.id--%>
-    <%--    let datatest = "data testing";--%>
-    <%--    fetch("/ban_hang_tai_quay/api/lst-hdct/${idHD}", {--%>
-    <%--        headers: {--%>
-    <%--            'Accept': 'application/json',--%>
-    <%--            'Content-Type': 'application/json'--%>
-    <%--        }--%>
-    <%--    }).then(response => response.json())--%>
-    <%--        .then(resp => {--%>
-    <%--            let html = '';--%>
-    <%--            resp.map((hdct,i)=>{--%>
-    <%--                const text = "html${hdct.id}";--%>
-    <%--                const id = hdct.id || 'N/A';--%>
-    <%--                const maSanPham = hdct.idCTSP && hdct.idCTSP.idSanPham ? hdct.idCTSP.idSanPham.ma : 'N/A';--%>
-    <%--                const tenSanPham = hdct.idCTSP && hdct.idCTSP.idSanPham ? hdct.idCTSP.idSanPham.ten : 'N/A';--%>
-    <%--                const soLuong = hdct ? hdct.soLuong : 'N/A';--%>
-    <%--                const giaBan = hdct.idCTSP ? hdct.idCTSP.giaBan : 'N/A';--%>
-    <%--                const thanhTien = soLuong*giaBan;--%>
-    <%--                const maHD = hdct.idHoaDon ? hdct.idHoaDon.ma : 'N/A';--%>
-    <%--                const idCTSP = hdct.idCTSP ? hdct.idCTSP.id : 'N/A';--%>
-    <%--                const idHoaDon = hdct.idHoaDon ? hdct.idHoaDon.id : 'N/A';--%>
-    <%--                html +=  '<tr>' +--%>
-    <%--                    '<td>' + (i + 1) + '</td>' +--%>
-    <%--                    '<td>' + maHD + '</td>'+--%>
-    <%--                    '<td>' + maSanPham + '</td>' +--%>
-    <%--                    '<td>' + tenSanPham + '</td>' +--%>
-    <%--                    '<td colspan="2" style="display: flex; align-items: center;">' +--%>
-    <%--                    '<form class="d-flex" method="post" action="/ban-hang-tai-quay/update-sl/' + (idCTSP) + '">' +--%>
-    <%--                    '<input type="hidden" name="idHoaDon" value="' + idHoaDon + '">' +--%>
-    <%--                    '<input class="form-control me-2" type="text" name="soLuong" value="' + (soLuong) + '" style="width: 45px">' +--%>
-    <%--                    '<button class="btn btn-light" type="submit">' +--%>
-    <%--                    '<i class="bi bi-pencil"></i>' +--%>
-    <%--                    '</button>' +--%>
-    <%--                    '</form>' +--%>
-    <%--                    '</td>' +--%>
-    <%--                    '<td>' + giaBan + '</td>' +--%>
-    <%--                    '<td>' + thanhTien + '</td>' +--%>
-    <%--                    '<td>' +--%>
-    <%--                    '<form action="/ban-hang-tai-quay/delete-hdct/' + id + '" method="post">' +--%>
-    <%--                    '<input type="hidden" name="idHoaDon" value="' + idHoaDon + '">' +--%>
-    <%--                    '<button class="btn btn-danger" type="submit">Delete</button>' +--%>
-    <%--                    '</form>' +--%>
-    <%--                    '</td>' +//editing--%>
-    <%--                    '</tr>';--%>
-    <%--            });--%>
-    <%--            $("#tbl_hd_cho").html(html)--%>
-    <%--        });--%>
-    <%--}--%>
-    <%--loadDsHDCT();--%>
-
-    <%--var loadDsCTSP = () => {--%>
-    <%--    let datatest = "data testing";--%>
-    <%--    fetch("/ban_hang_tai_quay/api/lst-spct", {--%>
-    <%--        headers: {--%>
-    <%--            'Accept': 'application/json',--%>
-    <%--            'Content-Type': 'application/json'--%>
-    <%--        }--%>
-    <%--    }).then(response => response.json())--%>
-    <%--        .then(resp => {--%>
-    <%--            let html = '';--%>
-    <%--            resp.map((spct,i)=>{--%>
-    <%--                const maSanPham = spct.idSanPham && spct.idSanPham.ma || 'N/A';--%>
-    <%--                const tenSanPham = spct.idSanPham && spct.idSanPham.ten || 'N/A';--%>
-    <%--                const tenMauSac = spct.idMauSac && spct.idMauSac.ten || 'N/A';--%>
-    <%--                const tenKichThuoc = spct.idKichThuoc && spct.idKichThuoc.ten || 'N/A';--%>
-    <%--                const tenChatLieu = spct.idChatLieu && spct.idChatLieu.ten || 'N/A';--%>
-    <%--                const tenKieuTay = spct.idKieuTay && spct.idKieuTay.ten || 'N/A';--%>
-    <%--                const soLuong = spct.soLuong || 'N/A';--%>
-    <%--                const giaBan = spct.giaBan || 'N/A';--%>
-    <%--                const trangThai = spct.trangThai == 1 ? "Còn hàng" : "Hết hàng";--%>
-    <%--                html += '<tr>' +--%>
-    <%--                    '<td>' + (i + 1) + '</td>' +--%>
-    <%--                    '<td>' + maSanPham + '</td>' +--%>
-    <%--                    '<td>' + tenSanPham + '</td>' +--%>
-    <%--                    '<td>' + tenMauSac + '</td>' +--%>
-    <%--                    '<td>' + tenKichThuoc + '</td>' +--%>
-    <%--                    '<td>' + tenChatLieu + '</td>' +--%>
-    <%--                    '<td>' + tenKieuTay + '</td>' +--%>
-    <%--                    '<td>' + soLuong + '</td>' +--%>
-    <%--                    '<td>' + giaBan + '</td>' +--%>
-    <%--                    '<td>' + trangThai + '</td>' +--%>
-    <%--                    // '<td><button id="add_sp_gio_hang_' + spct.id + '" class="btn btn-success">+</button></td>' +--%>
-    <%--                    '<td>' +--%>
-    <%--                    '<form action="/ban_hang_tai_quay/add-san-pham/' + spct.id  + '" method="post">' +--%>
-    <%--                    '<input type="hidden" name="idHoaDon" value="${hoaDon.id}">' +--%>
-    <%--                    '<button class="btn btn-success" type="submit">+</button>' +--%>
-    <%--                    '</form>' +--%>
-    <%--                    '</td>' +//editing--%>
-    <%--                    '</tr>';--%>
-    <%--            });--%>
-    <%--            $("#tbl_ds_spct").html(html)--%>
-    <%--        });--%>
-    <%--}--%>
-    <%--loadDsCTSP();--%>
-
-
-
-
-    // ---  Ajax xóa hóa đơn
-    // Lấy tất cả các nút xóa trong bảng
     const deleteButtons = document.querySelectorAll('.delete-button');
-
+    const checkBtn = document.querySelectorAll('#checkBtn');
     // Thêm sự kiện click cho từng nút
     deleteButtons.forEach(button => {
         button.addEventListener('click', function () {
-            const itemId = this.getAttribute('data-id');
-
+            const idhd = this.getAttribute('idhd');
             Swal.fire({
                 title: 'Bạn có muốn xóa không?',
                 text: "Bạn sẽ không thể khôi phục lại dữ liệu này!",
@@ -1258,7 +1146,7 @@
                 if (result.isConfirmed) {
                     // Thực hiện hành động xóa ở đây, ví dụ:
                     // Gửi yêu cầu AJAX tới server để xóa dữ liệu
-                    fetch(`/ban-hang-tai-quay/delete-hoa-don/`+itemId, { method: 'GET' }).then(() => {
+                    fetch(`/ban-hang-tai-quay/delete-hoa-don/`+idhd, { method: 'GET' }).then(() => {
                         Swal.fire(
                             'Đã xóa!',
                             'Dữ liệu của bạn đã bị xóa.',
@@ -1272,136 +1160,42 @@
             });
         });
     });
-    // Kết thúc xóa hóa đơn
-
-
-    <%--// ---  Ajax xóa hóa đơn chi tiết--%>
-    <%--// Lấy tất cả các nút xóa trong bảng--%>
-    <%--const deleteButtonHDCT = document.querySelectorAll('.deleteHDCT-button');--%>
-
-    <%--// Thêm sự kiện click cho từng nút--%>
-    <%--deleteButtonHDCT.forEach(button => {--%>
-    <%--    button.addEventListener('click', function () {--%>
-    <%--        const idHDCT = this.getAttribute('data-idHDCT');--%>
-    <%--        const idCTSP = this.getAttribute('data-idCTSP');--%>
-
-    <%--        Swal.fire({--%>
-    <%--            title: 'Bạn có muốn xóa không?',--%>
-    <%--            text: "Bạn sẽ không thể khôi phục lại dữ liệu này!",--%>
-    <%--            icon: 'warning',--%>
-    <%--            showCancelButton: true,--%>
-    <%--            confirmButtonColor: '#3085d6',--%>
-    <%--            cancelButtonColor: '#d33',--%>
-    <%--            confirmButtonText: 'Vâng, xóa nó!',--%>
-    <%--            cancelButtonText: 'Hủy'--%>
-    <%--        }).then((result) => {--%>
-    <%--            if (result.isConfirmed) {--%>
-    <%--                // Thực hiện hành động xóa ở đây, ví dụ:--%>
-    <%--                // Gửi yêu cầu AJAX tới server để xóa dữ liệu--%>
-    <%--                fetch(`/ban_hang_tai_quay/delete-hdct/`+idHDCT+`/`+idCTSP, { method: 'POST' }).then(() => {--%>
-    <%--                    loadDsCTSP();--%>
-    <%--                    Swal.fire(--%>
-    <%--                        'Đã xóa!',--%>
-    <%--                        'Dữ liệu của bạn đã bị xóa.',--%>
-    <%--                        'success'--%>
-    <%--                    );--%>
-    <%--                    // Xóa hàng khỏi bảng sau khi xóa thành công--%>
-    <%--                    button.closest('tr').remove();--%>
-    <%--                    loadDsCTSP();--%>
-    <%--                });--%>
-    <%--                button.closest('tr').remove();--%>
-    <%--            }--%>
-    <%--        });--%>
-    <%--    });--%>
-    <%--});--%>
-    <%--// Kết thúc xóa hóa đơn chi tiết--%>
-
-
-    <%--// Start--%>
-
-    <%--// Lấy tất cả các nút cập nhật trong bảng--%>
-    <%--const updateButtons = document.querySelectorAll('.update-button');--%>
-
-    <%--// Thêm sự kiện click cho từng nút--%>
-    <%--updateButtons.forEach(button => {--%>
-    <%--    button.addEventListener('click', function () {--%>
-    <%--        const itemId = this.getAttribute('data-id');--%>
-    <%--        const itemSL = parseInt(this.getAttribute('data-sl'));--%>
-    <%--        const donGia = this.getAttribute('data-donGia');--%>
-    <%--        const tongSL = parseInt(this.getAttribute('data-tongSL'));--%>
-    <%--        var tong2 = itemSL+tongSL;--%>
-
-    <%--        console.log("số lượng: "+tong2);--%>
-    <%--        console.log("số lượng: "+itemId);--%>
-
-    <%--        Swal.fire({--%>
-    <%--            title: 'Cập nhật số lượng',--%>
-    <%--            html: `--%>
-    <%--      <form id="update-form">--%>
-    <%--        <label for="name">Số lượng mới:</label>--%>
-    <%--        <input type="text" id="soLuong" name="quantity" value="${itemSL}" class="swal2-input">--%>
-    <%--      </form>--%>
-    <%--    `,--%>
-    <%--            showCancelButton: true,--%>
-    <%--            confirmButtonText: 'Cập nhật',--%>
-    <%--            cancelButtonText: 'Hủy',--%>
-    <%--            preConfirm: () => {--%>
-    <%--                const quantity = document.getElementById('soLuong').value;--%>
-    <%--                if (!quantity || quantity <= 0) {--%>
-    <%--                    Swal.showValidationMessage('Bạn cần nhập số lượng hợp lệ!');--%>
-    <%--                }--%>
-
-    <%--                if (quantity>tong2){--%>
-    <%--                    Swal.showValidationMessage('Số lượng bạn nhập lớn hơn số lượng trong kho!');--%>
-    <%--                }--%>
-
-    <%--                return { quantity: quantity };--%>
-    <%--            }--%>
-    <%--        }).then((result) => {--%>
-    <%--            if (result.isConfirmed) {--%>
-    <%--                const newQuantity = result.value.quantity;--%>
-
-
-    <%--                // Thực hiện hành động cập nhật ở đây, ví dụ:--%>
-    <%--                // Gửi yêu cầu AJAX tới server để cập nhật dữ liệu--%>
-    <%--                fetch(`/ban_hang_tai_quay/api-update-sl/`+itemId, {--%>
-    <%--                    method: 'POST',--%>
-    <%--                    headers: {--%>
-    <%--                        'Content-Type': 'application/json'--%>
-    <%--                    },--%>
-
-
-    <%--                    body: JSON.stringify({ quantity: newQuantity })--%>
-
-    <%--                }).then(() => {--%>
-
-    <%--                    loadDsCTSP();--%>
-    <%--                    Swal.fire(--%>
-    <%--                        'Cập nhật thành công!',--%>
-    <%--                        'Dữ liệu của bạn đã được cập nhật.',--%>
-    <%--                        'success'--%>
-    <%--                    );--%>
-    <%--                    // Cập nhật tên trong bảng--%>
-    <%--                    button.closest('tr').querySelector('td:nth-child(5)').textContent = newQuantity;--%>
-    <%--                    button.closest('tr').querySelector('td:nth-child(7)').textContent = donGia*newQuantity;--%>
-    <%--                    loadDsCTSP();--%>
-
-
-
-    <%--                })--%>
-
-    <%--                button.closest('tr').querySelector('td:nth-child(5)').textContent = newQuantity;--%>
-    <%--                // loadDsCTSP();--%>
-    <%--            }--%>
-    <%--        });--%>
-
-    <%--    });--%>
-    <%--});--%>
-    //End update số lượng của hóa đơn chi tiết
-
-
-
-
+    checkBtn.forEach(button => {
+        button.addEventListener('click', function () {
+            console.log("test check btn");
+            var idHD = document.getElementsByName("idHD")[0].value;
+            var idKH  = document.getElementsByName("idKH")[0].value;
+            var idKhuyenMai = document.getElementsByName("idKhuyenMai")[0].value;
+            var tongTien = document.getElementsByName("tongTien")[0].value;
+            console.log("====================== id hd:",idHD);
+            console.log("====================== id kh:",idKH);
+            console.log("====================== id khuyen mai:",idKhuyenMai);
+            console.log("====================== tong tien:",tongTien);
+            Swal.fire({
+                title: 'Xác nhận thanh toán?',
+                text: "Dữ liệu sẽ được lưu lại!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Vâng,Thanh toán!',
+                cancelButtonText: 'Hủy'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch(`/ban-hang-tai-quay/thanh-toan/`+idHD+'?idKhuyenMai='+idKhuyenMai+'&idKH='+idKH+'&tongTien='+tongTien,
+                        { method: 'POST' }).then(() => {
+                        Swal.fire(
+                            'Đã xóa!',
+                            'Dữ liệu của bạn đã bị xóa.',
+                            'success'
+                        );
+                        button.closest('tr').remove();
+                    });
+                    button.closest('tr').remove();
+                }
+            });
+        });
+    });
 </script>
 <script>
     // Hiển thị thông báo thêm thành công hoặc thất bại sử dụng thư viện Sweet Alert2

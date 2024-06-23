@@ -398,19 +398,15 @@ public class BanTaiQuayController {
     }
     @PostMapping("/thanh-toan/{idHoaDon}")
     public String thanhToanSanPham(@PathVariable("idHoaDon") HoaDon newHoaDon,
-                                   @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date ngayTao,
                                    @RequestParam String idKhuyenMai,
                                    @RequestParam String idKH,
                                    @RequestParam BigDecimal tongTien) {
-        LocalDateTime ngayTaoLocalDateTime = ngayTao.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+        LocalDateTime now =LocalDateTime.now();
         System.out.println("=================id hoa don: "+idHoaDon);
-        System.out.println("=================ngay tao:"+ ngayTao);
         System.out.println("=================khuyen mai:"+ idKhuyenMai);
         System.out.println("=================id kh: "+ idKH);
         System.out.println("=================tong tien: "+ tongTien);
         System.out.println("===================true false:"+ idKhuyenMai.equals(""));
-
-
         newHoaDon.setIdNhanVien(nhanVienRepo.findById(idNV).get());
         newHoaDon.setPhuongThucThanhToan(2);
         if(idKhuyenMai.equals("")){
@@ -426,7 +422,7 @@ public class BanTaiQuayController {
         else{
             newHoaDon.setIdKhachHang(khachHangRepository.findById(idKH).get());
         }
-        newHoaDon.setNgayThanhToan(ngayTaoLocalDateTime);
+        newHoaDon.setNgayThanhToan(now);
         newHoaDon.setTongTien(tongTien);
         newHoaDon.setLoaiHoaDon(2);
         newHoaDon.setTrangThai(1);
