@@ -586,7 +586,7 @@
                                 <td>
                                     <span class="badge rounded-pill bg-primary">${hoaDonDTO.phuongThucThanhToan == 0 ? "Tiền mặt" :"Chuyển khoản"}</span>
                                 </td>
-                                <td>${hoaDonDTO.nhanVien.hoTen}</td>
+                                <td>${hoaDonDTO.nhanVienViet.hoTen}</td>
                                 <td></td>
 
                             </tr>
@@ -641,7 +641,7 @@
                                                         class="fw-normal">${diaChiKhachHang.diaChiChiTiet}</span></p>
                                                 <p class="fw-bold mb-1 pb-3 small">Ghi chú: </p>
                                                 <p class="fw-bold mb-1 small">Người tạo: <span
-                                                        class="fw-normal">${hoaDonDTO.nhanVien.hoTen}</span></p>
+                                                        class="fw-normal">${hoaDonDTO.nhanVienViet.hoTen}</span></p>
 
                                             </div>
                                         </div>
