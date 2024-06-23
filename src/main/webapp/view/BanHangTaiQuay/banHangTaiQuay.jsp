@@ -1188,7 +1188,10 @@
                             'Đã xóa!',
                             'Dữ liệu của bạn đã bị xóa.',
                             'success'
-                        );
+                        ).then(() => {
+                            // Redirect to the initial page or perform any necessary actions
+                            window.location.href = '/ban-hang-tai-quay'; // Replace with your actual initial page URL
+                        });
                         button.closest('tr').remove();
                     });
                     button.closest('tr').remove();
