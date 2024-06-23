@@ -427,17 +427,18 @@
             </div>
         </div>
         <!-- Test modal -->
+        <!--Danh sách địa chỉ-->
         <button type="button" class="btn btn-primary mb-3" data-toggle="modal"
-                data-target="#addAddressModal1">
-            Thêm địa chỉ
+                data-target="#addAddressModal">
+            Chọn địa chỉ
         </button>
-        <div class="modal fade" id="addAddressModal1" tabindex="-1" role="dialog"
+        <div class="modal fade" id="addAddressModal" tabindex="-1" role="dialog"
              aria-labelledby="addAddressModalLabel"
              aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="addAddressModalLabel">Thêm địa chỉ mới</h5>
+                        <h5 class="modal-title" id="addAddressModalLabel1">Địa chỉ của tôi</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -496,14 +497,196 @@
                                         <option value="0">Chọn phường xã</option>
                                     </select>
                                     <span id="phuongXaError" class="text-danger"></span>
+                        <c:forEach var="i" items="${listDiaChi}">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-9 form-check">
+                                        <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                               id="flexRadioDefault1"
+                                               <c:if test="${i.trangThai == 1}">checked</c:if>>
+                                        <label>
+                                            <b>${i.tenNguoiNhan}</b> | ${i.sdtNguoiNhan}
+                                        </label>
+                                        <label>${i.diaChiChiTiet}, ${i.idPhuongXa}, ${i.idQuanHuyen}, ${i.idTinhThanh}</label>
+                                        <c:if test="${i.trangThai == 1}">
+                                            <label style="color: red">Mặc định</label>
+                                        </c:if>
+                                    </div>
+                                    <div class="col-3">
+                                        <a style="color: #147bff" data-toggle="modal"
+                                                data-target="#addAddressModal2">
+                                            Cập nhật
+                                        </a>
+                                        <div class="modal fade" id="addAddressModal2" tabindex="-1" role="dialog"
+                                             aria-labelledby="addAddressModalLabel"
+                                             aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="addAddressModalLabel2">Cập nhật địa chỉ</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form action="/cua-hang/sua-dia-chi" method="post">
+                                                            <div class="row px-xl-5">
+                                                                <div class="col-md-6 form-group">
+                                                                    <label><b>Họ tên</b></label>
+                                                                    <input class="form-control" type="text" name="tenNguoiNhan"
+                                                                           id="tenNguoiNhan2"
+                                                                           style="background-color: #f1f1f1; border: 2px solid #e4e4e4;"
+                                                                           placeholder="Họ tên">
+                                                                    <span id="tenNguoiNhan2Error" class="text-danger"></span>
+                                                                </div>
+                                                                <div class="col-md-6 form-group">
+                                                                    <label><b>Số điện thoại</b></label>
+                                                                    <input class="form-control" type="number" name="sdtNguoiNhan"
+                                                                           id="sdtNguoiNhan2"
+                                                                           style="background-color: #f1f1f1; border: 2px solid #e4e4e4;"
+                                                                           placeholder="Số điện thoại">
+                                                                    <span id="sdtNguoiNhan2Error" class="text-danger"></span>
+                                                                </div>
+                                                                <div class="col-md-12 form-group">
+                                                                    <label><b>Địa chỉ</b></label>
+                                                                    <input class="form-control" type="text" name="diaChiChiTiet"
+                                                                           id="diaChiChiTiet2"
+                                                                           style="background-color: #f1f1f1; border: 2px solid #e4e4e4;"
+                                                                           placeholder="Địa chỉ">
+                                                                    <span id="diaChiChiTiet2Error" class="text-danger"></span>
+                                                                </div>
+                                                                <div class="col-md-4 form-group">
+                                                                    <label><b>Tỉnh/Thành phố</b></label>
+                                                                    <select class="custom-select"
+<%--                                                                            id="tinhThanh" name="tinhThanh"--%>
+                                                                            title="Chọn Tỉnh Thành"
+                                                                            style="background-color: #f1f1f1; border: 1px solid #e4e4e4;">
+                                                                        <option value="0">Chọn tỉnh thành</option>
+                                                                    </select>
+<%--                                                                    <span id="tinhThanhError" class="text-danger"></span>--%>
+                                                                </div>
+                                                                <div class="col-md-4 form-group">
+                                                                    <label><b>Quận/Huyện</b></label>
+                                                                    <select class="custom-select"
+<%--                                                                            id="quanHuyen" name="quanHuyen"--%>
+                                                                            title="Chọn Quận Huyện"
+                                                                            style="background-color: #f1f1f1; border: 1px solid #e4e4e4;">
+                                                                        <option value="0">Chọn quận huyện</option>
+                                                                    </select>
+<%--                                                                    <span id="quanHuyenError" class="text-danger"></span>--%>
+                                                                </div>
+                                                                <div class="col-md-4 form-group">
+                                                                    <label><b>Phường/Xã</b></label>
+                                                                    <select class="custom-select"
+<%--                                                                            id="phuongXa" name="phuongXa"--%>
+                                                                            title="Chọn Phường Xã"
+                                                                            style="background-color: #f1f1f1; border: 1px solid #e4e4e4;">
+                                                                        <option value="0">Chọn phường xã</option>
+                                                                    </select>
+<%--                                                                    <span id="phuongXaError" class="text-danger"></span>--%>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Quay lại</button>
+                                                        <button type="button" class=" btn btn-primary">Thêm</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <a style="color: #ff3818" href="/cua-hang/xoa-dia-chi/${i.id}">Xóa</a>
+                                    </div>
                                 </div>
                             </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                            <%--                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>--%>
-                            <%--                        <button type="button" id="submitForm" class=" btn btn-primary">Thêm--%>
+                        </c:forEach>
+                        <%--Thêm địa chỉ--%>
+                        <button type="button" class="btn btn-primary mb-3" data-toggle="modal"
+                                data-target="#addAddressModal1">
+                            + Thêm địa chỉ
                         </button>
+                        <div class="modal fade" id="addAddressModal1" tabindex="-1" role="dialog"
+                             aria-labelledby="addAddressModalLabel"
+                             aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="addAddressModalLabel">Thêm địa chỉ mới</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="/cua-hang/them-dia-chi" method="post" id="themDiaChi">
+                                            <div class="row px-xl-5">
+                                                <div class="col-md-6 form-group">
+                                                    <label><b>Họ tên</b></label>
+                                                    <input class="form-control" type="text" name="tenNguoiNhan"
+                                                           id="tenNguoiNhan1"
+                                                           style="background-color: #f1f1f1; border: 2px solid #e4e4e4;"
+                                                           placeholder="Họ tên">
+                                                    <span id="tenNguoiNhan1Error" class="text-danger"></span>
+                                                </div>
+                                                <div class="col-md-6 form-group">
+                                                    <label><b>Số điện thoại</b></label>
+                                                    <input class="form-control" type="number" name="sdtNguoiNhan"
+                                                           id="sdtNguoiNhan1"
+                                                           style="background-color: #f1f1f1; border: 2px solid #e4e4e4;"
+                                                           placeholder="Số điện thoại">
+                                                    <span id="sdtNguoiNhan1Error" class="text-danger"></span>
+                                                </div>
+                                                <div class="col-md-12 form-group">
+                                                    <label><b>Địa chỉ</b></label>
+                                                    <input class="form-control" type="text" name="diaChiChiTiet"
+                                                           id="diaChiChiTiet1"
+                                                           style="background-color: #f1f1f1; border: 2px solid #e4e4e4;"
+                                                           placeholder="Địa chỉ">
+                                                    <span id="diaChiChiTiet1Error" class="text-danger"></span>
+                                                </div>
+                                                <div class="col-md-4 form-group">
+                                                    <label><b>Tỉnh/Thành phố</b></label>
+                                                    <select class="custom-select"
+                                                            id="tinhThanh" name="tinhThanh"
+                                                            title="Chọn Tỉnh Thành"
+                                                            style="background-color: #f1f1f1; border: 1px solid #e4e4e4;">
+                                                        <option value="0">Chọn tỉnh thành</option>
+                                                    </select>
+                                                    <span id="tinhThanhError" class="text-danger"></span>
+                                                </div>
+                                                <div class="col-md-4 form-group">
+                                                    <label><b>Quận/Huyện</b></label>
+                                                    <select class="custom-select"
+                                                            id="quanHuyen" name="quanHuyen"
+                                                            title="Chọn Quận Huyện"
+                                                            style="background-color: #f1f1f1; border: 1px solid #e4e4e4;">
+                                                        <option value="0">Chọn quận huyện</option>
+                                                    </select>
+                                                    <span id="quanHuyenError" class="text-danger"></span>
+                                                </div>
+                                                <div class="col-md-4 form-group">
+                                                    <label><b>Phường/Xã</b></label>
+                                                    <select class="custom-select"
+                                                            id="phuongXa" name="phuongXa"
+                                                            title="Chọn Phường Xã"
+                                                            style="background-color: #f1f1f1; border: 1px solid #e4e4e4;">
+                                                        <option value="0">Chọn phường xã</option>
+                                                    </select>
+                                                    <span id="phuongXaError" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Quay lại</button>
+                                        <button type="button" id="submitForm" class=" btn btn-primary">Thêm</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                            <button type="button" id="submitForm1" class=" btn btn-primary">Xác nhận</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -520,7 +703,7 @@
                             <div class="col-md-6 form-group">
                                 <label><b>Họ tên</b></label>
                                 <input class="form-control" type="text" name="tenNguoiNhan" id="tenNguoiNhan"
-                                       value="${response.hoTen}"
+                                       value="${diaChi.tenNguoiNhan}"
                                        style="background-color: #f1f1f1; border: 2px solid #e4e4e4;"
                                        placeholder="Họ tên">
                                 <span id="tenNguoiNhanError" class="text-danger"></span>
@@ -528,7 +711,7 @@
                             <div class="col-md-6 form-group">
                                 <label><b>Số điện thoại</b></label>
                                 <input class="form-control" type="number" name="sdtNguoiNhan" id="sdtNguoiNhan"
-                                       value="${response.sdt}"
+                                       value="${diaChi.sdtNguoiNhan}"
                                        style="background-color: #f1f1f1; border: 2px solid #e4e4e4;"
                                        placeholder="Số điện thoại">
                                 <span id="sdtNguoiNhanError" class="text-danger"></span>
@@ -536,7 +719,7 @@
                             <div class="col-md-12 form-group">
                                 <label><b>Địa chỉ</b></label>
                                 <input class="form-control" type="text" name="diaChiChiTiet" id="diaChiChiTiet"
-                                       value="${response.diaChiChiTiet}"
+                                       value="${diaChi.diaChiChiTiet}"
                                        style="background-color: #f1f1f1; border: 2px solid #e4e4e4;"
                                        placeholder="Địa chỉ">
                                 <span id="diaChiChiTietError" class="text-danger"></span>
@@ -545,7 +728,7 @@
                                 <label><b>Tỉnh/Thành phố</b></label>
                                 <select class="custom-select" id="tinh" name="tinh" title="Chọn Tỉnh Thành"
                                         style="background-color: #f1f1f1; border: 1px solid #e4e4e4;">
-                                    <option value="${response.idTinhThanh}">${response.idTinhThanh}</option>
+                                    <option value="${diaChi.idTinhThanh}">${diaChi.idTinhThanh}</option>
                                 </select>
                                 <span id="tinhError" class="text-danger"></span>
                             </div>
@@ -553,7 +736,7 @@
                                 <label><b>Quận/Huyện</b></label>
                                 <select class="custom-select" id="quan" name="quan" title="Chọn Quận Huyện"
                                         style="background-color: #f1f1f1; border: 1px solid #e4e4e4;">
-                                    <option value="${response.idQuanHuyen}">${response.idQuanHuyen}</option>
+                                    <option value="${diaChi.idQuanHuyen}">${diaChi.idQuanHuyen}</option>
                                 </select>
                                 <span id="quanError" class="text-danger"></span>
                             </div>
@@ -561,7 +744,7 @@
                                 <label><b>Phường/Xã</b></label>
                                 <select class="custom-select" id="phuong" name="phuong" title="Chọn Phường Xã"
                                         style="background-color: #f1f1f1; border: 1px solid #e4e4e4;">
-                                    <option value="${response.idPhuongXa}">${response.idPhuongXa}</option>
+                                    <option value="${diaChi.idPhuongXa}">${diaChi.idPhuongXa}</option>
                                 </select>
                                 <span id="phuongError" class="text-danger"></span>
                             </div>
@@ -1106,41 +1289,63 @@
                 $("#diaChiForm")[0].submit();
             }
         });
+    });
+
+
+    $(document).ready(function () {
+        var token = '4787bafa-2157-11ef-a90d-aaf29aa34580';
+
+        // Function to get JSON with token
+        function getJSONWithToken(url, callback) {
+            $.ajax({
+                url: url,
+                headers: {
+                    'Token': token
+                },
+                success: callback,
+                error: function (xhr, status, error) {
+                    console.error("Lỗi: " + error);
+                }
+            });
+        }
+
+        //Lấy tỉnh thành
+        getJSONWithToken('https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/province', function (data_tinh) {
+            // Sắp xếp theo ProvinceID tăng dần
+            data_tinh.data.sort(function (a, b) {
+                return a.ProvinceID - b.ProvinceID;
+            });
+
+            $.each(data_tinh.data, function (key_tinh, val_tinh) {
+                $("#tinhThanh").append('<option value="' + val_tinh.ProvinceID + '" name="' + val_tinh.ProvinceName + '">' + val_tinh.ProvinceName + '</option>');
+            });
+
+            $("#tinhThanh").change(function (e) {
+                var idtinh = $(this).val();
+
+                // Lấy quận huyện
+                getJSONWithToken('https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/district?province_id=' + idtinh, function (data_quan) {
+                    $("#quanHuyen").html('<option value="0">Quận Huyện</option>');
+                    $("#phuongXa").html('<option value="0">Phường Xã</option>');
+                    $.each(data_quan.data, function (key_quan, val_quan) {
+                        $("#quanHuyen").append('<option value="' + val_quan.DistrictID + '">' + val_quan.DistrictName + '</option>');
+                    });
+
+                    // Lấy phường xã
+                    $("#quanHuyen").change(function (e) {
+                        var idquan = $(this).val();
+                        getJSONWithToken('https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id=' + idquan, function (data_phuong) {
+                            $("#phuongXa").html('<option value="0">Phường Xã</option>');
+                            $.each(data_phuong.data, function (key_phuong, val_phuong) {
+                                $("#phuongXa").append('<option value="' + val_phuong.WardCode + '">' + val_phuong.WardName + '</option>');
+                            });
+                        });
+                    });
+                });
+            });
+        });
 
         $("#submitForm").click(function () {
-
-            // Xóa các thông báo lỗi trước đó
-            $(".text-danger").text("");
-
-            var isValid = true;
-
-            // Kiểm tra định dạng số điện thoại
-            var phonePattern = /^(03|05|07|08|09)+([0-9]{8})$/; // Định dạng số điện thoại 10 số bắt đầu 03, 05, 07, 08, 09.
-
-            // Kiểm tra các trường bắt buộc
-            if (!$("#tenNguoiNhan1").val()) {
-                isValid = false;
-                $("#tenNguoiNhan1Error").text("Vui lòng nhập họ tên");
-            } else if (!$("#sdtNguoiNhan1").val()) {
-                isValid = false;
-                $("#sdtNguoiNhan1Error").text("Vui lòng nhập số điện thoại");
-            } else if (!phonePattern.test($("#sdtNguoiNhan").val())) {
-                isValid = false;
-                $("#sdtNguoiNhan1Error").text("Số điện thoại không hợp lệ. Vui lòng nhập lại");
-            } else if (!$("#diaChiChiTiet1").val()) {
-                isValid = false;
-                $("#diaChiChiTiet1Error").text("Vui lòng nhập địa chỉ");
-            } else if ($("#tinhThanh").val() === "0") {
-                isValid = false;
-                $("#tinhThanhError").text("Vui lòng chọn tỉnh/thành phố");
-            } else if ($("#quanHuyen").val() === "0") {
-                isValid = false;
-                $("#quanHuyenError").text("Vui lòng chọn quận/huyện");
-            } else if ($("#phuongXa").val() === "0") {
-                isValid = false;
-                $("#phuongXaError").text("Vui lòng chọn phường/xã");
-            }
-
             // Xóa các thông báo lỗi trước đó
             $(".text-danger").text("");
 
@@ -1163,7 +1368,7 @@
                 $("#diaChiChiTiet1Error").text("Địa chỉ không được để trống.");
                 isValid = false;
             }
-
+//check
             // Kiểm tra Tỉnh/Thành phố
             if ($("#tinhThanh").val() === "0") {
                 $("#tinhThanhError").text("Vui lòng chọn Tỉnh/Thành phố.");
@@ -1183,9 +1388,9 @@
             }
 
             if (isValid) {
-                var tenTinhThanh = $("#tinh option:selected").text();
-                var tenQuanHuyen = $("#quan option:selected").text();
-                var tenPhuongXa = $("#phuong option:selected").text();
+                var tenTinhThanh = $("#tinhThanh option:selected").text();
+                var tenQuanHuyen = $("#quanHuyen option:selected").text();
+                var tenPhuongXa = $("#phuongXa option:selected").text();
 
                 $("<input>").attr({
                     type: "hidden",
@@ -1209,6 +1414,7 @@
             }
         });
     });
+
 </script>
 </body>
 
