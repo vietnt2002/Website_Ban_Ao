@@ -423,7 +423,7 @@
                                                 <%--                                            </a>--%>
 
                                             <button class="delete-button btn btn-danger" data-id="${hoaDon.id}">
-                                                <i class="bi bi-trash"></i>
+                                                <i class="bi bi-x-circle-fill"></i>
                                             </button>
 
                                         </td>
@@ -482,8 +482,9 @@
                                         <td style="display: flex; align-items: center;">
                                             <form class="d-flex" method="post" action="/ban-hang-tai-quay/update-sl/${hdct.idCTSP.id}" onsubmit="return checkValidateAfterUpdate();">
                                                 <input type="hidden" name="idHoaDon" value="${hoaDon.id}">
-                                                <input type="hidden" name="tongSL" value="${hdct.idCTSP.soLuong}">
-                                                <input id="soLuong" data-soLuong="${hdct.soLuong}" class="form-control me-2" type="text" name="soLuong" value="${hdct.soLuong}" style="width: 45px">
+                                                <input type="hidden" id="tongSL" value="${hdct.idCTSP.soLuong}">
+                                                <input type="hidden" id="soLuongCu" value="${hdct.soLuong}">
+                                                <input id="soLuong" class="form-control me-2" type="text" name="soLuong" value="${hdct.soLuong}" style="width: 45px">
                                                 <button class="btn btn-light" type="submit">
                                                     <i class="bi bi-pencil"></i>
                                                 </button>
@@ -528,16 +529,8 @@
                                         <div class="row mb-3">
                                             <label class="col-sm-4 col-form-label">Tên khách hàng</label>
                                             <div class="col-sm-5">
-
-                                                <c:if test="${hoaDon.idKhachHang.id==null}">
-
-                                                    <input type="text" class="form-control"  value="Khách lẻ" readonly>
-                                                </c:if>
-
-                                                <c:if test="${hoaDon.idKhachHang.id!=null}">
                                                     <input type="text" class="form-control"  value="${hoaDon.idKhachHang.hoTen}" readonly>
-                                                </c:if>
-
+                                                    <input type="hidden" class="form-control" name="idKH"  value="${hoaDon.idKhachHang.id}" readonly>
                                             </div>
 
                                             <%--   Modal thêm nhanh khách hàng--%>
@@ -555,6 +548,8 @@
                                         <div class="row mb-3">
                                             <label class="col-sm-4 col-form-label">Mã giảm giá</label>
                                             <div class="col-sm-5">
+                                                <input type="hidden" class="form-control" name="idKhuyenMai"
+                                                       value="${hoaDon.idKhuyenMai.id}" readonly>
                                                 <input type="text" class="form-control"
                                                        value="${hoaDon.idKhuyenMai.ma}" readonly>
                                             </div>
@@ -566,11 +561,20 @@
                                         </div>
 
                                         <div class="row mb-3">
+                                            <label class="col-sm-4 col-form-label">Số tiền giảm</label>
+                                            <div class="col-sm-5">
+                                                <p>${hoaDon.idKhuyenMai.soTienGiam}</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-3">
                                             <label class="col-sm-4 col-form-label">Tổng tiền</label>
                                             <div class="col-sm-8">
-                                                <input id="tongTien" type="number" class="form-control"
-                                                       value="${total-hoaDon.idKhuyenMai.soTienGiam}"
-                                                       readonly/>
+                                                <c:if test="${total>0}">
+                                                    <input id="tongTienKhiTruKM" type="number" class="form-control"
+                                                           name="tongTien"  value="${total-hoaDon.idKhuyenMai.soTienGiam}"
+                                                           readonly/>
+                                                </c:if>
                                             </div>
                                         </div>
 
@@ -1003,13 +1007,13 @@
         button.addEventListener('click', function() {
             const form = this.closest('.delete-form');
             Swal.fire({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
+                title: 'Bạn có muốn xóa không??',
+                text: "Bạn sẽ không thể khôi phục lại dữ liệu này!",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
+                confirmButtonText: 'Đồng ý'
             }).then((result) => {
                 if (result.isConfirmed) {
                     form.submit();
@@ -1017,7 +1021,6 @@
             });
         });
     });
-
 
 
 
@@ -1046,10 +1049,12 @@
 
     <%--    --%>
     function calculateChange() {
-        var tongTien = document.getElementById('tongTien').value;
+        <%--var tongTien = parseInt('${total}');--%>
+        var tongTien = parseInt(document.getElementById('tongTienKhiTruKM').value);
         var tienKhachDua = parseInt(document.getElementById('tienKhachDua').value);
-        console.log("test tong tien :"+tongTien);
-        console.log("test tien khach dua:"+tienKhachDua);
+        console.log(tongTien);
+        console.log(tienKhachDua);
+
         var tienTraLai = tienKhachDua - tongTien;
         console.log(tienTraLai);
         var thongBao = document.getElementById("errTraLai");
@@ -1061,6 +1066,7 @@
         if (tienKhachDua == "" || tienKhachDua < tongTien) {
             thongBao.textContent = "Số tiền khách đưa phải lớn hơn hoặc bằng tổng tiền.";
             // alert('Số tiền khách đưa phải lớn hơn hoặc bằng tổng tiền.');
+            document.getElementById('tienTraLai').value = "";
             return false;
         }
 
@@ -1072,12 +1078,16 @@
     }
 
 
-    function checkValidateAfterUpdate(){
-        var soLuong = document.getElementById("soLuong").value;
-        const dataSL = this.getAttribute('data-soLuong');
-        console.log("ssss"+dataSL);
 
-        if (soLuong<=0){
+    function checkValidateAfterUpdate(){
+
+        var soLuongNhap = parseInt(document.getElementById("soLuong").value);
+        var soLuongCu = parseInt(document.getElementById("soLuongCu").value);
+        var tongSL22 = parseInt(document.getElementById("tongSL").value);
+        var tt = soLuongCu+tongSL22
+
+
+        if (soLuongNhap<=0){
             Swal.fire({
                 title: 'Lỗi!',
                 text: 'Số lượng phải lớn hơn 0!',
@@ -1087,15 +1097,15 @@
             return false;
         }
 
-        <%--if (soLuong<${tongSl}){--%>
-        <%--    Swal.fire({--%>
-        <%--        title: 'Lỗi!',--%>
-        <%--        text: 'Số lượng phải lớn hơn 100',--%>
-        <%--        icon: 'error',--%>
-        <%--        confirmButtonText: 'OK'--%>
-        <%--    });--%>
-        <%--    return false;--%>
-        <%--}--%>
+        if (soLuongNhap>tt){
+            Swal.fire({
+                title: 'Lỗi!',
+                text: 'Số lượng nhập lớn hơn số lượng trong kho',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+            return false;
+        }
 
         return true;
     }
@@ -1125,6 +1135,109 @@
 
         return true; // Cho phép thêm sản phẩm vào giỏ hàng nếu đã chọn hóa đơn
     }
+    //---------------------------------------------------//
+
+    <%--const loadDsHDCT = () => {--%>
+    <%--    // get api + scpt.id--%>
+    <%--    let datatest = "data testing";--%>
+    <%--    fetch("/ban_hang_tai_quay/api/lst-hdct/${idHD}", {--%>
+    <%--        headers: {--%>
+    <%--            'Accept': 'application/json',--%>
+    <%--            'Content-Type': 'application/json'--%>
+    <%--        }--%>
+    <%--    }).then(response => response.json())--%>
+    <%--        .then(resp => {--%>
+    <%--            let html = '';--%>
+    <%--            resp.map((hdct,i)=>{--%>
+    <%--                const text = "html${hdct.id}";--%>
+    <%--                const id = hdct.id || 'N/A';--%>
+    <%--                const maSanPham = hdct.idCTSP && hdct.idCTSP.idSanPham ? hdct.idCTSP.idSanPham.ma : 'N/A';--%>
+    <%--                const tenSanPham = hdct.idCTSP && hdct.idCTSP.idSanPham ? hdct.idCTSP.idSanPham.ten : 'N/A';--%>
+    <%--                const soLuong = hdct ? hdct.soLuong : 'N/A';--%>
+    <%--                const giaBan = hdct.idCTSP ? hdct.idCTSP.giaBan : 'N/A';--%>
+    <%--                const thanhTien = soLuong*giaBan;--%>
+    <%--                const maHD = hdct.idHoaDon ? hdct.idHoaDon.ma : 'N/A';--%>
+    <%--                const idCTSP = hdct.idCTSP ? hdct.idCTSP.id : 'N/A';--%>
+    <%--                const idHoaDon = hdct.idHoaDon ? hdct.idHoaDon.id : 'N/A';--%>
+    <%--                html +=  '<tr>' +--%>
+    <%--                    '<td>' + (i + 1) + '</td>' +--%>
+    <%--                    '<td>' + maHD + '</td>'+--%>
+    <%--                    '<td>' + maSanPham + '</td>' +--%>
+    <%--                    '<td>' + tenSanPham + '</td>' +--%>
+    <%--                    '<td colspan="2" style="display: flex; align-items: center;">' +--%>
+    <%--                    '<form class="d-flex" method="post" action="/ban-hang-tai-quay/update-sl/' + (idCTSP) + '">' +--%>
+    <%--                    '<input type="hidden" name="idHoaDon" value="' + idHoaDon + '">' +--%>
+    <%--                    '<input class="form-control me-2" type="text" name="soLuong" value="' + (soLuong) + '" style="width: 45px">' +--%>
+    <%--                    '<button class="btn btn-light" type="submit">' +--%>
+    <%--                    '<i class="bi bi-pencil"></i>' +--%>
+    <%--                    '</button>' +--%>
+    <%--                    '</form>' +--%>
+    <%--                    '</td>' +--%>
+    <%--                    '<td>' + giaBan + '</td>' +--%>
+    <%--                    '<td>' + thanhTien + '</td>' +--%>
+    <%--                    '<td>' +--%>
+    <%--                    '<form action="/ban-hang-tai-quay/delete-hdct/' + id + '" method="post">' +--%>
+    <%--                    '<input type="hidden" name="idHoaDon" value="' + idHoaDon + '">' +--%>
+    <%--                    '<button class="btn btn-danger" type="submit">Delete</button>' +--%>
+    <%--                    '</form>' +--%>
+    <%--                    '</td>' +//editing--%>
+    <%--                    '</tr>';--%>
+    <%--            });--%>
+    <%--            $("#tbl_hd_cho").html(html)--%>
+    <%--        });--%>
+    <%--}--%>
+    <%--loadDsHDCT();--%>
+
+    <%--var loadDsCTSP = () => {--%>
+    <%--    let datatest = "data testing";--%>
+    <%--    fetch("/ban_hang_tai_quay/api/lst-spct", {--%>
+    <%--        headers: {--%>
+    <%--            'Accept': 'application/json',--%>
+    <%--            'Content-Type': 'application/json'--%>
+    <%--        }--%>
+    <%--    }).then(response => response.json())--%>
+    <%--        .then(resp => {--%>
+    <%--            let html = '';--%>
+    <%--            resp.map((spct,i)=>{--%>
+    <%--                const maSanPham = spct.idSanPham && spct.idSanPham.ma || 'N/A';--%>
+    <%--                const tenSanPham = spct.idSanPham && spct.idSanPham.ten || 'N/A';--%>
+    <%--                const tenMauSac = spct.idMauSac && spct.idMauSac.ten || 'N/A';--%>
+    <%--                const tenKichThuoc = spct.idKichThuoc && spct.idKichThuoc.ten || 'N/A';--%>
+    <%--                const tenChatLieu = spct.idChatLieu && spct.idChatLieu.ten || 'N/A';--%>
+    <%--                const tenKieuTay = spct.idKieuTay && spct.idKieuTay.ten || 'N/A';--%>
+    <%--                const soLuong = spct.soLuong || 'N/A';--%>
+    <%--                const giaBan = spct.giaBan || 'N/A';--%>
+    <%--                const trangThai = spct.trangThai == 1 ? "Còn hàng" : "Hết hàng";--%>
+    <%--                html += '<tr>' +--%>
+    <%--                    '<td>' + (i + 1) + '</td>' +--%>
+    <%--                    '<td>' + maSanPham + '</td>' +--%>
+    <%--                    '<td>' + tenSanPham + '</td>' +--%>
+    <%--                    '<td>' + tenMauSac + '</td>' +--%>
+    <%--                    '<td>' + tenKichThuoc + '</td>' +--%>
+    <%--                    '<td>' + tenChatLieu + '</td>' +--%>
+    <%--                    '<td>' + tenKieuTay + '</td>' +--%>
+    <%--                    '<td>' + soLuong + '</td>' +--%>
+    <%--                    '<td>' + giaBan + '</td>' +--%>
+    <%--                    '<td>' + trangThai + '</td>' +--%>
+    <%--                    // '<td><button id="add_sp_gio_hang_' + spct.id + '" class="btn btn-success">+</button></td>' +--%>
+    <%--                    '<td>' +--%>
+    <%--                    '<form action="/ban_hang_tai_quay/add-san-pham/' + spct.id  + '" method="post">' +--%>
+    <%--                    '<input type="hidden" name="idHoaDon" value="${hoaDon.id}">' +--%>
+    <%--                    '<button class="btn btn-success" type="submit">+</button>' +--%>
+    <%--                    '</form>' +--%>
+    <%--                    '</td>' +//editing--%>
+    <%--                    '</tr>';--%>
+    <%--            });--%>
+    <%--            $("#tbl_ds_spct").html(html)--%>
+    <%--        });--%>
+    <%--}--%>
+    <%--loadDsCTSP();--%>
+
+
+
+
+    // ---  Ajax xóa hóa đơn
+    // Lấy tất cả các nút xóa trong bảng
     const deleteButtons = document.querySelectorAll('.delete-button');
 
     // Thêm sự kiện click cho từng nút
@@ -1159,6 +1272,134 @@
             });
         });
     });
+    // Kết thúc xóa hóa đơn
+
+
+    <%--// ---  Ajax xóa hóa đơn chi tiết--%>
+    <%--// Lấy tất cả các nút xóa trong bảng--%>
+    <%--const deleteButtonHDCT = document.querySelectorAll('.deleteHDCT-button');--%>
+
+    <%--// Thêm sự kiện click cho từng nút--%>
+    <%--deleteButtonHDCT.forEach(button => {--%>
+    <%--    button.addEventListener('click', function () {--%>
+    <%--        const idHDCT = this.getAttribute('data-idHDCT');--%>
+    <%--        const idCTSP = this.getAttribute('data-idCTSP');--%>
+
+    <%--        Swal.fire({--%>
+    <%--            title: 'Bạn có muốn xóa không?',--%>
+    <%--            text: "Bạn sẽ không thể khôi phục lại dữ liệu này!",--%>
+    <%--            icon: 'warning',--%>
+    <%--            showCancelButton: true,--%>
+    <%--            confirmButtonColor: '#3085d6',--%>
+    <%--            cancelButtonColor: '#d33',--%>
+    <%--            confirmButtonText: 'Vâng, xóa nó!',--%>
+    <%--            cancelButtonText: 'Hủy'--%>
+    <%--        }).then((result) => {--%>
+    <%--            if (result.isConfirmed) {--%>
+    <%--                // Thực hiện hành động xóa ở đây, ví dụ:--%>
+    <%--                // Gửi yêu cầu AJAX tới server để xóa dữ liệu--%>
+    <%--                fetch(`/ban_hang_tai_quay/delete-hdct/`+idHDCT+`/`+idCTSP, { method: 'POST' }).then(() => {--%>
+    <%--                    loadDsCTSP();--%>
+    <%--                    Swal.fire(--%>
+    <%--                        'Đã xóa!',--%>
+    <%--                        'Dữ liệu của bạn đã bị xóa.',--%>
+    <%--                        'success'--%>
+    <%--                    );--%>
+    <%--                    // Xóa hàng khỏi bảng sau khi xóa thành công--%>
+    <%--                    button.closest('tr').remove();--%>
+    <%--                    loadDsCTSP();--%>
+    <%--                });--%>
+    <%--                button.closest('tr').remove();--%>
+    <%--            }--%>
+    <%--        });--%>
+    <%--    });--%>
+    <%--});--%>
+    <%--// Kết thúc xóa hóa đơn chi tiết--%>
+
+
+    <%--// Start--%>
+
+    <%--// Lấy tất cả các nút cập nhật trong bảng--%>
+    <%--const updateButtons = document.querySelectorAll('.update-button');--%>
+
+    <%--// Thêm sự kiện click cho từng nút--%>
+    <%--updateButtons.forEach(button => {--%>
+    <%--    button.addEventListener('click', function () {--%>
+    <%--        const itemId = this.getAttribute('data-id');--%>
+    <%--        const itemSL = parseInt(this.getAttribute('data-sl'));--%>
+    <%--        const donGia = this.getAttribute('data-donGia');--%>
+    <%--        const tongSL = parseInt(this.getAttribute('data-tongSL'));--%>
+    <%--        var tong2 = itemSL+tongSL;--%>
+
+    <%--        console.log("số lượng: "+tong2);--%>
+    <%--        console.log("số lượng: "+itemId);--%>
+
+    <%--        Swal.fire({--%>
+    <%--            title: 'Cập nhật số lượng',--%>
+    <%--            html: `--%>
+    <%--      <form id="update-form">--%>
+    <%--        <label for="name">Số lượng mới:</label>--%>
+    <%--        <input type="text" id="soLuong" name="quantity" value="${itemSL}" class="swal2-input">--%>
+    <%--      </form>--%>
+    <%--    `,--%>
+    <%--            showCancelButton: true,--%>
+    <%--            confirmButtonText: 'Cập nhật',--%>
+    <%--            cancelButtonText: 'Hủy',--%>
+    <%--            preConfirm: () => {--%>
+    <%--                const quantity = document.getElementById('soLuong').value;--%>
+    <%--                if (!quantity || quantity <= 0) {--%>
+    <%--                    Swal.showValidationMessage('Bạn cần nhập số lượng hợp lệ!');--%>
+    <%--                }--%>
+
+    <%--                if (quantity>tong2){--%>
+    <%--                    Swal.showValidationMessage('Số lượng bạn nhập lớn hơn số lượng trong kho!');--%>
+    <%--                }--%>
+
+    <%--                return { quantity: quantity };--%>
+    <%--            }--%>
+    <%--        }).then((result) => {--%>
+    <%--            if (result.isConfirmed) {--%>
+    <%--                const newQuantity = result.value.quantity;--%>
+
+
+    <%--                // Thực hiện hành động cập nhật ở đây, ví dụ:--%>
+    <%--                // Gửi yêu cầu AJAX tới server để cập nhật dữ liệu--%>
+    <%--                fetch(`/ban_hang_tai_quay/api-update-sl/`+itemId, {--%>
+    <%--                    method: 'POST',--%>
+    <%--                    headers: {--%>
+    <%--                        'Content-Type': 'application/json'--%>
+    <%--                    },--%>
+
+
+    <%--                    body: JSON.stringify({ quantity: newQuantity })--%>
+
+    <%--                }).then(() => {--%>
+
+    <%--                    loadDsCTSP();--%>
+    <%--                    Swal.fire(--%>
+    <%--                        'Cập nhật thành công!',--%>
+    <%--                        'Dữ liệu của bạn đã được cập nhật.',--%>
+    <%--                        'success'--%>
+    <%--                    );--%>
+    <%--                    // Cập nhật tên trong bảng--%>
+    <%--                    button.closest('tr').querySelector('td:nth-child(5)').textContent = newQuantity;--%>
+    <%--                    button.closest('tr').querySelector('td:nth-child(7)').textContent = donGia*newQuantity;--%>
+    <%--                    loadDsCTSP();--%>
+
+
+
+    <%--                })--%>
+
+    <%--                button.closest('tr').querySelector('td:nth-child(5)').textContent = newQuantity;--%>
+    <%--                // loadDsCTSP();--%>
+    <%--            }--%>
+    <%--        });--%>
+
+    <%--    });--%>
+    <%--});--%>
+    //End update số lượng của hóa đơn chi tiết
+
+
 
 
 </script>

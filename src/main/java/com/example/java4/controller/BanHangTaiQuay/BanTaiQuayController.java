@@ -20,7 +20,7 @@ import java.util.*;
 
 @Controller
 @RequestMapping("/ban-hang-tai-quay")
-public class BanHangTaiQuayController {
+public class BanTaiQuayController {
 
     @Autowired
     private HoaDonRepository hoaDonRepository;
@@ -55,9 +55,6 @@ public class BanHangTaiQuayController {
     @Autowired
     KhuyenMaiRepository khuyenMaiRepo;
 
-    @Autowired
-    Validator validator;
-
     private List<KhuyenMai> listKhuyenMai;
     private List<HoaDon> listHoaDon;
     private List<ChiTietHoaDon> listHDCT;
@@ -68,14 +65,14 @@ public class BanHangTaiQuayController {
     private List<SanPham> listSanPham;
     private List<KieuTay> listKieuTay;
     private List<ChatLieu> listChatLieu;
-    private String idNV = "BF29DB87-6ED2-46E8-B34C-135B2EA4CCA6";
+    private String idNV = "66441D57-68B7-45CA-B7BA-21F2927155C9";
     private String idHoaDon;
 
     private int tongSL;
 
 //    private BigDecimal tongTien;
 
-    public BanHangTaiQuayController() {
+    public BanTaiQuayController() {
         idHoaDon = "";
         tongSL = 0;
 //        tongTien = BigDecimal.ZERO;
@@ -145,10 +142,38 @@ public class BanHangTaiQuayController {
         model.addAttribute("listKieuTay", listKieuTay);
         model.addAttribute("listSanPham", listSanPham);
         model.addAttribute("listKM",listKhuyenMai);
+        //Lọc hóa đơn chi tiết theo id hóa đơn
+//        List<ChiTietHoaDon> gioHangTheoHoaDon = new ArrayList<>();
+//        for (ChiTietHoaDon chiTietHoaDon : listHDCT) {
+//            if (chiTietHoaDon.getIdHoaDon().getId().equals(idHD)) {
+//                gioHangTheoHoaDon.add(chiTietHoaDon);
+//                //Tính tổng tiền từng hóa đơn
+//                BigDecimal tongTien = BigDecimal.ZERO;
+//                for (ChiTietHoaDon hd : gioHangTheoHoaDon) {
+//                    int sL = hd.getSoLuong();
+//                    BigDecimal donGia = hd.getDonGia();
+//                    BigDecimal thanhTien = donGia.multiply(BigDecimal.valueOf(sL));
+//                    tongTien = tongTien.add(thanhTien);
+//                }
+//                model.addAttribute("tongTien", tongTien);
+//            }
+//        }
+//
         BigDecimal tongTien2 = hoaDonChiTietRepository.tinhGiaTriHD(idHoaDon);
         model.addAttribute("total",tongTien2);
+//
+//        model.addAttribute("listHDCT", gioHangTheoHoaDon);
         return "/view/BanHangTaiQuay/banHangTaiQuay.jsp";
     }
+
+
+//    @GetMapping("/load-tong-tien")
+//    public String loadTT(Model model){
+//        BigDecimal tongTien3 = hoaDonChiTietRepository.tinhGiaTriHD(idHoaDon);
+//        model.addAttribute("total",tongTien3);
+//        System.out.println("--------------------------------------------------------"+tongTien3);
+//        return "redirect:/ban_hang_tai_quay/detail-hoa-don/" + idHoaDon;
+//    }
 
 
     @PostMapping("/delete-hdct/{idHDCT}/{idCTSP}")
@@ -214,7 +239,7 @@ public class BanHangTaiQuayController {
                 hoaDonRepository.delete(hoaDon);
             }
         }
-        return "redirect:/ban-hang-tai-quay";
+        return "redirect:/ban-hang_tai_quay";
     }
 
 
@@ -253,28 +278,29 @@ public class BanHangTaiQuayController {
     public String updateSoLuong(@PathVariable String idCTSP,
 //                                @RequestBody Map<String, Integer> request,
                                 @RequestParam int soLuong,
-                                Model model,RedirectAttributes redirectAttributes){
+                                Model model){
 
         ChiTietSanPham chiTietSanPham = sanPhamChiTietRepository.findByIdCTSP(idCTSP);
 //        int newQuantity = request.get("quantity");
+
         tongSL = chiTietSanPham.getSoLuong();
-        if(validator.isOutStock(soLuong,idCTSP)){
-            for(ChiTietHoaDon chiTietHoaDon : listHDCT){
-                if (chiTietHoaDon.getIdCTSP().getId().equals(idCTSP) && chiTietHoaDon.getIdHoaDon().getId().equals(idHoaDon)) {
-                    int sl = chiTietHoaDon.getSoLuong();
-                    chiTietHoaDon.setSoLuong(soLuong);
-                    hoaDonChiTietRepository.save(chiTietHoaDon);
-                    //Số lượng của sản phẩm chi tiết -1 khi ấn vào button thêm trong giỏ hàng
-                    if (chiTietSanPham.getId().equals(idCTSP) ) {
-                        chiTietSanPham.setSoLuong(chiTietSanPham.getSoLuong() - chiTietHoaDon.getSoLuong() + sl);
-                        sanPhamChiTietRepository.save(chiTietSanPham);
-                    }
+        for(ChiTietHoaDon chiTietHoaDon : listHDCT){
+            if (chiTietHoaDon.getIdCTSP().getId().equals(idCTSP) && chiTietHoaDon.getIdHoaDon().getId().equals(idHoaDon)) {
+
+                int sl = chiTietHoaDon.getSoLuong();
+                chiTietHoaDon.setSoLuong(soLuong);
+
+                hoaDonChiTietRepository.save(chiTietHoaDon);
+
+                //Số lượng của sản phẩm chi tiết -1 khi ấn vào button thêm trong giỏ hàng
+                if (chiTietSanPham.getId().equals(idCTSP) ) {
+                    chiTietSanPham.setSoLuong(chiTietSanPham.getSoLuong() - chiTietHoaDon.getSoLuong() + sl);
+                    sanPhamChiTietRepository.save(chiTietSanPham);
                 }
             }
+
         }
-        else{
-            redirectAttributes.addFlashAttribute("error", "Không đủ số lượng.");
-        }
+
         return "redirect:/ban-hang-tai-quay/detail-hoa-don/" + idHoaDon;
     }
 
@@ -371,18 +397,40 @@ public class BanHangTaiQuayController {
         return "redirect:/ban-hang-tai-quay/detail-hoa-don/" + idHoaDon;
     }
     @PostMapping("/thanh-toan/{idHoaDon}")
-    public String thanhToanSanPham(@PathVariable String idHoaDon,
-                                   @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date ngayTao) {
+    public String thanhToanSanPham(@PathVariable("idHoaDon") HoaDon newHoaDon,
+                                   @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date ngayTao,
+                                   @RequestParam String idKhuyenMai,
+                                   @RequestParam String idKH,
+                                   @RequestParam BigDecimal tongTien) {
         LocalDateTime ngayTaoLocalDateTime = ngayTao.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-        for (int i = 0; i < listHoaDon.size(); i++) {
-            if (listHoaDon.get(i).getId().equals(idHoaDon)) {
-                HoaDon hoaDon = new HoaDon();
-                hoaDon.setId(idHoaDon);
-                hoaDon.setTrangThai(1);
-                hoaDon.setNgayThanhToan(ngayTaoLocalDateTime);
-                hoaDonRepository.save(hoaDon);
-            }
+        System.out.println("=================id hoa don: "+idHoaDon);
+        System.out.println("=================ngay tao:"+ ngayTao);
+        System.out.println("=================khuyen mai:"+ idKhuyenMai);
+        System.out.println("=================id kh: "+ idKH);
+        System.out.println("=================tong tien: "+ tongTien);
+        System.out.println("===================true false:"+ idKhuyenMai.equals(""));
+
+
+        newHoaDon.setIdNhanVien(nhanVienRepo.findById(idNV).get());
+        newHoaDon.setPhuongThucThanhToan(2);
+        if(idKhuyenMai.equals("")){
+            newHoaDon.setIdKhuyenMai(null);
         }
+        else{
+            newHoaDon.setIdKhuyenMai(khuyenMaiRepo.findById(idKhuyenMai).get());
+        }
+        newHoaDon.setIdNhanVien(nhanVienRepo.findById(idNV).get());
+        if(idKH.equals("")){
+            newHoaDon.setIdKhachHang(null);
+        }
+        else{
+            newHoaDon.setIdKhachHang(khachHangRepository.findById(idKH).get());
+        }
+        newHoaDon.setNgayThanhToan(ngayTaoLocalDateTime);
+        newHoaDon.setTongTien(tongTien);
+        newHoaDon.setLoaiHoaDon(2);
+        newHoaDon.setTrangThai(1);
+        hoaDonRepository.save(newHoaDon);
         return "redirect:/ban-hang-tai-quay";
     }
 
@@ -516,7 +564,7 @@ public class BanHangTaiQuayController {
         model.addAttribute("listKieuTay",kieuTayRepo.findAll());
         model.addAttribute("nhanVien", nv.get());
         model.addAttribute("listHoaDon",listHoaDon);
-        return "/view/BanHangTaiQuay/bangHangTaiQuay.jsp";
+        return "/view/BanHangTaiQuay/banHangTaiQuay.jsp";
     }
     //lọc sản phẩm chi tiết
     @PostMapping("filter")
@@ -687,6 +735,70 @@ public class BanHangTaiQuayController {
     @CrossOrigin
     @PostMapping("api/add-hdct/{idHoaDon}/{idSPCT}/{donGia}")
     public ResponseEntity<String> addLstHDCT(@PathVariable("idHoaDon") String idHoaDon,@PathVariable("idSPCT") String idSPCT,@PathVariable("donGia") String donGia ){
+//        System.out.println("test post mapping ajax+++++++++++++++++++++++++++++++++++++++++: ");
+//        ChiTietHoaDon cthd = new ChiTietHoaDon();
+//        BigDecimal big = new BigDecimal(donGia);
+//        cthd.setIdHoaDon(hoaDonRepository.findById(idHoaDon).get());
+//        cthd.setIdCTSP(sanPhamChiTietRepository.findByIdCTSP(idSPCT));
+//        cthd.setDonGia(big);
+//        cthd.setSoLuong(1);
+//        cthd.setTrangThai(0);
+//        hoaDonChiTietRepository.save(cthd);
+//        return ResponseEntity.ok(true);
+
+//        ChiTietHoaDon hdct = new ChiTietHoaDon();
+//        //Tìm sản phẩm trong giỏ hàng
+//        boolean spTonTaiTrongGioHang = false;
+//        ChiTietSanPham chiTietSanPham = sanPhamChiTietRepository.findByIdCTSP(idSPCT);
+////        ChiTietHoaDon  = hoaDonChiTietRepository.findHDCTByIdHoaDon(idHoaDon);
+//        for (ChiTietHoaDon chiTietHoaDon : listHDCT) {
+//            //Nếu số lượng trong spct = 0 thì không đưuọc thêm sản phẩm nữa
+//            if (chiTietSanPham.getSoLuong() <= 0) {
+//                chiTietHoaDon.setSoLuong(chiTietHoaDon.getSoLuong());
+//                try {
+//                    hoaDonChiTietRepository.save(chiTietHoaDon);
+//                    spTonTaiTrongGioHang = true;
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//                break;
+//            }
+//            else {
+//                if (chiTietHoaDon.getIdCTSP().getId().equals(idSPCT) && chiTietHoaDon.getIdHoaDon().getId().equals(idHoaDon)) {
+//                    //Thêm số lượng sản phẩm +1 khi ấn vào button thêm trong giỏ hàng
+//                    chiTietHoaDon.setSoLuong(chiTietHoaDon.getSoLuong() + 1);
+//                    hoaDonChiTietRepository.save(chiTietHoaDon);
+//
+//                    //Số lượng của sản phẩm chi tiết bị -1 khi ấn vào button thêm trong giỏ hàng
+//                    if (chiTietSanPham.getId().equals(idSPCT)) {
+//                        chiTietSanPham.setSoLuong(chiTietSanPham.getSoLuong() - 1);
+//                        sanPhamChiTietRepository.save(chiTietSanPham);
+//                    }
+//                    spTonTaiTrongGioHang = true;
+//                    break;
+//                }
+//            }
+//        }
+//
+//        if (!spTonTaiTrongGioHang) {
+//
+//            BigDecimal big = new BigDecimal(donGia);
+//            ChiTietSanPham ctsp = new ChiTietSanPham();
+//            ctsp.setId(idSPCT);
+//            hdct.setIdCTSP(ctsp);
+//            HoaDon hoaDon = new HoaDon();
+//            hoaDon.setId(idHoaDon);
+//            hdct.setIdHoaDon(hoaDon);
+//            hdct.setSoLuong(1);
+//            hdct.setDonGia(big);
+//            hoaDonChiTietRepository.save(hdct);
+//            //Số lượng của sản phẩm chi tiết bị giảm 1 khi ấn vào button thêm trong giỏ hàng
+//            if (chiTietSanPham.getId().equals(idSPCT)) {
+//                chiTietSanPham.setSoLuong(chiTietSanPham.getSoLuong() - 1);
+//                sanPhamChiTietRepository.save(chiTietSanPham);
+//            }
+//        }
+
         ChiTietSanPham chiTietSanPham = sanPhamChiTietRepository.findByIdCTSP(idSPCT);
         boolean flag = false;
         String idHDCT = "";
@@ -726,6 +838,7 @@ public class BanHangTaiQuayController {
 //        return ResponseEntity.ok(hoaDonChiTietRepository.findDistinctByHoaDon_Id(idHoaDon));
         return ResponseEntity.ok(hoaDonChiTietRepository.findAllByHoaDon_Id(idHoaDon));
     }
+
 
     //Test
     @CrossOrigin

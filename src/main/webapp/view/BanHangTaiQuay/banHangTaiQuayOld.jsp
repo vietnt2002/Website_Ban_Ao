@@ -30,6 +30,7 @@
 
     <%--Link Ajax --%>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
     <!-- Latest compiled and minified CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -50,15 +51,33 @@
             overflow: scroll;
         }
 
+        .table-scroll2{
+            height: 460px;
+            overflow: scroll;
+        }
+
         ::-webkit-scrollbar {
             width: 10px;
-            background-color: lightgray;
+            background-color: light grey;
         }
 
         ::-webkit-scrollbar-thumb {
             background-color: rgb(238, 234, 234);
             border-radius: 5px;
         }
+
+        .button-container {
+            display: flex;
+            gap: 10px; /* Tạo khoảng cách giữa các button */
+        }
+
+        #button {
+            flex: none; /* Đảm bảo kích thước button không thay đổi */
+        }
+        th,td{
+            text-align: center;
+        }
+
     </style>
 
 </head>
@@ -84,28 +103,28 @@
 
         <!-- Nav Item - Dashboard -->
         <li class="nav-item active">
-            <a class="nav-link" href="/ban-hang-tai-quay">
+            <a class="nav-link" href="index.html">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>Bán hàng tại quầy</span></a>
+                <span>Thống kê doanh thu</span></a>
         </li>
 
         <!-- Nav Item - Charts -->
         <li class="nav-item">
             <a class="nav-link" href="/ban-hang-tai-quay/admin/ban-tai-quay">
                 <i class="fas fa-fw fa-chart-area"></i>
-                <span>Thống kê doanh thu</span></a>
+                <span>Bán hàng tại quầy</span></a>
         </li>
 
         <!-- Nav Item - Charts -->
         <li class="nav-item">
-            <a class="nav-link" href="/hoa-don/hien-thi">
+            <a class="nav-link" href="charts.html">
                 <i class="fas fa-fw fa-chart-area"></i>
                 <span>Quản lý đơn hàng</span></a>
         </li>
 
         <!-- Nav Item - Charts -->
         <li class="nav-item">
-            <a class="nav-link" href="/hoa-don/hien-thi">
+            <a class="nav-link" href="charts.html">
                 <i class="fas fa-fw fa-chart-area"></i>
                 <span>Quản lý hóa đơn</span></a>
         </li>
@@ -364,6 +383,10 @@
                                 <form action="/ban-hang-tai-quay/add-hoa-don" method="post" style="float: right;" class="float-end">
                                     <button type="submit" class="btn btn-success">+ Tạo hóa đơn</button>
                                 </form>
+                                <a class="col-sm-3 btn btn-info text-white" data-bs-toggle="modal" data-bs-target="#exampleModal4"
+                                   style="float: right;margin-right: 30px;">
+                                    + Chọn sản phẩm
+                                </a>
                             </div>
                             <table class="table table-hover">
                                 <thead>
@@ -377,7 +400,35 @@
                                     <th>Chi tiết</th>
                                 </tr>
                                 </thead>
-                                <tbody id="tbl_hd_cho">
+                                <tbody>
+                                <c:forEach varStatus="i" items="${listHoaDon}" var="hoaDon">
+                                    <tr>
+                                        <td>${i.index+1}</td>
+                                        <td>${hoaDon.ma}</td>
+                                        <td>${hoaDon.idNhanVien.hoTen}</td>
+                                        <td>
+                                            <c:if test="${hoaDon.idKhachHang.id==null}">Khách lẻ</c:if>
+                                            <c:if test="${hoaDon.idKhachHang.id!=null}">${hoaDon.idKhachHang.hoTen}</c:if>
+                                        </td>
+                                        <td>${hoaDon.ngayTao}</td>
+                                        <td>${hoaDon.trangThai==0?"Chua thanh toan":"Da thanh toan"}</td>
+                                        <td>
+                                            <a href="/ban-hang-tai-quay/detail-hoa-don/${hoaDon.id}"
+                                               class="btn btn-primary">
+                                                <i class="bi bi-eye-fill"></i>
+                                            </a>
+                                                <%--                                            <a href="/ban_hang_tai_quay/delete-hoa-don/${hoaDon.id}"--%>
+                                                <%--                                               class="btn btn-danger" onclick="return confirm('Bạn có muốn xóa không')">--%>
+                                                <%--                                                <i class="bi bi-trash"></i>--%>
+                                                <%--                                            </a>--%>
+
+                                            <button class="delete-button btn btn-danger" data-id="${hoaDon.id}">
+                                                <i class="bi bi-x-circle-fill"></i>
+                                            </button>
+
+                                        </td>
+                                    </tr>
+                                </c:forEach>
                                 </tbody>
                             </table>
                             <!-- Giỏ hàng -->
@@ -396,6 +447,32 @@
                                 </tr>
                                 </thead>
                                 <tbody>
+                                <%--                                <c:forEach varStatus="i" items="${listHDCT}" var="hdct">--%>
+                                <%--                                    <tr>--%>
+                                <%--                                        <td>${i.index+1}</td>--%>
+                                <%--                                        <td>${hdct.idHoaDon.ma}</td>--%>
+                                <%--                                        <td>${hdct.idCTSP.idSanPham.ma}</td>--%>
+                                <%--                                        <td width="150px">${hdct.idCTSP.idSanPham.ten}</td>--%>
+                                <%--                                        <td>${hdct.soLuong}</td>--%>
+                                <%--                                        <td>${hdct.donGia}</td>--%>
+                                <%--                                        <td>${hdct.soLuong*hdct.donGia}</td>--%>
+                                <%--                                        <td>--%>
+
+                                <%--                                            <div class="button-container">--%>
+                                <%--                                                <button id="button" class="update-button btn btn-warning" data-id="${hdct.idCTSP.id}" data-sl="${hdct.soLuong}" data-donGia="${hdct.donGia}" data-tongSL="${hdct.idCTSP.soLuong}">--%>
+                                <%--                                                    <i class="bi bi-pencil"></i>--%>
+                                <%--                                                </button>--%>
+
+                                <%--                                                <button id="button" class="deleteHDCT-button btn btn-danger" data-idHDCT="${hdct.id}" data-idCTSP="${hdct.idCTSP.id}">--%>
+                                <%--                                                    <i class="bi bi-trash"></i>--%>
+                                <%--                                                </button>--%>
+                                <%--                                            </div>--%>
+
+
+                                <%--                                        </td>--%>
+                                <%--                                    </tr>--%>
+                                <%--                                </c:forEach>--%>
+
                                 <c:forEach varStatus="i" items="${listHDCT}" var="hdct">
                                     <tr>
                                         <td>${i.index+1}</td>
@@ -403,26 +480,31 @@
                                         <td>${hdct.idCTSP.idSanPham.ma}</td>
                                         <td>${hdct.idCTSP.idSanPham.ten}</td>
                                         <td style="display: flex; align-items: center;">
-                                               <form class="d-flex" method="post" action="/ban-hang-tai-quay/update-sl/${hdct.idCTSP.id}">
-                                                   <input type="hidden" name="idHoaDon" value="${hoaDon.id}">
-                                                   <input class="form-control me-2" type="text" name="soLuong" value="${hdct.soLuong}" style="width: 45px">
-                                                   <button class="btn btn-light" type="submit">
-                                                       <i class="bi bi-pencil"></i>
-                                                   </button>
-                                               </form>
+                                            <form class="d-flex" method="post" action="/ban-hang-tai-quay/update-sl/${hdct.idCTSP.id}" onsubmit="return checkValidateAfterUpdate();">
+                                                <input type="hidden" name="idHoaDon" value="${hoaDon.id}">
+                                                <input type="hidden" id="tongSL" value="${hdct.idCTSP.soLuong}">
+                                                <input type="hidden" id="soLuongCu" value="${hdct.soLuong}">
+                                                <input id="soLuong" class="form-control me-2" type="text" name="soLuong" value="${hdct.soLuong}" style="width: 45px">
+                                                <button class="btn btn-light" type="submit">
+                                                    <i class="bi bi-pencil"></i>
+                                                </button>
+                                            </form>
 
                                         </td>
                                         <td>${hdct.donGia}</td>
                                         <td>${hdct.soLuong*hdct.donGia}</td>
                                         <td>
-                                            <form action="/ban-hang-tai-quay/delete-hdct/${hdct.id}" method="post">
+                                            <form class="delete-form" action="/ban-hang-tai-quay/delete-hdct/${hdct.id}/${hdct.idCTSP.id}" method="post">
                                                 <input type="hidden" name="idHoaDon" value="${hoaDon.id}">
-                                                <button class="btn btn-danger" type="submit">Delete</button>
+                                                <button class="delete-button2 btn btn-danger" type="button" >Delete</button>
                                             </form>
+
                                         </td>
                                     </tr>
                                 </c:forEach>
                                 </tbody>
+
+
                             </table>
                         </div>
 
@@ -448,56 +530,15 @@
                                             <label class="col-sm-4 col-form-label">Tên khách hàng</label>
                                             <div class="col-sm-5">
 
-                                            <c:if test="${hoaDon.idKhachHang.id==null}">
-
-                                                <input type="text" class="form-control"  value="Khách lẻ" readonly>
-                                            </c:if>
+                                                <c:if test="${hoaDon.idKhachHang.id==null}">
+                                                    <input type="text" class="form-control" name="khachLe"  value="Khách lẻ" readonly>
+                                                </c:if>
 
                                                 <c:if test="${hoaDon.idKhachHang.id!=null}">
                                                     <input type="text" class="form-control"  value="${hoaDon.idKhachHang.hoTen}" readonly>
+                                                    <input type="hidden" class="form-control" name="idKH"  value="${hoaDon.idKhachHang.id}" readonly>
                                                 </c:if>
 
-<%--                                                <input type="text" class="form-control"  value="${hoaDon.idKhachHang.hoTen}" readonly>--%>
-                                            </div>
-
-                                         <%--   Modal thêm nhanh khách hàng--%>
-                                            <a class="col-sm-1 " data-bs-toggle="modal" data-bs-target="#exampleModal2"
-                                               style="padding-right: 0px;margin-top: 7px">
-                                                <i class="bi bi-person-plus" style="font-size: 25px;padding: 0px"></i>
-                                            </a>
-
-                                            <a class="col-sm-1" data-bs-toggle="modal" data-bs-target="#exampleModal"
-                                               href="#" style="padding-right: 0px;margin-top: 7px">
-                                                <i class=" bi bi-folder-plus col-3" style="font-size: 25px;padding: 0px"></i>
-                                            </a>
-                                        </div>
-
-                                        <div class="row mb-3">
-                                            <label class="col-sm-4 col-form-label">Mã giảm giá</label>
-                                            <div class="col-sm-5">
-                                                <input type="text" class="form-control"
-                                                       value="${hoaDon.idKhuyenMai.ma}" readonly>
-                                            </div>
-                                        <%--  Modal chọn mã giảm giá  --%>
-                                            <a class="col-sm-3 btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal3"
-                                            style="height: 38px;width: 79px;">
-                                               + Chọn
-                                            </a>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <label class="col-sm-4 col-form-label">Sđt</label>
-                                            <div class="col-sm-5">
-
-                                                <c:if test="${hoaDon.idKhachHang.id==null}">
-
-                                                    <input type="text" class="form-control"  value="Khách lẻ" readonly>
-                                                </c:if>
-
-                                                <c:if test="${hoaDon.idKhachHang.id!=null}">
-                                                    <input type="text" class="form-control"  value="${hoaDon.idKhachHang.sdt}" readonly>
-                                                </c:if>
-
-                                                <%--                                                <input type="text" class="form-control"  value="${hoaDon.idKhachHang.hoTen}" readonly>--%>
                                             </div>
 
                                             <%--   Modal thêm nhanh khách hàng--%>
@@ -513,14 +554,38 @@
                                         </div>
 
                                         <div class="row mb-3">
-                                            <label class="col-sm-4 col-form-label">Tổng tiền</label>
-                                            <div class="col-sm-8">
-                                                <input id="tongTien" type="number" class="form-control"
-                                                       value="${tongTien-hoaDon.idKhuyenMai.soTienGiam}"
-                                                       value="${tongTien}"
-                                                       readonly/>
+                                            <label class="col-sm-4 col-form-label">Mã giảm giá</label>
+                                            <div class="col-sm-5">
+                                                <input type="hidden" class="form-control" name="idKhuyenMai"
+                                                       value="${hoaDon.idKhuyenMai.id}" readonly>
+                                                <input type="text" class="form-control"
+                                                       value="${hoaDon.idKhuyenMai.ma}" readonly>
+                                            </div>
+                                            <%--  Modal chọn mã giảm giá  --%>
+                                            <a class="col-sm-3 btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal3"
+                                               style="height: 38px;width: 79px;">
+                                                + Chọn
+                                            </a>
+                                        </div>
+
+                                        <div class="row mb-3">
+                                            <label class="col-sm-4 col-form-label">Số tiền giảm</label>
+                                            <div class="col-sm-5">
+                                                <p>${hoaDon.idKhuyenMai.soTienGiam}</p>
                                             </div>
                                         </div>
+
+                                        <div class="row mb-3">
+                                            <label class="col-sm-4 col-form-label">Tổng tiền</label>
+                                            <div class="col-sm-8">
+                                                <c:if test="${total>0}">
+                                                    <input id="tongTienKhiTruKM" type="number" class="form-control"
+                                                           name="tongTien"  value="${total-hoaDon.idKhuyenMai.soTienGiam}"
+                                                           readonly/>
+                                                </c:if>
+                                            </div>
+                                        </div>
+
                                         <div class="row mb-3">
                                             <label class="col-sm-4 col-form-label">Tiền khách đưa</label>
                                             <div class="col-sm-6">
@@ -554,167 +619,6 @@
                     </div>
 
 
-                    <%--          --%>
-                    <div class="row">
-                        <div class="col col-12">
-                            <!-- Sản phẩm -->
-                            <h3>Chi tiết sản phẩm</h3>
-
-                            <div class="row">
-                                <div class="col col-5">
-                                    <form method="post" action="/ban-hang-tai-quay/search">
-                                        <div class="input-group mb-3">
-                                            <input type="text" name="search" class="form-control"
-                                                   placeholder="Tìm kiếm theo mã sản phẩm, màu sắc,..."
-                                                   aria-label="Recipient's username" aria-describedby="button-addon2">
-                                            <button class="btn btn-primary" type="submit" id="button-addon2">Tìm kiếm
-                                            </button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-
-
-                            <form method="post" action="/ban-hang-tai-quay/filter">
-                                <div class="row">
-                                    <div class="col col-md-2">
-                                        <div class="input-group mb-3">
-                                            <div class="dropdown">
-                                                <button class="btn btn-outline-secondary dropdown-toggle" type="button"
-                                                        id="dropdownMenuButton1" data-bs-toggle="dropdown"
-                                                        aria-expanded="false">
-                                                    Chọn sản phẩm
-                                                </button>
-                                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                                    <c:forEach items="${listSanPham}" var="sanPham">
-                                                        <li><a class="dropdown-item"
-                                                               href="/ban-hang-tai-quay/locSPCTBySanPham/${sanPham.id}">${sanPham.ten}</a>
-                                                        </li>
-                                                    </c:forEach>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col col-md-2">
-                                        <div class="dropdown">
-                                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
-                                                Chọn màu sắc
-                                            </button>
-                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-                                                <c:forEach items="${listMauSac}" var="mauSac">
-                                                    <li><a class="dropdown-item" href="/ban-hang-tai-quay/locSPCTByMauSac/${mauSac.id}">${mauSac.ten}</a></li>
-                                                </c:forEach>
-                                            </ul>
-                                        </div>
-                                    </div>
-
-                                    <div class="col col-md-2">
-                                        <div class="dropdown">
-                                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-expanded="false">
-                                                Chọn kích thước
-                                            </button>
-                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton3">
-                                                <c:forEach items="${listKichThuoc}" var="kichThuoc">
-                                                    <li><a class="dropdown-item" href="/ban-hang-tai-quay/locSPCTByKichThuoc/${kichThuoc.id}">${kichThuoc.ten}</a></li>
-                                                </c:forEach>
-                                            </ul>
-                                        </div>
-                                    </div>
-
-                                    <div class="col col-md-2">
-                                        <div class="dropdown">
-                                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton4" data-bs-toggle="dropdown" aria-expanded="false">
-                                                Chọn chất liệu
-                                            </button>
-                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton4">
-                                                <c:forEach items="${listChatLieu}" var="chatLieu">
-                                                    <li><a class="dropdown-item" href="/ban-hang-tai-quay/locSPCTByChatLieu/${chatLieu.id}">${chatLieu.ten}</a></li>
-                                                </c:forEach>
-                                            </ul>
-                                        </div>
-                                    </div>
-
-                                    <div class="col col-md-2">
-                                        <div class="dropdown">
-                                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton5" data-bs-toggle="dropdown" aria-expanded="false">
-                                                Chọn kiểu tay
-                                            </button>
-                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton5">
-                                                <c:forEach items="${listKieuTay}" var="kieuTay">
-                                                    <li><a class="dropdown-item" href="/ban-hang-tai-quay/locSPCTByKieuTay/${kieuTay.id}">${kieuTay.ten}</a></li>
-                                                </c:forEach>
-                                            </ul>
-                                        </div>
-                                    </div>
-
-<%--                                    <div class="col col-2">--%>
-<%--                                        <button type="submit" class="btn btn-primary float-start">Lọc</button>--%>
-<%--                                        <a href="/ban-hang-tai-quay/ban-tai-quay" class="btn btn-danger float-start">Hủy</a>--%>
-<%--                                    </div>--%>
-
-                                </div>
-                            </form>
-
-
-                            <table class="table table-hover">
-                                <thead>
-                                <tr>
-                                    <th>STT</th>
-                                    <th>Mã</th>
-                                    <th>Tên SP</th>
-                                    <th>Màu sắc</th>
-                                    <th>Kích thước</th>
-                                    <th>Chất liệu</th>
-                                    <th>Kiểu tay</th>
-                                    <th>Số lượng</th>
-                                    <th>Đơn giá</th>
-                                    <th>Trạng thái</th>
-                                    <th>Thao tác</th>
-                                </tr>
-                                </thead>
-                                <tbody id="chiTietSanPhamTableBody">
-                                <c:forEach varStatus="i" items="${listCTSP.content}" var="spct">
-                                    <tr>
-                                        <td>${i.index+1}</td>
-                                        <td>${spct.idSanPham.ma}</td>
-                                        <td>${spct.idSanPham.ten}</td>
-                                        <td>${spct.idMauSac.ten}</td>
-                                        <td>${spct.idKichThuoc.ten}</td>
-                                        <td>${spct.idChatLieu.ten}</td>
-                                        <td>${spct.idKieuTay.ten}</td>
-                                        <td>${spct.soLuong}</td>
-                                        <td>${spct.giaBan}</td>
-                                        <td>${spct.trangThai==1?"Còn hàng":"Hết hàng"}</td>
-                                        <td>
-                                            <button class="btn btn-success" id="add_sp_gio_hang_${spct.id}">+</button>
-                                        </td>
-                                    </tr>
-                                </c:forEach>
-
-                                </tbody>
-                            </table>
-                            <div class="float-end">
-                                <nav aria-label="Page navigation example">
-                                    <ul class="pagination">
-                                        <c:if test="${listCTSP.number > 0}">
-                                            <li class="page-item"><a class="page-link"
-                                                                     href="/ban-hang-tai-quay?page=${listCTSP.number - 1}">Trước</a>
-                                            </li>
-                                        </c:if>
-                                        <li class="page-item"><a class="page-link" href="#">${listCTSP.number + 1}</a>
-                                        </li>
-                                        <c:if test="${listCTSP.number+1 < listCTSP.totalPages}">
-                                            <li class="page-item"><a class="page-link"
-                                                                     href="/ban-hang-tai-quay?page=${listCTSP.number + 1}">Sau</a>
-                                            </li>
-                                        </c:if>
-                                    </ul>
-                                </nav>
-                            </div>
-                        </div>
-
-                    </div>
                 </div>
 
 
@@ -723,14 +627,16 @@
 
         </div>
 
+
+
         <!-- Modal mã giảm giá -->
-        <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true"
+        <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
              data-bs-backdrop="static" data-bs-keyboard="false" >
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
                         <div class="row">
-                            <h5 class="modal-title" id="exampleModalLabel2">Mã giảm giá</h5>
+                            <h5 class="modal-title" id="exampleModalLabel">Mã giảm giá</h5>
                         </div>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
@@ -742,7 +648,7 @@
                                 <th>Mã</th>
                                 <th>Tên</th>
                                 <th>Giảm tối đa</th>
-<%--                                <th>Áp dụng</th>--%>
+                                <%--                                <th>Áp dụng</th>--%>
                                 <th>Chọn</th>
                             </tr>
                             </thead>
@@ -752,22 +658,20 @@
                                     <td>${km.ma}</td>
                                     <td>${km.ten}</td>
                                     <td>${km.soTienGiam}</td>
-<%--                                    <td>--%>
-<%--                                        <c:if test="${km.soTienGiam==200}">--%>
-<%--                                           2.000.000 VNĐ--%>
-<%--                                        </c:if>--%>
-<%--                                        <c:if test="${km.soTienGiam==100}">--%>
-<%--                                            1.000.000 VNĐ--%>
-<%--                                        </c:if>--%>
-<%--                                        <c:if test="${km.soTienGiam==20}">--%>
-<%--                                            500.000 VNĐ--%>
-<%--                                        </c:if>--%>
-<%--                                    </td>--%>
+                                        <%--                                    <td>--%>
+                                        <%--                                        <c:if test="${km.soTienGiam==200}">--%>
+                                        <%--                                           2.000.000 VNĐ--%>
+                                        <%--                                        </c:if>--%>
+                                        <%--                                        <c:if test="${km.soTienGiam==100}">--%>
+                                        <%--                                            1.000.000 VNĐ--%>
+                                        <%--                                        </c:if>--%>
+                                        <%--                                        <c:if test="${km.soTienGiam==20}">--%>
+                                        <%--                                            500.000 VNĐ--%>
+                                        <%--                                        </c:if>--%>
+                                        <%--                                    </td>--%>
                                     <td>
-                                        <form action="/ban-hang-tai-quay/find-khuyen-mai/${km.id}" method="post">
-                                            <input type="hidden" name="idHoaDon" value="${hoaDon.id}">
-<%--                                            <input type="hidden" name="maHoaDon" value="${hoaDon.ma}">--%>
-<%--                                            <input type="hidden" class="form-control" name="ngayTao" value="${hoaDon.ngayTao}">--%>
+                                        <form action="/ban-hang-tai-quay/find-khuyen-mai/${km.id}" method="post" onsubmit="return validateAddToMaGiamGia();">
+                                            <input id="selectedMaGiamGia" type="hidden" name="idHoaDon" value="${hoaDon.id}">
                                             <button class="btn btn-primary" type="submit">
                                                 <i class="bi bi-plus-square"></i>
                                             </button>
@@ -783,16 +687,16 @@
             </div>
         </div>
 
-<%--        Modal thêm nhanh khách hàng--%>
+        <%--        Modal thêm nhanh khách hàng--%>
 
         <!-- Modal khách hàng -->
-        <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel3" aria-hidden="true"
+        <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
              data-bs-backdrop="static" data-bs-keyboard="false" >
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <div class="row">
-                            <h5 class="modal-title" id="exampleModalLabel3">Thêm khách hàng</h5>
+                            <h5 class="modal-title" id="exampleModalLabel">Thêm khách hàng</h5>
                         </div>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
@@ -822,13 +726,13 @@
         </div>
 
         <!-- Modal khách hàng -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel4" aria-hidden="true"
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
              data-bs-backdrop="static" data-bs-keyboard="false" >
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
                         <div class="row">
-                            <h5 class="modal-title" id="exampleModalLabel4">Danh sách khách hàng</h5>
+                            <h5 class="modal-title" id="exampleModalLabel">Danh sách khách hàng</h5>
                         </div>
 
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -869,28 +773,185 @@
                             </table>
                         </div>
 
-                        <%--                Phân trang--%>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <%--End--%>
 
-<%--                        <div>--%>
-<%--                            <ul class="pagination">--%>
-<%--                                <c:if test="${pageData.number>0}">--%>
-<%--                                    <li class="page-item" ><a id="modalLink" class="page-link" href="/ban-hang-tai-quay/detail-hoa-don/${hoaDon.id}?page=${pageData.number - 1}" >Previous</a></li>--%>
-<%--                                </c:if>--%>
-<%--                                <c:forEach begin="1" end="${total}" var="i">--%>
-<%--                                    <li class="page-item ${pageData.number==i-1?"active":""}"><a id="modalLinkYoutube" href="/ban-hang-tai-quay/detail-hoa-don/${hoaDon.id}?page=${i-1}" id="modalLink2" class="page-link">${i}</a></li>--%>
-<%--                                </c:forEach>--%>
 
-<%--                                <c:if test="${pageData.number<total-1}">--%>
-<%--                                    <li class="page-item"><a class="page-link" href="/ban-hang-tai-quay/detail-hoa-don/${hoaDon.id}?page=${pageData.number + 1}" id="modalLink3" >Next</a></li>--%>
-<%--                                </c:if>--%>
-<%--                            </ul>--%>
-<%--                        </div>--%>
+
+
+
+        <!-- Modal khách hàng -->
+        <div class="modal fade" id="exampleModal4" tabindex="-1" aria-labelledby="exampleModalLabel4" aria-hidden="true"
+             data-bs-backdrop="static" data-bs-keyboard="false" >
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="row">
+                            <h3 class="modal-title" id="exampleModalLabel4">Chi tiết sản phẩm</h3>
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+                    </div>
+                    <div class="modal-body">
+
+                        <%--          --%>
+                        <div class="row">
+                            <div class="col col-12">
+                                <!-- Sản phẩm -->
+
+                                <div class="row">
+                                    <div class="col col-5">
+                                        <form method="post" action="/ban-hang-tai-quay/search">
+                                            <div class="input-group mb-3">
+                                                <input type="text" name="search" class="form-control"
+                                                       placeholder="Tìm kiếm theo mã sản phẩm, màu sắc,..."
+                                                       aria-label="Recipient's username" aria-describedby="button-addon2">
+                                                <button class="btn btn-primary" type="submit" id="button-addon2">Tìm kiếm
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+
+
+                                <form method="post" action="/ban-hang-tai-quay/filter">
+                                    <div class="row">
+                                        <div class="col col-md-2">
+                                            <div class="input-group mb-3">
+                                                <div class="dropdown">
+                                                    <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                                            id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                                                            aria-expanded="false">
+                                                        Chọn sản phẩm
+                                                    </button>
+                                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                                        <c:forEach items="${listSanPham}" var="sanPham">
+                                                            <li><a class="dropdown-item"
+                                                                   href="/ban-hang-tai-quay/locSPCTBySanPham/${sanPham.id}">${sanPham.ten}</a>
+                                                            </li>
+                                                        </c:forEach>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col col-md-2">
+                                            <div class="dropdown">
+                                                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    Chọn màu sắc
+                                                </button>
+                                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                                                    <c:forEach items="${listMauSac}" var="mauSac">
+                                                        <li><a class="dropdown-item" href="/ban-hang-tai-quay/locSPCTByMauSac/${mauSac.id}">${mauSac.ten}</a></li>
+                                                    </c:forEach>
+                                                </ul>
+                                            </div>
+                                        </div>
+
+                                        <div class="col col-md-2">
+                                            <div class="dropdown">
+                                                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    Chọn kích thước
+                                                </button>
+                                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton3">
+                                                    <c:forEach items="${listKichThuoc}" var="kichThuoc">
+                                                        <li><a class="dropdown-item" href="/ban-hang-tai-quay/locSPCTByKichThuoc/${kichThuoc.id}">${kichThuoc.ten}</a></li>
+                                                    </c:forEach>
+                                                </ul>
+                                            </div>
+                                        </div>
+
+                                        <div class="col col-md-2">
+                                            <div class="dropdown">
+                                                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton4" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    Chọn chất liệu
+                                                </button>
+                                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton4">
+                                                    <c:forEach items="${listChatLieu}" var="chatLieu">
+                                                        <li><a class="dropdown-item" href="/ban-hang-tai-quay/locSPCTByChatLieu/${chatLieu.id}">${chatLieu.ten}</a></li>
+                                                    </c:forEach>
+                                                </ul>
+                                            </div>
+                                        </div>
+
+                                        <div class="col col-md-2">
+                                            <div class="dropdown">
+                                                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton5" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    Chọn kiểu tay
+                                                </button>
+                                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton5">
+                                                    <c:forEach items="${listKieuTay}" var="kieuTay">
+                                                        <li><a class="dropdown-item" href="/ban-hang-tai-quay/locSPCTByKieuTay/${kieuTay.id}">${kieuTay.ten}</a></li>
+                                                    </c:forEach>
+                                                </ul>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </form>
+
+                                <div class="table-scroll2">
+                                    <table class="table table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th>STT</th>
+                                            <th>Mã</th>
+                                            <th>Tên SP</th>
+                                            <th>Màu sắc</th>
+                                            <th>Kích thước</th>
+                                            <th>Chất liệu</th>
+                                            <th>Kiểu tay</th>
+                                            <th>Số lượng</th>
+                                            <th>Đơn giá</th>
+                                            <th>Trạng thái</th>
+                                            <th>Thao tác</th>
+                                        </tr>
+                                        </thead>
+
+                                        <tbody id="chiTietSanPhamTableBody">
+                                        <c:forEach varStatus="i" items="${listCTSP.content}" var="spct">
+                                            <tr>
+                                                <td>${i.index+1}</td>
+                                                <td>${spct.idSanPham.ma}</td>
+                                                <td>${spct.idSanPham.ten}</td>
+                                                <td>${spct.idMauSac.ten}</td>
+                                                <td>${spct.idKichThuoc.ten}</td>
+                                                <td>${spct.idChatLieu.ten}</td>
+                                                <td>${spct.idKieuTay.ten}</td>
+                                                <td>${spct.soLuong}</td>
+                                                <td>${spct.giaBan}</td>
+                                                <td>${spct.trangThai==1?"Còn hàng":"Hết hàng"}</td>
+                                                <td>
+                                                    <form action="/ban-hang-tai-quay/add-san-pham/${spct.id}" method="post"
+                                                          onsubmit="return validateBeforeAddToCart();">
+                                                        <input type="hidden" name="idHoaDon" value="${hoaDon.id}"
+                                                               id="selectedInvoiceId">
+                                                        <button class="btn btn-success" type="submit">+</button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        </c:forEach>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
 
                     </div>
                 </div>
             </div>
         </div>
         <%--End--%>
+
+
+
+
+
+
         <!-- Footer -->
         <footer class="sticky-footer bg-white">
             <div class="container my-auto">
@@ -911,12 +972,12 @@
 </a>
 
 <!-- Logout Modal-->
-<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1"
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel1">Ready to Leave?</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
@@ -950,57 +1011,26 @@
 </body>
 
 <script>
-
-
-    const loadDsHDCho = () => {
-        fetch("/ban-hang-tai-quay/api/load-hd-cho", {
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        }).then(response => response.json())
-        .then(resp => {
-            let html = '';
-            for (let i = 0; i < resp.length; i++) {
-                const hd = resp[i];
-                html += `<tr>
-                    <td>${i + 1}</td>
-                    <td>${hd.ma}</td>
-                    <td>${hd.idNhanVien}</td>
-                    <td>Khach le</td>
-                    <td>${hd.ngayTao}</td>
-                    <td>${hd.trangThai==0 ? "Chua thanh toan" : "Da thanh toan"}</td>
-                    <td>
-                        <a href="#"
-                           class="btn btn-primary">
-                            <i class="bi bi-eye-fill"></i>
-                        </a>
-                    </td>
-                </tr>`;
-            }
-
-            console.log(html)
-            $("#tbl_hd_cho").html(html)
+    document.querySelectorAll('.delete-button2').forEach(button => {
+        button.addEventListener('click', function() {
+            const form = this.closest('.delete-form');
+            Swal.fire({
+                title: 'Bạn có muốn xóa không??',
+                text: "Bạn sẽ không thể khôi phục lại dữ liệu này!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Đồng ý'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
         });
-    }
+    });
 
-    loadDsHDCho();
-    $("button[id^='add_sp_gio_hang_']").on('click', e => {
-        e.preventDefault();
-        const queryString = window.location.search;
-        console.log("path variable: ",queryString);
-        const spctid = e.currentTarget.id.replace("add_sp_gio_hang_", "");
-        console.log("---", e.currentTarget.id, spctid)
-        fetch("/ban-hang-tai-quay/api/add-san-pham/" + spctid, {
-            method: "post",
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        }).then( (response) => {
-            console.log(response);
-        });
-    })
+
 
     function searchByName(param){
         var txtSearch = param.value;
@@ -1025,9 +1055,10 @@
         });
     }
 
-<%--    --%>
+    <%--    --%>
     function calculateChange() {
-        var tongTien = parseInt('${tongTien}');
+        <%--var tongTien = parseInt('${total}');--%>
+        var tongTien = parseInt(document.getElementById('tongTienKhiTruKM').value);
         var tienKhachDua = parseInt(document.getElementById('tienKhachDua').value);
         console.log(tongTien);
         console.log(tienKhachDua);
@@ -1041,18 +1072,6 @@
         }
 
         if (tienKhachDua == "" || tienKhachDua < tongTien) {
-    function calculateChange() {
-        var tongTien = parseFloat('${tongTien}');
-        var tienKhachDua = parseFloat(document.getElementById('tienKhachDua').value);
-        var tienTraLai = tienKhachDua - tongTien;
-        var thongBao = document.getElementById("errTraLai");
-        if (isNaN(tienKhachDua)) {
-            thongBao.textContent = "Vui lòng nhập số tiền hợp lệ.";
-            // alert('Vui lòng nhập số tiền hợp lệ.');
-            return false;
-        }
-
-        if (tienKhachDua < tongTien) {
             thongBao.textContent = "Số tiền khách đưa phải lớn hơn hoặc bằng tổng tiền.";
             // alert('Số tiền khách đưa phải lớn hơn hoặc bằng tổng tiền.');
             document.getElementById('tienTraLai').value = "";
@@ -1066,33 +1085,39 @@
         return true;
     }
 
-    <%--function validatePayment() {--%>
-    <%--    var tienKhachDua = document.getElementById("tienKhachDua").value;--%>
-    <%--    var tongTien = parseFloat('${tongTien}');--%>
-    <%--    if (tienKhachDua === "" || tienKhachDua < tongTien) {--%>
-    <%--        thongBao.textContent = thongBao.textContent = "Vui lòng nhập số tiền khách đưa hợp lệ."--%>
-    <%--        // alert("Vui lòng nhập số tiền khách đưa hợp lệ.");--%>
-    <%--        document.getElementById('tienTraLai').value = "";--%>
-    <%--        return false;--%>
-    <%--    }--%>
-    <%--    thongBao.textContent="";--%>
-    <%--    return true;--%>
-    <%--}--%>
 
-        document.getElementById('tienTraLai').value = tienTraLai.toFixed(2);
-    }
 
-    function validatePayment() {
-        var tienKhachDua = document.getElementById("tienKhachDua").value;
-        var tongTien = parseFloat('${tongTien}');
-        if (tienKhachDua === "" || tienKhachDua < tongTien) {
-            thongBao.textContent = thongBao.textContent = "Vui lòng nhập số tiền khách đưa hợp lệ."
-            // alert("Vui lòng nhập số tiền khách đưa hợp lệ.");
-            document.getElementById('tienTraLai').value = "";
+    function checkValidateAfterUpdate(){
+
+        var soLuongNhap = parseInt(document.getElementById("soLuong").value);
+        var soLuongCu = parseInt(document.getElementById("soLuongCu").value);
+        var tongSL22 = parseInt(document.getElementById("tongSL").value);
+        var tt = soLuongCu+tongSL22
+
+
+        if (soLuongNhap<=0){
+            Swal.fire({
+                title: 'Lỗi!',
+                text: 'Số lượng phải lớn hơn 0!',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
             return false;
         }
+
+        if (soLuongNhap>tt){
+            Swal.fire({
+                title: 'Lỗi!',
+                text: 'Số lượng nhập lớn hơn số lượng trong kho',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+            return false;
+        }
+
         return true;
     }
+
 
     function validateBeforeAddToCart() {
         // Kiểm tra xem hóa đơn đã được chọn chưa
@@ -1105,7 +1130,286 @@
 
         return true; // Cho phép thêm sản phẩm vào giỏ hàng nếu đã chọn hóa đơn
     }
+
+
+    function validateAddToMaGiamGia(){
+        // Kiểm tra xem hóa đơn đã được chọn chưa
+        var selectedMaGiamGia = document.getElementById("selectedMaGiamGia").value;
+
+        if (selectedMaGiamGia === "") {
+            alert("Vui lòng chọn hóa đơn trước khi thêm mã giảm giá vào giỏ hàng.");
+            return false; // Ngăn chặn sự kiện click nút "+"
+        }
+
+        return true; // Cho phép thêm sản phẩm vào giỏ hàng nếu đã chọn hóa đơn
     }
+    //---------------------------------------------------//
+
+    <%--const loadDsHDCT = () => {--%>
+    <%--    // get api + scpt.id--%>
+    <%--    let datatest = "data testing";--%>
+    <%--    fetch("/ban_hang_tai_quay/api/lst-hdct/${idHD}", {--%>
+    <%--        headers: {--%>
+    <%--            'Accept': 'application/json',--%>
+    <%--            'Content-Type': 'application/json'--%>
+    <%--        }--%>
+    <%--    }).then(response => response.json())--%>
+    <%--        .then(resp => {--%>
+    <%--            let html = '';--%>
+    <%--            resp.map((hdct,i)=>{--%>
+    <%--                const text = "html${hdct.id}";--%>
+    <%--                const id = hdct.id || 'N/A';--%>
+    <%--                const maSanPham = hdct.idCTSP && hdct.idCTSP.idSanPham ? hdct.idCTSP.idSanPham.ma : 'N/A';--%>
+    <%--                const tenSanPham = hdct.idCTSP && hdct.idCTSP.idSanPham ? hdct.idCTSP.idSanPham.ten : 'N/A';--%>
+    <%--                const soLuong = hdct ? hdct.soLuong : 'N/A';--%>
+    <%--                const giaBan = hdct.idCTSP ? hdct.idCTSP.giaBan : 'N/A';--%>
+    <%--                const thanhTien = soLuong*giaBan;--%>
+    <%--                const maHD = hdct.idHoaDon ? hdct.idHoaDon.ma : 'N/A';--%>
+    <%--                const idCTSP = hdct.idCTSP ? hdct.idCTSP.id : 'N/A';--%>
+    <%--                const idHoaDon = hdct.idHoaDon ? hdct.idHoaDon.id : 'N/A';--%>
+    <%--                html +=  '<tr>' +--%>
+    <%--                    '<td>' + (i + 1) + '</td>' +--%>
+    <%--                    '<td>' + maHD + '</td>'+--%>
+    <%--                    '<td>' + maSanPham + '</td>' +--%>
+    <%--                    '<td>' + tenSanPham + '</td>' +--%>
+    <%--                    '<td colspan="2" style="display: flex; align-items: center;">' +--%>
+    <%--                    '<form class="d-flex" method="post" action="/ban-hang-tai-quay/update-sl/' + (idCTSP) + '">' +--%>
+    <%--                    '<input type="hidden" name="idHoaDon" value="' + idHoaDon + '">' +--%>
+    <%--                    '<input class="form-control me-2" type="text" name="soLuong" value="' + (soLuong) + '" style="width: 45px">' +--%>
+    <%--                    '<button class="btn btn-light" type="submit">' +--%>
+    <%--                    '<i class="bi bi-pencil"></i>' +--%>
+    <%--                    '</button>' +--%>
+    <%--                    '</form>' +--%>
+    <%--                    '</td>' +--%>
+    <%--                    '<td>' + giaBan + '</td>' +--%>
+    <%--                    '<td>' + thanhTien + '</td>' +--%>
+    <%--                    '<td>' +--%>
+    <%--                    '<form action="/ban-hang-tai-quay/delete-hdct/' + id + '" method="post">' +--%>
+    <%--                    '<input type="hidden" name="idHoaDon" value="' + idHoaDon + '">' +--%>
+    <%--                    '<button class="btn btn-danger" type="submit">Delete</button>' +--%>
+    <%--                    '</form>' +--%>
+    <%--                    '</td>' +//editing--%>
+    <%--                    '</tr>';--%>
+    <%--            });--%>
+    <%--            $("#tbl_hd_cho").html(html)--%>
+    <%--        });--%>
+    <%--}--%>
+    <%--loadDsHDCT();--%>
+
+    <%--var loadDsCTSP = () => {--%>
+    <%--    let datatest = "data testing";--%>
+    <%--    fetch("/ban_hang_tai_quay/api/lst-spct", {--%>
+    <%--        headers: {--%>
+    <%--            'Accept': 'application/json',--%>
+    <%--            'Content-Type': 'application/json'--%>
+    <%--        }--%>
+    <%--    }).then(response => response.json())--%>
+    <%--        .then(resp => {--%>
+    <%--            let html = '';--%>
+    <%--            resp.map((spct,i)=>{--%>
+    <%--                const maSanPham = spct.idSanPham && spct.idSanPham.ma || 'N/A';--%>
+    <%--                const tenSanPham = spct.idSanPham && spct.idSanPham.ten || 'N/A';--%>
+    <%--                const tenMauSac = spct.idMauSac && spct.idMauSac.ten || 'N/A';--%>
+    <%--                const tenKichThuoc = spct.idKichThuoc && spct.idKichThuoc.ten || 'N/A';--%>
+    <%--                const tenChatLieu = spct.idChatLieu && spct.idChatLieu.ten || 'N/A';--%>
+    <%--                const tenKieuTay = spct.idKieuTay && spct.idKieuTay.ten || 'N/A';--%>
+    <%--                const soLuong = spct.soLuong || 'N/A';--%>
+    <%--                const giaBan = spct.giaBan || 'N/A';--%>
+    <%--                const trangThai = spct.trangThai == 1 ? "Còn hàng" : "Hết hàng";--%>
+    <%--                html += '<tr>' +--%>
+    <%--                    '<td>' + (i + 1) + '</td>' +--%>
+    <%--                    '<td>' + maSanPham + '</td>' +--%>
+    <%--                    '<td>' + tenSanPham + '</td>' +--%>
+    <%--                    '<td>' + tenMauSac + '</td>' +--%>
+    <%--                    '<td>' + tenKichThuoc + '</td>' +--%>
+    <%--                    '<td>' + tenChatLieu + '</td>' +--%>
+    <%--                    '<td>' + tenKieuTay + '</td>' +--%>
+    <%--                    '<td>' + soLuong + '</td>' +--%>
+    <%--                    '<td>' + giaBan + '</td>' +--%>
+    <%--                    '<td>' + trangThai + '</td>' +--%>
+    <%--                    // '<td><button id="add_sp_gio_hang_' + spct.id + '" class="btn btn-success">+</button></td>' +--%>
+    <%--                    '<td>' +--%>
+    <%--                    '<form action="/ban_hang_tai_quay/add-san-pham/' + spct.id  + '" method="post">' +--%>
+    <%--                    '<input type="hidden" name="idHoaDon" value="${hoaDon.id}">' +--%>
+    <%--                    '<button class="btn btn-success" type="submit">+</button>' +--%>
+    <%--                    '</form>' +--%>
+    <%--                    '</td>' +//editing--%>
+    <%--                    '</tr>';--%>
+    <%--            });--%>
+    <%--            $("#tbl_ds_spct").html(html)--%>
+    <%--        });--%>
+    <%--}--%>
+    <%--loadDsCTSP();--%>
+
+
+
+
+    // ---  Ajax xóa hóa đơn
+    // Lấy tất cả các nút xóa trong bảng
+    const deleteButtons = document.querySelectorAll('.delete-button');
+
+    // Thêm sự kiện click cho từng nút
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            const itemId = this.getAttribute('data-id');
+
+            Swal.fire({
+                title: 'Bạn có muốn xóa không?',
+                text: "Bạn sẽ không thể khôi phục lại dữ liệu này!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Vâng, xóa nó!',
+                cancelButtonText: 'Hủy'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Thực hiện hành động xóa ở đây, ví dụ:
+                    // Gửi yêu cầu AJAX tới server để xóa dữ liệu
+                    fetch(`/ban-hang-tai-quay/delete-hoa-don/`+itemId, { method: 'GET' }).then(() => {
+                        Swal.fire(
+                            'Đã xóa!',
+                            'Dữ liệu của bạn đã bị xóa.',
+                            'success'
+                        );
+                        // Xóa hàng khỏi bảng sau khi xóa thành công
+                        button.closest('tr').remove();
+                    });
+                    button.closest('tr').remove();
+                }
+            });
+        });
+    });
+    // Kết thúc xóa hóa đơn
+
+
+    <%--// ---  Ajax xóa hóa đơn chi tiết--%>
+    <%--// Lấy tất cả các nút xóa trong bảng--%>
+    <%--const deleteButtonHDCT = document.querySelectorAll('.deleteHDCT-button');--%>
+
+    <%--// Thêm sự kiện click cho từng nút--%>
+    <%--deleteButtonHDCT.forEach(button => {--%>
+    <%--    button.addEventListener('click', function () {--%>
+    <%--        const idHDCT = this.getAttribute('data-idHDCT');--%>
+    <%--        const idCTSP = this.getAttribute('data-idCTSP');--%>
+
+    <%--        Swal.fire({--%>
+    <%--            title: 'Bạn có muốn xóa không?',--%>
+    <%--            text: "Bạn sẽ không thể khôi phục lại dữ liệu này!",--%>
+    <%--            icon: 'warning',--%>
+    <%--            showCancelButton: true,--%>
+    <%--            confirmButtonColor: '#3085d6',--%>
+    <%--            cancelButtonColor: '#d33',--%>
+    <%--            confirmButtonText: 'Vâng, xóa nó!',--%>
+    <%--            cancelButtonText: 'Hủy'--%>
+    <%--        }).then((result) => {--%>
+    <%--            if (result.isConfirmed) {--%>
+    <%--                // Thực hiện hành động xóa ở đây, ví dụ:--%>
+    <%--                // Gửi yêu cầu AJAX tới server để xóa dữ liệu--%>
+    <%--                fetch(`/ban_hang_tai_quay/delete-hdct/`+idHDCT+`/`+idCTSP, { method: 'POST' }).then(() => {--%>
+    <%--                    loadDsCTSP();--%>
+    <%--                    Swal.fire(--%>
+    <%--                        'Đã xóa!',--%>
+    <%--                        'Dữ liệu của bạn đã bị xóa.',--%>
+    <%--                        'success'--%>
+    <%--                    );--%>
+    <%--                    // Xóa hàng khỏi bảng sau khi xóa thành công--%>
+    <%--                    button.closest('tr').remove();--%>
+    <%--                    loadDsCTSP();--%>
+    <%--                });--%>
+    <%--                button.closest('tr').remove();--%>
+    <%--            }--%>
+    <%--        });--%>
+    <%--    });--%>
+    <%--});--%>
+    <%--// Kết thúc xóa hóa đơn chi tiết--%>
+
+
+    <%--// Start--%>
+
+    <%--// Lấy tất cả các nút cập nhật trong bảng--%>
+    <%--const updateButtons = document.querySelectorAll('.update-button');--%>
+
+    <%--// Thêm sự kiện click cho từng nút--%>
+    <%--updateButtons.forEach(button => {--%>
+    <%--    button.addEventListener('click', function () {--%>
+    <%--        const itemId = this.getAttribute('data-id');--%>
+    <%--        const itemSL = parseInt(this.getAttribute('data-sl'));--%>
+    <%--        const donGia = this.getAttribute('data-donGia');--%>
+    <%--        const tongSL = parseInt(this.getAttribute('data-tongSL'));--%>
+    <%--        var tong2 = itemSL+tongSL;--%>
+
+    <%--        console.log("số lượng: "+tong2);--%>
+    <%--        console.log("số lượng: "+itemId);--%>
+
+    <%--        Swal.fire({--%>
+    <%--            title: 'Cập nhật số lượng',--%>
+    <%--            html: `--%>
+    <%--      <form id="update-form">--%>
+    <%--        <label for="name">Số lượng mới:</label>--%>
+    <%--        <input type="text" id="soLuong" name="quantity" value="${itemSL}" class="swal2-input">--%>
+    <%--      </form>--%>
+    <%--    `,--%>
+    <%--            showCancelButton: true,--%>
+    <%--            confirmButtonText: 'Cập nhật',--%>
+    <%--            cancelButtonText: 'Hủy',--%>
+    <%--            preConfirm: () => {--%>
+    <%--                const quantity = document.getElementById('soLuong').value;--%>
+    <%--                if (!quantity || quantity <= 0) {--%>
+    <%--                    Swal.showValidationMessage('Bạn cần nhập số lượng hợp lệ!');--%>
+    <%--                }--%>
+
+    <%--                if (quantity>tong2){--%>
+    <%--                    Swal.showValidationMessage('Số lượng bạn nhập lớn hơn số lượng trong kho!');--%>
+    <%--                }--%>
+
+    <%--                return { quantity: quantity };--%>
+    <%--            }--%>
+    <%--        }).then((result) => {--%>
+    <%--            if (result.isConfirmed) {--%>
+    <%--                const newQuantity = result.value.quantity;--%>
+
+
+    <%--                // Thực hiện hành động cập nhật ở đây, ví dụ:--%>
+    <%--                // Gửi yêu cầu AJAX tới server để cập nhật dữ liệu--%>
+    <%--                fetch(`/ban_hang_tai_quay/api-update-sl/`+itemId, {--%>
+    <%--                    method: 'POST',--%>
+    <%--                    headers: {--%>
+    <%--                        'Content-Type': 'application/json'--%>
+    <%--                    },--%>
+
+
+    <%--                    body: JSON.stringify({ quantity: newQuantity })--%>
+
+    <%--                }).then(() => {--%>
+
+    <%--                    loadDsCTSP();--%>
+    <%--                    Swal.fire(--%>
+    <%--                        'Cập nhật thành công!',--%>
+    <%--                        'Dữ liệu của bạn đã được cập nhật.',--%>
+    <%--                        'success'--%>
+    <%--                    );--%>
+    <%--                    // Cập nhật tên trong bảng--%>
+    <%--                    button.closest('tr').querySelector('td:nth-child(5)').textContent = newQuantity;--%>
+    <%--                    button.closest('tr').querySelector('td:nth-child(7)').textContent = donGia*newQuantity;--%>
+    <%--                    loadDsCTSP();--%>
+
+
+
+    <%--                })--%>
+
+    <%--                button.closest('tr').querySelector('td:nth-child(5)').textContent = newQuantity;--%>
+    <%--                // loadDsCTSP();--%>
+    <%--            }--%>
+    <%--        });--%>
+
+    <%--    });--%>
+    <%--});--%>
+    //End update số lượng của hóa đơn chi tiết
+
+
+
+
 </script>
 <script>
     // Hiển thị thông báo thêm thành công hoặc thất bại sử dụng thư viện Sweet Alert2
@@ -1143,27 +1447,5 @@
     </c:if>
 
 
-    // document.addEventListener("DOMContentLoaded", function () {
-    //     const addButton = document.querySelector(".btn-bill");
-    //     const currentHoaDonCount = parseInt(document.getElementById("currentHoaDonCount").value);
-    //
-    //     addButton.addEventListener("click", function (event) {
-    //         event.preventDefault();
-    //
-    //         if (currentHoaDonCount >= 4) {
-    //             Swal.fire({
-    //                 icon: "warning",
-    //                 title: "Bạn chỉ có thể tạo tối đa 5 đơn hàng",
-    //                 toast: true,
-    //                 position: "top-end",
-    //                 showConfirmButton: false,
-    //                 timer: 3000,
-    //                 timerProgressBar: true
-    //             });
-    //         } else {
-    //             document.getElementById("addHoaDonForm").submit();
-    //         }
-    //     });
-    // });
 </script>
 </html>
