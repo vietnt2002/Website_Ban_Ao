@@ -1,4 +1,5 @@
 package com.example.java4.controller.BanHangTaiQuay;
+
 import com.example.java4.entities.*;
 import com.example.java4.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,14 +12,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import java.time.LocalDateTime;
+
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
 
 @Controller
 @RequestMapping("/ban-hang-tai-quay")
-public class BanTaiQuayController {
+public class BanHangTaiQuayController {
 
     @Autowired
     private HoaDonRepository hoaDonRepository;
@@ -53,6 +55,9 @@ public class BanTaiQuayController {
     @Autowired
     KhuyenMaiRepository khuyenMaiRepo;
 
+    @Autowired
+    Validator validator;
+
     private List<KhuyenMai> listKhuyenMai;
     private List<HoaDon> listHoaDon;
     private List<ChiTietHoaDon> listHDCT;
@@ -64,10 +69,22 @@ public class BanTaiQuayController {
     private List<KieuTay> listKieuTay;
     private List<ChatLieu> listChatLieu;
     private String idNV = "BF29DB87-6ED2-46E8-B34C-135B2EA4CCA6";
+    private String idHoaDon;
+
+    private int tongSL;
+
+//    private BigDecimal tongTien;
+
+    public BanHangTaiQuayController() {
+        idHoaDon = "";
+        tongSL = 0;
+//        tongTien = BigDecimal.ZERO;
+    }
+
     @GetMapping("")
-    public String hienThi(Model model,@RequestParam(value = "page",defaultValue ="0") String pageParam ) {
+    public String hienThi(Model model, @RequestParam(value = "page",defaultValue ="0") String pageParam ) {
         System.out.println("========================================= test paa"+pageParam);
-        Pageable pageable = PageRequest.of(Integer.valueOf(pageParam), 10);
+        Pageable pageable = PageRequest.of(Integer.valueOf(pageParam), 1000);
         listHoaDon = hoaDonRepository.selectTop5();
         Page<ChiTietSanPham> listCTSP = sanPhamChiTietRepository.findByTrangThai(1,pageable);
         listKH = khachHangRepository.findAll();
@@ -86,16 +103,23 @@ public class BanTaiQuayController {
         model.addAttribute("listCTSP", listCTSP);
         model.addAttribute("listKH", listKH);
         model.addAttribute("listKM",listKhuyenMai);
+        model.addAttribute("tongSL", tongSL);
         System.out.println(listMauSac);
         return "/view/BanHangTaiQuay/banHangTaiQuay.jsp";
     }
     @GetMapping("detail-hoa-don/{idHD}")
-    public String detailHoaDon(@PathVariable String idHD,@RequestParam Optional<Integer> pageParam,
+    public String detailHoaDon(@PathVariable String idHD, @RequestParam Optional<Integer> pageParam,
                                @RequestParam("page") Optional<Integer> pageParam2, Model model) {
+
+
         Optional<HoaDon> hoaDon = hoaDonRepository.findById(idHD);
+
+        idHoaDon = idHD;
+
         model.addAttribute("hoaDon", hoaDon.get());
         listHoaDon = hoaDonRepository.selectTop5();
-        listHDCT = hoaDonChiTietRepository.findAll();
+//        listHDCT = hoaDonChiTietRepository.findAll();
+        listHDCT = hoaDonChiTietRepository.findAllByHoaDon_Id(idHoaDon);
         listKH = khachHangRepository.findAll();
         listMauSac = mauSacRepository.findAll();
         listKichThuoc = kichThuocRepo.findAll();
@@ -109,7 +133,7 @@ public class BanTaiQuayController {
         model.addAttribute("pageData",pageData);
         int total = pageData.getTotalPages();
         model.addAttribute("total",total);
-        Pageable pageable = PageRequest.of(pageParam.orElse(0), 10);
+        Pageable pageable = PageRequest.of(pageParam.orElse(0), 1000);
         Page<ChiTietSanPham> listCTSP = sanPhamChiTietRepository.findAll(pageable);
         model.addAttribute("listHoaDon", listHoaDon);
         model.addAttribute("listCTSP", listCTSP);
@@ -121,43 +145,30 @@ public class BanTaiQuayController {
         model.addAttribute("listKieuTay", listKieuTay);
         model.addAttribute("listSanPham", listSanPham);
         model.addAttribute("listKM",listKhuyenMai);
-        //Lọc hóa đơn chi tiết theo id hóa đơn
-        List<ChiTietHoaDon> gioHangTheoHoaDon = new ArrayList<>();
-        for (ChiTietHoaDon chiTietHoaDon : listHDCT) {
-            if (chiTietHoaDon.getIdHoaDon().getId().equals(idHD)) {
-                gioHangTheoHoaDon.add(chiTietHoaDon);
-                //Tính tổng tiền từng hóa đơn
-                BigDecimal tongTien = BigDecimal.ZERO;
-                for (ChiTietHoaDon hd : gioHangTheoHoaDon) {
-                    int sL = hd.getSoLuong();
-                    BigDecimal donGia = hd.getDonGia();
-                    BigDecimal thanhTien = donGia.multiply(BigDecimal.valueOf(sL));
-                    tongTien = tongTien.add(thanhTien);
-                }
-                model.addAttribute("tongTien", tongTien);
-            }
-        }
-        model.addAttribute("listHDCT", gioHangTheoHoaDon);
+        BigDecimal tongTien2 = hoaDonChiTietRepository.tinhGiaTriHD(idHoaDon);
+        model.addAttribute("total",tongTien2);
         return "/view/BanHangTaiQuay/banHangTaiQuay.jsp";
     }
 
 
-    @PostMapping("/delete-hdct/{idHDCT}")
-    public String deleteHDCT(@PathVariable String idHDCT){
+    @PostMapping("/delete-hdct/{idHDCT}/{idCTSP}")
+    public String deleteHDCT(@PathVariable String idHDCT,@PathVariable String idCTSP){
         HoaDon hd = new HoaDon();
         int count = 0;
-        ChiTietSanPham ctsp = new ChiTietSanPham();
+        ChiTietSanPham ctsp = sanPhamChiTietRepository.findByIdCTSP(idCTSP);
         for (ChiTietHoaDon hdct:listHDCT){
             if (hdct.getId().equals(idHDCT)){
+                count=hdct.getSoLuong();
                 hoaDonChiTietRepository.delete(hdct);
                 hd = hdct.getIdHoaDon();
-                ctsp = hdct.getIdCTSP();
-                count=hdct.getSoLuong();
-                System.out.println("test data :========================== ");
+
+                if (ctsp.getId().equals(idCTSP)){
+                    ctsp.setSoLuong(ctsp.getSoLuong()+count);
+                    sanPhamChiTietRepository.save(ctsp);
+                }
             }
         }
-        ctsp.setSoLuong(ctsp.getSoLuong()+count);
-        sanPhamChiTietRepository.save(ctsp);
+
         return "redirect:/ban-hang-tai-quay/detail-hoa-don/" + hd.getId();
     }
 
@@ -194,6 +205,19 @@ public class BanTaiQuayController {
         return "redirect:/ban-hang-tai-quay";
     }
 
+    //  Delete hóa đơn
+    @GetMapping("delete-hoa-don/{idHoaDon}")
+    public String deleteHoaDon(@PathVariable String idHoaDon){
+
+        for (HoaDon hoaDon: listHoaDon){
+            if (hoaDon.getId().equals(idHoaDon)){
+                hoaDonRepository.delete(hoaDon);
+            }
+        }
+        return "redirect:/ban-hang-tai-quay";
+    }
+
+
     @PostMapping("them-so-luong/{idCTSP}")
     public String themSoLuong(@PathVariable String idCTSP, @RequestParam String idHoaDon, RedirectAttributes redirectAttributes) {
         ChiTietSanPham chiTietSanPham = sanPhamChiTietRepository.findByIdCTSP(idCTSP);
@@ -227,21 +251,29 @@ public class BanTaiQuayController {
     //Cập nhật số lượng
     @PostMapping("update-sl/{idCTSP}")
     public String updateSoLuong(@PathVariable String idCTSP,
-                                @RequestParam String idHoaDon,
-                                @RequestParam Integer soLuong){
+//                                @RequestBody Map<String, Integer> request,
+                                @RequestParam int soLuong,
+                                Model model,RedirectAttributes redirectAttributes){
 
         ChiTietSanPham chiTietSanPham = sanPhamChiTietRepository.findByIdCTSP(idCTSP);
-        for(ChiTietHoaDon chiTietHoaDon : listHDCT){
-            if (chiTietHoaDon.getIdCTSP().getId().equals(idCTSP) && chiTietHoaDon.getIdHoaDon().getId().equals(idHoaDon)) {
-                chiTietHoaDon.setSoLuong(soLuong);
-                hoaDonChiTietRepository.save(chiTietHoaDon);
-
-                //Số lượng của sản phẩm chi tiết -1 khi ấn vào button thêm trong giỏ hàng
-                if (chiTietSanPham.getId().equals(idCTSP)) {
-                    chiTietSanPham.setSoLuong(chiTietSanPham.getSoLuong() - chiTietHoaDon.getSoLuong() + 1);
-                    sanPhamChiTietRepository.save(chiTietSanPham);
+//        int newQuantity = request.get("quantity");
+        tongSL = chiTietSanPham.getSoLuong();
+        if(validator.isOutStock(soLuong,idCTSP)){
+            for(ChiTietHoaDon chiTietHoaDon : listHDCT){
+                if (chiTietHoaDon.getIdCTSP().getId().equals(idCTSP) && chiTietHoaDon.getIdHoaDon().getId().equals(idHoaDon)) {
+                    int sl = chiTietHoaDon.getSoLuong();
+                    chiTietHoaDon.setSoLuong(soLuong);
+                    hoaDonChiTietRepository.save(chiTietHoaDon);
+                    //Số lượng của sản phẩm chi tiết -1 khi ấn vào button thêm trong giỏ hàng
+                    if (chiTietSanPham.getId().equals(idCTSP) ) {
+                        chiTietSanPham.setSoLuong(chiTietSanPham.getSoLuong() - chiTietHoaDon.getSoLuong() + sl);
+                        sanPhamChiTietRepository.save(chiTietSanPham);
+                    }
                 }
             }
+        }
+        else{
+            redirectAttributes.addFlashAttribute("error", "Không đủ số lượng.");
         }
         return "redirect:/ban-hang-tai-quay/detail-hoa-don/" + idHoaDon;
     }
@@ -287,12 +319,13 @@ public class BanTaiQuayController {
             //Nếu số lượng trong spct = 0 thì không đưuọc thêm sản phẩm nữa
             if (chiTietSanPham.getSoLuong() <= 0) {
                 chiTietHoaDon.setSoLuong(chiTietHoaDon.getSoLuong());
+                redirectAttributes.addFlashAttribute("error", "Tạm thời hết số lượng sản phẩm");
                 try {
                     hoaDonChiTietRepository.save(chiTietHoaDon);
                     spTonTaiTrongGioHang = true;
                     hdct.setSoLuong(hdct.getSoLuong()+1);
                     hoaDonChiTietRepository.save(hdct);
-                    redirectAttributes.addFlashAttribute("error", "Hết hàng");
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -483,7 +516,7 @@ public class BanTaiQuayController {
         model.addAttribute("listKieuTay",kieuTayRepo.findAll());
         model.addAttribute("nhanVien", nv.get());
         model.addAttribute("listHoaDon",listHoaDon);
-        return "/view/BanHangTaiQuay/banHangTaiQuay.jsp";
+        return "/view/BanHangTaiQuay/bangHangTaiQuay.jsp";
     }
     //lọc sản phẩm chi tiết
     @PostMapping("filter")
@@ -605,95 +638,6 @@ public class BanTaiQuayController {
         return "redirect:/ban-hang-tai-quay/detail-hoa-don/" + idHoaDon;
     }
 
-    @PostMapping("/api/add-san-pham/{idCTSP}")
-    @ResponseBody
-    public ResponseEntity<String> addSanPhamVaoGioHangAPI(@PathVariable String idCTSP, @RequestParam String idHoaDon) {
-        ChiTietHoaDon hdct = new ChiTietHoaDon();
-        //Tìm sản phẩm trong giỏ hàng
-        boolean spTonTaiTrongGioHang = false;
-//        SELECT hdct FROM HoaDonChiTiet hdct WHERE idHoaDon = :idHoaDon AND idSPCT = :idSPCT
-        Integer slBanDau = 1;
-        ChiTietSanPham chiTietSanPham = sanPhamChiTietRepository.findByIdCTSP(idCTSP);
-        for (ChiTietHoaDon chiTietHoaDon : listHDCT) {
-            //Nếu số lượng trong spct = 0 thì không đưuọc thêm sản phẩm nữa
-            if (chiTietSanPham.getSoLuong() <= 0) {
-                chiTietHoaDon.setSoLuong(chiTietHoaDon.getSoLuong());
-                try {
-                    hoaDonChiTietRepository.save(chiTietHoaDon);
-                    spTonTaiTrongGioHang = true;
-                    hdct.setSoLuong(hdct.getSoLuong()+1);
-                    hoaDonChiTietRepository.save(hdct);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                break;
-            } else {
-                if (chiTietHoaDon.getIdCTSP().getId().equals(idCTSP) && chiTietHoaDon.getIdHoaDon().getId().equals(idHoaDon)) {
-                    //Thêm số lượng sản phẩm +1 khi ấn vào button thêm trong giỏ hàng
-                    chiTietHoaDon.setSoLuong(chiTietHoaDon.getSoLuong() + 1);
-                    hoaDonChiTietRepository.save(chiTietHoaDon);
-
-                    //Số lượng của sản phẩm chi tiết bị -1 khi ấn vào button thêm trong giỏ hàng
-                    if (chiTietSanPham.getId().equals(idCTSP)) {
-                        chiTietSanPham.setSoLuong(chiTietSanPham.getSoLuong() - 1);
-                        sanPhamChiTietRepository.save(chiTietSanPham);
-                    }
-                    spTonTaiTrongGioHang = true;
-                    break;
-                }
-            }
-        }
-        BigDecimal donGia =  new BigDecimal(0);
-        if (!spTonTaiTrongGioHang) {
-            for (ChiTietSanPham sp : listCTSP) {
-                if (sp.getId().equals(idCTSP)) {
-                    donGia = sp.getGiaBan();
-                }
-            }
-            ChiTietSanPham ctsp = new ChiTietSanPham();
-            ctsp.setId(idCTSP);
-            hdct.setIdCTSP(ctsp);
-            HoaDon hoaDon = new HoaDon();
-            hoaDon.setId(idHoaDon);
-            hdct.setIdHoaDon(hoaDon);
-            hdct.setSoLuong(1);
-            hdct.setDonGia(donGia);
-            hoaDonChiTietRepository.save(hdct);
-            //Số lượng của sản phẩm chi tiết bị giảm 1 khi ấn vào button thêm trong giỏ hàng
-            if (chiTietSanPham.getId().equals(idCTSP)) {
-                chiTietSanPham.setSoLuong(chiTietSanPham.getSoLuong() - 1);
-                sanPhamChiTietRepository.save(chiTietSanPham);
-            }
-        }
-        return ResponseEntity.ok("ok");
-    }
-    @GetMapping("api/load-hd-cho")
-    public ResponseEntity<List<HoaDon>> hienThi(@RequestParam(value = "page",defaultValue ="0") String pageParam ) {
-        return ResponseEntity.ok(hoaDonRepository.selectTop5());
-    }
-    @CrossOrigin
-    @GetMapping("api/lst-hdct/{idHoaDon}")
-    public ResponseEntity<List<ChiTietHoaDon>> getLstHDCT(@PathVariable("idHoaDon") String idHoaDon){
-//        return ResponseEntity.ok(hoaDonChiTietRepository.findDistinctByHoaDon_Id(idHoaDon));
-        return ResponseEntity.ok(hoaDonChiTietRepository.findAllByHoaDon_Id(idHoaDon));
-    }
-
-    @CrossOrigin
-    @PostMapping("api/add-hdct/{idHoaDon}/{idSPCT}/{donGia}")
-    public ResponseEntity<Boolean> addLstHDCT(@PathVariable("idHoaDon") String idHoaDon,@PathVariable("idSPCT") String idSPCT,@PathVariable("donGia") String donGia ){
-        System.out.println("test post mapping ajax+++++++++++++++++++++++++++++++++++++++++: ");
-            ChiTietHoaDon cthd = new ChiTietHoaDon();
-            BigDecimal big = new BigDecimal(donGia);
-            cthd.setIdHoaDon(hoaDonRepository.findById(idHoaDon).get());
-            cthd.setIdCTSP(sanPhamChiTietRepository.findByIdCTSP(idSPCT));
-            cthd.setDonGia(big);
-            cthd.setSoLuong(1);
-            cthd.setTrangThai(0);
-            hoaDonChiTietRepository.save(cthd);
-            return ResponseEntity.ok(true);
-
-    }
-
     @CrossOrigin
     @GetMapping("api/lst-spct")
     public ResponseEntity<List<ChiTietSanPham>> getLstSPCT(@RequestParam(value = "page",defaultValue ="0") String pageParam){
@@ -701,10 +645,93 @@ public class BanTaiQuayController {
         return ResponseEntity.ok(sanPhamChiTietRepository.findByTrangThai(1,pageable).getContent());
     }
 
+    //Cập nhật số lượng
+    @CrossOrigin
+    @PostMapping("/api-update-sl/{idCTSP}")
+    public ResponseEntity<String> updateSoLuong2(@PathVariable String idCTSP,
+                                                 @RequestBody Map<String, Integer> request,
+                                                 Model model){
+
+        ChiTietSanPham chiTietSanPham = sanPhamChiTietRepository.findByIdCTSP(idCTSP);
+        int newQuantity = request.get("quantity");
+
+//        int tongSl = chiTietSanPham.getSoLuong();
+//        model.addAttribute("tongSl",tongSl);
+        for(ChiTietHoaDon chiTietHoaDon : listHDCT){
+            if (chiTietHoaDon.getIdCTSP().getId().equals(idCTSP) && chiTietHoaDon.getIdHoaDon().getId().equals(idHoaDon)) {
+
+                int sl = chiTietHoaDon.getSoLuong();
+                chiTietHoaDon.setSoLuong(newQuantity);
+
+                hoaDonChiTietRepository.save(chiTietHoaDon);
+
+                //Số lượng của sản phẩm chi tiết -1 khi ấn vào button thêm trong giỏ hàng
+                if (chiTietSanPham.getId().equals(idCTSP) ) {
+                    chiTietSanPham.setSoLuong(chiTietSanPham.getSoLuong() - chiTietHoaDon.getSoLuong() + sl);
+                    sanPhamChiTietRepository.save(chiTietSanPham);
+                }
+            }
+
+        }
+
+        return ResponseEntity.ok("ok");
+    }
+
     @CrossOrigin
     @GetMapping("api/get-spct/{idSPCT}")
     public ResponseEntity<ChiTietSanPham> getSPCT(@PathVariable("idSPCT") String idSPCT){
         return ResponseEntity.ok(sanPhamChiTietRepository.findById(idSPCT).get());
+    }
+
+
+    @CrossOrigin
+    @PostMapping("api/add-hdct/{idHoaDon}/{idSPCT}/{donGia}")
+    public ResponseEntity<String> addLstHDCT(@PathVariable("idHoaDon") String idHoaDon,@PathVariable("idSPCT") String idSPCT,@PathVariable("donGia") String donGia ){
+        ChiTietSanPham chiTietSanPham = sanPhamChiTietRepository.findByIdCTSP(idSPCT);
+        boolean flag = false;
+        String idHDCT = "";
+        //Kiểm tra xem sản phẩm đã có hay chưa
+        for (ChiTietHoaDon cthd : listHDCT) {
+            if (chiTietSanPham.getId().equals(cthd.getIdCTSP().getId())) {
+                idHDCT = cthd.getId();
+                flag = true;
+                break;
+            }
+        }
+        if (flag){
+            ChiTietHoaDon cthd = hoaDonChiTietRepository.findById(idHDCT).get();
+            cthd.setSoLuong(cthd.getSoLuong() + 1);
+            cthd.setDonGia(cthd.getDonGia());
+            hoaDonChiTietRepository.save(cthd);
+        }else {
+            ChiTietHoaDon hdct = new ChiTietHoaDon();
+            BigDecimal big = new BigDecimal(donGia);
+//            ChiTietSanPham ctsp = new ChiTietSanPham();
+//            ctsp.setId(idSPCT);
+            hdct.setIdCTSP(chiTietSanPham);
+            HoaDon hoaDon = new HoaDon();
+            hoaDon.setId(idHoaDon);
+            hdct.setIdHoaDon(hoaDon);
+            hdct.setSoLuong(1);
+            hdct.setDonGia(big);
+            hoaDonChiTietRepository.save(hdct);
+        }
+
+        return ResponseEntity.ok("ok");
+    }
+
+    @CrossOrigin
+    @GetMapping("api/lst-hdct/{idHoaDon}")
+    public ResponseEntity<List<ChiTietHoaDon>> getLstHDCT(@PathVariable("idHoaDon") String idHoaDon){
+//        return ResponseEntity.ok(hoaDonChiTietRepository.findDistinctByHoaDon_Id(idHoaDon));
+        return ResponseEntity.ok(hoaDonChiTietRepository.findAllByHoaDon_Id(idHoaDon));
+    }
+
+    //Test
+    @CrossOrigin
+    @GetMapping("api/get-hd/{idHoaDon}")
+    public ResponseEntity<HoaDon> getHoaDon(@PathVariable("idHoaDon") String idHoaDon){
+        return ResponseEntity.ok(hoaDonRepository.findById(idHoaDon).get());
     }
 
 }
