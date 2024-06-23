@@ -748,9 +748,9 @@
                             <table class="table table-hover" id="contentAjax">
                                 <thead>
                                 <tr>
-                                    <th>Tên khách hàng</th>
-                                    <th>Số điện thoại</th>
-                                    <th>Chọn</th>
+                                    <th style="text-align: center">Tên khách hàng</th>
+                                    <th style="text-align: center">Số điện thoại</th>
+                                    <th style="text-align: center">Chọn</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -805,15 +805,17 @@
 
                                 <div class="row">
                                     <div class="col col-5">
-                                        <form method="post" action="/ban_hang_tai_quay/search">
-                                            <div class="input-group mb-3">
-                                                <input type="text" name="search" class="form-control"
-                                                       placeholder="Tìm kiếm theo mã sản phẩm, màu sắc,..."
-                                                       aria-label="Recipient's username" aria-describedby="button-addon2">
-                                                <button class="btn btn-primary" type="submit" id="button-addon2">Tìm kiếm
-                                                </button>
-                                            </div>
-                                        </form>
+<%--                                        <form method="post" action="/ban_hang_tai_quay/search">--%>
+<%--                                            <div class="input-group mb-3">--%>
+<%--                                                <input type="text" name="search" class="form-control"--%>
+<%--                                                       placeholder="Tìm kiếm theo mã sản phẩm, màu sắc,..."--%>
+<%--                                                       aria-label="Recipient's username" aria-describedby="button-addon2">--%>
+<%--                                                <button class="btn btn-primary" type="submit" id="button-addon2">Tìm kiếm--%>
+<%--                                                </button>--%>
+<%--                                            </div>--%>
+<%--                                        </form>--%>
+         <input oninput="searchBySPCT(this)" type="text" name="search" class="form-control" placeholder="Tìm kiếm theo mã sản phẩm, màu sắc,..."
+           aria-label="Recipient's username" aria-describedby="button-addon2" style="margin-bottom: 20px">
                                     </div>
                                 </div>
 
@@ -896,7 +898,7 @@
                                 </form>
 
                                 <div class="table-scroll2">
-                                    <table class="table table-hover">
+                                    <table class="table table-hover" id="contentAjax2">
                                         <thead>
                                         <tr>
                                             <th>STT</th>
@@ -1030,9 +1032,33 @@
             });
         });
     });
+//
+
+    function searchBySPCT(param){
+        var txtSearch = param.value;
+        console.log(txtSearch);
+        $.ajax({
+            url: "/ban_hang_tai_quay/searchSPCT/${hoaDon.id}",
+            type: "POST",
+            data: {
+                search:txtSearch
+            },
+            success: function (data) {
+                // var row = document.getElementById("content");
+                // row.innerHTML = data;
+                $('#contentAjax2').empty()
+                $('#contentAjax2').append(data);
+
+                console.log(data);
+            },
+            error: function (xhr) {
+                //Do Something to handle error
+            }
+        });
+    }
 
 
-
+    //
     function searchByName(param){
         var txtSearch = param.value;
         console.log(txtSearch);
