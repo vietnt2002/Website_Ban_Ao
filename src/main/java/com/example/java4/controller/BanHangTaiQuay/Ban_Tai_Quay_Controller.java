@@ -398,12 +398,26 @@ public class Ban_Tai_Quay_Controller {
     }
     @PostMapping("/thanh-toan/{idHoaDon}")
     public String thanhToanSanPham(@PathVariable String idHoaDon,
-                                   @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date ngayTao) {
+                                   @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date ngayTao,
+                                   @RequestParam String idKhuyenMai,
+                                   @RequestParam String idKH,
+                                   @RequestParam String khachLe,
+                                   @RequestParam BigDecimal tongTien) {
         LocalDateTime ngayTaoLocalDateTime = ngayTao.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
         for (int i = 0; i < listHoaDon.size(); i++) {
             if (listHoaDon.get(i).getId().equals(idHoaDon)) {
                 HoaDon hoaDon = new HoaDon();
                 hoaDon.setId(idHoaDon);
+                KhuyenMai khuyenMai = new KhuyenMai();
+                khuyenMai.setId(idKhuyenMai);
+                hoaDon.setIdKhuyenMai(khuyenMai);
+                NhanVien nhanVien = new NhanVien();
+                nhanVien.setId(idNV);
+                hoaDon.setIdNhanVien(nhanVien);
+                KhachHang khachHang = new KhachHang();
+                khachHang.setId(idKH);
+                hoaDon.setIdKhachHang(khachHang);
+                hoaDon.setTongTien(tongTien);
                 hoaDon.setTrangThai(1);
                 hoaDon.setNgayThanhToan(ngayTaoLocalDateTime);
                 hoaDonRepository.save(hoaDon);
