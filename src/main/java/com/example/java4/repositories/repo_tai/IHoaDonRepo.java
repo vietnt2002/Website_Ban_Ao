@@ -1,6 +1,8 @@
 package com.example.java4.repositories.repo_tai;
 
+import com.example.java4.entities.ChiTietHoaDon;
 import com.example.java4.entities.HoaDon;
+import com.example.java4.entities.tai.HoaDon_Tai;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,7 +14,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-public interface IHoaDonRepository   extends JpaRepository<HoaDon,String> {
+public interface IHoaDonRepo  extends JpaRepository<HoaDon_Tai,String> {
 
     // Loại hóa đơn
     public static final int HOA_DON_ONL = 0;
@@ -36,7 +38,7 @@ public interface IHoaDonRepository   extends JpaRepository<HoaDon,String> {
             nativeQuery = true)
     public List<HoaDon> selectTop5();
 
-    public Optional<HoaDon> findById(String id);
+//    public Optional<HoaDon_Tai> findById(String id);
 
     @Query(value = "SELECT COUNT(*) FROM dbo.HoaDon", nativeQuery = true)
     Integer countHD();
@@ -54,31 +56,7 @@ public interface IHoaDonRepository   extends JpaRepository<HoaDon,String> {
     Page<HoaDon> findByTrangThaiAndLoaiHoaDon(Integer trangThai, Integer loaiHoaDon, Pageable pageable);
 
 
-    @Query("SELECT h FROM HoaDon h " +
-            "JOIN h.idKhachHang kh " +
-            "WHERE LOWER(h.ma) LIKE LOWER(CONCAT('%', :keyword, '%')) " +
-            "OR LOWER(kh.sdt) LIKE LOWER(CONCAT('%', :keyword, '%'))")
-    Page<HoaDon> searchByKeyword(@Param("keyword") String keyword, Pageable pageable);
 
-    Page<HoaDon> findByTrangThaiAndLoaiHoaDonOrderByNgayTaoDesc(int trangThai, int loaiHoaDon, Pageable pageable);
 
-//    Page<HoaDon> findByNgayTaoBetween(LocalDateTime start, LocalDateTime end, Pageable pageable);
 
-    @Query("SELECT h FROM HoaDon h " +
-            "JOIN h.idKhachHang kh " +
-            "WHERE (LOWER(h.ma) LIKE LOWER(CONCAT('%', :keyword, '%')) " +
-            "OR LOWER(kh.sdt) LIKE LOWER(CONCAT('%', :keyword, '%'))) " +
-            "AND (:startDate IS NULL OR h.ngayTao >= :startDate) " +
-            "AND (:endDate IS NULL OR h.ngayTao <= :endDate)")
-    Page<HoaDon> searchByKeywordAndDate(@Param("keyword") String keyword,
-                                        @Param("startDate") LocalDateTime startDate,
-                                        @Param("endDate") LocalDateTime endDate,
-                                        Pageable pageable);
-
-    // Các phương thức đếm số lượng hóa đơn theo trạng thái
-    @Query("SELECT COUNT(h) FROM HoaDon h WHERE h.trangThai = :trangThai")
-    int countByTrangThai(@Param("trangThai") int trangThai);
-
-    @Query("SELECT COUNT(h) FROM HoaDon h")
-    int countAll();
 }
