@@ -1167,36 +1167,45 @@
             var idKH  = document.getElementsByName("idKH")[0].value;
             var idKhuyenMai = document.getElementsByName("idKhuyenMai")[0].value;
             var tongTien = document.getElementsByName("tongTien")[0].value;
+            var thongBao = document.getElementById("errTraLai");
+            var moneyGiven = parseInt(document.getElementById("tienKhachDua").value);
+            var thongBao = document.getElementById("errTraLai");
             console.log("====================== id hd:",idHD);
             console.log("====================== id kh:",idKH);
             console.log("====================== id khuyen mai:",idKhuyenMai);
             console.log("====================== tong tien:",tongTien);
-            Swal.fire({
-                title: 'Xác nhận thanh toán?',
-                text: "Dữ liệu sẽ được lưu lại!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Vâng,Thanh toán!',
-                cancelButtonText: 'Hủy'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    fetch(`/ban-hang-tai-quay/thanh-toan/`+idHD+'?idKhuyenMai='+idKhuyenMai+'&idKH='+idKH+'&tongTien='+tongTien,
-                        { method: 'POST' }).then(() => {
-                        Swal.fire(
-                            'Đã xóa!',
-                            'Dữ liệu của bạn đã bị xóa.',
-                            'success'
-                        ).then(() => {
-                            // Redirect to the initial page or perform any necessary actions
-                            window.location.href = '/ban-hang-tai-quay'; // Replace with your actual initial page URL
+            console.log("====================== money given:",moneyGiven);
+            if(tongTien<=moneyGiven&&!isNaN(tongTien)){
+                Swal.fire({
+                    title: 'Xác nhận thanh toán?',
+                    text: "Dữ liệu sẽ được lưu lại!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Vâng,Thanh toán!',
+                    cancelButtonText: 'Hủy'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        fetch(`/ban-hang-tai-quay/thanh-toan/`+idHD+'?idKhuyenMai='+idKhuyenMai+'&idKH='+idKH+'&tongTien='+tongTien,
+                            { method: 'POST' }).then(() => {
+                            Swal.fire(
+                                'Đã thanh toán!',
+                                'Dữ liệu đã được ghi nhận.',
+                                'success'
+                            ).then(() => {
+                                window.location.href = '/ban-hang-tai-quay';
+                            });
+                            button.closest('tr').remove();
                         });
                         button.closest('tr').remove();
-                    });
-                    button.closest('tr').remove();
-                }
-            });
+                        thongBao.textContent =  "";
+                    }
+                });
+            }
+            else{
+                thongBao.textContent =  "Số tiền khách đưa phải lớn hơn hoặc bằng tổng tiền.";
+            }
         });
     });
 </script>

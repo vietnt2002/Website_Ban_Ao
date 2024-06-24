@@ -54,6 +54,8 @@ public class BanTaiQuayController {
 
     @Autowired
     KhuyenMaiRepository khuyenMaiRepo;
+    @Autowired
+    Validator validator;
 
     private List<KhuyenMai> listKhuyenMai;
     private List<HoaDon> listHoaDon;
@@ -335,64 +337,70 @@ public class BanTaiQuayController {
     public String addSanPhamVaoGioHang(@PathVariable String idCTSP, @RequestParam("page") Optional<Integer> pageParam,
                                        @RequestParam String idHoaDon, RedirectAttributes redirectAttributes) {
         ChiTietHoaDon hdct = new ChiTietHoaDon();
-        //Tìm sản phẩm trong giỏ hàng
-        Pageable pageable = PageRequest.of(pageParam.orElse(0), 10);
-        Page<ChiTietSanPham> listCTSP = sanPhamChiTietRepository.findAll(pageable);
-        boolean spTonTaiTrongGioHang = false;
-        Integer slBanDau = 1;
         ChiTietSanPham chiTietSanPham = sanPhamChiTietRepository.findByIdCTSP(idCTSP);
-        for (ChiTietHoaDon chiTietHoaDon : listHDCT) {
-            //Nếu số lượng trong spct = 0 thì không đưuọc thêm sản phẩm nữa
-            if (chiTietSanPham.getSoLuong() <= 0) {
-                chiTietHoaDon.setSoLuong(chiTietHoaDon.getSoLuong());
-                redirectAttributes.addFlashAttribute("error", "Tạm thời hết số lượng sản phẩm");
-                try {
-                    hoaDonChiTietRepository.save(chiTietHoaDon);
-                    spTonTaiTrongGioHang = true;
-                    hdct.setSoLuong(hdct.getSoLuong()+1);
-                    hoaDonChiTietRepository.save(hdct);
+        tongSL = chiTietSanPham.getSoLuong();
+        //Tìm sản phẩm trong giỏ hàng
+        if(validator.isOutStock(1,idCTSP)){
+            Pageable pageable = PageRequest.of(pageParam.orElse(0), 10);
+            Page<ChiTietSanPham> listCTSP = sanPhamChiTietRepository.findAll(pageable);
+            boolean spTonTaiTrongGioHang = false;
+            Integer slBanDau = 1;
+            for (ChiTietHoaDon chiTietHoaDon : listHDCT) {
+                //Nếu số lượng trong spct = 0 thì không đưuọc thêm sản phẩm nữa
+                if (chiTietSanPham.getSoLuong() <= 0) {
+                    chiTietHoaDon.setSoLuong(chiTietHoaDon.getSoLuong());
+                    redirectAttributes.addFlashAttribute("error", "Tạm thời hết số lượng sản phẩm");
+                    try {
+                        hoaDonChiTietRepository.save(chiTietHoaDon);
+                        spTonTaiTrongGioHang = true;
+                        hdct.setSoLuong(hdct.getSoLuong()+1);
+                        hoaDonChiTietRepository.save(hdct);
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                break;
-            } else {
-                if (chiTietHoaDon.getIdCTSP().getId().equals(idCTSP) && chiTietHoaDon.getIdHoaDon().getId().equals(idHoaDon)) {
-                    //Thêm số lượng sản phẩm +1 khi ấn vào button thêm trong giỏ hàng
-                    chiTietHoaDon.setSoLuong(chiTietHoaDon.getSoLuong() + 1);
-                    hoaDonChiTietRepository.save(chiTietHoaDon);
-
-                    //Số lượng của sản phẩm chi tiết bị -1 khi ấn vào button thêm trong giỏ hàng
-                    if (chiTietSanPham.getId().equals(idCTSP)) {
-                        chiTietSanPham.setSoLuong(chiTietSanPham.getSoLuong() - 1);
-                        sanPhamChiTietRepository.save(chiTietSanPham);
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                    spTonTaiTrongGioHang = true;
                     break;
+                } else {
+                    if (chiTietHoaDon.getIdCTSP().getId().equals(idCTSP) && chiTietHoaDon.getIdHoaDon().getId().equals(idHoaDon)) {
+                        //Thêm số lượng sản phẩm +1 khi ấn vào button thêm trong giỏ hàng
+                        chiTietHoaDon.setSoLuong(chiTietHoaDon.getSoLuong() + 1);
+                        hoaDonChiTietRepository.save(chiTietHoaDon);
+
+                        //Số lượng của sản phẩm chi tiết bị -1 khi ấn vào button thêm trong giỏ hàng
+                        if (chiTietSanPham.getId().equals(idCTSP)) {
+                            chiTietSanPham.setSoLuong(chiTietSanPham.getSoLuong() - 1);
+                            sanPhamChiTietRepository.save(chiTietSanPham);
+                        }
+                        spTonTaiTrongGioHang = true;
+                        break;
+                    }
+                }
+            }
+            BigDecimal donGia =  new BigDecimal(0);
+            if (!spTonTaiTrongGioHang) {
+                for (ChiTietSanPham sp : listCTSP) {
+                    if (sp.getId().equals(idCTSP)) {
+                        donGia = sp.getGiaBan();
+                    }
+                }
+                ChiTietSanPham ctsp = new ChiTietSanPham();
+                ctsp.setId(idCTSP);
+                hdct.setIdCTSP(ctsp);
+                HoaDon hoaDon = new HoaDon();
+                hoaDon.setId(idHoaDon);
+                hdct.setIdHoaDon(hoaDon);
+                hdct.setSoLuong(1);
+                hdct.setDonGia(donGia);
+                hoaDonChiTietRepository.save(hdct);
+                //Số lượng của sản phẩm chi tiết bị giảm 1 khi ấn vào button thêm trong giỏ hàng
+                if (chiTietSanPham.getId().equals(idCTSP)) {
+                    chiTietSanPham.setSoLuong(chiTietSanPham.getSoLuong() - 1);
+                    sanPhamChiTietRepository.save(chiTietSanPham);
                 }
             }
         }
-        BigDecimal donGia =  new BigDecimal(0);
-        if (!spTonTaiTrongGioHang) {
-            for (ChiTietSanPham sp : listCTSP) {
-                if (sp.getId().equals(idCTSP)) {
-                    donGia = sp.getGiaBan();
-                }
-            }
-            ChiTietSanPham ctsp = new ChiTietSanPham();
-            ctsp.setId(idCTSP);
-            hdct.setIdCTSP(ctsp);
-            HoaDon hoaDon = new HoaDon();
-            hoaDon.setId(idHoaDon);
-            hdct.setIdHoaDon(hoaDon);
-            hdct.setSoLuong(1);
-            hdct.setDonGia(donGia);
-            hoaDonChiTietRepository.save(hdct);
-            //Số lượng của sản phẩm chi tiết bị giảm 1 khi ấn vào button thêm trong giỏ hàng
-            if (chiTietSanPham.getId().equals(idCTSP)) {
-                chiTietSanPham.setSoLuong(chiTietSanPham.getSoLuong() - 1);
-                sanPhamChiTietRepository.save(chiTietSanPham);
-            }
+        else{
+            redirectAttributes.addFlashAttribute("error", "Không đủ số lượng.");
         }
         return "redirect:/ban-hang-tai-quay/detail-hoa-don/" + idHoaDon;
     }
