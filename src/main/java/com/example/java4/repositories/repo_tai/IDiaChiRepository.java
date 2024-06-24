@@ -7,4 +7,6 @@ public interface IDiaChiRepository extends JpaRepository<DiaChi,String> {
 
     DiaChi findByIdKhachHang_Id(String idKH);
 
+
+
 }

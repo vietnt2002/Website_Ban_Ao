@@ -38,7 +38,7 @@ public class HoaDonUtil {
             case 6:
                 return "bg-success";
             case 7:
-                return "bg-secondary";
+                return "bg-danger";
             default:
                 return "bg-primary";
         }

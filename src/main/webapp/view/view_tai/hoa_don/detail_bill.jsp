@@ -191,6 +191,12 @@
             }
         }
 
+        /*.icon {*/
+        /*    font-size: 1.2rem; !* Đặt kích thước font chữ cho icon *!*/
+        /*    vertical-align: text-top; !* Căn chỉnh icon theo dòng chữ *!*/
+        /*    margin-right: 5px; !* Khoảng cách phía bên phải của icon *!*/
+        /*}*/
+
 
     </style>
 
@@ -709,37 +715,39 @@
                         </c:choose>
                     </div>
 
-                    <c:if test="${hoaDonDTO.loaiHoaDon == 0 && hoaDonDTO.trangThai != 6}">
-                        <div class="card-footer">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <c:if test="${hoaDonDTO.loaiHoaDon == 0}">
-                                        <c:if test="${hoaDonDTO.trangThai != 6}">
-                                            <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal"
-                                                    data-bs-target="#confirmModal">
-                                                Xác nhận
-                                            </button>
+                    <%--                    <c:if test="${hoaDonDTO.loaiHoaDon == 0 && hoaDonDTO.trangThai != 6}">--%>
+                    <div class="card-footer">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <c:if test="${hoaDonDTO.loaiHoaDon == 0}">
+                                    <c:if test="${hoaDonDTO.trangThai != 6}">
+                                        <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal"
+                                                data-bs-target="#confirmModal">
+                                            Xác nhận
+                                        </button>
+                                        <button type="button" class="btn btn-danger" id="cancelButton"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#cancelModal"
+                                                <c:if test="${hoaDonDTO.trangThai == 2}">disabled </c:if>
+                                        >
+                                            Hủy
+                                        </button>
 
-                                            <button type="button" class="btn btn-danger" id="cancelButton"
-                                                    <c:if test="${hoaDonDTO.trangThai == 2}">disabled </c:if>
-                                            >
-                                                Hủy
-                                            </button>
 
-                                        </c:if>
-
-                                        <c:if test="${hoaDonDTO.trangThai != 1 && hoaDonDTO.trangThai != 6}">
-                                            <a href="/hoa-don/hoan-tac/${hoaDonDTO.id}">
-                                                <button type="button" class="btn btn-warning" id="">
-                                                    Hoàn tác
-                                                </button>
-                                            </a>
-                                        </c:if>
                                     </c:if>
-                                </div>
+
+                                    <%--                                        <c:if test="${hoaDonDTO.trangThai != 1 && hoaDonDTO.trangThai != 6}">--%>
+                                    <a href="/hoa-don/hoan-tac/${hoaDonDTO.id}">
+                                        <button type="button" class="btn btn-warning" id="">
+                                            Hoàn tác
+                                        </button>
+                                    </a>
+                                    <%--                                        </c:if>--%>
+                                </c:if>
                             </div>
                         </div>
-                    </c:if>
+                    </div>
+                    <%--                    </c:if>--%>
 
                 </div>
 
@@ -778,6 +786,39 @@
                 </div>
 
 
+                <!-- Modal  hủy hóa đơn -->
+                <div class="modal fade" id="cancelModal" tabindex="-1" aria-labelledby="cancelModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <form id="cancelForm" method="post" action="/hoa-don/huy/${hoaDonDTO.id}">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="cancelModalLabel">Hủy đơn hàng</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <input type="hidden" name="trangThai" value="${hoaDonDTO.trangThai + 1}">
+                                    <div class="mb-3">
+                                        <label for="moTa" class="form-label">Lý do hủy đơn hàng</label>
+                                        <textarea class="form-control" id="reason" name="lyDo" rows="3"></textarea>
+                                        <div id="reasonError" class="text-danger" style="display: none;">Vui lòng điền
+                                            lý do hủy đơn hàng
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng
+                                    </button>
+                                    <button type="submit" class="btn btn-primary" id="confirmCancelBtn">Xác nhận
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+
                 <%--    Bảng lịch sử thanh toán--%>
                 <div class="card mb-3">
 
@@ -785,13 +826,16 @@
                         <h5 class="card-title mb-0">Lịch sử thanh toán:</h5>
 
 
-                        <c:if test="${hoaDonDTO.loaiHoaDon == 0 && hoaDonDTO.trangThai == 4}">
-                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#paymentModal"
-                            >
-                                <i class="bi bi-plus-lg"></i> Thanh Toán
-                            </button>
-                        </c:if>
+                        <%--                        <c:if test="${hoaDonDTO.loaiHoaDon == 0 && hoaDonDTO.trangThai == 4}">--%>
+                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                data-bs-target="#paymentModal"
+                                <c:if test="${hoaDonDTO.trangThai == 6}">
+                                    disabled
+                                </c:if>
+                        >
+                            <i class="bi bi-plus-lg"></i> Thanh Toán
+                        </button>
+                        <%--                        </c:if>--%>
                     </div>
 
                     <div class="card-body">
@@ -823,7 +867,7 @@
                                             ${hoaDonDTO.trangThaiText}
                                     </span>
                                     </td>
-                                    <td>${hoaDonDTO.ngayTao}</td>
+                                    <td>${hoaDonDTO.ngayCapNhat}</td>
                                     <td>
                                         <span class="badge rounded-pill bg-primary">${hoaDonDTO.phuongThucThanhToan == 0 ? "Tiền mặt" :"Chuyển khoản"}</span>
                                     </td>
@@ -856,6 +900,7 @@
 
 
                 <!-- Modal thanh toán -->
+                <!-- Payment Modal -->
                 <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel"
                      aria-hidden="true">
                     <div class="modal-dialog">
@@ -866,40 +911,48 @@
                                         aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <div class="mb-3">
-                                    <%--@declare id="totalAmount"--%>
-                                    <label for="totalAmount" class="form-label">Tổng tiền:</label>
-                                    <fmt:formatNumber value="${hoaDonDTO.tongTien}" type="currency" currencySymbol="₫"/>
-                                </div>
-                                <div class="mb-3">
-                                    <%--@declare id="paidamount"--%><label for="paidAmount" class="form-label">Đã thanh
-                                    toán:</label>
-                                    <input type="text" class="form-control" id="paidAmountInput"
-                                           placeholder="Nhập số tiền đã thanh toán">
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-check-label">Hình thức thanh toán:</label><br>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="paymentMethod" id="cashRadio"
-                                               value="0" checked>
-                                        <label class="form-check-label" for="cashRadio">Tiền mặt</label>
+                                <form action="/hoa-don/xac-nhan-thanh-toan" method="post">
+                                    <input type="hidden" name="id" value="${hoaDonDTO.id}">
+                                    <div class="mb-3">
+                                        <label for="totalAmountInput" class="form-label">Tổng tiền:</label>
+                                        <input name=""
+                                               value="<fmt:formatNumber value="${hoaDonDTO.tongTien}" type="currency" currencySymbol="₫"/>"
+                                               disabled type="text" class="form-control" id="totalAmountInput"
+                                               placeholder="">
                                     </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="paymentMethod"
-                                               id="transferRadio" value="1">
-                                        <label class="form-check-label" for="transferRadio">Chuyển khoản</label>
+                                    <div class="mb-3">
+                                        <label for="paidAmountInput" class="form-label">Đã thanh toán:</label>
+                                        <input type="text" class="form-control" id="paidAmountInput" name="tongTien"
+                                               placeholder="Nhập số tiền đã thanh toán">
                                     </div>
-                                </div>
-                                <div class="mb-3">
-                                    <%--@declare id="note"--%>
-                                    <label for="note" class="form-label">Ghi chú:</label>
-                                    <textarea class="form-control" id="noteInput" rows="3"></textarea>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                                <button type="button" class="btn btn-primary" id="confirmPaymentButton">Xác nhận
-                                </button>
+                                    <div class="mb-3 d-flex align-items-center">
+                                        <label class="form-label me-3">Hình thức:</label>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="phuongThucThanhToan"
+                                                   id="cashRadio" value="0" checked>
+                                            <label class="form-check-label" for="cashRadio">Tiền mặt</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="phuongThucThanhToan"
+                                                   id="transferRadio" value="1">
+                                            <label class="form-check-label" for="transferRadio">Chuyển khoản</label>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="noteInput" class="form-label">Ghi chú:</label>
+                                        <textarea class="form-control" id="noteInput" name="ghiChu" rows="3"></textarea>
+                                    </div>
+                                    <div class="d-flex justify-content-end mb-3">
+                                        <label class="form-label me-2">Số tiền:</label>
+                                        <fmt:formatNumber value="${hoaDonDTO.tongTien}" type="currency"
+                                                          currencySymbol="₫"/>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy
+                                        </button>
+                                        <button type="submit" class="btn btn-primary">Xác nhận</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -943,9 +996,10 @@
 
                                                 </p>
                                                 <p class="fw-bold mb-1 pb-3 small">Tên khách hàng: <span
-                                                        class="fw-normal">${hoaDonDTO.khachHang.hoTen}</span></p>
-                                                <p class="fw-bold mb-1 pb-3 small">Địa chỉ: <span
-                                                        class="fw-normal">${diaChiKhachHang.diaChiChiTiet}, ${diaChiKhachHang.idPhuongXa}, ${diaChiKhachHang.idQuanHuyen}, ${diaChiKhachHang.idTinhThanh}    </span>
+                                                        class="fw-normal">${diaChiKhachHang.idKhachHang.hoTen}</span>
+                                                </p>
+                                                <p class="fw-bold mb-1 pb-3 small">Địa chỉ:
+                                                    <span id="fullAddress" class="fw-normal"></span>
                                                 </p>
                                                 <p class="fw-bold mb-1 pb-3 small">Ghi chú:
                                                     <span
@@ -959,7 +1013,13 @@
 
                                                 <c:choose>
                                                     <c:when test="${hoaDonDTO.loaiHoaDon == 0}">
-                                                        <p class="fw-bold mb-1 small">Ngày dự kiến nhận:</p>
+                                                        <p class="fw-bold mb-1 small">Phí vận chuyển:
+                                                            <span class="fw-normal">
+                                                             <fmt:formatNumber
+                                                                     value="${giaoHangDTO.phiShip == null ? 0 : giaoHangDTO.phiShip }"
+                                                                     type="currency"
+                                                                     currencySymbol="₫" groupingUsed="true"/>
+                                                        </span></p>
                                                     </c:when>
                                                 </c:choose>
                                             </div>
@@ -973,7 +1033,7 @@
                                                     class="fw-normal badge rounded-pill bg-primary">${hoaDonDTO.phuongThucThanhToan == 0 ? "Tiền mặt" : "Chuyển khoản"}</span>
                                             </p>
                                             <p class="fw-bold mb-1 pb-3 small">Số điện thoại: <span
-                                                    class="fw-normal">${hoaDonDTO.khachHang.sdt}</span></p>
+                                                    class="fw-normal">${diaChiKhachHang.idKhachHang.sdt}</span></p>
 
 
                                             <p class="fw-bold mb-1 pb-3 small">Email:
@@ -998,61 +1058,58 @@
                                 <h5 class="card-title">Chi phí đơn hàng</h5>
                             </div>
                             <div class="card-body">
-                                <c:set var="giamGia" value="0"/>
-                                <c:set var="phiVanChuyen" value="0"/>
+                                <c:set var="giamGia" value="${hoaDonDTO.giamGia != null ? hoaDonDTO.giamGia : 0}"/>
+                                <c:set var="tongTien" value="${hoaDonDTO.tongTien != null ? hoaDonDTO.tongTien : 0}"/>
+                                <c:set var="phiVanChuyen"
+                                       value="${giaoHangDTO.phiShip != null ? giaoHangDTO.phiShip : 0}"/>
                                 <div class="row">
                                     <div class="col-12">
                                         <p class="fw-bold mb-1 pb-3 small d-flex justify-content-between">
                                             <span>Tổng tiền đơn hàng:</span>
-                                            <span class="text-danger  "><fmt:formatNumber value="${hoaDonDTO.tongTien}"
-                                                                                          type="currency"
-                                                                                          currencySymbol="₫"
-                                                                                          groupingUsed="true"/></span>
+                                            <span class="text-danger" id="tongTienValue">
+                                            <fmt:formatNumber value="${tongTien}" type="currency" currencySymbol="₫"
+                                                              groupingUsed="true"/>
+                                        </span>
                                         </p>
                                         <p class="fw-bold mb-1 pb-3 small d-flex justify-content-between">
-                                            <span> Phí Giảm giá:</span>
-                                            <span class="fw-normal">
-                                                <fmt:formatNumber value="${giamGia}" type="currency" currencySymbol="₫"
-                                                                  groupingUsed="true"/>
-                                            </span>
+                                            <span>Phí Giảm giá:</span>
+                                            <span class="fw-normal" id="giamGia">
+                                            <fmt:formatNumber value="${giamGia}" type="currency" currencySymbol="₫"
+                                                              groupingUsed="true"/>
+                                        </span>
                                         </p>
                                         <p class="fw-bold mb-1 pb-3 small d-flex justify-content-between">
                                             <span>Phí vận chuyển:</span>
-                                            <span class="fw-normal">
-                                                <fmt:formatNumber value="${phiVanChuyen}" type="currency"
-                                                                  currencySymbol="₫" groupingUsed="true"/>
-                                             </span>
+                                            <span class="fw-normal" id="phiVanChuyen">
+                                            <fmt:formatNumber value="${phiVanChuyen}" type="currency" currencySymbol="₫"
+                                                              groupingUsed="true"/>
+                                        </span>
                                         </p>
-
-                                        <div class="">
-                                            <p class="fw-bold mb-1 pb-3 small d-flex justify-content-between">
-                                                <span>Tổng tiền giảm:</span>
-                                                <span class="fw-normal">
-                                                    <fmt:formatNumber
-                                                            value="${hoaDonDTO.tongTien - giamGia - phiVanChuyen}"
-                                                            type="currency"
-                                                            currencySymbol="₫" groupingUsed="true"/>
-                                                </span>
-                                            </p>
-                                        </div>
+                                        <p class="fw-bold mb-1 pb-3 small d-flex justify-content-between">
+                                            <span>Tổng tiền giảm:</span>
+                                            <span class="fw-normal" id="tongTienGiam">
+                                                <c:set var="tongTienGiam" value="${tongTien - giamGia - phiVanChuyen}"></c:set>
+                                                 <fmt:formatNumber
+                                                         value="${tongTienGiam}"
+                                                         type="currency" currencySymbol="₫" groupingUsed="true"/>
+                                            </span>
+                                        </p>
                                     </div>
                                 </div>
                             </div>
-                            <!-- End General Form Elements -->
-
                             <div class="card-footer">
                                 <p class="fw-bold mb-1 pb-3 small d-flex justify-content-between">
                                     <span>Tổng tiền thanh toán:</span>
-                                    <span class="text-danger "><fmt:formatNumber value="${hoaDonDTO.tongTien}"
-                                                                                 type="currency" currencySymbol="₫"
-                                                                                 groupingUsed="true"/></span>
+                                    <span class=" text-danger  " id="tongTienThanhToanValue">
+                                          <c:set var="tongTienThanhToan" value="${tongTien - giamGia - phiVanChuyen}"></c:set>
+                                            <fmt:formatNumber value="${tongTienThanhToan}"
+                                                              type="currency" currencySymbol="₫" groupingUsed="true"/>
+                                    </span>
                                 </p>
                             </div>
-
                         </div>
-
-
-                    </div><!-- End Recent Activity -->
+                    </div>
+                    <!-- End Recent Activity -->
                 </div>
             </div>
 
@@ -1066,43 +1123,48 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form id="updateForm" method="post" action="/hoa-don/">
+                            <form id="updateForm" method="post" action="/hoa-don/cap-nhat/${hoaDonDTO.id}">
                                 <div class="mb-3">
-                                    <label for="hoTen" class="form-label">Họ tên</label>
+                                    <label for="hoTen" class="form-label">Họ tên:</label>
                                     <input type="text" class="form-control" id="hoTen" name="hoTen"
-                                           value="${hoaDonDTO.khachHang.hoTen}">
+                                           value="${diaChiKhachHang.idKhachHang.hoTen}">
                                     <div id="hoTenError" class="text-danger"></div>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="sdt" class="form-label">Số điện thoại</label>
+                                    <label for="sdt" class="form-label">Số điện thoại:</label>
                                     <input type="text" class="form-control" id="sdt" name="sdt"
-                                           value="${hoaDonDTO.khachHang.sdt}">
+                                           value="${diaChiKhachHang.idKhachHang.sdt}">
                                     <div id="sdtError" class="text-danger"></div>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="diaChi" class="form-label">Địa chỉ</label>
-                                    <input type="text" class="form-control" id="diaChi" name="diaChi"
+                                    <label for="diaChi" class="form-label">Địa chỉ cụ thể:</label>
+                                    <input type="text" class="form-control" id="diaChi" name="diaChiChiTiet"
                                            value="${diaChiKhachHang.diaChiChiTiet}">
                                     <div id="diaChiError" class="text-danger"></div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-4 mb-3">
-                                        <label for="tinh" class="form-label">Tỉnh/Thành Phố</label>
-                                        <select class="form-select" id="tinh" name="tinh">
+                                        <label for="tinh" class="form-label">Tỉnh/Thành Phố:</label>
+                                        <select class="form-select" id="tinh" name="idTinhThanh"
+                                                title="Chọn tỉnh thành">
+                                            <!-- Options populated dynamically -->
                                             <option value="" selected>Chọn tỉnh thành</option>
                                         </select>
                                         <div id="tinhError" class="text-danger"></div>
                                     </div>
                                     <div class="col-md-4 mb-3">
-                                        <label for="huyen" class="form-label">Quận/Huyện</label>
-                                        <select class="form-select" id="huyen" name="huyen">
+                                        <label for="huyen" class="form-label">Quận/Huyện:</label>
+                                        <select class="form-select" id="huyen" name="idQuanHuyen"
+                                                title="Chọn quận huyện">
+                                            <!-- Options populated dynamically -->
                                             <option value="" selected>Chọn quận huyện</option>
                                         </select>
                                         <div id="huyenError" class="text-danger"></div>
                                     </div>
                                     <div class="col-md-4 mb-3">
-                                        <label for="xa" class="form-label">Phường/Xã</label>
-                                        <select class="form-select" id="xa" name="xa">
+                                        <label for="xa" class="form-label">Phường/Xã:</label>
+                                        <select class="form-select" id="xa" name="idPhuongXa" title="Chọn phường xã">
+                                            <!-- Options populated dynamically -->
                                             <option value="" selected>Chọn phường xã</option>
                                         </select>
                                         <div id="xaError" class="text-danger"></div>
@@ -1110,7 +1172,8 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="phiShip" class="form-label">Phí ship</label>
-                                    <input type="text" class="form-control" id="phiShip" name="phiShip">
+                                    <input type="text" class="form-control" id="phiShip" name="phiShip"
+                                           value="${giaoHangDTO.phiShip}">
                                     <div id="phiShipError" class="text-danger"></div>
                                 </div>
                                 <div class="mb-3">
@@ -1119,10 +1182,11 @@
                                     <div id="ghiChuError" class="text-danger"></div>
                                 </div>
                             </form>
+
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                            <button type="button" class="btn btn-primary" id="updateButton">Cập nhật</button>
+                            <button type="submit" class="btn btn-primary" id="updateButton">Cập nhật</button>
                         </div>
                     </div>
                 </div>
@@ -1139,7 +1203,7 @@
                                 data-bs-target="#addProductModal"
                                 <c:if test="${hoaDonDTO.trangThai != 1}">
                                     disabled
-                                </c:if>>
+                                </c:if> >
                             Thêm sản phẩm
                         </button>
                     </c:if>
@@ -1194,8 +1258,28 @@
                                                       currencySymbol="₫" groupingUsed="true"/></td>
                                 <c:if test="${hoaDonDTO.loaiHoaDon == 0}">
                                     <td>
-                                        <button type="button" class="btn btn-warning">Sửa</button>
-                                        <button type="button" class="btn btn-danger">Xóa</button>
+                                        <c:choose>
+                                            <c:when test="${hoaDonDTO.trangThai != 1}">
+                                                <button type="button" class="btn btn-outline-warning" id="editBtn-${chiTiet.idCTSP.id}" disabled>
+                                                    <i class="bi bi-pencil-fill" style="font-size: 1.0em;"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-outline-danger" id="deleteBtn-${chiTiet.idCTSP.id}" disabled>
+                                                    <i class="bi bi-trash-fill" style="font-size: 1.3em;"></i>
+                                                </button>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <button type="button" class="btn btn-outline-warning" id="editBtn-${chiTiet.idCTSP.id}">
+                                                    <i class="bi bi-pencil-fill" style="font-size: 1.0em;"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-outline-danger btn-sm delete-product" data-id="${chiTiet.idCTSP.id}" data-hoadon="${hoaDonDTO.id}" id="deleteBtn-${chiTiet.idCTSP.id}">
+                                                    <i class="bi bi-trash-fill" style="font-size: 1.3em;"></i>
+<%--                                                    <i class="bi bi-trash" ></i>--%>
+                                                </button>
+                                            </c:otherwise>
+                                        </c:choose>
+
+
+
                                     </td>
                                 </c:if>
 
@@ -1214,7 +1298,7 @@
         <!-- End of Main Content -->
 
 
-        <%--       Modal Thêm sản sản vào hóa đơn--%>
+        <%--       Modal thêm sản phẩm vào hóa đơn--%>
         <div class="modal fade" name="addProductModal" id="addProductModal" tabindex="-1"
              aria-labelledby="addProductModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-xl">
@@ -1224,6 +1308,10 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
+
+                        <input type="text" hidden value="${hoaDonDTO.id}" name="idHoaDon">
+
+
                         <!-- Phần input tìm kiếm và các select -->
                         <div class="mb-3 p-3" style="background-color: #f0f0f0;">
                             <!-- Phần input tìm kiếm và nút tìm kiếm -->
@@ -1307,7 +1395,10 @@
                                     </span></td>
                                     <td>
                                         <!-- Thao tác, ví dụ như nút sửa, xóa -->
-                                        <button class="btn btn-primary btn-sm">Chọn</button>
+
+                                        <a href="/hoa-don/them-san-pham/${product.id}?idHoaDon=${hoaDonDTO.id}">
+                                            <button class="btn btn-primary btn-sm">Chọn</button>
+                                        </a>
                                     </td>
                                     </tr>
                                 </c:if>
@@ -1500,6 +1591,7 @@
         }
     });
 
+    <%--    Thông báo cập nhật trạng thi hóa đơn thành công--%>
     <c:if test="${not empty confirmSuccess}">
     Toast.fire({
         icon: "success",
@@ -1507,13 +1599,31 @@
     });
     </c:if>
 
+    <%--Thêm sản phẩm vào giỏ hàng thành công--%>
+    <c:if test="${not empty addProductSuccess}">
+    Toast.fire({
+        icon: "success",
+        title: "${addProductSuccess}"
+    });
+    </c:if>
+
+
+    <%--    Thông báo cập nhật thông tin khách hàng thành công--%>
+    <c:if test="${not empty successMessage}">
+    Toast.fire({
+        icon: "success",
+        title: "${successMessage}"
+    });
+    </c:if>
+
+    <%--    Thông báo cập nhật trạng thi hóa đơn thất bại --%>
     <c:if test="${not empty confirmError}">
     Toast.fire({
         icon: "error",
         title: "${confirmError}"
     });
     </c:if>
-
+    <%--    Thông báo lỗi sản phẩm chi tiết--%>
     <c:if test="${not empty errorProductDetail}">
     Toast.fire({
         icon: "error",
@@ -1521,31 +1631,6 @@
     });
     </c:if>
 
-
-
-
-
-    // Cofirm hủy hóa đơn
-    document.getElementById('cancelButton').addEventListener('click', function () {
-        Swal.fire({
-            title: 'Bạn có chắc chắn muốn hủy?',
-            text: "Bạn sẽ không thể hoàn tác lại thao tác này!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
-            confirmButtonText: 'Có, hủy nó!',
-            cancelButtonText: 'Không, giữ lại'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                Swal.fire(
-                    'Đã hủy!',
-                    'Hóa đơn của bạn đã được hủy.',
-                    'success'
-                )
-            }
-        })
-    });
 
     // Nút in hóa đơn để giao hàng
     document.getElementById('printDeliveryButton').addEventListener('click', () => {
@@ -1600,7 +1685,13 @@
 
     // Validate form  Thay đổi thông tin khách hàng
     $(document).ready(function () {
-        var token = '4787bafa-2157-11ef-a90d-aaf29aa34580'; // Thay bằng token thực tế của bạn
+        var token = '4787bafa-2157-11ef-a90d-aaf29aa34580';
+        var tongTien = ${hoaDonDTO.tongTien};
+        var diaChiChiTiet = "${diaChiKhachHang.diaChiChiTiet}";
+        var idPhuongXa = "${diaChiKhachHang.idPhuongXa}";
+        var idQuanHuyen = "${diaChiKhachHang.idQuanHuyen}";
+        var idTinhThanh = "${diaChiKhachHang.idTinhThanh}";
+
 
         // Function to get JSON with token
         function getJSONWithToken(url, callback) {
@@ -1616,9 +1707,76 @@
             });
         }
 
-        // Lấy danh sách tỉnh
+
+
+
+        // Function to get province name by ID
+        function getProvinceNameByID(provinceID, callback) {
+            getJSONWithToken('https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/province', function (data_tinh) {
+                var provinceName = "";
+                $.each(data_tinh.data, function (key_tinh, val_tinh) {
+                    if (val_tinh.ProvinceID == provinceID) {
+                        provinceName = val_tinh.ProvinceName;
+                        return false; // Exit the loop early
+                    }
+                });
+                callback(provinceName);
+            });
+        }
+
+        // Function to get district name by ID
+        function getDistrictNameByID(districtID, callback) {
+            getJSONWithToken('https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/district?province_id=' + idTinhThanh, function (data_quan) {
+                var districtName = "";
+                $.each(data_quan.data, function (key_quan, val_quan) {
+                    if (val_quan.DistrictID == districtID) {
+                        districtName = val_quan.DistrictName;
+                        return false; // Exit the loop early
+                    }
+                });
+                callback(districtName);
+            });
+        }
+
+        // Function to get ward name by WardCode
+        function getWardNameByCode(wardCode, callback) {
+            getJSONWithToken('https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id=' + idQuanHuyen, function (data_phuong) {
+                var wardName = "";
+                $.each(data_phuong.data, function (key_phuong, val_phuong) {
+                    if (val_phuong.WardCode == wardCode) {
+                        wardName = val_phuong.WardName;
+                        return false; // Exit the loop early
+                    }
+                });
+                callback(wardName);
+            });
+        }
+
+        // Function to update full address in HTML
+        function updateFullAddress() {
+            // Populate province name
+            getProvinceNameByID(idTinhThanh, function (provinceName) {
+                // Populate district name
+                getDistrictNameByID(idQuanHuyen, function (districtName) {
+                    // Populate ward name
+                    getWardNameByCode(idPhuongXa, function (wardName) {
+                        // Update the HTML with the resolved names
+                        var fullAddress = diaChiChiTiet + ', ' + wardName + ', ' + districtName + ', ' + provinceName;
+                        $('#fullAddress').text(fullAddress);
+                    });
+                });
+            });
+        }
+
+
+        updateFullAddress();
+
+
+
+
+
+        // Populate province dropdown on page load
         getJSONWithToken('https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/province', function (data_tinh) {
-            // Sắp xếp theo ProvinceID tăng dần
             data_tinh.data.sort(function (a, b) {
                 return a.ProvinceID - b.ProvinceID;
             });
@@ -1626,48 +1784,119 @@
             $.each(data_tinh.data, function (key_tinh, val_tinh) {
                 $("#tinh").append('<option value="' + val_tinh.ProvinceID + '">' + val_tinh.ProvinceName + '</option>');
             });
-
-            // Khi thay đổi tỉnh
-            $("#tinh").change(function () {
-                var idtinh = $(this).val();
-                $("#huyen").html('<option value="">Chọn Huyện</option>');
-                $("#xa").html('<option value="">Chọn Xã</option>');
-
-                // Lấy danh sách huyện
-                getJSONWithToken('https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/district?province_id=' + idtinh, function (data_quan) {
-                    $.each(data_quan.data, function (key_quan, val_quan) {
-                        $("#huyen").append('<option value="' + val_quan.DistrictID + '">' + val_quan.DistrictName + '</option>');
-                    });
-
-                    // Khi thay đổi huyện
-                    $("#huyen").change(function () {
-                        var idquan = $(this).val();
-                        $("#xa").html('<option value="">Chọn Xã</option>');
-
-                        // Lấy danh sách xã
-                        getJSONWithToken('https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id=' + idquan, function (data_phuong) {
-                            $.each(data_phuong.data, function (key_phuong, val_phuong) {
-                                $("#xa").append('<option value="' + val_phuong.WardCode + '">' + val_phuong.WardName + '</option>');
-                            });
-                        });
-                    });
-                });
-            });
         });
 
+        // When province changes, populate district dropdown
+        $("#tinh").change(function () {
+            var idtinh = $(this).val();
+            $("#huyen").html('<option value="">Chọn Huyện</option>');
+            $("#xa").html('<option value="">Chọn Xã</option>');
+
+            // Get districts based on province ID
+            getJSONWithToken('https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/district?province_id=' + idtinh, function (data_quan) {
+                $.each(data_quan.data, function (key_quan, val_quan) {
+                    $("#huyen").append('<option value="' + val_quan.DistrictID + '">' + val_quan.DistrictName + '</option>');
+                });
+            });
+
+            // Recalculate shipping fee
+            // calculateShippingAndDelivery();
+        });
+
+        // When district changes, populate ward dropdown
+        $("#huyen").change(function () {
+            var idquan = $(this).val();
+            $("#xa").html('<option value="">Chọn Xã</option>');
+
+            // Get wards based on district ID
+            getJSONWithToken('https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id=' + idquan, function (data_phuong) {
+                $.each(data_phuong.data, function (key_phuong, val_phuong) {
+                    $("#xa").append('<option value="' + val_phuong.WardCode + '">' + val_phuong.WardName + '</option>');
+                });
+            });
+
+            // Recalculate shipping fee
+            // calculateShippingAndDelivery();
+        });
+
+
+
+
+        // When ward changes, recalculate shipping fee
+        // $("#xa").change(function () {
+        //     // calculateShippingAndDelivery();
+        // });
+
+        // Function to calculate shipping fee and estimated delivery date
+        // function calculateShippingAndDelivery() {
+        //     var diaChiChiTiet = $("#diaChi").val().trim();
+        //     var idPhuongXa = $("#xa").val();
+        //     var idQuanHuyen = $("#huyen").val();
+        //     var idTinhThanh = $("#tinh").val();
+        //
+        //     if (diaChiChiTiet === "" || idPhuongXa === "" || idQuanHuyen === "" || idTinhThanh === "") {
+        //         console.log("Vui lòng điền đầy đủ thông tin địa chỉ để tính phí vận chuyển và ngày giao hàng.");
+        //         return;
+        //     }
+        //
+        //     var apiEndpoint = 'https://dev-online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee';
+        //     var requestData = {
+        //         "from_district_id": 1453, // Sender's district ID
+        //         "service_id": 53320, // Service ID
+        //         "to_district_id": idQuanHuyen,
+        //         "to_ward_code": idPhuongXa,
+        //         "weight": 1000, // Weight in grams
+        //         "length": 10, // Length in cm
+        //         "width": 10, // Width in cm
+        //         "height": 10, // Height in cm
+        //         "insurance_value": tongTien,
+        //         "coupon": ""
+        //     };
+        //
+        //     // Make AJAX request to calculate shipping fee
+        //     $.ajax({
+        //         url: apiEndpoint,
+        //         type: 'POST',
+        //         headers: {
+        //             'Token': token,
+        //             'Content-Type': 'application/json'
+        //         },
+        //         data: JSON.stringify(requestData),
+        //         success: function (response) {
+        //             if (response.code === 200) {
+        //                 var shippingFee = response.data.total;
+        //                 $("#phiShip").val(shippingFee);
+        //             } else {
+        //                 console.error("Lỗi khi tính phí vận chuyển: " + response.message);
+        //             }
+        //         },
+        //         error: function (xhr, status, error) {
+        //             console.error("Lỗi khi tính phí vận chuyển: " + error);
+        //         }
+        //     });
+        // }
+
+        // Clear errors and initialize form on modal show
+        $('#updateModal').on('shown.bs.modal', function () {
+            clearErrors();
+            // calculateShippingAndDelivery();
+        });
+
+        // Function to clear errors
         function clearErrors() {
-            $(".text-danger").text("");
-            $(".form-control").removeClass("border-danger");
+            $("#hoTenError, #sdtError, #diaChiError, #tinhError, #huyenError, #xaError").text("");
+            $("#hoTen, #sdt, #diaChi, #tinh, #huyen, #xa").removeClass("border-danger");
         }
 
+        // Function to add error
         function addError(inputId, errorMessage) {
             $(inputId).addClass("border-danger");
             $(inputId + "Error").text(errorMessage);
         }
 
+        // Update button click event
         $("#updateButton").click(function () {
             clearErrors();
-
             var isValid = true;
 
             // Validate customer name
@@ -1706,68 +1935,111 @@
                 isValid = false;
             }
 
-            // Validate phiShip
-            if ($("#phiShip").val().trim() === "") {
-                addError("#phiShip", "Phí ship không được để trống.");
-                isValid = false;
-            }
-
-            // Validate ghiChu (optional, only if you want to validate it)
-            if ($("#ghiChu").val().trim() === "") {
-                addError("#ghiChu", "Ghi chú không được để trống.");
-                isValid = false;
-            }
-
+            // If valid, calculate shipping fee and submit form
             if (isValid) {
-                var tenTinhThanh = $("#tinh option:selected").text();
-                var tenQuanHuyen = $("#huyen option:selected").text();
-                var tenPhuongXa = $("#xa option:selected").text();
-
-                $("<input>").attr({
-                    type: "hidden",
-                    name: "tenTinhThanh",
-                    value: tenTinhThanh
-                }).appendTo("#updateForm");
-
-                $("<input>").attr({
-                    type: "hidden",
-                    name: "tenQuanHuyen",
-                    value: tenQuanHuyen
-                }).appendTo("#updateForm");
-
-                $("<input>").attr({
-                    type: "hidden",
-                    name: "tenPhuongXa",
-                    value: tenPhuongXa
-                }).appendTo("#updateForm");
-
+            //     // calculateShippingAndDelivery();
                 $("#updateForm").submit();
+                console.log("Form is valid. Ready to submit...");
+            }
+            else {
+                $(".modal-body").scrollTop(0);
             }
         });
 
-        $(".form-control").on("input", function () {
+        // Clear errors when input/select value changes
+        $("#hoTen, #sdt, #diaChi, #tinh, #huyen, #xa").on("input click", function () {
             $(this).removeClass("border-danger");
-            $("#" + $(this).attr("id") + "Error").text("");
+            var errorId = $(this).attr("id") + "Error";
+            $("#" + errorId).text("");
         });
 
-        $(".form-select").on("change", function () {
+
+        $("#hoTen, #sdt, #diaChi, #tinh, #huyen, #xa").on("input change", function () {
             $(this).removeClass("border-danger");
-            $("#" + $(this).attr("id") + "Error").text("");
+            var errorId = $(this).attr("id") + "Error";
+            $("#" + errorId).text("");
+        });
+    });
+
+
+    // Validate form hủy đơn hàng
+    $(document).ready(function () {
+        $('#cancelForm').submit(function (event) {
+            event.preventDefault();
+
+            var reason = $('#reason').val().trim();
+
+            var hasError = false;
+            if (reason === '' || reason == null) {
+                $('#reasonError').text('Vui lòng điền lý do hủy đơn hàng.').show();
+                $('#reason').addClass('border-danger');
+                hasError = true;
+            } else {
+                $('#reasonError').hide();
+                $('#reason').removeClass('border-danger');
+            }
+
+            if (!hasError) {
+                this.submit();
+            }
         });
 
-        $(".form-control").on("focus", function () {
-            $(this).removeClass("border-danger");
-            $("#" + $(this).attr("id") + "Error").text("");
-        });
-
-        $(".form-select").on("click", function () {
-            $(this).removeClass("border-danger");
-            $("#" + $(this).attr("id") + "Error").text("");
+        $('#reason').focus(function () {
+            $('#reasonError').hide();
+            $(this).removeClass('border-danger');
         });
     });
 
 
 </script>
+
+
+<%--Chức năng xóa sản phẩm chi tiết khỏi chi tiết hóa đơn--%>
+<script th:inline="javascript" >
+
+
+
+    $(document).ready(function () {
+        $('.delete-product').click(function () {
+            var idCTSP = $(this).data('id');
+            var idHoaDon = $(this).data('hoadon');
+
+            Swal.fire({
+                title: 'Bạn chắc chắn muốn xóa sản phẩm này?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Xóa',
+                cancelButtonText: 'Hủy',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Gửi Ajax request để xóa sản phẩm
+                    $.ajax({
+                        type: 'GET',
+                        url: '/hoa-don/xoa-san-pham/' + idCTSP,
+                        data: {
+                            idHoaDon: idHoaDon
+                        },
+                        success: function (response) {
+                            Swal.fire({
+                                title: 'Đã xóa sản phẩm khỏi giỏ hàng',
+                                icon: 'success'
+                            }).then(() => {
+                                window.location.reload();
+                            });
+                        },
+                        error: function () {
+                            Swal.fire({
+                                title: 'Đã xảy ra lỗi khi xóa sản phẩm',
+                                icon: 'error'
+                            });
+                        }
+                    });
+                }
+            });
+        });
+    });
+</script>
+
 
 
 </body>

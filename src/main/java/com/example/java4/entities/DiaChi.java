@@ -15,6 +15,10 @@ public class DiaChi {
     private KhachHang idKhachHang;
     private Integer trangThai;
 
+
+
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "ID")

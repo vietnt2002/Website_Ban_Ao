@@ -1096,7 +1096,26 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
 
+    // Hiển thị thông báo thành công nếu xác nhận đơn hàng thành công
+    const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+        }
+    });
 
+    <%--    Thông báo cập nhật trạng thi hóa đơn thành công--%>
+    <c:if test="${not empty cancelSuccess}">
+    Toast.fire({
+        icon: "success",
+        title: "${cancelSuccess}"
+    });
+    </c:if>
 
 
     $(document).ready(function () {
