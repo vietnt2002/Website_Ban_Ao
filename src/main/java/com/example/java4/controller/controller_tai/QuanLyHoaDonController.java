@@ -1,32 +1,20 @@
 package com.example.java4.controller.controller_tai;
-
-
 import com.example.java4.config.HoaDonUtil;
 import com.example.java4.entities.*;
 import com.example.java4.entities.tai.HoaDon_Tai;
 import com.example.java4.repositories.*;
 import com.example.java4.repositories.repo_tai.*;
 import com.example.java4.response.GiaoHangDTO;
-import com.example.java4.response.HoaDonChiTietDTO;
 import com.example.java4.response.HoaDonDTO;
-
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;

@@ -1,17 +1,12 @@
 package com.example.java4.response;
-
-
 import com.example.java4.entities.*;
 import com.example.java4.entities.tai.HoaDon_Tai;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Date;
-
 
 @Getter
 @Setter
