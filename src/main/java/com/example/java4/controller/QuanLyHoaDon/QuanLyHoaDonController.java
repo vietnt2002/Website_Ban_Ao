@@ -325,8 +325,6 @@ public class QuanLyHoaDonController {
             model.addAttribute("errorDelivery","Không tìm thấy đối tượng giao hàng");
         }
         model.addAttribute("giaoHangDTO",giaoHangDTO);
-
-
         listMauSac = mauSacRepository.findAll();
         listKichThuoc = kichThuocRepo.findAll();
         listKieuTay = kieuTayRepo.findAll();
@@ -341,7 +339,6 @@ public class QuanLyHoaDonController {
         model.addAttribute("listKM",listKhuyenMai);
         model.addAttribute("listCTSP", listCTSP);
         model.addAttribute("pageCTSP", listCTSP);
-
         return "/view/view_tai/hoa_don/detail_bill.jsp";
     }
 

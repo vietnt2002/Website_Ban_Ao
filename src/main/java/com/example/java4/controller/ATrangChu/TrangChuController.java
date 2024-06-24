@@ -189,8 +189,6 @@ public class TrangChuController {
 
         //Tìm hoá đơn theo idKH, loaiHD và trạng thái  ->  Check khách hàng đã có hóa đơn chưa
         HoaDon hoaDonCuaKH = hoaDonRepo.findByidKHAndLoaiHoaDonAndTrangThai(UserInfor.idKhachHang, HoaDonRepository.HOA_DON_ONL, HoaDonRepository.CHO_THANH_TOAN);
-        //Lấy ra danh sách chi tiết hóa đơn theo hóa đơn của khách hàng
-        List<ChiTietHoaDon> listHDCT = hdctRepo.findHDCTByIdHoaDon(hoaDonCuaKH.getId());
 
         //Check tổng tiền không quá 10tr
         BigDecimal tongTien = BigDecimal.ZERO;
@@ -223,7 +221,7 @@ public class TrangChuController {
                 chiTietHoaDon.setDonGia(chiTietSanPham.getGiaBan());
                 chiTietHoaDon.setTrangThai(HDCTRepository.CHUA_THANH_TOAN);
                 hdctRepo.save(chiTietHoaDon);
-
+                //Lấy ra danh sách chi tiết hóa đơn theo hóa đơn của khách hàng
                 redirectAttributes.addFlashAttribute("success", "Thêm sản phẩm vào giỏ hàng thành công.");
             } catch (Exception e) {
                 e.printStackTrace();
@@ -240,6 +238,7 @@ public class TrangChuController {
                     break;
                 }
             }
+            List<ChiTietHoaDon> listHDCT = hdctRepo.findHDCTByIdHoaDon(hoaDonCuaKH.getId());
             //Nếu sản phẩm đã tồn tại trong giỏ hàng thì cộng dồn
             if (flag) {
                 try {
