@@ -423,7 +423,7 @@
 <%--                                            </a>--%>
 
                                             <button class="delete-button btn btn-danger" data-id="${hoaDon.id}">
-                                                <i class="bi bi-trash"></i>
+                                                <i class="bi bi-x-circle-fill"></i>
                                             </button>
 
                                         </td>
@@ -482,8 +482,9 @@
                                         <td style="display: flex; align-items: center;">
                                             <form class="d-flex" method="post" action="/ban_hang_tai_quay/update-sl/${hdct.idCTSP.id}" onsubmit="return checkValidateAfterUpdate();">
                                                 <input type="hidden" name="idHoaDon" value="${hoaDon.id}">
-                                                <input type="hidden" name="tongSL" value="${hdct.idCTSP.soLuong}">
-                                                <input id="soLuong" data-soLuong="${hdct.soLuong}" class="form-control me-2" type="text" name="soLuong" value="${hdct.soLuong}" style="width: 45px">
+                                                <input type="hidden" id="tongSL" value="${hdct.idCTSP.soLuong}">
+                                                <input type="hidden" id="soLuongCu" value="${hdct.soLuong}">
+                                                <input id="soLuong" class="form-control me-2" type="text" name="soLuong" value="${hdct.soLuong}" style="width: 45px">
                                                 <button class="btn btn-light" type="submit">
                                                     <i class="bi bi-pencil"></i>
                                                 </button>
@@ -531,11 +532,12 @@
 
                                                 <c:if test="${hoaDon.idKhachHang.id==null}">
 
-                                                    <input type="text" class="form-control"  value="Khách lẻ" readonly>
+                                                    <input type="text" class="form-control" name="khachLe"  value="Khách lẻ" readonly>
                                                 </c:if>
 
                                                 <c:if test="${hoaDon.idKhachHang.id!=null}">
                                                     <input type="text" class="form-control"  value="${hoaDon.idKhachHang.hoTen}" readonly>
+                                                    <input type="hidden" class="form-control" name="idKH"  value="${hoaDon.idKhachHang.id}" readonly>
                                                 </c:if>
 
                                             </div>
@@ -555,6 +557,8 @@
                                         <div class="row mb-3">
                                             <label class="col-sm-4 col-form-label">Mã giảm giá</label>
                                             <div class="col-sm-5">
+                                                <input type="hidden" class="form-control" name="idKhuyenMai"
+                                                       value="${hoaDon.idKhuyenMai.id}" readonly>
                                                 <input type="text" class="form-control"
                                                        value="${hoaDon.idKhuyenMai.ma}" readonly>
                                             </div>
@@ -566,11 +570,20 @@
                                         </div>
 
                                         <div class="row mb-3">
+                                            <label class="col-sm-4 col-form-label">Số tiền giảm</label>
+                                            <div class="col-sm-5">
+                                                <p>${hoaDon.idKhuyenMai.soTienGiam}</p>
+                                            </div>
+                                         </div>
+
+                                        <div class="row mb-3">
                                             <label class="col-sm-4 col-form-label">Tổng tiền</label>
                                             <div class="col-sm-8">
-                                                <input id="tongTien" type="number" class="form-control"
-                                                       value="${total-hoaDon.idKhuyenMai.soTienGiam}"
-                                                       readonly/>
+                                                <c:if test="${total>0}">
+                                                    <input id="tongTienKhiTruKM" type="number" class="form-control"
+                                                           name="tongTien"  value="${total-hoaDon.idKhuyenMai.soTienGiam}"
+                                                           readonly/>
+                                                </c:if>
                                             </div>
                                         </div>
 
@@ -1003,13 +1016,13 @@
         button.addEventListener('click', function() {
             const form = this.closest('.delete-form');
             Swal.fire({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
+                title: 'Bạn có muốn xóa không??',
+                text: "Bạn sẽ không thể khôi phục lại dữ liệu này!",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
+                confirmButtonText: 'Đồng ý'
             }).then((result) => {
                 if (result.isConfirmed) {
                     form.submit();
@@ -1017,7 +1030,6 @@
             });
         });
     });
-
 
 
 
@@ -1046,7 +1058,8 @@
 
     <%--    --%>
     function calculateChange() {
-        var tongTien = parseInt('${tongTien}');
+        <%--var tongTien = parseInt('${total}');--%>
+        var tongTien = parseInt(document.getElementById('tongTienKhiTruKM').value);
         var tienKhachDua = parseInt(document.getElementById('tienKhachDua').value);
         console.log(tongTien);
         console.log(tienKhachDua);
@@ -1074,12 +1087,16 @@
     }
 
 
-    function checkValidateAfterUpdate(){
-        var soLuong = document.getElementById("soLuong").value;
-        const dataSL = this.getAttribute('data-soLuong');
-        console.log("ssss"+dataSL);
 
-        if (soLuong<=0){
+    function checkValidateAfterUpdate(){
+
+        var soLuongNhap = parseInt(document.getElementById("soLuong").value);
+        var soLuongCu = parseInt(document.getElementById("soLuongCu").value);
+        var tongSL22 = parseInt(document.getElementById("tongSL").value);
+        var tt = soLuongCu+tongSL22
+
+
+        if (soLuongNhap<=0){
             Swal.fire({
                 title: 'Lỗi!',
                 text: 'Số lượng phải lớn hơn 0!',
@@ -1089,15 +1106,15 @@
             return false;
         }
 
-        <%--if (soLuong<${tongSl}){--%>
-        <%--    Swal.fire({--%>
-        <%--        title: 'Lỗi!',--%>
-        <%--        text: 'Số lượng phải lớn hơn 100',--%>
-        <%--        icon: 'error',--%>
-        <%--        confirmButtonText: 'OK'--%>
-        <%--    });--%>
-        <%--    return false;--%>
-        <%--}--%>
+        if (soLuongNhap>tt){
+            Swal.fire({
+                title: 'Lỗi!',
+                text: 'Số lượng nhập lớn hơn số lượng trong kho',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+            return false;
+        }
 
         return true;
     }

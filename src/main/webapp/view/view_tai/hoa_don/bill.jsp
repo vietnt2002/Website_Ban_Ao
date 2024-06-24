@@ -506,7 +506,11 @@
                                             <td>${i.index + 1}</td>
                                             <td>${hoaDon.ma}</td>
                                             <td>${hoaDon.nhanVien.hoTen}</td>
+<<<<<<< HEAD
                                             <td>${hoaDon.khachHang.hoTen == null ? "Khách lẻ" : hoaDon.khachHang.hoTen }</td>
+=======
+                                            <td>${hoaDon.khachHang.hoTen}</td>
+>>>>>>> 7525654b6bf7631974557df2cf9781acfa0c25ed
                                             <td>${hoaDon.khachHang.sdt}</td>
                                             <td>
                                                 <span class="badge rounded-pill ${hoaDon.loaiHoaDon == 0 ? 'bg-primary' : 'bg-success'}">
@@ -584,7 +588,7 @@
                                             <tr>
                                                 <td>${i.index + 1}</td>
                                                 <td>${hoaDon.ma}</td>
-                                                <td>${hoaDon.nhanVienViet.hoTen}</td>
+                                                <td>${hoaDon.nhanVien.hoTen}</td>
                                                 <td>${hoaDon.khachHang.hoTen}</td>
                                                 <td>${hoaDon.khachHang.sdt}</td>
                                                 <td>
@@ -661,7 +665,7 @@
                                             <tr>
                                                 <td>${i.index + 1}</td>
                                                 <td>${hoaDon.ma}</td>
-                                                <td>${hoaDon.nhanVienViet.hoTen}</td>
+                                                <td>${hoaDon.nhanVien.hoTen}</td>
                                                 <td>${hoaDon.khachHang.hoTen}</td>
                                                 <td>${hoaDon.khachHang.sdt}</td>
                                                 <td>
@@ -738,7 +742,7 @@
                                             <tr>
                                                 <td>${i.index + 1}</td>
                                                 <td>${hoaDon.ma}</td>
-                                                <td>${hoaDon.nhanVienViet.hoTen}</td>
+                                                <td>${hoaDon.nhanVien.hoTen}</td>
                                                 <td>${hoaDon.khachHang.hoTen}</td>
                                                 <td>${hoaDon.khachHang.sdt}</td>
                                                 <td>
@@ -815,7 +819,7 @@
                                             <tr>
                                                 <td>${i.index + 1}</td>
                                                 <td>${hoaDon.ma}</td>
-                                                <td>${hoaDon.nhanVienViet.hoTen}</td>
+                                                <td>${hoaDon.nhanVien.hoTen}</td>
                                                 <td>${hoaDon.khachHang.hoTen}</td>
                                                 <td>${hoaDon.khachHang.sdt}</td>
                                                 <td>
@@ -970,7 +974,7 @@
                                             <tr>
                                                 <td>${i.index + 1}</td>
                                                 <td>${hoaDon.ma}</td>
-                                                <td>${hoaDon.nhanVienViet.hoTen}</td>
+                                                <td>${hoaDon.nhanVien.hoTen}</td>
                                                 <td>${hoaDon.khachHang.hoTen}</td>
                                                 <td>${hoaDon.khachHang.sdt}</td>
                                                 <td>

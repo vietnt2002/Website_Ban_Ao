@@ -2,10 +2,11 @@ package com.example.java4.entities;
 
 import jakarta.persistence.*;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
+@Table(name = "NhanVien")
 public class NhanVien {
     private String id;
     private String hoTen;
@@ -14,13 +15,14 @@ public class NhanVien {
     private String taiKhoan;
     private String matKhau;
     private String anhDaiDien;
-    private Date ngayTao;
-    private Date ngaySua;
+    private LocalDateTime ngayTao;
+    private LocalDateTime ngaySua;
     private Integer trangThai;
+    private ChucVu idCV;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "ID")
+    @GeneratedValue(strategy = GenerationType.UUID)
     public String getId() {
         return id;
     }
@@ -29,6 +31,7 @@ public class NhanVien {
         this.id = id;
     }
 
+    @Basic
     @Column(name = "HoTen")
     public String getHoTen() {
         return hoTen;
@@ -38,6 +41,7 @@ public class NhanVien {
         this.hoTen = hoTen;
     }
 
+    @Basic
     @Column(name = "GioiTinh")
     public Integer getGioiTinh() {
         return gioiTinh;
@@ -47,6 +51,7 @@ public class NhanVien {
         this.gioiTinh = gioiTinh;
     }
 
+    @Basic
     @Column(name = "Sdt")
     public String getSdt() {
         return sdt;
@@ -56,6 +61,7 @@ public class NhanVien {
         this.sdt = sdt;
     }
 
+    @Basic
     @Column(name = "TaiKhoan")
     public String getTaiKhoan() {
         return taiKhoan;
@@ -65,6 +71,7 @@ public class NhanVien {
         this.taiKhoan = taiKhoan;
     }
 
+    @Basic
     @Column(name = "MatKhau")
     public String getMatKhau() {
         return matKhau;
@@ -74,6 +81,7 @@ public class NhanVien {
         this.matKhau = matKhau;
     }
 
+    @Basic
     @Column(name = "AnhDaiDien")
     public String getAnhDaiDien() {
         return anhDaiDien;
@@ -83,24 +91,27 @@ public class NhanVien {
         this.anhDaiDien = anhDaiDien;
     }
 
+    @Basic
     @Column(name = "NgayTao")
-    public Date getNgayTao() {
+    public LocalDateTime getNgayTao() {
         return ngayTao;
     }
 
-    public void setNgayTao(Date ngayTao) {
+    public void setNgayTao(LocalDateTime ngayTao) {
         this.ngayTao = ngayTao;
     }
 
+    @Basic
     @Column(name = "NgaySua")
-    public Date getNgaySua() {
+    public LocalDateTime getNgaySua() {
         return ngaySua;
     }
 
-    public void setNgaySua(Date ngaySua) {
+    public void setNgaySua(LocalDateTime ngaySua) {
         this.ngaySua = ngaySua;
     }
 
+    @Basic
     @Column(name = "TrangThai")
     public Integer getTrangThai() {
         return trangThai;
@@ -121,5 +132,15 @@ public class NhanVien {
     @Override
     public int hashCode() {
         return Objects.hash(id, hoTen, gioiTinh, sdt, taiKhoan, matKhau, anhDaiDien, ngayTao, ngaySua, trangThai);
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "IdCV", referencedColumnName = "ID")
+    public ChucVu getIdCV() {
+        return idCV;
+    }
+
+    public void setIdCV(ChucVu chucVuByIdCv) {
+        this.idCV = chucVuByIdCv;
     }
 }

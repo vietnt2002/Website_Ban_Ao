@@ -1,6 +1,4 @@
 package com.example.java4.controller.controller_viet;
-
-import com.example.java4.entities.NhanVienViet;
 import com.example.java4.config.UserInfor;
 import com.example.java4.entities.*;
 import com.example.java4.repositories.*;
@@ -16,14 +14,12 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import java.util.List;
-
 @Controller
 @RequestMapping("store")
 public class DangNhapController {
     @Autowired
-    NhanVienRepository_Viet nhanVienRepo;
+    NhanVienRepository nhanVienRepo;
 
     @Autowired
     private HoaDonRepository hoaDonRepository;
@@ -71,7 +67,7 @@ public class DangNhapController {
 
         //Hiển thị thông tin nhân viên đăng nhập
         if (UserInfor.idNhanVien != null){
-            NhanVienViet nhanVien = nhanVienRepo.findById(UserInfor.idNhanVien).get();
+            NhanVien nhanVien = nhanVienRepo.findById(UserInfor.idNhanVien).get();
             model.addAttribute("nv", nhanVien);
         }
 
@@ -120,7 +116,7 @@ public class DangNhapController {
 
         //Tìm kiếm nhân viên theo tên tài khoản
         boolean checkRole = false;
-        NhanVienViet nhanVienByTK = nhanVienRepo.findByTaiKhoan(nvReq.getTaiKhoan());
+        NhanVien nhanVienByTK = nhanVienRepo.findByTaiKhoan(nvReq.getTaiKhoan());
         if (nhanVienByTK == null){
             redirectAttributes.addFlashAttribute("error", "Tên tài khoản không tồn tại!");
             return "redirect:/store/dang-nhap-view";

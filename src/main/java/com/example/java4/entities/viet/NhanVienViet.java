@@ -1,7 +1,6 @@
-package com.example.java4.entities;
-
+package com.example.java4.entities.viet;
+import com.example.java4.entities.ChucVu;
 import jakarta.persistence.*;
-
 import java.time.LocalDateTime;
 import java.util.Objects;
 
