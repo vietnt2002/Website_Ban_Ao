@@ -82,22 +82,27 @@
         }
     </style>
     <style>
-        /*.table-responsive {*/
-        /*    max-height: 420px;*/
-        /*    overflow-y: auto;*/
-        /*}*/
+        .table-responsive {
+            max-height: 420px;
+            overflow-y: auto;
+        }
 
-        /*.table tbody {*/
-        /*    display: block;*/
-        /*    height: 135px;*/
-        /*    overflow-y: auto;*/
-        /*}*/
+        .table tbody {
+            display: block;
+            height: 135px;
+            overflow-y: auto;
+        }
 
-        /*.table thead, .table tbody tr {*/
-        /*    display: table;*/
-        /*    width: 100%;*/
-        /*    table-layout: fixed;*/
-        /*}*/
+        .table thead, .table tbody tr {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+        }
+
+        .list-group-item.active {
+            border-color: #007bff !important;
+            /* Màu border khi mục được chọn */
+        }
 
         .align-middle {
             vertical-align: middle !important;
@@ -466,8 +471,8 @@
                                     </div>
                                     <div class="col-3">
                                         <a href="" class="update-address-link" style="color: #1571ff;"
-                                                data-toggle="modal"
-                                                data-target="#updateAddressModal${i.id}" data-address-id="1">
+                                           data-toggle="modal"
+                                           data-target="#updateAddressModal${i.id}" data-address-id="1">
                                             Cập nhật
                                         </a>
                                         <div class="modal fade" id="updateAddressModal${i.id}" tabindex="-1"
@@ -730,16 +735,46 @@
             <!-- Checkout End -->
 
             <div class="col-lg-4" style="background-color: white;">
-                <form class="mb-5" action="">
-                    <div class="input-group mb-4">
-                        <input type="text" class="form-control p-4"
-                               style="background-color: #f1f1f1; border: 1px solid #e4e4e4;"
-                               placeholder="Mã giảm giá">
-                        <div class="input-group-append">
-                            <button type="button" class="btn btn-primary">Áp dụng</button>
+                <div class="input-group mb-4">
+                    <input type="text" id="discountCode" class="form-control p-4"
+                           style="background-color: #f1f1f1; border: 1px solid #e4e4e4;" placeholder="Mã giảm giá">
+                    <div class="input-group-append">
+                        <button id="openModalBtn" class="btn btn-primary" data-toggle="modal" data-target="#couponModal"
+                                type="button">
+                            Phiếu giảm giá
+                        </button>
+                    </div>
+                </div>
+
+                <!-- The Modal -->
+                <div id="couponModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="couponModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="couponModalLabel">Phiếu giảm giá</h5>
+                            </div>
+                            <div class="modal-body">
+                                <c:forEach var="i" items="${listKhuyenMai}">
+                                    <a href="javascript:void(0);"
+                                       class="list-group-item list-group-item-action flex-column align-items-start"
+                                       onclick="selectCoupon('${i.ma}', '${i.soTienGiam}')">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h5 class="mb-1">Giảm ${i.soTienGiam}</h5>
+                                            <small>Hết hạn ${i.ngayKetThuc}</small>
+                                        </div>
+                                        <p class="mb-1">Mã: ${i.ma}</p>
+                                    </a>
+                                </c:forEach>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                                <button type="button" class="btn btn-primary" onclick="confirmCoupon()">Xác nhận
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </form>
+                </div>
                 <div class="card mb-5">
                     <div class="card-header bg-secondary border-0">
                         <h4 class="font-weight-semi-bold m-0">Thông tin đơn hàng</h4>
@@ -748,6 +783,14 @@
                         <div class="d-flex justify-content-between mb-3 pt-1">
                             <h6 class="font-weight-medium">Tổng sản phẩm: </h6>
                             <h6 class="font-weight-medium" style="font-size: 18px">${soLuong}</h6>
+                        </div>
+                        <div class="d-flex justify-content-between mb-3 pt-1">
+                            <h6 class="font-weight-medium">Tổng tiền hàng: </h6>
+                            <h6 class="font-weight-medium" style="font-size: 18px">${tongTien}</h6>
+                        </div>
+                        <div class="d-flex justify-content-between mb-3 pt-1">
+                            <h6 class="font-weight-medium">Khuyến mại: </h6>
+                            <h6 class="font-weight-medium" style="font-size: 18px" id="soTienGiam"></h6>
                         </div>
                         <div class="d-flex justify-content-between">
                             <h6 class="font-weight-medium">Phí vận chuyển: </h6>
@@ -777,8 +820,8 @@
                         </div>
                         <hr>
                         <div class="d-flex justify-content-between mt-2">
-                            <h5 class="font-weight-bold" style="margin-left: 18px">Tổng cộng:</h5>
-                            <h5 class="font-weight-bold"
+                            <h5 class="font-weight-bold" style="margin-left: 18px">Tổng thanh toán:</h5>
+                            <h5 class="font-weight-bold" id="tongThanhToan"
                                 style="margin-right: 18px; font-size: 22px">${tongTien}₫</h5>
                         </div>
 
@@ -792,7 +835,6 @@
             </div>
         </div>
     </form>
-    </div>
 </c:if>
 <c:if test="${check == true}">
     <h3 style="text-align: center">Giỏ hàng không có sản phẩm</h3>
@@ -887,6 +929,7 @@
 <!-- JavaScript Libraries -->
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="/view_ban_hang/lib/easing/easing.min.js"></script>
 <script src="/view_ban_hang/lib/owlcarousel/owl.carousel.min.js"></script>
 
@@ -1559,6 +1602,26 @@
 
         // Đóng modal
         $('#addAddressModal').modal('hide');
+    }
+</script>
+
+<script>
+    var selectedCouponCode = '';
+    var soTienGiamJS = '';
+    var tongTien = parseFloat('${tongTien}');
+
+    function selectCoupon(code, soTienGiam) {
+        selectedCouponCode = code;
+        soTienGiamJS = soTienGiam;
+
+    }
+
+    function confirmCoupon() {
+        if (selectedCouponCode !== '' || soTienGiamJS !== '') {
+            document.getElementById('discountCode').value = selectedCouponCode;
+            document.getElementById('soTienGiam').textContent = soTienGiamJS;
+            $('#couponModal').modal('hide');
+        }
     }
 </script>
 </body>

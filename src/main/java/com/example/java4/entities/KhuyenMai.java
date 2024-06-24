@@ -2,6 +2,7 @@ package com.example.java4.entities;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.Objects;
 
@@ -12,7 +13,7 @@ public class KhuyenMai {
     private String ten;
     private Date ngayBatDau;
     private Date ngayKetThuc;
-    private Integer soTienGiam;
+    private BigDecimal soTienGiam;
     private Integer soLuong;
     private Integer trangThai;
 
@@ -64,11 +65,11 @@ public class KhuyenMai {
     }
 
     @Column(name = "SoTienGiam")
-    public Integer getSoTienGiam() {
+    public BigDecimal getSoTienGiam() {
         return soTienGiam;
     }
 
-    public void setSoTienGiam(Integer soTienGiam) {
+    public void setSoTienGiam(BigDecimal soTienGiam) {
         this.soTienGiam = soTienGiam;
     }
 

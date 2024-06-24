@@ -51,6 +51,8 @@ public class TrangChuController_Sang {
     GiaoHangRepo giaoHangRepo;
     @Autowired
     DiaChiRepository diaChiRepo;
+    @Autowired
+    KhuyenMaiRepository khuyenMaiRepo;
 
     private List<ChiTietHoaDon> listHDCT = new ArrayList<>();
     private List<ChiTietSanPham> listCTSP = new ArrayList<>();
@@ -58,6 +60,7 @@ public class TrangChuController_Sang {
     private List<KhachHang> listKhachHang = new ArrayList<>();
     private List<GioHangResponse> listGioHang;
     private List<DiaChi> listDiaChi = new ArrayList<>();
+    private List<KhuyenMai> listKhuyenMai = new ArrayList<>();
 
 
     //Bán onl
@@ -315,6 +318,7 @@ public class TrangChuController_Sang {
         listSanPham = sanPhamRepo.findAll();
         DiaChi diaChi = diaChiRepo.getDiaChiByIdKhachHangAndTrangThai(UserInfor.idKhachHang, DiaChiRepository.MAC_DINH);
         listDiaChi = diaChiRepo.getAllDiaChi();
+        listKhuyenMai = khuyenMaiRepo.findAll();
         boolean check = false;
         System.out.println("====================================test id kh : " + UserInfor.idKhachHang);
         if (listHDCT.isEmpty()) {
@@ -330,6 +334,7 @@ public class TrangChuController_Sang {
             model.addAttribute("listSanPham", listSanPham);
             model.addAttribute("diaChi", diaChi);
             model.addAttribute("listDiaChi", listDiaChi);
+            model.addAttribute("listKhuyenMai", listKhuyenMai);
             model.addAttribute("check", check);
         }
 
