@@ -505,7 +505,7 @@
                                         <tr>
                                             <td>${i.index + 1}</td>
                                             <td>${hoaDon.ma}</td>
-                                            <td>${hoaDon.nhanVienViet.hoTen}</td>
+                                            <td>${hoaDon.nhanVien.hoTen}</td>
                                             <td>${hoaDon.khachHang.hoTen}</td>
                                             <td>${hoaDon.khachHang.sdt}</td>
                                             <td>
@@ -584,7 +584,7 @@
                                             <tr>
                                                 <td>${i.index + 1}</td>
                                                 <td>${hoaDon.ma}</td>
-                                                <td>${hoaDon.nhanVienViet.hoTen}</td>
+                                                <td>${hoaDon.nhanVien.hoTen}</td>
                                                 <td>${hoaDon.khachHang.hoTen}</td>
                                                 <td>${hoaDon.khachHang.sdt}</td>
                                                 <td>
@@ -661,7 +661,7 @@
                                             <tr>
                                                 <td>${i.index + 1}</td>
                                                 <td>${hoaDon.ma}</td>
-                                                <td>${hoaDon.nhanVienViet.hoTen}</td>
+                                                <td>${hoaDon.nhanVien.hoTen}</td>
                                                 <td>${hoaDon.khachHang.hoTen}</td>
                                                 <td>${hoaDon.khachHang.sdt}</td>
                                                 <td>
@@ -738,7 +738,7 @@
                                             <tr>
                                                 <td>${i.index + 1}</td>
                                                 <td>${hoaDon.ma}</td>
-                                                <td>${hoaDon.nhanVienViet.hoTen}</td>
+                                                <td>${hoaDon.nhanVien.hoTen}</td>
                                                 <td>${hoaDon.khachHang.hoTen}</td>
                                                 <td>${hoaDon.khachHang.sdt}</td>
                                                 <td>
@@ -815,7 +815,7 @@
                                             <tr>
                                                 <td>${i.index + 1}</td>
                                                 <td>${hoaDon.ma}</td>
-                                                <td>${hoaDon.nhanVienViet.hoTen}</td>
+                                                <td>${hoaDon.nhanVien.hoTen}</td>
                                                 <td>${hoaDon.khachHang.hoTen}</td>
                                                 <td>${hoaDon.khachHang.sdt}</td>
                                                 <td>
@@ -970,7 +970,7 @@
                                             <tr>
                                                 <td>${i.index + 1}</td>
                                                 <td>${hoaDon.ma}</td>
-                                                <td>${hoaDon.nhanVienViet.hoTen}</td>
+                                                <td>${hoaDon.nhanVien.hoTen}</td>
                                                 <td>${hoaDon.khachHang.hoTen}</td>
                                                 <td>${hoaDon.khachHang.sdt}</td>
                                                 <td>

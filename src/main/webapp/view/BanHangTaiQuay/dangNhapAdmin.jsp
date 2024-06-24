@@ -69,7 +69,7 @@
                 <div id="login-box" class="col-md-12 ">
                     <%--@elvariable id="khachHangDTO" type=""--%>
                     <div class="login-form-wrapper">
-                        <form:form id="login-form" class="form" action="/store/dang-nhap" method="post"
+                        <form:form id="login-form" class="form" action="/ban-hang-tai-quay/dang-nhap" method="post"
                                    modelAttribute="nhanVien">
                             <h3 class="text-center text-info">Login</h3>
 
