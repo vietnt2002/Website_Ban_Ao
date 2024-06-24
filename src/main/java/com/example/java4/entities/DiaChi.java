@@ -18,9 +18,6 @@ public class DiaChi {
     private Integer trangThai;
 
 
-
-
-
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "ID")

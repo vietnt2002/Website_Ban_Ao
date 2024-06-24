@@ -784,6 +784,48 @@ public class QuanLyHoaDonController {
         }
     }
 
+    @GetMapping("/cap-nhat-so-luong-san-pham/{idCTSP}")
+    public ResponseEntity<String> updateSoLuong(
+            @PathVariable String idCTSP,
+            @RequestParam int soLuong,
+            @RequestParam("idHoaDon") String idHoaDon
+    ) {
+        try {
+            ChiTietSanPham chiTietSanPham = _sanPhamChiTietRepo.findByIdCTSP(idCTSP);
+
+            // Kiểm tra số lượng nhập vào hợp lệ
+            if (soLuong <= 0) {
+                return ResponseEntity.badRequest().body("Số lượng phải lớn hơn 0.");
+            }
+
+            // Kiểm tra số lượng nhập vào không được vượt quá số lượng trong kho
+            if (soLuong > chiTietSanPham.getSoLuong()) {
+                return ResponseEntity.badRequest().body("Số lượng không được vượt quá số lượng trong kho.");
+            }
+
+            // Lấy danh sách chi tiết hóa đơn và cập nhật số lượng
+            List<ChiTietHoaDon> listHDCT = _hoaDonChiTietRepo.findAllByHoaDon_Id(idHoaDon);
+
+            if (idHoaDon == null || idHoaDon.isEmpty()) {
+                return ResponseEntity.badRequest().body("Mã hóa đơn không hợp lệ.");
+            }
+
+            for (ChiTietHoaDon chiTietHoaDon : listHDCT) {
+                if (chiTietHoaDon.getIdCTSP().getId().equals(idCTSP)) {
+                    chiTietHoaDon.setSoLuong(soLuong);
+                    _hoaDonChiTietRepo.save(chiTietHoaDon);
+                    break;
+                }
+            }
+
+            return ResponseEntity.ok("Cập nhật số lượng thành công.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Đã xảy ra lỗi khi cập nhật số lượng.");
+        }
+    }
+
+
+
 
 
 

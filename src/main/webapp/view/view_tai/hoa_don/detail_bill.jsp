@@ -1249,7 +1249,9 @@
                                                        style="width: 50px;">
                                             </c:when>
                                             <c:otherwise>
-                                                <input type="number" value="${chiTiet.soLuong}" style="width: 50px;">
+                                                <input type="number" id="soLuong-${chiTiet.idCTSP.id}" value="${chiTiet.soLuong}"
+                                                       data-id="${chiTiet.idCTSP.id}" data-hoadon="${hoaDonDTO.id}"
+                                                       class="form-control form-control-sm" style="width: 50px;" min="1">
                                             </c:otherwise>
                                         </c:choose>
                                     </c:if>
@@ -1261,15 +1263,15 @@
                                         <c:choose>
                                             <c:when test="${hoaDonDTO.trangThai != 1}">
                                                 <button type="button" class="btn btn-outline-warning" id="editBtn-${chiTiet.idCTSP.id}" disabled>
-                                                    <i class="bi bi-pencil-fill" style="font-size: 1.0em;"></i>
+                                                    <i class="bi bi-arrow-clockwise" style="font-size: 1.0em;"></i>
                                                 </button>
                                                 <button type="button" class="btn btn-outline-danger" id="deleteBtn-${chiTiet.idCTSP.id}" disabled>
                                                     <i class="bi bi-trash-fill" style="font-size: 1.3em;"></i>
                                                 </button>
                                             </c:when>
                                             <c:otherwise>
-                                                <button type="button" class="btn btn-outline-warning" id="editBtn-${chiTiet.idCTSP.id}">
-                                                    <i class="bi bi-pencil-fill" style="font-size: 1.0em;"></i>
+                                                <button type="button" class="btn btn-outline-warning" id="editBtn-${chiTiet.idCTSP.id}"  data-id="${chiTiet.idCTSP.id}" data-hoadon="${hoaDonDTO.id}">
+                                                    <i class="bi bi-arrow-clockwise" style="font-size: 1.0em;"></i>
                                                 </button>
                                                 <button type="button" class="btn btn-outline-danger btn-sm delete-product" data-id="${chiTiet.idCTSP.id}" data-hoadon="${hoaDonDTO.id}" id="deleteBtn-${chiTiet.idCTSP.id}">
                                                     <i class="bi bi-trash-fill" style="font-size: 1.3em;"></i>
@@ -1707,7 +1709,88 @@
             });
         }
 
+        // Function to populate province dropdown
+        function populateProvinces(selectedProvinceId) {
+            getJSONWithToken('https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/province', function (data) {
+                $("#tinh").empty().append('<option value="">Chọn tỉnh thành</option>');
+                $.each(data.data, function (key, val) {
+                    var option = '<option value="' + val.ProvinceID + '">' + val.ProvinceName + '</option>';
+                    $("#tinh").append(option);
+                });
+                if (selectedProvinceId) {
+                    $("#tinh").val(selectedProvinceId);
+                    $("#tinh").change();
+                }
+            });
+        }
 
+        // Function to populate district dropdown based on selected province
+        function populateDistricts(provinceId, selectedDistrictId) {
+            getJSONWithToken('https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/district?province_id=' + provinceId, function (data) {
+                $("#huyen").empty().append('<option value="">Chọn quận huyện</option>');
+                $.each(data.data, function (key, val) {
+                    var option = '<option value="' + val.DistrictID + '">' + val.DistrictName + '</option>';
+                    $("#huyen").append(option);
+                });
+                if (selectedDistrictId) {
+                    $("#huyen").val(selectedDistrictId);
+                    $("#huyen").change();
+                }
+            });
+        }
+
+        // Function to populate ward dropdown based on selected district
+        function populateWards(districtId, selectedWardCode) {
+            getJSONWithToken('https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id=' + districtId, function (data) {
+                $("#xa").empty().append('<option value="">Chọn phường xã</option>');
+                $.each(data.data, function (key, val) {
+                    var option = '<option value="' + val.WardCode + '">' + val.WardName + '</option>';
+                    $("#xa").append(option);
+                });
+                if (selectedWardCode) {
+                    $("#xa").val(selectedWardCode);
+                }
+            });
+        }
+
+        // Initial population of provinces
+        populateProvinces(idTinhThanh);
+
+        // When province changes, populate districts
+        $("#tinh").change(function () {
+            var provinceId = $(this).val();
+            populateDistricts(provinceId);
+        });
+
+        // When district changes, populate wards
+        $("#huyen").change(function () {
+            var districtId = $(this).val();
+            populateWards(districtId);
+        });
+
+        // Update full address on modal show
+        $('#updateModal').on('shown.bs.modal', function () {
+            updateFullAddress();
+        });
+
+        // Function to update full address in HTML
+        function updateFullAddress() {
+            var diaChiChiTiet = $("#diaChi").val().trim();
+            var idPhuongXa = $("#xa").val();
+            var idQuanHuyen = $("#huyen").val();
+            var idTinhThanh = $("#tinh").val();
+
+            getProvinceNameByID(idTinhThanh, function (provinceName) {
+                getDistrictNameByID(idQuanHuyen, function (districtName) {
+                    getWardNameByCode(idPhuongXa, function (wardName) {
+                        var fullAddress = diaChiChiTiet + ', ' + wardName + ', ' + districtName + ', ' + provinceName;
+                        $('#fullAddress').text(fullAddress);
+                    });
+                });
+            });
+        }
+
+        updateFullAddress();
 
 
         // Function to get province name by ID
@@ -1751,6 +1834,8 @@
                 callback(wardName);
             });
         }
+
+        populateProvinces(idTinhThanh);
 
         // Function to update full address in HTML
         function updateFullAddress() {
@@ -1911,6 +1996,13 @@
                 isValid = false;
             }
 
+            // Validate phone number
+            var phonePattern = /(84|0[3|5|7|8|9])+([0-9]{8})\b/;
+            if (!phonePattern.test($("#sdt").val().trim())) {
+                addError("#sdt", "Số điện thoại không hợp lệ");
+                isValid = false;
+            }
+
             // Validate address
             if ($("#diaChi").val().trim() === "") {
                 addError("#diaChi", "Địa chỉ không được để trống.");
@@ -1962,7 +2054,7 @@
     });
 
 
-    // Validate form hủy đơn hàng
+        // Validate form hủy đơn hàng
     $(document).ready(function () {
         $('#cancelForm').submit(function (event) {
             event.preventDefault();
@@ -1989,6 +2081,9 @@
             $(this).removeClass('border-danger');
         });
     });
+
+
+
 
 
 </script>
@@ -2039,6 +2134,69 @@
         });
     });
 </script>
+
+<%--Chức năng cập nhat so luong chi tiet san pham trong hoa don chi tiet--%>
+<script th:inline="javascript">
+    $(document).ready(function () {
+        $('input[type="number"]').on('input', function () {
+            // Ngăn ngừa nhập chữ và số âm
+            if (this.value.match(/[^0-9]/g) || parseInt(this.value, 10) <= 0) {
+                this.value = this.value.replace(/[^0-9]/g, '').replace(/^0+/, '');
+            }
+        });
+
+        $('.update-sl').click(function () {
+            var idCTSP = $(this).data('id');
+            var idHoaDon = $(this).data('hoadon');
+            var newQuantity = parseInt($('#soLuong-' + idCTSP).val().trim(), 10);
+
+            // Validate input
+            if (isNaN(newQuantity) || newQuantity <= 0) {
+                Swal.fire({
+                    title: 'Số lượng không hợp lệ',
+                    icon: 'error'
+                });
+                return;
+            }
+
+            Swal.fire({
+                title: 'Xác nhận cập nhật số lượng sản phẩm?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Cập nhật',
+                cancelButtonText: 'Hủy'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Gửi Ajax request để cập nhật số lượng
+                    $.ajax({
+                        type: 'GET',
+                        url: '/hoa-don/cap-nhat-so-luong-san-pham/' + idCTSP,
+                        data: {
+                            idHoaDon: idHoaDon,
+                            soLuong: newQuantity
+                        },
+                        success: function (response) {
+                            Swal.fire({
+                                title: 'Đã cập nhật số lượng sản phẩm',
+                                icon: 'success'
+                            }).then(() => {
+                                window.location.reload();
+                            });
+                        },
+                        error: function (xhr) {
+                            let errorMsg = xhr.responseText || 'Đã xảy ra lỗi khi cập nhật số lượng';
+                            Swal.fire({
+                                title: errorMsg,
+                                icon: 'error'
+                            });
+                        }
+                    });
+                }
+            });
+        });
+    });
+</script>
+
 
 
 
