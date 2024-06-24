@@ -355,7 +355,6 @@ public class BanTaiQuayController {
                         spTonTaiTrongGioHang = true;
                         hdct.setSoLuong(hdct.getSoLuong()+1);
                         hoaDonChiTietRepository.save(hdct);
-
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
