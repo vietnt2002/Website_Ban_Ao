@@ -250,6 +250,7 @@ public class BanTaiQuayController {
         hoaDon.setIdNhanVien(nv.get());
         hoaDon.setMa(ma);
         hoaDon.setTrangThai(0);
+        hoaDon.setLoaiHoaDon(0);
         try {
             //gửi dữ liệu success từ Controller sang View(file.jsp)
             this.hoaDonRepository.save(hoaDon);
@@ -444,7 +445,7 @@ public class BanTaiQuayController {
         System.out.println("=================tong tien: "+ tongTien);
         System.out.println("===================true false:"+ idKhuyenMai.equals(""));
         newHoaDon.setIdNhanVien(nhanVienRepo.findById(UserInfor.idNhanVien).get());
-        newHoaDon.setPhuongThucThanhToan(2);
+        newHoaDon.setPhuongThucThanhToan(0);
         if(idKhuyenMai.equals("")){
             newHoaDon.setIdKhuyenMai(null);
         }
@@ -459,8 +460,8 @@ public class BanTaiQuayController {
         }
         newHoaDon.setNgayThanhToan(now);
         newHoaDon.setTongTien(tongTien);
-        newHoaDon.setLoaiHoaDon(2);
-        newHoaDon.setTrangThai(1);
+        newHoaDon.setLoaiHoaDon(0);
+        newHoaDon.setTrangThai(6);
         hoaDonRepository.save(newHoaDon);
         return "redirect:/ban-hang-tai-quay";
     }

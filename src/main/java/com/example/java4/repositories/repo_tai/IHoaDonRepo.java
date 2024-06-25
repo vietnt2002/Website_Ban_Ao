@@ -17,8 +17,8 @@ import java.util.Optional;
 public interface IHoaDonRepo  extends JpaRepository<HoaDon_Tai,String> {
 
     // Loại hóa đơn
-    public static final int HOA_DON_ONL = 0;
-    public static final int HOA_DON_OFF = 1;
+    public static final int HOA_DON_OFF = 0;
+    public static final int HOA_DON_ONL = 1;
 
     // Các trạng thái của hóa đơn
     public static final int CHO_THANH_TOAN = 0;
@@ -54,6 +54,9 @@ public interface IHoaDonRepo  extends JpaRepository<HoaDon_Tai,String> {
 
     // Tìm hóa đơn theo loại hóa đơn, chức năng lọc hóa đơn theo LoaiHoaDon và Trạng thái của hóa đơn
     Page<HoaDon> findByTrangThaiAndLoaiHoaDon(Integer trangThai, Integer loaiHoaDon, Pageable pageable);
+
+
+
 
 
 

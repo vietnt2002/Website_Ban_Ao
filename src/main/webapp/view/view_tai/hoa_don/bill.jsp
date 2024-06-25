@@ -477,10 +477,6 @@
                                 </button>
                             </li>
                         </ul>
-
-
-
-
                         <div class="tab-content mt-3" id="myTabContent">
                             <div class="tab-pane fade show active" id="all" role="tabpanel" aria-labelledby="all-tab">
                                 <%--  Danh sách tất cả các hóa đơn   --%>
@@ -506,15 +502,11 @@
                                             <td>${i.index + 1}</td>
                                             <td>${hoaDon.ma}</td>
                                             <td>${hoaDon.nhanVien.hoTen}</td>
-<<<<<<< HEAD
                                             <td>${hoaDon.khachHang.hoTen == null ? "Khách lẻ" : hoaDon.khachHang.hoTen }</td>
-=======
-                                            <td>${hoaDon.khachHang.hoTen}</td>
->>>>>>> 7525654b6bf7631974557df2cf9781acfa0c25ed
                                             <td>${hoaDon.khachHang.sdt}</td>
                                             <td>
-                                                <span class="badge rounded-pill ${hoaDon.loaiHoaDon == 0 ? 'bg-primary' : 'bg-success'}">
-                                                        ${hoaDon.loaiHoaDon == 1 ? "Bán tại quầy" : "Bán online"}
+                                                <span class="badge rounded-pill ${hoaDon.loaiHoaDon == 0 ? 'bg-success' : 'bg-primary'}">
+                                                        ${hoaDon.loaiHoaDon == 0 ? "Bán tại quầy" : "Bán online"}
                                                 </span>
                                             </td>
                                             <td>
@@ -589,11 +581,11 @@
                                                 <td>${i.index + 1}</td>
                                                 <td>${hoaDon.ma}</td>
                                                 <td>${hoaDon.nhanVien.hoTen}</td>
-                                                <td>${hoaDon.khachHang.hoTen}</td>
+                                                <td>${hoaDon.khachHang.hoTen == null ? "Khách lẻ" : hoaDon.khachHang.hoTen }</td>
                                                 <td>${hoaDon.khachHang.sdt}</td>
                                                 <td>
-                                                <span class="badge rounded-pill ${hoaDon.loaiHoaDon == 0 ? 'bg-primary' : 'bg-success'}">
-                                                        ${hoaDon.loaiHoaDon == 1 ? "Bán tại quầy" : "Bán online"}
+                                                <span class="badge rounded-pill ${hoaDon.loaiHoaDon == 0 ? 'bg-success' : 'bg-primary'}">
+                                                        ${hoaDon.loaiHoaDon == 0 ? "Bán tại quầy" : "Bán online"}
                                                 </span>
                                                 </td>
                                                 <td>
@@ -666,11 +658,11 @@
                                                 <td>${i.index + 1}</td>
                                                 <td>${hoaDon.ma}</td>
                                                 <td>${hoaDon.nhanVien.hoTen}</td>
-                                                <td>${hoaDon.khachHang.hoTen}</td>
+                                                <td>${hoaDon.khachHang.hoTen == null ? "Khách lẻ" : hoaDon.khachHang.hoTen }</td>
                                                 <td>${hoaDon.khachHang.sdt}</td>
                                                 <td>
-                                                <span class="badge rounded-pill ${hoaDon.loaiHoaDon == 0 ? 'bg-primary' : 'bg-success'}">
-                                                        ${hoaDon.loaiHoaDon == 1 ? "Bán tại quầy" : "Bán online"}
+                                                <span class="badge rounded-pill ${hoaDon.loaiHoaDon == 0 ? 'bg-success' : 'bg-primary'}">
+                                                        ${hoaDon.loaiHoaDon == 0 ? "Bán tại quầy" : "Bán online"}
                                                 </span>
                                                 </td>
                                                 <td>
@@ -743,11 +735,11 @@
                                                 <td>${i.index + 1}</td>
                                                 <td>${hoaDon.ma}</td>
                                                 <td>${hoaDon.nhanVien.hoTen}</td>
-                                                <td>${hoaDon.khachHang.hoTen}</td>
+                                                <td>${hoaDon.khachHang.hoTen == null ? "Khách lẻ" : hoaDon.khachHang.hoTen }</td>
                                                 <td>${hoaDon.khachHang.sdt}</td>
                                                 <td>
-                                                <span class="badge rounded-pill ${hoaDon.loaiHoaDon == 0 ? 'bg-primary' : 'bg-success'}">
-                                                        ${hoaDon.loaiHoaDon == 1 ? "Bán tại quầy" : "Bán online"}
+                                                <span class="badge rounded-pill ${hoaDon.loaiHoaDon == 0 ? 'bg-success' : 'bg-primary'}">
+                                                        ${hoaDon.loaiHoaDon == 0 ? "Bán tại quầy" : "Bán online"}
                                                 </span>
                                                 </td>
                                                 <td>
@@ -820,11 +812,11 @@
                                                 <td>${i.index + 1}</td>
                                                 <td>${hoaDon.ma}</td>
                                                 <td>${hoaDon.nhanVien.hoTen}</td>
-                                                <td>${hoaDon.khachHang.hoTen}</td>
+                                                <td>${hoaDon.khachHang.hoTen == null ? "Khách lẻ" : hoaDon.khachHang.hoTen }</td>
                                                 <td>${hoaDon.khachHang.sdt}</td>
                                                 <td>
-                                                <span class="badge rounded-pill ${hoaDon.loaiHoaDon == 0 ? 'bg-primary' : 'bg-success'}">
-                                                        ${hoaDon.loaiHoaDon == 1 ? "Bán tại quầy" : "Bán online"}
+                                                <span class="badge rounded-pill ${hoaDon.loaiHoaDon == 0 ? 'bg-success' : 'bg-primary'}">
+                                                        ${hoaDon.loaiHoaDon == 0 ? "Bán tại quầy" : "Bán online"}
                                                 </span>
                                                 </td>
                                                 <td>
@@ -898,11 +890,11 @@
                                                 <td>${i.index + 1}</td>
                                                 <td>${hoaDon.ma}</td>
                                                 <td>${hoaDon.nhanVien.hoTen}</td>
-                                                <td>${hoaDon.khachHang.hoTen}</td>
+                                                <td>${hoaDon.khachHang.hoTen == null ? "Khách lẻ" : hoaDon.khachHang.hoTen }</td>
                                                 <td>${hoaDon.khachHang.sdt}</td>
                                                 <td>
-                                                <span class="badge rounded-pill ${hoaDon.loaiHoaDon == 0 ? 'bg-primary' : 'bg-success'}">
-                                                        ${hoaDon.loaiHoaDon == 1 ? "Bán tại quầy" : "Bán online"}
+                                                <span class="badge rounded-pill ${hoaDon.loaiHoaDon == 0 ? 'bg-success' : 'bg-primary'}">
+                                                        ${hoaDon.loaiHoaDon == 0 ? "Bán tại quầy" : "Bán online"}
                                                 </span>
                                                 </td>
                                                 <td>
@@ -975,11 +967,11 @@
                                                 <td>${i.index + 1}</td>
                                                 <td>${hoaDon.ma}</td>
                                                 <td>${hoaDon.nhanVien.hoTen}</td>
-                                                <td>${hoaDon.khachHang.hoTen}</td>
+                                                <td>${hoaDon.khachHang.hoTen == null ? "Khách lẻ" : hoaDon.khachHang.hoTen }</td>
                                                 <td>${hoaDon.khachHang.sdt}</td>
                                                 <td>
-                                                <span class="badge rounded-pill ${hoaDon.loaiHoaDon == 0 ? 'bg-primary' : 'bg-success'}">
-                                                        ${hoaDon.loaiHoaDon == 1 ? "Bán tại quầy" : "Bán online"}
+                                                <span class="badge rounded-pill ${hoaDon.loaiHoaDon == 0 ? 'bg-success' : 'bg-primary'}">
+                                                        ${hoaDon.loaiHoaDon == 0 ? "Bán tại quầy" : "Bán online"}
                                                 </span>
                                                 </td>
                                                 <td>

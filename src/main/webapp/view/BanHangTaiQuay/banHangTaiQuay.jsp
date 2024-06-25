@@ -124,7 +124,7 @@
 
         <!-- Nav Item - Charts -->
         <li class="nav-item">
-            <a class="nav-link" href="charts.html">
+            <a class="nav-link" href="/hoa-don/hien-thi">
                 <i class="fas fa-fw fa-chart-area"></i>
                 <span>Quản lý hóa đơn</span></a>
         </li>
