@@ -1,13 +1,12 @@
-package com.example.java4.entities;
-
+package com.example.java4.entities.viet;
+import com.example.java4.entities.ChucVu;
 import jakarta.persistence.*;
-
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
 @Table(name = "NhanVien")
-public class NhanVien {
+public class NhanVienViet {
     private String id;
     private String hoTen;
     private Integer gioiTinh;
@@ -125,8 +124,8 @@ public class NhanVien {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        NhanVien nhanVien = (NhanVien) o;
-        return Objects.equals(id, nhanVien.id) && Objects.equals(hoTen, nhanVien.hoTen) && Objects.equals(gioiTinh, nhanVien.gioiTinh) && Objects.equals(sdt, nhanVien.sdt) && Objects.equals(taiKhoan, nhanVien.taiKhoan) && Objects.equals(matKhau, nhanVien.matKhau) && Objects.equals(anhDaiDien, nhanVien.anhDaiDien) && Objects.equals(ngayTao, nhanVien.ngayTao) && Objects.equals(ngaySua, nhanVien.ngaySua) && Objects.equals(trangThai, nhanVien.trangThai);
+        NhanVienViet nhanVienViet = (NhanVienViet) o;
+        return Objects.equals(id, nhanVienViet.id) && Objects.equals(hoTen, nhanVienViet.hoTen) && Objects.equals(gioiTinh, nhanVienViet.gioiTinh) && Objects.equals(sdt, nhanVienViet.sdt) && Objects.equals(taiKhoan, nhanVienViet.taiKhoan) && Objects.equals(matKhau, nhanVienViet.matKhau) && Objects.equals(anhDaiDien, nhanVienViet.anhDaiDien) && Objects.equals(ngayTao, nhanVienViet.ngayTao) && Objects.equals(ngaySua, nhanVienViet.ngaySua) && Objects.equals(trangThai, nhanVienViet.trangThai);
     }
 
     @Override

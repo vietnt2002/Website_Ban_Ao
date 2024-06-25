@@ -65,7 +65,7 @@ public class Ban_Tai_Quay_Controller {
     private List<SanPham> listSanPham;
     private List<KieuTay> listKieuTay;
     private List<ChatLieu> listChatLieu;
-    private String idNV = "3B24AB1E-A35A-407C-BC99-507330D3532F";
+    private String idNV = "BF29DB87-6ED2-46E8-B34C-135B2EA4CCA6";
     private String idHoaDon;
 
     private int tongSL;

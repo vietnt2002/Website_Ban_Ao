@@ -6,4 +6,6 @@ public class UserInfor {
 
         public static String idKhachHang = null;
 //        public static KhachHang khachHang = null;
+        public static String idNhanVien = null;
+
 }
