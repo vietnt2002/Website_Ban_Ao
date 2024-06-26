@@ -13,6 +13,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -22,13 +23,6 @@ import java.util.UUID;
 
 @Repository
 public interface SPCTRepository extends JpaRepository<ChiTietSanPham,String>, JpaSpecificationExecutor<ChiTietSanPham> {
-
-//    @Query("select new com.example.java4.response.SanPhamChiTietResponse(spct.id, ms.tenMauSac, kt.tenKichThuoc, sp.ten, spct.maSPCT, spct.soLuong, spct.donGia, spct.trangThai)" +
-//            "            from SPCT spct join MauSac ms on spct.idMauSac.id = ms.id" +
-//            "            join KichThuoc kt on spct.idKichThuoc.id = kt.id \n" +
-//            "            join SanPham sp on spct.idSanPham.id = sp.id")
-//    List<SanPhamChiTietResponse> getList();
-
     public static final int ACTIVE  = 1;
     public static final int INACTIVE =0;
     @Query("select ctsp from ChiTietSanPham ctsp where ctsp.trangThai=1 order by ctsp.id asc")
@@ -39,9 +33,6 @@ public interface SPCTRepository extends JpaRepository<ChiTietSanPham,String>, Jp
             "or ctsp.idMauSac.ten like %?1% or ctsp.idKichThuoc.ten like %?1%" +
             "or ctsp.idChatLieu.ten like %?1% or ctsp.idKieuTay.ten like %?1%) and ctsp.trangThai=?2")
     Page<ChiTietSanPham> timKiem(String key, int trangThai, Pageable pageable);
-
-
-
     //Lọc theo từng combobox
     @Query("select ctsp from ChiTietSanPham ctsp where ctsp.idSanPham.id = ?1 and ctsp.trangThai = ?2")
     Page<ChiTietSanPham> locCTSPByIdSanPham(String idSanPham, int trangThai, Pageable pageable);
@@ -54,7 +45,6 @@ public interface SPCTRepository extends JpaRepository<ChiTietSanPham,String>, Jp
 
     @Query("select ctsp from ChiTietSanPham ctsp where ctsp.idChatLieu.id = ?1 and ctsp.trangThai = ?2")
     Page<ChiTietSanPham> locCTSPByIdChatLieu(String idChatLieu, int trangThai, Pageable pageable);
-
     @Query("select ctsp from ChiTietSanPham ctsp where ctsp.idKieuTay.id = ?1 and ctsp.trangThai = ?2")
     Page<ChiTietSanPham> locCTSPByIdKieuTay(String idKieuTay, int trangThai, Pageable pageable);
     //Lọc cộng dồn sản phẩm(chưa được)
@@ -62,22 +52,8 @@ public interface SPCTRepository extends JpaRepository<ChiTietSanPham,String>, Jp
             "where idSanPham = :idSanPham and idMauSac = :idMauSac and idKichThuoc = :idKichThuoc " +
             "and idChatLieu = :idChatLieu and idKieuTay = :idKieuTay", nativeQuery = true)
     Page<ChiTietSanPham> filterCombobox(@Param("idSanPham")String idSanPham, @Param("idMauSac")String idMauSac, @Param("idKichThuoc")String idKichThuoc, @Param("idChatLieu")String idChatLieu, @Param("idKieuTay")String idKieuTay, Pageable pageable);
-
     @Query("SELECT ctsp  FROM ChiTietSanPham ctsp WHERE ctsp.id = ?1 ")
     ChiTietSanPham findByIdCTSP(String id);
-
-    //Lấy danh sách sản phẩm hiển thị trang chủ(online)
-//    @Query("SELECT new com.example.java4.response.SPCTResponse(sp.id, sp.ma, sp.ten, kta.ten, MAX(ctsp.giaBan), MAX(ha.hinhAnh1))" +
-//            "from ChiTietSanPham ctsp " +
-//            "join SanPham sp on sp.id = ctsp.idSanPham.id " +
-//            "join MauSac ms on ms.id = ctsp.idMauSac.id " +
-//            "join KichThuoc kth on  kth.id = ctsp.idKichThuoc.id " +
-//            "join ChatLieu cl on cl.id = ctsp.idChatLieu.id " +
-//            "join KieuTay kta on kta.id = ctsp.idKieuTay.id " +
-//            "join HinhAnh ha on ctsp.id = ha.idCTSP.id " +
-//            "group by sp.id, sp.ma, sp.ten, kta.ten")
-//    Page<SPCTResponse> getAllSP(Pageable pageable);
-
     @Query("SELECT new com.example.java4.response.SPCTResponse(ctsp.id, sp.id, sp.ma, sp.ten, kta.ten, ctsp.giaBan, ha.hinhAnh1)" +
             "from ChiTietSanPham ctsp " +
             "join SanPham sp on sp.id = ctsp.idSanPham.id " +
@@ -108,6 +84,30 @@ public interface SPCTRepository extends JpaRepository<ChiTietSanPham,String>, Jp
 
     @Query("SELECT spct.soLuong FROM ChiTietSanPham spct WHERE spct.id = :idSPCT AND spct.trangThai = 1")
     Integer findBySoLuong(@Param("idSPCT") String idSPCT);
+    //Nguyenxloc
+    @Query(value = "SELECT ctsp FROM ChiTietSP ctsp where ctsp.trangThai=:trangThai ORDER BY ctsp.ngayTao asc")
+    Page<ChiTietSanPham> findByTrangThaiAsc(int trangThai, Pageable pageable);
+    @Query(value = "SELECT ctsp FROM ChiTietSP ctsp where ctsp.trangThai=1 ORDER BY ctsp.ngayTao asc")
+    Page<ChiTietSanPham> findAllByPage(Pageable pageable);
+    @Query(value = "SELECT ctsp FROM ChiTietSP ctsp where ctsp.trangThai=:trangThai and ctsp.sp.id=:idSP ORDER BY ctsp.ngayTao asc")
+    Page<ChiTietSanPham> findByIdSP(int trangThai,String idSP,Pageable pageAble);
+    @Modifying(clearAutomatically = true)
+    @Query("UPDATE ChiTietSP ctsp SET ctsp.trangThai = 1 WHERE ctsp.id=:id")
+    int enableStt(@Param("id") String id);
+    @Query("UPDATE ChiTietSP ctsp SET ctsp.trangThai = 0 WHERE ctsp.id=:id")
+    int disableStt(@Param("id")String id);
+    @Query(value = "SELECT COUNT(*) FROM chitietsp",nativeQuery = true)
+    Integer getCount();
+    @Query(value = "SELECT COUNT(*) FROM chitietsp where trangThai=1",nativeQuery = true)
+    Integer getCountStt1();
+    @Query(value = "SELECT COUNT(*) FROM chitietsp where trangThai=0",nativeQuery = true)
+    Integer getCountStt0();
+    @Query(value = "SELECT COUNT(*) FROM chitietsp where IdSP=:idsp",nativeQuery = true)
+    Integer getCountByidsp(String idsp);
+    @Query(value = "SELECT COUNT(*) FROM chitietsp where trangThai=1 and IdSP=:idsp",nativeQuery = true)
+    Integer getCountStt1Byidsp(String idsp);
+    @Query(value = "SELECT COUNT(*) FROM chitietsp where trangThai=0 and IdSP=:idsp",nativeQuery = true)
+    Integer getCountStt0Byidsp(String idsp);
 };
 
 
