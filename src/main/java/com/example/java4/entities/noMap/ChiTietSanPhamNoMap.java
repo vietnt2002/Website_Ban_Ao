@@ -1,23 +1,18 @@
 package com.example.java4.entities.noMap;
-
-import com.example.java4.entities.*;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import java.math.BigDecimal;
-import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.Objects;
-
-
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Table(name="chiTietSanPham")
 public class ChiTietSanPhamNoMap {
     private String id;
     private Integer soLuong;

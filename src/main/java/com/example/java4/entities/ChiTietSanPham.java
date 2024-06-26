@@ -17,6 +17,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Table(name="chiTietSanPham")
 public class ChiTietSanPham {
     private String id;
     private Integer soLuong;

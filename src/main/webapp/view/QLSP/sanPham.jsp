@@ -16,9 +16,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-
     <title>MSStore_Tại quầy</title>
-
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
@@ -369,7 +367,7 @@
             <div class="container-fluid">
                 <div class="container">
                     <div class="row">
-                        <div class="col-8">
+                        <div class="col-12">
                             <div>
                                 <h3 class="float-start">Hóa đơn</h3>
                                 <form action="/ban-hang-tai-quay/add-hoa-don" method="post" style="float: right;" class="float-end">
@@ -409,200 +407,19 @@
                                                class="btn btn-primary">
                                                 <i class="bi bi-eye-fill"></i>
                                             </a>
-                                                <%--                                            <a href="/ban_hang_tai_quay/delete-hoa-don/${hoaDon.id}"--%>
-                                                <%--                                               class="btn btn-danger" onclick="return confirm('Bạn có muốn xóa không')">--%>
-                                                <%--                                                <i class="bi bi-trash"></i>--%>
-                                                <%--                                            </a>--%>
-
                                             <button class="delete-button btn btn-danger" data-id="${hoaDon.id}">
                                                 <i class="bi bi-x-circle-fill"></i>
                                             </button>
-
                                         </td>
                                     </tr>
                                 </c:forEach>
                                 </tbody>
                             </table>
-                            <!-- Giỏ hàng -->
-                            <h3>Giỏ hàng</h3>
-                            <table class="table table-hover">
-                                <thead>
-                                <tr>
-                                    <th>STT</th>
-                                    <th>Mã Hóa Đơn</th>
-                                    <th>Mã SP</th>
-                                    <th>Tên SP</th>
-                                    <th>Số lượng</th>
-                                    <th>Đơn giá</th>
-                                    <th>Thành tiền</th>
-                                    <th>Thao tác</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <%--                                <c:forEach varStatus="i" items="${listHDCT}" var="hdct">--%>
-                                <%--                                    <tr>--%>
-                                <%--                                        <td>${i.index+1}</td>--%>
-                                <%--                                        <td>${hdct.idHoaDon.ma}</td>--%>
-                                <%--                                        <td>${hdct.idCTSP.idSanPham.ma}</td>--%>
-                                <%--                                        <td width="150px">${hdct.idCTSP.idSanPham.ten}</td>--%>
-                                <%--                                        <td>${hdct.soLuong}</td>--%>
-                                <%--                                        <td>${hdct.donGia}</td>--%>
-                                <%--                                        <td>${hdct.soLuong*hdct.donGia}</td>--%>
-                                <%--                                        <td>--%>
-
-                                <%--                                            <div class="button-container">--%>
-                                <%--                                                <button id="button" class="update-button btn btn-warning" data-id="${hdct.idCTSP.id}" data-sl="${hdct.soLuong}" data-donGia="${hdct.donGia}" data-tongSL="${hdct.idCTSP.soLuong}">--%>
-                                <%--                                                    <i class="bi bi-pencil"></i>--%>
-                                <%--                                                </button>--%>
-
-                                <%--                                                <button id="button" class="deleteHDCT-button btn btn-danger" data-idHDCT="${hdct.id}" data-idCTSP="${hdct.idCTSP.id}">--%>
-                                <%--                                                    <i class="bi bi-trash"></i>--%>
-                                <%--                                                </button>--%>
-                                <%--                                            </div>--%>
-
-
-                                <%--                                        </td>--%>
-                                <%--                                    </tr>--%>
-                                <%--                                </c:forEach>--%>
-
-                                <c:forEach varStatus="i" items="${listHDCT}" var="hdct">
-                                    <tr>
-                                        <td>${i.index+1}</td>
-                                        <td>${hdct.idHoaDon.ma}</td>
-                                        <td>${hdct.idCTSP.idSanPham.ma}</td>
-                                        <td>${hdct.idCTSP.idSanPham.ten}</td>
-                                        <td style="display: flex; align-items: center;">
-                                            <form class="d-flex" method="post" action="/ban-hang-tai-quay/update-sl/${hdct.idCTSP.id}" onsubmit="return checkValidateAfterUpdate();">
-                                                <input type="hidden" name="idHoaDon" value="${hoaDon.id}">
-                                                <input type="hidden" id="tongSL" value="${hdct.idCTSP.soLuong}">
-                                                <input type="hidden" id="soLuongCu" value="${hdct.soLuong}">
-                                                <input id="soLuong" class="form-control me-2" type="text" name="soLuong" value="${hdct.soLuong}" style="width: 45px">
-                                                <button class="btn btn-light" type="submit">
-                                                    <i class="bi bi-pencil"></i>
-                                                </button>
-                                            </form>
-
-                                        </td>
-                                        <td>${hdct.donGia}</td>
-                                        <td>${hdct.soLuong*hdct.donGia}</td>
-                                        <td>
-                                            <form class="delete-form" action="/ban-hang-tai-quay/delete-hdct/${hdct.id}/${hdct.idCTSP.id}" method="post">
-                                                <input type="hidden" name="idHoaDon" value="${hoaDon.id}">
-                                                <button class="delete-button2 btn btn-danger" type="button" >Delete</button>
-                                            </form>
-
-                                        </td>
-                                    </tr>
-                                </c:forEach>
-                                </tbody>
-
-
-                            </table>
-                        </div>
-
-                        <div class="col-4">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title">HÓA ĐƠN</h5>
-                                    <div class="row mb-3">
-                                        <label class="col-sm-4 col-form-label">Mã hóa đơn</label>
-                                        <div class="col-sm-8">
-                                            <input type="text" class="form-control" value="${hoaDon.ma}"/>
-                                            <input type="hidden" class="form-control" name="idHD"  value="${hoaDon.id}" readonly>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <label class="col-sm-4 col-form-label">Ngày tạo</label>
-                                        <div class="col-sm-8">
-                                            <input type="text" class="form-control" name="ngayTao"
-                                                   value="${hoaDon.ngayTao}">
-                                        </div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <label class="col-sm-4 col-form-label">Tên khách hàng</label>
-                                        <div class="col-sm-5">
-                                            <input type="text" class="form-control"  value="${hoaDon.idKhachHang.hoTen}" readonly>
-                                            <input type="hidden" class="form-control" name="idKH"  value="${hoaDon.idKhachHang.id}" readonly>
-                                        </div>
-                                        <%--   Modal thêm nhanh khách hàng--%>
-                                        <a class="col-sm-1 " data-bs-toggle="modal" data-bs-target="#exampleModal2"
-                                           style="padding-right: 0px;margin-top: 7px">
-                                            <i class="bi bi-person-plus" style="font-size: 25px;padding: 0px"></i>
-                                        </a>
-                                        <a class="col-sm-1" data-bs-toggle="modal" data-bs-target="#exampleModal"
-                                           href="#" style="padding-right: 0px;margin-top: 7px">
-                                            <i class=" bi bi-folder-plus col-3" style="font-size: 25px;padding: 0px"></i>
-                                        </a>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <label class="col-sm-4 col-form-label">Mã giảm giá</label>
-                                        <div class="col-sm-5">
-                                            <input type="hidden" class="form-control" name="idKhuyenMai"
-                                                   value="${hoaDon.idKhuyenMai.id}" readonly>
-                                            <input type="text" class="form-control"
-                                                   value="${hoaDon.idKhuyenMai.ma}" readonly>
-                                        </div>
-                                        <%--  Modal chọn mã giảm giá  --%>
-                                        <a class="col-sm-3 btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal3"
-                                           style="height: 38px;width: 79px;">
-                                            + Chọn
-                                        </a>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <label class="col-sm-4 col-form-label">Số tiền giảm</label>
-                                        <div class="col-sm-5">
-                                            <p>${hoaDon.idKhuyenMai.soTienGiam}</p>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <label class="col-sm-4 col-form-label">Tổng tiền</label>
-                                        <div class="col-sm-8">
-                                            <c:if test="${total>0}">
-                                                <input id="tongTienKhiTruKM" type="number" class="form-control"
-                                                       name="tongTien"  value="${total-hoaDon.idKhuyenMai.soTienGiam}"
-                                                       readonly/>
-                                            </c:if>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <label class="col-sm-4 col-form-label">Tiền khách đưa</label>
-                                        <div class="col-sm-6">
-                                            <input id="tienKhachDua" class="form-control" type="number" required>
-                                            <span id="errTraLai" style="color: red"></span>
-                                        </div>
-
-                                        <i id="calculateChangeButton" class=" col-sm-2 bi bi-chevron-double-down"
-                                           style="font-size: 20px" onclick="calculateChange()"></i>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <label class="col-sm-4 col-form-label">Trả lại</label>
-                                        <div class="col-sm-8">
-                                            <input id="tienTraLai" type="number" class="form-control" required
-                                                   readonly>
-
-                                        </div>
-                                    </div>
-                                    <div class="row mb-3 mt-4 justify-content-end text-end">
-                                        <div class="col-sm-10">
-                                            <button id="checkBtn" idhd =${hoaDon.id} type="submit" class="btn btn-success ">THANH TOÁN</button>
-                                        </div>
-                                    </div>
-                                    <!-- End General Form Elements -->
-                                </div>
-                            </div><!-- End Recent Activity -->
                         </div>
                     </div>
-
-
                 </div>
-
-
             </div>
-            <!--  Kết thúc bán hàng tại quầy  -->
-
         </div>
-
-
 
         <!-- Modal mã giảm giá -->
         <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"

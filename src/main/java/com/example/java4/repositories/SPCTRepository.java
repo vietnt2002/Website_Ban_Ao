@@ -2,14 +2,7 @@ package com.example.java4.repositories;
 import com.example.java4.entities.ChiTietSanPham;
 import com.example.java4.response.MauSizeSL;
 import com.example.java4.response.SPCTResponse;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -17,9 +10,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Repository
 public interface SPCTRepository extends JpaRepository<ChiTietSanPham,String>, JpaSpecificationExecutor<ChiTietSanPham> {
@@ -85,28 +76,28 @@ public interface SPCTRepository extends JpaRepository<ChiTietSanPham,String>, Jp
     @Query("SELECT spct.soLuong FROM ChiTietSanPham spct WHERE spct.id = :idSPCT AND spct.trangThai = 1")
     Integer findBySoLuong(@Param("idSPCT") String idSPCT);
     //Nguyenxloc
-    @Query(value = "SELECT ctsp FROM ChiTietSP ctsp where ctsp.trangThai=:trangThai ORDER BY ctsp.ngayTao asc")
+    @Query(value = "SELECT ctsp FROM ChiTietSanPham ctsp where ctsp.trangThai=:trangThai ORDER BY ctsp.ngayTao asc")
     Page<ChiTietSanPham> findByTrangThaiAsc(int trangThai, Pageable pageable);
-    @Query(value = "SELECT ctsp FROM ChiTietSP ctsp where ctsp.trangThai=1 ORDER BY ctsp.ngayTao asc")
+    @Query(value = "SELECT ctsp FROM ChiTietSanPham ctsp where ctsp.trangThai=1 ORDER BY ctsp.ngayTao asc")
     Page<ChiTietSanPham> findAllByPage(Pageable pageable);
-    @Query(value = "SELECT ctsp FROM ChiTietSP ctsp where ctsp.trangThai=:trangThai and ctsp.sp.id=:idSP ORDER BY ctsp.ngayTao asc")
+    @Query(value = "SELECT ctsp FROM ChiTietSanPham ctsp where ctsp.trangThai=:trangThai and ctsp.idSanPham.id=:idSP ORDER BY ctsp.ngayTao asc")
     Page<ChiTietSanPham> findByIdSP(int trangThai,String idSP,Pageable pageAble);
     @Modifying(clearAutomatically = true)
-    @Query("UPDATE ChiTietSP ctsp SET ctsp.trangThai = 1 WHERE ctsp.id=:id")
+    @Query("UPDATE ChiTietSanPham ctsp SET ctsp.trangThai = 1 WHERE ctsp.id=:id")
     int enableStt(@Param("id") String id);
-    @Query("UPDATE ChiTietSP ctsp SET ctsp.trangThai = 0 WHERE ctsp.id=:id")
+    @Query("UPDATE ChiTietSanPham ctsp SET ctsp.trangThai = 0 WHERE ctsp.id=:id")
     int disableStt(@Param("id")String id);
-    @Query(value = "SELECT COUNT(*) FROM chitietsp",nativeQuery = true)
+    @Query(value = "SELECT COUNT(*) FROM chitietsanpham",nativeQuery = true)
     Integer getCount();
-    @Query(value = "SELECT COUNT(*) FROM chitietsp where trangThai=1",nativeQuery = true)
+    @Query(value = "SELECT COUNT(*) FROM chitietsanpham where trangThai=1",nativeQuery = true)
     Integer getCountStt1();
-    @Query(value = "SELECT COUNT(*) FROM chitietsp where trangThai=0",nativeQuery = true)
+    @Query(value = "SELECT COUNT(*) FROM chitietsanpham where trangThai=0",nativeQuery = true)
     Integer getCountStt0();
-    @Query(value = "SELECT COUNT(*) FROM chitietsp where IdSP=:idsp",nativeQuery = true)
+    @Query(value = "SELECT COUNT(*) FROM chitietsanpham where IdSP=:idsp",nativeQuery = true)
     Integer getCountByidsp(String idsp);
-    @Query(value = "SELECT COUNT(*) FROM chitietsp where trangThai=1 and IdSP=:idsp",nativeQuery = true)
+    @Query(value = "SELECT COUNT(*) FROM chitietsanpham where trangThai=1 and IdSP=:idsp",nativeQuery = true)
     Integer getCountStt1Byidsp(String idsp);
-    @Query(value = "SELECT COUNT(*) FROM chitietsp where trangThai=0 and IdSP=:idsp",nativeQuery = true)
+    @Query(value = "SELECT COUNT(*) FROM chitietsanpham where trangThai=0 and IdSP=:idsp",nativeQuery = true)
     Integer getCountStt0Byidsp(String idsp);
 };
 
