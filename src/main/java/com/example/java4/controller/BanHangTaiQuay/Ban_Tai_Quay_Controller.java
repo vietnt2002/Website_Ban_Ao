@@ -235,11 +235,21 @@ public class Ban_Tai_Quay_Controller {
     @GetMapping("delete-hoa-don/{idHoaDon}")
     public String deleteHoaDon(@PathVariable String idHoaDon){
 
+//        List<ChiTietHoaDon> listCTHD = hoaDonChiTietRepository.findHDCTByIdHoaDon(idHoaDon);
+//
+//        for (ChiTietHoaDon cthd: listCTHD){
+//            if (cthd.getIdHoaDon().getId().equals(idHoaDon)){
+//
+//
+//            }
+//        }
         for (HoaDon hoaDon: listHoaDon){
             if (hoaDon.getId().equals(idHoaDon)){
-                hoaDonRepository.delete(hoaDon);
+                hoaDon.setTrangThai(2);
+                hoaDonRepository.save(hoaDon);
             }
         }
+
         return "redirect:/ban_hang_tai_quay";
     }
 
@@ -332,8 +342,9 @@ public class Ban_Tai_Quay_Controller {
     }
 
 
-    @PostMapping("add-san-pham/{idCTSP}")
-    public String addSanPhamVaoGioHang(@PathVariable String idCTSP, @RequestParam("page") Optional<Integer> pageParam,
+    @PostMapping("add-san-pham/{idCTSP}/{donGia}")
+    public String addSanPhamVaoGioHang(@PathVariable String idCTSP, @PathVariable("donGia") String donGia,
+                                       @RequestParam("page") Optional<Integer> pageParam,
                                        @RequestParam String idHoaDon, RedirectAttributes redirectAttributes) {
         ChiTietHoaDon hdct = new ChiTietHoaDon();
         //Tìm sản phẩm trong giỏ hàng
@@ -373,21 +384,22 @@ public class Ban_Tai_Quay_Controller {
                 }
             }
         }
-        BigDecimal donGia =  new BigDecimal(0);
+//        BigDecimal donGia =  new BigDecimal(0);
         if (!spTonTaiTrongGioHang) {
-            for (ChiTietSanPham sp : listCTSP) {
-                if (sp.getId().equals(idCTSP)) {
-                    donGia = sp.getGiaBan();
-                }
-            }
+//            for (ChiTietSanPham sp : listCTSP) {
+//                if (sp.getId().equals(idCTSP)) {
+//                    donGia = sp.getGiaBan();
+//                }
+//            }
             ChiTietSanPham ctsp = new ChiTietSanPham();
+            BigDecimal big = new BigDecimal(donGia);
             ctsp.setId(idCTSP);
             hdct.setIdCTSP(ctsp);
             HoaDon hoaDon = new HoaDon();
             hoaDon.setId(idHoaDon);
             hdct.setIdHoaDon(hoaDon);
             hdct.setSoLuong(1);
-            hdct.setDonGia(donGia);
+            hdct.setDonGia(big);
             hoaDonChiTietRepository.save(hdct);
             //Số lượng của sản phẩm chi tiết bị giảm 1 khi ấn vào button thêm trong giỏ hàng
             if (chiTietSanPham.getId().equals(idCTSP)) {
@@ -455,7 +467,7 @@ public class Ban_Tai_Quay_Controller {
         Optional<HoaDon> hoaDon = hoaDonRepository.findById(idHD);
         model.addAttribute("hoaDon",hoaDon.get());
 
-        Pageable pageable = PageRequest.of(pageParam.orElse(0), 10);
+        Pageable pageable = PageRequest.of(pageParam.orElse(0), 1000);
         Page<ChiTietSanPham> listCTSP = sanPhamChiTietRepository.timKiem(search, SPCTRepository.ACTIVE, pageable);
         listHoaDon = hoaDonRepository.findAll();
         listHDCT = hoaDonChiTietRepository.findAll();
@@ -463,6 +475,11 @@ public class Ban_Tai_Quay_Controller {
         model.addAttribute("listHoaDon",listHoaDon);
         model.addAttribute("listCTSP",listCTSP);
         model.addAttribute("listKH",listKH);
+        model.addAttribute("listSanPham",sanPhamRepo.findAll());
+        model.addAttribute("listMauSac",mauSacRepository.findAll());
+        model.addAttribute("listKichThuoc",kichThuocRepo.findAll());
+        model.addAttribute("listChatLieu",chatLieuRepo.findAll());
+        model.addAttribute("listKieuTay",kieuTayRepo.findAll());
 //        return "/view/BanHangTaiQuay/ban-hang-tai-quay.jsp";
         return "/view/BanHangTaiQuay/index2.jsp";
     }
@@ -501,7 +518,7 @@ public class Ban_Tai_Quay_Controller {
             model.addAttribute("listHoaDon",  listHoaDon);
         }
 
-        return "/view/BanHangTaiQuay/ban-hang-tai-quay.jsp";
+        return "/view/BanHangTaiQuay/index2.jsp";
     }
 
     //Lọc màu sắc
@@ -538,7 +555,7 @@ public class Ban_Tai_Quay_Controller {
             model.addAttribute("listHoaDon",listHoaDon);
         }
 
-        return "/view/BanHangTaiQuay/ban-hang-tai-quay.jsp";
+        return "/view/BanHangTaiQuay/index2.jsp";
     }
     //Lọc kích thước
     @GetMapping("locSPCTByKichThuoc/{idKichThuoc}")
@@ -574,7 +591,7 @@ public class Ban_Tai_Quay_Controller {
         model.addAttribute("listKieuTay",kieuTayRepo.findAll());
         model.addAttribute("listHoaDon", listHoaDon);
         }
-        return "/view/BanHangTaiQuay/ban-hang-tai-quay.jsp";
+        return "/view/BanHangTaiQuay/index2.jsp";
     }
     //Lọc chất liệu
     @GetMapping("locSPCTByChatLieu/{idChatLieu}")
@@ -610,7 +627,8 @@ public class Ban_Tai_Quay_Controller {
             model.addAttribute("listHoaDon",listHoaDon);
         }
 
-        return "/view/BanHangTaiQuay/ban-hang-tai-quay.jsp";
+//        return "/view/BanHangTaiQuay/ban-hang-tai-quay.jsp";
+        return "/view/BanHangTaiQuay/index2.jsp";
     }
     //Lọc kiểu tay
     @GetMapping("locSPCTByKieuTay/{idKieuTay}")
@@ -652,7 +670,8 @@ public class Ban_Tai_Quay_Controller {
         }
 
 
-        return "/view/BanHangTaiQuay/ban-hang-tai-quay.jsp";
+//        return "/view/BanHangTaiQuay/ban-hang-tai-quay.jsp";
+        return "/view/BanHangTaiQuay/index2.jsp";
     }
     //lọc sản phẩm chi tiết
     @PostMapping("filter")
@@ -676,10 +695,12 @@ public class Ban_Tai_Quay_Controller {
         listHoaDon = hoaDonRepository.findAll();
         listHDCT = hoaDonChiTietRepository.findAll();
         listKH = khachHangRepository.findAll();
+
         model.addAttribute("listHoaDon",listHoaDon);
         model.addAttribute("listCTSP",listCTSP);
         model.addAttribute("listKH",listKH);
-        return "/view/BanHangTaiQuay/ban-hang-tai-quay.jsp";
+//        return "/view/BanHangTaiQuay/ban-hang-tai-quay.jsp";
+        return "/view/BanHangTaiQuay/index2.jsp";
     }
 
     //Find khách hàng

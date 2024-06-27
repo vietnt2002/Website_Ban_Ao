@@ -39,6 +39,7 @@
 <body>
 <div class="modal-body" >
 
+
     <div id="contentAjax2">
 
         <table class="table table-hover" id="contentAjax2">
@@ -72,7 +73,7 @@
                     <td>${spct.giaBan}</td>
                     <td>${spct.trangThai==1?"Còn hàng":"Hết hàng"}</td>
                     <td>
-                        <form action="/ban_hang_tai_quay/add-san-pham/${spct.id}" method="post"
+                        <form action="/ban_hang_tai_quay/add-san-pham/${spct.id}/${spct.giaBan}" method="post"
                               onsubmit="return validateBeforeAddToCart();">
                             <input type="hidden" name="idHoaDon" value="${hoaDon.id}"
                                    id="selectedInvoiceId">
