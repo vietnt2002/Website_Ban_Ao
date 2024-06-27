@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface HDCTRepository
@@ -77,4 +78,9 @@ public interface HDCTRepository
 
 //    @Query("SELECT c FROM ChiTietHoaDon c WHERE c.hoaDon.id = :idHoaDon GROUP BY c.hoaDon.id, c.chiTietSanPham.id, c.donGia")
 //    List<ChiTietHoaDon> findDistinctByHoaDon_Id(@Param("idHoaDon") String idHoaDon);
+
+
+
+
+
 };

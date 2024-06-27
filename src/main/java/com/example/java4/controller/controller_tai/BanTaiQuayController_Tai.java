@@ -486,7 +486,7 @@ public String hienThi(Model model,@RequestParam(value = "page",defaultValue ="0"
 //        HoaDon hoaDon = new HoaDon();
 //        //Tạo mã tự sinh
 //        hoaDon.setNgayTao(now);
-//        Optional<NhanVien> nv = nhanVienRepo.findById(idNV);
+//        Optional<NhanVienViet> nv = nhanVienRepo.findById(idNV);
 //        hoaDon.setIdNhanVien(nv.get());
 //        hoaDon.setMa(ma);
 //        hoaDon.setTrangThai(0);
@@ -819,7 +819,7 @@ public String hienThi(Model model,@RequestParam(value = "page",defaultValue ="0"
 //        listHoaDon = hoaDonRepository.selectTop5();
 //        Pageable pageable = PageRequest.of(pageParam.orElse(0), 10);
 //        Page<ChiTietSanPham> listCTSP = sanPhamChiTietRepository.locCTSPByIdKieuTay(idKieuTay,SPCTRepository.ACTIVE, pageable);
-//        Optional<NhanVien> nv = nhanVienRepo.findById(idNV);
+//        Optional<NhanVienViet> nv = nhanVienRepo.findById(idNV);
 //        model.addAttribute("listCTSP", listCTSP);
 //        model.addAttribute("listSanPham",sanPhamRepo.findAll());
 //        model.addAttribute("listMauSac",mauSacRepository.findAll());

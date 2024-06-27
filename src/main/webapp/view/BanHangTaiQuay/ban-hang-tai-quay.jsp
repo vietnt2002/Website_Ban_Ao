@@ -110,7 +110,7 @@
 
         <!-- Nav Item - Charts -->
         <li class="nav-item">
-            <a class="nav-link" href="/ban-hang-tai-quay/admin/ban-tai-quay">
+            <a class="nav-link" href="/ban_hang_tai_quay/admin/ban-tai-quay">
                 <i class="fas fa-fw fa-chart-area"></i>
                 <span>Bán hàng tại quầy</span></a>
         </li>
@@ -380,7 +380,7 @@
                         <div class="col-8">
                             <div>
                                 <h3 class="float-start">Hóa đơn</h3>
-                                <form action="/ban-hang-tai-quay/add-hoa-don" method="post" style="float: right;" class="float-end">
+                                <form action="/ban_hang_tai_quay/add-hoa-don" method="post" style="float: right;" class="float-end">
                                     <button type="submit" class="btn btn-success">+ Tạo hóa đơn</button>
                                 </form>
                                 <a class="col-sm-3 btn btn-info text-white" data-bs-toggle="modal" data-bs-target="#exampleModal4"
@@ -413,14 +413,14 @@
                                         <td>${hoaDon.ngayTao}</td>
                                         <td>${hoaDon.trangThai==0?"Chua thanh toan":"Da thanh toan"}</td>
                                         <td>
-                                            <a href="/ban-hang-tai-quay/detail-hoa-don/${hoaDon.id}"
+                                            <a href="/ban_hang_tai_quay/detail-hoa-don/${hoaDon.id}"
                                                class="btn btn-primary">
                                                 <i class="bi bi-eye-fill"></i>
                                             </a>
-                                                <%--                                            <a href="/ban_hang_tai_quay/delete-hoa-don/${hoaDon.id}"--%>
-                                                <%--                                               class="btn btn-danger" onclick="return confirm('Bạn có muốn xóa không')">--%>
-                                                <%--                                                <i class="bi bi-trash"></i>--%>
-                                                <%--                                            </a>--%>
+<%--                                            <a href="/ban_hang_tai_quay/delete-hoa-don/${hoaDon.id}"--%>
+<%--                                               class="btn btn-danger" onclick="return confirm('Bạn có muốn xóa không')">--%>
+<%--                                                <i class="bi bi-trash"></i>--%>
+<%--                                            </a>--%>
 
                                             <button class="delete-button btn btn-danger" data-id="${hoaDon.id}">
                                                 <i class="bi bi-x-circle-fill"></i>
@@ -447,31 +447,31 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <%--                                <c:forEach varStatus="i" items="${listHDCT}" var="hdct">--%>
-                                <%--                                    <tr>--%>
-                                <%--                                        <td>${i.index+1}</td>--%>
-                                <%--                                        <td>${hdct.idHoaDon.ma}</td>--%>
-                                <%--                                        <td>${hdct.idCTSP.idSanPham.ma}</td>--%>
-                                <%--                                        <td width="150px">${hdct.idCTSP.idSanPham.ten}</td>--%>
-                                <%--                                        <td>${hdct.soLuong}</td>--%>
-                                <%--                                        <td>${hdct.donGia}</td>--%>
-                                <%--                                        <td>${hdct.soLuong*hdct.donGia}</td>--%>
-                                <%--                                        <td>--%>
+<%--                                <c:forEach varStatus="i" items="${listHDCT}" var="hdct">--%>
+<%--                                    <tr>--%>
+<%--                                        <td>${i.index+1}</td>--%>
+<%--                                        <td>${hdct.idHoaDon.ma}</td>--%>
+<%--                                        <td>${hdct.idCTSP.idSanPham.ma}</td>--%>
+<%--                                        <td width="150px">${hdct.idCTSP.idSanPham.ten}</td>--%>
+<%--                                        <td>${hdct.soLuong}</td>--%>
+<%--                                        <td>${hdct.donGia}</td>--%>
+<%--                                        <td>${hdct.soLuong*hdct.donGia}</td>--%>
+<%--                                        <td>--%>
 
-                                <%--                                            <div class="button-container">--%>
-                                <%--                                                <button id="button" class="update-button btn btn-warning" data-id="${hdct.idCTSP.id}" data-sl="${hdct.soLuong}" data-donGia="${hdct.donGia}" data-tongSL="${hdct.idCTSP.soLuong}">--%>
-                                <%--                                                    <i class="bi bi-pencil"></i>--%>
-                                <%--                                                </button>--%>
+<%--                                            <div class="button-container">--%>
+<%--                                                <button id="button" class="update-button btn btn-warning" data-id="${hdct.idCTSP.id}" data-sl="${hdct.soLuong}" data-donGia="${hdct.donGia}" data-tongSL="${hdct.idCTSP.soLuong}">--%>
+<%--                                                    <i class="bi bi-pencil"></i>--%>
+<%--                                                </button>--%>
 
-                                <%--                                                <button id="button" class="deleteHDCT-button btn btn-danger" data-idHDCT="${hdct.id}" data-idCTSP="${hdct.idCTSP.id}">--%>
-                                <%--                                                    <i class="bi bi-trash"></i>--%>
-                                <%--                                                </button>--%>
-                                <%--                                            </div>--%>
+<%--                                                <button id="button" class="deleteHDCT-button btn btn-danger" data-idHDCT="${hdct.id}" data-idCTSP="${hdct.idCTSP.id}">--%>
+<%--                                                    <i class="bi bi-trash"></i>--%>
+<%--                                                </button>--%>
+<%--                                            </div>--%>
 
 
-                                <%--                                        </td>--%>
-                                <%--                                    </tr>--%>
-                                <%--                                </c:forEach>--%>
+<%--                                        </td>--%>
+<%--                                    </tr>--%>
+<%--                                </c:forEach>--%>
 
                                 <c:forEach varStatus="i" items="${listHDCT}" var="hdct">
                                     <tr>
@@ -480,7 +480,7 @@
                                         <td>${hdct.idCTSP.idSanPham.ma}</td>
                                         <td>${hdct.idCTSP.idSanPham.ten}</td>
                                         <td style="display: flex; align-items: center;">
-                                            <form class="d-flex" method="post" action="/ban-hang-tai-quay/update-sl/${hdct.idCTSP.id}" onsubmit="return checkValidateAfterUpdate();">
+                                            <form class="d-flex" method="post" action="/ban_hang_tai_quay/update-sl/${hdct.idCTSP.id}" onsubmit="return checkValidateAfterUpdate();">
                                                 <input type="hidden" name="idHoaDon" value="${hoaDon.id}">
                                                 <input type="hidden" id="tongSL" value="${hdct.idCTSP.soLuong}">
                                                 <input type="hidden" id="soLuongCu" value="${hdct.soLuong}">
@@ -494,7 +494,7 @@
                                         <td>${hdct.donGia}</td>
                                         <td>${hdct.soLuong*hdct.donGia}</td>
                                         <td>
-                                            <form class="delete-form" action="/ban-hang-tai-quay/delete-hdct/${hdct.id}/${hdct.idCTSP.id}" method="post">
+                                            <form class="delete-form" action="/ban_hang_tai_quay/delete-hdct/${hdct.id}/${hdct.idCTSP.id}" method="post">
                                                 <input type="hidden" name="idHoaDon" value="${hoaDon.id}">
                                                 <button class="delete-button2 btn btn-danger" type="button" >Delete</button>
                                             </form>
@@ -512,7 +512,7 @@
                             <div class="card">
                                 <div class="card-body">
                                     <h5 class="card-title">HÓA ĐƠN</h5>
-                                    <form method="POST" action="/ban-hang-tai-quay/thanh-toan/${hoaDon.id}">
+                                    <form method="POST" action="/ban_hang_tai_quay/thanh-toan/${hoaDon.id}">
                                         <div class="row mb-3">
                                             <label class="col-sm-4 col-form-label">Mã hóa đơn</label>
                                             <div class="col-sm-8">
@@ -531,6 +531,7 @@
                                             <div class="col-sm-5">
 
                                                 <c:if test="${hoaDon.idKhachHang.id==null}">
+
                                                     <input type="text" class="form-control" name="khachLe"  value="Khách lẻ" readonly>
                                                 </c:if>
 
@@ -573,7 +574,7 @@
                                             <div class="col-sm-5">
                                                 <p>${hoaDon.idKhuyenMai.soTienGiam}</p>
                                             </div>
-                                        </div>
+                                         </div>
 
                                         <div class="row mb-3">
                                             <label class="col-sm-4 col-form-label">Tổng tiền</label>
@@ -670,7 +671,7 @@
                                         <%--                                        </c:if>--%>
                                         <%--                                    </td>--%>
                                     <td>
-                                        <form action="/ban-hang-tai-quay/find-khuyen-mai/${km.id}" method="post" onsubmit="return validateAddToMaGiamGia();">
+                                        <form action="/ban_hang_tai_quay/find-khuyen-mai/${km.id}" method="post" onsubmit="return validateAddToMaGiamGia();">
                                             <input id="selectedMaGiamGia" type="hidden" name="idHoaDon" value="${hoaDon.id}">
                                             <button class="btn btn-primary" type="submit">
                                                 <i class="bi bi-plus-square"></i>
@@ -702,7 +703,7 @@
                     </div>
                     <div class="modal-body">
 
-                        <form method="post" action="/ban-hang-tai-quay/create">
+                        <form method="post" action="/ban_hang_tai_quay/create">
                             <div class="mb-3 mt-3">
                                 <label for="email" class="form-label">Họ tên khách hàng:</label>
                                 <input type="text" class="form-control" id="email" name="hoTen">
@@ -758,7 +759,7 @@
                                         <td>${kh.hoTen}</td>
                                         <td>${kh.sdt}</td>
                                         <td>
-                                            <form action="/ban-hang-tai-quay/find-kh/${kh.id}" method="post">
+                                            <form action="/ban_hang_tai_quay/find-kh/${kh.id}" method="post">
                                                 <input type="hidden" name="idHoaDon" value="${hoaDon.id}">
                                                 <input type="hidden" name="maHoaDon" value="${hoaDon.ma}">
                                                 <input type="hidden" class="form-control" name="ngayTao" value="${hoaDon.ngayTao}">
@@ -804,7 +805,7 @@
 
                                 <div class="row">
                                     <div class="col col-5">
-                                        <form method="post" action="/ban-hang-tai-quay/search">
+                                        <form method="post" action="/ban_hang_tai_quay/search">
                                             <div class="input-group mb-3">
                                                 <input type="text" name="search" class="form-control"
                                                        placeholder="Tìm kiếm theo mã sản phẩm, màu sắc,..."
@@ -817,7 +818,7 @@
                                 </div>
 
 
-                                <form method="post" action="/ban-hang-tai-quay/filter">
+                                <form method="post" action="/ban_hang_tai_quay/filter">
                                     <div class="row">
                                         <div class="col col-md-2">
                                             <div class="input-group mb-3">
@@ -830,7 +831,7 @@
                                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                                         <c:forEach items="${listSanPham}" var="sanPham">
                                                             <li><a class="dropdown-item"
-                                                                   href="/ban-hang-tai-quay/locSPCTBySanPham/${sanPham.id}">${sanPham.ten}</a>
+                                                                   href="/ban_hang_tai_quay/locSPCTBySanPham/${sanPham.id}">${sanPham.ten}</a>
                                                             </li>
                                                         </c:forEach>
                                                     </ul>
@@ -845,7 +846,7 @@
                                                 </button>
                                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
                                                     <c:forEach items="${listMauSac}" var="mauSac">
-                                                        <li><a class="dropdown-item" href="/ban-hang-tai-quay/locSPCTByMauSac/${mauSac.id}">${mauSac.ten}</a></li>
+                                                        <li><a class="dropdown-item" href="/ban_hang_tai_quay/locSPCTByMauSac/${mauSac.id}">${mauSac.ten}</a></li>
                                                     </c:forEach>
                                                 </ul>
                                             </div>
@@ -858,7 +859,7 @@
                                                 </button>
                                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton3">
                                                     <c:forEach items="${listKichThuoc}" var="kichThuoc">
-                                                        <li><a class="dropdown-item" href="/ban-hang-tai-quay/locSPCTByKichThuoc/${kichThuoc.id}">${kichThuoc.ten}</a></li>
+                                                        <li><a class="dropdown-item" href="/ban_hang_tai_quay/locSPCTByKichThuoc/${kichThuoc.id}">${kichThuoc.ten}</a></li>
                                                     </c:forEach>
                                                 </ul>
                                             </div>
@@ -871,7 +872,7 @@
                                                 </button>
                                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton4">
                                                     <c:forEach items="${listChatLieu}" var="chatLieu">
-                                                        <li><a class="dropdown-item" href="/ban-hang-tai-quay/locSPCTByChatLieu/${chatLieu.id}">${chatLieu.ten}</a></li>
+                                                        <li><a class="dropdown-item" href="/ban_hang_tai_quay/locSPCTByChatLieu/${chatLieu.id}">${chatLieu.ten}</a></li>
                                                     </c:forEach>
                                                 </ul>
                                             </div>
@@ -884,7 +885,7 @@
                                                 </button>
                                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton5">
                                                     <c:forEach items="${listKieuTay}" var="kieuTay">
-                                                        <li><a class="dropdown-item" href="/ban-hang-tai-quay/locSPCTByKieuTay/${kieuTay.id}">${kieuTay.ten}</a></li>
+                                                        <li><a class="dropdown-item" href="/ban_hang_tai_quay/locSPCTByKieuTay/${kieuTay.id}">${kieuTay.ten}</a></li>
                                                     </c:forEach>
                                                 </ul>
                                             </div>
@@ -926,7 +927,7 @@
                                                 <td>${spct.giaBan}</td>
                                                 <td>${spct.trangThai==1?"Còn hàng":"Hết hàng"}</td>
                                                 <td>
-                                                    <form action="/ban-hang-tai-quay/add-san-pham/${spct.id}" method="post"
+                                                    <form action="/ban_hang_tai_quay/add-san-pham/${spct.id}" method="post"
                                                           onsubmit="return validateBeforeAddToCart();">
                                                         <input type="hidden" name="idHoaDon" value="${hoaDon.id}"
                                                                id="selectedInvoiceId">
@@ -1036,7 +1037,7 @@
         var txtSearch = param.value;
         console.log(txtSearch);
         $.ajax({
-            url: "/ban-hang-tai-quay/search/${hoaDon.id}",
+            url: "/ban_hang_tai_quay/search/${hoaDon.id}",
             type: "POST",
             data: {
                 txt:txtSearch
@@ -1266,7 +1267,7 @@
                 if (result.isConfirmed) {
                     // Thực hiện hành động xóa ở đây, ví dụ:
                     // Gửi yêu cầu AJAX tới server để xóa dữ liệu
-                    fetch(`/ban-hang-tai-quay/delete-hoa-don/`+itemId, { method: 'GET' }).then(() => {
+                    fetch(`/ban_hang_tai_quay/delete-hoa-don/`+itemId, { method: 'GET' }).then(() => {
                         Swal.fire(
                             'Đã xóa!',
                             'Dữ liệu của bạn đã bị xóa.',

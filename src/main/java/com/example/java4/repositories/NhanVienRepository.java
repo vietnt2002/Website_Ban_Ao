@@ -4,6 +4,7 @@ import com.example.java4.entities.NhanVien;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -16,4 +17,7 @@ public interface NhanVienRepository
     public static final int INACTIVE =0;
     public Page<NhanVien> findByTrangThai(int trangThai, Pageable pageable);
     public Optional<NhanVien> findById(String id);
+
+    @Query("select nv from NhanVien nv where nv.taiKhoan = ?1")
+    NhanVien findByTaiKhoan(String tenTK);
 };

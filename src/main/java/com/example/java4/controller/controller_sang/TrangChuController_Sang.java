@@ -3,6 +3,7 @@ package com.example.java4.controller.controller_sang;
 import com.example.java4.config.UserInfor;
 import com.example.java4.entities.*;
 import com.example.java4.repositories.*;
+import com.example.java4.repositories.repo_tai.IHoaDonRepository;
 import com.example.java4.request.req_sang.DiaChiRequest;
 import com.example.java4.request.req_sang.GiaoHangRequest;
 import com.example.java4.request.req_tai.KhachHangDTO;
@@ -51,24 +52,35 @@ public class TrangChuController_Sang {
     GiaoHangRepo giaoHangRepo;
     @Autowired
     DiaChiRepository diaChiRepo;
-    @Autowired
-    KhuyenMaiRepository khuyenMaiRepo;
-
     private List<ChiTietHoaDon> listHDCT = new ArrayList<>();
-    private List<ChiTietSanPham> listCTSP = new ArrayList<>();
+    private List<ChiTietSanPham> listCTSP= new ArrayList<>();
     private List<SanPham> listSanPham = new ArrayList<>();
     private List<KhachHang> listKhachHang = new ArrayList<>();
     private List<GioHangResponse> listGioHang;
     private List<DiaChi> listDiaChi = new ArrayList<>();
-    private List<KhuyenMai> listKhuyenMai = new ArrayList<>();
+    //Test api địa chỉ
+    @GetMapping("apiDiaChi")
+    public String apiDC(){
+        return "/view/view_viet/testApiDiaChi.jsp";
+    }
 
+    @PostMapping("addDC")
+    public void addDiaChi(
+            @RequestParam("tenTinh") String tinh,
+            @RequestParam("tenQuan") String quan,
+            @RequestParam("tenPhuong") String phuong
+    ){
+        System.out.println("Tỉnh: "+tinh);
+        System.out.println("Quận: "+quan);
+        System.out.println("Phường: "+phuong);
+    }
 
     //Bán onl
     @GetMapping("/trang-chu")
     public String getTrangChu(
             Model model,
-            @RequestParam("page") Optional<Integer> pageParam
-    ) {
+            @RequestParam("page")Optional<Integer> pageParam
+    ){
         if (!model.containsAttribute("khachHangDTO")) {
             System.out.println("crette dto");
             model.addAttribute("khachHangDTO", new KhachHangDTO());
@@ -77,8 +89,7 @@ public class TrangChuController_Sang {
         Page pageSP = spctRepo.getAllSP(pageable);
         model.addAttribute("pageSP", pageSP);
         model.addAttribute("soLuong", hdctRepo.findByKHnStt(khachHangRepo.findByIdKH(UserInfor.idKhachHang)));
-        System.out.println("================================test user info :" + UserInfor.idKhachHang);
-
+        System.out.println("================================test user info :"+UserInfor.idKhachHang);
         //Tính tổng số lượng sản phẩm có trong giỏ hàng
         listHDCT = hdctRepo.findByIdHoaDonByIDKH(UserInfor.idKhachHang, HoaDonRepository.CHO_THANH_TOAN);
         listGioHang = hdctRepo.getAll(UserInfor.idKhachHang, HoaDonRepository.CHO_THANH_TOAN);
@@ -87,7 +98,6 @@ public class TrangChuController_Sang {
             totalSoLuong += chiTietHoaDon.getSoLuong();
         }
         model.addAttribute("soLuong", totalSoLuong);
-
         return "/view/BanHangOnline/trangChu.jsp";
     }
 
@@ -96,7 +106,7 @@ public class TrangChuController_Sang {
     public String detail(
             Model model,
             @PathVariable("idCTSP") String idCTSP
-    ) {
+    ){
         ChiTietSanPham chiTietSanPham = spctRepo.findById(idCTSP).get();
         HinhAnh hinhAnh = hinhAnhRepo.findByIdCTSP(idCTSP);
 
@@ -121,7 +131,7 @@ public class TrangChuController_Sang {
         model.addAttribute("listKichThuoc", listKichThuoc);
         model.addAttribute("listMauSizeSL", listMauSizeSL);
         model.addAttribute("listMauSac", listMauSac);
-        model.addAttribute("soLuong", hdctRepo.findByKHnStt(khachHangRepo.findByIdKH(UserInfor.idKhachHang)));
+        model.addAttribute("soLuong",hdctRepo.findByKHnStt(khachHangRepo.findByIdKH(UserInfor.idKhachHang)));
 
         //Tính tổng số lượng sản phẩm có trong giỏ hàng
         listHDCT = hdctRepo.findByIdHoaDonByIDKH(UserInfor.idKhachHang, HoaDonRepository.CHO_THANH_TOAN);
@@ -131,7 +141,6 @@ public class TrangChuController_Sang {
             totalSoLuong += chiTietHoaDon.getSoLuong();
         }
         model.addAttribute("soLuong", totalSoLuong);
-
         return "/view/BanHangOnline/chiTietSanPham.jsp";
     }
 
@@ -146,6 +155,12 @@ public class TrangChuController_Sang {
             RedirectAttributes redirectAttributes
     ) {
 
+        //Bắt khách đăng nhập mới thêm sản phẩm giỏ hàng được
+        if (UserInfor.idKhachHang == null) {     //Nếu ko đăng nhập thì thông báo khách hàng đăng nhập
+            redirectAttributes.addFlashAttribute("error", "Vui lòng đăng nhập trước khi thêm sản phẩm!");
+            return "redirect:/cua_hang/detail-san-pham/" + idCTSP;
+        }
+
         //Lấy ra màu sắc theo tên màu sắc
         MauSac mauSac = mauSacRepo.findByTen(tenMauSac);
         //Lấy ra kích thước theo tên kích thước
@@ -157,86 +172,116 @@ public class TrangChuController_Sang {
         //Lấy ra chi tiết sản phẩm đã chọn theo idSP, idMS, idKth
         ChiTietSanPham chiTietSanPham = spctRepo.findCTSPBySanPham_MauSac_KichThuoc(ctsp.getIdSanPham().getId(), mauSac.getId(), kichThuoc.getId());
 
-        //Mã tự động hóa đơn
-        int count = hoaDonRepo.countHD();
-
-        //Check khách hàng có đăng nhập ko
         if (khachHang == null) {     //Nếu ko đăng nhập thì lưu vào localStorage
 
             //Luồng khách hàng chưa đăng nhập thì làm sau
 
-        } else {    //Nếu có đăng nhập thì tạo hóa đơn và lưu vào HDCT(Giỏ hàng)
+        } else {
+        //Mã tự động hóa đơn
+        int count = hoaDonRepo.countHD();
+        //Kiểm tra số lượng khách thêm giỏ hàng có nhiều hơn số lượng tồn của SPCT không
+        if (soLuong > chiTietSanPham.getSoLuong()) {
+            redirectAttributes.addFlashAttribute("error", "Số lượng sản phẩm còn lại trong kho không đủ!");
+            return "redirect:/cua-hang/detail-san-pham/" + idCTSP;
+        }
 
-            //Tìm hoá đơn theo idKH, loaiHD và trạng thái  ->  Check khách hàng đã có hóa đơn chưa
-            HoaDon hoaDonCuaKH = hoaDonRepo.findByidKHAndLoaiHoaDonAndTrangThai(UserInfor.idKhachHang, HoaDonRepository.HOA_DON_ONL, HoaDonRepository.CHO_THANH_TOAN);
+        //Check không được thêm GH quá 10 sản phẩm
+        if (soLuong > 10) {
+            redirectAttributes.addFlashAttribute("error", "Sản phẩm này chỉ được thêm tối đa 10 chiếc!");
+            return "redirect:/cua-hang/detail-san-pham/" + idCTSP;
+        }
 
-            //Kiểm tra số lượng khách thêm giỏ hàng có nhiều hơn số lượng tồn của SPCT không
-            if (soLuong > chiTietSanPham.getSoLuong()) {
-                redirectAttributes.addFlashAttribute("error", "Số lượng sản phẩm còn lại không đủ!");
-                return "redirect:/store/detail-san-pham/" + idCTSP;
+        //Tìm hoá đơn theo idKH, loaiHD và trạng thái  ->  Check khách hàng đã có hóa đơn chưa
+        HoaDon hoaDonCuaKH = hoaDonRepo.findByidKHAndLoaiHoaDonAndTrangThai(UserInfor.idKhachHang, HoaDonRepository.HOA_DON_ONL, HoaDonRepository.CHO_THANH_TOAN);
+
+        //Check tổng tiền không quá 10tr
+        BigDecimal tongTien = BigDecimal.ZERO;
+        for (ChiTietHoaDon cthd : listHDCT){
+            tongTien = tongTien.add(cthd.getDonGia().multiply(BigDecimal.valueOf(cthd.getSoLuong())));
+        }
+        BigDecimal tienGioiHan = new BigDecimal(50000);
+        BigDecimal tienSauKhiThem = chiTietSanPham.getGiaBan().multiply(BigDecimal.valueOf(soLuong));
+        if (tongTien.add(tienSauKhiThem).compareTo(tienGioiHan) > 0){
+            redirectAttributes.addFlashAttribute("error", "Giới hạn hóa đơn của bạn là 10 triệu!");
+            return "redirect:/cua-hang/detail-san-pham/" + idCTSP;
+        }
+
+        //Nếu khách hàng chưa có hóa đơn thì tạo mới hóa đơn -> thêm sản phẩm giỏ hàng
+        if (hoaDonCuaKH == null) {
+            //Lấy ra thông tin khách hàng đăng nhập
+            try {
+                HoaDon hoaDon = new HoaDon();
+                hoaDon.setMa("HDMSS" + (count + 111));
+                hoaDon.setIdKhachHang(khachHang);
+                hoaDon.setNgayTao(LocalDateTime.now().withNano(0));
+                hoaDon.setTrangThai(HoaDonRepository.CHO_THANH_TOAN);
+                hoaDon.setLoaiHoaDon(HoaDonRepository.HOA_DON_ONL);
+                hoaDonRepo.save(hoaDon);
+
+                ChiTietHoaDon chiTietHoaDon = new ChiTietHoaDon();
+                chiTietHoaDon.setIdHoaDon(hoaDon);
+                chiTietHoaDon.setIdCTSP(chiTietSanPham);
+                chiTietHoaDon.setSoLuong(soLuong);
+                chiTietHoaDon.setDonGia(chiTietSanPham.getGiaBan());
+                chiTietHoaDon.setTrangThai(HDCTRepository.CHUA_THANH_TOAN);
+                hdctRepo.save(chiTietHoaDon);
+                //Lấy ra danh sách chi tiết hóa đơn theo hóa đơn của khách hàng
+                redirectAttributes.addFlashAttribute("success", "Thêm sản phẩm vào giỏ hàng thành công.");
+            } catch (Exception e) {
+                e.printStackTrace();
             }
+        } else {  //Nếu có hóa đơn rồi thì thêm sản phẩm vào giỏ hàng
 
-            //Nếu khách hàng chưa có hóa đơn thì tạo mới hóa đơn -> thêm sản phẩm giỏ hàng
-            if (hoaDonCuaKH == null) {
+            boolean flag = false;
+            String idHDCT = "";
+            //Kiểm tra xem sản phẩm đã có hay chưa
+            for (ChiTietHoaDon cthd : listHDCT) {
+                if (chiTietSanPham.getId().equals(cthd.getIdCTSP().getId())) {
+                    idHDCT = cthd.getId();
+                    flag = true;
+                    break;
+                }
+            }
+            List<ChiTietHoaDon> listHDCT = hdctRepo.findHDCTByIdHoaDon(hoaDonCuaKH.getId());
+            //Nếu sản phẩm đã tồn tại trong giỏ hàng thì cộng dồn
+            if (flag) {
                 try {
-                    HoaDon hoaDon = new HoaDon();
-                    hoaDon.setMa("HDMSS" + (count + 111));
-                    hoaDon.setIdKhachHang(khachHang);
-                    hoaDon.setNgayTao(LocalDateTime.now().withNano(0));
-                    hoaDon.setTrangThai(HoaDonRepository.CHO_THANH_TOAN);
-                    hoaDon.setLoaiHoaDon(HoaDonRepository.HOA_DON_ONL);
-                    hoaDonRepo.save(hoaDon);
-                    ChiTietHoaDon chiTietHoaDon = new ChiTietHoaDon();
-                    chiTietHoaDon.setIdHoaDon(hoaDon);
-                    chiTietHoaDon.setIdCTSP(chiTietSanPham);
-                    chiTietHoaDon.setSoLuong(soLuong);
-                    chiTietHoaDon.setDonGia(chiTietSanPham.getGiaBan());
-                    chiTietHoaDon.setTrangThai(HDCTRepository.CHUA_THANH_TOAN);
-                    hdctRepo.save(chiTietHoaDon);
+                    ChiTietHoaDon cthd = hdctRepo.findById(idHDCT).get();
+
+                    //Kiểm tra số lượng khách đã thêm(HDCT) có nhiều hơn số lượng tồn của SPCT không
+                    if ((cthd.getSoLuong()+soLuong) > chiTietSanPham.getSoLuong()){
+                        redirectAttributes.addFlashAttribute("error", "Số lượng sản phẩm còn lại trong kho không đủ!");
+                        return "redirect:/cua-hang/detail-san-pham/" + idCTSP;
+                    }
+
+                    //Check HDCT không được quá 10 sản phẩm
+                    if ((cthd.getSoLuong() + soLuong) > 10){
+                        redirectAttributes.addFlashAttribute("error", "Sản phẩm này chỉ được thêm tối đa 10 chiếc!");
+                        return "redirect:/cua-hang/detail-san-pham/" + idCTSP;
+                    }
+
+                    cthd.setSoLuong(cthd.getSoLuong() + soLuong);
+                    cthd.setDonGia(cthd.getDonGia());
+                    hdctRepo.save(cthd);
                     redirectAttributes.addFlashAttribute("success", "Thêm sản phẩm vào giỏ hàng thành công.");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            } else {  //Nếu có hóa đơn rồi thì thêm sản phẩm vào giỏ hàng
-                //Lấy ra danh sách chi tiết hóa đơn theo hóa đơn của khách hàng
-                List<ChiTietHoaDon> listHDCT = hdctRepo.findHDCTByIdHoaDon(hoaDonCuaKH.getId());
-                boolean flag = false;
-                String idHDCT = "";
-                //Kiểm tra xem sản phẩm đã có hay chưa
-                for (ChiTietHoaDon cthd : listHDCT) {
-                    if (chiTietSanPham.getId().equals(cthd.getIdCTSP().getId())) {
-                        idHDCT = cthd.getId();
-                        flag = true;
-                        break;
-                    }
-                }
-                //Nếu sản phẩm đã tồn tại trong giỏ hàng thì cộng dồn
-                if (flag) {
-                    try {
-                        ChiTietHoaDon cthd = hdctRepo.findById(idHDCT).get();
-                        cthd.setSoLuong(cthd.getSoLuong() + soLuong);
-                        cthd.setDonGia(cthd.getDonGia());
-                        hdctRepo.save(cthd);
-                        redirectAttributes.addFlashAttribute("success", "Thêm sản phẩm vào giỏ hàng thành công.");
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                } else {   //Check sản phẩm chưa có trong giỏ hàng thì thêm mới
-                    try {
-                        ChiTietHoaDon chiTietHoaDonMoi = new ChiTietHoaDon();
-                        chiTietHoaDonMoi.setIdHoaDon(hoaDonCuaKH);
-                        chiTietHoaDonMoi.setIdCTSP(chiTietSanPham);
-                        chiTietHoaDonMoi.setSoLuong(soLuong);
-                        chiTietHoaDonMoi.setDonGia(chiTietSanPham.getGiaBan());
-                        chiTietHoaDonMoi.setTrangThai(HDCTRepository.CHUA_THANH_TOAN);
-                        hdctRepo.save(chiTietHoaDonMoi);
-                        redirectAttributes.addFlashAttribute("success", "Thêm sản phẩm vào giỏ hàng thành công.");
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+            } else {   //Check sản phẩm chưa có trong giỏ hàng thì thêm mới
+                try {
+                    ChiTietHoaDon chiTietHoaDonMoi = new ChiTietHoaDon();
+                    chiTietHoaDonMoi.setIdHoaDon(hoaDonCuaKH);
+                    chiTietHoaDonMoi.setIdCTSP(chiTietSanPham);
+                    chiTietHoaDonMoi.setSoLuong(soLuong);
+                    chiTietHoaDonMoi.setDonGia(chiTietSanPham.getGiaBan());
+                    chiTietHoaDonMoi.setTrangThai(HDCTRepository.CHUA_THANH_TOAN);
+                    hdctRepo.save(chiTietHoaDonMoi);
+                    redirectAttributes.addFlashAttribute("success", "Thêm sản phẩm vào giỏ hàng thành công.");
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
-        }
+        }}
         return "redirect:/cua-hang/detail-san-pham/" + idCTSP;
     }
 
@@ -280,21 +325,21 @@ public class TrangChuController_Sang {
         session.removeAttribute("user");
         UserInfor.idKhachHang = null;
         redirectAttributes.addFlashAttribute("successMessage", "Đăng xuất thành công!");
-        return "redirect:/trang-chu";
+        return "redirect:/cua-hang/trang-chu";
     }
 
     @PostMapping("/register")
-    public String register(@ModelAttribute("khachHangDTO") KhachHangDTO khachHangDTO,
-                           BindingResult result,
-                           RedirectAttributes redirectAttributes) {
+    public String register( @ModelAttribute("khachHangDTO") KhachHangDTO khachHangDTO,
+                            BindingResult result,
+                            RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             redirectAttributes.addFlashAttribute("registerErrors", result.getAllErrors());
-            return "redirect:/trang-chu";
+            return "redirect:/cua-hang/trang-chu";
         }
         KhachHang existingUser = khachHangRepository.findByTaiKhoan(khachHangDTO.getTaiKhoan());
         if (existingUser != null) {
             redirectAttributes.addFlashAttribute("registerErrors", "Username already exists");
-            return "redirect:/trang-chu";
+            return "redirect:/cua-hang/trang-chu";
         }
         // Save the new user
         KhachHang newUser = new KhachHang();
@@ -302,11 +347,11 @@ public class TrangChuController_Sang {
         newUser.setEmail(khachHangDTO.getEmail());
         newUser.setSdt(khachHangDTO.getSdt());
         newUser.setMatKhau(khachHangDTO.getMatKhau());
-        newUser.setNgayTao(LocalDateTime.now());
+        newUser.setNgayTao( LocalDateTime.now());
         newUser.setTrangThai(khachHangRepository.ACTIVE);
         khachHangRepository.save(newUser);
         redirectAttributes.addFlashAttribute("successMessage", "Đăng ký thành công!");
-        return "redirect:/trang-chu";
+        return "redirect:/cua-hang/trang-chu";
     }
 
 
@@ -318,7 +363,6 @@ public class TrangChuController_Sang {
         listSanPham = sanPhamRepo.findAll();
         DiaChi diaChi = diaChiRepo.getDiaChiByIdKhachHangAndTrangThai(UserInfor.idKhachHang, DiaChiRepository.MAC_DINH);
         listDiaChi = diaChiRepo.getAllDiaChi();
-        listKhuyenMai = khuyenMaiRepo.findAll();
         boolean check = false;
         System.out.println("====================================test id kh : " + UserInfor.idKhachHang);
         if (listHDCT.isEmpty()) {
@@ -334,7 +378,6 @@ public class TrangChuController_Sang {
             model.addAttribute("listSanPham", listSanPham);
             model.addAttribute("diaChi", diaChi);
             model.addAttribute("listDiaChi", listDiaChi);
-            model.addAttribute("listKhuyenMai", listKhuyenMai);
             model.addAttribute("check", check);
         }
 
@@ -353,9 +396,8 @@ public class TrangChuController_Sang {
         }
         model.addAttribute("tongTien", tongTienBigDecimal);
 
-        return "/view/view_sang/gioHang.jsp";
+        return "/view/BanHangOnline/gioHang.jsp";
     }
-
     @PostMapping("/them-dia-chi")
     public String themDiaChiByidKH(DiaChiRequest request, @RequestParam("tenTinhThanh") String idTinh,
                                    @RequestParam("tenQuanHuyen") String idQuan,
@@ -380,11 +422,10 @@ public class TrangChuController_Sang {
         redirectAttributes.addFlashAttribute("successMessage", "Thêm địa chỉ thành công");
         return "redirect:/cua-hang/gio-hang";
     }
-
     @PostMapping("/cap-nhat-dia-chi/{id}")
     public String suaDiaChiByidKH(DiaChiRequest request, @PathVariable("id") String id, @RequestParam("tenTinh") String idTinh,
-                                   @RequestParam("tenQuan") String idQuan,
-                                   @RequestParam("tenPhuong") String idPhuong, RedirectAttributes redirectAttributes) {
+                                  @RequestParam("tenQuan") String idQuan,
+                                  @RequestParam("tenPhuong") String idPhuong, RedirectAttributes redirectAttributes) {
 
         DiaChi diaChi = diaChiRepo.findById(id).get();
         System.out.println(id);
@@ -402,7 +443,6 @@ public class TrangChuController_Sang {
         redirectAttributes.addFlashAttribute("successMessage", "Cập nhật địa chỉ thành công");
         return "redirect:/cua-hang/gio-hang";
     }
-
     @GetMapping("/xoa-dia-chi/{id}")
     public String xoaDiaChi(@PathVariable("id") String id, RedirectAttributes redirectAttributes) {
         DiaChi diaChi = diaChiRepo.findDiaChiByID(id);
@@ -411,7 +451,6 @@ public class TrangChuController_Sang {
 
         return "redirect:/cua-hang/gio-hang";
     }
-
     //Giảm số lượng sản phẩm có trong giỏ hàng đi 1
     @GetMapping("/giam-so-luong/{idHDCT}")
     public String giamSoLuong(@PathVariable("idHDCT") String idHDCT) {
@@ -477,7 +516,6 @@ public class TrangChuController_Sang {
         }
         return "redirect:/cua-hang/gio-hang";
     }
-
     @PostMapping("/thanh-toan")
     public String thanhToan(GiaoHangRequest request, @RequestParam("tenTinh") String idTinhThanh,
                             @RequestParam("tenQuan") String idQuanHuyen, @RequestParam("tenPhuong") String idPhuongXa, RedirectAttributes redirectAttributes) {
@@ -494,6 +532,7 @@ public class TrangChuController_Sang {
         hoaDon.setNgayThanhToan(LocalDateTime.now().withNano(0));
         hoaDon.setTongTien(tongTienBigDecimal);
         hoaDon.setTrangThai(HoaDonRepository.CHO_XAC_NHAN);
+        hoaDon.setLoaiHoaDon(HoaDonRepository.HOA_DON_ONL);
         hoaDonRepo.save(hoaDon);
 
         GiaoHang giaoHang = new GiaoHang();
@@ -513,34 +552,5 @@ public class TrangChuController_Sang {
 
         return "redirect:/cua-hang/gio-hang";
     }
-
-
-//    @Autowired
-//    SanPhamRepository sanPhamRepo;
-//    @GetMapping("/san-pham")
-//    public String sanPham(Model model){
-//        SanPhamRequest sanPhamRequest = new SanPhamRequest();
-//        model.addAttribute("sanPham", sanPhamRequest);
-//        model.addAttribute("listSP", sanPhamRepo.findAll());
-//        return "/view/view_viet/sanPham.jsp";
-//    }
-//
-//    @PostMapping("add")
-//    public String add(
-//            Model model,
-//            @Valid @ModelAttribute("sanPham") SanPhamRequest spReq,
-//            BindingResult result
-//    ){
-//        if (result.hasErrors()){
-//            return "/view/view_viet/sanPham.jsp";
-//        }
-//        SanPham sanPham = new SanPham();
-//        sanPham.setTen(spReq.getTen());
-//        sanPham.setTrangThai(spReq.getTrangThai());
-//        sanPham.setNgayTao(spReq.getNgayTao());
-//        sanPhamRepo.save(sanPham);
-//
-//        return "/view/view_viet/sanPham.jsp";
-//    }
 
 }

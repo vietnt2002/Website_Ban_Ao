@@ -7,12 +7,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-public interface IHoaDonRepository   extends JpaRepository<HoaDon,String> {
+public interface IHoaDonRepository extends JpaRepository<HoaDon, String> {
 
     // Loại hóa đơn
     public static final int HOA_DON_ONL = 0;
@@ -26,7 +25,7 @@ public interface IHoaDonRepository   extends JpaRepository<HoaDon,String> {
     public static final int DANG_GIAO_HANG = 4;
     public static final int GIAO_HANG_THANH_CONG = 5;
     public static final int DA_HOAN_THANH = 6;
-    public static final int DA_HUY= 7;
+    public static final int DA_HUY = 7;
 
     //Phương thức thanh toán
     public static final int TIEN_MAT = 0;
@@ -75,5 +74,52 @@ public interface IHoaDonRepository   extends JpaRepository<HoaDon,String> {
                                         @Param("endDate") LocalDateTime endDate,
                                         Pageable pageable);
 
+    // Các phương thức đếm số lượng hóa đơn theo trạng thái
+    @Query("SELECT COUNT(h) FROM HoaDon h WHERE h.trangThai = :trangThai")
+    int countByTrangThai(@Param("trangThai") int trangThai);
+
+    @Query("SELECT COUNT(h) FROM HoaDon h")
+    int countAll();
+
+
+    //Sáng  làm
+
+    //Tìm kiếm theo mã và sdt
+    @Query("SELECT hd FROM HoaDon hd " +
+            "LEFT JOIN hd.idKhachHang kh " +
+            "WHERE hd.ma LIKE %?1%" +
+            "OR kh.sdt LIKE %?1%")
+    Page<HoaDon> seachMaAndSdt(String keyword, Pageable pageable);
+
+    //Tìm kiếm theo ngày
+    @Query("SELECT hd FROM HoaDon hd " +
+            "LEFT JOIN hd.idKhachHang kh " +
+            "WHERE hd.ngayTao " +
+            "BETWEEN ?1 and ?2")
+    Page<HoaDon> searchByDate(LocalDateTime startDate, LocalDateTime endDate, Pageable pageable);
+
+    //Tìm kiếm theo từ khóa và theo loại hóa đơn
+    @Query("SELECT hd FROM HoaDon hd " +
+            "LEFT JOIN hd.idKhachHang kh " +
+            "WHERE (hd.ma LIKE %?1% OR kh.sdt LIKE %?1%) AND (hd.loaiHoaDon = ?2)")
+    Page<HoaDon> searchByMaOrSdtAndLoaiHoaDon(String keyword, Integer loaiHoaDon, Pageable pageable);
+
+    //Tìm kiếm theo từ khóa và theo khoảng ngày
+    @Query("SELECT hd FROM HoaDon hd " +
+            "LEFT JOIN hd.idKhachHang kh " +
+            "WHERE (hd.ma LIKE %?1% OR kh.sdt LIKE %?1%) AND (hd.ngayTao BETWEEN ?2 AND ?3)")
+    Page<HoaDon> searchByMaOrSdtAndNgayTao(String keyword, LocalDateTime startDate, LocalDateTime endDate, Pageable pageable);
+
+    //Tìm kiếm theo theo loại hóa đơn và theo khoảng ngày
+    @Query("SELECT hd FROM HoaDon hd " +
+            "LEFT JOIN hd.idKhachHang kh " +
+            "WHERE (hd.loaiHoaDon = ?1) AND (hd.ngayTao BETWEEN ?2 AND ?3)")
+    Page<HoaDon> searchByLoaiHoaDonAndNgayTao(Integer loaiHoaDon, LocalDateTime startDate, LocalDateTime endDate, Pageable pageable);
+
+    //Tìm kiếm theo từ khóa và theo khoảng ngày
+    @Query("SELECT hd FROM HoaDon hd " +
+            "LEFT JOIN hd.idKhachHang kh " +
+            "WHERE (hd.ma LIKE %?1% OR kh.sdt LIKE %?1%) AND (hd.loaiHoaDon = ?2) AND (hd.ngayTao BETWEEN ?3 AND ?4)")
+    Page<HoaDon> searchByMaOrSdtAndLoaiHoaDonAndNgayTao(String keyword, Integer loaiHoaDon, LocalDateTime startDate, LocalDateTime endDate, Pageable pageable);
 
 }
