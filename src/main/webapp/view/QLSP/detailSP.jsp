@@ -281,8 +281,6 @@
                             </h6>
                             <a class="dropdown-item d-flex align-items-center" href="#">
                                 <div class="dropdown-list-image mr-3">
-                                    <img class="rounded-circle" src="img/undraw_profile_1.svg"
-                                         alt="...">
                                     <div class="status-indicator bg-success"></div>
                                 </div>
                                 <div class="font-weight-bold">
@@ -294,8 +292,6 @@
                             </a>
                             <a class="dropdown-item d-flex align-items-center" href="#">
                                 <div class="dropdown-list-image mr-3">
-                                    <img class="rounded-circle" src="img/undraw_profile_2.svg"
-                                         alt="...">
                                     <div class="status-indicator"></div>
                                 </div>
                                 <div>
@@ -307,8 +303,6 @@
                             </a>
                             <a class="dropdown-item d-flex align-items-center" href="#">
                                 <div class="dropdown-list-image mr-3">
-                                    <img class="rounded-circle" src="img/undraw_profile_3.svg"
-                                         alt="...">
                                     <div class="status-indicator bg-warning"></div>
                                 </div>
                                 <div>
@@ -320,8 +314,6 @@
                             </a>
                             <a class="dropdown-item d-flex align-items-center" href="#">
                                 <div class="dropdown-list-image mr-3">
-                                    <img class="rounded-circle" src="https://source.unsplash.com/Mv9hjnEUHR4/60x60"
-                                         alt="...">
                                     <div class="status-indicator bg-success"></div>
                                 </div>
                                 <div>
@@ -367,248 +359,8 @@
             <div class="container-fluid">
                 <div class="container">
                     <div class="row">
-                        <div class="col-12">
+                        <div class="">
                             <div>
-                                <a class="col-sm-3 btn btn-info text-white" data-bs-toggle="modal" data-bs-target="#exampleModal4"
-                                   style="float: right;margin-right: 30px;">
-                                    Chi tiết
-                                </a>
-                            </div>
-                            <table class="table table-hover">
-                                <thead>
-                                <tr>
-                                    <th>STT</th>
-                                    <th>Mã</th>
-                                    <th>Tên SP</th>
-                                    <th>Màu sắc</th>
-                                    <th>Kích thước</th>
-                                    <th>Chất liệu</th>
-                                    <th>Kiểu tay</th>
-                                    <th>Số lượng</th>
-                                    <th>Đơn giá</th>
-                                    <th>Trạng thái</th>
-                                    <th>Thao tác</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <c:forEach varStatus="i" items="${listSanPham}" var="sanPham">
-                                    <tr>
-                                        <td>${i.index+1}</td>
-                                        <td>${hoaDon.ma}</td>
-                                        <td>${hoaDon.idNhanVien.hoTen}</td>
-                                        <td>
-                                            <c:if test="${hoaDon.idKhachHang.id==null}">Khách lẻ</c:if>
-                                            <c:if test="${hoaDon.idKhachHang.id!=null}">${hoaDon.idKhachHang.hoTen}</c:if>
-                                        </td>
-                                        <td>${hoaDon.ngayTao}</td>
-                                        <td>${hoaDon.trangThai==0?"Chua thanh toan":"Da thanh toan"}</td>
-                                        <td>
-                                            <a href="/ban-hang-tai-quay/detail-hoa-don/${hoaDon.id}"
-                                               class="btn btn-primary">
-                                                <i class="bi bi-eye-fill"></i>
-                                            </a>
-                                            <button class="delete-button btn btn-danger" data-id="${hoaDon.id}">
-                                                <i class="bi bi-x-circle-fill"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                </c:forEach>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Modal mã giảm giá -->
-        <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
-             data-bs-backdrop="static" data-bs-keyboard="false" >
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <div class="row">
-                            <h5 class="modal-title" id="exampleModalLabel">Mã giảm giá</h5>
-                        </div>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-
-                        <table class="table table-hover">
-                            <thead>
-                            <tr>
-                                <th>Mã</th>
-                                <th>Tên</th>
-                                <th>Giảm tối đa</th>
-                                <%--                                <th>Áp dụng</th>--%>
-                                <th>Chọn</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <c:forEach items="${listKM}" var="km">
-                                <tr>
-                                    <td>${km.ma}</td>
-                                    <td>${km.ten}</td>
-                                    <td>${km.soTienGiam}</td>
-                                        <%--                                    <td>--%>
-                                        <%--                                        <c:if test="${km.soTienGiam==200}">--%>
-                                        <%--                                           2.000.000 VNĐ--%>
-                                        <%--                                        </c:if>--%>
-                                        <%--                                        <c:if test="${km.soTienGiam==100}">--%>
-                                        <%--                                            1.000.000 VNĐ--%>
-                                        <%--                                        </c:if>--%>
-                                        <%--                                        <c:if test="${km.soTienGiam==20}">--%>
-                                        <%--                                            500.000 VNĐ--%>
-                                        <%--                                        </c:if>--%>
-                                        <%--                                    </td>--%>
-                                    <td>
-                                        <form action="/ban-hang-tai-quay/find-khuyen-mai/${km.id}" method="post" onsubmit="return validateAddToMaGiamGia();">
-                                            <input id="selectedMaGiamGia" type="hidden" name="idHoaDon" value="${hoaDon.id}">
-                                            <button class="btn btn-primary" type="submit">
-                                                <i class="bi bi-plus-square"></i>
-                                            </button>
-                                        </form>
-                                    </td>
-                                </tr>
-                            </c:forEach>
-                            </tbody>
-                        </table>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <%--        Modal thêm nhanh khách hàng--%>
-
-        <!-- Modal khách hàng -->
-        <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
-             data-bs-backdrop="static" data-bs-keyboard="false" >
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <div class="row">
-                            <h5 class="modal-title" id="exampleModalLabel1">Thêm khách hàng</h5>
-                        </div>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-
-                        <form method="post" action="/ban-hang-tai-quay/create">
-                            <div class="mb-3 mt-3">
-                                <label for="email" class="form-label">Họ tên khách hàng:</label>
-                                <input type="text" class="form-control" id="email" name="hoTen">
-                            </div>
-                            <div class="mb-3">
-                                <label for="pwd" class="form-label">Số điện thoại:</label>
-                                <input type="text" class="form-control" id="pwd" name="sdt">
-                            </div>
-
-                            <input type="hidden" name="idHoaDon" value="${hoaDon.id}">
-
-                            <div class="text-center">
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                            </div>
-
-                        </form>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Modal khách hàng -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
-             data-bs-backdrop="static" data-bs-keyboard="false" >
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <div class="row">
-                            <h5 class="modal-title" id="exampleModalLabel2">Danh sách khách hàng</h5>
-                        </div>
-
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-
-
-                    </div>
-                    <div class="modal-body">
-                        <input oninput="searchByName(this)" type="text" name="txt" class="form-control" placeholder="Tìm kiếm theo tên khách hàng,số điện thoại"
-                               aria-label="Recipient's username" aria-describedby="button-addon2" style="margin-bottom: 20px">
-
-                        <div class="table-scroll">
-                            <table class="table table-hover" id="contentAjax">
-                                <thead>
-                                <tr>
-                                    <th>Tên khách hàng</th>
-                                    <th>Số điện thoại</th>
-                                    <th>Chọn</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <c:forEach items="${pageData.content}" var="kh">
-                                    <tr>
-                                        <td>${kh.hoTen}</td>
-                                        <td>${kh.sdt}</td>
-                                        <td>
-                                            <form action="/ban-hang-tai-quay/find-kh/${kh.id}" method="post">
-                                                <input type="hidden" name="idHoaDon" value="${hoaDon.id}">
-                                                <input type="hidden" name="maHoaDon" value="${hoaDon.ma}">
-                                                <input type="hidden" class="form-control" name="ngayTao" value="${hoaDon.ngayTao}">
-                                                <button class="btn btn-primary" type="submit">
-                                                    <i class="bi bi-plus-square"></i>
-                                                </button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                </c:forEach>
-                                </tbody>
-                            </table>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-        <%--End--%>
-
-
-
-
-
-        <!-- Modal khách hàng -->
-        <div class="modal fade" id="exampleModal4" tabindex="-1" aria-labelledby="exampleModalLabel4" aria-hidden="true"
-             data-bs-backdrop="static" data-bs-keyboard="false" >
-            <div class="modal-dialog modal-xl">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <div class="row">
-                            <h3 class="modal-title" id="exampleModalLabel4">Chi tiết sản phẩm</h3>
-                        </div>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-
-                    </div>
-                    <div class="modal-body">
-
-                        <%--          --%>
-                        <div class="row">
-                            <div class="col col-12">
-                                <!-- Sản phẩm -->
-
-                                <div class="row">
-                                    <div class="col col-5">
-                                        <form method="post" action="/ban-hang-tai-quay/search">
-                                            <div class="input-group mb-3">
-                                                <input type="text" name="search" class="form-control"
-                                                       placeholder="Tìm kiếm theo mã sản phẩm, màu sắc,..."
-                                                       aria-label="Recipient's username" aria-describedby="button-addon2">
-                                                <button class="btn btn-primary" type="submit" id="button-addon2">Tìm kiếm
-                                                </button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-
-
                                 <form method="post" action="/ban-hang-tai-quay/filter">
                                     <div class="row">
                                         <div class="col col-md-2">
@@ -685,65 +437,114 @@
 
                                     </div>
                                 </form>
-
-                                <div class="table-scroll2">
-                                    <table class="table table-hover">
-                                        <thead>
-                                        <tr>
-                                            <th>STT</th>
-                                            <th>Mã</th>
-                                            <th>Tên SP</th>
-                                            <th>Màu sắc</th>
-                                            <th>Kích thước</th>
-                                            <th>Chất liệu</th>
-                                            <th>Kiểu tay</th>
-                                            <th>Số lượng</th>
-                                            <th>Đơn giá</th>
-                                            <th>Trạng thái</th>
-                                            <th>Thao tác</th>
-                                        </tr>
-                                        </thead>
-
-                                        <tbody id="chiTietSanPhamTableBody">
-                                        <c:forEach varStatus="i" items="${listCTSP.content}" var="spct">
-                                            <tr>
-                                                <td>${i.index+1}</td>
-                                                <td>${spct.idSanPham.ma}</td>
-                                                <td>${spct.idSanPham.ten}</td>
-                                                <td>${spct.idMauSac.ten}</td>
-                                                <td>${spct.idKichThuoc.ten}</td>
-                                                <td>${spct.idChatLieu.ten}</td>
-                                                <td>${spct.idKieuTay.ten}</td>
-                                                <td>${spct.soLuong}</td>
-                                                <td>${spct.giaBan}</td>
-                                                <td>${spct.trangThai==1?"Còn hàng":"Hết hàng"}</td>
-                                                <td>
-                                                    <form action="/ban-hang-tai-quay/add-san-pham/${spct.id}" method="post"
-                                                          onsubmit="return validateBeforeAddToCart();">
-                                                        <input type="hidden" name="idHoaDon" value="${hoaDon.id}"
-                                                               id="selectedInvoiceId">
-                                                        <button class="btn btn-success" type="submit">+</button>
-                                                    </form>
-                                                </td>
-                                            </tr>
-                                        </c:forEach>
-                                        </tbody>
-                                    </table>
-                                </div>
                             </div>
-                        </div>
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th>STT</th>
+                                    <th>Hình ảnh</th>
+                                    <th>Mã</th>
+                                    <th>Tên</th>
+                                    <th>Ngày tạo</th>
+                                    <th>Trạng thái</th>
+                                    <th>Thao tác</th>
+                                </tr>
+                                </thead>
+                                <tbody id="tbl_ds_sp">
 
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex flex-row-reverse">
+                <button id="btnAdd" class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#ModalAdd">Thêm mới</button>
+            </div>
+            <div class="col-12 pb-1">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center mb-3">
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                        </li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        <!-- ModalSPAdd-->
+        <div class="modal fade" id="ModalAdd" tabindex="-1" aria-labelledby="exampleModalLabel4" aria-hidden="true"
+             data-bs-backdrop="static" data-bs-keyboard="false" >
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="row">
+                            <h3 class="modal-title" id="exampleModalLabelAdd">Thêm mới sản phẩm</h3>
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="mb-3">
+                                <label for="tenSPAdd" class="form-label">Tên sản phẩm</label>
+                                <input type="email" class="form-control" id="tenSPAdd" aria-describedby="emailHelp">
+                            </div>
+                            <div class="mb-3">
+                                <label for="hinhAnhAdd" class="form-label">Hình ảnh</label>
+                                <input type="file" class="form-control" id="hinhAnhAdd">
+                            </div>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked>
+                                <label class="form-check-label" for="flexSwitchCheckChecked">Trạng thái</label>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Lưu</button>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
-        <%--End--%>
-
-
-
-
-
-
+        <%--End modal --%>
+        <!-- ModalSPEdit-->
+        <div class="modal fade" id="ModalEdit" tabindex="-1" aria-labelledby="exampleModalLabel4" aria-hidden="true"
+             data-bs-backdrop="static" data-bs-keyboard="false" >
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="row">
+                            <h3 class="modal-title" id="exampleModalLabel4">Chỉnh sửa sản phẩm</h3>
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="tenSPEdit" class="form-label">Tên sản phẩm</label>
+                            <input type="text" class="form-control" id="tenSPEdit" aria-describedby="emailHelp" value="">
+                        </div>
+                        <div class="mb-3">
+                            <label for="hinhAnhEdit" class="form-label">Hình ảnh</label>
+                            <input type="file" class="form-control" id="hinhAnhEdit" value="">
+                        </div>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" role="switch" id="trangThaiEdit" checked>
+                            <label class="form-check-label" for="flexSwitchCheckChecked">Trạng thái</label>
+                        </div>
+                        <button id="saveEditBtn"  class="btn btn-primary">Lưu</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <%--End modal --%>
         <!-- Footer -->
         <footer class="sticky-footer bg-white">
             <div class="container my-auto">
@@ -753,7 +554,6 @@
             </div>
         </footer>
         <!-- End of Footer -->
-
     </div>
 
 </div>
@@ -782,24 +582,18 @@
         </div>
     </div>
 </div>
-
 <!-- Bootstrap core JavaScript-->
 <script src="/view_admin/vendor/jquery/jquery.min.js"></script>
 <script src="/view_admin/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
 <!-- Core plugin JavaScript-->
 <script src="/view_admin/vendor/jquery-easing/jquery.easing.min.js"></script>
-
 <!-- Custom scripts for all pages-->
 <script src="/view_admin/js/sb-admin-2.min.js"></script>
-
 <!-- Page level plugins -->
 <script src="/view_admin/vendor/chart.js/Chart.min.js"></script>
-
 <!-- Page level custom scripts -->
 <script src="/view_admin/js/demo/chart-area-demo.js"></script>
 <script src="/view_admin/js/demo/chart-pie-demo.js"></script>
-
 </body>
 
 <script>
@@ -821,8 +615,6 @@
             });
         });
     });
-
-
 
     function searchByName(param){
         var txtSearch = param.value;
@@ -854,7 +646,6 @@
         var tienKhachDua = parseInt(document.getElementById('tienKhachDua').value);
         console.log(tongTien);
         console.log(tienKhachDua);
-
         var tienTraLai = tienKhachDua - tongTien;
         console.log(tienTraLai);
         var thongBao = document.getElementById("errTraLai");
@@ -862,7 +653,6 @@
             thongBao.textContent = "Vui lòng nhập số tiền hợp lệ.";
             return false;
         }
-
         if (tienKhachDua == "" || tienKhachDua < tongTien) {
             thongBao.textContent = "Số tiền khách đưa phải lớn hơn hoặc bằng tổng tiền.";
             // alert('Số tiền khách đưa phải lớn hơn hoặc bằng tổng tiền.');
@@ -886,7 +676,6 @@
         var tongSL22 = parseInt(document.getElementById("tongSL").value);
         var tt = soLuongCu+tongSL22
 
-
         if (soLuongNhap<=0){
             Swal.fire({
                 title: 'Lỗi!',
@@ -906,10 +695,8 @@
             });
             return false;
         }
-
         return true;
     }
-
 
     function validateBeforeAddToCart() {
         // Kiểm tra xem hóa đơn đã được chọn chưa
@@ -1018,6 +805,201 @@
         });
     });
 </script>
+
+<script>
+    const loadDSSP = () => {
+        // get api + scpt.id
+        let datatest = "data testing";
+        fetch("/san-pham/index", {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        }).then(response => response.json())
+            .then(resp => {
+                let html = '';
+                resp.map((sp,i)=>{
+                    const maSanPham = sp.ma || 'N/A';
+                    const tenSanPham = sp.ten || 'N/A';
+                    const hinhAnh = sp.hinhAnh || 'N/A';
+                    const ngayTao = sp.ngayTao || 'N/A';
+                    const trangThai = sp.trangThai == 1 ? "Hoạt động" : "Dừng hđ";
+                    html += '<tr>' +
+                        '<td>' + (i + 1) + '</td>' +
+                        '<td><img src="' + hinhAnh + '" alt="Image" class="img-fluid" /></td>' +
+                        '<td>' + maSanPham + '</td>' +
+                        '<td>' + tenSanPham + '</td>' +
+                        '<td>' + ngayTao + '</td>' +
+                        '<td>' + trangThai + '</td>' +
+                        '<td>' +
+                        '<div class="d-inline">' +
+                        '<button id="editSPBtn_' + sp.id + '" class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#ModalEdit">Chỉnh sửa</button>' +
+                        '<button id="detailSPBtn_' + sp.id + '" class="btn btn-danger">Chi tiết</button>' +
+                        '</div>' +
+                        '</td>' +
+                        '</tr>';
+                });
+                $("#tbl_ds_sp").html(html)
+            });
+    }
+    loadDSSP();
+    $(document).on('click', "button[id^='editSPBtn_']", e => {
+        e.preventDefault();
+        const queryString = window.location.pathname;
+        const pathParts = queryString.split('/');
+        const pathVariable = pathParts[pathParts.length - 1];
+        const spid = e.currentTarget.id.replace("editSPBtn_", "");
+        console.log("====================test id button edit: ", spid);
+        // fetch(apiGet, {
+        //     headers: {
+        //         'Accept': 'application/json',
+        //         'Content-Type': 'application/json'
+        //     }
+        // }).then(response => response.json())
+        //     .then(resp => {
+        //         console.log("test response spct: ", resp);
+        //         spctLocal =resp;
+        //         const apiAdd = "/san-pham/update/"+spid;
+        //         fetch(apiAdd, {
+        //             method: "post",
+        //             headers: {
+        //                 'Accept': 'application/json',
+        //                 'Content-Type': 'application/json'
+        //             }
+        //         }).then( (response) => {
+        //             console.log(response);
+        //             loadDSSP();
+        //         });
+        //     });
+    });
+    $(document).on('click', "button[id^='detailSPBtn_']", e => {
+        e.preventDefault();
+        const queryString = window.location.pathname;
+        const pathParts = queryString.split('/');
+        const pathVariable = pathParts[pathParts.length - 1];
+        const spid = e.currentTarget.id.replace("detailSP_", "");
+        console.log("====================test id button detail: ", spid);
+        window.location.href = '/qlsp/${spid}';
+        // fetch(apiGet, {
+        //     headers: {
+        //         'Accept': 'application/json',
+        //         'Content-Type': 'application/json'
+        //     }
+        // }).then(response => response.json())
+        //     .then(resp => {
+        //         console.log("test response spct: ", resp);
+        //         spctLocal =resp;
+        //         const apiAdd = "/san-pham/update/"+spid;
+        //         fetch(apiAdd, {
+        //             method: "post",
+        //             headers: {
+        //                 'Accept': 'application/json',
+        //                 'Content-Type': 'application/json'
+        //             }
+        //         }).then( (response) => {
+        //             console.log(response);
+        //             loadDSSP();
+        //         });
+        //     });
+    });
+    const addBtn = document.querySelectorAll('#addBtn');
+    const editSPBtn = document.querySelectorAll('#editSPBtn');
+    const saveEditBtn = document.querySelectorAll('#saveEditBtn');
+    addBtn.forEach(button => {
+        button.addEventListener('click', function (e) {
+            e.preventDefault();
+            console.log("test check btn");
+            var idHD = document.getElementsByName("idHD")[0].value;
+            var idKH  = document.getElementsByName("idKH")[0].value;
+            var idKhuyenMai = document.getElementsByName("idKhuyenMai")[0].value;
+            var tongTien = document.getElementsByName("tongTien")[0].value;
+            var thongBao = document.getElementById("errTraLai");
+            var moneyGiven = parseInt(document.getElementById("tienKhachDua").value);
+            var thongBao = document.getElementById("errTraLai");
+            console.log("====================== id hd:",idHD);
+            console.log("====================== id kh:",idKH);
+            console.log("====================== id khuyen mai:",idKhuyenMai);
+            console.log("====================== tong tien:",tongTien);
+            console.log("====================== money given:",moneyGiven);
+            if(tongTien<=moneyGiven&&!isNaN(tongTien)){
+                Swal.fire({
+                    title: 'Xác nhận thanh toán?',
+                    text: "Dữ liệu sẽ được lưu lại!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Vâng,Thanh toán!',
+                    cancelButtonText: 'Hủy'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        fetch(`/ban-hang-tai-quay/thanh-toan/`+idHD+'?idKhuyenMai='+idKhuyenMai+'&idKH='+idKH+'&tongTien='+tongTien,
+                            { method: 'POST' }).then(() => {
+                            Swal.fire(
+                                'Đã thanh toán!',
+                                'Dữ liệu đã được ghi nhận.',
+                                'success'
+                            ).then(() => {
+                                window.location.href = '/ban-hang-tai-quay';
+                            });
+                            button.closest('tr').remove();
+                        });
+                        button.closest('tr').remove();
+                        thongBao.textContent =  "";
+                    }
+                });
+            }
+            else{
+                thongBao.textContent =  "Số tiền khách đưa phải lớn hơn hoặc bằng tổng tiền.";
+            }
+        });
+    });
+    saveEditBtn.forEach(button => {
+        button.addEventListener('click', function (e) {
+            e.preventDefault();
+            console.log("test check btn");
+            var idSP = "pending";
+            var tenSP  = document.getElementById("tenSPEdit").value;
+            var hinhAnh = document.getElementById("hinhAnhEdit").value;
+
+            console.log("====================== id sp:",idSP);
+            console.log("====================== ten sp:",tenSP);
+            console.log("====================== hinh anh:",hinhAnh);
+
+            // if(tongTien<=moneyGiven&&!isNaN(tongTien)){
+            //     Swal.fire({
+            //         title: 'Xác nhận thanh toán?',
+            //         text: "Dữ liệu sẽ được lưu lại!",
+            //         icon: 'warning',
+            //         showCancelButton: true,
+            //         confirmButtonColor: '#3085d6',
+            //         cancelButtonColor: '#d33',
+            //         confirmButtonText: 'Vâng,Thanh toán!',
+            //         cancelButtonText: 'Hủy'
+            //     }).then((result) => {
+            //         if (result.isConfirmed) {
+            //             fetch(`/ban-hang-tai-quay/thanh-toan/`+idHD+'?idKhuyenMai='+idKhuyenMai+'&idKH='+idKH+'&tongTien='+tongTien,
+            //                 { method: 'POST' }).then(() => {
+            //                 Swal.fire(
+            //                     'Đã thanh toán!',
+            //                     'Dữ liệu đã được ghi nhận.',
+            //                     'success'
+            //                 ).then(() => {
+            //                     window.location.href = '/ban-hang-tai-quay';
+            //                 });
+            //                 button.closest('tr').remove();
+            //             });
+            //             button.closest('tr').remove();
+            //             thongBao.textContent =  "";
+            //         }
+            //     });
+            // }
+            // else{
+            //     thongBao.textContent =  "Số tiền khách đưa phải lớn hơn hoặc bằng tổng tiền.";
+            // }
+        });
+    });
+</script>
 <script>
     // Hiển thị thông báo thêm thành công hoặc thất bại sử dụng thư viện Sweet Alert2
     const Toast = Swal.mixin({
@@ -1052,7 +1034,5 @@
         title: "${errorBillMax}"
     });
     </c:if>
-
-
 </script>
 </html>

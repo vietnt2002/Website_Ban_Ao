@@ -495,21 +495,19 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                     </div>
                     <div class="modal-body">
-                        <form>
-                            <div class="mb-3">
-                                <label for="tenSPAdd" class="form-label">Tên sản phẩm</label>
-                                <input type="email" class="form-control" id="tenSPAdd" aria-describedby="emailHelp">
-                            </div>
-                            <div class="mb-3">
-                                <label for="hinhAnhAdd" class="form-label">Hình ảnh</label>
-                                <input type="file" class="form-control" id="hinhAnhAdd">
-                            </div>
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked>
-                                <label class="form-check-label" for="flexSwitchCheckChecked">Trạng thái</label>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Lưu</button>
-                        </form>
+                            <<div class="mb-3">
+                        <label for="tenSPEdit" class="form-label">Tên sản phẩm</label>
+                        <input type="text" class="form-control" id="tenSPAdd" aria-describedby="emailHelp" value="">
+                    </div>
+                        <div class="mb-3">
+                            <label for="hinhAnhEdit" class="form-label">Hình ảnh</label>
+                            <input type="file" class="form-control" id="hinhAnhAdd" value="">
+                        </div>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" role="switch" id="trangThaiAdd" checked>
+                            <label class="form-check-label" for="trangThaiEdit">Trạng thái</label>
+                        </div>
+                            <button id="saveAddBtn" class="btn btn-primary">Lưu</button>
                     </div>
                 </div>
             </div>
@@ -535,10 +533,10 @@
                                 <label for="hinhAnhEdit" class="form-label">Hình ảnh</label>
                                 <input type="file" class="form-control" id="hinhAnhEdit" value="">
                             </div>
-                            <div class="mb-3">
-                                <label for="trangThaiEdit" class="form-label">Trạng thái</label>
-                                <<input type="checkbox" class="form-check-input" id="trangThaiEdit" value="">
-                            </div>
+                        <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" role="switch" id="trangThaiEdit" checked>
+                        <label class="form-check-label" for="trangThaiEdit">Trạng thái</label>
+                        </div>
                             <button id="saveEditBtn"  class="btn btn-primary">Lưu</button>
                     </div>
                 </div>
@@ -807,6 +805,7 @@
 </script>
 
 <script>
+    let idSPLocal = "";
     const loadDSSP = () => {
         // get api + scpt.id
         let datatest = "data testing";
@@ -834,7 +833,7 @@
                         '<td>' +
                         '<div class="d-inline">' +
                         '<button id="editSPBtn_' + sp.id + '" class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#ModalEdit">Chỉnh sửa</button>' +
-                        '<button id="detailSP_' + sp.id + '" class="btn btn-danger">Chi tiết</button>' +
+                        '<button id="detailSPBtn_' + sp.id + '" class="btn btn-danger">Chi tiết</button>' +
                         '</div>' +
                         '</td>' +
                             '</tr>';
@@ -849,6 +848,7 @@
         const pathParts = queryString.split('/');
         const pathVariable = pathParts[pathParts.length - 1];
         const spid = e.currentTarget.id.replace("editSPBtn_", "");
+        idSPLocal = spid;
         console.log("====================test id button edit: ", spid);
         // fetch(apiGet, {
         //     headers: {
@@ -871,15 +871,15 @@
         //             loadDSSP();
         //         });
         //     });
-        console.log("test spct local: ", spctLocal);
     });
-    $(document).on('click', "button[id^='detailSP_']", e => {
+    $(document).on('click', "button[id^='detailSPBtn_']", e => {
         e.preventDefault();
         const queryString = window.location.pathname;
         const pathParts = queryString.split('/');
         const pathVariable = pathParts[pathParts.length - 1];
-        const spid = e.currentTarget.id.replace("detailSP_", "");
+        const spid = e.currentTarget.id.replace("detailSPBtn_", "");
         console.log("====================test id button detail: ", spid);
+        window.location.href = '/qlsp/'+spid;
         // fetch(apiGet, {
         //     headers: {
         //         'Accept': 'application/json',
@@ -901,11 +901,11 @@
         //             loadDSSP();
         //         });
         //     });
-        console.log("test spct local: ", spctLocal);
     });
     const addBtn = document.querySelectorAll('#addBtn');
     const editSPBtn = document.querySelectorAll('#editSPBtn');
     const saveEditBtn = document.querySelectorAll('#saveEditBtn');
+    const saveAddBtn = document.querySelectorAll('#saveAddBtn');
     addBtn.forEach(button => {
         button.addEventListener('click', function (e) {
             e.preventDefault();
@@ -924,18 +924,29 @@
             console.log("====================== money given:",moneyGiven);
             if(tongTien<=moneyGiven&&!isNaN(tongTien)){
                 Swal.fire({
-                    title: 'Xác nhận thanh toán?',
+                    title: 'Xác nhận?',
                     text: "Dữ liệu sẽ được lưu lại!",
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d33',
-                    confirmButtonText: 'Vâng,Thanh toán!',
+                    confirmButtonText: 'Ok!',
                     cancelButtonText: 'Hủy'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        fetch(`/ban-hang-tai-quay/thanh-toan/`+idHD+'?idKhuyenMai='+idKhuyenMai+'&idKH='+idKH+'&tongTien='+tongTien,
-                            { method: 'POST' }).then(() => {
+                        const data = {
+                            idHD: idHD,
+                            idKhuyenMai: idKhuyenMai,
+                            idKH: idKH,
+                            tongTien: tongTien
+                        };
+                        fetch(`/san-pham/save/`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(data)
+                            }).then(() => {
                             Swal.fire(
                                 'Đã thanh toán!',
                                 'Dữ liệu đã được ghi nhận.',
@@ -955,51 +966,115 @@
             }
         });
     });
+
+    saveAddBtn.forEach(button => {
+        button.addEventListener('click', function (e) {
+            e.preventDefault();
+            console.log("test check btn");
+            var tenSP = document.getElementById('tenSPAdd');
+            var hinhAnh = document.getElementById('hinhAnh');
+            var trangThai = document.getElementById('trangThai');
+            console.log("====================== ten sp:",tenSP);
+            console.log("====================== hinh anh:",hinhAnh);
+            console.log("====================== trang thai:",trangThai);
+            if(tongTien<=moneyGiven&&!isNaN(tongTien)){
+                Swal.fire({
+                    title: 'Xác nhận?',
+                    text: "Dữ liệu sẽ được lưu lại!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ok!',
+                    cancelButtonText: 'Hủy'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        const data = {
+                            ten: tenSP,
+                            hinhAnh: hinhAnh,
+                            trangThai: trangThai
+                        };
+                        fetch(`/san-pham/save/`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(data)
+                        }).then(() => {
+                            Swal.fire(
+                                'Đã thanh toán!',
+                                'Dữ liệu đã được ghi nhận.',
+                                'success'
+                            ).then(() => {
+                                window.location.href = '/ban-hang-tai-quay';
+                            });
+                            button.closest('tr').remove();
+                        });
+                        button.closest('tr').remove();
+                        thongBao.textContent =  "";
+                    }
+                });
+            }
+            else{
+                thongBao.textContent =  "Số tiền khách đưa phải lớn hơn hoặc bằng tổng tiền.";
+            }
+        });
+    });
+
     saveEditBtn.forEach(button => {
         button.addEventListener('click', function (e) {
             e.preventDefault();
             console.log("test check btn");
-            var idSP = "pending";
-            var tenSP  = document.getElementById("tenSPEdit").value;
-            var hinhAnh = document.getElementById("hinhAnhEdit").value;
-
-            console.log("====================== id sp:",idSP);
+            var tenSP = document.getElementById('tenSPAdd');
+            var hinhAnh = document.getElementById('hinhAnh');
+            var trangThai = document.getElementById('trangThai');
             console.log("====================== ten sp:",tenSP);
-            console.log("====================== hinh anh:",hinhAnh.files[0].name);
-
-            // if(tongTien<=moneyGiven&&!isNaN(tongTien)){
-            //     Swal.fire({
-            //         title: 'Xác nhận thanh toán?',
-            //         text: "Dữ liệu sẽ được lưu lại!",
-            //         icon: 'warning',
-            //         showCancelButton: true,
-            //         confirmButtonColor: '#3085d6',
-            //         cancelButtonColor: '#d33',
-            //         confirmButtonText: 'Vâng,Thanh toán!',
-            //         cancelButtonText: 'Hủy'
-            //     }).then((result) => {
-            //         if (result.isConfirmed) {
-            //             fetch(`/ban-hang-tai-quay/thanh-toan/`+idHD+'?idKhuyenMai='+idKhuyenMai+'&idKH='+idKH+'&tongTien='+tongTien,
-            //                 { method: 'POST' }).then(() => {
-            //                 Swal.fire(
-            //                     'Đã thanh toán!',
-            //                     'Dữ liệu đã được ghi nhận.',
-            //                     'success'
-            //                 ).then(() => {
-            //                     window.location.href = '/ban-hang-tai-quay';
-            //                 });
-            //                 button.closest('tr').remove();
-            //             });
-            //             button.closest('tr').remove();
-            //             thongBao.textContent =  "";
-            //         }
-            //     });
-            // }
-            // else{
-            //     thongBao.textContent =  "Số tiền khách đưa phải lớn hơn hoặc bằng tổng tiền.";
-            // }
+            console.log("====================== hinh anh:",hinhAnh);
+            console.log("====================== trang thai:",trangThai);
+            if(tongTien<=moneyGiven&&!isNaN(tongTien)){
+                Swal.fire({
+                    title: 'Xác nhận?',
+                    text: "Dữ liệu sẽ được lưu lại!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ok!',
+                    cancelButtonText: 'Hủy'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        const data = {
+                            ten: tenSP,
+                            hinhAnh: hinhAnh,
+                            trangThai: trangThai
+                        };
+                        fetch(`/san-pham/update/`+idSPLocal, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(data)
+                        }).then(() => {
+                            Swal.fire(
+                                'Đã thanh toán!',
+                                'Dữ liệu đã được ghi nhận.',
+                                'success'
+                            ).then(() => {
+                                window.location.href = '/ban-hang-tai-quay';
+                            });
+                            button.closest('tr').remove();
+                        });
+                        button.closest('tr').remove();
+                        thongBao.textContent =  "";
+                    }
+                });
+            }
+            else{
+                thongBao.textContent =  "Số tiền khách đưa phải lớn hơn hoặc bằng tổng tiền.";
+            }
         });
     });
+
 </script>
 <script>
     // Hiển thị thông báo thêm thành công hoặc thất bại sử dụng thư viện Sweet Alert2
