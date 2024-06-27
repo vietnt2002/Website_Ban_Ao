@@ -281,8 +281,6 @@
                             </h6>
                             <a class="dropdown-item d-flex align-items-center" href="#">
                                 <div class="dropdown-list-image mr-3">
-                                    <img class="rounded-circle" src="img/undraw_profile_1.svg"
-                                         alt="...">
                                     <div class="status-indicator bg-success"></div>
                                 </div>
                                 <div class="font-weight-bold">
@@ -294,8 +292,6 @@
                             </a>
                             <a class="dropdown-item d-flex align-items-center" href="#">
                                 <div class="dropdown-list-image mr-3">
-                                    <img class="rounded-circle" src="img/undraw_profile_2.svg"
-                                         alt="...">
                                     <div class="status-indicator"></div>
                                 </div>
                                 <div>
@@ -307,8 +303,6 @@
                             </a>
                             <a class="dropdown-item d-flex align-items-center" href="#">
                                 <div class="dropdown-list-image mr-3">
-                                    <img class="rounded-circle" src="img/undraw_profile_3.svg"
-                                         alt="...">
                                     <div class="status-indicator bg-warning"></div>
                                 </div>
                                 <div>
@@ -320,8 +314,6 @@
                             </a>
                             <a class="dropdown-item d-flex align-items-center" href="#">
                                 <div class="dropdown-list-image mr-3">
-                                    <img class="rounded-circle" src="https://source.unsplash.com/Mv9hjnEUHR4/60x60"
-                                         alt="...">
                                     <div class="status-indicator bg-success"></div>
                                 </div>
                                 <div>
@@ -512,9 +504,9 @@
                                 <label for="hinhAnhAdd" class="form-label">Hình ảnh</label>
                                 <input type="file" class="form-control" id="hinhAnhAdd">
                             </div>
-                            <div class="mb-3">
-                                <label for="trangThaiAdd" class="form-label">Trạng thái</label>
-                                <<input type="checkbox" class="form-check-input" id="trangThaiAdd">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked>
+                                <label class="form-check-label" for="flexSwitchCheckChecked">Trạng thái</label>
                             </div>
                             <button type="submit" class="btn btn-primary">Lưu</button>
                         </form>
@@ -535,21 +527,19 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form>
                             <div class="mb-3">
                                 <label for="tenSPEdit" class="form-label">Tên sản phẩm</label>
-                                <input type="email" class="form-control" id="tenSPEdit" aria-describedby="emailHelp">
+                                <input type="text" class="form-control" id="tenSPEdit" aria-describedby="emailHelp" value="">
                             </div>
                             <div class="mb-3">
                                 <label for="hinhAnhEdit" class="form-label">Hình ảnh</label>
-                                <input type="file" class="form-control" id="hinhAnhEdit">
+                                <input type="file" class="form-control" id="hinhAnhEdit" value="">
                             </div>
                             <div class="mb-3">
                                 <label for="trangThaiEdit" class="form-label">Trạng thái</label>
-                                <<input type="checkbox" class="form-check-input" id="trangThaiEdit">
+                                <<input type="checkbox" class="form-check-input" id="trangThaiEdit" value="">
                             </div>
-                            <button type="submit" class="btn btn-primary">Lưu</button>
-                        </form>
+                            <button id="saveEditBtn"  class="btn btn-primary">Lưu</button>
                     </div>
                 </div>
             </div>
@@ -564,7 +554,6 @@
             </div>
         </footer>
         <!-- End of Footer -->
-
     </div>
 
 </div>
@@ -844,7 +833,7 @@
                         '<td>' + trangThai + '</td>' +
                         '<td>' +
                         '<div class="d-inline">' +
-                        '<button id="editSP_' + sp.id + '" class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#ModalEdit">Chỉnh sửa</button>' +
+                        '<button id="editSPBtn_' + sp.id + '" class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#ModalEdit">Chỉnh sửa</button>' +
                         '<button id="detailSP_' + sp.id + '" class="btn btn-danger">Chi tiết</button>' +
                         '</div>' +
                         '</td>' +
@@ -854,12 +843,12 @@
             });
     }
     loadDSSP();
-    $(document).on('click', "button[id^='editSP_']", e => {
+    $(document).on('click', "button[id^='editSPBtn_']", e => {
         e.preventDefault();
         const queryString = window.location.pathname;
         const pathParts = queryString.split('/');
         const pathVariable = pathParts[pathParts.length - 1];
-        const spid = e.currentTarget.id.replace("editSP_", "");
+        const spid = e.currentTarget.id.replace("editSPBtn_", "");
         console.log("====================test id button edit: ", spid);
         // fetch(apiGet, {
         //     headers: {
@@ -914,9 +903,12 @@
         //     });
         console.log("test spct local: ", spctLocal);
     });
-    const checkBtn = document.querySelectorAll('#checkBtn');
-    checkBtn.forEach(button => {
-        button.addEventListener('click', function () {
+    const addBtn = document.querySelectorAll('#addBtn');
+    const editSPBtn = document.querySelectorAll('#editSPBtn');
+    const saveEditBtn = document.querySelectorAll('#saveEditBtn');
+    addBtn.forEach(button => {
+        button.addEventListener('click', function (e) {
+            e.preventDefault();
             console.log("test check btn");
             var idHD = document.getElementsByName("idHD")[0].value;
             var idKH  = document.getElementsByName("idKH")[0].value;
@@ -961,6 +953,51 @@
             else{
                 thongBao.textContent =  "Số tiền khách đưa phải lớn hơn hoặc bằng tổng tiền.";
             }
+        });
+    });
+    saveEditBtn.forEach(button => {
+        button.addEventListener('click', function (e) {
+            e.preventDefault();
+            console.log("test check btn");
+            var idSP = "pending";
+            var tenSP  = document.getElementById("tenSPEdit").value;
+            var hinhAnh = document.getElementById("hinhAnhEdit").value;
+
+            console.log("====================== id sp:",idSP);
+            console.log("====================== ten sp:",tenSP);
+            console.log("====================== hinh anh:",hinhAnh.files[0].name);
+
+            // if(tongTien<=moneyGiven&&!isNaN(tongTien)){
+            //     Swal.fire({
+            //         title: 'Xác nhận thanh toán?',
+            //         text: "Dữ liệu sẽ được lưu lại!",
+            //         icon: 'warning',
+            //         showCancelButton: true,
+            //         confirmButtonColor: '#3085d6',
+            //         cancelButtonColor: '#d33',
+            //         confirmButtonText: 'Vâng,Thanh toán!',
+            //         cancelButtonText: 'Hủy'
+            //     }).then((result) => {
+            //         if (result.isConfirmed) {
+            //             fetch(`/ban-hang-tai-quay/thanh-toan/`+idHD+'?idKhuyenMai='+idKhuyenMai+'&idKH='+idKH+'&tongTien='+tongTien,
+            //                 { method: 'POST' }).then(() => {
+            //                 Swal.fire(
+            //                     'Đã thanh toán!',
+            //                     'Dữ liệu đã được ghi nhận.',
+            //                     'success'
+            //                 ).then(() => {
+            //                     window.location.href = '/ban-hang-tai-quay';
+            //                 });
+            //                 button.closest('tr').remove();
+            //             });
+            //             button.closest('tr').remove();
+            //             thongBao.textContent =  "";
+            //         }
+            //     });
+            // }
+            // else{
+            //     thongBao.textContent =  "Số tiền khách đưa phải lớn hơn hoặc bằng tổng tiền.";
+            // }
         });
     });
 </script>
