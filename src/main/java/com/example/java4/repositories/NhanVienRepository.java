@@ -18,6 +18,6 @@ public interface NhanVienRepository
     public Page<NhanVien> findByTrangThai(int trangThai, Pageable pageable);
     public Optional<NhanVien> findById(String id);
 
-    @Query("select nv from NhanVien nv where nv.taiKhoan = ?1")
+    @Query("select nv from NhanVienViet nv where nv.taiKhoan = ?1")
     NhanVien findByTaiKhoan(String tenTK);
 };

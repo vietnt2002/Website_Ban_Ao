@@ -66,7 +66,7 @@ public class HoaDonDTO {
     }
 
 
-    //    public HoaDonDTO(String id, String ma, KhachHang khachHang, NhanVien nhanVien, Integer phuongThucThanhToan, BigDecimal tongTien,Integer loaiHoaDon, String ngayTao,String ngayThanhToan, Integer trangThai,String maText) {
+    //    public HoaDonDTO(String id, String ma, KhachHang khachHang, NhanVienViet nhanVien, Integer phuongThucThanhToan, BigDecimal tongTien,Integer loaiHoaDon, String ngayTao,String ngayThanhToan, Integer trangThai,String maText) {
 //        this.id = id;
 //        this.ma = ma;
 //        this.khachHang = khachHang;
