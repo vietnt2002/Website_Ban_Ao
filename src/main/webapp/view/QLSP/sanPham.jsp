@@ -461,24 +461,17 @@
             <div class="d-flex flex-row-reverse">
                 <button id="btnAdd" class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#ModalAdd">Thêm mới</button>
             </div>
+            <div class="d-flex flex-row-reverse">
+                <button onclick="setTotalPage(event)" class="btn btn-success me-2">test</button>
+            </div>
             <div class="col-12 pb-1">
                 <nav aria-label="Page navigation">
                     <ul class="pagination justify-content-center mb-3">
-                        <li class="page-item disabled">
-                            <a class="page-link" href="#" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                                <span class="sr-only">Previous</span>
-                            </a>
-                        </li>
-                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                                <span class="sr-only">Next</span>
-                            </a>
-                        </li>
+                        <li class="page-item" id="prev"><a class="page-link" href="#" onclick="navigate(-1)">Previous</a></li>
+                        <li class="page-item"><a class="page-link" href="#" onclick="setActive(this,1)">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#" onclick="setActive(this,2)">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#" onclick="setActive(this,3)">3</a></li>
+                        <li class="page-item" id="next"><a class="page-link" href="#" onclick="navigate(1)">Next</a></li>
                     </ul>
                 </nav>
             </div>
@@ -807,6 +800,47 @@
 
 <script>
     let idSPLocal = "";
+    let currentPage = 1;
+    const setTotalPage = (e)=>{
+        e.preventDefault();
+        fetch("/san-pham/count", {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        }).then(response => response.json())
+            .then(resp => {
+                let totalpage = Math.ceil(resp/10);
+                console.log("test response = "+totalpage);
+            });
+        // for (let i = 0; i < totalPageNumber ; i++) {
+        //
+        // }
+    }
+    function setActive(element, page) {
+        // Remove active class from all pagination items
+        let items = document.querySelectorAll('.page-item');
+        items.forEach(item => item.classList.remove('active'));
+        element.parentElement.classList.add('active');
+        currentPage = page ;
+        updateButtons();
+    }
+    function updateButtons() {
+        let items = document.querySelectorAll('.page-item');
+        let activeIndex = Array.from(items).findIndex(item => item.classList.contains('active'));
+        document.getElementById('prev').classList.toggle('disabled', activeIndex === 1);
+        document.getElementById('next').classList.toggle('disabled', activeIndex === items.length - 2);
+    }
+    function navigate(direction) {
+        let items = document.querySelectorAll('.page-item');
+        let activeIndex = Array.from(items).findIndex(item => item.classList.contains('active'));
+        let newIndex = activeIndex + direction;
+
+        if (newIndex > 0 && newIndex < items.length - 1) {
+            setActive(items[newIndex].querySelector('a'));
+        }
+    }
+    updateButtons();
     const loadDSSP = () => {
         // get api + scpt.id
         let datatest = "data testing";
