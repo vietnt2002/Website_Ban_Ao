@@ -23,6 +23,7 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -335,7 +336,17 @@ public class QuanLyHoaDonController {
                 hinhAnhMap.put(hdct.getIdCTSP().getId(), hinhAnh);
             }
         }
-        hoaDonDTO.setTongTien(tongTien);
+
+        Map<String, HinhAnh> hinhAnhMapCTSP = new HashMap<>();
+        listChiTietSanPham = _chiTietSanPhamRepo.findAll();
+        for (ChiTietSanPham ctsp : listChiTietSanPham) {
+            HinhAnh hinhAnh = _hinhAnhRepo.findByIdCTSP(ctsp.getId());
+            // Lấy hình ảnh cho từng chi tiết sản phẩm
+            if (hinhAnh != null) {
+                hinhAnhMapCTSP.put(ctsp.getId(), hinhAnh);
+            }
+        }
+
 
 
         // Lấy ra đối tượng giao hàng theo IdHoaDon
@@ -354,6 +365,7 @@ public class QuanLyHoaDonController {
 
         // Thêm các thông tin vào model để truyền sang JSP
         model.addAttribute("hinhAnhMap",hinhAnhMap);
+        model.addAttribute("hinhAnhMapCTSP",hinhAnhMapCTSP);
         model.addAttribute("khachHang",khachHang);
         model.addAttribute("hoaDonDTO", hoaDonDTO);
         model.addAttribute("listHDCT", listHDCT);
@@ -392,9 +404,6 @@ public class QuanLyHoaDonController {
                 listCTSP = _sanPhamChiTietRepo.findByTrangThai(_sanPhamChiTietRepo.INACTIVE, pageable);
             }
         }
-
-
-
 
         listMauSac = mauSacRepository.findAll();
         listKichThuoc = kichThuocRepo.findAll();
@@ -643,63 +652,37 @@ public class QuanLyHoaDonController {
 
     @PostMapping("/cap-nhat/{hoaDonId}")
     public String updateDiaChi(@PathVariable("hoaDonId") String hoaDonId,
-                               @ModelAttribute("diaChiDTO") DiaChiDTO diaChiDTO,
+                               @ModelAttribute("giaoHangDTO") GiaoHangDTO giaoHangDTO,
+                               @Param("tenTinhThanh") String tenTinhThanh,
+                               @Param("tenQuanHuyen") String tenQuanHuyen,
+                               @Param("tenPhuongXa") String tenPhuongXa,
                                RedirectAttributes redirectAttributes) {
-        // Tìm đối tượng DiaChi theo IdHoaDon (hoaDonId)
-//        HoaDon_Tai hoaDon = _hoaDonRepoTai.findById(hoaDonId).get();
 
         HoaDon hoaDon = hoaDonRepository.findById(hoaDonId).get();
         HoaDon_Tai hoaDonTai = _hoaDonRepoTai.findById(hoaDonId).get();
-
-//        DiaChi diaChi = _diaChiRepository.findDiaChiByKhachHangId(hoaDon.getIdKhachHang().getId());
         GiaoHang giaoHang = _giaoHangRepo.findByHoaDonId(hoaDonId);
         if (giaoHang == null) {
             // Nếu không tìm thấy, bạn có thể tạo mới nếu được phép
             giaoHang = new GiaoHang();
             giaoHang.setIdHoaDon(hoaDon); // Liên kết với HoaDon
         }
-
-
-//        if (diaChi == null) {
-//            // Xử lý trường hợp không tìm thấy DiaChi
-//            redirectAttributes.addFlashAttribute("errorMessage", "Không tìm thấy thông tin địa chỉ.");
-//            return "redirect:/hoa-don/detail/" + hoaDonId;
-//        }
-
         HoaDonDTO hoaDonDTO = new HoaDonDTO();
         hoaDonDTO.setTongTien(hoaDonTai.getTongTien());
-
-        GiaoHangDTO giaoHangDTO = GiaoHangDTO.toDTO(giaoHang);
-
-        // Cập nhật thông tin KhachHang
-//        KhachHang khachHang = hoaDonDTO.getKhachHang();
-//        khachHang.setHoTen(giaoHangDTO.getTenNguoiNhan());
-//        khachHang.setSdt(giaoHangDTO.getSdtNguoiNhan());
-//
-//        // Cập nhật thông tin địa chỉ
-//        diaChi.setDiaChiChiTiet(diaChiDTO.getDiaChiChiTiet());
-//        diaChi.setIdPhuongXa(diaChiDTO.getIdPhuongXa());
-//        diaChi.setIdQuanHuyen(diaChiDTO.getIdQuanHuyen());
-//        diaChi.setIdTinhThanh(diaChiDTO.getIdTinhThanh());
-
-
+         giaoHangDTO = GiaoHangDTO.toDTO(giaoHang);
         // Cập nhật các thông tin khác như phí ship, ghi chú nếu cần
         giaoHang.setTenNguoiNhan(giaoHangDTO.getTenNguoiNhan());
         giaoHang.setSdtNguoiNhan(giaoHangDTO.getSdtNguoiNhan());
         giaoHang.setDiaChiChiTiet(giaoHangDTO.getDiaChiChiTiet());
-        giaoHang.setIdPhuongXa(giaoHangDTO.getIdPhuongXa());
-        giaoHang.setIdQuanHuyen(giaoHangDTO.getIdQuanHuyen());
-        giaoHang.setIdTinhThanh(giaoHangDTO.getIdTinhThanh());
-        giaoHang.setPhiShip(giaoHangDTO.getPhiShip().intValue());
+        giaoHang.setIdPhuongXa(tenPhuongXa);
+        giaoHang.setIdQuanHuyen(tenQuanHuyen);
+        giaoHang.setIdTinhThanh(tenTinhThanh);
+        giaoHang.setPhiShip(giaoHangDTO.getPhiShip());
         giaoHang.setGhiChu(giaoHangDTO.getGhiChu());
 
-        // Lưu lại vào cơ sở dữ liệu
-//        _khachHangRepo.save(khachHang);
-//        _diaChiRepository.save(diaChi);
+
         _giaoHangRepo.save(giaoHang);
         // Thêm thông báo thành công và chuyển hướng
         System.out.println("Thành công");
-//        redirectAttributes.addFlashAttribute("diaChiKhachHang", diaChi);
         redirectAttributes.addFlashAttribute("hoaDonDTO", hoaDonDTO);
         redirectAttributes.addFlashAttribute("giaoHangDTO", giaoHangDTO);
         redirectAttributes.addFlashAttribute("successMessage", "Cập nhật thông tin địa chỉ thành công.");
@@ -747,8 +730,8 @@ public class QuanLyHoaDonController {
                 return "redirect:/hoa-don/detail/" + hoaDonDTO.getId();
             }
 
-            hoaDon.setTongTien(hoaDon.getTongTien().add(hoaDonDTO.getTongTien()));  // Assuming adding paid amount to total
-//            hoaDon.setTrangThai(IHoaDonRepository.DA_HOAN_THANH);
+            hoaDon.setTongTien(hoaDonDTO.getTongTien());
+            hoaDon.setTrangThai(IHoaDonRepository.DA_HOAN_THANH);
             hoaDon.setNgayThanhToan(LocalDateTime.now());
             hoaDon.setPhuongThucThanhToan(hoaDonDTO.getPhuongThucThanhToan());
             hoaDon.setGhiChu(hoaDonDTO.getGhiChu());

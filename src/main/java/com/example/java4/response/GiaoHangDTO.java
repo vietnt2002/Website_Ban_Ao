@@ -24,7 +24,7 @@ public class GiaoHangDTO {
     private String idTinhThanh;
     private String ngayShip;
     private String ngayNhan;
-    private BigDecimal phiShip;
+    private Integer phiShip;
     private Integer trangThai;
     private String ghiChu;
 
@@ -50,7 +50,7 @@ public class GiaoHangDTO {
         giaoHangDTO.setIdTinhThanh(giaoHang.getIdTinhThanh());
         giaoHangDTO.setNgayShip(giaoHang.getNgayShip() != null ? giaoHang.getNgayShip().toLocalDate().format(DATE_FORMATTER) : null);
         giaoHangDTO.setNgayNhan(giaoHang.getNgayNhan() != null ? giaoHang.getNgayNhan().toLocalDate().format(DATE_FORMATTER) : null);
-        giaoHangDTO.setPhiShip(giaoHang.getPhiShip() != null ? new BigDecimal(giaoHang.getPhiShip()) : null);
+        giaoHangDTO.setPhiShip(giaoHang.getPhiShip() != null ? giaoHang.getPhiShip() : null);
         giaoHangDTO.setTrangThai(giaoHang.getTrangThai());
         giaoHangDTO.setGhiChu(giaoHang.getGhiChu());
         return giaoHangDTO;
