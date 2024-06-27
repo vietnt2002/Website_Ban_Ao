@@ -15,6 +15,4 @@ public class SanPhamUpdate {
     private String trangThai;
     @NotEmpty
     private String hinhAnh;
-    @NotEmpty
-    private String giaBan;
 }

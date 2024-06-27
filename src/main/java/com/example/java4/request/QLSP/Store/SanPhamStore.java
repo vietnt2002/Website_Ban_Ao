@@ -16,6 +16,4 @@ public class SanPhamStore {
     private String trangThai;
     @NotEmpty
     private String hinhAnh;
-    @NotEmpty
-    private String giaBan;
 }

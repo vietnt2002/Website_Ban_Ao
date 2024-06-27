@@ -494,18 +494,19 @@
                         </div>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                     </div>
+
                     <div class="modal-body">
-                            <<div class="mb-3">
-                        <label for="tenSPEdit" class="form-label">Tên sản phẩm</label>
-                        <input type="text" class="form-control" id="tenSPAdd" aria-describedby="emailHelp" value="">
-                    </div>
+                            <div class="mb-3">
+                        <label for="tenSPAdd" class="form-label">Tên sản phẩm</label>
+                        <input type="text" class="form-control" id="tenSPAdd">
+                            </div>
                         <div class="mb-3">
-                            <label for="hinhAnhEdit" class="form-label">Hình ảnh</label>
+                            <label for="hinhAnhAdd" class="form-label">Hình ảnh</label>
                             <input type="file" class="form-control" id="hinhAnhAdd" value="">
                         </div>
                         <div class="form-check form-switch">
                             <input class="form-check-input" type="checkbox" role="switch" id="trangThaiAdd" checked>
-                            <label class="form-check-label" for="trangThaiEdit">Trạng thái</label>
+                            <label class="form-check-label" for="trangThaiAdd">Trạng thái</label>
                         </div>
                             <button id="saveAddBtn" class="btn btn-primary">Lưu</button>
                     </div>
@@ -850,6 +851,7 @@
         const spid = e.currentTarget.id.replace("editSPBtn_", "");
         idSPLocal = spid;
         console.log("====================test id button edit: ", spid);
+        console.log("====================test id sp local:", idSPLocal);
         // fetch(apiGet, {
         //     headers: {
         //         'Accept': 'application/json',
@@ -971,13 +973,13 @@
         button.addEventListener('click', function (e) {
             e.preventDefault();
             console.log("test check btn");
-            var tenSP = document.getElementById('tenSPAdd');
-            var hinhAnh = document.getElementById('hinhAnh');
-            var trangThai = document.getElementById('trangThai');
+            var tenSP = document.getElementById('tenSPAdd').value;
+            var hinhAnh = document.getElementById('hinhAnhAdd').value;
+            var trangThairaw = document.getElementById('trangThaiAdd').value;
             console.log("====================== ten sp:",tenSP);
             console.log("====================== hinh anh:",hinhAnh);
-            console.log("====================== trang thai:",trangThai);
-            if(tongTien<=moneyGiven&&!isNaN(tongTien)){
+            console.log("====================== trang thai:",trangThairaw);
+            if(1>0){
                 Swal.fire({
                     title: 'Xác nhận?',
                     text: "Dữ liệu sẽ được lưu lại!",
@@ -991,10 +993,10 @@
                     if (result.isConfirmed) {
                         const data = {
                             ten: tenSP,
-                            hinhAnh: hinhAnh,
-                            trangThai: trangThai
+                            trangThai: "1",
+                            hinhAnh: hinhAnh
                         };
-                        fetch(`/san-pham/save/`, {
+                        fetch(`/san-pham/save`, {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'
@@ -1006,7 +1008,7 @@
                                 'Dữ liệu đã được ghi nhận.',
                                 'success'
                             ).then(() => {
-                                window.location.href = '/ban-hang-tai-quay';
+                                loadDSSP()
                             });
                             button.closest('tr').remove();
                         });
@@ -1025,13 +1027,13 @@
         button.addEventListener('click', function (e) {
             e.preventDefault();
             console.log("test check btn");
-            var tenSP = document.getElementById('tenSPAdd');
-            var hinhAnh = document.getElementById('hinhAnh');
-            var trangThai = document.getElementById('trangThai');
+            var tenSP = document.getElementById('tenSPEdit').value;
+            var hinhAnh = document.getElementById('hinhAnhEdit').value;
+            var trangThai = document.getElementById('trangThaiEdit').value;
             console.log("====================== ten sp:",tenSP);
             console.log("====================== hinh anh:",hinhAnh);
             console.log("====================== trang thai:",trangThai);
-            if(tongTien<=moneyGiven&&!isNaN(tongTien)){
+            if(1>0){
                 Swal.fire({
                     title: 'Xác nhận?',
                     text: "Dữ liệu sẽ được lưu lại!",
@@ -1046,7 +1048,7 @@
                         const data = {
                             ten: tenSP,
                             hinhAnh: hinhAnh,
-                            trangThai: trangThai
+                            trangThai: "1"
                         };
                         fetch(`/san-pham/update/`+idSPLocal, {
                             method: 'POST',
@@ -1060,7 +1062,7 @@
                                 'Dữ liệu đã được ghi nhận.',
                                 'success'
                             ).then(() => {
-                                window.location.href = '/ban-hang-tai-quay';
+                                loadDSSP();
                             });
                             button.closest('tr').remove();
                         });
