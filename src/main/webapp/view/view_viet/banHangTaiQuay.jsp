@@ -129,14 +129,14 @@
 
                 <!-- Nav Item - Charts -->
                 <li class="nav-item">
-                    <a class="nav-link" href="charts.html">
+                    <a class="nav-link" href="/store/quan-ly-nhan-vien">
                         <i class="fas fa-fw fa-chart-area"></i>
                         <span>Quản lý nhân viên</span></a>
                 </li>
 
                 <!-- Nav Item - Charts -->
                 <li class="nav-item">
-                    <a class="nav-link" href="charts.html">
+                    <a class="nav-link" href="/store/quan-ly-khach-hang">
                         <i class="fas fa-fw fa-chart-area"></i>
                         <span>Quản lý khách hàng</span></a>
                 </li>
@@ -350,14 +350,14 @@
                     <li class="nav-item dropdown no-arrow">
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">${nv.hoTen}</span>
+                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">${nv.hoTen} | ${nv.idCV.ten}</span>
                             <img class="img-profile rounded-circle"
                                  src="/imageUser/${nv.anhDaiDien}">
                         </a>
                         <!-- Dropdown - User Information -->
                         <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                              aria-labelledby="userDropdown">
-                            <a class="dropdown-item" href="/store/tai-khoan-cua-toi">
+                            <a class="dropdown-item" href="/store/tai-khoan-cua-toi/${nv.id}">
                                 <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Tài khoản của tôi
                             </a>
