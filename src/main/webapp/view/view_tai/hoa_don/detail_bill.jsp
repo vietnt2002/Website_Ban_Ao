@@ -466,9 +466,9 @@
                     <li class="nav-item dropdown no-arrow">
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
+                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">${nv.hoTen}</span>
                             <img class="img-profile rounded-circle"
-                                 src="img/undraw_profile.svg">
+                                 src="/imageUser/${nv.anhDaiDien}">
                         </a>
                         <!-- Dropdown - User Information -->
                         <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -714,7 +714,7 @@
                             </c:otherwise>
                         </c:choose>
                     </div>
-                    <c:if test="${hoaDonDTO.loaiHoaDon == 0 && hoaDonDTO.trangThai != 6}">
+                    <c:if test="${hoaDonDTO.loaiHoaDon == 1 && hoaDonDTO.trangThai != 6}">
                         <div class="card-footer">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
@@ -727,7 +727,7 @@
                                             <button type="button" class="btn btn-danger" id="cancelButton"
                                                     data-bs-toggle="modal"
                                                     data-bs-target="#cancelModal"
-                                                    <c:if test="${hoaDonDTO.trangThai == 2}">disabled </c:if>
+                                                    <c:if test="${hoaDonDTO.trangThai != 1}">disabled </c:if>
                                             >
                                                 Hủy
                                             </button>
@@ -735,13 +735,13 @@
 
                                         </c:if>
 
-                                        <%--                                        <c:if test="${hoaDonDTO.trangThai != 1 && hoaDonDTO.trangThai != 6}">--%>
-                                        <a href="/hoa-don/hoan-tac/${hoaDonDTO.id}">
-                                            <button type="button" class="btn btn-warning" id="">
-                                                Hoàn tác
-                                            </button>
-                                        </a>
-                                        <%--                                        </c:if>--%>
+                                        <c:if test="${hoaDonDTO.trangThai != 1 && hoaDonDTO.trangThai != 6}">
+                                            <a href="/hoa-don/hoan-tac/${hoaDonDTO.id}">
+                                                <button type="button" class="btn btn-warning" id="">
+                                                    Hoàn tác
+                                                </button>
+                                            </a>
+                                        </c:if>
                                     </c:if>
                                 </div>
                             </div>
@@ -853,40 +853,42 @@
                             </thead>
 
                             <tbody>
-                            <c:if test="${hoaDonDTO.trangThai == 6 || hoaDonDTO.loaiHoaDon == 0}">
-
-                                <tr>
-                                    <td>1</td>
-                                    <td><fmt:formatNumber value="${hoaDonDTO.tongTien}" type="currency"
-                                                          currencySymbol="₫"
-                                                          groupingUsed="true"/>
-                                    </td>
-                                    <td>
+                            <c:if test="${hoaDonDTO.trangThai == 4 || hoaDonDTO.loaiHoaDon == 0}">
+                                <c:if test="${hoaDonDTO.ngayThanhToan != null}">
+                                    <tr>
+                                        <td>1</td>
+                                        <td><fmt:formatNumber value="${hoaDonDTO.tongTien}" type="currency"
+                                                              currencySymbol="₫"
+                                                              groupingUsed="true"/>
+                                        </td>
+                                        <td>
                                     <span class="badge rounded-pill ${hoaDonDTO.maMau}">
                                             ${hoaDonDTO.trangThaiText}
                                     </span>
-                                    </td>
-                                    <td>${hoaDonDTO.ngayThanhToan}</td>
-                                    <td>
-                                        <span class="badge rounded-pill bg-primary">${hoaDonDTO.phuongThucThanhToan == 0 ? "Tiền mặt" :"Chuyển khoản"}</span>
-                                    </td>
+                                        </td>
+                                        <td>${hoaDonDTO.ngayThanhToan}</td>
+                                        <td>
+                                            <span class="badge rounded-pill bg-primary">${hoaDonDTO.phuongThucThanhToan == 0 ? "Tiền mặt" :"Chuyển khoản"}</span>
+                                        </td>
 
-                                    <td>
+                                        <td>
 
-                                        <c:choose>
-                                            <c:when test="${hoaDonDTO.trangThai == 1 && hoaDonDTO.loaiHoaDon == 0}">
+                                            <c:choose>
+                                                <c:when test="${hoaDonDTO.trangThai == 1 && hoaDonDTO.loaiHoaDon == 0}">
 
-                                            </c:when>
-                                            <c:otherwise>
-                                                ${hoaDonDTO.nhanVien.hoTen}
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </td>
-                                    <td>
-                                            ${hoaDonDTO.ghiChu}
-                                    </td>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    ${hoaDonDTO.nhanVien.hoTen}
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </td>
+                                        <td>
+                                                ${hoaDonDTO.ghiChu}
+                                        </td>
 
-                                </tr>
+                                    </tr>
+                                </c:if>
+
 
                             </c:if>
 
@@ -972,7 +974,7 @@
                             <div class="card-header d-flex justify-content-between align-items-center">
                                 <h5 class="m-0 font-weight-bold">Thông tin đơn hàng: ${hoaDonDTO.ma}</h5>
 
-                                <c:if test="${hoaDonDTO.loaiHoaDon == 0}">
+                                <c:if test="${hoaDonDTO.loaiHoaDon == 1}">
                                     <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
                                             data-bs-target="#updateModal"
                                             <c:if test="${hoaDonDTO.trangThai != 1}">
@@ -986,70 +988,144 @@
                             <div class="card-body">
                                 <%--   Thông tin chi tiết hóa đơn --%>
                                 <div>
-                                    <div class="row mt-1">
-                                        <div class="col-6">
-                                            <div>
-                                                <p class="fw-bold mb-1 pb-3 small ">Trạng thái:
-                                                    <span class="badge rounded-pill ${hoaDonDTO.maMau}">
-                                                        ${hoaDonDTO.trangThaiText}
-                                                    </span>
+                                    <c:choose>
+                                        <%--Hiển thị thông tin bán hàng tại quày--%>
+                                        <c:when test="${hoaDonDTO.loaiHoaDon == 0 }">
+                                            <div class="row mt-1">
+                                                <div class="col-6">
+                                                    <div>
+                                                        <p class="fw-bold mb-1 pb-3 small ">Trạng thái:
+                                                            <span class="badge rounded-pill ${hoaDonDTO.maMau}">
+                                                                    ${hoaDonDTO.trangThaiText}
+                                                            </span>
 
-                                                </p>
-                                                <p class="fw-bold mb-1 pb-3 small">Tên khách hàng: <span
-                                                        class="fw-normal">${giaoHangDTO.tenNguoiNhan == null ? "Khách lẻ" : giaoHangDTO.tenNguoiNhan }</span>
-                                                </p>
-                                                <p class="fw-bold mb-1 pb-3 small">Địa chỉ:
-                                                    <span id="fullAddress" class="fw-normal">
+                                                        </p>
+                                                        <p class="fw-bold mb-1 pb-3 small">Tên khách hàng: <span
+                                                                class="fw-normal">${khachHang.hoTen == null ? "Khách lẻ" : khachHang.hoTen }</span>
+                                                        </p>
+
+
+                                                        <c:choose>
+                                                            <c:when test="${diaChiKhachHang.id != null}">
+                                                                <p class="fw-bold mb-1 pb-3 small">Địa chỉ:
+                                                                    <span id="address" class="fw-normal">
+                                                             ${diaChiKhachHang.diaChiChiTiet}, ${diaChiKhachHang.idPhuongXa}, ${diaChiKhachHang.idQuanHuyen}, ${diaChiKhachHang.idTinhThanh}
+                                                              </span>
+                                                                </p>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <p class="fw-bold mb-1 pb-3 small">Địa chỉ:
+                                                                    <span id="AddressOffline" class="fw-normal">
+                                                                            ${diaChiKhachHang.diaChiChiTiet}
+
+                                                                    </span>
+                                                                </p>
+                                                            </c:otherwise>
+                                                        </c:choose>
+
+
+                                                        <p class="fw-bold mb-1 pb-3 small">Ghi chú:
+                                                            <span
+                                                                    class="fw-normal">${hoaDonDTO.ghiChu}</span>
+                                                        </p>
+
+                                                        <c:if test="${hoaDonDTO.loaiHoaDon == 0}">
+                                                            <p class="fw-bold mb-1 small">Người tạo: <span
+                                                                    class="fw-normal">${hoaDonDTO.nhanVien.hoTen}</span>
+                                                            </p>
+                                                        </c:if>
+
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <p class="fw-bold mb-1 pb-3 small">Loại hóa đơn: <span
+                                                            class=" fw-normal badge rounded-pill ${hoaDonDTO.loaiHoaDon == 0 ? 'bg-success' : 'bg-primary'}">
+                                                            ${hoaDonDTO.loaiHoaDon == 0 ? "Bán tại quầy" :"Bán online"}</span>
+                                                    </p>
+                                                    <p class="fw-bold mb-1 pb-3 small">Phương thức thanh toán: <span
+                                                            class="fw-normal badge rounded-pill bg-primary">${hoaDonDTO.phuongThucThanhToan == 0 ? "Tiền mặt" : "Chuyển khoản"}</span>
+                                                    </p>
+                                                    <p class="fw-bold mb-1 pb-3 small">Số điện thoại: <span
+                                                            class="fw-normal">${khachHang.sdt == null ? "" : khachHang.sdt}</span>
+                                                    </p>
+
+
+                                                    <p class="fw-bold mb-1 pb-3 small">Email:
+                                                        <span
+                                                                class="fw-normal"> ${khachHang.email == null ? "" : khachHang.email}
+                                                        </span>
+                                                    </p>
+                                                    <p class="fw-bold mb-1 pb-3 small">Ngày tạo: <span
+                                                            class="fw-normal">${hoaDonDTO.ngayTao}</span></p>
+                                                </div>
+                                            </div>
+
+                                        </c:when>
+                                        <c:otherwise>
+                                            <div class="row mt-1">
+                                                <div class="col-6">
+                                                    <div>
+                                                        <p class="fw-bold mb-1 pb-3 small ">Trạng thái:
+                                                            <span class="badge rounded-pill ${hoaDonDTO.maMau}">
+                                                                    ${hoaDonDTO.trangThaiText}
+                                                            </span>
+
+                                                        </p>
+                                                        <p class="fw-bold mb-1 pb-3 small">Tên khách hàng: <span
+                                                                class="fw-normal">${giaoHangDTO.tenNguoiNhan == null ? "Khách lẻ" : giaoHangDTO.tenNguoiNhan }</span>
+                                                        </p>
+                                                        <p class="fw-bold mb-1 pb-3 small">Địa chỉ:
+                                                            <span id="fullAddressOnline" class="fw-normal">
                                                         ${giaoHangDTO.diaChiChiTiet}, ${giaoHangDTO.idPhuongXa}, ${giaoHangDTO.idQuanHuyen}, ${giaoHangDTO.idTinhThanh}
                                                     </span>
-                                                </p>
-                                                <p class="fw-bold mb-1 pb-3 small">Ghi chú:
-                                                    <span
-                                                            class="fw-normal">${hoaDonDTO.ghiChu}</span>
-                                                </p>
-
-                                                <c:if test="${hoaDonDTO.loaiHoaDon == 0}">
-                                                    <p class="fw-bold mb-1 small">Người tạo: <span
-                                                            class="fw-normal">${hoaDonDTO.nhanVien.hoTen}</span></p>
-                                                </c:if>
-
-                                                <c:choose>
-                                                    <c:when test="${hoaDonDTO.loaiHoaDon == 1}">
-                                                        <p class="fw-bold mb-1 small">Phí vận chuyển:
-                                                            <span class="fw-normal">
+                                                        </p>
+                                                        <p class="fw-bold mb-1 pb-3 small">Ghi chú:
+                                                            <span
+                                                                    class="fw-normal">${hoaDonDTO.ghiChu}</span>
+                                                        </p>
+                                                        <c:choose>
+                                                            <c:when test="${hoaDonDTO.loaiHoaDon == 1}">
+                                                                <p class="fw-bold mb-1 small">Phí vận chuyển:
+                                                                    <span class="fw-normal">
                                                              <fmt:formatNumber
                                                                      value="${giaoHangDTO.phiShip == null ? 0 : giaoHangDTO.phiShip }"
                                                                      type="currency"
                                                                      currencySymbol="₫" groupingUsed="true"/>
                                                         </span></p>
-                                                    </c:when>
-                                                </c:choose>
+                                                            </c:when>
+                                                        </c:choose>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <p class="fw-bold mb-1 pb-3 small">Loại hóa đơn: <span
+                                                            class=" fw-normal badge rounded-pill ${hoaDonDTO.loaiHoaDon == 0 ? 'bg-success' : 'bg-primary'}">
+                                                            ${hoaDonDTO.loaiHoaDon == 0 ? "Bán tại quầy" :"Bán online"}</span>
+                                                    </p>
+                                                    <p class="fw-bold mb-1 pb-3 small">Phương thức thanh toán: <span
+                                                            class="fw-normal badge rounded-pill bg-primary">${hoaDonDTO.phuongThucThanhToan == 0 ? "Tiền mặt" : "Chuyển khoản"}</span>
+                                                    </p>
+                                                    <p class="fw-bold mb-1 pb-3 small">Số điện thoại: <span
+                                                            class="fw-normal">${giaoHangDTO.sdtNguoiNhan == null ? "" : giaoHangDTO.sdtNguoiNhan}</span>
+                                                    </p>
+
+
+                                                    <p class="fw-bold mb-1 pb-3 small">Email:
+                                                        <span
+                                                                class="fw-normal"> ${hoaDonDTO.khachHang.email == null ? "" : hoaDonDTO.khachHang.email}
+                                                        </span>
+                                                    </p>
+                                                    <p class="fw-bold mb-1 pb-3 small">Ngày tạo: <span
+                                                            class="fw-normal">${hoaDonDTO.ngayTao}</span></p>
+
+
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-6">
-                                            <p class="fw-bold mb-1 pb-3 small">Loại hóa đơn: <span
-                                                    class=" fw-normal badge rounded-pill ${hoaDonDTO.loaiHoaDon == 0 ? 'bg-success' : 'bg-primary'}">
-                                                ${hoaDonDTO.loaiHoaDon == 0 ? "Bán tại quầy" :"Bán online"}</span>
-                                            </p>
-                                            <p class="fw-bold mb-1 pb-3 small">Phương thức thanh toán: <span
-                                                    class="fw-normal badge rounded-pill bg-primary">${hoaDonDTO.phuongThucThanhToan == 0 ? "Tiền mặt" : "Chuyển khoản"}</span>
-                                            </p>
-                                            <p class="fw-bold mb-1 pb-3 small">Số điện thoại: <span
-                                                    class="fw-normal">${giaoHangDTO.sdtNguoiNhan == null ? "" : giaoHangDTO.sdtNguoiNhan}</span>
-                                            </p>
+
+                                        </c:otherwise>
+                                    </c:choose>
 
 
-                                            <p class="fw-bold mb-1 pb-3 small">Email:
-                                                <span
-                                                        class="fw-normal"> ${hoaDonDTO.khachHang.email == null ? "" : hoaDonDTO.khachHang.email}
-                                                </span>
-                                            </p>
-                                            <p class="fw-bold mb-1 pb-3 small">Ngày tạo: <span
-                                                    class="fw-normal">${hoaDonDTO.ngayTao}</span></p>
-
-
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1132,19 +1208,19 @@
                                 <div class="mb-3">
                                     <label for="hoTen" class="form-label">Họ tên:</label>
                                     <input type="text" class="form-control" id="hoTen" name="hoTen"
-                                           value="${diaChiKhachHang.idKhachHang.hoTen}">
+                                           value="${giaoHangDTO.tenNguoiNhan}">
                                     <div id="hoTenError" class="text-danger"></div>
                                 </div>
                                 <div class="mb-3">
                                     <label for="sdt" class="form-label">Số điện thoại:</label>
                                     <input type="text" class="form-control" id="sdt" name="sdt"
-                                           value="${diaChiKhachHang.idKhachHang.sdt}">
+                                           value="${giaoHangDTO.sdtNguoiNhan}">
                                     <div id="sdtError" class="text-danger"></div>
                                 </div>
                                 <div class="mb-3">
                                     <label for="diaChi" class="form-label">Địa chỉ cụ thể:</label>
                                     <input type="text" class="form-control" id="diaChi" name="diaChiChiTiet"
-                                           value="${diaChiKhachHang.diaChiChiTiet}">
+                                           value="${giaoHangDTO.diaChiChiTiet}">
                                     <div id="diaChiError" class="text-danger"></div>
                                 </div>
                                 <div class="row">
@@ -1183,7 +1259,8 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="ghiChu" class="form-label">Ghi chú</label>
-                                    <textarea class="form-control" id="ghiChu" name="ghiChu"></textarea>
+                                    <textarea class="form-control" id="ghiChu"
+                                              name="ghiChu">${giaoHangDTO.ghiChu}</textarea>
                                     <div id="ghiChuError" class="text-danger"></div>
                                 </div>
                             </form>
@@ -1238,15 +1315,14 @@
                                 <td>${i.index + 1}</td>
 
                                 <td>
-                                    <c:set var="hinhAnh" value="${hinhAnhMap[chiTiet.idCTSP.id]}" />
-                                        <!-- Kiểm tra và hiển thị ảnh -->
-                                        <c:choose>
-                                            <c:when test="${not empty hinhAnh.hinhAnh1}">
-                                                <img src="/image/${hinhAnh.hinhAnh1}" alt="Ảnh sản phẩm" width="50" >
-                                            </c:when>
-                                        </c:choose>
+                                    <c:set var="hinhAnh" value="${hinhAnhMap[chiTiet.idCTSP.id]}"/>
+                                    <!-- Kiểm tra và hiển thị ảnh -->
+                                    <c:choose>
+                                        <c:when test="${not empty hinhAnh.hinhAnh1}">
+                                            <img src="/image/${hinhAnh.hinhAnh1}" alt="Ảnh sản phẩm" width="50">
+                                        </c:when>
+                                    </c:choose>
                                 </td>
-
 
 
                                 <td>${chiTiet.idCTSP.idSanPham.ten}</td>
@@ -1659,17 +1735,17 @@
 
 
     // Nút in hóa đơn để giao hàng
-    document.getElementById('printDeliveryButton').addEventListener('click', () => {
-        const element = document.querySelector('.container');
-        const opt = {
-            margin: 1,
-            filename: 'phieu_giao_hang.pdf',
-            image: {type: 'jpeg', quality: 0.98},
-            html2canvas: {scale: 2},
-            jsPDF: {unit: 'cm', format: 'a4', orientation: 'portrait'}
-        };
-        html2pdf().from(element).set(opt).save();
-    });
+    // document.getElementById('printDeliveryButton').addEventListener('click', () => {
+    //     const element = document.querySelector('.container');
+    //     const opt = {
+    //         margin: 1,
+    //         filename: 'phieu_giao_hang.pdf',
+    //         image: {type: 'jpeg', quality: 0.98},
+    //         html2canvas: {scale: 2},
+    //         jsPDF: {unit: 'cm', format: 'a4', orientation: 'portrait'}
+    //     };
+    //     html2pdf().from(element).set(opt).save();
+    // });
 
     // Validate ô input mô tả xác nhận
     $(document).ready(function () {
@@ -1708,7 +1784,6 @@
         // Đặt giá trị của textarea là rỗng khi modal được hiển thị
         document.getElementById('moTa').value = '';
     });
-
 
 
     // Hiển thị địa chỉ chi tiet
@@ -2156,8 +2231,6 @@
             $("#" + errorId).text("");
         });
     });
-
-
 
 
     // Validate form hủy đơn hàng
