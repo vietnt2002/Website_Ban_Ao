@@ -58,7 +58,7 @@
 
         ::-webkit-scrollbar {
             width: 10px;
-            background-color: light grey;
+            background-color: lightgray;
         }
 
         ::-webkit-scrollbar-thumb {
@@ -124,7 +124,7 @@
 
         <!-- Nav Item - Charts -->
         <li class="nav-item">
-            <a class="nav-link" href="charts.html">
+            <a class="nav-link" href="/hoa-don/hien-thi">
                 <i class="fas fa-fw fa-chart-area"></i>
                 <span>Quản lý hóa đơn</span></a>
         </li>

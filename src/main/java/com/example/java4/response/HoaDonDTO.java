@@ -32,6 +32,7 @@ public class HoaDonDTO {
     private String ngayDaXacNhan;
     private String ngayChoGiaoHang;
     private String ngayDangGiaoHang;
+    private BigDecimal giamGia;
 
 
     public HoaDonDTO(String id, String ma, KhachHang khachHang, NhanVien nhanVien, Integer phuongThucThanhToan, BigDecimal tongTien,Integer loaiHoaDon, String ngayTao,String ngayThanhToan, Integer trangThai) {

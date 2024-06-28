@@ -526,6 +526,7 @@ public class TrangChuController {
         hoaDon.setNgayThanhToan(LocalDateTime.now().withNano(0));
         hoaDon.setTongTien(tongTienBigDecimal);
         hoaDon.setTrangThai(HoaDonRepository.CHO_XAC_NHAN);
+        hoaDon.setLoaiHoaDon(1);
         hoaDonRepo.save(hoaDon);
 
         GiaoHang giaoHang = new GiaoHang();
