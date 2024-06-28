@@ -835,7 +835,7 @@
 
                                             </c:when>
                                             <c:otherwise>
-                                                ${hoaDonDTO.nhanVien.hoTen}
+                                                ${hoaDonDTO.nhanVienViet.hoTen}
                                             </c:otherwise>
                                         </c:choose>
                                     </td>
@@ -954,7 +954,7 @@
 
                                                 <c:if test="${hoaDonDTO.loaiHoaDon == 1}">
                                                     <p class="fw-bold mb-1 small">Người tạo: <span
-                                                            class="fw-normal">${hoaDonDTO.nhanVien.hoTen}</span></p>
+                                                            class="fw-normal">${hoaDonDTO.nhanVienViet.hoTen}</span></p>
                                                 </c:if>
 
                                                 <c:choose>
