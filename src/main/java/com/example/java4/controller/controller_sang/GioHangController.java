@@ -55,7 +55,7 @@
 //        listGioHang = new ArrayList<>();
 //    }
 //
-//    private String idKH = UserInfor.idKhachHang ;
+//    private String idKH = UserInfor.idKhachHang;
 //
 //    //Danh sách sản phẩm
 //    @GetMapping("/gio-hang")
@@ -65,7 +65,7 @@
 //        listCTSP = spctRepo.findAll();
 //        listSanPham = sanPhamRepo.findAll();
 //        boolean check = false;
-//        System.out.println("====================================test id kh : "+idKH);
+//        System.out.println("====================================test id kh : " + idKH);
 //        if (listHDCT.isEmpty()) {
 //            //Trong giỏ hàng không có sản phẩm sẽ hiển thị thông báo
 //            check = true;
@@ -88,7 +88,7 @@
 //        model.addAttribute("soLuong", totalSoLuong);
 //
 //        //Tính tổng giá tiền của giỏ hàng
-//        BigDecimal tongTienBigDecimal  = new BigDecimal(0);
+//        BigDecimal tongTienBigDecimal = new BigDecimal(0);
 //        for (ChiTietHoaDon chiTietHoaDon : listHDCT) {
 //            BigDecimal soLuongDecimal = new BigDecimal(chiTietHoaDon.getSoLuong());
 //            tongTienBigDecimal.add(chiTietHoaDon.getDonGia().multiply(soLuongDecimal));
@@ -140,41 +140,42 @@
 //        return "redirect:/gio-hang";
 //    }
 //
-////    @PostMapping("/thanh-toan")
-////    public String thanhToan(GiaoHangRequest ghRequest, @RequestParam("tenTinh") String idTinhThanh,
-////                            @RequestParam("tenQuan") String idQuanHuyen, @RequestParam("tenPhuong") String idPhuongXa) {
-////
-////        Integer tongTien = 0;
-////        for (ChiTietHoaDon chiTietHoaDon : listHDCT) {
-////            tongTien += chiTietHoaDon.getSoLuong() * chiTietHoaDon.getDonGia();
-////        }
-////
-////        HoaDon hoaDon = hoaDonRepo.findByIdKhachHang(idKH).get();
-////        hoaDon.setPhuongThucThanhToan(ghRequest.getPhuongThucThanhToan());
-////        hoaDon.setNgayThanhToan(LocalDateTime.now().withNano(0));
-////        hoaDon.setTongTien(tongTien);
-////        hoaDon.setTrangThai(HoaDonRepository.CHO_XAC_NHAN);
-////        hoaDon.setLoaiHoaDon(HoaDonRepository.HOA_DON_ONL);
-////        hoaDonRepo.save(hoaDon);
-////
-////        System.out.println(idTinhThanh);
-////        System.out.println(idQuanHuyen);
-////        System.out.println(idPhuongXa);
-////        System.out.println(hoaDon);
-////
-////
-////        GiaoHang giaoHang = new GiaoHang();
-////        giaoHang.setIdHoaDon(hoaDonRepo.findByIdKhachHang(idKH).get());
-////        giaoHang.setTenNguoiNhan(ghRequest.getTenNguoiNhan());
-////        giaoHang.setSdtNguoiNhan(ghRequest.getSdtNguoiNhan());
-////        giaoHang.setDiaChiChiTiet(ghRequest.getDiaChiChiTiet());
-////        giaoHang.setIdTinhThanh(idTinhThanh);
-////        giaoHang.setIdQuanHuyen(idQuanHuyen);
-////        giaoHang.setIdPhuongXa(idPhuongXa);
-////        giaoHang.setTrangThai(HoaDonRepository.CHO_XAC_NHAN);
-////        giaoHang.setGhiChu(ghRequest.getGhiChu());
-////        giaoHangRepo.save(giaoHang);
-////
-////        return "redirect:/gio-hang";
-////    }
+//    @PostMapping("/thanh-toan")
+//    public String thanhToan(GiaoHangRequest ghRequest, @RequestParam("tenTinh") String idTinhThanh,
+//                            @RequestParam("tenQuan") String idQuanHuyen, @RequestParam("tenPhuong") String idPhuongXa) {
+//
+//        Integer tongTien = 0;
+//        for (ChiTietHoaDon chiTietHoaDon : listHDCT) {
+//            tongTien += chiTietHoaDon.getSoLuong() * chiTietHoaDon.getDonGia();
+//        }
+//
+//        HoaDon hoaDon = hoaDonRepo.findByIdKhachHang(idKH).get();
+//        hoaDon.setPhuongThucThanhToan(ghRequest.getPhuongThucThanhToan());
+//        hoaDon.setNgayThanhToan(LocalDateTime.now().withNano(0));
+//        hoaDon.setTongTien(tongTien);
+//        hoaDon.setTrangThai(HoaDonRepository.CHO_XAC_NHAN);
+//        hoaDon.setLoaiHoaDon(HoaDonRepository.HOA_DON_ONL);
+//        hoaDonRepo.save(hoaDon);
+//
+//        System.out.println(idTinhThanh);
+//        System.out.println(idQuanHuyen);
+//        System.out.println(idPhuongXa);
+//        System.out.println(hoaDon);
+//
+//
+//        GiaoHang giaoHang = new GiaoHang();
+//        giaoHang.setIdHoaDon(hoaDonRepo.findByIdKhachHang(idKH).get());
+//        giaoHang.setTenNguoiNhan(ghRequest.getTenNguoiNhan());
+//        giaoHang.setSdtNguoiNhan(ghRequest.getSdtNguoiNhan());
+//        giaoHang.setDiaChiChiTiet(ghRequest.getDiaChiChiTiet());
+//        giaoHang.setIdTinhThanh(idTinhThanh);
+//        giaoHang.setIdQuanHuyen(idQuanHuyen);
+//        giaoHang.setIdPhuongXa(idPhuongXa);
+//        giaoHang.setTrangThai(HoaDonRepository.CHO_XAC_NHAN);
+//        giao
+//        giaoHang.setGhiChu(ghRequest.getGhiChu());
+//        giaoHangRepo.save(giaoHang);
+//
+//        return "redirect:/gio-hang";
+//    }
 //}
