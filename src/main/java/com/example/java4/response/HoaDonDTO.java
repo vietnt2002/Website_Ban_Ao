@@ -1,6 +1,5 @@
 package com.example.java4.response;
 import com.example.java4.entities.*;
-import com.example.java4.entities.tai.HoaDon_Tai;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -81,7 +80,7 @@ public class HoaDonDTO {
 //        this.trangThaiText=maText;
 //    }
 
-    public static HoaDonDTO fromEntity(HoaDon_Tai hoaDon) {
+    public static HoaDonDTO fromEntity(HoaDon hoaDon) {
         return new HoaDonDTO(
                 hoaDon.getId(),
                 hoaDon.getMa(),

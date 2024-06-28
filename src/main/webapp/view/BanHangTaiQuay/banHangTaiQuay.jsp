@@ -103,23 +103,9 @@
 
         <!-- Nav Item - Dashboard -->
         <li class="nav-item active">
-            <a class="nav-link" href="index.html">
-                <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>Thống kê doanh thu</span></a>
-        </li>
-
-        <!-- Nav Item - Charts -->
-        <li class="nav-item">
-            <a class="nav-link" href="/ban-hang-tai-quay/admin/ban-tai-quay">
+            <a class="nav-link" href="/ban-hang-tai-quay">
                 <i class="fas fa-fw fa-chart-area"></i>
                 <span>Bán hàng tại quầy</span></a>
-        </li>
-
-        <!-- Nav Item - Charts -->
-        <li class="nav-item">
-            <a class="nav-link" href="charts.html">
-                <i class="fas fa-fw fa-chart-area"></i>
-                <span>Quản lý đơn hàng</span></a>
         </li>
 
         <!-- Nav Item - Charts -->
@@ -129,33 +115,33 @@
                 <span>Quản lý hóa đơn</span></a>
         </li>
 
-        <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-               aria-expanded="true" aria-controls="collapseTwo">
-                <i class="fas fa-fw fa-cog"></i>
-                <span>Quản lý sản phẩm</span>
-            </a>
-            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" href="buttons.html">Màu sắc, kích thước các thứ</a>
-                    <a class="collapse-item" href="cards.html">Cards</a>
-                </div>
-            </div>
-        </li>
-
         <!-- Nav Item - Charts -->
         <li class="nav-item">
-            <a class="nav-link" href="charts.html">
+            <a class="nav-link" href="/qlnv/quan-ly-nhan-vien">
                 <i class="fas fa-fw fa-chart-area"></i>
                 <span>Quản lý nhân viên</span></a>
         </li>
 
         <!-- Nav Item - Charts -->
         <li class="nav-item">
+            <a class="nav-link" href="/hoa-don/hien-thi">
+                <i class="fas fa-fw fa-chart-area"></i>
+                <span>Pending....</span></a>
+        </li>
+
+        <!-- Nav Item - Pages Collapse Menu -->
+        <!-- Nav Item - Charts -->
+        <li class="nav-item">
             <a class="nav-link" href="charts.html">
                 <i class="fas fa-fw fa-chart-area"></i>
-                <span>Quản lý khách hàng</span></a>
+                <span>Pending....</span></a>
+        </li>
+
+        <!-- Nav Item - Charts -->
+        <li class="nav-item">
+            <a class="nav-link" href="charts.html">
+                <i class="fas fa-fw fa-chart-area"></i>
+                <span>Pending......</span></a>
         </li>
 
         <!-- Divider -->
@@ -409,15 +395,6 @@
                                                class="btn btn-primary">
                                                 <i class="bi bi-eye-fill"></i>
                                             </a>
-                                                <%--                                            <a href="/ban_hang_tai_quay/delete-hoa-don/${hoaDon.id}"--%>
-                                                <%--                                               class="btn btn-danger" onclick="return confirm('Bạn có muốn xóa không')">--%>
-                                                <%--                                                <i class="bi bi-trash"></i>--%>
-                                                <%--                                            </a>--%>
-
-                                            <button class="delete-button btn btn-danger" data-id="${hoaDon.id}">
-                                                <i class="bi bi-x-circle-fill"></i>
-                                            </button>
-
                                         </td>
                                     </tr>
                                 </c:forEach>
@@ -700,7 +677,8 @@
             </div>
         </div>
 
-        <!-- Modal khách hàng -->
+
+<%--        modal them san pham--%>
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
              data-bs-backdrop="static" data-bs-keyboard="false" >
             <div class="modal-dialog modal-lg">
@@ -754,10 +732,6 @@
         </div>
         <%--End--%>
 
-
-
-
-
         <!-- Modal khách hàng -->
         <div class="modal fade" id="exampleModal4" tabindex="-1" aria-labelledby="exampleModalLabel4" aria-hidden="true"
              data-bs-backdrop="static" data-bs-keyboard="false" >
@@ -779,89 +753,70 @@
 
                                 <div class="row">
                                     <div class="col col-5">
-                                        <form method="post" action="/ban-hang-tai-quay/search">
-                                            <div class="input-group mb-3">
-                                                <input type="text" name="search" class="form-control"
-                                                       placeholder="Tìm kiếm theo mã sản phẩm, màu sắc,..."
-                                                       aria-label="Recipient's username" aria-describedby="button-addon2">
-                                                <button class="btn btn-primary" type="submit" id="button-addon2">Tìm kiếm
-                                                </button>
-                                            </div>
-                                        </form>
+                                        <input oninput="searchBySPCT(this)" type="text" name="search" class="form-control" placeholder="Tìm kiếm theo mã sản phẩm, màu sắc,..."
+                                               aria-label="Recipient's username" aria-describedby="button-addon2" style="margin-bottom: 20px">
                                     </div>
                                 </div>
 
-
+                                <%--     Lọc theo thuộc tính   --%>
                                 <form method="post" action="/ban-hang-tai-quay/filter">
                                     <div class="row">
-                                        <div class="col col-md-2">
-                                            <div class="input-group mb-3">
-                                                <div class="dropdown">
-                                                    <button class="btn btn-outline-secondary dropdown-toggle" type="button"
-                                                            id="dropdownMenuButton1" data-bs-toggle="dropdown"
-                                                            aria-expanded="false">
-                                                        Chọn sản phẩm
-                                                    </button>
-                                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                                        <c:forEach items="${listSanPham}" var="sanPham">
-                                                            <li><a class="dropdown-item"
-                                                                   href="/ban-hang-tai-quay/locSPCTBySanPham/${sanPham.id}">${sanPham.ten}</a>
-                                                            </li>
-                                                        </c:forEach>
-                                                    </ul>
-                                                </div>
+                                        <div class="col col-md-3">
+                                            <div class="form-group">
+                                                <label ><strong>Chọn sản phẩm</strong></label>
+                                                <select class="form-control" id="combobox1">
+                                                    <!-- Các option sẽ được nạp ở đây -->
+                                                    <c:forEach items="${listSanPham}" var="sanPham">
+                                                        <option value="${sanPham.id}">${sanPham.ten}</option>
+                                                    </c:forEach>
+                                                </select>
                                             </div>
                                         </div>
-
                                         <div class="col col-md-2">
-                                            <div class="dropdown">
-                                                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
-                                                    Chọn màu sắc
-                                                </button>
-                                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                                            <div class="form-group">
+                                                <label ><strong>Chọn màu sắc</strong></label>
+                                                <select class="form-control" id="combobox2">
+                                                    <!-- Các option sẽ được nạp ở đây -->
                                                     <c:forEach items="${listMauSac}" var="mauSac">
-                                                        <li><a class="dropdown-item" href="/ban-hang-tai-quay/locSPCTByMauSac/${mauSac.id}">${mauSac.ten}</a></li>
+                                                        <option value="${mauSac.id}">${mauSac.ten}</option>
                                                     </c:forEach>
-                                                </ul>
+                                                </select>
                                             </div>
                                         </div>
 
                                         <div class="col col-md-2">
-                                            <div class="dropdown">
-                                                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-expanded="false">
-                                                    Chọn kích thước
-                                                </button>
-                                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton3">
+                                            <div class="form-group">
+                                                <label ><strong>Chọn kích thước</strong></label>
+                                                <select class="form-control" id="combobox3">
+                                                    <!-- Các option sẽ được nạp ở đây -->
                                                     <c:forEach items="${listKichThuoc}" var="kichThuoc">
-                                                        <li><a class="dropdown-item" href="/ban-hang-tai-quay/locSPCTByKichThuoc/${kichThuoc.id}">${kichThuoc.ten}</a></li>
+                                                        <option value="${kichThuoc.id}">${kichThuoc.ten}</option>
                                                     </c:forEach>
-                                                </ul>
+                                                </select>
                                             </div>
                                         </div>
 
                                         <div class="col col-md-2">
-                                            <div class="dropdown">
-                                                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton4" data-bs-toggle="dropdown" aria-expanded="false">
-                                                    Chọn chất liệu
-                                                </button>
-                                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton4">
+                                            <div class="form-group">
+                                                <label ><strong>Chọn chất liệu</strong></label>
+                                                <select class="form-control" id="combobox4">
+                                                    <!-- Các option sẽ được nạp ở đây -->
                                                     <c:forEach items="${listChatLieu}" var="chatLieu">
-                                                        <li><a class="dropdown-item" href="/ban-hang-tai-quay/locSPCTByChatLieu/${chatLieu.id}">${chatLieu.ten}</a></li>
+                                                        <option value="${chatLieu.id}">${chatLieu.ten}</option>
                                                     </c:forEach>
-                                                </ul>
+                                                </select>
                                             </div>
                                         </div>
 
                                         <div class="col col-md-2">
-                                            <div class="dropdown">
-                                                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton5" data-bs-toggle="dropdown" aria-expanded="false">
-                                                    Chọn kiểu tay
-                                                </button>
-                                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton5">
+                                            <div class="form-group">
+                                                <label ><strong>Chọn kiểu tay</strong></label>
+                                                <select class="form-control" id="combobox5">
+                                                    <!-- Các option sẽ được nạp ở đây -->
                                                     <c:forEach items="${listKieuTay}" var="kieuTay">
-                                                        <li><a class="dropdown-item" href="/ban-hang-tai-quay/locSPCTByKieuTay/${kieuTay.id}">${kieuTay.ten}</a></li>
+                                                        <option value="${kieuTay.id}">${kieuTay.ten}</option>
                                                     </c:forEach>
-                                                </ul>
+                                                </select>
                                             </div>
                                         </div>
 
@@ -870,7 +825,7 @@
                                 </form>
 
                                 <div class="table-scroll2">
-                                    <table class="table table-hover">
+                                    <table class="table table-hover" id="contentAjax2">
                                         <thead>
                                         <tr>
                                             <th>STT</th>
@@ -912,6 +867,7 @@
                                         </c:forEach>
                                         </tbody>
                                     </table>
+
                                 </div>
                             </div>
                         </div>
@@ -921,7 +877,6 @@
             </div>
         </div>
         <%--End--%>
-
 
 
 
@@ -1201,6 +1156,135 @@
         });
     });
 </script>
+<script>
+    function searchBySPCT(param){
+        var txtSearch = param.value;
+        console.log(txtSearch);
+        $.ajax({
+            url: "/ban-hang-tai-quay/searchSPCT/${hoaDon.id}",
+            type: "POST",
+            data: {
+                search:txtSearch
+            },
+            success: function (data) {
+                // var row = document.getElementById("content");
+                // row.innerHTML = data;
+                $('#contentAjax2').empty()
+                $('#contentAjax2').append(data);
+
+                console.log(data);
+            },
+            error: function (xhr) {
+                //Do Something to handle error
+            }
+        });
+    }
+
+
+    //
+    function searchByName(param){
+        var txtSearch = param.value;
+        console.log(txtSearch);
+        $.ajax({
+            url: "/ban-hang-tai-quay/search/${hoaDon.id}",
+            type: "POST",
+            data: {
+                txt:txtSearch
+            },
+            success: function (data) {
+                // var row = document.getElementById("content");
+                // row.innerHTML = data;
+                $('#contentAjax').empty()
+                $('#contentAjax').append(data);
+                console.log(data);
+            },
+            error: function (xhr) {
+                //Do Something to handle error
+            }
+        });
+    }
+
+    //Lọc sản phẩm
+    $(document).ready(function(){
+        $('#combobox1').on('change', function() {
+            var productId = $(this).val();
+            $.ajax({
+                url: "/ban-hang-tai-quay/locSPCTBySanPham/"+productId,
+                type: 'GET',
+                data: {id: productId},
+                success: function(data) {
+                    $('#contentAjax2').empty()
+                    $('#contentAjax2').append(data);
+                }
+            });
+        });
+    });
+
+    //Lọc màu sắc
+    $(document).ready(function(){
+        $('#combobox2').on('change', function() {
+            var productId = $(this).val();
+            $.ajax({
+                url: "/ban-hang-tai-quay/locSPCTByMauSac/"+productId,
+                type: 'GET',
+                data: {id: productId},
+                success: function(data) {
+                    $('#contentAjax2').empty()
+                    $('#contentAjax2').append(data);
+                }
+            });
+        });
+    });
+
+    //Lọc kích thước
+    $(document).ready(function(){
+        $('#combobox3').on('change', function() {
+            var productId = $(this).val();
+            $.ajax({
+                url: "/ban-hang-tai-quay/locSPCTByKichThuoc/"+productId,
+                type: 'GET',
+                data: {id: productId},
+                success: function(data) {
+                    $('#contentAjax2').empty()
+                    $('#contentAjax2').append(data);
+                }
+            });
+        });
+    });
+
+    //Lọc chất liệu
+    $(document).ready(function(){
+        $('#combobox4').on('change', function() {
+            var productId = $(this).val();
+            $.ajax({
+                url: "/ban-hang-tai-quay/locSPCTByChatLieu/"+productId,
+                type: 'GET',
+                data: {id: productId},
+                success: function(data) {
+                    $('#contentAjax2').empty()
+                    $('#contentAjax2').append(data);
+                }
+            });
+        });
+    });
+
+    //Lọc theo kiểu tay
+    $(document).ready(function(){
+        $('#combobox5').on('change', function() {
+            var productId = $(this).val();
+            $.ajax({
+                url: "/ban-hang-tai-quay/locSPCTByKieuTay/"+productId,
+                type: 'GET',
+                data: {id: productId},
+                success: function(data) {
+                    $('#contentAjax2').empty()
+                    $('#contentAjax2').append(data);
+                }
+            });
+        });
+    });
+</script>
+
 <script>
     // Hiển thị thông báo thêm thành công hoặc thất bại sử dụng thư viện Sweet Alert2
     const Toast = Swal.mixin({

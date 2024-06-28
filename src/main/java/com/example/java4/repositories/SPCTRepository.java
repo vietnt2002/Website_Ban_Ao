@@ -11,6 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface SPCTRepository extends JpaRepository<ChiTietSanPham,String>, JpaSpecificationExecutor<ChiTietSanPham> {
@@ -99,6 +100,11 @@ public interface SPCTRepository extends JpaRepository<ChiTietSanPham,String>, Jp
     Integer getCountStt1Byidsp(String idsp);
     @Query(value = "SELECT COUNT(*) FROM chitietsanpham where trangThai=0 and IdSP=:idsp",nativeQuery = true)
     Integer getCountStt0Byidsp(String idsp);
+    @Query(value = "SELECT ctsp.* FROM ChiTietSanPham ctsp " +
+            "JOIN ChiTietHoaDon hdct ON ctsp.id = hdct.idCTSP " +
+            "WHERE hdct.id = :idHoaDonChiTiet", nativeQuery = true)
+    Optional<ChiTietSanPham> findByHoaDonChiTietId(@Param("idHoaDonChiTiet") String idHoaDonChiTiet);
+
 };
 
 

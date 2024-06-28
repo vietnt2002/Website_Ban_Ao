@@ -1,15 +1,13 @@
 package com.example.java4.service;
 
 import com.example.java4.entities.HoaDon;
-import com.example.java4.repositories.repo_tai.IHoaDonRepository;
+import com.example.java4.repositories.HoaDonRepository;
 import com.example.java4.response.HoaDonDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.chrono.ChronoLocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
@@ -19,7 +17,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Service
 public class AdminService {
-    private IHoaDonRepository _hoaDonRepository;
+    private HoaDonRepository _hoaDonRepository;
 
     public List<HoaDonDTO> FilterData(String maSdt, Integer loaiHd, LocalDateTime ngayBatDau, LocalDateTime ngayKetThuc) {
         List<HoaDon> query = _hoaDonRepository.findAll();
@@ -39,7 +37,6 @@ public class AdminService {
                     .filter(record -> !record.getNgayTao().isBefore(ngayBatDau) && !record.getNgayTao().isAfter(ngayKetThuc))
                     .collect(Collectors.toList());
         }
-
 
 
         List<HoaDonDTO> res = query.stream()

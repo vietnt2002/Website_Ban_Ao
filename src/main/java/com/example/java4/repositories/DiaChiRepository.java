@@ -3,6 +3,7 @@ package com.example.java4.repositories;
 import com.example.java4.entities.DiaChi;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -21,4 +22,6 @@ public interface DiaChiRepository extends JpaRepository<DiaChi,String> {
 
     @Query("select dc from DiaChi dc where dc.id = ?1")
     DiaChi findDiaChiByID(String id);
+    @Query("SELECT diaChi FROM DiaChi diaChi WHERE diaChi.idKhachHang.id = :idKH and diaChi.trangThai=1")
+    DiaChi findDiaChiByKhachHangId(@Param("idKH") String idKH);
 }

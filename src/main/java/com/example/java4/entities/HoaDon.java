@@ -1,5 +1,8 @@
 package com.example.java4.entities;
 
+import com.example.java4.entities.KhachHang;
+import com.example.java4.entities.KhuyenMai;
+import com.example.java4.entities.NhanVien;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -8,6 +11,7 @@ import java.util.Date;
 import java.util.Objects;
 
 @Entity
+@Table( name = "HoaDon")
 public class HoaDon {
     private String id;
     private String ma;
@@ -17,9 +21,14 @@ public class HoaDon {
     private KhachHang idKhachHang;
     private LocalDateTime ngayTao;
     private LocalDateTime ngayThanhToan;
+    private LocalDateTime ngayCapNhat;
     private BigDecimal tongTien;
     private Integer loaiHoaDon;
     private Integer trangThai;
+    private String ghiChu;
+    private LocalDateTime ngayDaXacNhan;
+    private LocalDateTime ngayChoGiaoHang;
+    private LocalDateTime ngayDangGiaoHang;
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -95,6 +104,49 @@ public class HoaDon {
         this.trangThai = trangThai;
     }
 
+    @Column(name = "NgayCapNhat")
+    public LocalDateTime getNgayCapNhat() {
+        return ngayCapNhat;
+    }
+
+    public void setNgayCapNhat(LocalDateTime ngayCapNhat) {
+        this.ngayCapNhat = ngayCapNhat;
+    }
+
+    @Column(name = "GhiChu")
+    public String getGhiChu() {
+        return ghiChu;
+    }
+    public void setGhiChu(String ghiChu) {
+        this.ghiChu = ghiChu;
+    }
+
+    @Column(name = "NgayDaXacNhan")
+    public LocalDateTime getNgayDaXacNhan() {
+        return ngayDaXacNhan;
+    }
+
+    public void setNgayDaXacNhan(LocalDateTime ngayDaXacNhan) {
+        this.ngayDaXacNhan = ngayDaXacNhan;
+    }
+
+    @Column(name = "NgayChoGiaoHang")
+    public LocalDateTime getNgayChoGiaoHang() {
+        return ngayChoGiaoHang;
+    }
+
+    public void setNgayChoGiaoHang(LocalDateTime ngayChoGiaoHang) {
+        this.ngayChoGiaoHang = ngayChoGiaoHang;
+    }
+
+    @Column(name = "NgayDangGiaoHang")
+    public LocalDateTime getNgayDangGiaoHang() {
+        return ngayDangGiaoHang;
+    }
+
+    public void setNgayDangGiaoHang(LocalDateTime ngayDangGiaoHang) {
+        this.ngayDangGiaoHang = ngayDangGiaoHang;
+    }
 
 
     @Override

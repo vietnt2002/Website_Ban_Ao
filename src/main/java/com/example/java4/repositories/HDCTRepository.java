@@ -5,9 +5,11 @@ import com.example.java4.entities.ChiTietSanPham;
 import com.example.java4.entities.KhachHang;
 import com.example.java4.response.GioHangResponse;
 import com.example.java4.response.HoaDonChiTietDTO;
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -75,12 +77,11 @@ public interface HDCTRepository
             "where hd.idKhachHang.id = ?1")
     ChiTietHoaDon findByIdHoaDonByidKH(String idKH);
 
-
 //    @Query("SELECT c FROM ChiTietHoaDon c WHERE c.hoaDon.id = :idHoaDon GROUP BY c.hoaDon.id, c.chiTietSanPham.id, c.donGia")
 //    List<ChiTietHoaDon> findDistinctByHoaDon_Id(@Param("idHoaDon") String idHoaDon);
 
-
-
-
-
+    @Transactional
+    @Modifying
+    @Query("DELETE FROM ChiTietHoaDon hdct WHERE hdct.idHoaDon.id = :idHoaDon AND hdct.idCTSP.id = :idCTSP")
+    int deleteByHoaDon_IdAndIdCTSP_Id(@Param("idHoaDon") String idHoaDon, @Param("idCTSP") String idCTSP);
 };

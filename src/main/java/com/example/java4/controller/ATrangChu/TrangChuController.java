@@ -519,18 +519,14 @@ public class TrangChuController {
             BigDecimal soLuongDecimal = new BigDecimal(cthd.getSoLuong());
             tongTienBigDecimal = tongTienBigDecimal.add(cthd.getDonGia().multiply(soLuongDecimal));
         }
-
         HoaDon hoaDon = hoaDonRepo.findByIdKhachHang(UserInfor.idKhachHang, HoaDonRepository.CHO_THANH_TOAN);
-
         hoaDon.setPhuongThucThanhToan(request.getPhuongThucThanhToan());
         hoaDon.setNgayThanhToan(LocalDateTime.now().withNano(0));
         hoaDon.setTongTien(tongTienBigDecimal);
         hoaDon.setTrangThai(HoaDonRepository.CHO_XAC_NHAN);
         hoaDon.setLoaiHoaDon(1);
         hoaDonRepo.save(hoaDon);
-
         GiaoHang giaoHang = new GiaoHang();
-
         giaoHang.setIdHoaDon(hoaDon);
         giaoHang.setTenNguoiNhan(request.getTenNguoiNhan());
         giaoHang.setSdtNguoiNhan(request.getSdtNguoiNhan());
@@ -541,9 +537,7 @@ public class TrangChuController {
         giaoHang.setTrangThai(HoaDonRepository.CHO_XAC_NHAN);
         giaoHang.setGhiChu(request.getGhiChu());
         giaoHangRepo.save(giaoHang);
-
         redirectAttributes.addFlashAttribute("successMessage", "Đặt hàng thành công");
-
         return "redirect:/cua-hang/gio-hang";
     }
 

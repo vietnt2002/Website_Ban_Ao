@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -20,4 +21,19 @@ public interface NhanVienRepository
 
     @Query("select nv from NhanVien nv where nv.taiKhoan = ?1")
     NhanVien findByTaiKhoan(String tenTK);
+
+    @Query("select nv from NhanVien nv order by nv.ngayTao asc ")
+    Page<NhanVien> getAlll(Pageable pageable);
+
+    //Tìm kiếm theo tên hoặc sdt
+    @Query("select nv from NhanVien nv where nv.hoTen like %?1% or nv.sdt like %?1%")
+    List<NhanVien> findByHoTenOrSdt(String key);
+
+    //Tìm kiếm theo chức vụ
+    @Query("select nv from NhanVien nv where nv.idCV.id = ?1")
+    List<NhanVien> findByChucVu(String idCV);
+
+    //Tìm kiếm theo tên hoặc sdt và chức vụ
+    @Query("select nv from NhanVien nv where (nv.hoTen like %?1% or nv.sdt like %?1%) and (nv.idCV.id = ?2)")
+    List<NhanVien> findByHoTenOrSdtAndChucVu(String key, String idCV);
 };
