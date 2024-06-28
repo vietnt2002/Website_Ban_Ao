@@ -217,6 +217,7 @@ public class Ban_Tai_Quay_Controller {
         hoaDon.setNgayTao(now);
         Optional<NhanVien> nv = nhanVienRepo.findById(idNV);
         hoaDon.setIdNhanVien(nv.get());
+
         hoaDon.setMa(ma);
         hoaDon.setTrangThai(0);
         try {
@@ -234,11 +235,21 @@ public class Ban_Tai_Quay_Controller {
     @GetMapping("delete-hoa-don/{idHoaDon}")
     public String deleteHoaDon(@PathVariable String idHoaDon){
 
+//        List<ChiTietHoaDon> listCTHD = hoaDonChiTietRepository.findHDCTByIdHoaDon(idHoaDon);
+//
+//        for (ChiTietHoaDon cthd: listCTHD){
+//            if (cthd.getIdHoaDon().getId().equals(idHoaDon)){
+//
+//
+//            }
+//        }
         for (HoaDon hoaDon: listHoaDon){
             if (hoaDon.getId().equals(idHoaDon)){
-                hoaDonRepository.delete(hoaDon);
+                hoaDon.setTrangThai(2);
+                hoaDonRepository.save(hoaDon);
             }
         }
+
         return "redirect:/ban_hang_tai_quay";
     }
 
@@ -331,8 +342,9 @@ public class Ban_Tai_Quay_Controller {
     }
 
 
-    @PostMapping("add-san-pham/{idCTSP}")
-    public String addSanPhamVaoGioHang(@PathVariable String idCTSP, @RequestParam("page") Optional<Integer> pageParam,
+    @PostMapping("add-san-pham/{idCTSP}/{donGia}")
+    public String addSanPhamVaoGioHang(@PathVariable String idCTSP, @PathVariable("donGia") String donGia,
+                                       @RequestParam("page") Optional<Integer> pageParam,
                                        @RequestParam String idHoaDon, RedirectAttributes redirectAttributes) {
         ChiTietHoaDon hdct = new ChiTietHoaDon();
         //Tìm sản phẩm trong giỏ hàng
@@ -372,21 +384,22 @@ public class Ban_Tai_Quay_Controller {
                 }
             }
         }
-        BigDecimal donGia =  new BigDecimal(0);
+//        BigDecimal donGia =  new BigDecimal(0);
         if (!spTonTaiTrongGioHang) {
-            for (ChiTietSanPham sp : listCTSP) {
-                if (sp.getId().equals(idCTSP)) {
-                    donGia = sp.getGiaBan();
-                }
-            }
+//            for (ChiTietSanPham sp : listCTSP) {
+//                if (sp.getId().equals(idCTSP)) {
+//                    donGia = sp.getGiaBan();
+//                }
+//            }
             ChiTietSanPham ctsp = new ChiTietSanPham();
+            BigDecimal big = new BigDecimal(donGia);
             ctsp.setId(idCTSP);
             hdct.setIdCTSP(ctsp);
             HoaDon hoaDon = new HoaDon();
             hoaDon.setId(idHoaDon);
             hdct.setIdHoaDon(hoaDon);
             hdct.setSoLuong(1);
-            hdct.setDonGia(donGia);
+            hdct.setDonGia(big);
             hoaDonChiTietRepository.save(hdct);
             //Số lượng của sản phẩm chi tiết bị giảm 1 khi ấn vào button thêm trong giỏ hàng
             if (chiTietSanPham.getId().equals(idCTSP)) {
@@ -401,7 +414,6 @@ public class Ban_Tai_Quay_Controller {
                                    @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date ngayTao,
                                    @RequestParam String idKhuyenMai,
                                    @RequestParam String idKH,
-                                   @RequestParam String khachLe,
                                    @RequestParam BigDecimal tongTien) {
         LocalDateTime ngayTaoLocalDateTime = ngayTao.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
         for (int i = 0; i < listHoaDon.size(); i++) {
@@ -413,6 +425,7 @@ public class Ban_Tai_Quay_Controller {
                 hoaDon.setIdKhuyenMai(khuyenMai);
                 NhanVien nhanVien = new NhanVien();
                 nhanVien.setId(idNV);
+
                 hoaDon.setIdNhanVien(nhanVien);
                 KhachHang khachHang = new KhachHang();
                 khachHang.setId(idKH);
@@ -443,13 +456,18 @@ public class Ban_Tai_Quay_Controller {
 
     //=====GHÉP=====
     //Search sản phẩm chi tiết
-    @PostMapping("search")
+    @PostMapping("searchSPCT/{idHD}")
     public String search(
+            @PathVariable String idHD,
             Model model,
             @RequestParam("search") String search,
             @RequestParam("page") Optional<Integer> pageParam
     ){
-        Pageable pageable = PageRequest.of(pageParam.orElse(0), 10);
+
+        Optional<HoaDon> hoaDon = hoaDonRepository.findById(idHD);
+        model.addAttribute("hoaDon",hoaDon.get());
+
+        Pageable pageable = PageRequest.of(pageParam.orElse(0), 1000);
         Page<ChiTietSanPham> listCTSP = sanPhamChiTietRepository.timKiem(search, SPCTRepository.ACTIVE, pageable);
         listHoaDon = hoaDonRepository.findAll();
         listHDCT = hoaDonChiTietRepository.findAll();
@@ -457,7 +475,13 @@ public class Ban_Tai_Quay_Controller {
         model.addAttribute("listHoaDon",listHoaDon);
         model.addAttribute("listCTSP",listCTSP);
         model.addAttribute("listKH",listKH);
-        return "/view/BanHangTaiQuay/ban-hang-tai-quay.jsp";
+        model.addAttribute("listSanPham",sanPhamRepo.findAll());
+        model.addAttribute("listMauSac",mauSacRepository.findAll());
+        model.addAttribute("listKichThuoc",kichThuocRepo.findAll());
+        model.addAttribute("listChatLieu",chatLieuRepo.findAll());
+        model.addAttribute("listKieuTay",kieuTayRepo.findAll());
+//        return "/view/BanHangTaiQuay/ban-hang-tai-quay.jsp";
+        return "/view/BanHangTaiQuay/index2.jsp";
     }
 
     //Lọc sản phẩm
@@ -467,17 +491,34 @@ public class Ban_Tai_Quay_Controller {
             @PathVariable("idSanPham") String idSanPham,
             @RequestParam("page") Optional<Integer> pageParam
     ){
-        listHoaDon = hoaDonRepository.selectTop5();
-        Pageable pageable = PageRequest.of(pageParam.orElse(0), 10);
-        Page<ChiTietSanPham> listCTSP = sanPhamChiTietRepository.locCTSPByIdSanPham(idSanPham,SPCTRepository.ACTIVE, pageable);
-        model.addAttribute("listCTSP", listCTSP);
-        model.addAttribute("listSanPham",sanPhamRepo.findAll());
-        model.addAttribute("listMauSac",mauSacRepository.findAll());
-        model.addAttribute("listKichThuoc",kichThuocRepo.findAll());
-        model.addAttribute("listChatLieu",chatLieuRepo.findAll());
-        model.addAttribute("listKieuTay",kieuTayRepo.findAll());
-        model.addAttribute("listHoaDon",  listHoaDon);
-        return "/view/BanHangTaiQuay/ban-hang-tai-quay.jsp";
+        if (idHoaDon.equals("")){
+            listHoaDon = hoaDonRepository.selectTop5();
+            Pageable pageable = PageRequest.of(pageParam.orElse(0), 10);
+            Page<ChiTietSanPham> listCTSP = sanPhamChiTietRepository.locCTSPByIdSanPham(idSanPham,SPCTRepository.ACTIVE, pageable);
+            model.addAttribute("listCTSP", listCTSP);
+            model.addAttribute("listSanPham",sanPhamRepo.findAll());
+            model.addAttribute("listMauSac",mauSacRepository.findAll());
+            model.addAttribute("listKichThuoc",kichThuocRepo.findAll());
+            model.addAttribute("listChatLieu",chatLieuRepo.findAll());
+            model.addAttribute("listKieuTay",kieuTayRepo.findAll());
+            model.addAttribute("listHoaDon",  listHoaDon);
+        }else {
+            Optional<HoaDon> hoaDon = hoaDonRepository.findById(idHoaDon);
+            model.addAttribute("hoaDon",hoaDon.get());
+
+            listHoaDon = hoaDonRepository.selectTop5();
+            Pageable pageable = PageRequest.of(pageParam.orElse(0), 10);
+            Page<ChiTietSanPham> listCTSP = sanPhamChiTietRepository.locCTSPByIdSanPham(idSanPham,SPCTRepository.ACTIVE, pageable);
+            model.addAttribute("listCTSP", listCTSP);
+            model.addAttribute("listSanPham",sanPhamRepo.findAll());
+            model.addAttribute("listMauSac",mauSacRepository.findAll());
+            model.addAttribute("listKichThuoc",kichThuocRepo.findAll());
+            model.addAttribute("listChatLieu",chatLieuRepo.findAll());
+            model.addAttribute("listKieuTay",kieuTayRepo.findAll());
+            model.addAttribute("listHoaDon",  listHoaDon);
+        }
+
+        return "/view/BanHangTaiQuay/index2.jsp";
     }
 
     //Lọc màu sắc
@@ -487,17 +528,34 @@ public class Ban_Tai_Quay_Controller {
             @PathVariable("idMauSac") String idMauSac,
             @RequestParam("page") Optional<Integer> pageParam
     ){
-        listHoaDon = hoaDonRepository.selectTop5();
-        Pageable pageable = PageRequest.of(pageParam.orElse(0), 10);
-        Page<ChiTietSanPham> listCTSP = sanPhamChiTietRepository.locCTSPByIdMauSac(idMauSac,SPCTRepository.ACTIVE, pageable);
-        model.addAttribute("listCTSP", listCTSP);
-        model.addAttribute("listSanPham",sanPhamRepo.findAll());
-        model.addAttribute("listMauSac",mauSacRepository.findAll());
-        model.addAttribute("listKichThuoc",kichThuocRepo.findAll());
-        model.addAttribute("listChatLieu",chatLieuRepo.findAll());
-        model.addAttribute("listKieuTay",kieuTayRepo.findAll());
-        model.addAttribute("listHoaDon",listHoaDon);
-        return "/view/BanHangTaiQuay/ban-hang-tai-quay.jsp";
+        if (idHoaDon.equals("")){
+            listHoaDon = hoaDonRepository.selectTop5();
+            Pageable pageable = PageRequest.of(pageParam.orElse(0), 10);
+            Page<ChiTietSanPham> listCTSP = sanPhamChiTietRepository.locCTSPByIdMauSac(idMauSac,SPCTRepository.ACTIVE, pageable);
+            model.addAttribute("listCTSP", listCTSP);
+            model.addAttribute("listSanPham",sanPhamRepo.findAll());
+            model.addAttribute("listMauSac",mauSacRepository.findAll());
+            model.addAttribute("listKichThuoc",kichThuocRepo.findAll());
+            model.addAttribute("listChatLieu",chatLieuRepo.findAll());
+            model.addAttribute("listKieuTay",kieuTayRepo.findAll());
+            model.addAttribute("listHoaDon",listHoaDon);
+        }else {
+            Optional<HoaDon> hoaDon = hoaDonRepository.findById(idHoaDon);
+            model.addAttribute("hoaDon",hoaDon.get());
+
+            listHoaDon = hoaDonRepository.selectTop5();
+            Pageable pageable = PageRequest.of(pageParam.orElse(0), 10);
+            Page<ChiTietSanPham> listCTSP = sanPhamChiTietRepository.locCTSPByIdMauSac(idMauSac,SPCTRepository.ACTIVE, pageable);
+            model.addAttribute("listCTSP", listCTSP);
+            model.addAttribute("listSanPham",sanPhamRepo.findAll());
+            model.addAttribute("listMauSac",mauSacRepository.findAll());
+            model.addAttribute("listKichThuoc",kichThuocRepo.findAll());
+            model.addAttribute("listChatLieu",chatLieuRepo.findAll());
+            model.addAttribute("listKieuTay",kieuTayRepo.findAll());
+            model.addAttribute("listHoaDon",listHoaDon);
+        }
+
+        return "/view/BanHangTaiQuay/index2.jsp";
     }
     //Lọc kích thước
     @GetMapping("locSPCTByKichThuoc/{idKichThuoc}")
@@ -506,6 +564,22 @@ public class Ban_Tai_Quay_Controller {
             @PathVariable("idKichThuoc") String idKichThuoc,
             @RequestParam("page") Optional<Integer> pageParam
     ){
+        if (idHoaDon.equals("")){
+            listHoaDon = hoaDonRepository.selectTop5();
+            Pageable pageable = PageRequest.of(pageParam.orElse(0), 10);
+            Page<ChiTietSanPham> listCTSP = sanPhamChiTietRepository.locCTSPByIdKichThuoc(idKichThuoc,SPCTRepository.ACTIVE, pageable);
+            model.addAttribute("listCTSP", listCTSP);
+            model.addAttribute("listSanPham",sanPhamRepo.findAll());
+            model.addAttribute("listMauSac",mauSacRepository.findAll());
+            model.addAttribute("listKichThuoc",kichThuocRepo.findAll());
+            model.addAttribute("listChatLieu",chatLieuRepo.findAll());
+            model.addAttribute("listKieuTay",kieuTayRepo.findAll());
+            model.addAttribute("listHoaDon", listHoaDon);
+        }else {
+
+        Optional<HoaDon> hoaDon = hoaDonRepository.findById(idHoaDon);
+        model.addAttribute("hoaDon",hoaDon.get());
+
         listHoaDon = hoaDonRepository.selectTop5();
         Pageable pageable = PageRequest.of(pageParam.orElse(0), 10);
         Page<ChiTietSanPham> listCTSP = sanPhamChiTietRepository.locCTSPByIdKichThuoc(idKichThuoc,SPCTRepository.ACTIVE, pageable);
@@ -516,7 +590,8 @@ public class Ban_Tai_Quay_Controller {
         model.addAttribute("listChatLieu",chatLieuRepo.findAll());
         model.addAttribute("listKieuTay",kieuTayRepo.findAll());
         model.addAttribute("listHoaDon", listHoaDon);
-        return "/view/BanHangTaiQuay/ban-hang-tai-quay.jsp";
+        }
+        return "/view/BanHangTaiQuay/index2.jsp";
     }
     //Lọc chất liệu
     @GetMapping("locSPCTByChatLieu/{idChatLieu}")
@@ -525,17 +600,35 @@ public class Ban_Tai_Quay_Controller {
             @PathVariable("idChatLieu") String idChatLieu,
             @RequestParam("page") Optional<Integer> pageParam
     ){
-        listHoaDon = hoaDonRepository.selectTop5();
-        Pageable pageable = PageRequest.of(pageParam.orElse(0), 10);
-        Page<ChiTietSanPham> listCTSP = sanPhamChiTietRepository.locCTSPByIdChatLieu(idChatLieu,SPCTRepository.ACTIVE, pageable);
-        model.addAttribute("listCTSP", listCTSP);
-        model.addAttribute("listSanPham",sanPhamRepo.findAll());
-        model.addAttribute("listMauSac",mauSacRepository.findAll());
-        model.addAttribute("listKichThuoc",kichThuocRepo.findAll());
-        model.addAttribute("listChatLieu",chatLieuRepo.findAll());
-        model.addAttribute("listKieuTay",kieuTayRepo.findAll());
-        model.addAttribute("listHoaDon",listHoaDon);
-        return "/view/BanHangTaiQuay/ban-hang-tai-quay.jsp";
+        if (idHoaDon.equals("")){
+            listHoaDon = hoaDonRepository.selectTop5();
+            Pageable pageable = PageRequest.of(pageParam.orElse(0), 10);
+            Page<ChiTietSanPham> listCTSP = sanPhamChiTietRepository.locCTSPByIdChatLieu(idChatLieu,SPCTRepository.ACTIVE, pageable);
+            model.addAttribute("listCTSP", listCTSP);
+            model.addAttribute("listSanPham",sanPhamRepo.findAll());
+            model.addAttribute("listMauSac",mauSacRepository.findAll());
+            model.addAttribute("listKichThuoc",kichThuocRepo.findAll());
+            model.addAttribute("listChatLieu",chatLieuRepo.findAll());
+            model.addAttribute("listKieuTay",kieuTayRepo.findAll());
+            model.addAttribute("listHoaDon",listHoaDon);
+        }else {
+            Optional<HoaDon> hoaDon = hoaDonRepository.findById(idHoaDon);
+            model.addAttribute("hoaDon",hoaDon.get());
+
+            listHoaDon = hoaDonRepository.selectTop5();
+            Pageable pageable = PageRequest.of(pageParam.orElse(0), 10);
+            Page<ChiTietSanPham> listCTSP = sanPhamChiTietRepository.locCTSPByIdChatLieu(idChatLieu,SPCTRepository.ACTIVE, pageable);
+            model.addAttribute("listCTSP", listCTSP);
+            model.addAttribute("listSanPham",sanPhamRepo.findAll());
+            model.addAttribute("listMauSac",mauSacRepository.findAll());
+            model.addAttribute("listKichThuoc",kichThuocRepo.findAll());
+            model.addAttribute("listChatLieu",chatLieuRepo.findAll());
+            model.addAttribute("listKieuTay",kieuTayRepo.findAll());
+            model.addAttribute("listHoaDon",listHoaDon);
+        }
+
+//        return "/view/BanHangTaiQuay/ban-hang-tai-quay.jsp";
+        return "/view/BanHangTaiQuay/index2.jsp";
     }
     //Lọc kiểu tay
     @GetMapping("locSPCTByKieuTay/{idKieuTay}")
@@ -544,19 +637,41 @@ public class Ban_Tai_Quay_Controller {
             @PathVariable("idKieuTay") String idKieuTay,
             @RequestParam("page") Optional<Integer> pageParam
     ){
-        listHoaDon = hoaDonRepository.selectTop5();
-        Pageable pageable = PageRequest.of(pageParam.orElse(0), 10);
-        Page<ChiTietSanPham> listCTSP = sanPhamChiTietRepository.locCTSPByIdKieuTay(idKieuTay,SPCTRepository.ACTIVE, pageable);
-        Optional<NhanVien> nv = nhanVienRepo.findById(idNV);
-        model.addAttribute("listCTSP", listCTSP);
-        model.addAttribute("listSanPham",sanPhamRepo.findAll());
-        model.addAttribute("listMauSac",mauSacRepository.findAll());
-        model.addAttribute("listKichThuoc",kichThuocRepo.findAll());
-        model.addAttribute("listChatLieu",chatLieuRepo.findAll());
-        model.addAttribute("listKieuTay",kieuTayRepo.findAll());
-        model.addAttribute("nhanVien", nv.get());
-        model.addAttribute("listHoaDon",listHoaDon);
-        return "/view/BanHangTaiQuay/ban-hang-tai-quay.jsp";
+
+        if (idHoaDon.equals("")){
+            listHoaDon = hoaDonRepository.selectTop5();
+            Pageable pageable = PageRequest.of(pageParam.orElse(0), 10);
+            Page<ChiTietSanPham> listCTSP = sanPhamChiTietRepository.locCTSPByIdKieuTay(idKieuTay,SPCTRepository.ACTIVE, pageable);
+            Optional<NhanVien> nv = nhanVienRepo.findById(idNV);
+            model.addAttribute("listCTSP", listCTSP);
+            model.addAttribute("listSanPham",sanPhamRepo.findAll());
+            model.addAttribute("listMauSac",mauSacRepository.findAll());
+            model.addAttribute("listKichThuoc",kichThuocRepo.findAll());
+            model.addAttribute("listChatLieu",chatLieuRepo.findAll());
+            model.addAttribute("listKieuTay",kieuTayRepo.findAll());
+            model.addAttribute("nhanVien", nv.get());
+            model.addAttribute("listHoaDon",listHoaDon);
+        }else {
+            Optional<HoaDon> hoaDon = hoaDonRepository.findById(idHoaDon);
+            model.addAttribute("hoaDon",hoaDon.get());
+
+            listHoaDon = hoaDonRepository.selectTop5();
+            Pageable pageable = PageRequest.of(pageParam.orElse(0), 10);
+            Page<ChiTietSanPham> listCTSP = sanPhamChiTietRepository.locCTSPByIdKieuTay(idKieuTay,SPCTRepository.ACTIVE, pageable);
+            Optional<NhanVien> nv = nhanVienRepo.findById(idNV);
+            model.addAttribute("listCTSP", listCTSP);
+            model.addAttribute("listSanPham",sanPhamRepo.findAll());
+            model.addAttribute("listMauSac",mauSacRepository.findAll());
+            model.addAttribute("listKichThuoc",kichThuocRepo.findAll());
+            model.addAttribute("listChatLieu",chatLieuRepo.findAll());
+            model.addAttribute("listKieuTay",kieuTayRepo.findAll());
+            model.addAttribute("nhanVien", nv.get());
+            model.addAttribute("listHoaDon",listHoaDon);
+        }
+
+
+//        return "/view/BanHangTaiQuay/ban-hang-tai-quay.jsp";
+        return "/view/BanHangTaiQuay/index2.jsp";
     }
     //lọc sản phẩm chi tiết
     @PostMapping("filter")
@@ -580,10 +695,12 @@ public class Ban_Tai_Quay_Controller {
         listHoaDon = hoaDonRepository.findAll();
         listHDCT = hoaDonChiTietRepository.findAll();
         listKH = khachHangRepository.findAll();
+
         model.addAttribute("listHoaDon",listHoaDon);
         model.addAttribute("listCTSP",listCTSP);
         model.addAttribute("listKH",listKH);
-        return "/view/BanHangTaiQuay/ban-hang-tai-quay.jsp";
+//        return "/view/BanHangTaiQuay/ban-hang-tai-quay.jsp";
+        return "/view/BanHangTaiQuay/index2.jsp";
     }
 
     //Find khách hàng
