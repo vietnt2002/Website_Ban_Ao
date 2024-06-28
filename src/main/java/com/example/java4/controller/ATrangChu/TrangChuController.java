@@ -422,13 +422,11 @@ public class TrangChuController {
     public String suaDiaChiByidKH(DiaChiRequest request, @PathVariable("id") String id, @RequestParam("tenTinh") String idTinh,
                                   @RequestParam("tenQuan") String idQuan,
                                   @RequestParam("tenPhuong") String idPhuong, RedirectAttributes redirectAttributes) {
-
         DiaChi diaChi = diaChiRepo.findById(id).get();
         System.out.println(id);
         System.out.println(idTinh);
         System.out.println(idQuan);
         System.out.println(idPhuong);
-
         diaChi.setTenNguoiNhan(request.getTenNguoiNhan());
         diaChi.setSdtNguoiNhan(request.getSdtNguoiNhan());
         diaChi.setDiaChiChiTiet(request.getDiaChiChiTiet());

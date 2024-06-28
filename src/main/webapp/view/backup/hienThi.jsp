@@ -44,9 +44,9 @@
         <table class="table table-hover">
             <thead>
             <tr>
-                <th style="text-align: center">Tên khách hàng</th>
-                <th style="text-align: center">Số điện thoại</th>
-                <th style="text-align: center">Chọn</th>
+                <th>Tên khách hàng</th>
+                <th>Số điện thoại</th>
+                <th>Chọn</th>
             </tr>
             </thead>
             <tbody id="results">

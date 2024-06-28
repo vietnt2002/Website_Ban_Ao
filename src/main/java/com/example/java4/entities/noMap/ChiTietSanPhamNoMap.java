@@ -1,24 +1,19 @@
-package com.example.java4.entities;
-
+package com.example.java4.entities.noMap;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import java.math.BigDecimal;
-import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.Objects;
-
-
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name="chiTietSanPham")
-public class ChiTietSanPham {
+public class ChiTietSanPhamNoMap {
     private String id;
     private Integer soLuong;
     private String moTa;
@@ -26,11 +21,12 @@ public class ChiTietSanPham {
     private BigDecimal giaBan;
     private LocalDateTime ngayTao;
     private Integer trangThai;
-    private MauSac idMauSac;
-    private KichThuoc idKichThuoc;
-    private ChatLieu idChatLieu;
-    private KieuTay idKieuTay;
-    private SanPham idSanPham;
+    private String idMauSac;
+    private String idKichThuoc;
+    private String idChatLieu;
+    private String idKieuTay;
+    private String idSanPham;
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "ID")
@@ -93,7 +89,7 @@ public class ChiTietSanPham {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ChiTietSanPham that = (ChiTietSanPham) o;
+        ChiTietSanPhamNoMap that = (ChiTietSanPhamNoMap) o;
         return Objects.equals(id, that.id) && Objects.equals(soLuong, that.soLuong) && Objects.equals(moTa, that.moTa) && Objects.equals(giaNhap, that.giaNhap) && Objects.equals(giaBan, that.giaBan) && Objects.equals(ngayTao, that.ngayTao) && Objects.equals(trangThai, that.trangThai);
     }
 
@@ -102,53 +98,46 @@ public class ChiTietSanPham {
         return Objects.hash(id, soLuong, moTa, giaNhap, giaBan, ngayTao, trangThai);
     }
 
-    @ManyToOne
-    @JoinColumn(name = "IdMauSac", referencedColumnName = "ID")
-    public MauSac getIdMauSac() {
+    @Column(name = "IdMauSac")
+    public String getIdMauSac() {
         return idMauSac;
     }
 
-    public void setIdMauSac(MauSac mauSacByIdMauSac) {
+    public void setIdMauSac(String mauSacByIdMauSac) {
         this.idMauSac = mauSacByIdMauSac;
     }
-
-    @ManyToOne
-    @JoinColumn(name = "IdKichThuoc", referencedColumnName = "ID")
-    public KichThuoc getIdKichThuoc() {
+    @Column(name = "IdKichThuoc")
+    public String getIdKichThuoc() {
         return idKichThuoc;
     }
 
-    public void setIdKichThuoc(KichThuoc kichThuocByIdKichThuoc) {
+    public void setIdKichThuoc(String kichThuocByIdKichThuoc) {
         this.idKichThuoc = kichThuocByIdKichThuoc;
     }
-
-    @ManyToOne
-    @JoinColumn(name = "IdChatLieu", referencedColumnName = "ID")
-    public ChatLieu getIdChatLieu() {
+    @Column(name = "IdChatLieu")
+    public String getIdChatLieu() {
         return idChatLieu;
     }
 
-    public void setIdChatLieu(ChatLieu chatLieuByIdChatLieu) {
+    public void setIdChatLieu(String chatLieuByIdChatLieu) {
         this.idChatLieu = chatLieuByIdChatLieu;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "IdKieuTay", referencedColumnName = "ID")
-    public KieuTay getIdKieuTay() {
+    @JoinColumn(name = "IdKieuTay")
+    public String getIdKieuTay() {
         return idKieuTay;
     }
 
-    public void setIdKieuTay(KieuTay kieuTayByIdKieuTay) {
+    public void setIdKieuTay(String kieuTayByIdKieuTay) {
         this.idKieuTay = kieuTayByIdKieuTay;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "IdSanPham", referencedColumnName = "ID")
-    public SanPham getIdSanPham() {
+    @Column(name = "IdSanPham")
+    public String getIdSanPham() {
         return idSanPham;
     }
 
-    public void setIdSanPham(SanPham sanPhamByIdSanPham) {
+    public void setIdSanPham(String sanPhamByIdSanPham) {
         this.idSanPham = sanPhamByIdSanPham;
     }
 }

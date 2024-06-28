@@ -1,7 +1,9 @@
-package com.example.java4.entities.viet;
-import com.example.java4.entities.ChucVu;
+package com.example.java4.entities;
+
 import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Objects;
 
 @Entity
@@ -10,6 +12,7 @@ public class NhanVienViet {
     private String id;
     private String hoTen;
     private Integer gioiTinh;
+    private Date ngaySinh;
     private String sdt;
     private String taiKhoan;
     private String matKhau;
@@ -48,6 +51,17 @@ public class NhanVienViet {
 
     public void setGioiTinh(Integer gioiTinh) {
         this.gioiTinh = gioiTinh;
+    }
+
+    @Basic
+    @Temporal(TemporalType.DATE)
+    @Column(name = "NgaySinh")
+    public Date getNgaySinh() {
+        return ngaySinh;
+    }
+
+    public void setNgaySinh(Date ngaySinh) {
+        this.ngaySinh = ngaySinh;
     }
 
     @Basic
@@ -125,12 +139,12 @@ public class NhanVienViet {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         NhanVienViet nhanVienViet = (NhanVienViet) o;
-        return Objects.equals(id, nhanVienViet.id) && Objects.equals(hoTen, nhanVienViet.hoTen) && Objects.equals(gioiTinh, nhanVienViet.gioiTinh) && Objects.equals(sdt, nhanVienViet.sdt) && Objects.equals(taiKhoan, nhanVienViet.taiKhoan) && Objects.equals(matKhau, nhanVienViet.matKhau) && Objects.equals(anhDaiDien, nhanVienViet.anhDaiDien) && Objects.equals(ngayTao, nhanVienViet.ngayTao) && Objects.equals(ngaySua, nhanVienViet.ngaySua) && Objects.equals(trangThai, nhanVienViet.trangThai);
+        return Objects.equals(id, nhanVienViet.id) && Objects.equals(hoTen, nhanVienViet.hoTen) && Objects.equals(gioiTinh, nhanVienViet.gioiTinh) && Objects.equals(ngaySinh, nhanVienViet.ngaySinh) && Objects.equals(sdt, nhanVienViet.sdt) && Objects.equals(taiKhoan, nhanVienViet.taiKhoan) && Objects.equals(matKhau, nhanVienViet.matKhau) && Objects.equals(anhDaiDien, nhanVienViet.anhDaiDien) && Objects.equals(ngayTao, nhanVienViet.ngayTao) && Objects.equals(ngaySua, nhanVienViet.ngaySua) && Objects.equals(trangThai, nhanVienViet.trangThai);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, hoTen, gioiTinh, sdt, taiKhoan, matKhau, anhDaiDien, ngayTao, ngaySua, trangThai);
+        return Objects.hash(id, hoTen, gioiTinh, ngaySinh, sdt, taiKhoan, matKhau, anhDaiDien, ngayTao, ngaySua, trangThai);
     }
 
     @ManyToOne

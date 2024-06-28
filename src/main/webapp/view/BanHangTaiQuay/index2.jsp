@@ -39,29 +39,46 @@
 <body>
 <div class="modal-body" >
 
-    <div  id="contentAjax">
 
-        <table class="table table-hover">
+    <div id="contentAjax2">
+
+        <table class="table table-hover" id="contentAjax2">
             <thead>
             <tr>
-                <th style="text-align: center">Tên khách hàng</th>
-                <th style="text-align: center">Số điện thoại</th>
-                <th style="text-align: center">Chọn</th>
+                <th>STT</th>
+                <th>Mã</th>
+                <th>Tên SP</th>
+                <th>Màu sắc</th>
+                <th>Kích thước</th>
+                <th>Chất liệu</th>
+                <th>Kiểu tay</th>
+                <th>Số lượng</th>
+                <th>Đơn giá</th>
+                <th>Trạng thái</th>
+                <th>Thao tác</th>
             </tr>
             </thead>
-            <tbody id="results">
-            <c:forEach items="${pageData.content}" var="kh">
-                <tr>
-                    <td>${kh.hoTen}</td>
-                    <td>${kh.sdt}</td>
-                    <td>
-                        <form action="/ban-hang-tai-quay/find-kh/${kh.id}" method="post">
-                            <input type="hidden" name="idHoaDon" value="${hoaDon.id}">
-                            <input type="hidden" name="maHoaDon" value="${hoaDon.ma}">
-                            <input type="hidden" class="form-control" name="ngayTao" value="${hoaDon.ngayTao}">
-                            <button class="btn btn-primary" type="submit">+</button>
-                        </form>
 
+            <tbody id="chiTietSanPhamTableBody">
+            <c:forEach varStatus="i" items="${listCTSP.content}" var="spct">
+                <tr>
+                    <td>${i.index+1}</td>
+                    <td>${spct.idSanPham.ma}</td>
+                    <td>${spct.idSanPham.ten}</td>
+                    <td>${spct.idMauSac.ten}</td>
+                    <td>${spct.idKichThuoc.ten}</td>
+                    <td>${spct.idChatLieu.ten}</td>
+                    <td>${spct.idKieuTay.ten}</td>
+                    <td>${spct.soLuong}</td>
+                    <td>${spct.giaBan}</td>
+                    <td>${spct.trangThai==1?"Còn hàng":"Hết hàng"}</td>
+                    <td>
+                        <form action="/ban_hang_tai_quay/add-san-pham/${spct.id}/${spct.giaBan}" method="post"
+                              onsubmit="return validateBeforeAddToCart();">
+                            <input type="hidden" name="idHoaDon" value="${hoaDon.id}"
+                                   id="selectedInvoiceId">
+                            <button class="btn btn-success" type="submit">+</button>
+                        </form>
                     </td>
                 </tr>
             </c:forEach>
