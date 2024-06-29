@@ -468,9 +468,8 @@
                 <nav aria-label="Page navigation">
                     <ul class="pagination justify-content-center mb-3">
                         <li class="page-item" id="prev"><a class="page-link" href="#" onclick="navigate(-1)">Previous</a></li>
-                        <li class="page-item"><a class="page-link" href="#" onclick="setActive(this,1)">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#" onclick="setActive(this,2)">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#" onclick="setActive(this,3)">3</a></li>
+                            <div class="d-flex" id="paginationBody">
+                            </div>
                         <li class="page-item" id="next"><a class="page-link" href="#" onclick="navigate(1)">Next</a></li>
                     </ul>
                 </nav>
@@ -810,8 +809,14 @@
             }
         }).then(response => response.json())
             .then(resp => {
+                let html = '';
                 let totalpage = Math.ceil(resp/10);
                 console.log("test response = "+totalpage);
+                for (let i = 1; i <= resp+1; i++) {
+                    console.log("count rendering: "+i);
+                    html += `<li class="page-item"><a class="page-link" href="#" onclick="setActive(this, ${i})">${i}</a></li>`;
+                }
+                $("#paginationBody").html(html);
             });
         // for (let i = 0; i < totalPageNumber ; i++) {
         //
@@ -876,6 +881,29 @@
                 $("#tbl_ds_sp").html(html)
             });
     }
+    const loadTotalPagination = ()=>{
+        let datatest = "data testing";
+        fetch("/san-pham/count", {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        }).then(response => response.json())
+            .then(resp => {
+                let html = '';
+                    const maSanPham = sp.ma || 'N/A';
+                    const tenSanPham = sp.ten || 'N/A';
+                    const hinhAnh = sp.hinhAnh || 'N/A';
+                    const ngayTao = sp.ngayTao || 'N/A';
+                    const trangThai = sp.trangThai == 1 ? "Hoạt động" : "Dừng hđ";
+                    for (let i = 1; i <= resp+1; i++) {
+                        console.log("count rendering: "+i);
+                        html += `<li class="page-item"><a class="page-link" href="#" onclick="setActive(this, ${i})">${i}</a></li>`;
+                    }
+                $("#paginationBody").html(html)
+            });
+    }
+    loadTotalPagination();
     loadDSSP();
     $(document).on('click', "button[id^='editSPBtn_']", e => {
         e.preventDefault();
