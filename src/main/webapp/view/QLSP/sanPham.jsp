@@ -809,14 +809,8 @@
             }
         }).then(response => response.json())
             .then(resp => {
-                let html = '';
                 let totalpage = Math.ceil(resp/10);
                 console.log("test response = "+totalpage);
-                for (let i = 1; i <= resp+1; i++) {
-                    console.log("count rendering: "+i);
-                    html += `<li class="page-item"><a class="page-link" href="#" onclick="setActive(this, ${i})">${i}</a></li>`;
-                }
-                $("#paginationBody").html(html);
             });
         // for (let i = 0; i < totalPageNumber ; i++) {
         //
@@ -881,8 +875,10 @@
                 $("#tbl_ds_sp").html(html)
             });
     }
-    const loadTotalPagination = ()=>{
-        let datatest = "data testing";
+    const loadTotalPagination = (e) => {
+        if (e) {
+            e.preventDefault();
+        }
         fetch("/san-pham/count", {
             headers: {
                 'Accept': 'application/json',
@@ -891,20 +887,24 @@
         }).then(response => response.json())
             .then(resp => {
                 let html = '';
-                    const maSanPham = sp.ma || 'N/A';
-                    const tenSanPham = sp.ten || 'N/A';
-                    const hinhAnh = sp.hinhAnh || 'N/A';
-                    const ngayTao = sp.ngayTao || 'N/A';
-                    const trangThai = sp.trangThai == 1 ? "Hoạt động" : "Dừng hđ";
-                    for (let i = 1; i <= resp+1; i++) {
-                        console.log("count rendering: "+i);
-                        html += `<li class="page-item"><a class="page-link" href="#" onclick="setActive(this, ${i})">${i}</a></li>`;
+                // Check if resp is a number and greater than 0
+                if (typeof resp === 'number' && resp > 0) {
+                    for (let i = 1; i <=  Math.ceil(resp/10); i++) {
+                        html += '<li class="page-item"><a class="page-link" href="#" onclick="setActive(this, ' + i + ')">' + i + '</a></li>';
                     }
-                $("#paginationBody").html(html)
-            });
+                } else {
+                    // Handle case where resp is not a valid number or is <= 0
+                    html = '<li class="page-item"><a class="page-link" href="#">No pages found</a></li>';
+                }
+                $("#paginationBody").html(html);
+            }).catch(error => {
+            console.error('Error fetching pagination data:', error);
+            // Handle fetch error
+        });
     }
-    loadTotalPagination();
+
     loadDSSP();
+    loadTotalPagination();
     $(document).on('click', "button[id^='editSPBtn_']", e => {
         e.preventDefault();
         const queryString = window.location.pathname;
