@@ -17,3 +17,4 @@ public class QLSPController {
         return "/view/QLSP/detailSP.jsp";
     }
 }
+
