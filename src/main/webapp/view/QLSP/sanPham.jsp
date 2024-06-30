@@ -467,10 +467,10 @@
             <div class="col-12 pb-1">
                 <nav aria-label="Page navigation">
                     <ul class="pagination justify-content-center mb-3">
-                        <li class="page-item" id="prev"><a class="page-link" href="#" onclick="navigate(-1)">Previous</a></li>
+                        <li class="page-item" id="prev"><Button class="page-link"  onclick="navigate(-1,event)">Previous</Button></li>
                             <div class="d-flex" id="paginationBody">
                             </div>
-                        <li class="page-item" id="next"><a class="page-link" href="#" onclick="navigate(1)">Next</a></li>
+                        <li class="page-item" id="next"><Button class="page-link"  onclick="navigate(1,event)">Next</Button></li>
                     </ul>
                 </nav>
             </div>
@@ -486,7 +486,6 @@
                         </div>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                     </div>
-
                     <div class="modal-body">
                             <div class="mb-3">
                         <label for="tenSPAdd" class="form-label">Tên sản phẩm</label>
@@ -800,50 +799,10 @@
 <script>
     let idSPLocal = "";
     let currentPage = 1;
-    const setTotalPage = (e)=>{
-        e.preventDefault();
-        fetch("/san-pham/count", {
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        }).then(response => response.json())
-            .then(resp => {
-                let totalpage = Math.ceil(resp/10);
-                console.log("test response = "+totalpage);
-            });
-        // for (let i = 0; i < totalPageNumber ; i++) {
-        //
-        // }
-    }
-    function setActive(element, page) {
-        // Remove active class from all pagination items
-        let items = document.querySelectorAll('.page-item');
-        items.forEach(item => item.classList.remove('active'));
-        element.parentElement.classList.add('active');
-        currentPage = page ;
-        updateButtons();
-    }
-    function updateButtons() {
-        let items = document.querySelectorAll('.page-item');
-        let activeIndex = Array.from(items).findIndex(item => item.classList.contains('active'));
-        document.getElementById('prev').classList.toggle('disabled', activeIndex === 1);
-        document.getElementById('next').classList.toggle('disabled', activeIndex === items.length - 2);
-    }
-    function navigate(direction) {
-        let items = document.querySelectorAll('.page-item');
-        let activeIndex = Array.from(items).findIndex(item => item.classList.contains('active'));
-        let newIndex = activeIndex + direction;
-
-        if (newIndex > 0 && newIndex < items.length - 1) {
-            setActive(items[newIndex].querySelector('a'));
-        }
-    }
-    updateButtons();
-    const loadDSSP = () => {
+    const loadDSSP = (pageParams) => {
         // get api + scpt.id
         let datatest = "data testing";
-        fetch("/san-pham/index", {
+        fetch("/san-pham/index"+"?page="+pageParams, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -870,15 +829,57 @@
                         '<button id="detailSPBtn_' + sp.id + '" class="btn btn-danger">Chi tiết</button>' +
                         '</div>' +
                         '</td>' +
-                            '</tr>';
+                        '</tr>';
                 });
                 $("#tbl_ds_sp").html(html)
             });
     }
-    const loadTotalPagination = (e) => {
-        if (e) {
-            e.preventDefault();
+    const setTotalPage = (e)=>{
+        e.preventDefault();
+        fetch("/san-pham/count", {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        }).then(response => response.json())
+            .then(resp => {
+                let totalpage = Math.ceil(resp/10);
+                console.log("test response = "+totalpage);
+            });
+        // for (let i = 0; i < totalPageNumber ; i++) {
+        //
+        // }
+    }
+    function setActive(element, page) {
+        // Remove active class from all pagination items
+        let items = document.querySelectorAll('.page-item');
+        items.forEach(item => item.classList.remove('active'));
+        element.parentElement.classList.add('active');
+        currentPage = page ;
+        updateButtons();
+        loadDSSP(currentPage);
+    }
+    function updateButtons() {
+        let items = document.querySelectorAll('.page-item');
+        let activeIndex = Array.from(items).findIndex(item => item.classList.contains('active'));
+        document.getElementById('prev').classList.toggle('disabled', activeIndex === 1);
+        document.getElementById('next').classList.toggle('disabled', activeIndex === items.length - 2);
+    }
+    function navigate(direction,e) {
+        e.preventDefault();
+        let items = document.querySelectorAll('.page-item');
+        let activeIndex = Array.from(items).findIndex(item => item.classList.contains('active'));
+        let newIndex = activeIndex + direction;
+        currentPage =newIndex
+        loadDSSP(currentPage);
+        if (newIndex > 0 && newIndex < items.length - 1) {
+            setActive(items[newIndex].querySelector('a'));
         }
+    }
+    updateButtons();
+
+    const loadTotalPagination = (currentPage) => {
+
         fetch("/san-pham/count", {
             headers: {
                 'Accept': 'application/json',
@@ -889,8 +890,9 @@
                 let html = '';
                 // Check if resp is a number and greater than 0
                 if (typeof resp === 'number' && resp > 0) {
-                    for (let i = 1; i <=  Math.ceil(resp/10); i++) {
-                        html += '<li class="page-item"><a class="page-link" href="#" onclick="setActive(this, ' + i + ')">' + i + '</a></li>';
+                    for (let i = 1; i <=  Math.ceil(resp/20); i++) {
+                        const activeClass = (i === currentPage) ? 'active' : '';
+                        html += '<li class="page-item ' + activeClass + '"><a class="page-link" href="#" onclick="setActive(this, ' + i + ')">' + i + '</a></li>';
                     }
                 } else {
                     // Handle case where resp is not a valid number or is <= 0
@@ -902,9 +904,8 @@
             // Handle fetch error
         });
     }
-
-    loadDSSP();
-    loadTotalPagination();
+    loadDSSP(currentPage);
+    loadTotalPagination(currentPage);
     $(document).on('click', "button[id^='editSPBtn_']", e => {
         e.preventDefault();
         const queryString = window.location.pathname;
@@ -1070,7 +1071,20 @@
                                 'Dữ liệu đã được ghi nhận.',
                                 'success'
                             ).then(() => {
-                                loadDSSP()
+                                fetch("/san-pham/count", {
+                                    headers: {
+                                        'Accept': 'application/json',
+                                        'Content-Type': 'application/json'
+                                    }
+                                }).then(response => response.json())
+                                    .then(resp => {
+                                        loadDSSP(Math.ceil(resp/20));
+                                        currentPage = Math.ceil(resp/20);
+                                        loadTotalPagination(currentPage);
+                                    }).catch(error => {
+                                    console.error('Error fetching pagination data:', error);
+                                    // Handle fetch error
+                                });
                             });
                             button.closest('tr').remove();
                         });
