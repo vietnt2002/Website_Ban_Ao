@@ -489,7 +489,7 @@
                             <img src="src/main/webapp/image/${hinhAnhdspAdd}" alt="" width="200" height="200">
                         </div>
                         <div>
-                            <form method="post" enctype="multipart/form-data" action="/upload">
+                            <form id="uploadForm" method="post" enctype="multipart/form-data" action="/upload">
                             <div class="mb-3">
                                 <label for="tenSPAdd" class="form-label">Tên sản phẩm</label>
                                 <input type="text" class="form-control" id="tenSPAdd">
@@ -504,7 +504,7 @@
                                 <input class="form-check-input" type="checkbox" role="switch" id="trangThaiAdd" checked>
                                 <label class="form-check-label" for="trangThaiAdd" id="trangThaiLabeladd"></label>
                             </div>
-                            <button id="saveAddBtn" type="submit" class="btn btn-primary">Lưu</button>
+                            <button type="submit" id="saveAddBtn"  class="btn btn-primary">Lưu</button>
                             </form>
                         </div>
                     </div>
@@ -704,6 +704,7 @@
             });
         });
     });
+
     checkBtn.forEach(button => {
         button.addEventListener('click', function () {
             console.log("test check btn");
@@ -974,6 +975,7 @@
             }
         });
     });
+
     function getFileName(fullPath) {
         // Check for the last occurrence of the backslash or forward slash
         var startIndex = Math.max(fullPath.lastIndexOf('\\'), fullPath.lastIndexOf('/'));
@@ -981,6 +983,7 @@
         var fileName = fullPath.substring(startIndex + 1);
         return fileName;
     }
+
     saveAddBtn.forEach(button => {
         button.addEventListener('click', function (e) {
             e.preventDefault();
@@ -1035,6 +1038,21 @@
                             trangThai: trangThai,
                             hinhAnh: getFileName(hinhAnh)
                         };
+                        var formData = new FormData($('#uploadForm')[0]); // Use FormData to get all form data
+                        // Handle file upload via AJAX
+                        $.ajax({
+                            url: '/upload',
+                            type: 'POST',
+                            data: formData,
+                            processData: false,
+                            contentType: false,
+                            success: function(response) {
+                                console.log("save image success ");
+                            },
+                            error: function(xhr, status, error) {
+                                console.log("save image =error");
+                            }
+                        });
                         fetch(`/san-pham/save`, {
                             method: 'POST',
                             headers: {
@@ -1073,6 +1091,7 @@
             }
         });
     });
+
     function  validateNull(param){
      if(param===""||param===undefined){
          return true;
@@ -1159,6 +1178,14 @@
         });
     });
 
+</script>
+<script>
+    $(document).ready(function() {
+        $('#saveAddBtn').on('click', function(event) {
+
+            // Optionally, submit the form normally after AJAX request (if needed)
+        });
+    });
 </script>
 <script>
     // Hiển thị thông báo thêm thành công hoặc thất bại sử dụng thư viện Sweet Alert2

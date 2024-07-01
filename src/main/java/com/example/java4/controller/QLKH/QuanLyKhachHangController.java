@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("qlnv")
+@RequestMapping("qlkh")
 public class QuanLyKhachHangController {
     @Autowired
     NhanVienRepository nhanVienRepo;
