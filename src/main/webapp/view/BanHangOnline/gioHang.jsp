@@ -428,7 +428,8 @@
         </div>
         <!--Test modal-->
         <!--Danh sách địa chỉ-->
-        <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#addAddressModal">
+        <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#addAddressModal"
+        style="position: relative; left: 907px; bottom: -186px;">
             Chọn địa chỉ
         </button>
 
@@ -661,8 +662,8 @@
             </div>
         </div>
     </div>
-
     <!-- End modal -->
+
     <!-- Thông tin giao hàng -->
     <form action="/cua-hang/thanh-toan" method="post" id="diaChiForm">
         <div class="row px-xl-5" style="margin-top: 100px">
@@ -729,17 +730,25 @@
             </div>
             <!-- Checkout End -->
 
+            <!-- Thông tin đơn hàng -->
             <div class="col-lg-4" style="background-color: white;">
-                <form class="mb-5" action="">
-                    <div class="input-group mb-4">
-                        <input type="text" class="form-control p-4"
-                               style="background-color: #f1f1f1; border: 1px solid #e4e4e4;"
-                               placeholder="Mã giảm giá">
-                        <div class="input-group-append">
-                            <button type="button" class="btn btn-primary">Áp dụng</button>
-                        </div>
+                <div style="position: relative" class="input-group mb-4">
+                    <input type="text" id="discountCode" class="form-control p-4"
+                           style="background-color: #f1f1f1; border: 1px solid #e4e4e4;" placeholder="Mã giảm giá"
+                           value="${hoaDon.idKhuyenMai.ma}"
+                           readonly>
+                    <a href="/cua-hang/xoa-khuyen-mai/${hoaDon.id}" style="position: absolute;right: 144px;bottom: 5px;">
+                        <button style="color: black" class="btn btn-outline-secondary" type="button">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </a>
+                    <div class="input-group-append">
+                        <button id="openModalBtn" class="btn btn-primary" data-toggle="modal" data-target="#couponModal"
+                                type="button">
+                            Phiếu giảm giá
+                        </button>
                     </div>
-                </form>
+                </div>
                 <div class="card mb-5">
                     <div class="card-header bg-secondary border-0">
                         <h4 class="font-weight-semi-bold m-0">Thông tin đơn hàng</h4>
@@ -748,6 +757,14 @@
                         <div class="d-flex justify-content-between mb-3 pt-1">
                             <h6 class="font-weight-medium">Tổng sản phẩm: </h6>
                             <h6 class="font-weight-medium" style="font-size: 18px">${soLuong}</h6>
+                        </div>
+                        <div class="d-flex justify-content-between mb-3 pt-1">
+                            <h6 class="font-weight-medium">Tổng tiền hàng: </h6>
+                            <h6 class="font-weight-medium" style="font-size: 18px">${tongTien}</h6>
+                        </div>
+                        <div class="d-flex justify-content-between mb-3 pt-1">
+                            <h6 class="font-weight-medium">Số tiền giảm: </h6>
+                            <h6 class="font-weight-medium" style="font-size: 18px">${hoaDon.idKhuyenMai.soTienGiam}</h6>
                         </div>
                         <div class="d-flex justify-content-between">
                             <h6 class="font-weight-medium">Phí vận chuyển: </h6>
@@ -777,9 +794,9 @@
                         </div>
                         <hr>
                         <div class="d-flex justify-content-between mt-2">
-                            <h5 class="font-weight-bold" style="margin-left: 18px">Tổng cộng:</h5>
+                            <h5 class="font-weight-bold" style="margin-left: 18px">Tổng thanh toán:</h5>
                             <h5 class="font-weight-bold"
-                                style="margin-right: 18px; font-size: 22px">${tongTien}₫</h5>
+                                style="margin-right: 18px; font-size: 22px">${tongTien - hoaDon.idKhuyenMai.soTienGiam}₫</h5>
                         </div>
 
                         <div class="card-footer border-secondary bg-transparent">
@@ -792,6 +809,35 @@
             </div>
         </div>
     </form>
+
+    <!-- Modal phiếu giảm giá -->
+    <div id="couponModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="couponModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="couponModalLabel">Phiếu giảm giá</h5>
+                </div>
+                <div class="modal-body">
+                    <c:forEach var="i" items="${listKhuyenMai}">
+                        <div class="list-group-item list-group-item-action flex-column align-items-start">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">Giảm ${i.soTienGiam}</h5>
+                                <small>Hết hạn ${i.ngayKetThuc}</small>
+                            </div>
+                            <p class="mb-1">Mã: ${i.ma}</p>
+                        </div>
+
+                        <form action="/cua-hang/khuyen-mai/${i.id}" method="post" style=" position: relative; right: -366px;">
+                            <button type="submit" class="btn btn-primary" style="">Xác nhận</button>
+                        </form>
+                    </c:forEach>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
     </div>
 </c:if>
 <c:if test="${check == true}">
@@ -1560,7 +1606,35 @@
         // Đóng modal
         $('#addAddressModal').modal('hide');
     }
+
 </script>
+
+<%--<script>--%>
+<%--    document.getElementById('diaChiForm').addEventListener('submit', function (event) {--%>
+<%--        event.preventDefault(); // Ngăn chặn hành vi mặc định của thẻ <a>--%>
+<%--        Swal.fire({--%>
+<%--            title: "Bạn chắc chắn muốn mua hàng chứ",--%>
+<%--            text: "Bạn sẽ không thể hoàn tác hành động này!",--%>
+<%--            icon: "warning",--%>
+<%--            showCancelButton: true,--%>
+<%--            confirmButtonColor: "#3085d6",--%>
+<%--            cancelButtonColor: "#d33",--%>
+<%--            cancelButtonText: "Hủy",--%>
+<%--            confirmButtonText: "Đặt hàng"--%>
+<%--        }).then((result) => {--%>
+<%--            if (result.isConfirmed) {--%>
+<%--                Swal.fire({--%>
+<%--                    title: "Đã đặt hàng",--%>
+<%--                    text: "Bạn đã đặt hàng thành công.",--%>
+<%--                    icon: "success"--%>
+<%--                }).then(() => {--%>
+<%--                    // Điều hướng tới URL đăng xuất sau khi người dùng xác nhận--%>
+<%--                    document.getElementById('diaChiForm').submit();--%>
+<%--                });--%>
+<%--            }--%>
+<%--        });--%>
+<%--    });--%>
+<%--</script>--%>
 </body>
 
 </html>
