@@ -434,7 +434,6 @@
                                             </div>
                                         </div>
 
-
                                     </div>
                                 </form>
                             </div>
@@ -486,7 +485,6 @@
                         </div>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                     </div>
-
                     <div class="modal-body d-flex gap-5">
                         <div>
                             <img src="${hinhAnhdspAdd}" alt="" width="200" height="200">
@@ -501,6 +499,10 @@
                                 <label for="hinhAnhAdd" class="form-label">Hình ảnh</label>
                                 <input type="file" class="form-control" id="hinhAnhAdd" value="">
                                 <p style="color: red;" id="hinhAnhAddErr"></p>
+                                <form method="post" enctype="multipart/form-data" action="/upload">
+                                    <input type="file" name="file"/>
+                                    <button type="submit">Upload</button>
+                                </form>
                             </div>
                             <div class="form-check form-switch">
                                 <input class="form-check-input" type="checkbox" role="switch" id="trangThaiAdd" checked>
@@ -670,88 +672,7 @@
     }
 
     <%--    --%>
-    function calculateChange() {
-        <%--var tongTien = parseInt('${total}');--%>
-        var tongTien = parseInt(document.getElementById('tongTienKhiTruKM').value);
-        var tienKhachDua = parseInt(document.getElementById('tienKhachDua').value);
-        console.log(tongTien);
-        console.log(tienKhachDua);
-        var tienTraLai = tienKhachDua - tongTien;
-        console.log(tienTraLai);
-        var thongBao = document.getElementById("errTraLai");
-        if (isNaN(tienKhachDua)) {
-            thongBao.textContent = "Vui lòng nhập số tiền hợp lệ.";
-            return false;
-        }
-        if (tienKhachDua == "" || tienKhachDua < tongTien) {
-            thongBao.textContent = "Số tiền khách đưa phải lớn hơn hoặc bằng tổng tiền.";
-            // alert('Số tiền khách đưa phải lớn hơn hoặc bằng tổng tiền.');
-            document.getElementById('tienTraLai').value = "";
-            return false;
-        }
 
-        // Hiển thị số tiền trả lại trong trường "Trả lại"
-
-        document.getElementById('tienTraLai').value = tienTraLai;
-        thongBao.textContent="";
-        return true;
-    }
-
-
-
-    function checkValidateAfterUpdate(){
-
-        var soLuongNhap = parseInt(document.getElementById("soLuong").value);
-        var soLuongCu = parseInt(document.getElementById("soLuongCu").value);
-        var tongSL22 = parseInt(document.getElementById("tongSL").value);
-        var tt = soLuongCu+tongSL22
-
-        if (soLuongNhap<=0){
-            Swal.fire({
-                title: 'Lỗi!',
-                text: 'Số lượng phải lớn hơn 0!',
-                icon: 'error',
-                confirmButtonText: 'OK'
-            });
-            return false;
-        }
-
-        if (soLuongNhap>tt){
-            Swal.fire({
-                title: 'Lỗi!',
-                text: 'Số lượng nhập lớn hơn số lượng trong kho',
-                icon: 'error',
-                confirmButtonText: 'OK'
-            });
-            return false;
-        }
-        return true;
-    }
-
-    function validateBeforeAddToCart() {
-        // Kiểm tra xem hóa đơn đã được chọn chưa
-        var selectedInvoiceId = document.getElementById("selectedInvoiceId").value;
-
-        if (selectedInvoiceId === "") {
-            alert("Vui lòng chọn hóa đơn trước khi thêm sản phẩm vào giỏ hàng.");
-            return false; // Ngăn chặn sự kiện click nút "+"
-        }
-
-        return true; // Cho phép thêm sản phẩm vào giỏ hàng nếu đã chọn hóa đơn
-    }
-
-
-    function validateAddToMaGiamGia(){
-        // Kiểm tra xem hóa đơn đã được chọn chưa
-        var selectedMaGiamGia = document.getElementById("selectedMaGiamGia").value;
-
-        if (selectedMaGiamGia === "") {
-            alert("Vui lòng chọn hóa đơn trước khi thêm mã giảm giá vào giỏ hàng.");
-            return false; // Ngăn chặn sự kiện click nút "+"
-        }
-
-        return true; // Cho phép thêm sản phẩm vào giỏ hàng nếu đã chọn hóa đơn
-    }
 
     const deleteButtons = document.querySelectorAll('.delete-button');
     const checkBtn = document.querySelectorAll('#checkBtn');
