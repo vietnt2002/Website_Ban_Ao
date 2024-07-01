@@ -1,6 +1,7 @@
 package com.example.java4.repositories;
 
 import com.example.java4.entities.HoaDon;
+import com.example.java4.entities.KhuyenMai;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -44,9 +45,12 @@ public interface HoaDonRepository
     HoaDon findByidKHAndLoaiHoaDonAndTrangThai(String idKH, Integer loaiHD, Integer trangThai);
     @Query("select hd from HoaDon hd where hd.idKhachHang.id = ?1 and hd.trangThai = ?2")
     HoaDon findByIdKhachHang(String idKH, Integer trangThai);
-    @Query(value = "SELECT TOP 5 * FROM HoaDon where trangThai = 1 ORDER BY ngayTao DESC",
-            nativeQuery = true)
+//    @Query(value = "SELECT TOP 5 * FROM HoaDon where trangThai = 1 ORDER BY ngayTao DESC",
+//            nativeQuery = true)
     Page<HoaDon>  findByTrangThai(int trangThai,Pageable pageable);
+
+
+
     //    public Optional<HoaDon_Tai> findById(String id);
     // Tìm hóa đơn theo loại hóa đơn, chức năng lọc hóa đơn theo LoaiHoaDon
     Page<HoaDon> findByLoaiHoaDon(int loaiHoaDon, Pageable pageable);
@@ -122,4 +126,12 @@ public interface HoaDonRepository
             "LEFT JOIN hd.idKhachHang kh " +
             "WHERE (hd.ma LIKE %?1% OR kh.sdt LIKE %?1%) AND (hd.loaiHoaDon = ?2) AND (hd.ngayTao BETWEEN ?3 AND ?4)")
     Page<HoaDon> searchByMaOrSdtAndLoaiHoaDonAndNgayTao(String keyword, Integer loaiHoaDon, LocalDateTime startDate, LocalDateTime endDate, Pageable pageable);
+
+
+    // Tìm khuyến mãi theo id hóa đơn -Tai
+    @Query("SELECT hd.idKhuyenMai FROM HoaDon hd WHERE hd.id = :hoaDonId")
+    KhuyenMai findKhuyenMaiByHoaDonId(@Param("hoaDonId") String hoaDonId);
+
+
+
 };

@@ -2,7 +2,9 @@ package com.example.java4.entities;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
@@ -15,9 +17,9 @@ public class GiaoHang {
     private String idPhuongXa;
     private String idQuanHuyen;
     private String idTinhThanh;
-    private Date ngayShip;
-    private Date ngayNhan;
-    private Integer phiShip;
+    private LocalDateTime ngayShip;
+    private LocalDateTime ngayNhan;
+    private BigDecimal phiShip;
     private Integer trangThai;
     private String ghiChu;
 
@@ -88,29 +90,29 @@ public class GiaoHang {
     }
 
     @Column(name = "NgayShip")
-    public Date getNgayShip() {
+    public LocalDateTime getNgayShip() {
         return ngayShip;
     }
 
-    public void setNgayShip(Date ngayShip) {
+    public void setNgayShip(LocalDateTime ngayShip) {
         this.ngayShip = ngayShip;
     }
 
     @Column(name = "NgayNhan")
-    public Date getNgayNhan() {
+    public LocalDateTime getNgayNhan() {
         return ngayNhan;
     }
 
-    public void setNgayNhan(Date ngayNhan) {
+    public void setNgayNhan(LocalDateTime ngayNhan) {
         this.ngayNhan = ngayNhan;
     }
 
     @Column(name = "PhiShip")
-    public Integer getPhiShip() {
+    public BigDecimal getPhiShip() {
         return phiShip;
     }
 
-    public void setPhiShip(Integer phiShip) {
+    public void setPhiShip(BigDecimal phiShip) {
         this.phiShip = phiShip;
     }
 

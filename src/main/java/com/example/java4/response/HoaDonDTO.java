@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Getter
 @Setter
@@ -18,6 +19,7 @@ public class HoaDonDTO {
     private KhachHang khachHang;
     private NhanVien nhanVien;
     private DiaChi diaChi;
+    private KhuyenMai khuyenMai;
     private Integer phuongThucThanhToan;
     private BigDecimal tongTien;
     private Integer loaiHoaDon;
@@ -32,6 +34,7 @@ public class HoaDonDTO {
     private String ngayChoGiaoHang;
     private String ngayDangGiaoHang;
     private BigDecimal giamGia;
+    private BigDecimal tongTienThanhToan;
 
 
     public HoaDonDTO(String id, String ma, KhachHang khachHang, NhanVien nhanVien, Integer phuongThucThanhToan, BigDecimal tongTien,Integer loaiHoaDon, String ngayTao,String ngayThanhToan, Integer trangThai) {
@@ -47,11 +50,12 @@ public class HoaDonDTO {
         this.trangThai = trangThai;
     }
 
-    public HoaDonDTO(String id, String ma, KhachHang khachHang, NhanVien nhanVien, Integer phuongThucThanhToan, BigDecimal tongTien, Integer loaiHoaDon, String ngayTao, String ngayThanhToan, Integer trangThai, String ngayCapNhat, String ghiChu,String ngayDaXacNhan,String ngayChoGiaoHang,String ngayDangGiaoHang) {
+    public HoaDonDTO(String id, String ma, KhachHang khachHang, NhanVien nhanVien,KhuyenMai khuyenMai ,Integer phuongThucThanhToan, BigDecimal tongTien, Integer loaiHoaDon, String ngayTao, String ngayThanhToan, Integer trangThai, String ngayCapNhat, String ghiChu,String ngayDaXacNhan,String ngayChoGiaoHang,String ngayDangGiaoHang) {
         this.id = id;
         this.ma = ma;
         this.khachHang = khachHang;
         this.nhanVien = nhanVien;
+        this.khuyenMai = khuyenMai;
         this.phuongThucThanhToan = phuongThucThanhToan;
         this.tongTien = tongTien;
         this.loaiHoaDon = loaiHoaDon;
@@ -66,37 +70,26 @@ public class HoaDonDTO {
     }
 
 
-    //    public HoaDonDTO(String id, String ma, KhachHang khachHang, NhanVienViet nhanVien, Integer phuongThucThanhToan, BigDecimal tongTien,Integer loaiHoaDon, String ngayTao,String ngayThanhToan, Integer trangThai,String maText) {
-//        this.id = id;
-//        this.ma = ma;
-//        this.khachHang = khachHang;
-//        this.nhanVien = nhanVien;
-//        this.phuongThucThanhToan = phuongThucThanhToan;
-//        this.tongTien = tongTien;
-//        this.loaiHoaDon = loaiHoaDon;
-//        this.ngayTao = ngayTao;
-//        this.ngayThanhToan = ngayThanhToan;
-//        this.trangThai = trangThai;
-//        this.trangThaiText=maText;
-//    }
 
     public static HoaDonDTO fromEntity(HoaDon hoaDon) {
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         return new HoaDonDTO(
                 hoaDon.getId(),
                 hoaDon.getMa(),
                 hoaDon.getIdKhachHang(),
                 hoaDon.getIdNhanVien(),
+                hoaDon.getIdKhuyenMai(),
                 hoaDon.getPhuongThucThanhToan(),
                 hoaDon.getTongTien(),
                 hoaDon.getLoaiHoaDon(),
-                hoaDon.getNgayTao() != null ? hoaDon.getNgayTao().toString() : null,
-                hoaDon.getNgayThanhToan() != null ? hoaDon.getNgayThanhToan().toString() : null,
+                hoaDon.getNgayTao() != null ? dateTimeFormatter.format(hoaDon.getNgayTao()).toString() : null,
+                hoaDon.getNgayThanhToan() != null ? dateTimeFormatter.format(hoaDon.getNgayThanhToan()).toString() : null,
                 hoaDon.getTrangThai(),
-                hoaDon.getNgayCapNhat() != null ? hoaDon.getNgayCapNhat().toString() : null,
+                hoaDon.getNgayCapNhat() != null ? dateTimeFormatter.format(hoaDon.getNgayCapNhat()).toString() : null,
                 hoaDon.getGhiChu(),
-                hoaDon.getNgayDaXacNhan() != null ? hoaDon.getNgayDaXacNhan().toString() : null,
-                hoaDon.getNgayChoGiaoHang() != null ? hoaDon.getNgayChoGiaoHang().toString() : null,
-                hoaDon.getNgayDangGiaoHang() != null ? hoaDon.getNgayDangGiaoHang().toString() : null
+                hoaDon.getNgayDaXacNhan() != null ? dateTimeFormatter.format(hoaDon.getNgayDaXacNhan()) : null,
+                hoaDon.getNgayChoGiaoHang() != null ? dateTimeFormatter.format(hoaDon.getNgayChoGiaoHang()).toString() : null,
+                hoaDon.getNgayDangGiaoHang() != null ? dateTimeFormatter.format(hoaDon.getNgayDangGiaoHang()).toString() : null
         );
     }
 
