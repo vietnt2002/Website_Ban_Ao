@@ -433,7 +433,6 @@
                                                 </ul>
                                             </div>
                                         </div>
-
                                     </div>
                                 </form>
                             </div>
@@ -487,9 +486,10 @@
                     </div>
                     <div class="modal-body d-flex gap-5">
                         <div>
-                            <img src="${hinhAnhdspAdd}" alt="" width="200" height="200">
+                            <img src="src/main/webapp/image/${hinhAnhdspAdd}" alt="" width="200" height="200">
                         </div>
                         <div>
+                            <form method="post" enctype="multipart/form-data" action="/upload">
                             <div class="mb-3">
                                 <label for="tenSPAdd" class="form-label">Tên sản phẩm</label>
                                 <input type="text" class="form-control" id="tenSPAdd">
@@ -497,18 +497,15 @@
                             </div>
                             <div class="mb-3">
                                 <label for="hinhAnhAdd" class="form-label">Hình ảnh</label>
-                                <input type="file" class="form-control" id="hinhAnhAdd" value="">
+                                <input type="file" name="file" class="form-control" id="hinhAnhAdd" value="">
                                 <p style="color: red;" id="hinhAnhAddErr"></p>
-                                <form method="post" enctype="multipart/form-data" action="/upload">
-                                    <input type="file" name="file"/>
-                                    <button type="submit">Upload</button>
-                                </form>
                             </div>
                             <div class="form-check form-switch">
                                 <input class="form-check-input" type="checkbox" role="switch" id="trangThaiAdd" checked>
                                 <label class="form-check-label" for="trangThaiAdd" id="trangThaiLabeladd"></label>
                             </div>
-                            <button id="saveAddBtn" class="btn btn-primary">Lưu</button>
+                            <button id="saveAddBtn" type="submit" class="btn btn-primary">Lưu</button>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -528,7 +525,7 @@
                     </div>
                         <div class="modal-body d-flex gap-5">
                             <div class="border">
-                                <img src="${hinhAnhDisplay}" width="200" height="200" alt="">
+                                <img id="hinhAnhEditDisplay" width="200" height="200" alt="">
                             </div>
                             <div>
                                 <div class="mb-3">
@@ -854,7 +851,7 @@
     loadDSSP(currentPage);
     loadTotalPagination(currentPage);
     let tenSpEdit = document.getElementById("tenSPEdit");
-    let hinhAnhDisplay = document.getElementById("hinhAnhDisplay");
+    let hinhAnhDisplay = document.getElementById("hinhAnhEditDisplay");
     let trangThaiEdit  = document.getElementById("trangThaiEdit");
     $(document).on('click', "button[id^='editSPBtn_']", e => {
         e.preventDefault();
@@ -871,7 +868,8 @@
         }).then(response => response.json())
             .then(resp => {
                 tenSpEdit.value = resp.ten;
-                hinhAnhDisplay = resp.hinhAnh;
+                console.log("test link image: "+resp.hinhAnh);
+                hinhAnhDisplay.src ="/image/"+ resp.hinhAnh;
                 if(resp.trangThai==1){
                     trangThaiEdit.checked = true;
                     labelElementedit.textContent = "Đang hoạt động";
@@ -976,7 +974,13 @@
             }
         });
     });
-
+    function getFileName(fullPath) {
+        // Check for the last occurrence of the backslash or forward slash
+        var startIndex = Math.max(fullPath.lastIndexOf('\\'), fullPath.lastIndexOf('/'));
+        // Extract the file name
+        var fileName = fullPath.substring(startIndex + 1);
+        return fileName;
+    }
     saveAddBtn.forEach(button => {
         button.addEventListener('click', function (e) {
             e.preventDefault();
@@ -989,7 +993,7 @@
             let trangThai = 0;
             let sttCheck  = 0;
             console.log("====================== ten sp:",tenSP);
-            console.log("====================== hinh anh:",hinhAnh);
+            console.log("====================== hinh anh:",getFileName(hinhAnh));
             console.log("====================== trang thai:",trangThairaw);
             if(trangThairaw==true){
                 trangThai =1;
@@ -1029,7 +1033,7 @@
                         const data = {
                             ten: tenSP,
                             trangThai: trangThai,
-                            hinhAnh: hinhAnh
+                            hinhAnh: getFileName(hinhAnh)
                         };
                         fetch(`/san-pham/save`, {
                             method: 'POST',
@@ -1128,7 +1132,7 @@
                     if (result.isConfirmed) {
                         const data = {
                             ten: tenSP,
-                            hinhAnh: hinhAnh,
+                            hinhAnh: getFileName(hinhAnh),
                             trangThai: trangThai
                         };
                         fetch(`/san-pham/update/`+idSPLocal, {
