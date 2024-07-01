@@ -1,4 +1,4 @@
-package com.example.java4.controller.QLNV;
+package com.example.java4.controller.QLKH;
 
 import com.example.java4.config.UserInfor;
 import com.example.java4.entities.ChucVu;
@@ -15,12 +15,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -30,7 +27,7 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("qlnv")
-public class QuanLyNhanVienController {
+public class QuanLyKhachHangController {
     @Autowired
     NhanVienRepository nhanVienRepo;
 
