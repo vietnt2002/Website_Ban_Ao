@@ -489,7 +489,7 @@
                             <img src="src/main/webapp/image/${hinhAnhdspAdd}" alt="" width="200" height="200">
                         </div>
                         <div>
-                            <form id="uploadForm" method="post" enctype="multipart/form-data" action="/upload">
+                            <form id="uploadFormAdd" method="post" enctype="multipart/form-data" action="/upload">
                             <div class="mb-3">
                                 <label for="tenSPAdd" class="form-label">Tên sản phẩm</label>
                                 <input type="text" class="form-control" id="tenSPAdd">
@@ -528,6 +528,7 @@
                                 <img id="hinhAnhEditDisplay" width="200" height="200" alt="">
                             </div>
                             <div>
+                                <form id="uploadFormEdit" method="post" enctype="multipart/form-data" action="/upload">
                                 <div class="mb-3">
                                     <label for="tenSPEdit" class="form-label">Tên sản phẩm</label>
                                     <input type="text" class="form-control" id="tenSPEdit" aria-describedby="emailHelp" value="">
@@ -535,14 +536,15 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="hinhAnhEdit" class="form-label">Hình ảnh</label>
-                                    <input type="file" class="form-control" id="hinhAnhEdit" value="">
+                                    <input type="file" name="file" class="form-control" id="hinhAnhEdit" value="">
                                     <p style="color: red;" id="hinhAnhEditErr"></p>
                                 </div>
                                 <div class="form-check form-switch">
                                     <input class="form-check-input" type="checkbox" role="switch" id="trangThaiEdit" checked>
                                     <label class="form-check-label" for="trangThaiEdit" id="trangThaiLabeledit">Trạng thái</label>
                                 </div>
-                                <button id="saveEditBtn"  class="btn btn-primary">Lưu</button>
+                                <button id="saveEditBtn" type="submit"  class="btn btn-primary">Lưu</button>
+                                </form>
                             </div>
                         </div>
                 </div>
@@ -1038,7 +1040,7 @@
                             trangThai: trangThai,
                             hinhAnh: getFileName(hinhAnh)
                         };
-                        var formData = new FormData($('#uploadForm')[0]); // Use FormData to get all form data
+                        var formData = new FormData($('#uploadFormAdd')[0]); // Use FormData to get all form data
                         // Handle file upload via AJAX
                         $.ajax({
                             url: '/upload',
@@ -1154,6 +1156,21 @@
                             hinhAnh: getFileName(hinhAnh),
                             trangThai: trangThai
                         };
+                        var formData = new FormData($('#uploadFormEdit')[0]); // Use FormData to get all form data
+                        // Handle file upload via AJAX
+                        $.ajax({
+                            url: '/upload',
+                            type: 'POST',
+                            data: formData,
+                            processData: false,
+                            contentType: false,
+                            success: function(response) {
+                                console.log("save image success ");
+                            },
+                            error: function(xhr, status, error) {
+                                console.log("save image =error");
+                            }
+                        });
                         fetch(`/san-pham/update/`+idSPLocal, {
                             method: 'POST',
                             headers: {
