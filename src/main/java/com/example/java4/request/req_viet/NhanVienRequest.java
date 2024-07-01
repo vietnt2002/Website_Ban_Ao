@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.Date;
 import java.time.LocalDateTime;
@@ -34,7 +35,7 @@ public class NhanVienRequest {
     @NotBlank(message = "Vui lòng nhập mật khẩu!")
     private String matKhau;
 
-    private String anhDaiDien;
+    private MultipartFile anhDaiDien;
 
     private LocalDateTime ngayTao;
 

@@ -461,24 +461,16 @@
             <div class="d-flex flex-row-reverse">
                 <button id="btnAdd" class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#ModalAdd">Thêm mới</button>
             </div>
+            <div class="d-flex flex-row-reverse">
+                <button onclick="testDataMaping(event)" class="btn btn-success me-2">test</button>
+            </div>
             <div class="col-12 pb-1">
                 <nav aria-label="Page navigation">
                     <ul class="pagination justify-content-center mb-3">
-                        <li class="page-item disabled">
-                            <a class="page-link" href="#" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                                <span class="sr-only">Previous</span>
-                            </a>
-                        </li>
-                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                                <span class="sr-only">Next</span>
-                            </a>
-                        </li>
+                        <li class="page-item" id="prev"><Button class="page-link"  onclick="navigate(-1,event)">Previous</Button></li>
+                        <div class="d-flex" id="paginationBody">
+                        </div>
+                        <li class="page-item" id="next"><Button class="page-link"  onclick="navigate(1,event)">Next</Button></li>
                     </ul>
                 </nav>
             </div>
@@ -494,22 +486,28 @@
                         </div>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                     </div>
-                    <div class="modal-body">
-                        <form>
+
+                    <div class="modal-body d-flex gap-5">
+                        <div>
+                            <img src="${hinhAnhdspAdd}" alt="" width="200" height="200">
+                        </div>
+                        <div>
                             <div class="mb-3">
                                 <label for="tenSPAdd" class="form-label">Tên sản phẩm</label>
-                                <input type="email" class="form-control" id="tenSPAdd" aria-describedby="emailHelp">
+                                <input type="text" class="form-control" id="tenSPAdd">
+                                <p style="color: red;"id="tenSPAddErr"></p>
                             </div>
                             <div class="mb-3">
                                 <label for="hinhAnhAdd" class="form-label">Hình ảnh</label>
-                                <input type="file" class="form-control" id="hinhAnhAdd">
+                                <input type="file" class="form-control" id="hinhAnhAdd" value="">
+                                <p style="color: red;" id="hinhAnhAddErr"></p>
                             </div>
                             <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked>
-                                <label class="form-check-label" for="flexSwitchCheckChecked">Trạng thái</label>
+                                <input class="form-check-input" type="checkbox" role="switch" id="trangThaiAdd" checked>
+                                <label class="form-check-label" for="trangThaiAdd" id="trangThaiLabeladd"></label>
                             </div>
-                            <button type="submit" class="btn btn-primary">Lưu</button>
-                        </form>
+                            <button id="saveAddBtn" class="btn btn-primary">Lưu</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -526,20 +524,27 @@
                         </div>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="tenSPEdit" class="form-label">Tên sản phẩm</label>
-                            <input type="text" class="form-control" id="tenSPEdit" aria-describedby="emailHelp" value="">
+                    <div class="modal-body d-flex gap-5">
+                        <div class="border">
+                            <img src="${hinhAnhDisplay}" width="200" height="200" alt="">
                         </div>
-                        <div class="mb-3">
-                            <label for="hinhAnhEdit" class="form-label">Hình ảnh</label>
-                            <input type="file" class="form-control" id="hinhAnhEdit" value="">
+                        <div>
+                            <div class="mb-3">
+                                <label for="tenSPEdit" class="form-label">Tên sản phẩm</label>
+                                <input type="text" class="form-control" id="tenSPEdit" aria-describedby="emailHelp" value="">
+                                <p style="color: red;" id="tenSPEditErr"></p>
+                            </div>
+                            <div class="mb-3">
+                                <label for="hinhAnhEdit" class="form-label">Hình ảnh</label>
+                                <input type="file" class="form-control" id="hinhAnhEdit" value="">
+                                <p style="color: red;" id="hinhAnhEditErr"></p>
+                            </div>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" role="switch" id="trangThaiEdit" checked>
+                                <label class="form-check-label" for="trangThaiEdit" id="trangThaiLabeledit">Trạng thái</label>
+                            </div>
+                            <button id="saveEditBtn"  class="btn btn-primary">Lưu</button>
                         </div>
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" role="switch" id="trangThaiEdit" checked>
-                            <label class="form-check-label" for="flexSwitchCheckChecked">Trạng thái</label>
-                        </div>
-                        <button id="saveEditBtn"  class="btn btn-primary">Lưu</button>
                     </div>
                 </div>
             </div>
@@ -555,7 +560,6 @@
         </footer>
         <!-- End of Footer -->
     </div>
-
 </div>
 
 <!-- Scroll to Top Button-->
@@ -597,6 +601,32 @@
 </body>
 
 <script>
+
+    // change sttlbl add
+    const inputElementadd = document.getElementById("trangThaiAdd");
+    const labelElementadd = document.getElementById("trangThaiLabeladd");
+    function updateLabeladd() {
+        if (inputElementadd.checked) {
+            labelElementadd.textContent = "Đang hoạt động";
+        } else {
+            labelElementadd.textContent = "Dừng hoạt động";
+        }
+    }
+    inputElementadd.addEventListener("change", updateLabeladd);
+    updateLabeladd();
+    // change sttlbl edit
+    const inputElementedit = document.getElementById("trangThaiEdit");
+    const labelElementedit = document.getElementById("trangThaiLabeledit");
+    function updateLabeledit() {
+        if (inputElementedit.checked) {
+            labelElementedit.textContent = "Đang hoạt động";
+        } else {
+            labelElementedit.textContent = "Dừng hoạt động";
+        }
+    }
+    inputElementedit.addEventListener("change", updateLabeledit);
+    //end change sttlbl edit
+    updateLabeledit();
     document.querySelectorAll('.delete-button2').forEach(button => {
         button.addEventListener('click', function() {
             const form = this.closest('.delete-form');
@@ -640,88 +670,7 @@
     }
 
     <%--    --%>
-    function calculateChange() {
-        <%--var tongTien = parseInt('${total}');--%>
-        var tongTien = parseInt(document.getElementById('tongTienKhiTruKM').value);
-        var tienKhachDua = parseInt(document.getElementById('tienKhachDua').value);
-        console.log(tongTien);
-        console.log(tienKhachDua);
-        var tienTraLai = tienKhachDua - tongTien;
-        console.log(tienTraLai);
-        var thongBao = document.getElementById("errTraLai");
-        if (isNaN(tienKhachDua)) {
-            thongBao.textContent = "Vui lòng nhập số tiền hợp lệ.";
-            return false;
-        }
-        if (tienKhachDua == "" || tienKhachDua < tongTien) {
-            thongBao.textContent = "Số tiền khách đưa phải lớn hơn hoặc bằng tổng tiền.";
-            // alert('Số tiền khách đưa phải lớn hơn hoặc bằng tổng tiền.');
-            document.getElementById('tienTraLai').value = "";
-            return false;
-        }
 
-        // Hiển thị số tiền trả lại trong trường "Trả lại"
-
-        document.getElementById('tienTraLai').value = tienTraLai;
-        thongBao.textContent="";
-        return true;
-    }
-
-
-
-    function checkValidateAfterUpdate(){
-
-        var soLuongNhap = parseInt(document.getElementById("soLuong").value);
-        var soLuongCu = parseInt(document.getElementById("soLuongCu").value);
-        var tongSL22 = parseInt(document.getElementById("tongSL").value);
-        var tt = soLuongCu+tongSL22
-
-        if (soLuongNhap<=0){
-            Swal.fire({
-                title: 'Lỗi!',
-                text: 'Số lượng phải lớn hơn 0!',
-                icon: 'error',
-                confirmButtonText: 'OK'
-            });
-            return false;
-        }
-
-        if (soLuongNhap>tt){
-            Swal.fire({
-                title: 'Lỗi!',
-                text: 'Số lượng nhập lớn hơn số lượng trong kho',
-                icon: 'error',
-                confirmButtonText: 'OK'
-            });
-            return false;
-        }
-        return true;
-    }
-
-    function validateBeforeAddToCart() {
-        // Kiểm tra xem hóa đơn đã được chọn chưa
-        var selectedInvoiceId = document.getElementById("selectedInvoiceId").value;
-
-        if (selectedInvoiceId === "") {
-            alert("Vui lòng chọn hóa đơn trước khi thêm sản phẩm vào giỏ hàng.");
-            return false; // Ngăn chặn sự kiện click nút "+"
-        }
-
-        return true; // Cho phép thêm sản phẩm vào giỏ hàng nếu đã chọn hóa đơn
-    }
-
-
-    function validateAddToMaGiamGia(){
-        // Kiểm tra xem hóa đơn đã được chọn chưa
-        var selectedMaGiamGia = document.getElementById("selectedMaGiamGia").value;
-
-        if (selectedMaGiamGia === "") {
-            alert("Vui lòng chọn hóa đơn trước khi thêm mã giảm giá vào giỏ hàng.");
-            return false; // Ngăn chặn sự kiện click nút "+"
-        }
-
-        return true; // Cho phép thêm sản phẩm vào giỏ hàng nếu đã chọn hóa đơn
-    }
 
     const deleteButtons = document.querySelectorAll('.delete-button');
     const checkBtn = document.querySelectorAll('#checkBtn');
@@ -807,10 +756,12 @@
 </script>
 
 <script>
-    const loadDSSP = () => {
+    let idSPLocal = "";
+    let currentPage = 1;
+    const loadDSSP = (pageParams) => {
         // get api + scpt.id
         let datatest = "data testing";
-        fetch("/san-pham/index", {
+        fetch("/san-pham/index"+"?page="+pageParams, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -842,44 +793,101 @@
                 $("#tbl_ds_sp").html(html)
             });
     }
-    loadDSSP();
+    function testDataMapping(){
+
+    }
+    function setActive(element, page) {
+        // Remove active class from all pagination items
+        let items = document.querySelectorAll('.page-item');
+        items.forEach(item => item.classList.remove('active'));
+        element.parentElement.classList.add('active');
+        currentPage = page ;
+        updateButtons();
+        loadDSSP(currentPage);
+    }
+    function updateButtons() {
+        let items = document.querySelectorAll('.page-item');
+        let activeIndex = Array.from(items).findIndex(item => item.classList.contains('active'));
+        document.getElementById('prev').classList.toggle('disabled', activeIndex === 1);
+        document.getElementById('next').classList.toggle('disabled', activeIndex === items.length - 2);
+    }
+    function navigate(direction,e) {
+        e.preventDefault();
+        let items = document.querySelectorAll('.page-item');
+        let activeIndex = Array.from(items).findIndex(item => item.classList.contains('active'));
+        let newIndex = activeIndex + direction;
+        currentPage =newIndex
+        loadDSSP(currentPage);
+        if (newIndex > 0 && newIndex < items.length - 1) {
+            setActive(items[newIndex].querySelector('a'));
+        }
+    }
+    updateButtons();
+
+    const loadTotalPagination = (currentPage) => {
+        fetch("/san-pham/count", {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        }).then(response => response.json())
+            .then(resp => {
+                let html = '';
+                // Check if resp is a number and greater than 0
+                if (typeof resp === 'number' && resp > 0) {
+                    for (let i = 1; i <=  Math.ceil(resp/20); i++) {
+                        const activeClass = (i === currentPage) ? 'active' : '';
+                        html += '<li class="page-item ' + activeClass + '"><a class="page-link" href="#" onclick="setActive(this, ' + i + ')">' + i + '</a></li>';
+                    }
+                } else {
+                    // Handle case where resp is not a valid number or is <= 0
+                    html = '<li class="page-item"><a class="page-link" href="#">No pages found</a></li>';
+                }
+                $("#paginationBody").html(html);
+            }).catch(error => {
+            console.error('Error fetching pagination data:', error);
+            // Handle fetch error
+        });
+    }
+    loadDSSP(currentPage);
+    loadTotalPagination(currentPage);
+    let tenSpEdit = document.getElementById("tenSPEdit");
+    let hinhAnhDisplay = document.getElementById("hinhAnhDisplay");
+    let trangThaiEdit  = document.getElementById("trangThaiEdit");
     $(document).on('click', "button[id^='editSPBtn_']", e => {
         e.preventDefault();
         const queryString = window.location.pathname;
         const pathParts = queryString.split('/');
         const pathVariable = pathParts[pathParts.length - 1];
         const spid = e.currentTarget.id.replace("editSPBtn_", "");
-        console.log("====================test id button edit: ", spid);
-        // fetch(apiGet, {
-        //     headers: {
-        //         'Accept': 'application/json',
-        //         'Content-Type': 'application/json'
-        //     }
-        // }).then(response => response.json())
-        //     .then(resp => {
-        //         console.log("test response spct: ", resp);
-        //         spctLocal =resp;
-        //         const apiAdd = "/san-pham/update/"+spid;
-        //         fetch(apiAdd, {
-        //             method: "post",
-        //             headers: {
-        //                 'Accept': 'application/json',
-        //                 'Content-Type': 'application/json'
-        //             }
-        //         }).then( (response) => {
-        //             console.log(response);
-        //             loadDSSP();
-        //         });
-        //     });
+        idSPLocal = spid;
+        fetch("/san-pham/detail/"+spid, {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        }).then(response => response.json())
+            .then(resp => {
+                tenSpEdit.value = resp.ten;
+                hinhAnhDisplay = resp.hinhAnh;
+                if(resp.trangThai==1){
+                    trangThaiEdit.checked = true;
+                    labelElementedit.textContent = "Đang hoạt động";
+                }
+                else{
+                    trangThaiEdit.checked = false;
+                    labelElementedit.textContent = "Dừng hoạt động";
+                }
+            });
     });
     $(document).on('click', "button[id^='detailSPBtn_']", e => {
         e.preventDefault();
         const queryString = window.location.pathname;
         const pathParts = queryString.split('/');
         const pathVariable = pathParts[pathParts.length - 1];
-        const spid = e.currentTarget.id.replace("detailSP_", "");
+        const spid = e.currentTarget.id.replace("detailSPBtn_", "");
         console.log("====================test id button detail: ", spid);
-        window.location.href = '/qlsp/${spid}';
+        window.location.href = '/qlsp/'+spid;
         // fetch(apiGet, {
         //     headers: {
         //         'Accept': 'application/json',
@@ -905,6 +913,7 @@
     const addBtn = document.querySelectorAll('#addBtn');
     const editSPBtn = document.querySelectorAll('#editSPBtn');
     const saveEditBtn = document.querySelectorAll('#saveEditBtn');
+    const saveAddBtn = document.querySelectorAll('#saveAddBtn');
     addBtn.forEach(button => {
         button.addEventListener('click', function (e) {
             e.preventDefault();
@@ -923,18 +932,29 @@
             console.log("====================== money given:",moneyGiven);
             if(tongTien<=moneyGiven&&!isNaN(tongTien)){
                 Swal.fire({
-                    title: 'Xác nhận thanh toán?',
+                    title: 'Xác nhận?',
                     text: "Dữ liệu sẽ được lưu lại!",
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d33',
-                    confirmButtonText: 'Vâng,Thanh toán!',
+                    confirmButtonText: 'Ok!',
                     cancelButtonText: 'Hủy'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        fetch(`/ban-hang-tai-quay/thanh-toan/`+idHD+'?idKhuyenMai='+idKhuyenMai+'&idKH='+idKH+'&tongTien='+tongTien,
-                            { method: 'POST' }).then(() => {
+                        const data = {
+                            idHD: idHD,
+                            idKhuyenMai: idKhuyenMai,
+                            idKH: idKH,
+                            tongTien: tongTien
+                        };
+                        fetch(`/san-pham/save/`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(data)
+                        }).then(() => {
                             Swal.fire(
                                 'Đã thanh toán!',
                                 'Dữ liệu đã được ghi nhận.',
@@ -954,51 +974,185 @@
             }
         });
     });
+
+    saveAddBtn.forEach(button => {
+        button.addEventListener('click', function (e) {
+            e.preventDefault();
+            console.log("test check btn");
+            var tenSP = document.getElementById('tenSPAdd').value;
+            var hinhAnh = document.getElementById('hinhAnhAdd').value;
+            var trangThairaw = document.getElementById('trangThaiAdd').checked;
+            var tenSperr = document.getElementById("tenSPAddErr");
+            var hinhAnhErr = document.getElementById("hinhAnhAddErr");
+            let trangThai = 0;
+            let sttCheck  = 0;
+            console.log("====================== ten sp:",tenSP);
+            console.log("====================== hinh anh:",hinhAnh);
+            console.log("====================== trang thai:",trangThairaw);
+            if(trangThairaw==true){
+                trangThai =1;
+            }
+            else{
+                trangThai = 0;
+            }
+            if(validateNull(tenSP)){
+                tenSperr.textContent = "Vui lòng nhập tên sản phẩm";
+                sttCheck = 0;
+            }
+            else{
+                tenSperr.textContent = "";
+                sttCheck ++;
+            }
+            if(validateNull(hinhAnh)){
+                hinhAnhErr.textContent ="Vui lòng chọn hình ảnh";
+                sttCheck = 0;
+            }
+            else{
+                hinhAnhErr.textContent = "";
+                sttCheck ++;
+            }
+
+            if(sttCheck==2){
+                Swal.fire({
+                    title: 'Xác nhận?',
+                    text: "Dữ liệu sẽ được lưu lại!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ok!',
+                    cancelButtonText: 'Hủy'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        const data = {
+                            ten: tenSP,
+                            trangThai: trangThai,
+                            hinhAnh: hinhAnh
+                        };
+                        fetch(`/san-pham/save`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(data)
+                        }).then(() => {
+                            Swal.fire(
+                                'Đã thanh toán!',
+                                'Dữ liệu đã được ghi nhận.',
+                                'success'
+                            ).then(() => {
+                                fetch("/san-pham/count", {
+                                    headers: {
+                                        'Accept': 'application/json',
+                                        'Content-Type': 'application/json'
+                                    }
+                                }).then(response => response.json())
+                                    .then(resp => {
+                                        loadDSSP(Math.ceil(resp/20));
+                                        currentPage = Math.ceil(resp/20);
+                                        loadTotalPagination(currentPage);
+                                    }).catch(error => {
+                                    console.error('Error fetching pagination data:', error);
+                                    // Handle fetch error
+                                });
+                            });
+                            button.closest('tr').remove();
+                        });
+                        button.closest('tr').remove();
+                    }
+                });
+            }
+            else{
+
+            }
+        });
+    });
+    function  validateNull(param){
+        if(param===""||param===undefined){
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
     saveEditBtn.forEach(button => {
         button.addEventListener('click', function (e) {
             e.preventDefault();
             console.log("test check btn");
-            var idSP = "pending";
-            var tenSP  = document.getElementById("tenSPEdit").value;
-            var hinhAnh = document.getElementById("hinhAnhEdit").value;
-
-            console.log("====================== id sp:",idSP);
+            var tenSP = document.getElementById('tenSPEdit').value;
+            var hinhAnh = document.getElementById('hinhAnhEdit').value;
+            var trangThaiRaw = document.getElementById('trangThaiEdit').checked;
+            var tenSperr = document.getElementById("tenSPEditErr");
+            var hinhAnhErr = document.getElementById("hinhAnhEditErr");
+            let trangThai = 0;
+            let sttCheck = 0;
             console.log("====================== ten sp:",tenSP);
             console.log("====================== hinh anh:",hinhAnh);
 
-            // if(tongTien<=moneyGiven&&!isNaN(tongTien)){
-            //     Swal.fire({
-            //         title: 'Xác nhận thanh toán?',
-            //         text: "Dữ liệu sẽ được lưu lại!",
-            //         icon: 'warning',
-            //         showCancelButton: true,
-            //         confirmButtonColor: '#3085d6',
-            //         cancelButtonColor: '#d33',
-            //         confirmButtonText: 'Vâng,Thanh toán!',
-            //         cancelButtonText: 'Hủy'
-            //     }).then((result) => {
-            //         if (result.isConfirmed) {
-            //             fetch(`/ban-hang-tai-quay/thanh-toan/`+idHD+'?idKhuyenMai='+idKhuyenMai+'&idKH='+idKH+'&tongTien='+tongTien,
-            //                 { method: 'POST' }).then(() => {
-            //                 Swal.fire(
-            //                     'Đã thanh toán!',
-            //                     'Dữ liệu đã được ghi nhận.',
-            //                     'success'
-            //                 ).then(() => {
-            //                     window.location.href = '/ban-hang-tai-quay';
-            //                 });
-            //                 button.closest('tr').remove();
-            //             });
-            //             button.closest('tr').remove();
-            //             thongBao.textContent =  "";
-            //         }
-            //     });
-            // }
-            // else{
-            //     thongBao.textContent =  "Số tiền khách đưa phải lớn hơn hoặc bằng tổng tiền.";
-            // }
+            if(trangThaiRaw==true){
+                trangThai = 1;
+            }
+            else{
+                trangThai = 0;
+            }
+            if(validateNull(tenSP)){
+                tenSperr.textContent = "Vui lòng nhập tên sản phẩm";
+                sttCheck = 0;
+            }
+            else{
+                tenSperr.textContent = "";
+                sttCheck ++;
+            }
+            if(validateNull(hinhAnh)){
+                hinhAnhErr.textContent ="Vui lòng chọn hình ảnh";
+                sttCheck = 0;
+            }
+            else{
+                hinhAnhErr.textContent = "";
+                sttCheck ++;
+            }
+            if(sttCheck==2){
+                Swal.fire({
+                    title: 'Xác nhận?',
+                    text: "Dữ liệu sẽ được lưu lại!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ok!',
+                    cancelButtonText: 'Hủy'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        const data = {
+                            ten: tenSP,
+                            hinhAnh: hinhAnh,
+                            trangThai: trangThai
+                        };
+                        fetch(`/san-pham/update/`+idSPLocal, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(data)
+                        }).then(() => {
+                            Swal.fire(
+                                'Đã thanh toán!',
+                                'Dữ liệu đã được ghi nhận.',
+                                'success'
+                            ).then(() => {
+                                loadDSSP(currentPage);
+                            });
+                        });
+                    }
+                });
+            }
+            else{
+                thongBao.textContent =  "Số tiền khách đưa phải lớn hơn hoặc bằng tổng tiền.";
+            }
         });
     });
+
 </script>
 <script>
     // Hiển thị thông báo thêm thành công hoặc thất bại sử dụng thư viện Sweet Alert2

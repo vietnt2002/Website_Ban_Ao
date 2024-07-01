@@ -1,8 +1,7 @@
 package com.example.java4.entities;
-
 import jakarta.persistence.*;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
@@ -10,7 +9,7 @@ public class MauSac {
     private String id;
     private String ma;
     private String ten;
-    private Date ngayTao;
+    private LocalDateTime ngayTao;
     private Integer trangThai;
 
     @Id
@@ -43,11 +42,11 @@ public class MauSac {
     }
 
     @Column(name = "NgayTao")
-    public Date getNgayTao() {
+    public LocalDateTime getNgayTao() {
         return ngayTao;
     }
 
-    public void setNgayTao(Date ngayTao) {
+    public void setNgayTao(LocalDateTime ngayTao) {
         this.ngayTao = ngayTao;
     }
 
