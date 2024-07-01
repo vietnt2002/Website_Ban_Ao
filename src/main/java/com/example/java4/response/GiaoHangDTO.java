@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.format.DateTimeFormatter;
 
 @Data
@@ -21,7 +22,7 @@ public class GiaoHangDTO {
     private String idTinhThanh;
     private String ngayShip;
     private String ngayNhan;
-    private Integer phiShip;
+    private BigDecimal phiShip;
     private Integer trangThai;
     private String ghiChu;
 

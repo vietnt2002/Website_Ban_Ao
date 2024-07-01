@@ -69,45 +69,52 @@
 
         <!-- Nav Item - Dashboard -->
         <li class="nav-item active">
-            <a class="nav-link" href="/ban-hang-tai-quay">
+            <a class="nav-link" href="index.html">
+                <i class="fas fa-fw fa-tachometer-alt"></i>
+                <span>Thống kê doanh thu</span></a>
+        </li>
+
+        <!-- Nav Item - Charts -->
+        <li class="nav-item">
+            <a class="nav-link" href="/ban-hang-tai-quay/admin/ban-tai-quay">
                 <i class="fas fa-fw fa-chart-area"></i>
                 <span>Bán hàng tại quầy</span></a>
         </li>
 
         <!-- Nav Item - Charts -->
         <li class="nav-item">
-            <a class="nav-link" href="/hoa-don/hien-thi">
+            <a class="nav-link" href="charts.html">
                 <i class="fas fa-fw fa-chart-area"></i>
                 <span>Quản lý hóa đơn</span></a>
         </li>
 
+        <!-- Nav Item - Pages Collapse Menu -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+               aria-expanded="true" aria-controls="collapseTwo">
+                <i class="fas fa-fw fa-cog"></i>
+                <span>Quản lý sản phẩm</span>
+            </a>
+            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" href="buttons.html">Màu sắc, kích thước các thứ</a>
+                    <a class="collapse-item" href="cards.html">Cards</a>
+                </div>
+            </div>
+        </li>
+
         <!-- Nav Item - Charts -->
         <li class="nav-item">
-            <a class="nav-link" href="/qlnv/quan-ly-nhan-vien">
+            <a class="nav-link" href="charts.html">
                 <i class="fas fa-fw fa-chart-area"></i>
                 <span>Quản lý nhân viên</span></a>
         </li>
 
         <!-- Nav Item - Charts -->
         <li class="nav-item">
-            <a class="nav-link" href="/hoa-don/hien-thi">
-                <i class="fas fa-fw fa-chart-area"></i>
-                <span>Pending....</span></a>
-        </li>
-
-        <!-- Nav Item - Pages Collapse Menu -->
-        <!-- Nav Item - Charts -->
-        <li class="nav-item">
             <a class="nav-link" href="charts.html">
                 <i class="fas fa-fw fa-chart-area"></i>
-                <span>Pending....</span></a>
-        </li>
-
-        <!-- Nav Item - Charts -->
-        <li class="nav-item">
-            <a class="nav-link" href="charts.html">
-                <i class="fas fa-fw fa-chart-area"></i>
-                <span>Pending......</span></a>
+                <span>Quản lý khách hàng</span></a>
         </li>
 
         <!-- Divider -->
@@ -351,40 +358,44 @@
                         <h6 class="m-0 font-weight-bold">Bộ Lọc</h6>
                     </div>
                     <div class="card-body">
-                        <form class="row g-3" method="get" action="/hoa-don/hien-thi">
+                        <form class="row g-3" method="get" action="/hoa-don/hien-thi" id="searchForm" onsubmit="return validateDates()">
                             <div class="col-md-6">
                                 <label for="searchKeyword" class="form-label">Tìm kiếm</label>
                                 <div class="input-group">
                                     <input type="text" class="form-control bg-light border-0 small" id="searchKeyword"
                                            name="keyword"
-                                           placeholder="Nhập mã hóa đơn hoặc SĐT khách hàng" value="${keyword}"
+                                           placeholder="Nhập mã hóa đơn hoặc SĐT khách hàng" value="${param.keyword}"
                                            aria-label="Search" aria-describedby="basic-addon2">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <label for="inputLoaiHoaDon" class="form-label">Loại Hóa Đơn</label>
-                                <select id="inputLoaiHoaDon" class="form-select" name="loaiHoaDon" >
-                                    <option value="-1" ${currentLoaiHoaDon == -1 ? 'selected' : ''} >Tất cả</option>
-                                    <option value="0" ${currentLoaiHoaDon == 0 ? 'selected' : ''}>Bán Online</option>
-                                    <option value="1" ${currentLoaiHoaDon == 1 ? 'selected' : ''}>Bán tại quầy</option>
+                                <select id="inputLoaiHoaDon" class="form-select" name="loaiHoaDon">
+                                    <option value="-1" ${param.loaiHoaDon == -1 ? 'selected' : ''}>Tất cả</option>
+                                    <option value="0" ${param.loaiHoaDon == 0 ? 'selected' : ''}>Bán tại quầy</option>
+                                    <option value="1" ${param.loaiHoaDon == 1 ? 'selected' : ''}>Bán online</option>
                                 </select>
                             </div>
 
-
                             <div class="col-md-6 mt-3">
                                 <label for="startDate" class="form-label">Ngày bắt đầu</label>
-                                <input type="date" class="form-control" id="startDate" name="startDate" value="${startDate}">
+                                <input type="date" class="form-control" id="startDate" name="startDate"
+                                       value="${param.startDate}">
                             </div>
                             <div class="col-md-6 mt-3">
                                 <label for="endDate" class="form-label">Ngày kết thúc</label>
-                                <input type="date" class="form-control" id="endDate" name="endDate" value="${endDate}">
+                                <input type="date" class="form-control" id="endDate" name="endDate"
+                                       value="${param.endDate}">
+
                             </div>
                             <div class="col-md-12 mt-3 d-flex justify-content-end">
+                                <input type="hidden" id="page" name="page"
+                                       value="${param.page != null ? param.page : '0'}">
                                 <button type="submit" class="btn btn-success mr-2">Tìm kiếm</button>
-                                <button type="button" class="btn btn-danger" onclick="resetForm()">Làm Mới</button>
+                                <a href="/hoa-don/hien-thi">
+                                    <button type="button" class="btn btn-danger">Làm Mới</button>
+                                </a>
                             </div>
-
-
                         </form>
                     </div>
                 </div>
@@ -494,10 +505,8 @@
                                         <tr>
                                             <td>${i.index + 1}</td>
                                             <td>${hoaDon.ma}</td>
-
                                             <td>${hoaDon.nhanVien.hoTen}</td>
                                             <td>${hoaDon.khachHang.hoTen == null ? "Khách lẻ" : hoaDon.khachHang.hoTen }</td>
-
                                             <td>${hoaDon.khachHang.sdt}</td>
                                             <td>
                                                 <span class="badge rounded-pill ${hoaDon.loaiHoaDon == 0 ? 'bg-success' : 'bg-primary'}">
@@ -527,29 +536,56 @@
                                     </tbody>
                                 </table>
                                 <%-- Phân trang của tất cả các hóa đơn  --%>
-                                <div class="float-end">
-                                    <nav aria-label="Page navigation example">
-                                        <ul class="pagination">
-                                            <c:if test="${pageHD.hasPrevious()}">
-                                                <li class="page-item"><a class="page-link"
-                                                                         href="?page=${pageHD.number - 1}">&laquo;</a>
-                                                </li>
-                                            </c:if>
-                                            <c:if test="${pageHD.totalPages > 0}">
-                                                <c:forEach var="i" begin="0" end="${pageHD.totalPages - 1}">
-                                                    <li class="page-item ${pageHD.number == i ? 'active' : ''}">
-                                                        <a class="page-link" href="?page=${i}">${i + 1}</a>
+                                    <div class="float-end">
+                                        <nav aria-label="Page navigation example">
+                                            <ul class="pagination">
+                                                <!-- Kiểm tra nếu có trang trước đó -->
+                                                <c:if test="${pageHD.hasPrevious()}">
+                                                    <c:url var="prevPageUrl" value="">
+                                                        <c:param name="page" value="${pageHD.number - 1}"/>
+                                                        <c:param name="keyword" value="${param.keyword}"/>
+                                                        <c:param name="loaiHoaDon" value="${param.loaiHoaDon}"/>
+                                                        <c:param name="startDate" value="${param.startDate}"/>
+                                                        <c:param name="endDate" value="${param.endDate}"/>
+                                                    </c:url>
+                                                    <li class="page-item">
+                                                        <a class="page-link" href="${prevPageUrl}">&laquo;</a>
                                                     </li>
-                                                </c:forEach>
-                                            </c:if>
-                                            <c:if test="${pageHD.hasNext()}">
-                                                <li class="page-item"><a class="page-link"
-                                                                         href="?page=${pageHD.number + 1}">&raquo;</a>
-                                                </li>
-                                            </c:if>
-                                        </ul>
-                                    </nav>
-                                </div>
+                                                </c:if>
+
+                                                <!-- Kiểm tra nếu có tổng số trang lớn hơn 0 -->
+                                                <c:if test="${pageHD.totalPages > 0}">
+                                                    <!-- Duyệt qua các trang -->
+                                                    <c:forEach var="i" begin="0" end="${pageHD.totalPages - 1}">
+                                                        <c:url var="pageUrl" value="">
+                                                            <c:param name="page" value="${i}"/>
+                                                            <c:param name="keyword" value="${param.keyword}"/>
+                                                            <c:param name="loaiHoaDon" value="${param.loaiHoaDon}"/>
+                                                            <c:param name="startDate" value="${param.startDate}"/>
+                                                            <c:param name="endDate" value="${param.endDate}"/>
+                                                        </c:url>
+                                                        <li class="page-item ${pageHD.number == i ? 'active' : ''}">
+                                                            <a class="page-link" href="${pageUrl}">${i + 1}</a>
+                                                        </li>
+                                                    </c:forEach>
+                                                </c:if>
+
+                                                <!-- Kiểm tra nếu có trang tiếp theo -->
+                                                <c:if test="${pageHD.hasNext()}">
+                                                    <c:url var="nextPageUrl" value="">
+                                                        <c:param name="page" value="${pageHD.number + 1}"/>
+                                                        <c:param name="keyword" value="${param.keyword}"/>
+                                                        <c:param name="loaiHoaDon" value="${param.loaiHoaDon}"/>
+                                                        <c:param name="startDate" value="${param.startDate}"/>
+                                                        <c:param name="endDate" value="${param.endDate}"/>
+                                                    </c:url>
+                                                    <li class="page-item">
+                                                        <a class="page-link" href="${nextPageUrl}">&raquo;</a>
+                                                    </li>
+                                                </c:if>
+                                            </ul>
+                                        </nav>
+                                    </div>
                             </div>
                             <div class="tab-pane fade" id="confirmation" role="tabpanel"
                                  aria-labelledby="confirmation-tab">
@@ -575,10 +611,8 @@
                                             <tr>
                                                 <td>${i.index + 1}</td>
                                                 <td>${hoaDon.ma}</td>
-
                                                 <td>${hoaDon.nhanVien.hoTen}</td>
                                                 <td>${hoaDon.khachHang.hoTen == null ? "Khách lẻ" : hoaDon.khachHang.hoTen }</td>
-
                                                 <td>${hoaDon.khachHang.sdt}</td>
                                                 <td>
                                                 <span class="badge rounded-pill ${hoaDon.loaiHoaDon == 0 ? 'bg-success' : 'bg-primary'}">
@@ -654,10 +688,8 @@
                                             <tr>
                                                 <td>${i.index + 1}</td>
                                                 <td>${hoaDon.ma}</td>
-
                                                 <td>${hoaDon.nhanVien.hoTen}</td>
                                                 <td>${hoaDon.khachHang.hoTen == null ? "Khách lẻ" : hoaDon.khachHang.hoTen }</td>
-
                                                 <td>${hoaDon.khachHang.sdt}</td>
                                                 <td>
                                                 <span class="badge rounded-pill ${hoaDon.loaiHoaDon == 0 ? 'bg-success' : 'bg-primary'}">
@@ -733,10 +765,8 @@
                                             <tr>
                                                 <td>${i.index + 1}</td>
                                                 <td>${hoaDon.ma}</td>
-
                                                 <td>${hoaDon.nhanVien.hoTen}</td>
                                                 <td>${hoaDon.khachHang.hoTen == null ? "Khách lẻ" : hoaDon.khachHang.hoTen }</td>
-
                                                 <td>${hoaDon.khachHang.sdt}</td>
                                                 <td>
                                                 <span class="badge rounded-pill ${hoaDon.loaiHoaDon == 0 ? 'bg-success' : 'bg-primary'}">
@@ -812,10 +842,8 @@
                                             <tr>
                                                 <td>${i.index + 1}</td>
                                                 <td>${hoaDon.ma}</td>
-
                                                 <td>${hoaDon.nhanVien.hoTen}</td>
                                                 <td>${hoaDon.khachHang.hoTen == null ? "Khách lẻ" : hoaDon.khachHang.hoTen }</td>
-
                                                 <td>${hoaDon.khachHang.sdt}</td>
                                                 <td>
                                                 <span class="badge rounded-pill ${hoaDon.loaiHoaDon == 0 ? 'bg-success' : 'bg-primary'}">
@@ -892,10 +920,8 @@
                                             <tr>
                                                 <td>${i.index + 1}</td>
                                                 <td>${hoaDon.ma}</td>
-
                                                 <td>${hoaDon.nhanVien.hoTen}</td>
                                                 <td>${hoaDon.khachHang.hoTen == null ? "Khách lẻ" : hoaDon.khachHang.hoTen }</td>
-
                                                 <td>${hoaDon.khachHang.sdt}</td>
                                                 <td>
                                                 <span class="badge rounded-pill ${hoaDon.loaiHoaDon == 0 ? 'bg-success' : 'bg-primary'}">
@@ -971,10 +997,8 @@
                                             <tr>
                                                 <td>${i.index + 1}</td>
                                                 <td>${hoaDon.ma}</td>
-
                                                 <td>${hoaDon.nhanVien.hoTen}</td>
                                                 <td>${hoaDon.khachHang.hoTen == null ? "Khách lẻ" : hoaDon.khachHang.hoTen }</td>
-
                                                 <td>${hoaDon.khachHang.sdt}</td>
                                                 <td>
                                                 <span class="badge rounded-pill ${hoaDon.loaiHoaDon == 0 ? 'bg-success' : 'bg-primary'}">
@@ -1121,7 +1145,9 @@
     </c:if>
 
 
-    $(document).ready(function () {
+
+    // Hàm xử lý hiển thị bg-warning các tab
+    document.addEventListener('DOMContentLoaded', function () {
         // Function to get status from URL
         function getStatusFromUrl() {
             const urlParams = new URLSearchParams(window.location.search);
@@ -1143,10 +1169,17 @@
             } else {
                 $('#myTab .nav-link[data-status="' + status + '"]').addClass('bg-warning').tab('show');
             }
+
+            // Save the current status to localStorage
+            localStorage.setItem('currentTabStatus', status);
         }
 
+        // Clear any old localStorage value and set it to "all"
+        localStorage.removeItem('currentTabStatus');
+        localStorage.setItem('currentTabStatus', 'all');
+
         // Initial setup
-        let status = getStatusFromUrl();
+        let status = getStatusFromUrl() || 'all';
         setStatusAndHighlightTab(status);
 
         // When clicking on a tab
@@ -1155,15 +1188,30 @@
             $('#myTab .nav-link').removeClass('bg-warning');
             // Add the bg-warning class to the clicked tab
             $(this).addClass('bg-warning');
+
+            // Update the URL without reloading the page
+            let status = $(this).data('status');
+            history.pushState(null, '', '?status=' + status);
+
+            // Save the current status to localStorage
+            localStorage.setItem('currentTabStatus', status);
         });
 
         // When clicking on any a tag
         $('a').click(function () {
-            status = getStatusFromUrl();
-            if (status === null) {
-                status = 'all';
-            }
-            setStatusAndHighlightTab('all');
+            // Save the current tab status before navigating away
+            let currentTabStatus = $('#myTab .nav-link.bg-warning').data('status');
+            localStorage.setItem('currentTabStatus', currentTabStatus);
+        });
+    });
+
+    // Handle data loading when tabs are clicked
+    document.querySelectorAll('.nav-link').forEach(button => {
+        button.addEventListener('click', function () {
+            let status = this.getAttribute('data-status');
+            let url = new URL(window.location.href);
+            url.searchParams.set('status', status);
+            window.history.pushState({}, '', url.toString());
         });
     });
 
