@@ -423,7 +423,7 @@
 
                     <%--      Tìm kiếm & lọc thông tin nhân ciên      --%>
                     <h5 class="card-title mb-3">Thêm mới nhân viên</h5>
-                    <sf:form id="nhanVienForm" method="post" action="/store/them-nhan-vien"
+                    <sf:form id="nhanVienForm" method="post" action="/store/them-nhan-vien" enctype="multipart/form-data"
                              modelAttribute="nhanVien">
                         <div class="row">
                             <div class="col-sm-4">
@@ -434,7 +434,7 @@
                                             <img src="" alt="" id="image-preview">
                                             <div id="image-overlay">+ Upload</div>
                                             <sf:input type="file" id="file-input" accept="image/*"
-                                                      style="display: none;" name="imageName" path="anhDaiDien"/>
+                                                      style="display: none;" path="anhDaiDien"/>
                                         </label>
                                         <div id="image-info" class="mt-4"></div>
                                     </div>
