@@ -585,4 +585,20 @@ public class TrangChuController {
         return "redirect:/cua-hang/gio-hang";
     }
 
+    @GetMapping("/don-mua")
+    public String hỉenThi(Model model) {
+
+        //Tính tổng số lượng sản phẩm có trong giỏ hàng
+        listHDCT = hdctRepo.findByIdHoaDonByIDKH(UserInfor.idKhachHang, HoaDonRepository.CHO_THANH_TOAN);
+        listGioHang = hdctRepo.getAll(UserInfor.idKhachHang, HoaDonRepository.CHO_THANH_TOAN);
+        Integer totalSoLuong = 0;
+        for (ChiTietHoaDon chiTietHoaDon : listHDCT) {
+            totalSoLuong += chiTietHoaDon.getSoLuong();
+        }
+        listGioHang = hdctRepo.getAll(UserInfor.idKhachHang, HoaDonRepository.CHO_XAC_NHAN);
+        model.addAttribute("listHD", listGioHang);
+        model.addAttribute("soLuong", totalSoLuong);
+
+        return "/view/BanHangOnline/donMua.jsp";
+    }
 }

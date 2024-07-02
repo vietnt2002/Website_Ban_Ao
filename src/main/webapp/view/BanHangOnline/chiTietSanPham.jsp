@@ -148,8 +148,7 @@
                         </c:when>
                         <c:otherwise>
                             <!-- Hiển thị nút đăng xuất khi đã đăng nhập -->
-                            <li><a class="dropdown-item" href="#">Theo dõi đơn hàng</a></li>
-                            <li><a class="dropdown-item" href="#">Lịch sử mua hàng</a></li>
+                            <li><a class="dropdown-item" href="/cua-hang/don-mua">Đơn mua</a></li>
                             <li><a class="dropdown-item" href="#">Quản lý tài khoản</a></li>
                             <li><a class="dropdown-item" href="/home/logout">Đăng xuất</a></li>
                         </c:otherwise>
