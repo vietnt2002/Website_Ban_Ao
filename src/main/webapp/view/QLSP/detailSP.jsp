@@ -373,78 +373,48 @@
                                 <form method="post" action="/ban-hang-tai-quay/filter">
                                     <div class="row">
                                         <div class="col col-md-2">
-                                            <div class="input-group mb-3">
-                                                <div class="dropdown">
-                                                    <button class="btn btn-outline-secondary dropdown-toggle" type="button"
-                                                            id="dropdownMenuButton1" data-bs-toggle="dropdown"
-                                                            aria-expanded="false">
-                                                        Chọn sản phẩm
-                                                    </button>
-                                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                                        <c:forEach items="${listSanPham}" var="sanPham">
-                                                            <li><a class="dropdown-item"
-                                                                   href="/ban-hang-tai-quay/locSPCTBySanPham/${sanPham.id}">${sanPham.ten}</a>
-                                                            </li>
-                                                        </c:forEach>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col col-md-2">
                                             <div class="dropdown">
                                                 <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
                                                     Chọn màu sắc
                                                 </button>
-                                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-                                                    <c:forEach items="${listMauSac}" var="mauSac">
-                                                        <li><a class="dropdown-item" href="/ban-hang-tai-quay/locSPCTByMauSac/${mauSac.id}">${mauSac.ten}</a></li>
-                                                    </c:forEach>
+                                                <ul class="dropdown-menu" id="cboMauSac" aria-labelledby="dropdownMenuButton2">
                                                 </ul>
                                             </div>
                                         </div>
-
                                         <div class="col col-md-2">
                                             <div class="dropdown">
                                                 <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-expanded="false">
                                                     Chọn kích thước
                                                 </button>
-                                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton3">
-                                                    <c:forEach items="${listKichThuoc}" var="kichThuoc">
+                                                <ul class="dropdown-menu" id="cboKichThuoc" aria-labelledby="dropdownMenuButton3">
                                                         <li><a class="dropdown-item" href="/ban-hang-tai-quay/locSPCTByKichThuoc/${kichThuoc.id}">${kichThuoc.ten}</a></li>
-                                                    </c:forEach>
                                                 </ul>
                                             </div>
                                         </div>
-
                                         <div class="col col-md-2">
                                             <div class="dropdown">
                                                 <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton4" data-bs-toggle="dropdown" aria-expanded="false">
                                                     Chọn chất liệu
                                                 </button>
-                                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton4">
-                                                    <c:forEach items="${listChatLieu}" var="chatLieu">
+                                                <ul class="dropdown-menu" id="cboChatLieu" aria-labelledby="dropdownMenuButton4">
                                                         <li><a class="dropdown-item" href="/ban-hang-tai-quay/locSPCTByChatLieu/${chatLieu.id}">${chatLieu.ten}</a></li>
-                                                    </c:forEach>
                                                 </ul>
                                             </div>
                                         </div>
-
                                         <div class="col col-md-2">
                                             <div class="dropdown">
                                                 <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton5" data-bs-toggle="dropdown" aria-expanded="false">
                                                     Chọn kiểu tay
                                                 </button>
-                                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton5">
-                                                    <c:forEach items="${listKieuTay}" var="kieuTay">
+                                                <ul class="dropdown-menu" id="cboKieuTay" aria-labelledby="dropdownMenuButton5">
                                                         <li><a class="dropdown-item" href="/ban-hang-tai-quay/locSPCTByKieuTay/${kieuTay.id}">${kieuTay.ten}</a></li>
-                                                    </c:forEach>
                                                 </ul>
                                             </div>
                                         </div>
                                         <div class="col col-md-2">
                                             <button id="btnSearch" class="btn btn-success me-2">Tìm kiếm</button>
                                         </div>
+
                                     </div>
                                 </form>
                             </div>
@@ -786,13 +756,89 @@
         }).then(response => response.json())
             .then(resp => {
                 let trangThaiSP = "";
+                if(resp.trangThai == 1){
+                    trangThaiSP = "Đang hoạt động";
+                }
+                else{
+                    trangThaiSP = "Dừng hoạt động";
+                }
+                $('#hinhAnhSP').attr('src',"/image/"+resp.hinhAnh);
                 $('#tenSP').text(resp.ten);
                 $('#maSP').text(resp.ma);
                 $('#ngayTaoSP').text(resp.ngayTao);
-                $('#trangThaiSP').text(resp.trangThai);
+                $('#trangThaiSP').text(trangThaiSP);
             });
     }
     loadSP();
+
+    const loadCboMauSac = ()=>{
+        let datatest = "data testing";
+        fetch("/mau-sac/index", {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        }).then(response => response.json())
+            .then(resp => {
+                let html = '';
+                resp.map((ms, i) => {
+                    html += '<li><a class="dropdown-item" value="' + ms.id + '">' + ms.ten + '</a></li>';
+                });
+                $("#cboMauSac").html(html)
+            });
+    }
+    loadCboMauSac();
+    const loadCboKichThuoc = ()=>{
+        let datatest = "data testing";
+        fetch("/kich-thuoc/index", {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        }).then(response => response.json())
+            .then(resp => {
+                let html = '';
+                resp.map((kt, i) => {
+                    html += '<li><a class="dropdown-item" value="' + kt.id + '">' + kt.ten + '</a></li>';
+                });
+                $("#cboKichThuoc").html(html)
+            });
+    }
+    loadCboKichThuoc();
+    const loadCboChatLieu = ()=>{
+        let datatest = "data testing";
+        fetch("/chat-lieu/index", {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        }).then(response => response.json())
+            .then(resp => {
+                let html = '';
+                resp.map((cl, i) => {
+                    html += '<li><a class="dropdown-item" value="' + cl.id + '">' + cl.ten + '</a></li>';
+                });
+                $("#cboChatLieu").html(html)
+            });
+    }
+    loadCboChatLieu();
+    const loadCboKieuTay = ()=>{
+        let datatest = "data testing";
+        fetch("/kieu-tay/index", {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        }).then(response => response.json())
+            .then(resp => {
+                let html = '';
+                resp.map((kt, i) => {
+                    html += '<li><a class="dropdown-item" value="' + kt.id + '">' + kt.ten + '</a></li>';
+                });
+                $("#cboKieuTay").html(html)
+            });
+    }
+    loadCboKieuTay();
     const loadDSSPCT = (pageParams) => {
         // get api + scpt.id
         let datatest = "data testing";

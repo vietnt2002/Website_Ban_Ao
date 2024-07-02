@@ -25,10 +25,8 @@ public class MauSacController {
     }
     @CrossOrigin
     @GetMapping("index")
-    public ResponseEntity<List<MauSac>> index(@RequestParam("page")Optional<Integer> pageParam) {
-        int page = pageParam.orElse(1);
-        Pageable pageale = PageRequest.of(page-1, 20);
-        return ResponseEntity.ok(msRepo.findByTrangThai(1,pageale).getContent());
+    public ResponseEntity<List<MauSac>> index() {
+        return ResponseEntity.ok(msRepo.findAll());
     }
 
     @CrossOrigin
