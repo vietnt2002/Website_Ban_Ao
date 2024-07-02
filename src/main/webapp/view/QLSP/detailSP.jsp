@@ -361,11 +361,11 @@
                             <h4 class="border-bottom">Quản lý sản phẩm chi tiết</h4>
                             <div class="d-flex gap-3 mt-3">
                                 <img id="hinhAnhSP" width="200" height="200" alt="">
-                                <div>
-                                    <h5 class="border-bottom">Tên sản phẩm: </h5>
-                                    <h5 class="border-bottom">Mã sản phẩm: </h5>
-                                    <h5 class="border-bottom">Ngày tạo: </h5>
-                                    <h5 class="border-bottom">Trạng thái: </h5>
+                                <div id="product-details">
+                                    <h5 class="border-bottom">Tên sản phẩm:&nbsp&nbsp<span id="tenSP"></span></h5>
+                                    <h5 class="border-bottom">Mã sản phẩm:&nbsp&nbsp<span id="maSP"></span></h5>
+                                    <h5 class="border-bottom">Ngày tạo:&nbsp&nbsp<span id="ngayTaoSP"></span></h5>
+                                    <h5 class="border-bottom">Trạng thái:&nbsp&nbsp<span id="trangThaiSP"></span></h5>
                                 </div>
                             </div>
                             <h5 class="mt-3 border-bottom">Danh sách sản phẩm chi tiết: </h5>
@@ -456,7 +456,6 @@
                                     <th>Kích thước</th>
                                     <th>Chất liệu</th>
                                     <th>Kiểu tay</th>
-                                    <th>Sản phẩm</th>
                                     <th>Số lượng</th>
                                     <th>Trạng thái</th>
                                     <th>Thao tác</th>
@@ -777,10 +776,27 @@
     const queryString = window.location.pathname;
     const pathParts = queryString.split('/');
     const pathVariable = pathParts[pathParts.length - 1];
+
+    const loadSP = ()=>{
+        fetch("/san-pham/detail/"+pathVariable, {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        }).then(response => response.json())
+            .then(resp => {
+                let trangThaiSP = "";
+                $('#tenSP').text(resp.ten);
+                $('#maSP').text(resp.ma);
+                $('#ngayTaoSP').text(resp.ngayTao);
+                $('#trangThaiSP').text(resp.trangThai);
+            });
+    }
+    loadSP();
     const loadDSSPCT = (pageParams) => {
         // get api + scpt.id
         let datatest = "data testing";
-        fetch("/detail-byidsp-all/"+pathVariable+"?page="+pageParams, {
+        fetch("/chi-tiet-sp/detail-byidsp-all/"+pathVariable+"?page="+pageParams, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -790,15 +806,13 @@
                 let html = '';
                 resp.map((spct, i) => {
                     const trangThai = spct.trangThai == 1 ? "Hoạt động" : "Dừng hđ";
-                    const mauSac = spct.mauSac || 'N/A';
-                    const kichThuoc = spct.kichThuoc || 'N/A';
-                    const chatLieu = spct.chatLieu || 'N/A';
-                    const kieuTay = spct.kieuTay || 'N/A';
+                    const mauSac = spct.idMauSac.ten || 'N/A';
+                    const kichThuoc = spct.idKichThuoc.ten || 'N/A';
+                    const chatLieu = spct.idChatLieu.ten || 'N/A';
+                    const kieuTay = spct.idKieuTay.ten || 'N/A';
                     const soLuong = spct.soLuong || 'N/A';
-
                     html += '<tr>' +
                         '<td>' + (i + 1) + '</td>' +
-                        '<td><img src="' + hinhAnh + '" alt="Image" class="img-fluid" /></td>' +
                         '<td>' + mauSac + '</td>' +
                         '<td>' + kichThuoc + '</td>' +
                         '<td>' + chatLieu + '</td>' +
@@ -813,7 +827,6 @@
                         '</td>' +
                         '</tr>';
                 });
-
                 $("#tbl_ds_spct").html(html)
             });
     }
@@ -827,7 +840,7 @@
         element.parentElement.classList.add('active');
         currentPage = page ;
         updateButtons();
-        loadDSSP(currentPage);
+        loadDSSPCT(currentPage);
     }
     function updateButtons() {
         let items = document.querySelectorAll('.page-item');
@@ -841,7 +854,7 @@
         let activeIndex = Array.from(items).findIndex(item => item.classList.contains('active'));
         let newIndex = activeIndex + direction;
         currentPage =newIndex
-        loadDSSP(currentPage);
+        loadDSSPCT(currentPage);
         if (newIndex > 0 && newIndex < items.length - 1) {
             setActive(items[newIndex].querySelector('a'));
         }
@@ -873,7 +886,7 @@
             // Handle fetch error
         });
     }
-    loadDSSP(currentPage);
+    loadDSSPCT(currentPage);
     loadTotalPagination(currentPage);
     let tenSpEdit = document.getElementById("tenSPEdit");
     let hinhAnhDisplay = document.getElementById("hinhAnhEditDisplay");
@@ -1093,7 +1106,7 @@
                                     }
                                 }).then(response => response.json())
                                     .then(resp => {
-                                        loadDSSP(Math.ceil(resp/20));
+                                        loadDSSPCT(Math.ceil(resp/20));
                                         currentPage = Math.ceil(resp/20);
                                         loadTotalPagination(currentPage);
                                     }).catch(error => {
@@ -1202,7 +1215,7 @@
                                 'Dữ liệu đã được ghi nhận.',
                                 'success'
                             ).then(() => {
-                                loadDSSP(currentPage);
+                                loadDSSPCT(currentPage);
                             });
                         });
                     }
