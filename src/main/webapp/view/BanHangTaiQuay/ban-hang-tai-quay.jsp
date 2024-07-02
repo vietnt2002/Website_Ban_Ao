@@ -1233,7 +1233,13 @@
         var selectedInvoiceId = document.getElementById("selectedInvoiceId").value;
 
         if (selectedInvoiceId === "") {
-            alert("Vui lòng chọn hóa đơn trước khi thêm sản phẩm vào giỏ hàng.");
+            Swal.fire({
+                title: 'Lỗi!',
+                text: 'Vui lòng chọn hóa đơn trước khi thêm sản phẩm vào giỏ hàng.',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+            // alert("Vui lòng chọn hóa đơn trước khi thêm sản phẩm vào giỏ hàng.");
             return false; // Ngăn chặn sự kiện click nút "+"
         }
 
