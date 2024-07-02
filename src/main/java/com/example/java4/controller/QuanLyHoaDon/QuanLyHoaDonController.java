@@ -324,14 +324,17 @@ public class QuanLyHoaDonController {
 
         BigDecimal tongTienGiam  = tongTien;
 
+        if(giaoHang != null ){
+            if(giaoHang.getPhiShip() == null){
+                giaoHang.setPhiShip(BigDecimal.valueOf(0.0));
+            }
+            tongTien = tongTien.add(giaoHang.getPhiShip());
+        }
+
         if(khuyenMai != null){
             tongTienGiam = tongTien.subtract(khuyenMai.getSoTienGiam());
         }
 
-        if(giaoHang != null ){
-            giaoHang.setPhiShip(BigDecimal.valueOf(0.0));
-            tongTienGiam = tongTienGiam.subtract(giaoHang.getPhiShip());
-        }
         tongTienGiam = tongTienGiam.max(BigDecimal.ZERO);
         // Nếu tổng tiền thanh toán nhỏ hơn 0 thì gán lại giá trị bằng 0
         BigDecimal tongTienThanhToan = tongTienGiam;
@@ -428,7 +431,7 @@ public class QuanLyHoaDonController {
                 if (chiTietSanPhamOptional.isPresent()) {
                     ChiTietSanPham chiTietSanPham = chiTietSanPhamOptional.get();
                     int soLuongConLai = chiTietSanPham.getSoLuong() - chiTietHD.getSoLuong();
-                    if (soLuongConLai >= 0) {
+                    if (soLuongConLai > 0) {
                         chiTietSanPham.setSoLuong(soLuongConLai);
                         _chiTietSanPhamRepo.save(chiTietSanPham);
                     } else {
@@ -522,24 +525,24 @@ public class QuanLyHoaDonController {
                     hoaDon.setTrangThai(HoaDonRepository.CHO_XAC_NHAN);
                     hoaDon.setNgayCapNhat(LocalDateTime.now());
                     hoaDon.setNgayDaXacNhan(null);
-                    hoaDon.setIdNhanVien(nhanVien);
+//                    hoaDon.setIdNhanVien(nhanVien);
                     break;
                 case HoaDonRepository.CHO_GIAO_HANG:
                     hoaDon.setTrangThai(HoaDonRepository.DA_XAC_NHAN);
                     hoaDon.setNgayCapNhat(LocalDateTime.now());
                     hoaDon.setNgayChoGiaoHang(null);
-                    hoaDon.setIdNhanVien(nhanVien);
+//                    hoaDon.setIdNhanVien(nhanVien);
                     break;
 
                 case HoaDonRepository.DANG_GIAO_HANG:
                     hoaDon.setTrangThai(HoaDonRepository.CHO_GIAO_HANG);
                     hoaDon.setNgayCapNhat(LocalDateTime.now());
-                    hoaDon.setIdNhanVien(nhanVien);
+//                    hoaDon.setIdNhanVien(nhanVien);
                     break;
                 case HoaDonRepository.DA_HOAN_THANH:
                     hoaDon.setTrangThai(HoaDonRepository.DANG_GIAO_HANG);
                     hoaDon.setNgayCapNhat(LocalDateTime.now());
-                    hoaDon.setIdNhanVien(nhanVien);
+//                    hoaDon.setIdNhanVien(nhanVien);
                     break;
                 default:
                     model.addAttribute("errorMessage", "Trạng thái không hợp lệ.");
@@ -590,8 +593,6 @@ public class QuanLyHoaDonController {
         giaoHang.setIdTinhThanh(tenTinhThanh);
         giaoHang.setPhiShip(giaoHangDTO.getPhiShip());
         giaoHang.setGhiChu(giaoHangDTO.getGhiChu());
-
-
         _giaoHangRepo.save(giaoHang);
         // Thêm thông báo thành công và chuyển hướng
         redirectAttributes.addFlashAttribute("hoaDonDTO", hoaDonDTO);
@@ -741,9 +742,6 @@ public class QuanLyHoaDonController {
         redirectAttributes.addFlashAttribute("addProductSuccess","Thêm sản phẩm vào giỏ hàng thành công");
         return "redirect:/hoa-don/detail/" + idHoaDon;
     }
-
-
-
 
     // Chức năng xóa sản phẩm chi tiết khỏi hoa đơn chi tiết
     @GetMapping("/xoa-san-pham/{idCTSP}")

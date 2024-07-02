@@ -198,11 +198,11 @@
             width: 100%;
         }
 
-        @media (min-width: 768px) {
-            .modal-lg {
-                max-width: 80%;
-            }
-        }
+        /*@media (min-width: 768px) {*/
+        /*    .modal-lg {*/
+        /*        max-width: 80%;*/
+        /*    }*/
+        /*}*/
 
         /*.icon {*/
         /*    font-size: 1.2rem; !* Đặt kích thước font chữ cho icon *!*/
@@ -211,6 +211,126 @@
         /*}*/
 
 
+        @media print {
+            /* Ẩn tất cả các phần tử khác trừ phần tử với id invoiceSection */
+            body * {
+                visibility: hidden;
+            }
+
+            #invoiceSection, #invoiceSection * {
+                visibility: visible;
+            }
+
+            #invoiceSection {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+            }
+            delivery-logo{
+                width: 150px;
+            }
+
+            .bordered-section {
+                border: 1px solid #ddd;
+                padding: 15px;
+                margin-bottom: 20px;
+            }
+
+            .separator {
+                border-top: 1px solid #ccc;
+                margin: 20px 0;
+            }
+
+            .table-bordered {
+                width: 100%;
+                border-collapse: collapse;
+            }
+
+            .table-bordered th,
+            .table-bordered td {
+                border: 1px solid #ddd;
+                padding: 8px;
+            }
+
+            .signature-box {
+                border: 1px solid #ccc;
+                padding: 10px;
+                max-width: 200px;
+            }
+
+            .table th, .table td {
+                page-break-inside: avoid;
+            }
+        }
+
+        .bordered-section {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .separator {
+            border-top: 1px solid #ccc;
+            margin: 20px 0;
+        }
+
+        .table-bordered {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table-bordered th,
+        .table-bordered td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        .signature-box {
+            border: 1px solid #ccc;
+            padding: 10px;
+            max-width: 200px;
+        }
+
+
+    .bordered-section {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .separator {
+            border-top: 1px solid #ccc;
+            margin: 20px 0;
+        }
+
+        .table-bordered {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table-bordered th,
+        .table-bordered td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        /*.signature-box {*/
+        /*    border: 1px solid #ccc;*/
+        /*    padding: 10px;*/
+        /*    max-width: 230px;*/
+        /*    height: 150px;*/
+        /*}*/
+
+
+
+        @page {
+            size: A4;
+            margin: 0;
+        }
+
+
+        .
     </style>
 
 </head>
@@ -524,7 +644,7 @@
                     <!-- Nút in ra phiếu hóa đơn khi giao hàng theo dạng file PDF -->
                     <c:if test="${hoaDonDTO.loaiHoaDon == 1 && hoaDonDTO.trangThai != 1 }">
                         <div class="d-flex ms-auto">
-                            <button id="printDeliveryButton" class="btn btn-primary my-3">
+                            <button id="printDeliveryButton" class="btn btn-primary my-3" onclick="openPrintModal()">
                                 <i class="bi bi-printer"></i> In hóa đơn
                             </button>
                         </div>
@@ -728,7 +848,7 @@
                         </c:choose>
                     </div>
 
-                    <c:if test="${hoaDonDTO.loaiHoaDon == 1}">
+                    <c:if test="${hoaDonDTO.loaiHoaDon == 1 || hoaDonDTO.trangThai == 6}">
                         <div class="card-footer">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
@@ -771,13 +891,13 @@
                                     </c:if>
 
 <%--                                                <!-- --%>
-<%--                            <c:if test="${hoaDonDTO.trangThai != 1 && hoaDonDTO.trangThai != 6}">--%>
-<%--                                <a href="/hoa-don/hoan-tac/${hoaDonDTO.id}">--%>
-<%--                                    <button type="button" class="btn btn-warning" id="">--%>
-<%--                                        Hoàn tác--%>
-<%--                                    </button>--%>
-<%--                                </a>--%>
-<%--                            </c:if>--%>
+                             <c:if test="${hoaDonDTO.trangThai != 1 && hoaDonDTO.trangThai != 6}">
+                                <a href="/hoa-don/hoan-tac/${hoaDonDTO.id}">
+                                    <button type="button" class="btn btn-warning" id="">
+                                        Hoàn tác
+                                    </button>
+                                </a>
+                                 </c:if>
                                 </div>
                             </div>
                         </div>
@@ -792,30 +912,25 @@
                      aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
-                            <form id="confirmForm" method="post" action="/hoa-don/xac-nhan/${hoaDonDTO.id}">
+                            <form id="confirmForm" method="post" action="/hoa-don/xac-nhan/${hoaDonDTO.id}" onsubmit="return handleFormSubmit(e, ${hoaDonDTO.trangThai})">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="confirmModalLabel">Xác nhận đơn hàng</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
                                     <input type="hidden" name="trangThai" value="${hoaDonDTO.trangThai + 1}">
                                     <div class="mb-3">
                                         <label for="moTa" class="form-label">Mô tả</label>
-                                        <textarea value="" placeholder="Nhập nội dung mô tả..." class="form-control"
-                                                  id="moTa"
-                                                  name="moTa" rows="3"></textarea>
-                                        <div id="moTaError" class="text-danger" style="display: none;">Vui lòng điền mô
-                                            tả.
-                                        </div>
+                                        <textarea placeholder="Nhập nội dung mô tả..." class="form-control" id="moTa" name="moTa" rows="3"></textarea>
+                                        <div id="moTaError" class="text-danger" style="display: none;">Vui lòng điền mô tả.</div>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng
-                                    </button>
-                                    <button type="submit" class="btn btn-primary">Xác nhận</button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                    <button onclick="Test()" type="submit" class="btn btn-primary">Xác nhận</button>
                                 </div>
                             </form>
+
                         </div>
                     </div>
                 </div>
@@ -856,7 +971,6 @@
 
                 <%--    Bảng lịch sử thanh toán--%>
                 <div class="card mb-3">
-
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h5 class="card-title mb-0">Lịch sử thanh toán:</h5>
 
@@ -992,13 +1106,9 @@
                 </div>
 
 
-                <!-- Page Heading -->
-                <%--Thông tin hóa đơn    --%>
-                <%--                <h1 class="h3 mb-3 text-gray-800">Thông tin chi tiết hóa đơn</h1>--%>
 
 
                 <%--                <!-- Thông tin đơn hàng -->--%>
-
                 <div class="row d-flex align-items-stretch">
                     <div class="col-7 mb-3 d-flex align-items-stretch">
                         <div class="card w-100 h-100">
@@ -1181,20 +1291,23 @@
                                                       groupingUsed="true"/>
                                 </span>
                                         </p>
-                                        <p class="fw-bold mb-1 pb-3 small d-flex justify-content-between">
-                                            <span>Phí Giảm giá:</span>
-                                            <span class="fw-normal" id="giamGia">
-                            <fmt:formatNumber value="${giamGia}" type="currency" currencySymbol="₫"
-                                              groupingUsed="true"/>
-                        </span>
-                                        </p>
+
                                         <p class="fw-bold mb-1 pb-3 small d-flex justify-content-between">
                                             <span>Phí vận chuyển:</span>
                                             <span class="fw-normal" id="phiVanChuyen">
-                            <fmt:formatNumber value="${phiVanChuyen}" type="currency" currencySymbol="₫"
-                                              groupingUsed="true"/>
-                        </span>
+                                                <fmt:formatNumber value="${phiVanChuyen}" type="currency" currencySymbol="₫"
+                                                                  groupingUsed="true"/>
+                                            </span>
                                         </p>
+
+                                        <p class="fw-bold mb-1 pb-3 small d-flex justify-content-between">
+                                            <span>Phí Giảm giá:</span>
+                                            <span class="fw-normal" id="giamGia">
+                                                <fmt:formatNumber value="${giamGia}" type="currency" currencySymbol="₫"
+                                                                  groupingUsed="true"/>
+                                            </span>
+                                        </p>
+
                                         <p class="fw-bold mb-1 pb-3 small d-flex justify-content-between">
                                             <span>Tổng tiền giảm:</span>
                                             <span class="fw-normal" id="tongTienGiam">
@@ -1444,7 +1557,7 @@
         <!-- End of Main Content -->
 
 
-        <%--       Modal thêm sản phẩm vào hóa đơn--%>
+        <%--  Modal thêm sản phẩm vào hóa đơn--%>
         <div class="modal fade" name="addProductModal" id="addProductModal" tabindex="-1"
              aria-labelledby="addProductModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-xl">
@@ -1560,29 +1673,29 @@
 
                     </div>
                     <div class="modal-footer">
-                        <div class="float-end">
-                            <nav aria-label="Page navigation example">
-                                <ul class="pagination">
-                                    <!-- Thêm phân trang nếu cần -->
-                                    <c:if test="${pageCTSP.hasPrevious()}">
-                                        <li class="page-item"><a class="page-link"
-                                                                 href="?page=${pageCTSP.number - 1}">&laquo;</a>
-                                        </li>
-                                    </c:if>
-                                    <c:if test="${pageCTSP.totalPages > 0}">
-                                        <c:forEach var="i" begin="0" end="${pageCTSP.totalPages - 1}">
-                                            <li class="page-item ${pageCTSP.number == i ? 'active' : ''}">
-                                                <a class="page-link" href="?page=${i}">${i + 1}</a>
-                                            </li>
-                                        </c:forEach>
-                                    </c:if>
-                                    <c:if test="${pageCTSP.hasNext()}">
-                                        <li class="page-item"><a class="page-link"
-                                                                 href="?page=${pageCTSP.number + 1}">&raquo;</a>
-                                        </li>
-                                    </c:if>
-                                </ul>
-                            </nav>
+                        <div class="float-end" id="pagination">
+<%--                            <nav aria-label="Page navigation example">--%>
+<%--                                <ul class="pagination">--%>
+<%--                                    <!-- Thêm phân trang nếu cần -->--%>
+<%--                                    <c:if test="${pageCTSP.hasPrevious()}">--%>
+<%--                                        <li class="page-item"><a class="page-link"--%>
+<%--                                                                 href="?page=${pageCTSP.number - 1}">&laquo;</a>--%>
+<%--                                        </li>--%>
+<%--                                    </c:if>--%>
+<%--                                    <c:if test="${pageCTSP.totalPages > 0}">--%>
+<%--                                        <c:forEach var="i" begin="0" end="${pageCTSP.totalPages - 1}">--%>
+<%--                                            <li class="page-item ${pageCTSP.number == i ? 'active' : ''}">--%>
+<%--                                                <a class="page-link" href="?page=${i}">${i + 1}</a>--%>
+<%--                                            </li>--%>
+<%--                                        </c:forEach>--%>
+<%--                                    </c:if>--%>
+<%--                                    <c:if test="${pageCTSP.hasNext()}">--%>
+<%--                                        <li class="page-item"><a class="page-link"--%>
+<%--                                                                 href="?page=${pageCTSP.number + 1}">&raquo;</a>--%>
+<%--                                        </li>--%>
+<%--                                    </c:if>--%>
+<%--                                </ul>--%>
+<%--                            </nav>--%>
                         </div>
                     </div>
                 </div>
@@ -1590,84 +1703,88 @@
         </div>
 
 
-        <%--  Phiếu hóa đơn để giao hàng --%>
-        <div class="delivery" style="display: none">
-            <div class="container mt-5 p-4 shadow delivery">
+        <%--  Phiếu hóa đơn để giao hàng(In hóa đơn) --%>
+        <div id="invoiceSection" class="container mt-5 p-4 shadow delivery" style="display: none">
+            <div class="bordered-section">
                 <div class="row">
-                    <div class="col-md-12 text-center">
-                        <h1>MS-STORE</h1>
+                    <div class="col-md-6">
+                        <h1 class="mb-0">MS-STORE</h1>
                         <p class="mb-1">Mã Hóa Đơn: ${hoaDonDTO.ma}</p>
                         <p class="mb-0">Ngày Đặt Đơn: ${hoaDonDTO.ngayTao}</p>
                     </div>
-
-                </div>
-                <div class="separator"></div>
-
-
-                <div class="row mb-4">
-                    <div class="col-md-6">
-                        <h5>Thông tin Bên Gửi:</h5>
-                        <div class="d-flex flex-column">
-                            <p>Người gửi: MS-STORE</p>
-                            <p>Địa chỉ: Tòa nhà FPT Polytechnic, Phố Trịnh Văn Bô, Xuân Phương, Nam Từ Liêm, Hà Nội</p>
-                            <p>Số điện thoại: 0123 456 789</p>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <h5>Thông tin Bên Nhận:</h5>
-                        <div class="d-flex flex-column">
-                            <p>Người nhận: ${hoaDonDTO.khachHang.hoTen}</p>
-                            <p>Địa
-                                chỉ: ${diaChiKhachHang.diaChiChiTiet}, ${diaChiKhachHang.idPhuongXa}, ${diaChiKhachHang.idQuanHuyen}, ${diaChiKhachHang.idTinhThanh}</p>
-                            <p>Số điện thoại: ${hoaDonDTO.khachHang.sdt}</p>
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="mb-4">
-                    <h5>Nội dung đơn hàng</h5>
-                    <table class="table table-bordered">
-                        <thead class="thead-light">
-                        <tr>
-                            <th>Tên Sản Phẩm</th>
-                            <th>Màu Sắc</th>
-                            <th>Kích Thước</th>
-                            <th>Số Lượng</th>
-                            <th>Đơn Giá</th>
-                            <th>Tổng tiền</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <c:forEach var="chiTiet" items="${listHDCT}" varStatus="i">
-                            <tr>
-                                <td>${chiTiet.idCTSP.idSanPham.ten}</td>
-                                <td>${chiTiet.idCTSP.idMauSac.ten}</td>
-                                <td>${chiTiet.idCTSP.idKichThuoc.ten}</td>
-                                <td>${chiTiet.soLuong}</td>
-                                <td><fmt:formatNumber value="${chiTiet.donGia}" type="currency" currencySymbol="₫"
-                                                      groupingUsed="true"/></td>
-                                <td><fmt:formatNumber value="${chiTiet.donGia * chiTiet.soLuong}" type="currency"
-                                                      currencySymbol="₫" groupingUsed="true"/></td>
-                            </tr>
-                        </c:forEach>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="d-flex justify-content-between align-items-start mb-4">
-                    <div>
-                        <h5 class="mb-0">Tiền thu hộ: <span><fmt:formatNumber value="${hoaDonDTO.tongTien}"
-                                                                              type="currency" currencySymbol="₫"
-                                                                              groupingUsed="true"/></span></h5>
-                    </div>
-                    <div class="text-right mr-5">
-                        <p class="mb-1 mr-5">Chữ ký người nhận</p>
-                        <p class="mb-0">(Xác nhận hàng nguyên vẹn, không móp, méo)</p>
+                    <div class="col-md-6 text-right">
+                        <img src="https://cdn.prod.website-files.com/5fb85f26f126ce08d792d2d9/607cdb2f875a62174a2ac9e3_After_GHN.png" alt="Giao hàng nhanh" class="delivery-logo">
                     </div>
                 </div>
             </div>
+
+            <div class="separator"></div>
+            <table style="width: 100%;">
+                <tr>
+                    <td style="width: 50%; padding-right: 10px;">
+                        <div class="bordered-section">
+                            <h5>Thông tin Bên Gửi:</h5>
+                            <div>
+                                <p>Người gửi: MS-STORE</p>
+                                <p>Địa chỉ: Tòa nhà FPT Polytechnic, Phố Trịnh Văn Bô, Xuân Phương, Nam Từ Liêm, Hà Nội</p>
+                                <p>Số điện thoại: 0123 456 789</p>
+                            </div>
+                        </div>
+                    </td>
+                    <td style="width: 50%; padding-left: 10px;">
+                        <div class="bordered-section">
+                            <h5>Thông tin Bên Nhận:</h5>
+                            <div>
+                                <p>Người nhận: ${hoaDonDTO.khachHang.hoTen}</p>
+                                <p>Địa chỉ: ${diaChiKhachHang.diaChiChiTiet}, ${diaChiKhachHang.idPhuongXa}, ${diaChiKhachHang.idQuanHuyen}, ${diaChiKhachHang.idTinhThanh}</p>
+                                <p>Số điện thoại: ${hoaDonDTO.khachHang.sdt}</p>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+            <div class="separator"></div>
+
+            <div class="mb-4 bordered-section">
+                <h5>Nội dung đơn hàng</h5>
+                <table class="table table-bordered">
+                    <thead class="thead-light">
+                    <tr>
+                        <th>Tên Sản Phẩm</th>
+                        <th>Màu Sắc</th>
+                        <th>Kích Thước</th>
+                        <th>Số Lượng</th>
+                        <th>Đơn Giá</th>
+                        <th>Tổng tiền</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <c:forEach var="chiTiet" items="${listHDCT}" varStatus="i">
+                        <tr>
+                            <td>${chiTiet.idCTSP.idSanPham.ten}</td>
+                            <td>${chiTiet.idCTSP.idMauSac.ten}</td>
+                            <td>${chiTiet.idCTSP.idKichThuoc.ten}</td>
+                            <td>${chiTiet.soLuong}</td>
+                            <td><fmt:formatNumber value="${chiTiet.donGia}" type="currency" currencySymbol="₫" groupingUsed="true"/></td>
+                            <td><fmt:formatNumber value="${chiTiet.donGia * chiTiet.soLuong}" type="currency" currencySymbol="₫" groupingUsed="true"/></td>
+                        </tr>
+                    </c:forEach>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-start mb-4">
+                <div>
+                    <h5 class="mb-0">Tiền thu hộ: <span><fmt:formatNumber value="${hoaDonDTO.tongTien}" type="currency" currencySymbol="₫" groupingUsed="true"/></span></h5>
+                </div>
+                <div class="signature-box">
+                    <p class="mb-1">Chữ ký người nhận</p>
+                    <p class="mb-0">(Xác nhận hàng nguyên vẹn, không móp, méo)</p>
+                </div>
+            </div>
         </div>
+
 
 
         <!-- Footer -->
@@ -1798,6 +1915,116 @@
     //     };
     //     html2pdf().from(element).set(opt).save();
     // });
+
+    function openPrintModal() {
+        // Hiển thị phần tử invoiceSection để in
+        document.getElementById('invoiceSection').style.display = 'block';
+
+        // Mở cửa sổ in
+        window.print();
+
+        // Ẩn lại phần tử invoiceSection sau khi in xong (nếu bạn muốn)
+        document.getElementById('invoiceSection').style.display = 'none';
+    }
+
+
+
+
+
+
+    <%--function handleFormSubmit(e, currentStatus) {--%>
+    <%--    e.preventDefault();  // Ngăn chặn hành động mặc định của form--%>
+    <%--    console.log("zo")--%>
+    <%--    const form = e.target;--%>
+
+    <%--    // Gửi form sử dụng Fetch API--%>
+    <%--    fetch(form.action, {--%>
+    <%--        method: form.method,--%>
+    <%--        body: new FormData(form)--%>
+    <%--    })--%>
+    <%--        .then(response => {--%>
+    <%--            if (!response.ok) {--%>
+    <%--                throw new Error('Network response was not ok');--%>
+    <%--            }--%>
+    <%--            return response.json();  // Giả sử server trả về JSON--%>
+    <%--        })--%>
+    <%--        .then(data => {--%>
+    <%--            // Kiểm tra nếu phản hồi chỉ ra thành công--%>
+    <%--            if (data.success) {--%>
+
+    <%--                // Đóng modal--%>
+    <%--                const modal = document.getElementById('confirmModal');--%>
+    <%--                const modalInstance = bootstrap.Modal.getInstance(modal);--%>
+    <%--                modalInstance.hide();--%>
+
+    <%--                // In hóa đơn nếu trạng thái thay đổi từ "chờ xác nhận" (1) sang "đã xác nhận" (2)--%>
+    <%--                const newStatus = data.newStatus;--%>
+    <%--                if (currentStatus == 1 && newStatus == 2) {--%>
+    <%--                    console.log("oki")--%>
+    <%--                    printDeliveryNote();--%>
+    <%--                }--%>
+    <%--            } else {--%>
+    <%--                console.log("no")--%>
+    <%--                // Xử lý lỗi (ví dụ: hiển thị thông báo lỗi)--%>
+    <%--                document.getElementById('moTaError').style.display = 'block';--%>
+    <%--            }--%>
+    <%--        })--%>
+    <%--        .catch(error => {--%>
+    <%--            console.error('Có vấn đề xảy ra khi gửi yêu cầu:', error);--%>
+    <%--        });--%>
+    <%--}--%>
+
+    <%--function printDeliveryNote() {--%>
+    <%--    const container = document.querySelector('.delivery');--%>
+    <%--    container.style.display = 'block'; // Hiển thị phần container chứa hóa đơn--%>
+
+    <%--    // Tạo một cửa sổ in ẩn--%>
+    <%--    const printWindow = window.open('', '_blank');--%>
+    <%--    printWindow.document.open();--%>
+
+    <%--    // Tạo nội dung HTML để in--%>
+    <%--    const htmlContent = `--%>
+    <%--    <!DOCTYPE html>--%>
+    <%--    <html lang="en">--%>
+    <%--    <head>--%>
+    <%--        <meta charset="UTF-8">--%>
+    <%--        <meta name="viewport" content="width=device-width, initial-scale=1.0">--%>
+    <%--        <title>Delivery Note</title>--%>
+    <%--        <style>--%>
+    <%--            /* Thêm các kiểu CSS cho hóa đơn tại đây */--%>
+    <%--            /* Ví dụ: */--%>
+    <%--            body {--%>
+    <%--                font-family: Arial, sans-serif;--%>
+    <%--                line-height: 1.6;--%>
+    <%--            }--%>
+    <%--            .container {--%>
+    <%--                margin: 20px;--%>
+    <%--                padding: 20px;--%>
+    <%--                border: 1px solid #ccc;--%>
+    <%--                background-color: #fff;--%>
+    <%--            }--%>
+    <%--            /* Các kiểu CSS khác tùy thuộc vào nhu cầu của bạn */--%>
+    <%--        </style>--%>
+    <%--    </head>--%>
+    <%--    <body>--%>
+    <%--        ${container.innerHTML}--%>
+    <%--    </body>--%>
+    <%--    </html>--%>
+    <%--`;--%>
+
+    <%--    // Đưa nội dung HTML vào cửa sổ in--%>
+    <%--    printWindow.document.write(htmlContent);--%>
+    <%--    printWindow.document.close();--%>
+
+    <%--    // Đợi cho tài liệu HTML được tạo hoàn thành trước khi in--%>
+    <%--    printWindow.onload = function() {--%>
+    <%--        printWindow.focus(); // Focus vào cửa sổ in--%>
+    <%--        printWindow.print(); // Thực hiện lệnh in--%>
+    <%--        printWindow.close(); // Đóng cửa sổ in sau khi in xong--%>
+    <%--    };--%>
+    <%--}--%>
+
+
 
     // Validate ô input mô tả xác nhận
     $(document).ready(function () {
@@ -2212,8 +2439,79 @@
             });
         });
     });
-</script>
+//     phân trang
 
+</script>
+<%--<script>--%>
+<%--    const rowsPerPage = 15;--%>
+<%--    // Các hàng dữ liệu trong bảng--%>
+<%--    const tableRows = document.getElementById('tbl_ds_spct');--%>
+<%--    // Tính số trang dựa trên số hàng dữ liệu--%>
+<%--    const totalPagess = Math.ceil(tableRows.length / rowsPerPage);--%>
+<%--    let currentPagee = 1; // Trang hiện tại--%>
+
+<%--    showPage(1); // Hiển thị trang đầu tiên khi trang web được tải--%>
+<%--    // Tạo và thêm nút phân trang vào phần tử có lớp là "pagination"--%>
+<%--    const pagination = document.querySelector('.pagination');--%>
+<%--    updatePagination(currentPagee);--%>
+
+<%--    function updatePagination(currentPagee) {--%>
+<%--        pagination.innerHTML = ''; // Xóa hết các button cũ--%>
+<%--        const maxButtons = 5; // Số lượng button tối đa được hiển thị--%>
+<%--        const startPage = Math.max(1, currentPagee - Math.floor(maxButtons / 2));--%>
+<%--        const endPage = Math.min(totalPagess, startPage + maxButtons - 1);--%>
+
+<%--        if (startPage > 1) {--%>
+<%--            const previousPage = document.createElement('button');--%>
+<%--            previousPage.innerText = '<';--%>
+<%--            previousPage.addEventListener('click', function() {--%>
+<%--                currentPagee = Math.max(1, currentPagee - 1); // Di chuyển đến trang trước đó--%>
+<%--                showPage(currentPagee);--%>
+<%--                updatePagination(currentPagee);--%>
+<%--            });--%>
+<%--            pagination.appendChild(previousPage);--%>
+<%--        }--%>
+
+<%--        for (let i = startPage; i <= endPage; i++) {--%>
+<%--            const button = document.createElement('button');--%>
+<%--            button.innerText = i;--%>
+<%--            button.addEventListener('click', function() {--%>
+<%--                currentPagee = i;--%>
+<%--                showPage(currentPagee);--%>
+<%--                updatePagination(currentPagee);--%>
+<%--            });--%>
+<%--            if (i === currentPagee) {--%>
+<%--                button.classList.add('active');--%>
+<%--                button.style.backgroundColor = 'darkgray';--%>
+<%--            }--%>
+<%--            pagination.appendChild(button);--%>
+<%--        }--%>
+<%--        if (endPage < totalPagess) {--%>
+<%--            const nextPage = document.createElement('button');--%>
+<%--            nextPage.innerText = '>';--%>
+<%--            nextPage.addEventListener('click', function() {--%>
+<%--                currentPagee = Math.min(totalPagess, currentPagee + 1); // Di chuyển đến trang kế tiếp--%>
+<%--                showPage(currentPagee);--%>
+<%--                updatePagination(currentPagee);--%>
+<%--            });--%>
+<%--            pagination.appendChild(nextPage);--%>
+<%--        }--%>
+
+<%--    }--%>
+
+<%--    // Hiển thị các hàng dữ liệu tương ứng với trang được chọn--%>
+<%--    function showPage(pageNumber) {--%>
+<%--        const startIndex = (pageNumber - 1) * rowsPerPage;--%>
+<%--        const endIndex = startIndex + rowsPerPage;--%>
+<%--        tableRows.forEach((row, index) => {--%>
+<%--            if (index >= startIndex && index < endIndex) {--%>
+<%--                row.style.display = '';--%>
+<%--            } else {--%>
+<%--                row.style.display = 'none';--%>
+<%--            }--%>
+<%--        });--%>
+<%--    }--%>
+<%--</script>--%>
 
 
 
