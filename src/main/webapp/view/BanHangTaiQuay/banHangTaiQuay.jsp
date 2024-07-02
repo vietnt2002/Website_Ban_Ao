@@ -101,56 +101,96 @@
         <!-- Divider -->
         <hr class="sidebar-divider my-0">
 
-        <!-- Nav Item - Dashboard -->
-        <li class="nav-item active">
-            <a class="nav-link" href="/ban-hang-tai-quay">
-                <i class="fas fa-fw fa-chart-area"></i>
-                <span>Bán hàng tại quầy</span></a>
-        </li>
+        <c:choose>
+            <c:when test="${sessionScope.userRole == 'Quản lý'}">
+                <!-- Nav Item - Dashboard -->
+                <li class="nav-item active">
+                    <a class="nav-link" href="/ban-hang-tai-quay">
+                        <i class="fas fa-fw fa-tachometer-alt"></i>
+                        <span>Bán hàng tại quầy</span></a>
+                </li>
 
-        <!-- Nav Item - Charts -->
-        <li class="nav-item">
-            <a class="nav-link" href="/hoa-don/hien-thi">
-                <i class="fas fa-fw fa-chart-area"></i>
-                <span>Quản lý hóa đơn</span></a>
-        </li>
+                <!-- Nav Item - Charts -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/ban-hang-tai-quay/admin/ban-tai-quay">
+                        <i class="fas fa-fw fa-chart-area"></i>
+                        <span>Thống kê doanh thu</span></a>
+                </li>
 
-        <!-- Nav Item - Charts -->
-        <li class="nav-item">
-            <a class="nav-link" href="/qlnv/quan-ly-nhan-vien">
-                <i class="fas fa-fw fa-chart-area"></i>
-                <span>Quản lý nhân viên</span></a>
-        </li>
+                <!-- Nav Item - Charts -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/hoa-don/hien-thi">
+                        <i class="fas fa-fw fa-chart-area"></i>
+                        <span>Quản lý đơn hàng</span></a>
+                </li>
 
-        <!-- Nav Item - Charts -->
-        <li class="nav-item">
-            <a class="nav-link" href="/hoa-don/hien-thi">
-                <i class="fas fa-fw fa-chart-area"></i>
-                <span>Pending....</span></a>
-        </li>
+                <!-- Nav Item - Charts -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/hoa-don/hien-thi">
+                        <i class="fas fa-fw fa-chart-area"></i>
+                        <span>Quản lý hóa đơn</span></a>
+                </li>
 
-        <!-- Nav Item - Pages Collapse Menu -->
-        <!-- Nav Item - Charts -->
-        <li class="nav-item">
-            <a class="nav-link" href="charts.html">
-                <i class="fas fa-fw fa-chart-area"></i>
-                <span>Pending....</span></a>
-        </li>
+                <!-- Nav Item - Pages Collapse Menu -->
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+                       aria-expanded="true" aria-controls="collapseTwo">
+                        <i class="fas fa-fw fa-cog"></i>
+                        <span>Quản lý sản phẩm</span>
+                    </a>
+                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <a class="collapse-item" href="buttons.html">Màu sắc, kích thước các thứ</a>
+                            <a class="collapse-item" href="cards.html">Cards</a>
+                        </div>
+                    </div>
+                </li>
 
-        <!-- Nav Item - Charts -->
-        <li class="nav-item">
-            <a class="nav-link" href="charts.html">
-                <i class="fas fa-fw fa-chart-area"></i>
-                <span>Pending......</span></a>
-        </li>
+                <!-- Nav Item - Charts -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/store/quan-ly-nhan-vien">
+                        <i class="fas fa-fw fa-chart-area"></i>
+                        <span>Quản lý nhân viên</span></a>
+                </li>
 
-        <!-- Divider -->
-        <hr class="sidebar-divider d-none d-md-block">
+                <!-- Nav Item - Charts -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/store/quan-ly-khach-hang">
+                        <i class="fas fa-fw fa-chart-area"></i>
+                        <span>Quản lý khách hàng</span></a>
+                </li>
 
-        <!-- Sidebar Toggler (Sidebar) -->
-        <div class="text-center d-none d-md-inline">
-            <button class="rounded-circle border-0" id="sidebarToggle"></button>
-        </div>
+                <!-- Divider -->
+                <hr class="sidebar-divider d-none d-md-block">
+
+                <!-- Sidebar Toggler (Sidebar) -->
+                <div class="text-center d-none d-md-inline">
+                    <button class="rounded-circle border-0" id="sidebarToggle"></button>
+                </div>
+            </c:when>
+            <c:otherwise>
+                <!-- Nav Item - Dashboard -->
+                <li class="nav-item active">
+                    <a class="nav-link" href="/ban-hang-tai-quay">
+                        <i class="fas fa-fw fa-tachometer-alt"></i>
+                        <span>Bán hàng tại quầy</span></a>
+                </li>
+
+                <!-- Nav Item - Charts -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/hoa-don/hien-thi">
+                        <i class="fas fa-fw fa-chart-area"></i>
+                        <span>Quản lý hóa đơn</span></a>
+                </li>
+
+                <!-- Nav Item - Charts -->
+                <li class="nav-item">
+                    <a class="nav-link" href="charts.html">
+                        <i class="fas fa-fw fa-chart-area"></i>
+                        <span>Quản lý khách hàng</span></a>
+                </li>
+            </c:otherwise>
+        </c:choose>
 
     </ul>
 
@@ -341,7 +381,7 @@
                                 Tài khoản của tôi
                             </a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="/store/dang-xuat" id="dang-xuat" data-toggle="modal" data-target="#logoutModal">
+                            <a class="dropdown-item" href="/ban-hang-tai-quay/dang-xuat">
                                 <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Đăng xuất
                             </a>
@@ -531,16 +571,20 @@
                                                 <p>${hoaDon.idKhuyenMai.soTienGiam}</p>
                                             </div>
                                         </div>
-                                        <div class="row mb-3">
-                                            <label class="col-sm-4 col-form-label">Tổng tiền</label>
-                                            <div class="col-sm-8">
-                                                <c:if test="${total>0}">
-                                                    <input id="tongTienKhiTruKM" type="number" class="form-control"
-                                                           name="tongTien"  value="${total-hoaDon.idKhuyenMai.soTienGiam}"
-                                                           readonly/>
-                                                </c:if>
-                                            </div>
+                                    <div class="row mb-3">
+                                        <label class="col-sm-4 col-form-label">Tổng tiền</label>
+                                        <div class="col-sm-8">
+                                            <c:if test="${total>0}">
+                                                <input id="tongTienKhiTruKM" type="number" class="form-control"
+                                                       name="tongTien"  value="${total-hoaDon.idKhuyenMai.soTienGiam}"
+                                                       readonly/>
+                                            </c:if>
+                                            <c:if test="${total==null}">
+                                                <input type="number" class="form-control" value="0"
+                                                       readonly/>
+                                            </c:if>
                                         </div>
+                                    </div>
                                         <div class="row mb-3">
                                             <label class="col-sm-4 col-form-label">Tiền khách đưa</label>
                                             <div class="col-sm-6">
@@ -902,24 +946,24 @@
 </a>
 
 <!-- Logout Modal-->
-<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel3">Ready to Leave?</h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                <a class="btn btn-primary" href="login.html">Logout</a>
-            </div>
-        </div>
-    </div>
-</div>
+<%--<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"--%>
+<%--     aria-hidden="true">--%>
+<%--    <div class="modal-dialog" role="document">--%>
+<%--        <div class="modal-content">--%>
+<%--            <div class="modal-header">--%>
+<%--                <h5 class="modal-title" id="exampleModalLabel3">Ready to Leave?</h5>--%>
+<%--                <button class="close" type="button" data-dismiss="modal" aria-label="Close">--%>
+<%--                    <span aria-hidden="true">×</span>--%>
+<%--                </button>--%>
+<%--            </div>--%>
+<%--            <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>--%>
+<%--            <div class="modal-footer">--%>
+<%--                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>--%>
+<%--                <a class="btn btn-primary" href="login.html">Logout</a>--%>
+<%--            </div>--%>
+<%--        </div>--%>
+<%--    </div>--%>
+<%--</div>--%>
 
 <!-- Bootstrap core JavaScript-->
 <script src="/view_admin/vendor/jquery/jquery.min.js"></script>
@@ -1054,7 +1098,12 @@
         var selectedInvoiceId = document.getElementById("selectedInvoiceId").value;
 
         if (selectedInvoiceId === "") {
-            alert("Vui lòng chọn hóa đơn trước khi thêm sản phẩm vào giỏ hàng.");
+            Swal.fire({
+                title: 'Lỗi!',
+                text: 'Vui lòng chọn hóa đơn trước khi thêm sản phẩm vào giỏ hàng.',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
             return false; // Ngăn chặn sự kiện click nút "+"
         }
 
@@ -1067,7 +1116,12 @@
         var selectedMaGiamGia = document.getElementById("selectedMaGiamGia").value;
 
         if (selectedMaGiamGia === "") {
-            alert("Vui lòng chọn hóa đơn trước khi thêm mã giảm giá vào giỏ hàng.");
+            Swal.fire({
+                title: 'Lỗi!',
+                text: 'Vui lòng chọn hóa đơn trước khi thêm mã giảm giá vào giỏ hàng.',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
             return false; // Ngăn chặn sự kiện click nút "+"
         }
 
@@ -1273,7 +1327,7 @@
         $('#combobox5').on('change', function() {
             var productId = $(this).val();
             $.ajax({
-                url: "/ban-hang-tai-quay/locSPCTByKieuTay/"+productId,
+                url: "/ban_hang_tai_quay/locSPCTByKieuTay/${hoaDon.id}/"+productId,
                 type: 'GET',
                 data: {id: productId},
                 success: function(data) {
@@ -1283,6 +1337,7 @@
             });
         });
     });
+
 </script>
 
 <script>
