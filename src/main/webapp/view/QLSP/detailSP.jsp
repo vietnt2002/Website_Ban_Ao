@@ -353,14 +353,23 @@
                     </li>
                 </ul>
             </nav>
-
-
             <!-- Bán hàng tại quầy -->
-            <div class="container-fluid">
+            <div class="container-fluid bg-white">
                 <div class="container">
                     <div class="row">
-                        <div class="">
-                            <div>
+                        <div class="mt-3">
+                            <h4 class="border-bottom">Quản lý sản phẩm chi tiết</h4>
+                            <div class="d-flex gap-3 mt-3">
+                                <img id="hinhAnhSP" width="200" height="200" alt="">
+                                <div id="product-details">
+                                    <h5 class="border-bottom">Tên sản phẩm:&nbsp&nbsp<span id="tenSP"></span></h5>
+                                    <h5 class="border-bottom">Mã sản phẩm:&nbsp&nbsp<span id="maSP"></span></h5>
+                                    <h5 class="border-bottom">Ngày tạo:&nbsp&nbsp<span id="ngayTaoSP"></span></h5>
+                                    <h5 class="border-bottom">Trạng thái:&nbsp&nbsp<span id="trangThaiSP"></span></h5>
+                                </div>
+                            </div>
+                            <h5 class="mt-3 border-bottom">Danh sách sản phẩm chi tiết: </h5>
+                            <div class="mt-3">
                                 <form method="post" action="/ban-hang-tai-quay/filter">
                                     <div class="row">
                                         <div class="col col-md-2">
@@ -433,8 +442,9 @@
                                                 </ul>
                                             </div>
                                         </div>
-
-
+                                        <div class="col col-md-2">
+                                            <button id="btnSearch" class="btn btn-success me-2">Tìm kiếm</button>
+                                        </div>
                                     </div>
                                 </form>
                             </div>
@@ -442,15 +452,16 @@
                                 <thead>
                                 <tr>
                                     <th>STT</th>
-                                    <th>Hình ảnh</th>
-                                    <th>Mã</th>
-                                    <th>Tên</th>
-                                    <th>Ngày tạo</th>
+                                    <th>Màu sắc</th>
+                                    <th>Kích thước</th>
+                                    <th>Chất liệu</th>
+                                    <th>Kiểu tay</th>
+                                    <th>Số lượng</th>
                                     <th>Trạng thái</th>
                                     <th>Thao tác</th>
                                 </tr>
                                 </thead>
-                                <tbody id="tbl_ds_sp">
+                                <tbody id="tbl_ds_spct">
 
                                 </tbody>
                             </table>
@@ -486,27 +497,28 @@
                         </div>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                     </div>
-
                     <div class="modal-body d-flex gap-5">
                         <div>
-                            <img src="${hinhAnhdspAdd}" alt="" width="200" height="200">
+                            <img src="src/main/webapp/image/${hinhAnhdspAdd}" alt="" width="200" height="200">
                         </div>
                         <div>
-                            <div class="mb-3">
-                                <label for="tenSPAdd" class="form-label">Tên sản phẩm</label>
-                                <input type="text" class="form-control" id="tenSPAdd">
-                                <p style="color: red;"id="tenSPAddErr"></p>
-                            </div>
-                            <div class="mb-3">
-                                <label for="hinhAnhAdd" class="form-label">Hình ảnh</label>
-                                <input type="file" class="form-control" id="hinhAnhAdd" value="">
-                                <p style="color: red;" id="hinhAnhAddErr"></p>
-                            </div>
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" role="switch" id="trangThaiAdd" checked>
-                                <label class="form-check-label" for="trangThaiAdd" id="trangThaiLabeladd"></label>
-                            </div>
-                            <button id="saveAddBtn" class="btn btn-primary">Lưu</button>
+                            <form id="uploadFormAdd" method="post" enctype="multipart/form-data" action="/upload">
+                                <div class="mb-3">
+                                    <label for="tenSPAdd" class="form-label">Tên sản phẩm</label>
+                                    <input type="text" class="form-control" id="tenSPAdd">
+                                    <p style="color: red;"id="tenSPAddErr"></p>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="hinhAnhAdd" class="form-label">Hình ảnh</label>
+                                    <input type="file" name="file" class="form-control" id="hinhAnhAdd" value="">
+                                    <p style="color: red;" id="hinhAnhAddErr"></p>
+                                </div>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="trangThaiAdd" checked>
+                                    <label class="form-check-label" for="trangThaiAdd" id="trangThaiLabeladd"></label>
+                                </div>
+                                <button type="submit" id="saveAddBtn"  class="btn btn-primary">Lưu</button>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -526,24 +538,26 @@
                     </div>
                     <div class="modal-body d-flex gap-5">
                         <div class="border">
-                            <img src="${hinhAnhDisplay}" width="200" height="200" alt="">
+                            <img id="hinhAnhEditDisplay" width="200" height="200" alt="">
                         </div>
                         <div>
-                            <div class="mb-3">
-                                <label for="tenSPEdit" class="form-label">Tên sản phẩm</label>
-                                <input type="text" class="form-control" id="tenSPEdit" aria-describedby="emailHelp" value="">
-                                <p style="color: red;" id="tenSPEditErr"></p>
-                            </div>
-                            <div class="mb-3">
-                                <label for="hinhAnhEdit" class="form-label">Hình ảnh</label>
-                                <input type="file" class="form-control" id="hinhAnhEdit" value="">
-                                <p style="color: red;" id="hinhAnhEditErr"></p>
-                            </div>
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" role="switch" id="trangThaiEdit" checked>
-                                <label class="form-check-label" for="trangThaiEdit" id="trangThaiLabeledit">Trạng thái</label>
-                            </div>
-                            <button id="saveEditBtn"  class="btn btn-primary">Lưu</button>
+                            <form id="uploadFormEdit" method="post" enctype="multipart/form-data" action="/upload">
+                                <div class="mb-3">
+                                    <label for="tenSPEdit" class="form-label">Tên sản phẩm</label>
+                                    <input type="text" class="form-control" id="tenSPEdit" aria-describedby="emailHelp" value="">
+                                    <p style="color: red;" id="tenSPEditErr"></p>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="hinhAnhEdit" class="form-label">Hình ảnh</label>
+                                    <input type="file" name="file" class="form-control" id="hinhAnhEdit" value="">
+                                    <p style="color: red;" id="hinhAnhEditErr"></p>
+                                </div>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="trangThaiEdit" checked>
+                                    <label class="form-check-label" for="trangThaiEdit" id="trangThaiLabeledit">Trạng thái</label>
+                                </div>
+                                <button id="saveEditBtn" type="submit"  class="btn btn-primary">Lưu</button>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -705,6 +719,7 @@
             });
         });
     });
+
     checkBtn.forEach(button => {
         button.addEventListener('click', function () {
             console.log("test check btn");
@@ -758,10 +773,30 @@
 <script>
     let idSPLocal = "";
     let currentPage = 1;
-    const loadDSSP = (pageParams) => {
+    const queryString = window.location.pathname;
+    const pathParts = queryString.split('/');
+    const pathVariable = pathParts[pathParts.length - 1];
+
+    const loadSP = ()=>{
+        fetch("/san-pham/detail/"+pathVariable, {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        }).then(response => response.json())
+            .then(resp => {
+                let trangThaiSP = "";
+                $('#tenSP').text(resp.ten);
+                $('#maSP').text(resp.ma);
+                $('#ngayTaoSP').text(resp.ngayTao);
+                $('#trangThaiSP').text(resp.trangThai);
+            });
+    }
+    loadSP();
+    const loadDSSPCT = (pageParams) => {
         // get api + scpt.id
         let datatest = "data testing";
-        fetch("/san-pham/index"+"?page="+pageParams, {
+        fetch("/chi-tiet-sp/detail-byidsp-all/"+pathVariable+"?page="+pageParams, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -769,28 +804,30 @@
         }).then(response => response.json())
             .then(resp => {
                 let html = '';
-                resp.map((sp,i)=>{
-                    const maSanPham = sp.ma || 'N/A';
-                    const tenSanPham = sp.ten || 'N/A';
-                    const hinhAnh = sp.hinhAnh || 'N/A';
-                    const ngayTao = sp.ngayTao || 'N/A';
-                    const trangThai = sp.trangThai == 1 ? "Hoạt động" : "Dừng hđ";
+                resp.map((spct, i) => {
+                    const trangThai = spct.trangThai == 1 ? "Hoạt động" : "Dừng hđ";
+                    const mauSac = spct.idMauSac.ten || 'N/A';
+                    const kichThuoc = spct.idKichThuoc.ten || 'N/A';
+                    const chatLieu = spct.idChatLieu.ten || 'N/A';
+                    const kieuTay = spct.idKieuTay.ten || 'N/A';
+                    const soLuong = spct.soLuong || 'N/A';
                     html += '<tr>' +
                         '<td>' + (i + 1) + '</td>' +
-                        '<td><img src="' + hinhAnh + '" alt="Image" class="img-fluid" /></td>' +
-                        '<td>' + maSanPham + '</td>' +
-                        '<td>' + tenSanPham + '</td>' +
-                        '<td>' + ngayTao + '</td>' +
+                        '<td>' + mauSac + '</td>' +
+                        '<td>' + kichThuoc + '</td>' +
+                        '<td>' + chatLieu + '</td>' +
+                        '<td>' + kieuTay + '</td>' +
+                        '<td>' + soLuong + '</td>' +
                         '<td>' + trangThai + '</td>' +
                         '<td>' +
                         '<div class="d-inline">' +
-                        '<button id="editSPBtn_' + sp.id + '" class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#ModalEdit">Chỉnh sửa</button>' +
-                        '<button id="detailSPBtn_' + sp.id + '" class="btn btn-danger">Chi tiết</button>' +
+                        '<button id="editSPBtn_' + spct.id + '" class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#ModalEdit">Chỉnh sửa</button>' +
+                        '<button id="detailSPBtn_' + spct.id + '" class="btn btn-danger">Chi tiết</button>' +
                         '</div>' +
                         '</td>' +
                         '</tr>';
                 });
-                $("#tbl_ds_sp").html(html)
+                $("#tbl_ds_spct").html(html)
             });
     }
     function testDataMapping(){
@@ -803,7 +840,7 @@
         element.parentElement.classList.add('active');
         currentPage = page ;
         updateButtons();
-        loadDSSP(currentPage);
+        loadDSSPCT(currentPage);
     }
     function updateButtons() {
         let items = document.querySelectorAll('.page-item');
@@ -817,7 +854,7 @@
         let activeIndex = Array.from(items).findIndex(item => item.classList.contains('active'));
         let newIndex = activeIndex + direction;
         currentPage =newIndex
-        loadDSSP(currentPage);
+        loadDSSPCT(currentPage);
         if (newIndex > 0 && newIndex < items.length - 1) {
             setActive(items[newIndex].querySelector('a'));
         }
@@ -849,10 +886,10 @@
             // Handle fetch error
         });
     }
-    loadDSSP(currentPage);
+    loadDSSPCT(currentPage);
     loadTotalPagination(currentPage);
     let tenSpEdit = document.getElementById("tenSPEdit");
-    let hinhAnhDisplay = document.getElementById("hinhAnhDisplay");
+    let hinhAnhDisplay = document.getElementById("hinhAnhEditDisplay");
     let trangThaiEdit  = document.getElementById("trangThaiEdit");
     $(document).on('click', "button[id^='editSPBtn_']", e => {
         e.preventDefault();
@@ -869,7 +906,8 @@
         }).then(response => response.json())
             .then(resp => {
                 tenSpEdit.value = resp.ten;
-                hinhAnhDisplay = resp.hinhAnh;
+                console.log("test link image: "+resp.hinhAnh);
+                hinhAnhDisplay.src ="/image/"+ resp.hinhAnh;
                 if(resp.trangThai==1){
                     trangThaiEdit.checked = true;
                     labelElementedit.textContent = "Đang hoạt động";
@@ -882,9 +920,6 @@
     });
     $(document).on('click', "button[id^='detailSPBtn_']", e => {
         e.preventDefault();
-        const queryString = window.location.pathname;
-        const pathParts = queryString.split('/');
-        const pathVariable = pathParts[pathParts.length - 1];
         const spid = e.currentTarget.id.replace("detailSPBtn_", "");
         console.log("====================test id button detail: ", spid);
         window.location.href = '/qlsp/'+spid;
@@ -975,6 +1010,14 @@
         });
     });
 
+    function getFileName(fullPath) {
+        // Check for the last occurrence of the backslash or forward slash
+        var startIndex = Math.max(fullPath.lastIndexOf('\\'), fullPath.lastIndexOf('/'));
+        // Extract the file name
+        var fileName = fullPath.substring(startIndex + 1);
+        return fileName;
+    }
+
     saveAddBtn.forEach(button => {
         button.addEventListener('click', function (e) {
             e.preventDefault();
@@ -987,7 +1030,7 @@
             let trangThai = 0;
             let sttCheck  = 0;
             console.log("====================== ten sp:",tenSP);
-            console.log("====================== hinh anh:",hinhAnh);
+            console.log("====================== hinh anh:",getFileName(hinhAnh));
             console.log("====================== trang thai:",trangThairaw);
             if(trangThairaw==true){
                 trangThai =1;
@@ -1027,8 +1070,23 @@
                         const data = {
                             ten: tenSP,
                             trangThai: trangThai,
-                            hinhAnh: hinhAnh
+                            hinhAnh: getFileName(hinhAnh)
                         };
+                        var formData = new FormData($('#uploadFormAdd')[0]); // Use FormData to get all form data
+                        // Handle file upload via AJAX
+                        $.ajax({
+                            url: '/upload',
+                            type: 'POST',
+                            data: formData,
+                            processData: false,
+                            contentType: false,
+                            success: function(response) {
+                                console.log("save image success ");
+                            },
+                            error: function(xhr, status, error) {
+                                console.log("save image =error");
+                            }
+                        });
                         fetch(`/san-pham/save`, {
                             method: 'POST',
                             headers: {
@@ -1048,7 +1106,7 @@
                                     }
                                 }).then(response => response.json())
                                     .then(resp => {
-                                        loadDSSP(Math.ceil(resp/20));
+                                        loadDSSPCT(Math.ceil(resp/20));
                                         currentPage = Math.ceil(resp/20);
                                         loadTotalPagination(currentPage);
                                     }).catch(error => {
@@ -1067,6 +1125,7 @@
             }
         });
     });
+
     function  validateNull(param){
         if(param===""||param===undefined){
             return true;
@@ -1126,9 +1185,24 @@
                     if (result.isConfirmed) {
                         const data = {
                             ten: tenSP,
-                            hinhAnh: hinhAnh,
+                            hinhAnh: getFileName(hinhAnh),
                             trangThai: trangThai
                         };
+                        var formData = new FormData($('#uploadFormEdit')[0]); // Use FormData to get all form data
+                        // Handle file upload via AJAX
+                        $.ajax({
+                            url: '/upload',
+                            type: 'POST',
+                            data: formData,
+                            processData: false,
+                            contentType: false,
+                            success: function(response) {
+                                console.log("save image success ");
+                            },
+                            error: function(xhr, status, error) {
+                                console.log("save image =error");
+                            }
+                        });
                         fetch(`/san-pham/update/`+idSPLocal, {
                             method: 'POST',
                             headers: {
@@ -1141,7 +1215,7 @@
                                 'Dữ liệu đã được ghi nhận.',
                                 'success'
                             ).then(() => {
-                                loadDSSP(currentPage);
+                                loadDSSPCT(currentPage);
                             });
                         });
                     }
@@ -1153,6 +1227,14 @@
         });
     });
 
+</script>
+<script>
+    $(document).ready(function() {
+        $('#saveAddBtn').on('click', function(event) {
+
+            // Optionally, submit the form normally after AJAX request (if needed)
+        });
+    });
 </script>
 <script>
     // Hiển thị thông báo thêm thành công hoặc thất bại sử dụng thư viện Sweet Alert2

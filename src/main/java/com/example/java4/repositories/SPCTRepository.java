@@ -83,6 +83,8 @@ public interface SPCTRepository extends JpaRepository<ChiTietSanPham,String>, Jp
     Page<ChiTietSanPham> findAllByPage(Pageable pageable);
     @Query(value = "SELECT ctsp FROM ChiTietSanPham ctsp where ctsp.trangThai=:trangThai and ctsp.idSanPham.id=:idSP ORDER BY ctsp.ngayTao asc")
     Page<ChiTietSanPham> findByIdSP(int trangThai,String idSP,Pageable pageAble);
+    @Query(value = "SELECT ctsp FROM ChiTietSanPham ctsp where ctsp.idSanPham.id=:idSP ORDER BY ctsp.ngayTao asc")
+    Page<ChiTietSanPham> findByIdSPAll(String idSP,Pageable pageAble);
     @Modifying(clearAutomatically = true)
     @Query("UPDATE ChiTietSanPham ctsp SET ctsp.trangThai = 1 WHERE ctsp.id=:id")
     int enableStt(@Param("id") String id);

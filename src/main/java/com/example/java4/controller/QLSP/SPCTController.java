@@ -47,13 +47,19 @@ public class SPCTController {
     }
 
     @CrossOrigin
-    @GetMapping("/detail-byidsp/{idSP}")
-    public ResponseEntity<List<ChiTietSanPham>> GetIndexByIdSP(@PathVariable(value = "idSP") String idSP,@RequestParam("page")Optional<Integer> pageParam) {
+    @GetMapping("/detail-byidsp-stt1/{idSP}")
+    public ResponseEntity<List<ChiTietSanPham>> GetIndexByIdSP1(@PathVariable(value = "idSP") String idSP,@RequestParam("page")Optional<Integer> pageParam) {
         int page = pageParam.orElse(1);
         Pageable pageable = PageRequest.of(page-1,20);
         return ResponseEntity.ok(chiTietSPRepository.findByIdSP(1,idSP,pageable).getContent());
     }
-
+    @CrossOrigin
+    @GetMapping("/detail-byidsp-all/{idSP}")
+    public ResponseEntity<List<ChiTietSanPham>> GetIndexByIdSPAll(@PathVariable(value = "idSP") String idSP,@RequestParam("page")Optional<Integer> pageParam) {
+        int page = pageParam.orElse(1);
+        Pageable pageable = PageRequest.of(page-1,20);
+        return ResponseEntity.ok(chiTietSPRepository.findByIdSPAll(idSP,pageable).getContent());
+    }
     @CrossOrigin
     @GetMapping("/get-all")
     public ResponseEntity<List<ChiTietSanPham>> getAll(@RequestParam("page")Optional<Integer> pageParam) {
