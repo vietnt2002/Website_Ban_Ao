@@ -1,9 +1,0 @@
-<component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="WebSpringBootApp" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" singleton="false">
-    <module name="sd18203" />
-    <option name="SPRING_BOOT_MAIN_CLASS" value="com.example.java4.WebSpringBootApp" />
-    <method v="2">
-      <option name="Make" enabled="true" />
-    </method>
-  </configuration>
-</component>

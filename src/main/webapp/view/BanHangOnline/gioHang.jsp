@@ -46,6 +46,57 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <style>
+        .voucher-card {
+            border: 2px solid #007bff; /* Màu xanh của btn-primary */
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            background: #fff;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .voucher-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #007bff; /* Màu xanh của btn-primary */
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+        .voucher-discount {
+            color: #007bff; /* Màu xanh của btn-primary */
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        .voucher-expiry {
+            font-size: 0.9em;
+            color: #888;
+        }
+        .voucher-code {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        .voucher-button {
+            text-align: center;
+        }
+        .voucher-button button {
+            background-color: #007bff; /* Màu xanh của btn-primary */
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .voucher-button button:hover {
+            background-color: #0056b3; /* Màu xanh đậm hơn khi hover */
+        }
+    </style>
     <style>
         .userCart {
             display: flex;
@@ -191,8 +242,7 @@
                         </c:when>
                         <c:otherwise>
                             <!-- Hiển thị nút đăng xuất khi đã đăng nhập -->
-                            <li><a class="dropdown-item" href="#">Theo dõi đơn hàng</a></li>
-                            <li><a class="dropdown-item" href="#">Lịch sử mua hàng</a></li>
+                            <li><a class="dropdown-item" href="/cua-hang/don-mua">Đơn mua</a></li>
                             <li><a class="dropdown-item" href="#">Quản lý tài khoản</a></li>
                             <li><a class="dropdown-item" href="/home/logout">Đăng xuất</a></li>
                         </c:otherwise>
@@ -429,7 +479,7 @@
         <!--Test modal-->
         <!--Danh sách địa chỉ-->
         <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#addAddressModal"
-        style="position: relative; left: 907px; bottom: -186px;">
+                style="position: relative; left: 907px; bottom: -186px;">
             Chọn địa chỉ
         </button>
 
@@ -737,7 +787,8 @@
                            style="background-color: #f1f1f1; border: 1px solid #e4e4e4;" placeholder="Mã giảm giá"
                            value="${hoaDon.idKhuyenMai.ma}"
                            readonly>
-                    <a href="/cua-hang/xoa-khuyen-mai/${hoaDon.id}" style="position: absolute;right: 144px;bottom: 5px;">
+                    <a href="/cua-hang/xoa-khuyen-mai/${hoaDon.id}"
+                       style="position: absolute;right: 144px;bottom: 5px;">
                         <button style="color: black" class="btn btn-outline-secondary" type="button">
                             <i class="fas fa-times"></i>
                         </button>
@@ -819,19 +870,22 @@
                     <h5 class="modal-title" id="couponModalLabel">Phiếu giảm giá</h5>
                 </div>
                 <div class="modal-body">
-                    <c:forEach var="i" items="${listKhuyenMai}">
-                        <div class="list-group-item list-group-item-action flex-column align-items-start">
-                            <div class="d-flex w-100 justify-content-between">
-                                <h5 class="mb-1">Giảm ${i.soTienGiam}</h5>
-                                <small>Hết hạn ${i.ngayKetThuc}</small>
+                    <div class="voucher-container">
+                        <c:forEach var="i" items="${listKhuyenMai}">
+                            <div class="voucher-card">
+                                <div class="voucher-header">
+                                    <div class="voucher-discount">Giảm ${i.soTienGiam}</div>
+                                    <div class="voucher-expiry">Hết hạn ${i.ngayKetThuc}</div>
+                                </div>
+                                <div class="voucher-code">Mã: ${i.ma}</div>
+                                <div class="voucher-button">
+                                    <form action="/cua-hang/khuyen-mai/${i.id}" method="post">
+                                        <button type="submit">Xác nhận</button>
+                                    </form>
+                                </div>
                             </div>
-                            <p class="mb-1">Mã: ${i.ma}</p>
-                        </div>
-
-                        <form action="/cua-hang/khuyen-mai/${i.id}" method="post" style=" position: relative; right: -366px;">
-                            <button type="submit" class="btn btn-primary" style="">Xác nhận</button>
-                        </form>
-                    </c:forEach>
+                        </c:forEach>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
