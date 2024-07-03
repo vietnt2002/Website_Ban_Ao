@@ -630,6 +630,7 @@
 <script>
     let idSPLocal = "";
     let currentPage = 1;
+    let totalPage = 0;
     const queryString = window.location.pathname;
     const pathParts = queryString.split('/');
     const pathVariable = pathParts[pathParts.length - 1];
@@ -826,19 +827,21 @@
     }
     function navigate(direction,e) {
         e.preventDefault();
-        let items = document.querySelectorAll('.page-item');
-        let activeIndex = Array.from(items).findIndex(item => item.classList.contains('active'));
-        let newIndex = activeIndex + direction;
-        currentPage =newIndex
-        loadDSSPCT(currentPage);
-        if (newIndex > 0 && newIndex < items.length - 1) {
-            setActive(items[newIndex].querySelector('a'));
+        if(totalPage>1){
+            let items = document.querySelectorAll('.page-item');
+            let activeIndex = Array.from(items).findIndex(item => item.classList.contains('active'));
+            let newIndex = activeIndex + direction;
+            currentPage =newIndex
+            loadDSSPCT(currentPage);
+            if (newIndex > 0 && newIndex < items.length - 1) {
+                setActive(items[newIndex].querySelector('a'));
+            }
         }
     }
     updateButtons();
 
     const loadTotalPagination = (currentPage) => {
-        fetch("/san-pham/count", {
+        fetch("/chi-tiet-sp/count-byidsp/"+pathVariable, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -848,6 +851,7 @@
                 let html = '';
                 // Check if resp is a number and greater than 0
                 if (typeof resp === 'number' && resp > 0) {
+                    totalPage = Math.ceil(resp/20);
                     for (let i = 1; i <=  Math.ceil(resp/20); i++) {
                         const activeClass = (i === currentPage) ? 'active' : '';
                         html += '<li class="page-item ' + activeClass + '"><a class="page-link" href="#" onclick="setActive(this, ' + i + ')">' + i + '</a></li>';
@@ -862,6 +866,7 @@
             // Handle fetch error
         });
     }
+
     loadDSSPCT(currentPage);
     loadTotalPagination(currentPage);
     let tenSpEdit = document.getElementById("tenSPEdit");
