@@ -169,8 +169,8 @@ public class SPCTController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<ChiTietSanPhamNoMap>> searchChiTietSanPham(@RequestParam Map<String, Object> params) {
-        List<ChiTietSanPhamNoMap> chiTietSanPhams = search.searchChiTietSanPham(params);
+    public ResponseEntity<List<ChiTietSanPham>> searchChiTietSanPham(@RequestParam Map<String, Object> params) {
+        List<ChiTietSanPham> chiTietSanPhams = search.searchChiTietSanPham(params);
         return ResponseEntity.ok(chiTietSanPhams);
     }
 }
