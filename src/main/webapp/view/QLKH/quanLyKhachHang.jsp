@@ -333,12 +333,12 @@
             </nav>
 
 
-            <!-- Bán hàng tại quầy -->
+            <!-- Quản lý khách hàng -->
             <div class="container-fluid">
                 <div class="container">
 
-                    <%--      Tìm kiếm & lọc thông tin nhân ciên      --%>
-                    <h5 class="card-title mb-3">Quản lý thông tin nhân viên</h5>
+                    <%--      Tìm kiếm & lọc thông tin khách hàng      --%>
+                    <h5 class="card-title mb-3">Quản lý thông tin khách hàng</h5>
                     <div class="row mb-4">
                         <div class="card">
                             <div class="card-header">
@@ -356,34 +356,29 @@
                                         </div>
 
                                         <div class="col-6">
-                                            <label for="chucVu" class="col-sm-2 col-form-label mb-2">Chức vụ: </label>
-                                            <div class="col-sm-10 float-right">
-                                                <select class="form-select w-75" aria-label="Default select example"
-                                                        id="chucVu" name="idCV">
-                                                    <option value="">Chọn chức vụ</option>
-                                                    <c:forEach items="${listChucVu}" var="chucVu">
-                                                        <option value="${chucVu.id}">${chucVu.ten}</option>
-                                                    </c:forEach>
-                                                </select>
+                                            <label for="ngaySinh1" class="col-sm-2 col-form-label mb-2">Ngày sinh: </label>
+                                            <div class="col-sm-10 float-right mb-3" style="display: flex">
+                                                <input type="date" class="form-control me-3" id="ngaySinh1" name="ngaySinh1" style="width: 160px;">
+                                                <input type="date" class="form-control" id="ngaySinh2" name="ngaySinh2" style="width: 160px;">
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="text-center">
                                         <button type="submit" class="btn btn-primary">Tìm kiếm</button>
-                                        <a href="/qlnv/quan-ly-nhan-vien"><button type="button" class="btn btn-secondary">Làm mới bộ lọc</button></a>
+                                        <a href="/qlkh/quan-ly-khach-hang"><button type="button" class="btn btn-secondary">Làm mới bộ lọc</button></a>
                                     </div>
                                 </form>
                             </div>
                         </div>
                     </div>
 
-                    <%--      Danh sách nhân viên     --%>
+                    <%--      Danh sách khách hàng     --%>
                     <div class="row">
                         <div class="card">
                             <div class="card-header">
                                 <span>Danh sách nhân viên</span>
-                                <a href="/qlnv/them-nhan-vien-view"><button class="btn btn-primary float-end">+ Thêm</button></a>
+                                <a href="/qlkh/them-khach-hang-view"><button class="btn btn-primary float-end">+ Thêm</button></a>
                             </div>
                             <div class="card-body">
                                 <table class="table" id="nhanVienTable">
@@ -395,34 +390,53 @@
                                         <th scope="col">Giới tính</th>
                                         <th scope="col">Ngày sinh</th>
                                         <th scope="col">Sdt</th>
-                                        <th scope="col">Chức vụ</th>
+                                        <th scope="col">Email</th>
                                         <th scope="col">Ngày tạo</th>
                                         <th scope="col">Trạng thái</th>
                                         <th scope="col">Thao tác</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <c:forEach varStatus="i" items="${listNhanVien}" var="nv">
+                                    <c:forEach varStatus="i" items="${listKhachHang}" var="kh">
                                         <tr>
                                             <th>${i.index+1}</th>
-                                            <th><img src="/imageUser/${nv.anhDaiDien}" style="width: 70px; height: 60px"></th>
-                                            <td>${nv.hoTen}</td>
-                                            <td>${nv.gioiTinh == 1 ? "Nam" : "Nữ"}</td>
-                                            <td>${nv.ngaySinh}</td>
-                                            <td>${nv.sdt}</td>
-                                            <td>${nv.idCV.ten}</td>
-                                            <td>${nv.ngayTao}</td>
+                                            <th><img src="/imageUser/${kh.anhDaiDien}" style="width: 70px; height: 60px"></th>
+                                            <td>${kh.hoTen}</td>
+                                            <td>${kh.gioiTinh == 1 ? "Nam" : "Nữ"}</td>
+                                            <td>${kh.ngaySinh}</td>
+                                            <td>${kh.sdt}</td>
+                                            <td>${kh.email}</td>
+                                            <td>${kh.ngayTao}</td>
                                             <td>
-                                                <c:if test="${nv.trangThai == 1}">
-                                                    <span class="badge bg-success">Đang làm</span>
+                                                <c:if test="${kh.trangThai == 1}">
+                                                    <span class="badge bg-success">Hoạt động</span>
                                                 </c:if>
-                                                <c:if test="${nv.trangThai == 0}">
-                                                    <span class="badge bg-warning">Đã nghỉ</span>
+                                                <c:if test="${kh.trangThai == 0}">
+                                                    <span class="badge bg-warning">Ngừng hoạt động</span>
                                                 </c:if>
                                             </td>
                                             <td>
-                                                <a href="/qlnv/sua-trang-thai/${nv.id}"><button class="btn btn-outline-secondary" style="width: 33px; display: inline-flex;align-items: center;justify-content: center"><i class="bi bi-arrow-repeat" style="font-size: 17px"></i></button></a>
-                                                <a href="/qlnv/sua-nhan-vien-view/${nv.id}"><button class="btn btn-warning"><i class="bi bi-pencil-square"></i></button></a>
+                                                <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal${kh.id}">
+                                                    <i class="bi bi-house-door"></i>
+                                                </button>
+                                                <a href="/qlkh/sua-khach-hang-view/${kh.id}"><button class="btn btn-warning"><i class="bi bi-pencil-square"></i></button></a>
+                                                <!-- Button trigger modal -->
+
+                                                <!-- Modal -->
+                                                <div class="modal fade" id="exampleModal${kh.id}" tabindex="-1" aria-labelledby="exampleModalLabel${kh.id}" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalLabel${kh.id}">Danh sách địa chỉ</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                ...
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
                                             </td>
                                         </tr>
                                     </c:forEach>
@@ -435,7 +449,7 @@
 
 
             </div>
-            <!--  Kết thúc bán hàng tại quầy  -->
+            <!--  Kết thúc quản lý khách hàng  -->
 
         </div>
 
