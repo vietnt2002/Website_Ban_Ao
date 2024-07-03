@@ -431,19 +431,36 @@
                     <div class="tab-pane fade show active" id="tat-ca" role="tabpanel" aria-labelledby="nav-home-tab">
                         <div class="row">
                             <c:forEach var="i" items="${listHD}">
-                                <div class="invoice-container">
-                                    <div class="invoice-header">Mã hóa đơn:</div>
-                                    <div class="invoice-item">
-                                        <img src="/image/${i.hinhAnh1}" alt="${i.tenSanPham}" style="width: 50px;">
-                                        <div>${i.tenSanPham}</div>
-                                        <div>Số lượng: ${i.soLuong}</div>
-                                        <div>Màu sắc: ${i.tenMauSac}</div>
-                                        <div>Kích thước: ${i.tenKichThuoc}</div>
-                                        <div>Đơn giá: ${i.donGia}</div>
-                                    </div>
+                                <div class="col-6">
+                                    <div>Mã hóa đơn: ${i.ma}</div>
+                                    <div>Ngày thanh toán: ${i.ngayThanhToan}</div>
                                 </div>
-                                <div class="invoice-footer">
-                                    <div class="total">Tổng: ${i.soLuong * i.donGia}</div>
+                                <hr>
+                                <div class="col-6">
+<%--                                    <c:if test="${i.trangThai == 1} ">--%>
+                                        <div class="badge bg-warning">${i.trangThai == 1 ? "Chờ xác nhận" : "Đã xác nhận"} </div>
+<%--                                    </c:if>--%>
+<%--                                    <c:if test="${i.trangThai == 2} ">--%>
+<%--                                        <div class="badge bg-warning">Đã xác nhận</div>--%>
+<%--                                    </c:if>--%>
+<%--                                    <c:if test="${i.trangThai == 3} ">--%>
+<%--                                        <div class="badge bg-warning">Chào giao hàng</div>--%>
+<%--                                    </c:if>--%>
+<%--                                    <c:if test="${i.trangThai == 4} ">--%>
+<%--                                        <div class="badge bg-warning">Đang giao hàng</div>--%>
+<%--                                    </c:if>--%>
+<%--                                    <c:if test="${i.trangThai == 5} ">--%>
+<%--                                        <div class="badge bg-warning">Giao hàng thành công</div>--%>
+<%--                                    </c:if>--%>
+<%--                                    <c:if test="${i.trangThai == 6} ">--%>
+<%--                                        <div class="badge bg-warning">Hoàn thành</div>--%>
+<%--                                    </c:if>--%>
+<%--                                    <c:if test="${i.trangThai == 6} ">--%>
+<%--                                        <div class="badge bg-warning">Hủy</div>--%>
+<%--                                    </c:if>--%>
+                                    <div class="total">Tổng: ${i.tongTien}</div>
+                                </div>
+                                <div class="footer">
                                     <button>Chi tiết</button>
                                 </div>
                             </c:forEach>

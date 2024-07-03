@@ -1,6 +1,7 @@
 package com.example.java4.repositories;
 
 import com.example.java4.entities.HoaDon;
+import com.example.java4.response.HoaDonResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -122,4 +123,12 @@ public interface HoaDonRepository
             "LEFT JOIN hd.idKhachHang kh " +
             "WHERE (hd.ma LIKE %?1% OR kh.sdt LIKE %?1%) AND (hd.loaiHoaDon = ?2) AND (hd.ngayTao BETWEEN ?3 AND ?4)")
     Page<HoaDon> searchByMaOrSdtAndLoaiHoaDonAndNgayTao(String keyword, Integer loaiHoaDon, LocalDateTime startDate, LocalDateTime endDate, Pageable pageable);
+
+    @Query("select new com.example.java4.response.HoaDonResponse(hd.id, hd.ma, cthd.idCTSP.idSanPham.ten, cthd.soLuong, ha.hinhAnh1, cthd.idCTSP.idMauSac.ten, cthd.idCTSP.idKichThuoc.ten, ctsp.giaBan) from HoaDon hd " +
+            "join ChiTietHoaDon cthd on cthd.idHoaDon.id = hd.id " +
+            "join ChiTietSanPham ctsp on ctsp.id = cthd.idCTSP.id " +
+            "join HinhAnh ha on ha.idCTSP.id = ctsp.id " +
+            "where hd.idKhachHang.id = ?1 and hd.trangThai = ?2")
+    List<HoaDonResponse> getListHDbyIDKH(String idKH, Integer trangThai);
+
 };

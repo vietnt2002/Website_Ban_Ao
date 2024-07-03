@@ -59,6 +59,7 @@ public class TrangChuController {
     private List<GioHangResponse> listGioHang;
     private List<DiaChi> listDiaChi = new ArrayList<>();
     private List<KhuyenMai> listKhuyenMai = new ArrayList<>();
+    private List<HoaDonResponse> listHDByIDKH = new ArrayList<>();
 
     //Test api địa chỉ
     @GetMapping("apiDiaChi")
@@ -546,6 +547,7 @@ public class TrangChuController {
         hoaDon.setTongTien(tongThanhToan);
         hoaDon.setTrangThai(HoaDonRepository.CHO_XAC_NHAN);
         hoaDon.setLoaiHoaDon(HoaDonRepository.HOA_DON_ONL);
+        hoaDon.setNgayThanhToan(LocalDateTime.now().withNano(0));
         hoaDonRepo.save(hoaDon);
 
         GiaoHang giaoHang = new GiaoHang();
@@ -595,8 +597,8 @@ public class TrangChuController {
         for (ChiTietHoaDon chiTietHoaDon : listHDCT) {
             totalSoLuong += chiTietHoaDon.getSoLuong();
         }
-        listGioHang = hdctRepo.getAll(UserInfor.idKhachHang, HoaDonRepository.CHO_XAC_NHAN);
-        model.addAttribute("listHD", listGioHang);
+        listHoaDon = hoaDonRepo.findAll();
+        model.addAttribute("listHD", listHoaDon);
         model.addAttribute("soLuong", totalSoLuong);
 
         return "/view/BanHangOnline/donMua.jsp";
