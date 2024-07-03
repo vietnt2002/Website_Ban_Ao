@@ -374,7 +374,7 @@
                                     <div class="row">
                                         <div class="col col-md-2">
                                             <div class="dropdown">
-                                                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="lblMauSac" data-bs-toggle="dropdown" aria-expanded="false">
                                                     Chọn màu sắc
                                                 </button>
                                                 <ul class="dropdown-menu" id="cboMauSac" aria-labelledby="dropdownMenuButton2">
@@ -383,38 +383,34 @@
                                         </div>
                                         <div class="col col-md-2">
                                             <div class="dropdown">
-                                                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="lblKichThuoc" data-bs-toggle="dropdown" aria-expanded="false">
                                                     Chọn kích thước
                                                 </button>
                                                 <ul class="dropdown-menu" id="cboKichThuoc" aria-labelledby="dropdownMenuButton3">
-                                                        <li><a class="dropdown-item" href="/ban-hang-tai-quay/locSPCTByKichThuoc/${kichThuoc.id}">${kichThuoc.ten}</a></li>
                                                 </ul>
                                             </div>
                                         </div>
                                         <div class="col col-md-2">
                                             <div class="dropdown">
-                                                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton4" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="lblChatLieu" data-bs-toggle="dropdown" aria-expanded="false">
                                                     Chọn chất liệu
                                                 </button>
                                                 <ul class="dropdown-menu" id="cboChatLieu" aria-labelledby="dropdownMenuButton4">
-                                                        <li><a class="dropdown-item" href="/ban-hang-tai-quay/locSPCTByChatLieu/${chatLieu.id}">${chatLieu.ten}</a></li>
                                                 </ul>
                                             </div>
                                         </div>
                                         <div class="col col-md-2">
                                             <div class="dropdown">
-                                                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton5" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="lblKieuTay" data-bs-toggle="dropdown" aria-expanded="false">
                                                     Chọn kiểu tay
                                                 </button>
                                                 <ul class="dropdown-menu" id="cboKieuTay" aria-labelledby="dropdownMenuButton5">
-                                                        <li><a class="dropdown-item" href="/ban-hang-tai-quay/locSPCTByKieuTay/${kieuTay.id}">${kieuTay.ten}</a></li>
                                                 </ul>
                                             </div>
                                         </div>
                                         <div class="col col-md-2">
-                                            <button id="btnSearch" class="btn btn-success me-2">Tìm kiếm</button>
+                                            <button id="btnSearch" class="btn btn-success me-2" onclick="search(event)">Tìm kiếm</button>
                                         </div>
-
                                     </div>
                                 </form>
                             </div>
@@ -629,115 +625,6 @@
             });
         });
     });
-
-    function searchByName(param){
-        var txtSearch = param.value;
-        console.log(txtSearch);
-        $.ajax({
-            url: "/ban-hang-tai-quay/search/${hoaDon.id}",
-            type: "POST",
-            data: {
-                txt:txtSearch
-            },
-            success: function (data) {
-                // var row = document.getElementById("content");
-                // row.innerHTML = data;
-                $('#contentAjax').empty()
-                $('#contentAjax').append(data);
-
-                console.log(data);
-            },
-            error: function (xhr) {
-                //Do Something to handle error
-            }
-        });
-    }
-
-    <%--    --%>
-
-
-    const deleteButtons = document.querySelectorAll('.delete-button');
-    const checkBtn = document.querySelectorAll('#checkBtn');
-    // Thêm sự kiện click cho từng nút
-    deleteButtons.forEach(button => {
-        button.addEventListener('click', function () {
-            const idhd = this.getAttribute('idhd');
-            Swal.fire({
-                title: 'Bạn có muốn xóa không?',
-                text: "Bạn sẽ không thể khôi phục lại dữ liệu này!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Vâng, xóa nó!',
-                cancelButtonText: 'Hủy'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Thực hiện hành động xóa ở đây, ví dụ:
-                    // Gửi yêu cầu AJAX tới server để xóa dữ liệu
-                    fetch(`/ban-hang-tai-quay/delete-hoa-don/`+idhd, { method: 'GET' }).then(() => {
-                        Swal.fire(
-                            'Đã xóa!',
-                            'Dữ liệu của bạn đã bị xóa.',
-                            'success'
-                        );
-                        // Xóa hàng khỏi bảng sau khi xóa thành công
-                        button.closest('tr').remove();
-                    });
-                    button.closest('tr').remove();
-                }
-            });
-        });
-    });
-
-    checkBtn.forEach(button => {
-        button.addEventListener('click', function () {
-            console.log("test check btn");
-            var idHD = document.getElementsByName("idHD")[0].value;
-            var idKH  = document.getElementsByName("idKH")[0].value;
-            var idKhuyenMai = document.getElementsByName("idKhuyenMai")[0].value;
-            var tongTien = document.getElementsByName("tongTien")[0].value;
-            var thongBao = document.getElementById("errTraLai");
-            var moneyGiven = parseInt(document.getElementById("tienKhachDua").value);
-            var thongBao = document.getElementById("errTraLai");
-            console.log("====================== id hd:",idHD);
-            console.log("====================== id kh:",idKH);
-            console.log("====================== id khuyen mai:",idKhuyenMai);
-            console.log("====================== tong tien:",tongTien);
-            console.log("====================== money given:",moneyGiven);
-            if(tongTien<=moneyGiven&&!isNaN(tongTien)){
-                Swal.fire({
-                    title: 'Xác nhận thanh toán?',
-                    text: "Dữ liệu sẽ được lưu lại!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Vâng,Thanh toán!',
-                    cancelButtonText: 'Hủy'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        fetch(`/ban-hang-tai-quay/thanh-toan/`+idHD+'?idKhuyenMai='+idKhuyenMai+'&idKH='+idKH+'&tongTien='+tongTien,
-                            { method: 'POST' }).then(() => {
-                            Swal.fire(
-                                'Đã thanh toán!',
-                                'Dữ liệu đã được ghi nhận.',
-                                'success'
-                            ).then(() => {
-                                window.location.href = '/ban-hang-tai-quay';
-                            });
-                            button.closest('tr').remove();
-                        });
-                        button.closest('tr').remove();
-                        thongBao.textContent =  "";
-                    }
-                });
-            }
-            else{
-                thongBao.textContent =  "Số tiền khách đưa phải lớn hơn hoặc bằng tổng tiền.";
-            }
-        });
-    });
 </script>
 
 <script>
@@ -746,6 +633,42 @@
     const queryString = window.location.pathname;
     const pathParts = queryString.split('/');
     const pathVariable = pathParts[pathParts.length - 1];
+    let idMauSac = "";
+    let idKichThuoc = "";
+    let idChatLieu = "";
+    let idKieuTay = "";
+    const lblMauSac = document.getElementById("lblMauSac");
+    const lblKichThuoc = document.getElementById("lblKichThuoc");
+    const lblChatLieu = document.getElementById("lblChatLieu");
+    const lblKieuTay  = document.getElementById("lblKieuTay");
+    function setMauSac(msString) {
+        const ms = JSON.parse(msString.replace(/&quot;/g, '"'));
+        idMauSac = ms.id;
+        lblMauSac.textContent= ms.ten;
+        console.log('Selected mau sac ID:', idMauSac);
+        // You can add more logic here to handle the selected value
+    }
+    function setKichThuoc(ktString) {
+        const kt  = JSON.parse(ktString.replace(/&quot;/g, '"'));
+        idKichThuoc = kt.id;
+        lblKichThuoc.textContent = kt.ten;
+        console.log('Selected kich thuoc ID:', idKichThuoc);
+        // You can add more logic here to handle the selected value
+    }
+    function setChatLieu(clString) {
+        const cl  = JSON.parse(clString.replace(/&quot;/g, '"'));
+        idChatLieu = cl.id;
+        lblChatLieu.textContent = cl.ten;
+        console.log('Selected chat lieu ID:',idChatLieu);
+        // You can add more logic here to handle the selected value
+    }
+    function setKieuTay(ktString) {
+        const kt = JSON.parse(ktString.replace(/&quot;/g, '"'));
+        idKieuTay = kt.id;
+        lblKieuTay.textContent = kt.ten;
+        console.log('Selected kieu tay ID:',idKieuTay);
+        // You can add more logic here to handle the selected value
+    }
 
     const loadSP = ()=>{
         fetch("/san-pham/detail/"+pathVariable, {
@@ -770,7 +693,6 @@
             });
     }
     loadSP();
-
     const loadCboMauSac = ()=>{
         let datatest = "data testing";
         fetch("/mau-sac/index", {
@@ -782,7 +704,8 @@
             .then(resp => {
                 let html = '';
                 resp.map((ms, i) => {
-                    html += '<li><a class="dropdown-item" value="' + ms.id + '">' + ms.ten + '</a></li>';
+                    const msString = JSON.stringify(ms).replace(/"/g, '&quot;');
+                    html += '<li><a class="dropdown-item"  onclick="setMauSac(\'' + msString + '\')">' + ms.ten + '</a></li>';
                 });
                 $("#cboMauSac").html(html)
             });
@@ -799,7 +722,8 @@
             .then(resp => {
                 let html = '';
                 resp.map((kt, i) => {
-                    html += '<li><a class="dropdown-item" value="' + kt.id + '">' + kt.ten + '</a></li>';
+                    const ktString = JSON.stringify(kt).replace(/"/g, '&quot;');
+                    html += '<li><a class="dropdown-item" onclick="setKichThuoc(\'' + ktString + '\')">' + kt.ten + '</a></li>';
                 });
                 $("#cboKichThuoc").html(html)
             });
@@ -816,7 +740,8 @@
             .then(resp => {
                 let html = '';
                 resp.map((cl, i) => {
-                    html += '<li><a class="dropdown-item" value="' + cl.id + '">' + cl.ten + '</a></li>';
+                    const clString = JSON.stringify(cl).replace(/"/g, '&quot;');
+                    html += '<li><a class="dropdown-item" onclick="setChatLieu(\'' + clString + '\')">' + cl.ten + '</a></li>';
                 });
                 $("#cboChatLieu").html(html)
             });
@@ -833,7 +758,8 @@
             .then(resp => {
                 let html = '';
                 resp.map((kt, i) => {
-                    html += '<li><a class="dropdown-item" value="' + kt.id + '">' + kt.ten + '</a></li>';
+                    const kieuTayString = JSON.stringify(kt).replace(/"/g, '&quot;');
+                    html += '<li><a class="dropdown-item"  onclick="setKieuTay(\'' + kieuTayString + '\')">' + kt.ten + '</a></li>';
                 });
                 $("#cboKieuTay").html(html)
             });
@@ -876,8 +802,12 @@
                 $("#tbl_ds_spct").html(html)
             });
     }
-    function testDataMapping(){
-
+    function search(e){
+        e.preventDefault();
+        console.log('data mau sac ID:', idMauSac);
+        console.log('data kich thuoc ID:', idKichThuoc);
+        console.log('data chat lieu ID:',idChatLieu);
+        console.log('data kieu tay ID:',idKieuTay);
     }
     function setActive(element, page) {
         // Remove active class from all pagination items
