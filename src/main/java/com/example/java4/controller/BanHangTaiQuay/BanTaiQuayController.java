@@ -268,7 +268,6 @@ public class BanTaiQuayController {
     //  Delete hóa đơn
     @GetMapping("delete-hoa-don/{idHoaDon}")
     public String deleteHoaDon(@PathVariable String idHoaDon){
-
         for (HoaDon hoaDon: listHoaDon){
             if (hoaDon.getId().equals(idHoaDon)){
                 hoaDonRepository.delete(hoaDon);
