@@ -684,7 +684,6 @@
                             <%-- Hiển thị stepper cho bán hàng online (LoaiHD != 0) --%>
                             <c:otherwise>
                                 <div class="stepper-horizontal" id="stepper_online">
-
                                     <c:choose>
                                         <c:when test="${step == 'confirmation'}">
                                             <div class="step active" id="step_online_1">
@@ -743,6 +742,46 @@
                                                 <div class="step-date">${hoaDonDTO.ngayChoGiaoHang}</div>
                                             </div>
                                         </c:when>
+                                        <c:when test="${step == 'delivering'}">
+                                            <div class="step active" id="step_online_1">
+                                                <div class="step-icon-wrapper">
+                                                    <i class="bi bi-hourglass-split step-icon"></i>
+                                                </div>
+                                                <div class="step-title">Chờ xác nhận</div>
+                                                <div class="step-date">${hoaDonDTO.ngayTao}</div>
+                                            </div>
+                                            <div class="step-arrow">
+                                                <i class="bi bi-arrow-right"></i>
+                                            </div>
+                                            <div class="step active" id="step_online_2">
+                                                <div class="step-icon-wrapper">
+                                                    <i class="bi bi-check-circle step-icon"></i>
+                                                </div>
+                                                <div class="step-title">Đã xác nhận</div>
+                                                <div class="step-date">${hoaDonDTO.ngayDaXacNhan}</div>
+                                            </div>
+                                            <div class="step-arrow">
+                                                <i class="bi bi-arrow-right"></i>
+                                            </div>
+                                            <div class="step active" id="step_online_3">
+                                                <div class="step-icon-wrapper">
+                                                    <i class="bi bi-truck step-icon"></i>
+                                                </div>
+                                                <div class="step-title">Chờ giao hàng</div>
+                                                <div class="step-date">${hoaDonDTO.ngayChoGiaoHang}</div>
+                                            </div>
+                                            <div class="step-arrow">
+                                                <i class="bi bi-arrow-right"></i>
+                                            </div>
+                                            <div class="step active" id="step_online_4">
+                                                <div class="step-icon-wrapper">
+                                                    <i class="bi bi-box-seam step-icon"></i>
+                                                </div>
+                                                <div class="step-title">Đang giao hàng</div>
+                                                <div class="step-date">${hoaDonDTO.ngayDangGiaoHang}</div>
+                                            </div>
+                                        </c:when>
+
                                         <c:when test="${step == 'delivered'}">
                                             <div class="step active" id="step_online_1">
                                                 <div class="step-icon-wrapper">
@@ -778,8 +817,19 @@
                                                 <div class="step-icon-wrapper">
                                                     <i class="bi bi-box-seam step-icon"></i>
                                                 </div>
-                                                <div class="step-title">Đang giao hàng</div>
+                                                <div class="step-title">Đang vận chuyển</div>
                                                 <div class="step-date">${hoaDonDTO.ngayDangGiaoHang}</div>
+                                            </div>
+                                            <div class="step-arrow">
+                                                <i class="bi bi-arrow-right"></i>
+                                            </div>
+
+                                            <div class="step active" id="step_online_5">
+                                                <div class="step-icon-wrapper">
+                                                    <i class="bi bi-box-arrow-in-right step-icon"></i>
+                                                </div>
+                                                <div class="step-title">Đã giao hàng</div>
+                                                <div class="step-date">${hoaDonDTO.ngayCapNhat}</div>
                                             </div>
                                         </c:when>
                                         <c:when test="${step == 'accomplished'}">
@@ -813,12 +863,24 @@
                                             <div class="step-arrow">
                                                 <i class="bi bi-arrow-right"></i>
                                             </div>
+
                                             <div class="step active" id="step_online_4">
                                                 <div class="step-icon-wrapper">
                                                     <i class="bi bi-box-seam step-icon"></i>
                                                 </div>
-                                                <div class="step-title">Đang giao hàng</div>
+                                                <div class="step-title">Đang vận chuyển</div>
                                                 <div class="step-date">${hoaDonDTO.ngayDangGiaoHang}</div>
+                                            </div>
+                                            <div class="step-arrow">
+                                                <i class="bi bi-arrow-right"></i>
+                                            </div>
+
+                                            <div class="step active" id="step_online_5">
+                                                <div class="step-icon-wrapper">
+                                                    <i class="bi bi-box-arrow-in-right step-icon"></i>
+                                                </div>
+                                                <div class="step-title">Đã giao hàng</div>
+                                                <div class="step-date">${hoaDonDTO.ngayCapNhat}</div>
                                             </div>
                                             <div class="step-arrow">
                                                 <i class="bi bi-arrow-right"></i>
@@ -827,7 +889,7 @@
                                                 <div class="step-icon-wrapper">
                                                     <i class="bi bi-credit-card-2-back step-icon"></i>
                                                 </div>
-                                                <div class="step-title">Đã hoàn thành</div>
+                                                <div class="step-title">Hoàn thành</div>
                                                 <div class="step-date">${hoaDonDTO.ngayThanhToan}</div>
                                             </div>
                                         </c:when>
@@ -848,7 +910,7 @@
                         </c:choose>
                     </div>
 
-                    <c:if test="${hoaDonDTO.loaiHoaDon == 1 || hoaDonDTO.trangThai == 6}">
+                    <c:if test="${hoaDonDTO.loaiHoaDon == 1 && hoaDonDTO.trangThai != 6}">
                         <div class="card-footer">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
@@ -863,16 +925,22 @@
                                             <c:when test="${hoaDonDTO.trangThai == 2}">
                                                 <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal"
                                                         data-bs-target="#confirmModal" id="btnChoGiaoHang" name="btnChoGiaoHang">
-                                                    Chờ giao hàng
+                                                  Xác nhận chờ giao hàng
                                                 </button>
                                             </c:when>
                                             <c:when test="${hoaDonDTO.trangThai == 3}">
                                                 <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal"
                                                         data-bs-target="#confirmModal" id="btnDangGiaoHang" name="btnDangGiaoHang">
-                                                    Đang giao hàng
+                                                    Xác nhận đang vận chuyển
                                                 </button>
                                             </c:when>
                                             <c:when test="${hoaDonDTO.trangThai == 4}">
+                                                <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal"
+                                                        data-bs-target="#confirmModal" id="btnDaGiaoHang" name="btnDaGiaoHang">
+                                                   Xác nhận lấy hàng
+                                                </button>
+                                            </c:when>
+                                            <c:when test="${hoaDonDTO.trangThai == 5}">
                                                 <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal"
                                                         data-bs-target="#confirmModal" id="btnHoanThanh" name="btnHoanThanh">
                                                     Hoàn thành
@@ -1278,7 +1346,7 @@
                                 <h5 class="card-title">Chi phí đơn hàng</h5>
                             </div>
                             <div class="card-body">
-                                <c:set var="giamGia" value="${hoaDonDTO.giamGia != null ? hoaDonDTO.giamGia : 0}"/>
+                                <c:set var="giamGia" value="${phiGiamGia != null ? phiGiamGia : 0}"/>
                                 <c:set var="tongTien" value="${tongTienDonHang != null ? tongTienDonHang : 0}"/>
                                 <c:set var="phiVanChuyen"
                                        value="${giaoHangDTO.phiShip != null ? giaoHangDTO.phiShip : 0}"/>
@@ -1301,21 +1369,18 @@
                                         </p>
 
                                         <p class="fw-bold mb-1 pb-3 small d-flex justify-content-between">
-                                            <span>Phí Giảm giá:</span>
-                                            <span class="fw-normal" id="giamGia">
-                                                <fmt:formatNumber value="${giamGia}" type="currency" currencySymbol="₫"
-                                                                  groupingUsed="true"/>
+                                            <span>Phiếu giảm giá:</span>
+                                            <span class="fw-normal" id="phieuGiamGia">
+                                                ${hoaDonDTO.khuyenMai.ma == null ? "N/A" : hoaDonDTO.khuyenMai.ma}
                                             </span>
                                         </p>
 
                                         <p class="fw-bold mb-1 pb-3 small d-flex justify-content-between">
-                                            <span>Tổng tiền giảm:</span>
-                                            <span class="fw-normal" id="tongTienGiam">
-
-                            <c:set var="tongTienGiam" value="${tongTienGiam} "/>
-                            <fmt:formatNumber value="${tongTienGiam}" type="currency" currencySymbol="₫"
-                                              groupingUsed="true"/>
-                        </span>
+                                            <span>Giảm giá:</span>
+                                            <span class="fw-normal" id="giamGia">
+                                                <fmt:formatNumber value="${giamGia}" type="currency" currencySymbol="₫"
+                                                                  groupingUsed="true"/>
+                                            </span>
                                         </p>
                                     </div>
                                 </div>
@@ -1324,10 +1389,10 @@
                                 <p class="fw-bold mb-1 pb-3 small d-flex justify-content-between">
                                     <span>Tổng tiền thanh toán:</span>
                                     <span class=" text-danger" id="tongTienThanhToanValue">
-                    <c:set var="tongTienThanhToan" value="${tongTienThanhToan}"/>
-                    <fmt:formatNumber value="${tongTienThanhToan}" type="currency" currencySymbol="₫"
-                                      groupingUsed="true"/>
-                </span>
+                                    <c:set var="tongTienThanhToan" value="${tongTienThanhToan}"/>
+                                    <fmt:formatNumber value="${tongTienThanhToan}" type="currency" currencySymbol="₫"
+                                                      groupingUsed="true"/>
+                                     </span>
                                 </p>
                             </div>
                         </div>
@@ -1428,13 +1493,12 @@
             <div class="card shadow mb-4 mx-2" id="custom-card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="m-0 font-weight-bold">Thông tin sản phẩm đã mua</h5>
-
                     <c:if test="${hoaDonDTO.loaiHoaDon == 1}">
                         <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
                                 data-bs-target="#addProductModal"
-                                <c:if test="${hoaDonDTO.trangThai != 1}">
-                                    disabled
-                                </c:if> >
+<%--                                <c:if test="${hoaDonDTO.trangThai != 1}">--%>
+<%--                                    disabled--%>
+<%--                                </c:if> >--%>
                             <i class="bi bi-plus text-white"></i>
                             Thêm sản phẩm
                         </button>
@@ -1463,7 +1527,6 @@
                         <c:forEach var="chiTiet" items="${listHDCT}" varStatus="i">
                             <tr class="product-row">
                                 <td>${i.index + 1}</td>
-
                                 <td>
                                     <c:set var="hinhAnh" value="${hinhAnhMap[chiTiet.idCTSP.id]}"/>
                                     <!-- Kiểm tra và hiển thị ảnh -->
@@ -1473,12 +1536,10 @@
                                         </c:when>
                                     </c:choose>
                                 </td>
-
-
                                 <td>${chiTiet.idCTSP.idSanPham.ten}</td>
                                 <td class="total-amount" id="total-${chiTiet.idCTSP.id} ">
-                                    <span  id="tongTienSanPham">
-                                         <fmt:formatNumber value="${chiTiet.donGia * chiTiet.soLuong}" type="currency"
+                                    <span class="text-danger"  id="donGiaSanPham">
+                                         <fmt:formatNumber value="${chiTiet.donGia}" type="currency"
                                                            currencySymbol="₫" groupingUsed="true"/>
                                     </span>
                                 </td>
@@ -1506,9 +1567,10 @@
                                 </td>
                                 <td class="" id="tongTienSanPham-${chiTiet.idCTSP.id}">
                                     <c:set var="tongTienSanPham" value="${chiTiet.donGia * chiTiet.soLuong}"></c:set>
-                                    <fmt:formatNumber value="${tongTienSanPham}" type="currency"
-                                                      currencySymbol="₫" groupingUsed="true"/>
-
+                                    <span class="text-danger fw-bold" >
+                                         <fmt:formatNumber value="${tongTienSanPham}" type="currency"
+                                                           currencySymbol="₫" groupingUsed="true"/>
+                                    </span>
                                 </td>
                                 <c:if test="${hoaDonDTO.loaiHoaDon == 1}">
                                     <td>
@@ -1537,12 +1599,8 @@
                                                 </button>
                                             </c:otherwise>
                                         </c:choose>
-
-
                                     </td>
                                 </c:if>
-
-
                             </tr>
                         </c:forEach>
                         </tbody>
@@ -1674,28 +1732,28 @@
                     </div>
                     <div class="modal-footer">
                         <div class="float-end" id="pagination">
-<%--                            <nav aria-label="Page navigation example">--%>
-<%--                                <ul class="pagination">--%>
-<%--                                    <!-- Thêm phân trang nếu cần -->--%>
-<%--                                    <c:if test="${pageCTSP.hasPrevious()}">--%>
-<%--                                        <li class="page-item"><a class="page-link"--%>
-<%--                                                                 href="?page=${pageCTSP.number - 1}">&laquo;</a>--%>
-<%--                                        </li>--%>
-<%--                                    </c:if>--%>
-<%--                                    <c:if test="${pageCTSP.totalPages > 0}">--%>
-<%--                                        <c:forEach var="i" begin="0" end="${pageCTSP.totalPages - 1}">--%>
-<%--                                            <li class="page-item ${pageCTSP.number == i ? 'active' : ''}">--%>
-<%--                                                <a class="page-link" href="?page=${i}">${i + 1}</a>--%>
-<%--                                            </li>--%>
-<%--                                        </c:forEach>--%>
-<%--                                    </c:if>--%>
-<%--                                    <c:if test="${pageCTSP.hasNext()}">--%>
-<%--                                        <li class="page-item"><a class="page-link"--%>
-<%--                                                                 href="?page=${pageCTSP.number + 1}">&raquo;</a>--%>
-<%--                                        </li>--%>
-<%--                                    </c:if>--%>
-<%--                                </ul>--%>
-<%--                            </nav>--%>
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination">
+                                    <!-- Thêm phân trang nếu cần -->
+                                    <c:if test="${pageCTSP.hasPrevious()}">
+                                        <li class="page-item"><a class="page-link"
+                                                                 href="?page=${pageCTSP.number - 1}">&laquo;</a>
+                                        </li>
+                                    </c:if>
+                                    <c:if test="${pageCTSP.totalPages > 0}">
+                                        <c:forEach var="i" begin="0" end="${pageCTSP.totalPages - 1}">
+                                            <li class="page-item ${pageCTSP.number == i ? 'active' : ''}">
+                                                <a class="page-link" href="?page=${i}">${i + 1}</a>
+                                            </li>
+                                        </c:forEach>
+                                    </c:if>
+                                    <c:if test="${pageCTSP.hasNext()}">
+                                        <li class="page-item"><a class="page-link"
+                                                                 href="?page=${pageCTSP.number + 1}">&raquo;</a>
+                                        </li>
+                                    </c:if>
+                                </ul>
+                            </nav>
                         </div>
                     </div>
                 </div>
@@ -2314,7 +2372,7 @@
                                 $('#tongTienValue').text(formatCurrency(response.tongTien));
                                 const giamGia = parseFloat($('#giamGia').text().replace(/[^0-9.-]+/g, ""));
                                 const phiVanChuyen = parseFloat($('#phiVanChuyen').text().replace(/[^0-9.-]+/g, ""));
-                                const tongTienGiam = response.tongTien - giamGia - phiVanChuyen;
+                                const tongTienGiam = response.tongTien - giamGia + phiVanChuyen;
                                 $('#tongTienGiam').text(formatCurrency(tongTienGiam));
                                 $('#tongTienThanhToanValue').text(formatCurrency(tongTienGiam));
 
@@ -2369,13 +2427,13 @@
                 return;
             }
 
-            if (newQuantity > 10) {
-                Toast.fire({
-                    title: 'Bạn chỉ có thể cập nhật tối đa 10 sản phẩm',
-                    icon: 'error'
-                });
-                return;
-            }
+            // if (newQuantity > 10) {
+            //     Toast.fire({
+            //         title: 'Bạn chỉ có thể cập nhật tối đa 10 sản phẩm',
+            //         icon: 'error'
+            //     });
+            //     return;
+            // }
 
             // Gửi Ajax request để cập nhật số lượng
             $.ajax({
