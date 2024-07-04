@@ -1,6 +1,7 @@
 package com.example.java4.repositories;
 
 import com.example.java4.entities.HoaDon;
+import com.example.java4.entities.KhuyenMai;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -122,4 +123,9 @@ public interface HoaDonRepository
             "LEFT JOIN hd.idKhachHang kh " +
             "WHERE (hd.ma LIKE %?1% OR kh.sdt LIKE %?1%) AND (hd.loaiHoaDon = ?2) AND (hd.ngayTao BETWEEN ?3 AND ?4)")
     Page<HoaDon> searchByMaOrSdtAndLoaiHoaDonAndNgayTao(String keyword, Integer loaiHoaDon, LocalDateTime startDate, LocalDateTime endDate, Pageable pageable);
+
+
+    @Query("select hd from HoaDon hd where hd.id=?1")
+    HoaDon findByIdHoaDon(String idHoaDon);
+
 };

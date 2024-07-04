@@ -47,7 +47,7 @@
 
     <style>
         .table-scroll{
-            height: 340px;
+            height: 365px;
             overflow: scroll;
         }
 
@@ -521,93 +521,182 @@
                             <div class="card">
                                 <div class="card-body">
                                     <h5 class="card-title">HÓA ĐƠN</h5>
-                                        <div class="row mb-3">
-                                            <label class="col-sm-4 col-form-label">Mã hóa đơn</label>
-                                            <div class="col-sm-8">
-                                                <input type="text" class="form-control" value="${hoaDon.ma}"/>
-                                                <input type="hidden" class="form-control" name="idHD"  value="${hoaDon.id}" readonly>
-                                            </div>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <label class="col-sm-4 col-form-label">Ngày tạo</label>
-                                            <div class="col-sm-8">
-                                                <input type="text" class="form-control" name="ngayTao"
-                                                       value="${hoaDon.ngayTao}">
-                                            </div>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <label class="col-sm-4 col-form-label">Tên khách hàng</label>
-                                            <div class="col-sm-5">
+
+                                    <div class="mb-3">
+                                        <label class="form-label">Mã Hóa Đơn</label>
+                                        <input type="text" class="form-control" value="${hoaDon.ma}" readonly>
+                                        <input type="hidden" class="form-control" name="idHD"  value="${hoaDon.id}" readonly>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Tên Khách Hàng</label>
+                                        <div class="row align-items-center">
+                                            <div class="col-sm-9">
+
+                                                <c:if test="${hoaDon.idKhachHang.id!=null}">
                                                     <input type="text" class="form-control"  value="${hoaDon.idKhachHang.hoTen}" readonly>
                                                     <input type="hidden" class="form-control" name="idKH"  value="${hoaDon.idKhachHang.id}" readonly>
+                                                </c:if>
+                                                <c:if test="${hoaDon.idKhachHang.id==null}">
+                                                    <input type="text" class="form-control" name="idKH" placeholder="Khách lẻ" readonly>
+                                                </c:if>
+
                                             </div>
-                                            <%--   Modal thêm nhanh khách hàng--%>
-                                            <a class="col-sm-1 " data-bs-toggle="modal" data-bs-target="#exampleModal2"
-                                               style="padding-right: 0px;margin-top: 7px">
-                                                <i class="bi bi-person-plus" style="font-size: 25px;padding: 0px"></i>
-                                            </a>
-                                            <a class="col-sm-1" data-bs-toggle="modal" data-bs-target="#exampleModal"
-                                               href="#" style="padding-right: 0px;margin-top: 7px">
-                                                <i class=" bi bi-folder-plus col-3" style="font-size: 25px;padding: 0px"></i>
-                                            </a>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <label class="col-sm-4 col-form-label">Mã giảm giá</label>
-                                            <div class="col-sm-5">
-                                                <input type="hidden" class="form-control" name="idKhuyenMai"
-                                                       value="${hoaDon.idKhuyenMai.id}" readonly>
-                                                <input type="text" class="form-control"
-                                                       value="${hoaDon.idKhuyenMai.ma}" readonly>
+                                            <%-- Modal  --%>
+                                            <div class="col-sm-1 d-flex " >
+                                                <a data-bs-toggle="modal" data-bs-target="#exampleModal2">
+                                                    <i class="bi bi-person-plus" style="font-size: 25px; padding: 0px;color: blue"></i>
+                                                </a>
                                             </div>
-                                            <%--  Modal chọn mã giảm giá  --%>
-                                            <a class="col-sm-3 btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal3"
-                                               style="height: 38px;width: 79px;">
-                                                + Chọn
-                                            </a>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <label class="col-sm-4 col-form-label">Số tiền giảm</label>
-                                            <div class="col-sm-5">
-                                                <p>${hoaDon.idKhuyenMai.soTienGiam}</p>
+                                            <div class="col-sm-2 d-flex " style="padding-left: 17px;">
+                                                <a data-bs-toggle="modal" data-bs-target="#exampleModal5" href="#">
+                                                    <i class="bi bi-folder-plus" style="font-size: 25px; padding: 0px;"></i>
+                                                </a>
                                             </div>
-                                        </div>
-                                    <div class="row mb-3">
-                                        <label class="col-sm-4 col-form-label">Tổng tiền</label>
-                                        <div class="col-sm-8">
-                                            <c:if test="${total>0}">
-                                                <input id="tongTienKhiTruKM" type="number" class="form-control"
-                                                       name="tongTien"  value="${total-hoaDon.idKhuyenMai.soTienGiam}"
-                                                       readonly/>
-                                            </c:if>
-                                            <c:if test="${total==null}">
-                                                <input type="number" class="form-control" value="0"
-                                                       readonly/>
-                                            </c:if>
                                         </div>
                                     </div>
-                                        <div class="row mb-3">
-                                            <label class="col-sm-4 col-form-label">Tiền khách đưa</label>
-                                            <div class="col-sm-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Mã Giảm Giá</label>
+                                        <input type="hidden" class="form-control" name="idKhuyenMai"
+                                               value="${hoaDon.idKhuyenMai.id}" readonly>
+                                        <input type="text" class="form-control"
+                                               value="${hoaDon.idKhuyenMai.ma}" readonly>
+                                        <%--  Modal chọn mã giảm giá  --%>
+                                        <a id="openModalBtn" class="col-sm-3 btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal3"
+                                           style="height: 38px;width: 79px;margin-top: 16px; margin-right: 6px;">
+                                            + Chọn
+                                        </a>
+                                        <a class="col-sm-3 btn btn-outline-danger" href="/ban-hang-tai-quay/huy-khuyen-mai/${hoaDon.idKhuyenMai.id}"
+                                           style="height: 38px;width: 79px;margin-top: 16px;">
+                                            X Hủy
+                                        </a>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Ngày Tạo</label>
+                                        <input type="text" class="form-control" name="ngayTao" value="${hoaDon.ngayTao}" readonly>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Thành Tiền</label>
+                                        <c:if test="${total>0}">
+                                            <input id="tongTienKhiTruKM" type="number" class="form-control"
+                                                   name="tongTien"  value="${total-hoaDon.idKhuyenMai.soTienGiam}"
+                                                   readonly/>
+                                        </c:if>
+                                        <c:if test="${total==null}">
+                                            <input type="number" class="form-control" value="0"
+                                                   readonly/>
+                                        </c:if>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Tiền Khách Đưa</label>
+                                        <div class="row align-items-center">
+                                            <div class="col-sm-10 d-flex align-items-center">
                                                 <input id="tienKhachDua" class="form-control" type="number" required>
-                                                <span id="errTraLai" style="color: red"></span>
-                                            </div>
-
-                                            <i id="calculateChangeButton" class=" col-sm-2 bi bi-chevron-double-down"
-                                               style="font-size: 20px" onclick="calculateChange()"></i>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <label class="col-sm-4 col-form-label">Trả lại</label>
-                                            <div class="col-sm-8">
-                                                <input id="tienTraLai" type="number" class="form-control" required
-                                                       readonly>
 
                                             </div>
-                                        </div>
-                                        <div class="row mb-3 mt-4 justify-content-end text-end">
-                                            <div class="col-sm-10">
-                                                <button id="checkBtn" idhd =${hoaDon.id} type="submit" class="btn btn-success ">THANH TOÁN</button>
+                                            <div class="col-sm-2 d-flex">
+                                                <i id="calculateChangeButton" class="bi bi-chevron-double-down" style="font-size: 20px; cursor: pointer;" onclick="calculateChange()"></i>
                                             </div>
+                                            <span id="errTraLai" style="color: red; margin-left: 10px;"></span>
                                         </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Trả Lại</label>
+                                        <input id="tienTraLai" type="number" class="form-control" required readonly>
+                                    </div>
+                                    <div class="row mb-3 mt-4 justify-content-end text-end">
+                                        <div class="col-sm-10">
+                                            <button id="checkBtn" idhd =${hoaDon.id} type="submit" class="btn btn-success ">THANH TOÁN</button>
+                                        </div>
+                                    </div>
+
+                                       <%-- Cũ --%>
+<%--                                        <div class="row mb-3">--%>
+<%--                                            <label class="col-sm-4 col-form-label">Mã hóa đơn</label>--%>
+<%--                                            <div class="col-sm-8">--%>
+<%--                                                <input type="text" class="form-control" value="${hoaDon.ma}"/>--%>
+<%--                                                <input type="hidden" class="form-control" name="idHD"  value="${hoaDon.id}" readonly>--%>
+<%--                                            </div>--%>
+<%--                                        </div>--%>
+<%--                                        <div class="row mb-3">--%>
+<%--                                            <label class="col-sm-4 col-form-label">Ngày tạo</label>--%>
+<%--                                            <div class="col-sm-8">--%>
+<%--                                                <input type="text" class="form-control" name="ngayTao" value="${hoaDon.ngayTao}">--%>
+<%--                                            </div>--%>
+<%--                                        </div>--%>
+<%--                                        <div class="row mb-3">--%>
+<%--                                            <label class="col-sm-4 col-form-label">Tên khách hàng</label>--%>
+<%--                                            <div class="col-sm-5">--%>
+<%--                                                    <input type="text" class="form-control"  value="${hoaDon.idKhachHang.hoTen}" readonly>--%>
+<%--                                                    <input type="hidden" class="form-control" name="idKH"  value="${hoaDon.idKhachHang.id}" readonly>--%>
+<%--                                            </div>--%>
+<%--                                            &lt;%&ndash;   Modal thêm nhanh khách hàng&ndash;%&gt;--%>
+<%--                                            <a class="col-sm-1 " data-bs-toggle="modal" data-bs-target="#exampleModal2"--%>
+<%--                                               style="padding-right: 0px;margin-top: 7px">--%>
+<%--                                                <i class="bi bi-person-plus" style="font-size: 25px;padding: 0px"></i>--%>
+<%--                                            </a>--%>
+<%--                                            <a class="col-sm-1" data-bs-toggle="modal" data-bs-target="#exampleModal"--%>
+<%--                                               href="#" style="padding-right: 0px;margin-top: 7px">--%>
+<%--                                                <i class=" bi bi-folder-plus col-3" style="font-size: 25px;padding: 0px"></i>--%>
+<%--                                            </a>--%>
+<%--                                        </div>--%>
+<%--                                        <div class="row mb-3">--%>
+<%--                                            <label class="col-sm-4 col-form-label">Mã giảm giá</label>--%>
+<%--                                            <div class="col-sm-5">--%>
+<%--                                                <input type="hidden" class="form-control" name="idKhuyenMai"--%>
+<%--                                                       value="${hoaDon.idKhuyenMai.id}" readonly>--%>
+<%--                                                <input type="text" class="form-control"--%>
+<%--                                                       value="${hoaDon.idKhuyenMai.ma}" readonly>--%>
+<%--                                            </div>--%>
+<%--                                            &lt;%&ndash;  Modal chọn mã giảm giá  &ndash;%&gt;--%>
+<%--                                            <a class="col-sm-3 btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal3"--%>
+<%--                                               style="height: 38px;width: 79px;">--%>
+<%--                                                + Chọn--%>
+<%--                                            </a>--%>
+<%--                                        </div>--%>
+<%--                                        <div class="row mb-3">--%>
+<%--                                            <label class="col-sm-4 col-form-label">Số tiền giảm</label>--%>
+<%--                                            <div class="col-sm-5">--%>
+<%--                                                <p>${hoaDon.idKhuyenMai.soTienGiam}</p>--%>
+<%--                                            </div>--%>
+<%--                                        </div>--%>
+<%--                                    <div class="row mb-3">--%>
+<%--                                        <label class="col-sm-4 col-form-label">Tổng tiền</label>--%>
+<%--                                        <div class="col-sm-8">--%>
+<%--                                            <c:if test="${total>0}">--%>
+<%--                                                <input id="tongTienKhiTruKM" type="number" class="form-control"--%>
+<%--                                                       name="tongTien"  value="${total-hoaDon.idKhuyenMai.soTienGiam}"--%>
+<%--                                                       readonly/>--%>
+<%--                                            </c:if>--%>
+<%--                                            <c:if test="${total==null}">--%>
+<%--                                                <input type="number" class="form-control" value="0"--%>
+<%--                                                       readonly/>--%>
+<%--                                            </c:if>--%>
+<%--                                        </div>--%>
+<%--                                    </div>--%>
+<%--                                        <div class="row mb-3">--%>
+<%--                                            <label class="col-sm-4 col-form-label">Tiền khách đưa</label>--%>
+<%--                                            <div class="col-sm-6">--%>
+<%--                                                <input id="tienKhachDua" class="form-control" type="number" required>--%>
+<%--                                                <span id="errTraLai" style="color: red"></span>--%>
+<%--                                            </div>--%>
+
+<%--                                            <i id="calculateChangeButton" class=" col-sm-2 bi bi-chevron-double-down"--%>
+<%--                                               style="font-size: 20px" onclick="calculateChange()"></i>--%>
+<%--                                        </div>--%>
+<%--                                        <div class="row mb-3">--%>
+<%--                                            <label class="col-sm-4 col-form-label">Trả lại</label>--%>
+<%--                                            <div class="col-sm-8">--%>
+<%--                                                <input id="tienTraLai" type="number" class="form-control" required--%>
+<%--                                                       readonly>--%>
+
+<%--                                            </div>--%>
+<%--                                        </div>--%>
+<%--                                    --%>
+<%--                                        <div class="row mb-3 mt-4 justify-content-end text-end">--%>
+<%--                                            <div class="col-sm-10">--%>
+<%--                                                <button id="checkBtn" idhd =${hoaDon.id} type="submit" class="btn btn-success ">THANH TOÁN</button>--%>
+<%--                                            </div>--%>
+<%--                                        </div>--%>
                                     <!-- End General Form Elements -->
                                 </div>
                             </div><!-- End Recent Activity -->
@@ -654,20 +743,10 @@
                                     <td>${km.ma}</td>
                                     <td>${km.ten}</td>
                                     <td>${km.soTienGiam}</td>
-                                        <%--                                    <td>--%>
-                                        <%--                                        <c:if test="${km.soTienGiam==200}">--%>
-                                        <%--                                           2.000.000 VNĐ--%>
-                                        <%--                                        </c:if>--%>
-                                        <%--                                        <c:if test="${km.soTienGiam==100}">--%>
-                                        <%--                                            1.000.000 VNĐ--%>
-                                        <%--                                        </c:if>--%>
-                                        <%--                                        <c:if test="${km.soTienGiam==20}">--%>
-                                        <%--                                            500.000 VNĐ--%>
-                                        <%--                                        </c:if>--%>
-                                        <%--                                    </td>--%>
                                     <td>
                                         <form action="/ban-hang-tai-quay/find-khuyen-mai/${km.id}" method="post" onsubmit="return validateAddToMaGiamGia();">
                                             <input id="selectedMaGiamGia" type="hidden" name="idHoaDon" value="${hoaDon.id}">
+                                            <input  type="hidden" name="idKMBanDau" value="${hoaDon.idKhuyenMai.id}">
                                             <button class="btn btn-primary" type="submit">
                                                 <i class="bi bi-plus-square"></i>
                                             </button>
@@ -722,14 +801,14 @@
         </div>
 
 
-<%--        modal them san pham--%>
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+        <!-- Modal khách hàng -->
+        <div class="modal fade" id="exampleModal5" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
              data-bs-backdrop="static" data-bs-keyboard="false" >
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
                         <div class="row">
-                            <h5 class="modal-title" id="exampleModalLabel2">Danh sách khách hàng</h5>
+                            <h5 class="modal-title" id="exampleModalLabel">Danh sách khách hàng</h5>
                         </div>
 
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -744,9 +823,9 @@
                             <table class="table table-hover" id="contentAjax">
                                 <thead>
                                 <tr>
-                                    <th>Tên khách hàng</th>
-                                    <th>Số điện thoại</th>
-                                    <th>Chọn</th>
+                                    <th style="text-align: center">Tên khách hàng</th>
+                                    <th style="text-align: center">Số điện thoại</th>
+                                    <th style="text-align: center">Chọn</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -776,7 +855,7 @@
         </div>
         <%--End--%>
 
-        <!-- Modal khách hàng -->
+        <!-- Modal chi tiết sản phẩm -->
         <div class="modal fade" id="exampleModal4" tabindex="-1" aria-labelledby="exampleModalLabel4" aria-hidden="true"
              data-bs-backdrop="static" data-bs-keyboard="false" >
             <div class="modal-dialog modal-xl">
@@ -1209,6 +1288,15 @@
             }
         });
     });
+
+
+
+    //Test
+
+
+
+
+
 </script>
 <script>
     function searchBySPCT(param){

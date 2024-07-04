@@ -90,7 +90,7 @@ public class Ban_Tai_Quay_Controller {
         listKieuTay = kieuTayRepo.findAll();
         listSanPham = sanPhamRepo.findAll();
         listChatLieu = chatLieuRepo.findAll();
-        listKhuyenMai = khuyenMaiRepo.findAll();
+        listKhuyenMai = khuyenMaiRepo.findAllKMTrangThai(khuyenMaiRepo.ACTIVE);
         model.addAttribute("listMauSac", listMauSac);
         model.addAttribute("listKichThuoc", listKichThuoc);
         model.addAttribute("listChatLieu", listChatLieu);
@@ -123,7 +123,7 @@ public class Ban_Tai_Quay_Controller {
         listKieuTay = kieuTayRepo.findAll();
         listSanPham = sanPhamRepo.findAll();
         listChatLieu = chatLieuRepo.findAll();
-        listKhuyenMai = khuyenMaiRepo.findAll();
+        listKhuyenMai = khuyenMaiRepo.findAllKMTrangThai(khuyenMaiRepo.ACTIVE);
         int page = pageParam2.orElse(0);
         Pageable p = PageRequest.of(page,100);
         Page<KhachHang> pageData = khachHangRepository.findByTrangThai(khachHangRepository.ACTIVE,p);
@@ -415,6 +415,12 @@ public class Ban_Tai_Quay_Controller {
                                    @RequestParam String idKhuyenMai,
                                    @RequestParam String idKH,
                                    @RequestParam BigDecimal tongTien) {
+        System.out.println("-----------------------------------------------------------------------"+tongTien);
+        System.out.println("-----------------------------------------------------------------------"+idHoaDon);
+        System.out.println("-----------------------------------------------------------------------"+ngayTao);
+        System.out.println("-----------------------------------------------------------------------"+idKhuyenMai);
+        System.out.println("-----------------------------------------------------------------------"+idKH);
+        System.out.println("-----------------------------------------------------------------------"+idNV);
         LocalDateTime ngayTaoLocalDateTime = ngayTao.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
         for (int i = 0; i < listHoaDon.size(); i++) {
             if (listHoaDon.get(i).getId().equals(idHoaDon)) {
@@ -742,20 +748,55 @@ public class Ban_Tai_Quay_Controller {
     // Find khuyến mãi
     @PostMapping("/find-khuyen-mai/{idKM}")
     public String findKhuyenMai(@PathVariable String idKM,
-                                @RequestParam String idHoaDon){
+                                @RequestParam String idHoaDon,
+                                @RequestParam String idKMBanDau){
+
+        KhuyenMai km = khuyenMaiRepo.findByIdKM(idKM);
+        System.out.println("------------------------------------------------------------------------"+km.getSoLuong());
+
+        for (KhuyenMai km2: listKhuyenMai){
+            if (km2.getId().equals(idKMBanDau)){
+                km2.setSoLuong(km2.getSoLuong()+1);
+                khuyenMaiRepo.save(km2);
+            }
+        }
 
         for (HoaDon hoaDon:listHoaDon){
+
             if (hoaDon.getId().equals(idHoaDon)){
                 KhuyenMai khuyenMai = new KhuyenMai();
                 khuyenMai.setId(idKM);
                 hoaDon.setIdKhuyenMai(khuyenMai);
                 hoaDonRepository.save(hoaDon);
+                if (km.getId().equals(idKM)){
+                    km.setSoLuong(km.getSoLuong()-1);
+                    khuyenMaiRepo.save(km);
+                }
             }
+
         }
 
         return "redirect:/ban_hang_tai_quay/detail-hoa-don/" + idHoaDon;
     }
 
+    //Bỏ khuyến mãi
+    @GetMapping("/huy-khuyen-mai/{idKM}")
+    public String huyKhuyenMai(@PathVariable String idKM){
+
+        KhuyenMai km = khuyenMaiRepo.findByIdKM(idKM);
+
+        for (HoaDon hoaDon:listHoaDon){
+            if (hoaDon.getId().equals(idHoaDon)){
+                hoaDon.setIdKhuyenMai(null);
+                hoaDonRepository.save(hoaDon);
+                if (km.getId().equals(idKM)){
+                    km.setSoLuong(km.getSoLuong()+1);
+                    khuyenMaiRepo.save(km);
+                }
+            }
+        }
+        return "redirect:/ban_hang_tai_quay/detail-hoa-don/" + idHoaDon;
+    }
 
     //Search khách hàng
     @PostMapping("search/{idHD}")
