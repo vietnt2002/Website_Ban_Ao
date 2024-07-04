@@ -38,4 +38,5 @@ public interface KhachHangRepository
             "join DiaChi dc on dc.idKhachHang.id = kh.id\n" +
             "where kh.id = ?1")
     ThongTinGiaohangResponse getThongTinGiaoHang(String idKH);
+
 };

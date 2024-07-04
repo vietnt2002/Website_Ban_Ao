@@ -47,62 +47,27 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
-    <style>
-        .invoice-container {
-            border: 1px solid #e0e0e0;
-            border-radius: 5px;
-            margin-bottom: 15px;
-            padding: 10px;
-            background-color: #fff;
-        }
+<%--    <style>--%>
+<%--        .invoice-card {--%>
+<%--            border: 1px solid #e0e0e0;--%>
+<%--            border-radius: 8px;--%>
+<%--            padding: 20px;--%>
+<%--            margin-bottom: 20px;--%>
+<%--            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);--%>
+<%--        }--%>
 
-        .invoice-header {
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
+<%--        .footer {--%>
+<%--            text-align: right;--%>
+<%--        }--%>
 
-        .invoice-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-        }
+<%--        .footer button {--%>
+<%--            margin-top: 10px;--%>
+<%--        }--%>
 
-        .invoice-item img {
-            margin-right: 10px;
-            border: 1px solid #e0e0e0;
-            border-radius: 5px;
-        }
-
-        .invoice-item div {
-            flex: 1;
-        }
-
-        .invoice-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-top: 1px solid #e0e0e0;
-            padding-top: 10px;
-            margin-top: 10px;
-        }
-
-        .invoice-footer .total {
-            font-weight: bold;
-        }
-
-        .invoice-footer button {
-            padding: 5px 10px;
-            background-color: #ff5722;
-            border: none;
-            color: #fff;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .invoice-footer button:hover {
-            background-color: #e64a19;
-        }
-    </style>
+<%--        .badge-warning {--%>
+<%--            background-color: #ffc107;--%>
+<%--        }--%>
+<%--    </style>--%>
 
     <style>
         .userCart {
@@ -385,122 +350,89 @@
 <!-- Boby -->
 <div class="container-fluid">
     <div class="card shadow mb-4">
-        <div class="card-header py-3 d-flex align-items-center">
+        <div class="card-header py-3 d-flex align-items-center" style="padding: 300px;">
             <i class="bi bi-card-list mr-3"></i>
             <h6 class="m-0 font-weight-bold">Đơn mua</h6>
         </div>
         <div class="row px-xl-5">
             <div class="col-lg table-responsive mb-5">
                 <nav>
-                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <div class="nav nav-tabs justify-content-center" id="nav-tab" role="tablist">
                         <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#tat-ca"
                                 type="button" role="tab" aria-controls="nav-home" aria-selected="true">Tất cả
                         </button>
-
                         <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab"
                                 data-bs-target="#cho-xac-nhan"
                                 type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Chờ xác
                             nhận
                         </button>
-
                         <button class="nav-link" id="nav-contact-tab1" data-bs-toggle="tab"
                                 data-bs-target="#da-xac-nhan"
                                 type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Đã xác
                             nhận
                         </button>
-
                         <button class="nav-link" id="nav-contact-tab2" data-bs-toggle="tab"
                                 data-bs-target="#cho-giao-hang"
                                 type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Chờ giao
                             hàng
                         </button>
-
                         <button class="nav-link" id="nav-contact-tab3" data-bs-toggle="tab"
                                 data-bs-target="#da-giao-hang"
                                 type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Đã giao
                             hàng
                         </button>
-
                         <button class="nav-link" id="nav-contact-tab4" data-bs-toggle="tab" data-bs-target="#hoan-thanh"
                                 type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Hoàn thành
                         </button>
                     </div>
                 </nav>
-                <div class="tab-content" id="nav-tabContent">
-                    <!-- Tất cả danh sách -->
+                <div class="tab-content">
                     <div class="tab-pane fade show active" id="tat-ca" role="tabpanel" aria-labelledby="nav-home-tab">
-                        <div class="row">
+                        <div class="container mt-5">
                             <c:forEach var="i" items="${listHD}">
-                                <div class="col-6">
-                                    <div>Mã hóa đơn: ${i.ma}</div>
-                                    <div>Ngày thanh toán: ${i.ngayThanhToan}</div>
-                                </div>
-                                <hr>
-                                <div class="col-6">
-<%--                                    <c:if test="${i.trangThai == 1} ">--%>
-                                        <div class="badge bg-warning">${i.trangThai == 1 ? "Chờ xác nhận" : "Đã xác nhận"} </div>
-<%--                                    </c:if>--%>
-<%--                                    <c:if test="${i.trangThai == 2} ">--%>
-<%--                                        <div class="badge bg-warning">Đã xác nhận</div>--%>
-<%--                                    </c:if>--%>
-<%--                                    <c:if test="${i.trangThai == 3} ">--%>
-<%--                                        <div class="badge bg-warning">Chào giao hàng</div>--%>
-<%--                                    </c:if>--%>
-<%--                                    <c:if test="${i.trangThai == 4} ">--%>
-<%--                                        <div class="badge bg-warning">Đang giao hàng</div>--%>
-<%--                                    </c:if>--%>
-<%--                                    <c:if test="${i.trangThai == 5} ">--%>
-<%--                                        <div class="badge bg-warning">Giao hàng thành công</div>--%>
-<%--                                    </c:if>--%>
-<%--                                    <c:if test="${i.trangThai == 6} ">--%>
-<%--                                        <div class="badge bg-warning">Hoàn thành</div>--%>
-<%--                                    </c:if>--%>
-<%--                                    <c:if test="${i.trangThai == 6} ">--%>
-<%--                                        <div class="badge bg-warning">Hủy</div>--%>
-<%--                                    </c:if>--%>
-                                    <div class="total">Tổng: ${i.tongTien}</div>
-                                </div>
-                                <div class="footer">
-                                    <button>Chi tiết</button>
+                                <div class="row mb-4 border rounded p-3">
+                                    <div class="col-3">
+                                        <div><strong>Mã hóa đơn:</strong> ${i.ma}</div>
+                                    </div>
+                                    <div class="col-5">
+                                        <div><strong>Ngày thanh toán:</strong> ${i.ngayThanhToan}</div>
+                                    </div>
+                                    <div class="col-2">
+                                        <div><strong>Tổng:</strong> ${i.tongTien}</div>
+                                    </div>
+                                    <div class="col-2 d-flex align-items-center justify-content-center">
+                                        <div class="badge badge-warning">
+                                                ${i.trangThai == 1 ? "Chờ xác nhận" : "Đã xác nhận"}
+                                        </div>
+                                    </div>
+                                    <div class="col-12 mt-3 text-center">
+                                        <button class="btn btn-primary">Chi tiết</button>
+                                    </div>
                                 </div>
                             </c:forEach>
                         </div>
                     </div>
-                    <!-- Danh sách chờ xác nhận -->
-                    <div class="tab-pane fade" id="cho-xac-nhan" role="tabpanel" aria-labelledby="nav-profile-tab">
-                        <h1>
-                            Mã hóa đơn: HD1112
-                        </h1>
+                    <div class="tab-pane fade show active" id="cho-xac-nhan" role="tabpanel" aria-labelledby="nav-home-tab">
+                        <h5>Chờ xác nhận</h5>
                     </div>
-                    <!-- Danh sách đã xác nhận -->
-                    <div class="tab-pane fade" id="da-xac-nhan" role="tabpanel" aria-labelledby="nav-contact-tab">
-                        <h1>
-                            Mã hóa đơn: HD1113
-                        </h1>
+                    <div class="tab-pane fade show active" id="da-xac-nhan" role="tabpanel" aria-labelledby="nav-home-tab">
+                        <h5>Đã xác nhận</h5>
                     </div>
-                    <!-- Danh sách chờ giao hàng -->
-                    <div class="tab-pane fade" id="cho-giao-hang" role="tabpanel" aria-labelledby="nav-contact-tab">
-                        <h1>
-                            Mã hóa đơn: HD1114
-                        </h1>
+                    <div class="tab-pane fade show active" id="cho-giao-hang" role="tabpanel" aria-labelledby="nav-home-tab">
+                        <h5>Chờ giao hàng</h5>
                     </div>
-                    <!-- Danh sách đã giao hàng -->
-                    <div class="tab-pane fade" id="da-giao-hang" role="tabpanel" aria-labelledby="nav-contact-tab">
-                        <h1>
-                            Mã hóa đơn: HD1115
-                        </h1>
+                    <div class="tab-pane fade show active" id="da-giao-hang" role="tabpanel" aria-labelledby="nav-home-tab">
+                        <h5>Đã giao hàng</h5>
                     </div>
-                    <!-- Danh sách hoàn thành -->
-                    <div class="tab-pane fade" id="hoan-thanh" role="tabpanel" aria-labelledby="nav-contact-tab">
-                        <h1>
-                            Mã hóa đơn: HD1116
-                        </h1>
+                    <div class="tab-pane fade show active" id="hoan-thanh" role="tabpanel" aria-labelledby="nav-home-tab">
+                        <h5>Hoàn thành</h5>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 
 <!-- Body End -->
 
@@ -601,7 +533,6 @@
 <!-- Template Javascript -->
 <script src="/view_ban_hang/js/main.js"></script>
 <script>
-
 </script>
 
 </body>

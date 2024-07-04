@@ -489,7 +489,7 @@
                             <img src="src/main/webapp/image/${hinhAnhdspAdd}" alt="" width="200" height="200">
                         </div>
                         <div>
-                            <form method="post" enctype="multipart/form-data" action="/upload">
+                            <form id="uploadFormAdd" method="post" enctype="multipart/form-data" action="/upload">
                             <div class="mb-3">
                                 <label for="tenSPAdd" class="form-label">Tên sản phẩm</label>
                                 <input type="text" class="form-control" id="tenSPAdd">
@@ -504,7 +504,7 @@
                                 <input class="form-check-input" type="checkbox" role="switch" id="trangThaiAdd" checked>
                                 <label class="form-check-label" for="trangThaiAdd" id="trangThaiLabeladd"></label>
                             </div>
-                            <button id="saveAddBtn" type="submit" class="btn btn-primary">Lưu</button>
+                            <button type="submit" id="saveAddBtn"  class="btn btn-primary">Lưu</button>
                             </form>
                         </div>
                     </div>
@@ -528,6 +528,7 @@
                                 <img id="hinhAnhEditDisplay" width="200" height="200" alt="">
                             </div>
                             <div>
+                                <form id="uploadFormEdit" method="post" enctype="multipart/form-data" action="/upload">
                                 <div class="mb-3">
                                     <label for="tenSPEdit" class="form-label">Tên sản phẩm</label>
                                     <input type="text" class="form-control" id="tenSPEdit" aria-describedby="emailHelp" value="">
@@ -535,14 +536,15 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="hinhAnhEdit" class="form-label">Hình ảnh</label>
-                                    <input type="file" class="form-control" id="hinhAnhEdit" value="">
+                                    <input type="file" name="file" class="form-control" id="hinhAnhEdit" value="">
                                     <p style="color: red;" id="hinhAnhEditErr"></p>
                                 </div>
                                 <div class="form-check form-switch">
                                     <input class="form-check-input" type="checkbox" role="switch" id="trangThaiEdit" checked>
                                     <label class="form-check-label" for="trangThaiEdit" id="trangThaiLabeledit">Trạng thái</label>
                                 </div>
-                                <button id="saveEditBtn"  class="btn btn-primary">Lưu</button>
+                                <button id="saveEditBtn" type="submit"  class="btn btn-primary">Lưu</button>
+                                </form>
                             </div>
                         </div>
                 </div>
@@ -644,119 +646,13 @@
             });
         });
     });
-
-    function searchByName(param){
-        var txtSearch = param.value;
-        console.log(txtSearch);
-        $.ajax({
-            url: "/ban-hang-tai-quay/search/${hoaDon.id}",
-            type: "POST",
-            data: {
-                txt:txtSearch
-            },
-            success: function (data) {
-                // var row = document.getElementById("content");
-                // row.innerHTML = data;
-                $('#contentAjax').empty()
-                $('#contentAjax').append(data);
-
-                console.log(data);
-            },
-            error: function (xhr) {
-                //Do Something to handle error
-            }
-        });
-    }
-
     <%--    --%>
-
-
-    const deleteButtons = document.querySelectorAll('.delete-button');
-    const checkBtn = document.querySelectorAll('#checkBtn');
-    // Thêm sự kiện click cho từng nút
-    deleteButtons.forEach(button => {
-        button.addEventListener('click', function () {
-            const idhd = this.getAttribute('idhd');
-            Swal.fire({
-                title: 'Bạn có muốn xóa không?',
-                text: "Bạn sẽ không thể khôi phục lại dữ liệu này!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Vâng, xóa nó!',
-                cancelButtonText: 'Hủy'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Thực hiện hành động xóa ở đây, ví dụ:
-                    // Gửi yêu cầu AJAX tới server để xóa dữ liệu
-                    fetch(`/ban-hang-tai-quay/delete-hoa-don/`+idhd, { method: 'GET' }).then(() => {
-                        Swal.fire(
-                            'Đã xóa!',
-                            'Dữ liệu của bạn đã bị xóa.',
-                            'success'
-                        );
-                        // Xóa hàng khỏi bảng sau khi xóa thành công
-                        button.closest('tr').remove();
-                    });
-                    button.closest('tr').remove();
-                }
-            });
-        });
-    });
-    checkBtn.forEach(button => {
-        button.addEventListener('click', function () {
-            console.log("test check btn");
-            var idHD = document.getElementsByName("idHD")[0].value;
-            var idKH  = document.getElementsByName("idKH")[0].value;
-            var idKhuyenMai = document.getElementsByName("idKhuyenMai")[0].value;
-            var tongTien = document.getElementsByName("tongTien")[0].value;
-            var thongBao = document.getElementById("errTraLai");
-            var moneyGiven = parseInt(document.getElementById("tienKhachDua").value);
-            var thongBao = document.getElementById("errTraLai");
-            console.log("====================== id hd:",idHD);
-            console.log("====================== id kh:",idKH);
-            console.log("====================== id khuyen mai:",idKhuyenMai);
-            console.log("====================== tong tien:",tongTien);
-            console.log("====================== money given:",moneyGiven);
-            if(tongTien<=moneyGiven&&!isNaN(tongTien)){
-                Swal.fire({
-                    title: 'Xác nhận thanh toán?',
-                    text: "Dữ liệu sẽ được lưu lại!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Vâng,Thanh toán!',
-                    cancelButtonText: 'Hủy'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        fetch(`/ban-hang-tai-quay/thanh-toan/`+idHD+'?idKhuyenMai='+idKhuyenMai+'&idKH='+idKH+'&tongTien='+tongTien,
-                            { method: 'POST' }).then(() => {
-                            Swal.fire(
-                                'Đã thanh toán!',
-                                'Dữ liệu đã được ghi nhận.',
-                                'success'
-                            ).then(() => {
-                                window.location.href = '/ban-hang-tai-quay';
-                            });
-                            button.closest('tr').remove();
-                        });
-                        button.closest('tr').remove();
-                        thongBao.textContent =  "";
-                    }
-                });
-            }
-            else{
-                thongBao.textContent =  "Số tiền khách đưa phải lớn hơn hoặc bằng tổng tiền.";
-            }
-        });
-    });
 </script>
 
 <script>
     let idSPLocal = "";
     let currentPage = 1;
+    let totalPage = 0;
     const loadDSSP = (pageParams) => {
         // get api + scpt.id
         let datatest = "data testing";
@@ -812,17 +708,18 @@
     }
     function navigate(direction,e) {
         e.preventDefault();
-        let items = document.querySelectorAll('.page-item');
-        let activeIndex = Array.from(items).findIndex(item => item.classList.contains('active'));
-        let newIndex = activeIndex + direction;
-        currentPage =newIndex
-        loadDSSP(currentPage);
-        if (newIndex > 0 && newIndex < items.length - 1) {
-            setActive(items[newIndex].querySelector('a'));
+        if(totalPage > 1){
+            let items = document.querySelectorAll('.page-item');
+            let activeIndex = Array.from(items).findIndex(item => item.classList.contains('active'));
+            let newIndex = activeIndex + direction;
+            currentPage =newIndex
+            loadDSSP(currentPage);
+            if (newIndex > 0 && newIndex < items.length - 1) {
+                setActive(items[newIndex].querySelector('a'));
+            }
         }
     }
     updateButtons();
-
     const loadTotalPagination = (currentPage) => {
         fetch("/san-pham/count", {
             headers: {
@@ -834,6 +731,7 @@
                 let html = '';
                 // Check if resp is a number and greater than 0
                 if (typeof resp === 'number' && resp > 0) {
+                    totalPage = Math.ceil(resp/20);
                     for (let i = 1; i <=  Math.ceil(resp/20); i++) {
                         const activeClass = (i === currentPage) ? 'active' : '';
                         html += '<li class="page-item ' + activeClass + '"><a class="page-link" href="#" onclick="setActive(this, ' + i + ')">' + i + '</a></li>';
@@ -974,6 +872,7 @@
             }
         });
     });
+
     function getFileName(fullPath) {
         // Check for the last occurrence of the backslash or forward slash
         var startIndex = Math.max(fullPath.lastIndexOf('\\'), fullPath.lastIndexOf('/'));
@@ -981,6 +880,7 @@
         var fileName = fullPath.substring(startIndex + 1);
         return fileName;
     }
+
     saveAddBtn.forEach(button => {
         button.addEventListener('click', function (e) {
             e.preventDefault();
@@ -1035,6 +935,21 @@
                             trangThai: trangThai,
                             hinhAnh: getFileName(hinhAnh)
                         };
+                        var formData = new FormData($('#uploadFormAdd')[0]); // Use FormData to get all form data
+                        // Handle file upload via AJAX
+                        $.ajax({
+                            url: '/upload',
+                            type: 'POST',
+                            data: formData,
+                            processData: false,
+                            contentType: false,
+                            success: function(response) {
+                                console.log("save image success ");
+                            },
+                            error: function(xhr, status, error) {
+                                console.log("save image =error");
+                            }
+                        });
                         fetch(`/san-pham/save`, {
                             method: 'POST',
                             headers: {
@@ -1073,6 +988,7 @@
             }
         });
     });
+
     function  validateNull(param){
      if(param===""||param===undefined){
          return true;
@@ -1135,6 +1051,21 @@
                             hinhAnh: getFileName(hinhAnh),
                             trangThai: trangThai
                         };
+                        var formData = new FormData($('#uploadFormEdit')[0]); // Use FormData to get all form data
+                        // Handle file upload via AJAX
+                        $.ajax({
+                            url: '/upload',
+                            type: 'POST',
+                            data: formData,
+                            processData: false,
+                            contentType: false,
+                            success: function(response) {
+                                console.log("save image success ");
+                            },
+                            error: function(xhr, status, error) {
+                                console.log("save image =error");
+                            }
+                        });
                         fetch(`/san-pham/update/`+idSPLocal, {
                             method: 'POST',
                             headers: {
@@ -1159,6 +1090,14 @@
         });
     });
 
+</script>
+<script>
+    $(document).ready(function() {
+        $('#saveAddBtn').on('click', function(event) {
+
+            // Optionally, submit the form normally after AJAX request (if needed)
+        });
+    });
 </script>
 <script>
     // Hiển thị thông báo thêm thành công hoặc thất bại sử dụng thư viện Sweet Alert2

@@ -601,6 +601,8 @@ public class TrangChuController {
         model.addAttribute("listHD", listHoaDon);
         model.addAttribute("soLuong", totalSoLuong);
 
+
+
         return "/view/BanHangOnline/donMua.jsp";
     }
 }

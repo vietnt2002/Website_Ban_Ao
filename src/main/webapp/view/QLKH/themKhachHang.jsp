@@ -422,9 +422,9 @@
                 <div class="container">
 
                     <%--      Tìm kiếm & lọc thông tin nhân ciên      --%>
-                    <h5 class="card-title mb-3">Thêm mới nhân viên</h5>
-                    <sf:form id="nhanVienForm" method="post" action="/qlnv/them-nhan-vien" enctype="multipart/form-data"
-                             modelAttribute="nhanVien">
+                    <h5 class="card-title mb-3">Thêm mới khách hàng</h5>
+                    <sf:form id="khachHangForm" method="post" action="/qlkh/them-khach-hang" enctype="multipart/form-data"
+                             modelAttribute="khachHang">
                         <div class="row">
                             <div class="col-sm-4">
                                 <div class="card text-center" style="height: 550px;">
@@ -445,15 +445,15 @@
                             <div class="col-sm-8">
                                 <div class="card" style="height: 550px">
                                     <div class="card-body">
-                                        <h5 class="card-title mt-4" style="margin-bottom: 25px">Thông tin nhân viên</h5>
+                                        <h5 class="card-title mt-4" style="margin-bottom: 25px">Thông tin khách hàng</h5>
                                         <div class="row">
                                             <div class="col col-6">
                                                 <div class="mb-3">
-                                                    <label for="tenNhanVien" class="form-label"><span
-                                                            class="text-danger">*</span> Tên nhân viên</label>
-                                                    <sf:input type="text" class="form-control" id="tenNhanVien"
+                                                    <label for="tenKhachHang" class="form-label"><span
+                                                            class="text-danger">*</span> Tên khách hàng</label>
+                                                    <sf:input type="text" class="form-control" id="tenKhachHang"
                                                               placeholder="Nhập họ tên.." path="hoTen"/>
-                                                    <div id="error-tenNhanVien" class="error"></div>
+                                                    <div id="error-tenKhachHang" class="error"></div>
                                                 </div>
 
                                                 <div class="mb-3">
@@ -465,36 +465,11 @@
                                                 </div>
 
                                                 <div class="mb-3">
-                                                    <label for="taiKhoan" class="form-label"><span
-                                                            class="text-danger">*</span> Tài khoản</label>
-                                                    <sf:input type="text" class="form-control" id="taiKhoan"
-                                                              placeholder="Nhập tài khoản.." path="taiKhoan"/>
-                                                    <div id="error-taiKhoan" class="error"></div>
-                                                </div>
-
-                                                <div class="mb-3">
-                                                    <div class="row">
-                                                        <div class="col-10">
-                                                            <label for="chucVu" class="form-label"><span
-                                                                    class="text-danger">*</span> Chức vụ</label>
-                                                            <sf:select class="form-select"
-                                                                       aria-label="Default select example"
-                                                                       id="chucVu" path="idCV">
-                                                                <c:forEach items="${listChucVuByTT}" var="chucVu">
-                                                                    <option value="${chucVu.id}">${chucVu.ten}</option>
-                                                                </c:forEach>
-                                                            </sf:select>
-                                                        </div>
-                                                        <div class="col-2">
-                                                            <!-- Button thêm chức vụ  -->
-                                                            <button type="button" class="btn btn-outline-success"
-                                                                    data-bs-toggle="modal"
-                                                                    data-bs-target="#themCV"
-                                                                    style="position: absolute; bottom: 0px; height: 37px">
-                                                                <i class="bi bi-plus-circle-fill"></i>
-                                                            </button>
-                                                        </div>
-                                                    </div>
+                                                    <label for="email" class="form-label"><span
+                                                            class="text-danger">*</span> Email</label>
+                                                    <sf:input type="text" class="form-control" id="email"
+                                                              placeholder="Nhập email.." path="email"/>
+                                                    <div id="error-email" class="error"></div>
                                                 </div>
                                             </div>
 
@@ -516,20 +491,12 @@
                                                                     ssStyle="margin-top: 5px"/>
                                                     <div id="error-gioiTinh" class="error"></div>
                                                 </div>
-
-                                                <div class="mb-3" style="margin-top: 22px">
-                                                    <label for="matKhau" class="form-label"><span
-                                                            class="text-danger">*</span> Mật khẩu</label>
-                                                    <sf:input type="text" class="form-control" id="matKhau"
-                                                              placeholder="Nhập mật khẩu.." path="matKhau"/>
-                                                    <div id="error-matKhau" class="error"></div>
-                                                </div>
                                             </div>
                                         </div>
 
                                         <div class="text-center" style="margin-top: 40px">
                                             <button type="submit" class="btn btn-primary">Thêm</button>
-                                            <a href="/qlnv/quan-ly-nhan-vien">
+                                            <a href="/qlkh/quan-ly-khach-hang">
                                                 <button type="button" class="btn btn-secondary">Hủy</button>
                                             </a>
                                         </div>
@@ -539,9 +506,7 @@
                             </div>
                         </div>
                     </sf:form>
-
                 </div>
-
 
             </div>
             <!--  Kết thúc bán hàng tại quầy  -->
@@ -553,12 +518,11 @@
         <footer class="sticky-footer bg-white">
             <div class="container my-auto">
                 <div class="copyright text-center my-auto">
-                    <span>MS - qlnv</span>
+                    <span>MS - qlkh</span>
                 </div>
             </div>
         </footer>
         <!-- End of Footer -->
-
     </div>
 
 </div>
@@ -568,96 +532,6 @@
     <i class="fas fa-angle-up"></i>
 </a>
 
-
-<!--               Modal thêm chức vụ              -->
-<div class="modal fade" id="themCV" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Thêm chức vụ</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="mb-3">
-                    <sf:form method="post" action="/qlnv/them-chuc-vu" id="chucVuForm" modelAttribute="chucVu">
-                        <div class="row">
-                            <div class="col-7">
-                                <label for="tenChucVu" class="form-label">Tên chức vụ</label>
-                                <sf:input type="text" class="form-control" path="ten" id="tenChucVu"
-                                          placeholder="Nhập tên chức vụ.."/>
-                                <div id="error-tenChucVu" class="error"></div>
-                            </div>
-                            <div class="col-5">
-                                <button type="submit" class="btn btn-success" style="position: absolute; bottom: 0px">
-                                    Thêm
-                                </button>
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
-                                        style="position: absolute; bottom: 0px; left: 85px">Hủy
-                                </button>
-                            </div>
-                        </div>
-                    </sf:form>
-                </div>
-
-
-                <div class="card">
-                    <div class="card-header">
-                        Danh sách chức vụ
-                    </div>
-                    <div class="card-body">
-                        <table class="table">
-                            <thead>
-                            <tr>
-                                <th scope="col">STT</th>
-                                <th scope="col">Tên chức vụ</th>
-                                <th scope="col">Ngày tạo</th>
-                                <th scope="col">Trạng thái</th>
-                                <th scope="col">Thao tác</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <c:forEach varStatus="i" items="${listChucVuAll}" var="chucVu">
-                                <form id="suaCVForm${chucVu.id}" method="post" action="/qlnv/sua-chuc-vu/${chucVu.id}">
-                                    <tr>
-                                        <th>${i.index+1}</th>
-                                        <td>
-                                            <input id="tenCV${chucVu.id}" type="text" name="ten" value="${chucVu.ten}"
-                                                   style="border: none">
-                                            <div id="error-tenCV${chucVu.id}" class="error"></div>
-                                        </td>
-                                        <td>${chucVu.ngayTao}</td>
-                                        <td>
-                                            <select class="form-select"
-                                                    aria-label="Default select example"
-                                                    name="trangThai"
-                                                    id="trangThai">
-                                                <option value="1"
-                                                        <c:if test="${chucVu.trangThai == 1}">selected</c:if>>
-                                                    Hoạt động
-                                                </option>
-                                                <option value="0"
-                                                        <c:if test="${chucVu.trangThai == 0}">selected</c:if>>
-                                                    Ngừng hoạt động
-                                                </option>
-                                            </select>
-                                        </td>
-                                        <td>
-                                            <!-- Button sửa chức vụ  -->
-                                            <button id="btnSuaCV${chucVu.id}" type="submit" class="btn btn-warning">
-                                                <i class="bi bi-pencil-square"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                </form>
-                            </c:forEach>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
 <!-- Bootstrap core JavaScript-->
 <script src="/view_admin/vendor/jquery/jquery.min.js"></script>
@@ -733,7 +607,7 @@
                     icon: "success"
                 }).then(() => {
                     // Điều hướng tới URL đăng xuất sau khi người dùng xác nhận
-                    window.location.href = "/qlnv/dang-nhap-view";
+                    window.location.href = "/admin/dang-nhap-view";
                 });
             }
         });
@@ -742,20 +616,19 @@
 </script>
 
 <script>
-    //Chuyển list nhân viên java -> js
-    var listNV = []
-    <c:forEach items="${listNhanVien}" var="nv">
-    var NhanVien = {};
-    NhanVien.id = "${nv.id}";
-    NhanVien.hoTen = "${nv.hoTen}";
-    NhanVien.gioiTinh = "${nv.gioiTinh}";
-    NhanVien.ngaySinh = "${nv.ngaySinh}";
-    NhanVien.sdt = "${nv.sdt}";
-    NhanVien.taiKhoan = "${nv.taiKhoan}";
-    NhanVien.matKhau = "${nv.matKhau}";
-    NhanVien.anhDaiDien = "${nv.anhDaiDien}";
-    NhanVien.trangThai = "${nv.trangThai}";
-    listNV.push(NhanVien);
+    //Chuyển list khách hàng java -> js
+    var listKH = []
+    <c:forEach items="${listKhachHang}" var="kh">
+    var KhachHang = {};
+    KhachHang.id = "${nv.id}";
+    KhachHang.hoTen = "${nv.hoTen}";
+    KhachHang.gioiTinh = "${nv.gioiTinh}";
+    KhachHang.ngaySinh = "${nv.ngaySinh}";
+    KhachHang.sdt = "${nv.sdt}";
+    KhachHang.taiKhoan = "${nv.email}";
+    KhachHang.anhDaiDien = "${nv.anhDaiDien}";
+    KhachHang.trangThai = "${nv.trangThai}";
+    listKH.push(KhachHang);
     </c:forEach>
 
     //Validate form
@@ -764,29 +637,33 @@
         return regex.test(phone);
     }
 
+    function validateEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    }
+
     function clearErrors() {
         document.querySelectorAll('.error').forEach(element => {
             element.textContent = '';
         });
     }
 
-    //Thêm nhân viên
-    document.getElementById('nhanVienForm').addEventListener('submit', function (event) {
+    //Thêm khách hàng
+    document.getElementById('khachHangForm').addEventListener('submit', function (event) {
         event.preventDefault();
         clearErrors();
 
-        const tenNhanVien = document.getElementById('tenNhanVien').value.trim();
+        const tenKhachHang = document.getElementById('tenKhachHang').value.trim();
         const ngaySinh = document.getElementById('ngaySinh').value.trim();
-        const taiKhoan = document.getElementById('taiKhoan').value.trim();
         const soDienThoai = document.getElementById('soDienThoai').value.trim();
-        const matKhau = document.getElementById('matKhau').value.trim();
+        const email = document.getElementById('email').value.trim();
         const gioiTinhNam = document.getElementById('gioiTinhNam').checked;
         const gioiTinhNu = document.getElementById('gioiTinhNu').checked;
 
         let hasError = false;
 
-        if (!tenNhanVien) {
-            document.getElementById('error-tenNhanVien').textContent = 'Tên nhân viên không được để trống';
+        if (!tenKhachHang) {
+            document.getElementById('error-tenKhachHang').textContent = 'Tên khách hàng không được để trống';
             hasError = true;
         }
 
@@ -800,27 +677,25 @@
             hasError = true;
         }
 
-        if (!taiKhoan) {
-            document.getElementById('error-taiKhoan').textContent = 'Tài khoản không được để trống';
-            hasError = true;
-        } else if (listNV.some(nhanVien => nhanVien.taiKhoan === taiKhoan)) {
-            document.getElementById('error-taiKhoan').textContent = 'Tài khoản đã tồn tại';
-            hasError = true;
-        }
-
         if (!soDienThoai) {
             document.getElementById('error-soDienThoai').textContent = 'Số điện thoại không được để trống';
             hasError = true;
         } else if (!isVietnamesePhoneNumber(soDienThoai)) {
             document.getElementById('error-soDienThoai').textContent = 'Số điện thoại không hợp lệ';
             hasError = true;
-        } else if (listNV.some(nhanVien => nhanVien.sdt === soDienThoai)) {
+        } else if (listKH.some(khachHang => khachHang.sdt === soDienThoai)) {
             document.getElementById('error-soDienThoai').textContent = 'Số điện thoại đã tồn tại';
             hasError = true;
         }
 
-        if (!matKhau) {
-            document.getElementById('error-matKhau').textContent = 'Mật khẩu không được để trống';
+        if (!email) {
+            document.getElementById('error-email').textContent = 'Email không được để trống';
+            hasError = true;
+        } else if (!validateEmail(email)) {
+            document.getElementById('error-email').textContent = 'Email không hợp lệ';
+            hasError = true;
+        } else if (listKH.some(khachHang => khachHang.email === email)) {
+            document.getElementById('error-email').textContent = 'Email đã tồn tại';
             hasError = true;
         }
 
@@ -842,11 +717,11 @@
             if (result.isConfirmed) {
                 Swal.fire({
                     title: "Đã thêm!",
-                    text: "Bạn đã thêm nhân viên thành công.",
+                    text: "Bạn đã thêm khách hàng thành công.",
                     icon: "success"
                 }).then(() => {
                     // window.location.href = "/qlnv/quan-ly-nhan-vien";
-                    document.getElementById('nhanVienForm').submit();
+                    document.getElementById('khachHangForm').submit();
                 });
             }
         });
@@ -872,116 +747,5 @@
     });
 </script>
 
-<script>
-    //Chuyển list chức vụ java -> js
-    var listCV = []
-    <c:forEach items="${listChucVu}" var="chucVu">
-    var ChucVu = {};
-    ChucVu.id = "${chucVu.id}";
-    ChucVu.ten = "${chucVu.ten}";
-    listCV.push(ChucVu);
-    </c:forEach>
-
-    // Thêm chức vụ
-    document.getElementById('chucVuForm').addEventListener('submit', function (event) {
-        event.preventDefault();
-        const tenChucVu = document.getElementById('tenChucVu').value.trim();
-
-        let hasError = false;
-        if (!tenChucVu) {
-            document.getElementById('error-tenChucVu').textContent = 'Tên chức vụ không được để trống';
-            hasError = true;
-        } else if (listCV.some(chucVu => chucVu.ten === tenChucVu)) {
-            document.getElementById('error-tenChucVu').textContent = 'Tên chức vụ đã tồn tại';
-            hasError = true;
-        } else {
-            document.getElementById('error-tenChucVu').textContent = '';
-        }
-        if (hasError) {
-            return;
-        }
-
-        event.preventDefault();
-        Swal.fire({
-            title: "Bạn có chắc chắn muốn thêm không?",
-            text: "Bạn sẽ không thể hoàn tác hành động này!",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            cancelButtonText: "Hủy",
-            confirmButtonText: "Thêm"
-        }).then((result) => {
-            if (result.isConfirmed) {
-                Swal.fire({
-                    title: "Đã thêm!",
-                    text: "Bạn đã thêm chức vụ thành công.",
-                    icon: "success"
-                }).then(() => {
-                    document.getElementById('chucVuForm').submit();
-                });
-            }
-        });
-    });
-
-</script>
-
-
-<script>
-    var list = [];
-    //Sửa chức vụ
-    document.addEventListener('DOMContentLoaded', function () {
-        const forms = document.querySelectorAll('form[id^="suaCVForm"]');
-        forms.forEach(form => {
-            form.addEventListener('submit', function (event) {
-                event.preventDefault();
-                debugger
-                const idCV = form.id.replace('suaCVForm', '');
-                const tenCV = document.getElementById('tenCV' + idCV).value.trim();
-
-                let hasError = false;
-                if (!tenCV) {
-                    document.getElementById('error-tenCV' + idCV).textContent = 'Tên chức vụ không được để trống';
-                    hasError = true;
-                } else {
-                    document.getElementById('error-tenCV' + idCV).textContent = '';
-                }
-                const tenCVs = document.querySelectorAll('input[id^="tenCV"]');
-                tenCVs.forEach(input => {
-                    if (input.id !== 'tenCV' + idCV && input.value.trim() === tenCV) {
-                        document.getElementById('error-tenCV' + idCV).textContent = 'Tên chức vụ bị trùng';
-                        hasError = true;
-                    }
-                });
-                if (hasError) {
-                    return;
-                }
-
-
-                Swal.fire({
-                    title: "Bạn có chắc chắn muốn sửa không?",
-                    text: "Bạn sẽ không thể hoàn tác hành động này!",
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#3085d6",
-                    cancelButtonColor: "#d33",
-                    cancelButtonText: "Hủy",
-                    confirmButtonText: "Sửa"
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        Swal.fire({
-                            title: "Đã sửa!",
-                            text: "Bạn đã sửa chức vụ thành công.",
-                            icon: "success"
-                        }).then(() => {
-                            form.submit();
-                        });
-                    }
-                });
-
-            });
-        });
-    });
-</script>
 
 </html>
