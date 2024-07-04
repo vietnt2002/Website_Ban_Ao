@@ -446,13 +446,12 @@
                                 <thead>
                                 <tr>
                                     <th>STT</th>
-                                    <th>Mã Hóa Đơn</th>
-                                    <th>Mã SP</th>
-                                    <th>Tên SP</th>
+                                    <th>Tên sản phẩm</th>
+                                    <th>Màu sắc</th>
+                                    <th>Kích thước</th>
                                     <th>Số lượng</th>
                                     <th>Đơn giá</th>
-                                    <th>Thành tiền</th>
-                                    <th>Thao tác</th>
+                                    <th>Chức năng</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -485,9 +484,9 @@
                                 <c:forEach varStatus="i" items="${listHDCT}" var="hdct">
                                     <tr>
                                         <td>${i.index+1}</td>
-                                        <td>${hdct.idHoaDon.ma}</td>
-                                        <td>${hdct.idCTSP.idSanPham.ma}</td>
                                         <td>${hdct.idCTSP.idSanPham.ten}</td>
+                                        <td>${hdct.idCTSP.idMauSac.ten}</td>
+                                        <td>${hdct.idCTSP.idKichThuoc.ten}</td>
                                         <td style="display: flex; align-items: center;">
                                             <form class="d-flex" method="post" action="/ban-hang-tai-quay/update-sl/${hdct.idCTSP.id}" onsubmit="return checkValidateAfterUpdate();">
                                                 <input type="hidden" name="idHoaDon" value="${hoaDon.id}">
@@ -498,10 +497,8 @@
                                                     <i class="bi bi-pencil"></i>
                                                 </button>
                                             </form>
-
                                         </td>
-                                        <td>${hdct.donGia}</td>
-                                        <td>${hdct.soLuong*hdct.donGia}</td>
+                                        <td class="price">${hdct.donGia}</td>
                                         <td>
                                             <form class="delete-form" action="/ban-hang-tai-quay/delete-hdct/${hdct.id}/${hdct.idCTSP.id}" method="post">
                                                 <input type="hidden" name="idHoaDon" value="${hoaDon.id}">
@@ -577,9 +574,10 @@
                                     <div class="mb-3">
                                         <label class="form-label">Thành Tiền</label>
                                         <c:if test="${total>0}">
-                                            <input id="tongTienKhiTruKM" type="number" class="form-control"
-                                                   name="tongTien"  value="${total-hoaDon.idKhuyenMai.soTienGiam}"
-                                                   readonly/>
+                                            <input id="tongTienKhiTruKM" type="text" class="form-control" name="tongTien"
+                                                   value="${total-hoaDon.idKhuyenMai.soTienGiam}" readonly/>
+                                            <input type="hidden" class="form-control"
+                                                    id="tongTien" value="${total-hoaDon.idKhuyenMai.soTienGiam}" readonly/>
                                         </c:if>
                                         <c:if test="${total==null}">
                                             <input type="number" class="form-control" value="0"
@@ -590,7 +588,7 @@
                                         <label class="form-label">Tiền Khách Đưa</label>
                                         <div class="row align-items-center">
                                             <div class="col-sm-10 d-flex align-items-center">
-                                                <input id="tienKhachDua" class="form-control" type="number" required>
+                                                <input id="tienKhachDua" class="form-control" type="text" required>
 
                                             </div>
                                             <div class="col-sm-2 d-flex">
@@ -601,7 +599,7 @@
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label">Trả Lại</label>
-                                        <input id="tienTraLai" type="number" class="form-control" required readonly>
+                                        <input id="tienTraLai" type="text" class="form-control" required readonly>
                                     </div>
                                     <div class="row mb-3 mt-4 justify-content-end text-end">
                                         <div class="col-sm-10">
@@ -976,7 +974,7 @@
                                                 <td>${spct.idChatLieu.ten}</td>
                                                 <td>${spct.idKieuTay.ten}</td>
                                                 <td>${spct.soLuong}</td>
-                                                <td>${spct.giaBan}</td>
+                                                <td class="price">${spct.giaBan}</td>
                                                 <td>${spct.trangThai==1?"Còn hàng":"Hết hàng"}</td>
                                                 <td>
                                                     <form action="/ban-hang-tai-quay/add-san-pham/${spct.id}" method="post"
@@ -1064,12 +1062,170 @@
 </body>
 
 <script>
+
+    // Fomat sang VNĐ bảng hóa đơn chi tiết
+    function formatCurrencyVND(amount) {
+        return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
+    }
+
+    document.querySelectorAll('.price').forEach(function(cell) {
+        let amount = parseFloat(cell.textContent);
+        cell.textContent = formatCurrencyVND(amount);
+    });
+    // End
+
+    //input
+    document.addEventListener('DOMContentLoaded', function() {
+        var input = document.getElementById('tongTienKhiTruKM');
+        var value = parseInt(input.value);
+
+        var formattedValue = new Intl.NumberFormat('vi-VN', {
+            style: 'currency',
+            currency: 'VND'
+        }).format(value);
+
+        input.value = formattedValue;
+    });
+
+    // //Nhập input
+    // document.addEventListener('DOMContentLoaded', function() {
+    //     var input = document.getElementById('tienKhachDua');
+    //
+    //     input.addEventListener('input', function(event) {
+    //         var value = input.value.replace(/\D/g, ''); // Loại bỏ tất cả các ký tự không phải số
+    //         if (value) {
+    //             var formattedValue = new Intl.NumberFormat('vi-VN', {
+    //                 style: 'currency',
+    //                 currency: 'VND'
+    //             }).format(value);
+    //
+    //             input.value = formattedValue;
+    //         }
+    //     });
+    //
+    //     input.addEventListener('focus', function(event) {
+    //         var value = input.value.replace(/\D/g, ''); // Loại bỏ tất cả các ký tự không phải số
+    //         input.value = value;
+    //     });
+    //
+    //     input.addEventListener('blur', function(event) {
+    //         var value = input.value.replace(/\D/g, ''); // Loại bỏ tất cả các ký tự không phải số
+    //         if (value) {
+    //             var formattedValue = new Intl.NumberFormat('vi-VN', {
+    //                 style: 'currency',
+    //                 currency: 'VND'
+    //             }).format(value);
+    //
+    //             input.value = formattedValue;
+    //         }
+    //     });
+    //
+    //     // Hàm để lấy giá trị gốc
+    //     function getRawValue() {
+    //         var value = input.value.replace(/\D/g, ''); // Loại bỏ tất cả các ký tự không phải số
+    //         return value;
+    //     }
+    //
+    //
+    //
+    //     // Ví dụ sử dụng hàm lấy giá trị gốc
+    //    input.addEventListener('change', function() {
+    //         console.log("Giá trị gốc: " + getRawValue());
+    //
+    //     });
+    //
+    //
+    // });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var tongTienInput = document.getElementById('tongTien');
+        var tienKhachDuaInput = document.getElementById('tienKhachDua');
+
+        // Định dạng giá trị tổng tiền khi trang được tải
+        var tongTien = parseInt(tongTienInput.value, 10);
+        tongTienInput.value = new Intl.NumberFormat('vi-VN', {
+            style: 'currency',
+            currency: 'VND'
+        }).format(tongTien);
+
+        tienKhachDuaInput.addEventListener('input', function(event) {
+            var value = tienKhachDuaInput.value.replace(/\D/g, ''); // Loại bỏ tất cả các ký tự không phải số
+            if (value) {
+                var formattedValue = new Intl.NumberFormat('vi-VN', {
+                    style: 'currency',
+                    currency: 'VND'
+                }).format(value);
+
+                tienKhachDuaInput.value = formattedValue;
+            }
+        });
+
+        tienKhachDuaInput.addEventListener('focus', function(event) {
+            var value = tienKhachDuaInput.value.replace(/\D/g, ''); // Loại bỏ tất cả các ký tự không phải số
+            tienKhachDuaInput.value = value;
+        });
+
+        tienKhachDuaInput.addEventListener('blur', function(event) {
+            var value = tienKhachDuaInput.value.replace(/\D/g, ''); // Loại bỏ tất cả các ký tự không phải số
+            if (value) {
+                var formattedValue = new Intl.NumberFormat('vi-VN', {
+                    style: 'currency',
+                    currency: 'VND'
+                }).format(value);
+
+                tienKhachDuaInput.value = formattedValue;
+            }
+        });
+
+        // Hàm để lấy giá trị gốc
+        function getRawValue(input) {
+            var value = input.value.replace(/\D/g, ''); // Loại bỏ tất cả các ký tự không phải số
+            return parseInt(value, 10);
+        }
+
+        // Hàm tính tiền trả lại
+        window.calculateChange = function() {
+            var tongTien = getRawValue(tongTienInput);
+            var tienKhachDua = getRawValue(tienKhachDuaInput);
+
+            console.log("Tổng tiền đầu: ", tongTienInput);
+            console.log("Tổng tiền: ", tongTien);
+            console.log("Tiền khách đưa: ", tienKhachDua);
+
+            var tienTraLai = (tienKhachDua - tongTien);
+            console.log("Tiền trả lại: ", tienTraLai);
+            var thongBao = document.getElementById("errTraLai");
+
+            if (isNaN(tienKhachDua)) {
+                thongBao.textContent = "Vui lòng nhập số tiền hợp lệ.";
+                return false;
+            }
+
+            if (tienKhachDua < tongTien) {
+                thongBao.textContent = "Số tiền khách đưa phải lớn hơn hoặc bằng tổng tiền.";
+                document.getElementById('tienTraLai').value = "";
+                return false;
+            }
+
+            // Hiển thị số tiền trả lại trong trường "Trả lại"
+            var formattedValue = new Intl.NumberFormat('vi-VN', {
+                style: 'currency',
+                currency: 'VND'
+            }).format(tienTraLai);
+
+            document.getElementById('tienTraLai').value = formattedValue;
+            thongBao.textContent = "";
+            return true;
+        }
+    });
+
+    //
     document.querySelectorAll('.delete-button2').forEach(button => {
         button.addEventListener('click', function() {
             const form = this.closest('.delete-form');
             Swal.fire({
-                title: 'Bạn có muốn hủy không??',
-                text: "Dữ liệu này sẽ được lưu trữ lại để đối chiếu!",
+                title: 'Bạn có muốn xóa không??',
+                text: "Dữ liệu này sẽ không thể khôi phục lại!",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -1108,35 +1264,38 @@
         });
     }
 
-    <%--    --%>
-    function calculateChange() {
-        <%--var tongTien = parseInt('${total}');--%>
-        var tongTien = parseInt(document.getElementById('tongTienKhiTruKM').value);
-        var tienKhachDua = parseInt(document.getElementById('tienKhachDua').value);
-        console.log(tongTien);
-        console.log(tienKhachDua);
+<%--    &lt;%&ndash;    &ndash;%&gt;--%>
+<%--    function calculateChange() {--%>
+<%--        var tongTien = parseInt(document.getElementById('tongTien').value);--%>
+<%--        var tienKhachDua = parseInt(document.getElementById('tienKhachDua').value)*1000;--%>
+<%--        console.log("Tổng tiền: ",tongTien);--%>
+<%--        console.log("Tiền khách đưa: ",tienKhachDua);--%>
 
-        var tienTraLai = tienKhachDua - tongTien;
-        console.log(tienTraLai);
-        var thongBao = document.getElementById("errTraLai");
-        if (isNaN(tienKhachDua)) {
-            thongBao.textContent = "Vui lòng nhập số tiền hợp lệ.";
-            return false;
-        }
+<%--        var tienTraLai = (tienKhachDua - tongTien);--%>
+<%--        console.log("Tiền trả lại: ",tienTraLai);--%>
+<%--        var thongBao = document.getElementById("errTraLai");--%>
+<%--        if (isNaN(tienKhachDua)) {--%>
+<%--            thongBao.textContent = "Vui lòng nhập số tiền hợp lệ.";--%>
+<%--            return false;--%>
+<%--        }--%>
 
-        if (tienKhachDua == "" || tienKhachDua < tongTien) {
-            thongBao.textContent = "Số tiền khách đưa phải lớn hơn hoặc bằng tổng tiền.";
-            // alert('Số tiền khách đưa phải lớn hơn hoặc bằng tổng tiền.');
-            document.getElementById('tienTraLai').value = "";
-            return false;
-        }
+<%--        if (tienKhachDua == "" || tienKhachDua < tongTien) {--%>
+<%--            thongBao.textContent = "Số tiền khách đưa phải lớn hơn hoặc bằng tổng tiền.";--%>
+<%--            // alert('Số tiền khách đưa phải lớn hơn hoặc bằng tổng tiền.');--%>
+<%--            document.getElementById('tienTraLai').value = "";--%>
+<%--            return false;--%>
+<%--        }--%>
 
-        // Hiển thị số tiền trả lại trong trường "Trả lại"
+<%--        // Hiển thị số tiền trả lại trong trường "Trả lại"--%>
+<%--        var formattedValue = new Intl.NumberFormat('vi-VN', {--%>
+<%--            style: 'currency',--%>
+<%--            currency: 'VND'--%>
+<%--        }).format(tienTraLai);--%>
 
-        document.getElementById('tienTraLai').value = tienTraLai;
-        thongBao.textContent="";
-        return true;
-    }
+<%--        document.getElementById('tienTraLai').value = formattedValue;--%>
+<%--        thongBao.textContent="";--%>
+<%--        return true;--%>
+<%--    }--%>
 
 
 
@@ -1246,8 +1405,17 @@
             var idHD = document.getElementsByName("idHD")[0].value;
             var idKH  = document.getElementsByName("idKH")[0].value;
             var idKhuyenMai = document.getElementsByName("idKhuyenMai")[0].value;
-            var tongTien = document.getElementsByName("tongTien")[0].value;
+            // var tongTien = document.getElementsByName("tongTien")[0].value;
             var thongBao = document.getElementById("errTraLai");
+            // var tongTien = parseInt(document.getElementById("tongTienKhiTruKM").value);
+
+            var tongTienInput = document.getElementById('tongTien');
+            function getRawValue(input) {
+                var value = input.value.replace(/\D/g, ''); // Loại bỏ tất cả các ký tự không phải số
+                return parseInt(value, 10);
+            }
+            var tongTien = getRawValue(tongTienInput);
+
             var moneyGiven = parseInt(document.getElementById("tienKhachDua").value);
             var thongBao = document.getElementById("errTraLai");
             console.log("====================== id hd:",idHD);
@@ -1255,7 +1423,7 @@
             console.log("====================== id khuyen mai:",idKhuyenMai);
             console.log("====================== tong tien:",tongTien);
             console.log("====================== money given:",moneyGiven);
-            if(tongTien<=moneyGiven&&!isNaN(tongTien)){
+            if(!isNaN(moneyGiven)&&!isNaN(tongTien)){
                 Swal.fire({
                     title: 'Xác nhận thanh toán?',
                     text: "Dữ liệu sẽ được lưu lại!",
@@ -1284,7 +1452,13 @@
                 });
             }
             else{
-                thongBao.textContent =  "Số tiền khách đưa phải lớn hơn hoặc bằng tổng tiền.";
+                // thongBao.textContent =  "Vui lòng kiểm tra lại thanh toán";
+                Swal.fire({
+                    title: 'Lỗi!',
+                    text: 'Vui lòng kiểm tra lại thanh toán.',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
             }
         });
     });

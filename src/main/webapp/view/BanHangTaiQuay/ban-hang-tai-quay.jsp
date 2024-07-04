@@ -1129,12 +1129,11 @@
 
 
 
-    // Function to format number as VND currency
+    // Fomat sang VNĐ bảng hóa đơn chi tiết
     function formatCurrencyVND(amount) {
         return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
     }
 
-    // Format all prices in the table
     document.querySelectorAll('.price').forEach(function(cell) {
         let amount = parseFloat(cell.textContent);
         cell.textContent = formatCurrencyVND(amount);
