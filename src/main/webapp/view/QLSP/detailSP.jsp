@@ -372,62 +372,64 @@
                             </div>
                             <h5 class="mt-3 border-bottom">Danh sách sản phẩm chi tiết: </h5>
                             <div class="mt-3">
-                                    <div class="row">
-                                        <div class="col col-md-2">
-                                            <div class="dropdown">
-                                                <button class="btn btn-outline-secondary dropdown-toggle" type="button"
-                                                        id="lblMauSac" style="width: 150px;" data-bs-toggle="dropdown" aria-expanded="false">
-                                                    Chọn màu sắc
-                                                </button>
-                                                <ul class="dropdown-menu" id="cboMauSac"
-                                                    aria-labelledby="dropdownMenuButton2">
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        <div class="col col-md-2">
-                                            <div class="dropdown" style="width: 200px;">
-                                                <button class="btn btn-outline-secondary dropdown-toggle" type="button"
-                                                        id="lblKichThuoc" style="width: 150px;" data-bs-toggle="dropdown"
-                                                        aria-expanded="false">
-                                                    Chọn kích thước
-                                                </button>
-                                                <ul class="dropdown-menu" id="cboKichThuoc"
-                                                    aria-labelledby="dropdownMenuButton3">
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        <div class="col col-md-2">
-                                            <div class="dropdown" style="width: 200px;">
-                                                <button class="btn btn-outline-secondary dropdown-toggle" type="button"
-                                                        id="lblChatLieu" style="width: 150px;" data-bs-toggle="dropdown"
-                                                        aria-expanded="false">
-                                                    Chọn chất liệu
-                                                </button>
-                                                <ul class="dropdown-menu" id="cboChatLieu"
-                                                    aria-labelledby="dropdownMenuButton4">
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        <div class="col col-md-2">
-                                            <div class="dropdown" style="width: 200px;">
-                                                <button class="btn btn-outline-secondary dropdown-toggle" type="button"
-                                                        id="lblKieuTay" style="width: 150px;" data-bs-toggle="dropdown" aria-expanded="false">
-                                                    Chọn kiểu tay
-                                                </button>
-                                                <ul class="dropdown-menu" id="cboKieuTay"
-                                                    aria-labelledby="dropdownMenuButton5">
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        <div class="col col-md-3 d-flex gap-3">
-                                            <button id="btnSearch" class="btn btn-success me-2" onclick="search(event)">
-                                                Tìm kiếm
+                                <div class="row">
+                                    <div class="col col-md-2">
+                                        <div class="dropdown">
+                                            <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                                    id="lblMauSac" style="width: 150px;" data-bs-toggle="dropdown"
+                                                    aria-expanded="false">
+                                                Chọn màu sắc
                                             </button>
-                                            <button id="btnRef" class="btn btn-success me-2" onclick="refresh(event)">
-                                                Refresh
-                                            </button>
+                                            <ul class="dropdown-menu" id="cboMauSac"
+                                                aria-labelledby="dropdownMenuButton2">
+                                            </ul>
                                         </div>
                                     </div>
+                                    <div class="col col-md-2">
+                                        <div class="dropdown" style="width: 200px;">
+                                            <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                                    id="lblKichThuoc" style="width: 150px;" data-bs-toggle="dropdown"
+                                                    aria-expanded="false">
+                                                Chọn kích thước
+                                            </button>
+                                            <ul class="dropdown-menu" id="cboKichThuoc"
+                                                aria-labelledby="dropdownMenuButton3">
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="col col-md-2">
+                                        <div class="dropdown" style="width: 200px;">
+                                            <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                                    id="lblChatLieu" style="width: 150px;" data-bs-toggle="dropdown"
+                                                    aria-expanded="false">
+                                                Chọn chất liệu
+                                            </button>
+                                            <ul class="dropdown-menu" id="cboChatLieu"
+                                                aria-labelledby="dropdownMenuButton4">
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="col col-md-2">
+                                        <div class="dropdown" style="width: 200px;">
+                                            <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                                    id="lblKieuTay" style="width: 150px;" data-bs-toggle="dropdown"
+                                                    aria-expanded="false">
+                                                Chọn kiểu tay
+                                            </button>
+                                            <ul class="dropdown-menu" id="cboKieuTay"
+                                                aria-labelledby="dropdownMenuButton5">
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="col col-md-3 d-flex gap-3">
+                                        <button id="btnSearch" class="btn btn-success me-2" onclick="search(event)">
+                                            Tìm kiếm
+                                        </button>
+                                        <button id="btnRef" class="btn btn-success me-2" onclick="refresh(event)">
+                                            Refresh
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                             <table class="table table-hover">
                                 <thead>
@@ -516,39 +518,120 @@
         <!-- ModalSPEdit-->
         <div class="modal fade" id="ModalEdit" tabindex="-1" aria-labelledby="exampleModalLabel4" aria-hidden="true"
              data-bs-backdrop="static" data-bs-keyboard="false">
-            <div class="modal-dialog modal-lg">
+            <div class="modal-dialog modal-xl">
                 <div class="modal-content">
                     <div class="modal-header">
                         <div class="row">
-                            <h3 class="modal-title" id="exampleModalLabel4">Chỉnh sửa sản phẩm</h3>
+                            <h3 class="modal-title" id="exampleModalLabel4">Chỉnh sửa sản phẩm chi tiết</h3>
                         </div>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body d-flex gap-5">
-                        <div class="border">
-                            <img id="hinhAnhEditDisplay" width="200" height="200" alt="">
-                        </div>
-                        <div>
-                            <form id="uploadFormEdit" method="post" enctype="multipart/form-data" action="/upload">
-                                <div class="mb-3">
-                                    <label for="tenSPEdit" class="form-label">Tên sản phẩm</label>
-                                    <input type="text" class="form-control" id="tenSPEdit" aria-describedby="emailHelp"
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <div class="row">
+                                <h5 class="border-bottom">Tên sản phẩm:&nbsp&nbsp<span id="tenSPModalEdit"></span></h5>
+                                <div class="col col-md-3">
+                                    <div class="d-flex">
+                                        <div class="dropdown">
+                                            <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                                    id="lblMauSacModalEdit" style="width: 150px;" data-bs-toggle="dropdown"
+                                                    aria-expanded="false">
+                                                Chọn màu sắc
+                                            </button>
+                                            <ul class="dropdown-menu" id="cboMauSacModalEdit"
+                                                aria-labelledby="dropdownMenuButton2">
+                                            </ul>
+                                        </div>
+                                        <button>Thêm</button>
+                                    </div>
+                                </div>
+                                <div class="col col-md-3">
+                                    <div class="d-flex">
+                                        <div class="dropdown">
+                                            <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                                    id="lblKichThuocModalEdit" style="width: 150px;"
+                                                    data-bs-toggle="dropdown"
+                                                    aria-expanded="false">
+                                                Chọn kích thước
+                                            </button>
+                                            <ul class="dropdown-menu" id="cboKichThuocModalEdit"
+                                                aria-labelledby="dropdownMenuButton3">
+                                            </ul>
+                                        </div>
+                                        <button>Thêm</button>
+                                    </div>
+                                </div>
+                                <div class="col col-md-3">
+                                    <div class="d-flex">
+                                        <div class="dropdown">
+                                            <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                                    id="lblChatLieuModalEdit" style="width: 150px;"
+                                                    data-bs-toggle="dropdown"
+                                                    aria-expanded="false">
+                                                Chọn chất liệu
+                                            </button>
+                                            <ul class="dropdown-menu" id="cboChatLieuModalEdit"
+                                                aria-labelledby="dropdownMenuButton4">
+                                            </ul>
+                                        </div>
+                                        <button>Thêm</button>
+                                    </div>
+                                </div>
+                                <div class="col col-md-3">
+                                    <div class="d-flex">
+                                        <div class="dropdown">
+                                            <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                                    id="lblKieuTayModalEdit" style="width: 150px;" data-bs-toggle="dropdown"
+                                                    aria-expanded="false">
+                                                Chọn kiểu tay
+                                            </button>
+                                            <ul class="dropdown-menu" id="cboKieuTayModalEdit"
+                                                aria-labelledby="dropdownMenuButton5">
+                                            </ul>
+                                        </div>
+                                        <button>Thêm</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col col-md-3">
+                                    <label for="soLuongModalEdit" class="form-label">Số lượng</label>
+                                    <input type="number" name="file" class="form-control" id="soLuongModalEdit"
                                            value="">
-                                    <p style="color: red;" id="tenSPEditErr"></p>
+                                    <p style="color: red;" id="soLuongModalEditErr"></p>
                                 </div>
-                                <div class="mb-3">
-                                    <label for="hinhAnhEdit" class="form-label">Hình ảnh</label>
-                                    <input type="file" name="file" class="form-control" id="hinhAnhEdit" value="">
-                                    <p style="color: red;" id="hinhAnhEditErr"></p>
+                                <div class="col col-md-3">
+                                    <label for="giaNhapModalEdit" class="form-label">Giá nhập</label>
+                                    <input type="number" name="file" class="form-control" id="giaNhapModalEdit"
+                                           value="">
+                                    <p style="color: red;" id="giaNhapModalEditErr"></p>
                                 </div>
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" role="switch" id="trangThaiEdit"
-                                           checked>
-                                    <label class="form-check-label" for="trangThaiEdit" id="trangThaiLabeledit">Trạng
-                                        thái</label>
+                                <div class="col col-md-3">
+                                    <label for="giaBanModalEdit" class="form-label">Giá bán</label>
+                                    <input type="number" name="file" class="form-control" id="giaBanModalEdit" value="">
+                                    <p style="color: red;" id="giaBanModalEditErr"></p>
                                 </div>
-                                <button id="saveEditBtn" type="submit" class="btn btn-primary">Lưu</button>
-                            </form>
+                            </div>
+                            <div class="row">
+                                <div class="col col-md-3">
+                                    <label for="moTaModalEdit" class="form-label">Ghi chú</label>
+                                    <textarea class="form-control custom-textarea" style="width: 550px;"
+                                              id="moTaModalEdit" name="moTa"></textarea>
+                                    <p style="color: red;" id="moTaModalEditErr"></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col col-md-3">
+                                    <button>Chọn hình ảnh</button>
+                                </div>
+                            </div>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" role="switch" id="trangThaiEdit"
+                                       checked>
+                                <label class="form-check-label" for="trangThaiEdit" id="trangThaiLabeledit">Trạng
+                                    thái</label>
+                            </div>
+                            <button id="saveEditBtn" type="submit" class="btn btn-primary">Lưu</button>
                         </div>
                     </div>
                 </div>
@@ -842,7 +925,7 @@
         console.log('data kich thuoc ID:', idKichThuoc);
         console.log('data chat lieu ID:', idChatLieu);
         console.log('data kieu tay ID:', idKieuTay);
-        fetch("/chi-tiet-sp/search" +"?idMauSac=" + idMauSac+"&idKichThuoc="+idKichThuoc+"&idChatLieu="+idChatLieu+"&idKieuTay="+idKieuTay, {
+        fetch("/chi-tiet-sp/search" + "?idMauSac=" + idMauSac + "&idKichThuoc=" + idKichThuoc + "&idChatLieu=" + idChatLieu + "&idKieuTay=" + idKieuTay, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -876,7 +959,8 @@
                 $("#tbl_ds_spct").html(html)
             });
     }
-    function refresh(e){
+
+    function refresh(e) {
         e.preventDefault();
         idMauSac = "";
         idKichThuoc = "";
@@ -884,10 +968,11 @@
         idKieuTay = "";
         lblMauSac.textContent = "Chọn màu sắc"
         lblKichThuoc.textContent = "Chọn kích thước";
-        lblChatLieu.textContent  = "Chọn chất liệu";
+        lblChatLieu.textContent = "Chọn chất liệu";
         lblKieuTay.textContent = "Chọn kiểu tay";
         loadDSSPCT(currentPage);
     }
+
     function setActive(element, page) {
         // Remove active class from all pagination items
         let items = document.querySelectorAll('.page-item');
