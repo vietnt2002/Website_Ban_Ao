@@ -79,6 +79,15 @@
 
     </style>
 
+    <style>
+        .icon-container i {
+            transition: color 0.3s ease;
+        }
+        .icon-container i:hover {
+            color: #4e73df; /* Change this to your desired hover color */
+        }
+    </style>
+
 </head>
 
 <body id="page-top">
@@ -478,37 +487,131 @@
         <!-- ModalSPAdd-->
         <div class="modal fade" id="ModalAdd" tabindex="-1" aria-labelledby="exampleModalLabel4" aria-hidden="true"
              data-bs-backdrop="static" data-bs-keyboard="false">
-            <div class="modal-dialog modal-lg">
+            <div class="modal-dialog modal-xl">
                 <div class="modal-content">
                     <div class="modal-header">
                         <div class="row">
-                            <h3 class="modal-title" id="exampleModalLabelAdd">Thêm mới sản phẩm</h3>
+                            <h3 class="modal-title">Chỉnh sửa sản phẩm chi tiết</h3>
                         </div>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body d-flex gap-5">
-                        <div>
-                            <img src="src/main/webapp/image/${hinhAnhdspAdd}" alt="" width="200" height="200">
-                        </div>
-                        <div>
-                            <form id="uploadFormAdd" method="post" enctype="multipart/form-data" action="/upload">
-                                <div class="mb-3">
-                                    <label for="tenSPAdd" class="form-label">Tên sản phẩm</label>
-                                    <input type="text" class="form-control" id="tenSPAdd">
-                                    <p style="color: red;" id="tenSPAddErr"></p>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <div class="row">
+                                <div class="d-flex" style="gap: 500px;">
+                                    <h5 class="border-bottom">Tên sản phẩm:&nbsp&nbsp<span id="tenSPModalAdd"></span></h5>
+                                    <h5 class="border-bottom">Ngày tạo:&nbsp&nbsp<span id="ngayTaoModalAdd"></span></h5>
                                 </div>
-                                <div class="mb-3">
-                                    <label for="hinhAnhAdd" class="form-label">Hình ảnh</label>
-                                    <input type="file" name="file" class="form-control" id="hinhAnhAdd" value="">
-                                    <p style="color: red;" id="hinhAnhAddErr"></p>
+                                <div class="col col-md-3">
+                                    <div class="d-flex">
+                                        <div class="dropdown">
+                                            <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                                    id="lblMauSacModalAdd" style="width: 150px;" data-bs-toggle="dropdown"
+                                                    aria-expanded="false">
+                                                Chọn màu sắc
+                                            </button>
+                                            <ul class="dropdown-menu" id="cboMauSacModalAdd"
+                                                aria-labelledby="dropdownMenuButton2">
+                                            </ul>
+                                        </div>
+                                        <div class="icon-container">
+                                            <i class=" bi bi-folder-plus col-3" style="font-size: 25px"></i>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" role="switch" id="trangThaiAdd"
-                                           checked>
-                                    <label class="form-check-label" for="trangThaiAdd" id="trangThaiLabeladd"></label>
+                                <div class="col col-md-3">
+                                    <div class="d-flex">
+                                        <div class="dropdown">
+                                            <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                                    id="lblKichThuocModalAdd" style="width: 150px;"
+                                                    data-bs-toggle="dropdown"
+                                                    aria-expanded="false">
+                                                Chọn kích thước
+                                            </button>
+                                            <ul class="dropdown-menu" id="cboKichThuocModalAdd"
+                                                aria-labelledby="dropdownMenuButton3">
+                                            </ul>
+                                        </div>
+                                        <div class="icon-container">
+                                            <i class=" bi bi-folder-plus col-3" style="font-size: 25px"></i>
+                                        </div>
+                                    </div>
                                 </div>
-                                <button type="submit" id="saveAddBtn" class="btn btn-primary">Lưu</button>
-                            </form>
+                                <div class="col col-md-3">
+                                    <div class="d-flex">
+                                        <div class="dropdown">
+                                            <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                                    id="lblChatLieuModalAdd" style="width: 150px;"
+                                                    data-bs-toggle="dropdown"
+                                                    aria-expanded="false">
+                                                Chọn chất liệu
+                                            </button>
+                                            <ul class="dropdown-menu" id="cboChatLieuModalAdd"
+                                                aria-labelledby="dropdownMenuButton4">
+                                            </ul>
+                                        </div>
+                                        <div class="icon-container">
+                                            <i class=" bi bi-folder-plus col-3" style="font-size: 25px"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col col-md-3">
+                                    <div class="d-flex">
+                                        <div class="dropdown">
+                                            <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                                    id="lblKieuTayModalAdd" style="width: 150px;" data-bs-toggle="dropdown"
+                                                    aria-expanded="false">
+                                                Chọn kiểu tay
+                                            </button>
+                                            <ul class="dropdown-menu" id="cboKieuTayModalAdd"
+                                                aria-labelledby="dropdownMenuButton5">
+                                            </ul>
+                                        </div>
+                                        <div class="icon-container">
+                                            <i class=" bi bi-folder-plus col-3" style="font-size: 25px"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col col-md-4">
+                                    <label for="soLuongModalEdit" class="form-label">Số lượng</label>
+                                    <input type="number" name="file" class="form-control" id="soLuongModalAdd"
+                                           value="">
+                                    <p style="color: red;" id="soLuongModalAddErr"></p>
+                                </div>
+                                <div class="col col-md-4">
+                                    <label for="giaNhapModalEdit" class="form-label">Giá nhập</label>
+                                    <input type="number" name="file" class="form-control" id="giaNhapModalAdd"
+                                           value="">
+                                    <p style="color: red;" id="giaNhapModalAddErr"></p>
+                                </div>
+                                <div class="col col-md-4">
+                                    <label for="giaBanModalEdit" class="form-label">Giá bán</label>
+                                    <input type="number" name="file" class="form-control" id="giaBanModalAdd" value="">
+                                    <p style="color: red;" id="giaBanModalAddErr"></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col col-md-3">
+                                    <label for="moTaModalEdit" class="form-label">Ghi chú</label>
+                                    <textarea class="form-control custom-textarea" style="width: 550px;"
+                                              id="moTaModalAdd" name="moTa"></textarea>
+                                    <p style="color: red;" id="moTaModalAddErr"></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col col-md-3">
+                                    <button type="button" class="btn btn-secondary">Chọn hình ảnh</button>
+                                </div>
+                            </div>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" role="switch" id="trangThaiAdd"
+                                       checked>
+                                <label class="form-check-label" for="trangThaiEdit" id="trangThaiLabelAdd">Trạng
+                                    thái</label>
+                            </div>
+                            <button id="saveAddBtn" type="submit" class="btn btn-primary">Lưu</button>
                         </div>
                     </div>
                 </div>
@@ -529,7 +632,10 @@
                     <div class="modal-body">
                         <div class="mb-3">
                             <div class="row">
-                                <h5 class="border-bottom">Tên sản phẩm:&nbsp&nbsp<span id="tenSPModalEdit"></span></h5>
+                                <div class="d-flex" style="gap: 500px;">
+                                    <h5 class="border-bottom">Tên sản phẩm:&nbsp&nbsp<span id="tenSPModalEdit"></span></h5>
+                                    <h5 class="border-bottom">Ngày tạo:&nbsp&nbsp<span id="ngayTaoModalEdit"></span></h5>
+                                </div>
                                 <div class="col col-md-3">
                                     <div class="d-flex">
                                         <div class="dropdown">
@@ -542,7 +648,9 @@
                                                 aria-labelledby="dropdownMenuButton2">
                                             </ul>
                                         </div>
-                                        <button>Thêm</button>
+                                        <div class="icon-container">
+                                            <i class=" bi bi-folder-plus col-3" style="font-size: 25px"></i>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col col-md-3">
@@ -558,7 +666,9 @@
                                                 aria-labelledby="dropdownMenuButton3">
                                             </ul>
                                         </div>
-                                        <button>Thêm</button>
+                                        <div class="icon-container">
+                                            <i class=" bi bi-folder-plus col-3" style="font-size: 25px"></i>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col col-md-3">
@@ -574,7 +684,9 @@
                                                 aria-labelledby="dropdownMenuButton4">
                                             </ul>
                                         </div>
-                                        <button>Thêm</button>
+                                        <div class="icon-container">
+                                            <i class=" bi bi-folder-plus col-3" style="font-size: 25px"></i>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col col-md-3">
@@ -589,24 +701,26 @@
                                                 aria-labelledby="dropdownMenuButton5">
                                             </ul>
                                         </div>
-                                        <button>Thêm</button>
+                                        <div class="icon-container">
+                                            <i class=" bi bi-folder-plus col-3" style="font-size: 25px"></i>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col col-md-3">
+                                <div class="col col-md-4">
                                     <label for="soLuongModalEdit" class="form-label">Số lượng</label>
                                     <input type="number" name="file" class="form-control" id="soLuongModalEdit"
                                            value="">
                                     <p style="color: red;" id="soLuongModalEditErr"></p>
                                 </div>
-                                <div class="col col-md-3">
+                                <div class="col col-md-4">
                                     <label for="giaNhapModalEdit" class="form-label">Giá nhập</label>
                                     <input type="number" name="file" class="form-control" id="giaNhapModalEdit"
                                            value="">
                                     <p style="color: red;" id="giaNhapModalEditErr"></p>
                                 </div>
-                                <div class="col col-md-3">
+                                <div class="col col-md-4">
                                     <label for="giaBanModalEdit" class="form-label">Giá bán</label>
                                     <input type="number" name="file" class="form-control" id="giaBanModalEdit" value="">
                                     <p style="color: red;" id="giaBanModalEditErr"></p>
@@ -622,7 +736,7 @@
                             </div>
                             <div class="row">
                                 <div class="col col-md-3">
-                                    <button>Chọn hình ảnh</button>
+                                    <button type="button" class="btn btn-secondary">Chọn hình ảnh</button>
                                 </div>
                             </div>
                             <div class="form-check form-switch">
@@ -754,7 +868,22 @@
     const lblKichThuoc = document.getElementById("lblKichThuoc");
     const lblChatLieu = document.getElementById("lblChatLieu");
     const lblKieuTay = document.getElementById("lblKieuTay");
-
+    let idMauSacModalEdit = "";
+    let idKichThuocModalEdit = "";
+    let idChatLieuModalEdit = "";
+    let idKieuTayModalEdit = "";
+    const lblMauSacModalEdit = document.getElementById("lblMauSac");
+    const lblKichThuocModalEdit = document.getElementById("lblKichThuoc");
+    const lblChatLieuModalEdit = document.getElementById("lblChatLieu");
+    const lblKieuTayModalEdit = document.getElementById("lblKieuTay");
+    let idMauSacModalAdd = "";
+    let idKichThuocModalAdd = "";
+    let idChatLieuModalAdd = "";
+    let idKieuTayModalAdd = "";
+    const lblMauSacModalAdd = document.getElementById("lblMauSac");
+    const lblKichThuocModalAdd = document.getElementById("lblKichThuoc");
+    const lblChatLieuModalAdd = document.getElementById("lblChatLieu");
+    const lblKieuTayModalAdd = document.getElementById("lblKieuTay");
     function setMauSac(msString) {
         const ms = JSON.parse(msString.replace(/&quot;/g, '"'));
         idMauSac = ms.id;
@@ -778,12 +907,67 @@
         console.log('Selected chat lieu ID:', idChatLieu);
         // You can add more logic here to handle the selected value
     }
+    function setMauSacModalEdit(msString) {
+        const ms = JSON.parse(msString.replace(/&quot;/g, '"'));
+        idMauSacModalEdit = ms.id;
+        lblMauSacModalEdit.textContent = ms.ten;
+        console.log('Selected mau sac ID modal edit:', idMauSacModalEdit);
+        // You can add more logic here to handle the selected value
+    }
 
-    function setKieuTay(ktString) {
+    function setKichThuocModalEdit(ktString) {
         const kt = JSON.parse(ktString.replace(/&quot;/g, '"'));
-        idKieuTay = kt.id;
-        lblKieuTay.textContent = kt.ten;
-        console.log('Selected kieu tay ID:', idKieuTay);
+        idKichThuocModalEdit = kt.id;
+        lblKichThuocModalEdit.textContent = kt.ten;
+        console.log('Selected kich thuoc ID modal edit:', idKichThuocModalEdit);
+        // You can add more logic here to handle the selected value
+    }
+
+    function setChatLieuModalEdit(clString) {
+        const cl = JSON.parse(clString.replace(/&quot;/g, '"'));
+        idChatLieuModalEdit = cl.id;
+        lblChatLieuModalEdit.textContent = cl.ten;
+        console.log('Selected chat lieu ID modal Edit:', idChatLieuModalEdit);
+        // You can add more logic here to handle the selected value
+    }
+
+    function setKieuTayModalEdit(ktString) {
+        const kt = JSON.parse(ktString.replace(/&quot;/g, '"'));
+        idKieuTayModalEdit = kt.id;
+        lblKieuTayModalEdit.textContent = kt.ten;
+        console.log('Selected kieu tay ID modal edit:', idKieuTayModalEdit);
+        // You can add more logic here to handle the selected value
+    }
+
+    function setMauSacModalAdd(msString) {
+        const ms = JSON.parse(msString.replace(/&quot;/g, '"'));
+        idMauSacModalAdd = ms.id;
+        lblMauSacModalAdd.textContent = ms.ten;
+        console.log('Selected mau sac ID modal add:', idMauSacModalAdd);
+        // You can add more logic here to handle the selected value
+    }
+
+    function setKichThuocModalAdd(ktString) {
+        const kt = JSON.parse(ktString.replace(/&quot;/g, '"'));
+        idKichThuocModalAdd = kt.id;
+        lblKichThuocModalAdd.textContent = kt.ten;
+        console.log('Selected kich thuoc ID modal Add:', idKichThuocModalAdd);
+        // You can add more logic here to handle the selected value
+    }
+
+    function setChatLieuModalAdd(clString) {
+        const cl = JSON.parse(clString.replace(/&quot;/g, '"'));
+        idChatLieuModalAdd = cl.id;
+        lblChatLieuModalAdd.textContent = cl.ten;
+        console.log('Selected chat lieu ID modal add:', idChatLieuModalAdd);
+        // You can add more logic here to handle the selected value
+    }
+
+    function setKieuTayModalAdd(ktString) {
+        const kt = JSON.parse(ktString.replace(/&quot;/g, '"'));
+        idKieuTayModalAdd = kt.id;
+        lblKieuTayModalAdd.textContent = kt.ten;
+        console.log('Selected kieu tay ID modal add:', idKieuTayModalAdd);
         // You can add more logic here to handle the selected value
     }
 
@@ -818,12 +1002,18 @@
             }
         }).then(response => response.json())
             .then(resp => {
-                let html = '';
+                let htmlSearch = '';
+                let htmlCboModalEdit='';
+                let htmCboModalAdd='';
                 resp.map((ms, i) => {
                     const msString = JSON.stringify(ms).replace(/"/g, '&quot;');
-                    html += '<li><a class="dropdown-item"  onclick="setMauSac(\'' + msString + '\')">' + ms.ten + '</a></li>';
+                    htmlSearch += '<li><a class="dropdown-item"  onclick="setMauSac(\'' + msString + '\')">' + ms.ten + '</a></li>';
+                    htmlCboModalEdit += '<li><a class="dropdown-item"  onclick="setMauSacModalEdit(\'' + msString + '\')">' + ms.ten + '</a></li>'
+                    htmCboModalAdd += '<li><a class="dropdown-item"  onclick="setMauSacModalAdd(\'' + msString + '\')">' + ms.ten + '</a></li>'
                 });
-                $("#cboMauSac").html(html)
+                $("#cboMauSac").html(htmlSearch);
+                $("#cboMauSacModalAdd").html(htmCboModalAdd);
+                $("#cboMauSacModalEdit").html(htmlCboModalEdit);
             });
     }
     loadCboMauSac();
@@ -836,12 +1026,18 @@
             }
         }).then(response => response.json())
             .then(resp => {
-                let html = '';
+                let htmlSearch = '';
+                let htmlCboModalEdit='';
+                let htmlCboModalAdd='';
                 resp.map((kt, i) => {
                     const ktString = JSON.stringify(kt).replace(/"/g, '&quot;');
-                    html += '<li><a class="dropdown-item" onclick="setKichThuoc(\'' + ktString + '\')">' + kt.ten + '</a></li>';
+                    htmlSearch += '<li><a class="dropdown-item" onclick="setKichThuoc(\'' + ktString + '\')">' + kt.ten + '</a></li>';
+                    htmlCboModalEdit += '<li><a class="dropdown-item" onclick="setKichThuocModalEdit(\'' + ktString + '\')">' + kt.ten + '</a></li>';
+                    htmlCboModalAdd += '<li><a class="dropdown-item" onclick="setKichThuocModalAdd(\'' + ktString + '\')">' + kt.ten + '</a></li>';
                 });
-                $("#cboKichThuoc").html(html)
+                $("#cboKichThuoc").html(htmlSearch);
+                $("#cboKichThuocModalAdd").html(htmlCboModalAdd);
+                $("#cboKichThuocModalEdit").html(htmlCboModalEdit);
             });
     }
     loadCboKichThuoc();
@@ -854,12 +1050,18 @@
             }
         }).then(response => response.json())
             .then(resp => {
-                let html = '';
+                let htmlSearch = '';
+                let htmlCboModalEdit='';
+                let htmlCboModalAdd='';
                 resp.map((cl, i) => {
                     const clString = JSON.stringify(cl).replace(/"/g, '&quot;');
-                    html += '<li><a class="dropdown-item" onclick="setChatLieu(\'' + clString + '\')">' + cl.ten + '</a></li>';
+                    htmlSearch += '<li><a class="dropdown-item" onclick="setChatLieu(\'' + clString + '\')">' + cl.ten + '</a></li>';
+                    htmlCboModalAdd += '<li><a class="dropdown-item" onclick="setChatLieuModalAdd(\'' + clString + '\')">' + cl.ten + '</a></li>';
+                    htmlCboModalEdit += '<li><a class="dropdown-item" onclick="setChatLieuModalEdit(\'' + clString + '\')">' + cl.ten + '</a></li>';
                 });
-                $("#cboChatLieu").html(html)
+                $("#cboChatLieu").html(htmlSearch)
+                $("#cboChatLieuModalAdd").html(htmlCboModalAdd);
+                $("#cboChatLieuModalEdit").html(htmlCboModalEdit);
             });
     }
     loadCboChatLieu();
@@ -872,15 +1074,22 @@
             }
         }).then(response => response.json())
             .then(resp => {
-                let html = '';
+                let htmlSearch = '';
+                let htmlCboModalEdit='';
+                let htmlCboModalAdd='';
                 resp.map((kt, i) => {
                     const kieuTayString = JSON.stringify(kt).replace(/"/g, '&quot;');
-                    html += '<li><a class="dropdown-item"  onclick="setKieuTay(\'' + kieuTayString + '\')">' + kt.ten + '</a></li>';
+                    htmlSearch += '<li><a class="dropdown-item"  onclick="setKieuTay(\'' + kieuTayString + '\')">' + kt.ten + '</a></li>';
+                    htmlCboModalEdit += '<li><a class="dropdown-item"  onclick="setKieuTayModalEdit(\'' + kieuTayString + '\')">' + kt.ten + '</a></li>';
+                    htmlCboModalAdd += '<li><a class="dropdown-item"  onclick="setKieuTayModalAdd(\'' + kieuTayString + '\')">' + kt.ten + '</a></li>';
                 });
-                $("#cboKieuTay").html(html)
+                $("#cboKieuTay").html(htmlSearch);
+                $("#cboKieuTayModalAdd").html(htmlCboModalAdd);
+                $("#cboKieuTayModalEdit").html(htmlCboModalEdit);
             });
     }
     loadCboKieuTay();
+
     const loadDSSPCT = (pageParams) => {
         // get api + scpt.id
         let datatest = "data testing";
