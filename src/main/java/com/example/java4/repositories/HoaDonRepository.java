@@ -1,11 +1,8 @@
 package com.example.java4.repositories;
 
 import com.example.java4.entities.HoaDon;
-<<<<<<< HEAD
 import com.example.java4.response.HoaDonResponse;
-=======
 import com.example.java4.entities.KhuyenMai;
->>>>>>> 5cc773191b58f50b5599fba71dd66351e5f953bd
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -131,20 +128,23 @@ public interface HoaDonRepository
             "WHERE (hd.ma LIKE %?1% OR kh.sdt LIKE %?1%) AND (hd.loaiHoaDon = ?2) AND (hd.ngayTao BETWEEN ?3 AND ?4)")
     Page<HoaDon> searchByMaOrSdtAndLoaiHoaDonAndNgayTao(String keyword, Integer loaiHoaDon, LocalDateTime startDate, LocalDateTime endDate, Pageable pageable);
 
-<<<<<<< HEAD
     @Query("select new com.example.java4.response.HoaDonResponse(hd.id, hd.ma, cthd.idCTSP.idSanPham.ten, cthd.soLuong, ha.hinhAnh1, cthd.idCTSP.idMauSac.ten, cthd.idCTSP.idKichThuoc.ten, ctsp.giaBan) from HoaDon hd " +
             "join ChiTietHoaDon cthd on cthd.idHoaDon.id = hd.id " +
             "join ChiTietSanPham ctsp on ctsp.id = cthd.idCTSP.id " +
             "join HinhAnh ha on ha.idCTSP.id = ctsp.id " +
             "where hd.idKhachHang.id = ?1 and hd.trangThai = ?2")
     List<HoaDonResponse> getListHDbyIDKH(String idKH, Integer trangThai);
-=======
 
     // Tìm khuyến mãi theo id hóa đơn -Tai
     @Query("SELECT hd.idKhuyenMai FROM HoaDon hd WHERE hd.id = :hoaDonId")
     KhuyenMai findKhuyenMaiByHoaDonId(@Param("hoaDonId") String hoaDonId);
 
+    @Query("select hd from HoaDon hd where hd.idKhachHang.id = ?1")
+    List<HoaDon> getHoaDonByIDKHA(String idKH);
 
->>>>>>> 5cc773191b58f50b5599fba71dd66351e5f953bd
+    @Query("select hd from HoaDon hd where hd.idKhachHang.id = ?1 and hd.trangThai = ?2")
+    List<HoaDon> getHoaDonByIDKHAndTrangThai(String idKH, Integer trangThai);
 
+    @Query("select count(hd) from HoaDon hd where hd.idKhachHang.id = ?1 and hd.trangThai = ?2")
+    int countByHoaDonByTrangThai(String idKH, Integer trangThai);
 };
