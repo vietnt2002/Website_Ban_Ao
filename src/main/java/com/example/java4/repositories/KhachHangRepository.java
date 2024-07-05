@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,4 +40,13 @@ public interface KhachHangRepository
             "where kh.id = ?1")
     ThongTinGiaohangResponse getThongTinGiaoHang(String idKH);
 
+    //Tìm kiếm
+    @Query("select kh from KhachHang kh where kh.hoTen like %?1% or kh.sdt like %?1% or kh.email like %?1%")
+    List<KhachHang> findByHoTenOrSdtOrEmail(String key);
+
+    @Query("select kh from KhachHang kh where kh.ngaySinh between ?1 and ?2")
+    List<KhachHang> findByKhoangNgaySinh(Date ngayBatDau, Date ngayKetThuc);
+
+    @Query("select kh from KhachHang kh where (kh.hoTen like %?1% or kh.sdt like %?1% or kh.email like %?1%) and (kh.ngaySinh between ?2 and ?3)")
+    List<KhachHang> findByHoTenOrSdtOrEmail_NgaySinh(String key, Date ngayBatDau, Date ngayKetThuc);
 };
