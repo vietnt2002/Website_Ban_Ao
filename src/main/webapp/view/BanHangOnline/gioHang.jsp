@@ -53,6 +53,9 @@
             display: flex;
             flex-wrap: wrap;
             gap: 15px; /* Khoảng cách giữa các voucher */
+            max-height: 300px; /* Hoặc bạn có thể đặt chiều cao mà bạn muốn */
+            overflow-y: scroll;
+            padding-right: 15px; /* Đảm bảo rằng thanh cuộn không che mất nội dung */
         }
         .voucher-card {
             border: 2px solid #007bff; /* Màu xanh của btn-primary */
@@ -409,7 +412,7 @@
     <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
         <h1 class="font-weight-semi-bold text-uppercase mb-3">GIỎ HÀNG CỦA BẠN</h1>
         <div class="d-inline-flex">
-            <p class="m-0"><a href="/cua-hang/trang-chu">Trang chủ</a></p>
+            <p class="m-0"><a href="/cua-hang/trang-chuf">Trang chủ</a></p>
             <p class="m-0 px-2">-</p>
             <p class="m-0">Giỏ hàng</p>
         </div>
@@ -868,7 +871,7 @@
 
     <!-- Modal phiếu giảm giá -->
     <div id="couponModal" class="modal-fixed">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="couponModalLabel">Phiếu giảm giá</h5>
