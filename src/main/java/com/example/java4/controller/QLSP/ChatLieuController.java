@@ -26,10 +26,8 @@ public class ChatLieuController {
     }
     @CrossOrigin
     @GetMapping("index")
-    public ResponseEntity<List<ChatLieu>> index(@RequestParam("page")Optional<Integer> pageParam) {
-        int page = pageParam.orElse(1);
-        Pageable pageAble = PageRequest.of(page-1,20);
-        return ResponseEntity.ok(chatLieuRepo.findByTrangThai(1,pageAble).getContent());
+    public ResponseEntity<List<ChatLieu>> index() {
+        return ResponseEntity.ok(chatLieuRepo.findAll());
     }
     @CrossOrigin
     @GetMapping("get-all")

@@ -9,13 +9,21 @@ import com.example.java4.request.req_viet.ChucVuRequest;
 import com.example.java4.request.req_viet.NhanVienRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -29,14 +37,17 @@ public class QuanLyNhanVienController {
     @Autowired
     ChucVuRepository chucVuRepo;
 
+    @Value("src/main/webapp/imageUser")
+    private String fileUpload;
+
     //Quản lý nhân viên
     @GetMapping("quan-ly-nhan-vien")
     public String getQuanLyNhanVien(
             Model model,
-            @RequestParam("page")Optional<Integer> pageParam
-    ){
+            @RequestParam("page") Optional<Integer> pageParam
+    ) {
         //Hiển thị thông tin nhân viên đăng nhập
-        if (UserInfor.idNhanVien != null){
+        if (UserInfor.idNhanVien != null) {
             NhanVien nhanVien = nhanVienRepo.findById(UserInfor.idNhanVien).get();
             model.addAttribute("nv", nhanVien);
         }
@@ -51,11 +62,11 @@ public class QuanLyNhanVienController {
 
     //update trạng thái
     @GetMapping("/sua-trang-thai/{id}")
-    public String updateTrangThaiOff(@PathVariable("id") NhanVien nhanVien){
-        if (nhanVien.getTrangThai() == NhanVienRepository.ACTIVE){
+    public String updateTrangThaiOff(@PathVariable("id") NhanVien nhanVien) {
+        if (nhanVien.getTrangThai() == NhanVienRepository.ACTIVE) {
             nhanVien.setTrangThai(NhanVienRepository.INACTIVE);
             nhanVienRepo.save(nhanVien);
-        }else {
+        } else {
             nhanVien.setTrangThai(NhanVienRepository.ACTIVE);
             nhanVienRepo.save(nhanVien);
         }
@@ -65,9 +76,9 @@ public class QuanLyNhanVienController {
     @GetMapping("/them-nhan-vien-view")
     public String themNhanVienView(
             Model model
-    ){
+    ) {
         //Hiển thị thông tin nhân viên đăng nhập
-        if (UserInfor.idNhanVien != null){
+        if (UserInfor.idNhanVien != null) {
             NhanVien nhanVien = nhanVienRepo.findById(UserInfor.idNhanVien).get();
             model.addAttribute("nv", nhanVien);
         }
@@ -86,7 +97,7 @@ public class QuanLyNhanVienController {
     @PostMapping("them-nhan-vien")
     public String themNhanVien(
             @Valid @ModelAttribute("nhanVien") NhanVienRequest nvReq
-    ){
+    ) {
         ChucVu chucVu = chucVuRepo.findById(nvReq.getIdCV()).get();
         NhanVien nhanVien = new NhanVien();
         nhanVien.setHoTen(nvReq.getHoTen());
@@ -96,10 +107,23 @@ public class QuanLyNhanVienController {
         nhanVien.setTaiKhoan(nvReq.getTaiKhoan());
         nhanVien.setMatKhau(nvReq.getMatKhau());
         nhanVien.setIdCV(chucVu);
-        if (nvReq.getAnhDaiDien().isEmpty()){
+
+        // Lấy ra tên ảnh
+        String imgName = nvReq.getAnhDaiDien().getOriginalFilename();
+        try {
+            //Lưu ảnh vào file chung
+            if (!nvReq.getAnhDaiDien().isEmpty()) {
+                byte[] bytes = nvReq.getAnhDaiDien().getBytes();
+                Path path = Paths.get(fileUpload + File.separator + imgName);
+                Files.write(path, bytes);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (nvReq.getAnhDaiDien().isEmpty()) {
             nhanVien.setAnhDaiDien("png-clipart-user-computer-icons-avatar-miscellaneous-heroes.png");
-        }else {
-            nhanVien.setAnhDaiDien(nvReq.getAnhDaiDien());
+        } else {
+            nhanVien.setAnhDaiDien(imgName);
         }
         nhanVien.setNgayTao(LocalDateTime.now());
         nhanVien.setTrangThai(NhanVienRepository.ACTIVE);
@@ -110,7 +134,7 @@ public class QuanLyNhanVienController {
     @PostMapping("them-chuc-vu")
     public String themChucVu(
             @Valid @ModelAttribute("chucVu") ChucVuRequest cvReq
-    ){
+    ) {
         ChucVu chucVu = new ChucVu();
         chucVu.setTen(cvReq.getTen());
         chucVu.setNgayTao(LocalDateTime.now());
@@ -125,7 +149,7 @@ public class QuanLyNhanVienController {
             @PathVariable("id") ChucVu chucVu,
             @RequestParam("ten") String ten,
             @RequestParam("trangThai") Integer trangThai
-    ){
+    ) {
         chucVu.setId(chucVu.getId());
         chucVu.setTen(ten);
         chucVu.setNgaySua(LocalDateTime.now());
@@ -139,9 +163,9 @@ public class QuanLyNhanVienController {
     public String suaNhanVienView(
             Model model,
             @PathVariable("id") NhanVien nhanVien
-    ){
+    ) {
         //Hiển thị thông tin nhân viên đăng nhập
-        if (UserInfor.idNhanVien != null){
+        if (UserInfor.idNhanVien != null) {
             NhanVien nhanVienTK = nhanVienRepo.findById(UserInfor.idNhanVien).get();
             model.addAttribute("nv", nhanVienTK);
         }
@@ -157,7 +181,7 @@ public class QuanLyNhanVienController {
             @PathVariable("id") NhanVien nhanVien,
             @RequestParam("img") String anhDaiDien,
             @Valid @ModelAttribute("nhanVien") NhanVienRequest nvReq
-    ){
+    ) {
 
         ChucVu chucVu = chucVuRepo.findById(nvReq.getIdCV()).get();
         nhanVien.setId(nhanVien.getId());
@@ -168,7 +192,23 @@ public class QuanLyNhanVienController {
         nhanVien.setTaiKhoan(nvReq.getTaiKhoan());
         nhanVien.setMatKhau(nvReq.getMatKhau());
         nhanVien.setIdCV(chucVu);
-        nhanVien.setAnhDaiDien(anhDaiDien);
+
+        if (nvReq.getAnhDaiDien() == null || nvReq.getAnhDaiDien().isEmpty()){
+            nhanVien.setAnhDaiDien(anhDaiDien);
+        }else {
+            // Lấy ra tên ảnh
+            String imgName = nvReq.getAnhDaiDien().getOriginalFilename();
+            try {
+                //Lưu ảnh vào file chung
+                byte[] bytes = nvReq.getAnhDaiDien().getBytes();
+                Path path = Paths.get(fileUpload + File.separator + imgName);
+                Files.write(path, bytes);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            nhanVien.setAnhDaiDien(imgName);
+        }
+
         nhanVien.setNgaySua(LocalDateTime.now());
         nhanVien.setTrangThai(nvReq.getTrangThai());
         nhanVienRepo.save(nhanVien);
@@ -180,21 +220,20 @@ public class QuanLyNhanVienController {
             Model model,
             @RequestParam(value = "key", required = false) String key,
             @RequestParam(value = "idCV", required = false) String idCV
-    ){
+    ) {
         //Hiển thị thông tin nhân viên đăng nhập
-        if (UserInfor.idNhanVien != null){
+        if (UserInfor.idNhanVien != null) {
             NhanVien nhanVien = nhanVienRepo.findById(UserInfor.idNhanVien).get();
             model.addAttribute("nv", nhanVien);
         }
-        System.out.println("------------------------------------KEY: "+key);
-        System.out.println("------------------------------------idCV: "+idCV);
+
         List<NhanVien> listNhanVien = nhanVienRepo.findAll();
 
-        if ((key != null || !key.isEmpty()) && idCV.isEmpty()){
+        if ((key != null || !key.isEmpty()) && idCV.isEmpty()) {
             listNhanVien = nhanVienRepo.findByHoTenOrSdt(key);
-        } else if (key.isEmpty()){
+        } else if (key.isEmpty()) {
             listNhanVien = nhanVienRepo.findByChucVu(idCV);
-        }else if (!key.isEmpty() && !idCV.isEmpty()){
+        } else if (!key.isEmpty() && !idCV.isEmpty()) {
             listNhanVien = nhanVienRepo.findByHoTenOrSdtAndChucVu(key, idCV);
         }
 
@@ -202,5 +241,62 @@ public class QuanLyNhanVienController {
         model.addAttribute("listChucVu", listChucVuByTrangThai);
         model.addAttribute("listNhanVien", listNhanVien);
         return "/view/QLNV/quanLyNhanVien.jsp";
+    }
+
+
+    @GetMapping("/tai-khoan-cua-toi/{id}")
+    public String taiKhoanDangNhap(
+            Model model,
+            @PathVariable("id") NhanVien nhanVien
+    ) {
+        //Hiển thị thông tin nhân viên đăng nhập
+        if (UserInfor.idNhanVien != null) {
+            NhanVien nhanVienTK = nhanVienRepo.findById(UserInfor.idNhanVien).get();
+            model.addAttribute("nv", nhanVienTK);
+        }
+        List<ChucVu> listChucVu = chucVuRepo.findByTrangThai(ChucVuRepository.ACTIVE);
+        model.addAttribute("nhanVien", nhanVien);
+        model.addAttribute("listChucVu", listChucVu);
+        model.addAttribute("listNhanVien", nhanVienRepo.findAll());
+        return "/view/QLNV/taiKhoanDangNhap.jsp";
+    }
+
+    @PostMapping("sua-tai-khoan-cua-toi/{id}")
+    public String suaTaiKhoanDangNhap(
+            @PathVariable("id") NhanVien nhanVien,
+            @RequestParam("img") String anhDaiDien,
+            @Valid @ModelAttribute("nhanVien") NhanVienRequest nvReq
+    ) {
+
+        ChucVu chucVu = chucVuRepo.findById(nvReq.getIdCV()).get();
+        nhanVien.setId(nhanVien.getId());
+        nhanVien.setHoTen(nvReq.getHoTen());
+        nhanVien.setSdt(nvReq.getSdt());
+        nhanVien.setNgaySinh(nvReq.getNgaySinh());
+        nhanVien.setGioiTinh(nvReq.getGioiTinh());
+        nhanVien.setTaiKhoan(nvReq.getTaiKhoan());
+        nhanVien.setMatKhau(nvReq.getMatKhau());
+        nhanVien.setIdCV(chucVu);
+
+        if (nvReq.getAnhDaiDien() == null || nvReq.getAnhDaiDien().isEmpty()){
+            nhanVien.setAnhDaiDien(anhDaiDien);
+        }else {
+            // Lấy ra tên ảnh
+            String imgName = nvReq.getAnhDaiDien().getOriginalFilename();
+            try {
+                //Lưu ảnh vào file chung
+                byte[] bytes = nvReq.getAnhDaiDien().getBytes();
+                Path path = Paths.get(fileUpload + File.separator + imgName);
+                Files.write(path, bytes);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            nhanVien.setAnhDaiDien(imgName);
+        }
+
+        nhanVien.setNgaySua(LocalDateTime.now());
+        nhanVien.setTrangThai(nvReq.getTrangThai());
+        nhanVienRepo.save(nhanVien);
+        return "redirect:/qlnv/quan-ly-nhan-vien";
     }
 }

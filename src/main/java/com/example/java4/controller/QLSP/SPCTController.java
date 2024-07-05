@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 @Controller
 @RequestMapping("chi-tiet-sp")
@@ -34,7 +35,8 @@ public class SPCTController {
     SPCTRepository chiTietSPRepository;
     @Autowired
     SPCTRepoNoMap spctRepoNoMap;
-
+    @Autowired
+    private SearchService search;
     public SPCTController() {
     }
 
@@ -47,13 +49,19 @@ public class SPCTController {
     }
 
     @CrossOrigin
-    @GetMapping("/detail-byidsp/{idSP}")
-    public ResponseEntity<List<ChiTietSanPham>> GetIndexByIdSP(@PathVariable(value = "idSP") String idSP,@RequestParam("page")Optional<Integer> pageParam) {
+    @GetMapping("/detail-byidsp-stt1/{idSP}")
+    public ResponseEntity<List<ChiTietSanPham>> GetIndexByIdSP1(@PathVariable(value = "idSP") String idSP,@RequestParam("page")Optional<Integer> pageParam) {
         int page = pageParam.orElse(1);
         Pageable pageable = PageRequest.of(page-1,20);
         return ResponseEntity.ok(chiTietSPRepository.findByIdSP(1,idSP,pageable).getContent());
     }
-
+    @CrossOrigin
+    @GetMapping("/detail-byidsp-all/{idSP}")
+    public ResponseEntity<List<ChiTietSanPham>> GetIndexByIdSPAll(@PathVariable(value = "idSP") String idSP,@RequestParam("page")Optional<Integer> pageParam) {
+        int page = pageParam.orElse(1);
+        Pageable pageable = PageRequest.of(page-1,20);
+        return ResponseEntity.ok(chiTietSPRepository.findByIdSPAll(idSP,pageable).getContent());
+    }
     @CrossOrigin
     @GetMapping("/get-all")
     public ResponseEntity<List<ChiTietSanPham>> getAll(@RequestParam("page")Optional<Integer> pageParam) {
@@ -137,7 +145,6 @@ public class SPCTController {
     public ResponseEntity<Boolean> Store(
             @RequestBody @Valid SPCTStore newChiTietSP,
             BindingResult result
-
     ) {
         if (result.hasErrors()) {
             System.out.println("temp error: " + result);
@@ -159,5 +166,11 @@ public class SPCTController {
             spctRepoNoMap.save(chiTietSP);
             return ResponseEntity.ok(true);
         }
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<ChiTietSanPham>> searchChiTietSanPham(@RequestParam Map<String, Object> params) {
+        List<ChiTietSanPham> chiTietSanPhams = search.searchChiTietSanPham(params);
+        return ResponseEntity.ok(chiTietSanPhams);
     }
 }

@@ -401,7 +401,7 @@
                         <!-- Dropdown - User Information -->
                         <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                              aria-labelledby="userDropdown">
-                            <a class="dropdown-item" href="/qlnv/tai-khoan-cua-toi">
+                            <a class="dropdown-item" href="/qlnv/tai-khoan-cua-toi/${nv.id}">
                                 <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Thông tin cá nhân
                             </a>
@@ -423,7 +423,7 @@
 
                     <%--      Tìm kiếm & lọc thông tin nhân ciên      --%>
                     <h5 class="card-title mb-3">Thêm mới nhân viên</h5>
-                    <sf:form id="nhanVienForm" method="post" action="/qlnv/them-nhan-vien"
+                    <sf:form id="nhanVienForm" method="post" action="/qlnv/them-nhan-vien" enctype="multipart/form-data"
                              modelAttribute="nhanVien">
                         <div class="row">
                             <div class="col-sm-4">
@@ -434,7 +434,7 @@
                                             <img src="" alt="" id="image-preview">
                                             <div id="image-overlay">+ Upload</div>
                                             <sf:input type="file" id="file-input" accept="image/*"
-                                                      style="display: none;" name="imageName" path="anhDaiDien"/>
+                                                      style="display: none;" path="anhDaiDien"/>
                                         </label>
                                         <div id="image-info" class="mt-4"></div>
                                     </div>

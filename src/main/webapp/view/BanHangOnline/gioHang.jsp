@@ -46,6 +46,79 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <%--    Voucher    --%>
+    <style>
+        .voucher-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px; /* Khoảng cách giữa các voucher */
+        }
+        .voucher-card {
+            border: 2px solid #007bff; /* Màu xanh của btn-primary */
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            background: #fff;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            width: calc(50% - 15px); /* Giảm chiều rộng để vừa 2 voucher trong 1 hàng */
+        }
+        .voucher-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #007bff; /* Màu xanh của btn-primary */
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+        .voucher-discount {
+            color: #007bff; /* Màu xanh của btn-primary */
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        .voucher-expiry {
+            font-size: 0.9em;
+            color: #888;
+        }
+        .voucher-code {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        .voucher-button {
+            text-align: center;
+        }
+        .voucher-button button {
+            background-color: #007bff; /* Màu xanh của btn-primary */
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .voucher-button button:hover {
+            background-color: #0056b3; /* Màu xanh đậm hơn khi hover */
+        }
+        /* CSS cố định modal */
+        .modal-fixed {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1050;
+            display: none;
+            width: 90%; /* Điều chỉnh kích thước modal */
+            max-width: 500px; /* Giới hạn kích thước modal */
+        }
+        .modal-fixed.show {
+            display: block;
+        }
+    </style>
+
     <style>
         .userCart {
             display: flex;
@@ -82,23 +155,6 @@
         }
     </style>
     <style>
-        /*.table-responsive {*/
-        /*    max-height: 420px;*/
-        /*    overflow-y: auto;*/
-        /*}*/
-
-        /*.table tbody {*/
-        /*    display: block;*/
-        /*    height: 135px;*/
-        /*    overflow-y: auto;*/
-        /*}*/
-
-        /*.table thead, .table tbody tr {*/
-        /*    display: table;*/
-        /*    width: 100%;*/
-        /*    table-layout: fixed;*/
-        /*}*/
-
         .align-middle {
             vertical-align: middle !important;
         }
@@ -191,8 +247,7 @@
                         </c:when>
                         <c:otherwise>
                             <!-- Hiển thị nút đăng xuất khi đã đăng nhập -->
-                            <li><a class="dropdown-item" href="#">Theo dõi đơn hàng</a></li>
-                            <li><a class="dropdown-item" href="#">Lịch sử mua hàng</a></li>
+                            <li><a class="dropdown-item" href="/cua-hang/don-mua">Đơn mua</a></li>
                             <li><a class="dropdown-item" href="#">Quản lý tài khoản</a></li>
                             <li><a class="dropdown-item" href="/home/logout">Đăng xuất</a></li>
                         </c:otherwise>
@@ -335,7 +390,7 @@
                 </button>
                 <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                     <div class="navbar-nav mr-auto py-0">
-                        <a href="/store/trang-chu" class="nav-item nav-link active">Trang chủ</a>
+                        <a href="/cua-hang/trang-chu" class="nav-item nav-link active">Trang chủ</a>
                         <a href="detail.html" class="nav-item nav-link">Giới thiệu</a>
                         <a href="contact.html" class="nav-item nav-link">Liên hệ</a>
                     </div>
@@ -354,7 +409,7 @@
     <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
         <h1 class="font-weight-semi-bold text-uppercase mb-3">GIỎ HÀNG CỦA BẠN</h1>
         <div class="d-inline-flex">
-            <p class="m-0"><a href="">Trang chủ</a></p>
+            <p class="m-0"><a href="/cua-hang/trang-chu">Trang chủ</a></p>
             <p class="m-0 px-2">-</p>
             <p class="m-0">Giỏ hàng</p>
         </div>
@@ -428,7 +483,8 @@
         </div>
         <!--Test modal-->
         <!--Danh sách địa chỉ-->
-        <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#addAddressModal">
+        <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#addAddressModal"
+                style="position: relative; left: 907px; bottom: -186px;">
             Chọn địa chỉ
         </button>
 
@@ -580,13 +636,13 @@
 
     <%--Thêm địa chỉ--%>
     <button type="button" class="btn btn-primary mb-3" data-toggle="modal"
-            data-target="#addAddressModal1">
-        + Thêm địa chỉ
+            data-target="#addAddressModal1" style="position: relative; left: 1036px; bottom: -132px;">
+        <i class="bi bi-plus-circle"></i>
     </button>
     <div class="modal fade" id="addAddressModal1" tabindex="-1" role="dialog"
          aria-labelledby="addAddressModalLabel"
          aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="addAddressModalLabel">Thêm địa chỉ mới</h5>
@@ -661,8 +717,8 @@
             </div>
         </div>
     </div>
-
     <!-- End modal -->
+
     <!-- Thông tin giao hàng -->
     <form action="/cua-hang/thanh-toan" method="post" id="diaChiForm">
         <div class="row px-xl-5" style="margin-top: 100px">
@@ -729,17 +785,26 @@
             </div>
             <!-- Checkout End -->
 
+            <!-- Thông tin đơn hàng -->
             <div class="col-lg-4" style="background-color: white;">
-                <form class="mb-5" action="">
-                    <div class="input-group mb-4">
-                        <input type="text" class="form-control p-4"
-                               style="background-color: #f1f1f1; border: 1px solid #e4e4e4;"
-                               placeholder="Mã giảm giá">
-                        <div class="input-group-append">
-                            <button type="button" class="btn btn-primary">Áp dụng</button>
-                        </div>
+                <div style="position: relative" class="input-group mb-4">
+                    <input type="text" id="discountCode" class="form-control p-4"
+                           style="background-color: #f1f1f1; border: 1px solid #e4e4e4;" placeholder="Mã giảm giá"
+                           value="${hoaDon.idKhuyenMai.ma}"
+                           readonly>
+                    <a href="/cua-hang/xoa-khuyen-mai/${hoaDon.id}"
+                       style="position: absolute;right: 144px;bottom: 5px;">
+                        <button style="color: black" class="btn btn-outline-secondary" type="button">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </a>
+                    <div class="input-group-append">
+                        <button id="openModalBtn" class="btn btn-primary" data-toggle="modal" data-target="#couponModal"
+                                type="button">
+                            Phiếu giảm giá
+                        </button>
                     </div>
-                </form>
+                </div>
                 <div class="card mb-5">
                     <div class="card-header bg-secondary border-0">
                         <h4 class="font-weight-semi-bold m-0">Thông tin đơn hàng</h4>
@@ -748,6 +813,14 @@
                         <div class="d-flex justify-content-between mb-3 pt-1">
                             <h6 class="font-weight-medium">Tổng sản phẩm: </h6>
                             <h6 class="font-weight-medium" style="font-size: 18px">${soLuong}</h6>
+                        </div>
+                        <div class="d-flex justify-content-between mb-3 pt-1">
+                            <h6 class="font-weight-medium">Tổng tiền hàng: </h6>
+                            <h6 class="font-weight-medium" style="font-size: 18px">${tongTien}</h6>
+                        </div>
+                        <div class="d-flex justify-content-between mb-3 pt-1">
+                            <h6 class="font-weight-medium">Số tiền giảm: </h6>
+                            <h6 class="font-weight-medium" style="font-size: 18px">${hoaDon.idKhuyenMai.soTienGiam}</h6>
                         </div>
                         <div class="d-flex justify-content-between">
                             <h6 class="font-weight-medium">Phí vận chuyển: </h6>
@@ -777,9 +850,9 @@
                         </div>
                         <hr>
                         <div class="d-flex justify-content-between mt-2">
-                            <h5 class="font-weight-bold" style="margin-left: 18px">Tổng cộng:</h5>
+                            <h5 class="font-weight-bold" style="margin-left: 18px">Tổng thanh toán:</h5>
                             <h5 class="font-weight-bold"
-                                style="margin-right: 18px; font-size: 22px">${tongTien}₫</h5>
+                                style="margin-right: 18px; font-size: 22px">${tongTien - hoaDon.idKhuyenMai.soTienGiam}₫</h5>
                         </div>
 
                         <div class="card-footer border-secondary bg-transparent">
@@ -792,6 +865,37 @@
             </div>
         </div>
     </form>
+
+    <!-- Modal phiếu giảm giá -->
+    <div id="couponModal" class="modal-fixed">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="couponModalLabel">Phiếu giảm giá</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="voucher-container">
+                        <c:forEach var="i" items="${listKhuyenMai}">
+                            <div class="voucher-card">
+                                <div class="voucher-header">
+                                    <div class="voucher-discount">Giảm ${i.soTienGiam}</div>
+                                    <div class="voucher-expiry">Hết hạn ${i.ngayKetThuc}</div>
+                                </div>
+                                <div class="voucher-code">Mã: ${i.ma}</div>
+                                <div class="voucher-button">
+                                    <form action="/cua-hang/khuyen-mai/${i.id}" method="post">
+                                        <button type="submit">Xác nhận</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </c:forEach>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
     </div>
 </c:if>
 <c:if test="${check == true}">
@@ -1560,7 +1664,46 @@
         // Đóng modal
         $('#addAddressModal').modal('hide');
     }
+
+    function showModal() {
+        document.getElementById('couponModal').classList.add('show');
+    }
+
+    // JS để ẩn modal
+    function hideModal() {
+        document.getElementById('couponModal').classList.remove('show');
+    }
+
+    // Thêm sự kiện đóng modal vào nút "Đóng"
+    document.querySelector('[data-dismiss="modal"]').addEventListener('click', hideModal);
 </script>
+
+<%--<script>--%>
+<%--    document.getElementById('diaChiForm').addEventListener('submit', function (event) {--%>
+<%--        event.preventDefault(); // Ngăn chặn hành vi mặc định của thẻ <a>--%>
+<%--        Swal.fire({--%>
+<%--            title: "Bạn chắc chắn muốn mua hàng chứ",--%>
+<%--            text: "Bạn sẽ không thể hoàn tác hành động này!",--%>
+<%--            icon: "warning",--%>
+<%--            showCancelButton: true,--%>
+<%--            confirmButtonColor: "#3085d6",--%>
+<%--            cancelButtonColor: "#d33",--%>
+<%--            cancelButtonText: "Hủy",--%>
+<%--            confirmButtonText: "Đặt hàng"--%>
+<%--        }).then((result) => {--%>
+<%--            if (result.isConfirmed) {--%>
+<%--                Swal.fire({--%>
+<%--                    title: "Đã đặt hàng",--%>
+<%--                    text: "Bạn đã đặt hàng thành công.",--%>
+<%--                    icon: "success"--%>
+<%--                }).then(() => {--%>
+<%--                    // Điều hướng tới URL đăng xuất sau khi người dùng xác nhận--%>
+<%--                    document.getElementById('diaChiForm').submit();--%>
+<%--                });--%>
+<%--            }--%>
+<%--        });--%>
+<%--    });--%>
+<%--</script>--%>
 </body>
 
 </html>

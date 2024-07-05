@@ -423,7 +423,7 @@
 
                     <%--      Tìm kiếm & lọc thông tin nhân ciên      --%>
                     <h5 class="card-title mb-3">Sửa thông tin nhân viên</h5>
-                    <sf:form id="employeeForm" method="post" action="/qlnv/sua-nhan-vien/${nhanVien.id}" enctype="multipart/form-data"
+                    <sf:form id="employeeForm" method="post" action="/qlnv/sua-tai-khoan-cua-toi/${nhanVien.id}" enctype="multipart/form-data"
                              modelAttribute="nhanVien">
                         <div class="row">
                             <div class="col-sm-4">
@@ -513,7 +513,7 @@
                                                     <div id="error-matKhau" class="error"></div>
                                                 </div>
 
-                                                 <div class="mb-3">
+                                                <div class="mb-3">
                                                     <label for="trangThai" class="form-label"><span
                                                             class="text-danger">*</span> Trạng thái</label>
                                                     <sf:select class="form-select" aria-label="Default select example" path="trangThai" id="trangThai">

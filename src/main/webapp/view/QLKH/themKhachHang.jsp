@@ -422,20 +422,19 @@
                 <div class="container">
 
                     <%--      Tìm kiếm & lọc thông tin nhân ciên      --%>
-                    <h5 class="card-title mb-3">Sửa thông tin nhân viên</h5>
-                    <sf:form id="employeeForm" method="post" action="/qlnv/sua-nhan-vien/${nhanVien.id}" enctype="multipart/form-data"
-                             modelAttribute="nhanVien">
+                    <h5 class="card-title mb-3">Thêm mới khách hàng</h5>
+                    <sf:form id="khachHangForm" method="post" action="/qlkh/them-khach-hang" enctype="multipart/form-data"
+                             modelAttribute="khachHang">
                         <div class="row">
                             <div class="col-sm-4">
                                 <div class="card text-center" style="height: 550px;">
                                     <div class="card-body">
                                         <h5 class="card-title mt-4">Ảnh đại diện</h5>
                                         <label for="file-input" class="image-container mt-5">
-                                            <img src="/imageUser/${nhanVien.anhDaiDien}" alt="" id="image-preview">
+                                            <img src="" alt="" id="image-preview">
                                             <div id="image-overlay">+ Upload</div>
                                             <sf:input type="file" id="file-input" accept="image/*"
                                                       style="display: none;" path="anhDaiDien"/>
-                                            <input id="img" type="hidden" value="${nhanVien.anhDaiDien}" name="img">
                                         </label>
                                         <div id="image-info" class="mt-4"></div>
                                     </div>
@@ -446,15 +445,15 @@
                             <div class="col-sm-8">
                                 <div class="card" style="height: 550px">
                                     <div class="card-body">
-                                        <h5 class="card-title mt-4" style="margin-bottom: 25px">Thông tin nhân viên</h5>
+                                        <h5 class="card-title mt-4" style="margin-bottom: 25px">Thông tin khách hàng</h5>
                                         <div class="row">
                                             <div class="col col-6">
                                                 <div class="mb-3">
-                                                    <label for="tenNhanVien" class="form-label"><span
-                                                            class="text-danger">*</span> Tên nhân viên</label>
-                                                    <sf:input type="text" class="form-control" id="tenNhanVien"
+                                                    <label for="tenKhachHang" class="form-label"><span
+                                                            class="text-danger">*</span> Tên khách hàng</label>
+                                                    <sf:input type="text" class="form-control" id="tenKhachHang"
                                                               placeholder="Nhập họ tên.." path="hoTen"/>
-                                                    <div id="error-tenNhanVien" class="error"></div>
+                                                    <div id="error-tenKhachHang" class="error"></div>
                                                 </div>
 
                                                 <div class="mb-3">
@@ -466,25 +465,11 @@
                                                 </div>
 
                                                 <div class="mb-3">
-                                                    <label for="taiKhoan" class="form-label"><span
-                                                            class="text-danger">*</span> Tài khoản</label>
-                                                    <sf:input type="text" class="form-control" id="taiKhoan"
-                                                              placeholder="Nhập tài khoản.." path="taiKhoan"/>
-                                                    <div id="error-taiKhoan" class="error"></div>
-                                                </div>
-
-                                                <div class="mb-3">
-                                                    <label for="chucVu" class="form-label"><span
-                                                            class="text-danger">*</span> Chức vụ</label>
-                                                    <sf:select class="form-select"
-                                                               aria-label="Default select example"
-                                                               id="chucVu" path="idCV">
-                                                        <c:forEach items="${listChucVu}" var="chucVu">
-                                                            <option value="${chucVu.id}"
-                                                                    <c:if test="${chucVu.id == nhanVien.idCV.id}">selected</c:if>> ${chucVu.ten}
-                                                            </option>
-                                                        </c:forEach>
-                                                    </sf:select>
+                                                    <label for="email" class="form-label"><span
+                                                            class="text-danger">*</span> Email</label>
+                                                    <sf:input type="text" class="form-control" id="email"
+                                                              placeholder="Nhập email.." path="email"/>
+                                                    <div id="error-email" class="error"></div>
                                                 </div>
                                             </div>
 
@@ -500,33 +485,18 @@
                                                 <div class="mb-3">
                                                     <label class="form-label" style="display: block"><span
                                                             class="text-danger">*</span> Giới tính</label>
-                                                    <sf:radiobutton path="gioiTinh" id="gioiTinhNam" label="Nam" value="1" cssStyle="margin-top: 5px" />
-                                                    <sf:radiobutton path="gioiTinh" id="gioiTinhNu" label="Nữ" value="0" ssStyle="margin-top: 5px" />
+                                                    <sf:radiobutton path="gioiTinh" id="gioiTinhNam" label="Nam"
+                                                                    value="1" cssStyle="margin-top: 5px"/>
+                                                    <sf:radiobutton path="gioiTinh" id="gioiTinhNu" label="Nữ" value="0"
+                                                                    ssStyle="margin-top: 5px"/>
                                                     <div id="error-gioiTinh" class="error"></div>
-                                                </div>
-
-                                                <div class="mb-3" style="margin-top: 22px">
-                                                    <label for="matKhau" class="form-label"><span
-                                                            class="text-danger">*</span> Mật khẩu</label>
-                                                    <sf:input type="text" class="form-control" id="matKhau"
-                                                              placeholder="Nhập mật khẩu.." path="matKhau"/>
-                                                    <div id="error-matKhau" class="error"></div>
-                                                </div>
-
-                                                 <div class="mb-3">
-                                                    <label for="trangThai" class="form-label"><span
-                                                            class="text-danger">*</span> Trạng thái</label>
-                                                    <sf:select class="form-select" aria-label="Default select example" path="trangThai" id="trangThai">
-                                                        <option value="1">Đang làm</option>
-                                                        <option value="0">Nghỉ làm</option>
-                                                    </sf:select>
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div class="text-center" style="margin-top: 40px">
-                                            <button type="submit" class="btn btn-warning">Sửa</button>
-                                            <a href="/qlnv/quan-ly-nhan-vien">
+                                            <button type="submit" class="btn btn-primary">Thêm</button>
+                                            <a href="/qlkh/quan-ly-khach-hang">
                                                 <button type="button" class="btn btn-secondary">Hủy</button>
                                             </a>
                                         </div>
@@ -536,9 +506,7 @@
                             </div>
                         </div>
                     </sf:form>
-
                 </div>
-
 
             </div>
             <!--  Kết thúc bán hàng tại quầy  -->
@@ -550,12 +518,11 @@
         <footer class="sticky-footer bg-white">
             <div class="container my-auto">
                 <div class="copyright text-center my-auto">
-                    <span>MS - qlnv</span>
+                    <span>MS - qlkh</span>
                 </div>
             </div>
         </footer>
         <!-- End of Footer -->
-
     </div>
 
 </div>
@@ -565,25 +532,6 @@
     <i class="fas fa-angle-up"></i>
 </a>
 
-<!-- Logout Modal-->
-<%--<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1"--%>
-<%--     aria-hidden="true">--%>
-<%--    <div class="modal-dialog" role="document">--%>
-<%--        <div class="modal-content">--%>
-<%--            <div class="modal-header">--%>
-<%--                <h5 class="modal-title" id="exampleModalLabel1">Bạn có chắc chắn muốn đăng xuất không?</h5>--%>
-<%--                <button class="close" type="button" data-dismiss="modal" aria-label="Close">--%>
-<%--                    <span aria-hidden="true">×</span>--%>
-<%--                </button>--%>
-<%--            </div>--%>
-<%--            <div class="modal-body">Chọn "Đăng xuất" bạn sẽ thoát khỏi trang này!</div>--%>
-<%--            <div class="modal-footer">--%>
-<%--                <button class="btn btn-secondary" type="button" data-dismiss="modal">Hủy</button>--%>
-<%--                <a class="btn btn-primary" href="/qlnv/dang-xuat">Đăng xuất</a>--%>
-<%--            </div>--%>
-<%--        </div>--%>
-<%--    </div>--%>
-<%--</div>--%>
 
 <!-- Bootstrap core JavaScript-->
 <script src="/view_admin/vendor/jquery/jquery.min.js"></script>
@@ -668,29 +616,30 @@
 </script>
 
 <script>
-    //Chuyển list nhân viên java -> js
-    var listNV = []
-    <c:forEach items="${listNhanVien}" var="nv">
-    if ('${nv.id}' !== '${nhanVien.id}'){
-        var NhanVien = {};
-        NhanVien.id = "${nv.id}";
-        NhanVien.hoTen = "${nv.hoTen}";
-        NhanVien.gioiTinh = "${nv.gioiTinh}";
-        NhanVien.ngaySinh = "${nv.ngaySinh}";
-        NhanVien.sdt = "${nv.sdt}";
-        NhanVien.taiKhoan = "${nv.taiKhoan}";
-        NhanVien.matKhau = "${nv.matKhau}";
-        NhanVien.anhDaiDien = "${nv.anhDaiDien}";
-        NhanVien.trangThai = "${nv.trangThai}";
-        listNV.push(NhanVien);
-    }
+    //Chuyển list khách hàng java -> js
+    var listKH = []
+    <c:forEach items="${listKhachHang}" var="kh">
+    var KhachHang = {};
+    KhachHang.id = "${nv.id}";
+    KhachHang.hoTen = "${nv.hoTen}";
+    KhachHang.gioiTinh = "${nv.gioiTinh}";
+    KhachHang.ngaySinh = "${nv.ngaySinh}";
+    KhachHang.sdt = "${nv.sdt}";
+    KhachHang.taiKhoan = "${nv.email}";
+    KhachHang.anhDaiDien = "${nv.anhDaiDien}";
+    KhachHang.trangThai = "${nv.trangThai}";
+    listKH.push(KhachHang);
     </c:forEach>
-    console.log(listNV)
-    //Validate form
 
+    //Validate form
     function isVietnamesePhoneNumber(phone) {
         const regex = /(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})\b/;
         return regex.test(phone);
+    }
+
+    function validateEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
     }
 
     function clearErrors() {
@@ -699,21 +648,22 @@
         });
     }
 
-    document.getElementById('employeeForm').addEventListener('submit', function (event) {
+    //Thêm khách hàng
+    document.getElementById('khachHangForm').addEventListener('submit', function (event) {
         event.preventDefault();
-
         clearErrors();
 
-        const tenNhanVien = document.getElementById('tenNhanVien').value.trim();
+        const tenKhachHang = document.getElementById('tenKhachHang').value.trim();
         const ngaySinh = document.getElementById('ngaySinh').value.trim();
-        const taiKhoan = document.getElementById('taiKhoan').value.trim();
         const soDienThoai = document.getElementById('soDienThoai').value.trim();
-        const matKhau = document.getElementById('matKhau').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const gioiTinhNam = document.getElementById('gioiTinhNam').checked;
+        const gioiTinhNu = document.getElementById('gioiTinhNu').checked;
 
         let hasError = false;
 
-        if (!tenNhanVien) {
-            document.getElementById('error-tenNhanVien').textContent = 'Tên nhân viên không được để trống';
+        if (!tenKhachHang) {
+            document.getElementById('error-tenKhachHang').textContent = 'Tên khách hàng không được để trống';
             hasError = true;
         }
 
@@ -727,54 +677,51 @@
             hasError = true;
         }
 
-        if (!taiKhoan) {
-            document.getElementById('error-taiKhoan').textContent = 'Tài khoản không được để trống';
-            hasError = true;
-        } else if (listNV.some(nhanVien => nhanVien.taiKhoan === taiKhoan)) {
-            document.getElementById('error-taiKhoan').textContent = 'Tài khoản đã tồn tại';
-            hasError = true;
-        }
-
         if (!soDienThoai) {
             document.getElementById('error-soDienThoai').textContent = 'Số điện thoại không được để trống';
             hasError = true;
         } else if (!isVietnamesePhoneNumber(soDienThoai)) {
             document.getElementById('error-soDienThoai').textContent = 'Số điện thoại không hợp lệ';
             hasError = true;
-        } else if (listNV.some(nhanVien => nhanVien.sdt === soDienThoai)) {
+        } else if (listKH.some(khachHang => khachHang.sdt === soDienThoai)) {
             document.getElementById('error-soDienThoai').textContent = 'Số điện thoại đã tồn tại';
             hasError = true;
         }
 
-        if (!matKhau) {
-            document.getElementById('error-matKhau').textContent = 'Mật khẩu không được để trống';
+        if (!email) {
+            document.getElementById('error-email').textContent = 'Email không được để trống';
+            hasError = true;
+        } else if (!validateEmail(email)) {
+            document.getElementById('error-email').textContent = 'Email không hợp lệ';
+            hasError = true;
+        } else if (listKH.some(khachHang => khachHang.email === email)) {
+            document.getElementById('error-email').textContent = 'Email đã tồn tại';
             hasError = true;
         }
-        debugger
+
         if (hasError) {
             return;
         }
 
         event.preventDefault();
         Swal.fire({
-            title: "Bạn có chắc chắn muốn sửa không?",
+            title: "Bạn có chắc chắn muốn thêm không?",
             text: "Bạn sẽ không thể hoàn tác hành động này!",
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
             cancelButtonText: "Hủy",
-            confirmButtonText: "Sửa"
+            confirmButtonText: "Thêm"
         }).then((result) => {
             if (result.isConfirmed) {
                 Swal.fire({
-                    title: "Đã sửa!",
-                    text: "Bạn đã sửa thông tin nhân viên thành công.",
+                    title: "Đã thêm!",
+                    text: "Bạn đã thêm khách hàng thành công.",
                     icon: "success"
                 }).then(() => {
                     // window.location.href = "/qlnv/quan-ly-nhan-vien";
-
-                    document.getElementById('employeeForm').submit();
+                    document.getElementById('khachHangForm').submit();
                 });
             }
         });
@@ -793,23 +740,12 @@
                 if (file) {
                     const fileName = file.name;
                     document.getElementById('image-info').textContent = fileName;
-                    document.getElementById('img').value = fileName;
                 }
             }
             reader.readAsDataURL(file);
         }
     });
 </script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const imageUrl = '${nhanVien.anhDaiDien}';
-        if (imageUrl != null) {
-            document.getElementById('image-overlay').textContent = '';
-            document.getElementById('image-info').textContent = '${nhanVien.anhDaiDien}'
-        } else {
-            document.getElementById('image-overlay').textContent = '+ Upload';
-        }
-    });
-</script>
+
 
 </html>

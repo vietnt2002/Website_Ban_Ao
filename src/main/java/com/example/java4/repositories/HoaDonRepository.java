@@ -1,6 +1,10 @@
 package com.example.java4.repositories;
 
 import com.example.java4.entities.HoaDon;
+<<<<<<< HEAD
+=======
+import com.example.java4.response.HoaDonResponse;
+>>>>>>> 3d603911edf128be08d4c9052535f3224a839408
 import com.example.java4.entities.KhuyenMai;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -45,9 +49,12 @@ public interface HoaDonRepository
     HoaDon findByidKHAndLoaiHoaDonAndTrangThai(String idKH, Integer loaiHD, Integer trangThai);
     @Query("select hd from HoaDon hd where hd.idKhachHang.id = ?1 and hd.trangThai = ?2")
     HoaDon findByIdKhachHang(String idKH, Integer trangThai);
-    @Query(value = "SELECT TOP 5 * FROM HoaDon where trangThai = 1 ORDER BY ngayTao DESC",
-            nativeQuery = true)
+//    @Query(value = "SELECT TOP 5 * FROM HoaDon where trangThai = 1 ORDER BY ngayTao DESC",
+//            nativeQuery = true)
     Page<HoaDon>  findByTrangThai(int trangThai,Pageable pageable);
+
+
+
     //    public Optional<HoaDon_Tai> findById(String id);
     // Tìm hóa đơn theo loại hóa đơn, chức năng lọc hóa đơn theo LoaiHoaDon
     Page<HoaDon> findByLoaiHoaDon(int loaiHoaDon, Pageable pageable);
@@ -124,8 +131,42 @@ public interface HoaDonRepository
             "WHERE (hd.ma LIKE %?1% OR kh.sdt LIKE %?1%) AND (hd.loaiHoaDon = ?2) AND (hd.ngayTao BETWEEN ?3 AND ?4)")
     Page<HoaDon> searchByMaOrSdtAndLoaiHoaDonAndNgayTao(String keyword, Integer loaiHoaDon, LocalDateTime startDate, LocalDateTime endDate, Pageable pageable);
 
+<<<<<<< HEAD
 
     @Query("select hd from HoaDon hd where hd.id=?1")
     HoaDon findByIdHoaDon(String idHoaDon);
 
+=======
+    @Query("select new com.example.java4.response.HoaDonResponse(hd.id, hd.ma, cthd.idCTSP.idSanPham.ten, cthd.soLuong, ha.hinhAnh1, cthd.idCTSP.idMauSac.ten, cthd.idCTSP.idKichThuoc.ten, ctsp.giaBan) from HoaDon hd " +
+            "join ChiTietHoaDon cthd on cthd.idHoaDon.id = hd.id " +
+            "join ChiTietSanPham ctsp on ctsp.id = cthd.idCTSP.id " +
+            "join HinhAnh ha on ha.idCTSP.id = ctsp.id " +
+            "where hd.idKhachHang.id = ?1 and hd.trangThai = ?2")
+    List<HoaDonResponse> getListHDbyIDKH(String idKH, Integer trangThai);
+
+    // Tìm khuyến mãi theo id hóa đơn -Tai
+    @Query("SELECT hd.idKhuyenMai FROM HoaDon hd WHERE hd.id = :hoaDonId")
+    KhuyenMai findKhuyenMaiByHoaDonId(@Param("hoaDonId") String hoaDonId);
+
+    @Query("select hd from HoaDon hd where hd.idKhachHang.id = ?1 " +
+            "order by hd.ngayTao desc")
+    List<HoaDon> getHoaDonByIDKHA(String idKH);
+
+    @Query("select hd from HoaDon hd " +
+            "where hd.idKhachHang.id = ?1 and hd.trangThai = ?2 " +
+            "order by hd.ngayTao desc")
+    List<HoaDon> getHoaDonByIDKHAndTrangThai(String idKH, Integer trangThai);
+
+    @Query("select count(hd) from HoaDon hd where hd.idKhachHang.id = ?1 and hd.trangThai = ?2")
+    int countByHoaDonByTrangThai(String idKH, Integer trangThai);
+
+    @Query("select count(hd) from HoaDon hd where hd.trangThai >= 1")
+    int countByTrangThai();
+
+//    select hd.Ma, hd.NgayTao, sum(cthd.SoLuong) as TongSoLuong, hd.TongTien, hd.TrangThai from HoaDon hd
+//    join ChiTietHoaDon cthd on cthd.idHoaDon = hd.id
+//    where hd.TrangThai = 1 and hd.IdKhachHang = '839D965B-9681-4074-9A66-5ACECE1545E6'
+//    group by hd.Ma, hd.NgayTao, hd.TongTien, hd.TrangThai
+//    order by hd.NgayTao desc
+>>>>>>> 3d603911edf128be08d4c9052535f3224a839408
 };

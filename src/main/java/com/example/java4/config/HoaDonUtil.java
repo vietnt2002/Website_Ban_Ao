@@ -14,7 +14,7 @@ public class HoaDonUtil {
             case 3:
                 return "Chờ giao hàng";
             case 4:
-                return "Đang giao hàng";
+                return "Đang vận chuyển";
             case 5:
                 return "Giao hàng thành công";
             case 6:

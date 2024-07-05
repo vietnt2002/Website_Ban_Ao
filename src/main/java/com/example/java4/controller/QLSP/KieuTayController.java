@@ -28,10 +28,8 @@ public class KieuTayController {
     }
     @CrossOrigin
     @GetMapping("/index")
-    public ResponseEntity<List<KieuTay>> getIndexPage(@RequestParam("page") Optional<Integer> pageParam) {
-        int page =  pageParam.orElse(1);
-        Pageable pageable = PageRequest.of(page-1,20);
-        return ResponseEntity.ok(ktRepo.findByTrangThai(1, pageable).getContent());
+    public ResponseEntity<List<KieuTay>> getIndexPage() {
+        return ResponseEntity.ok(ktRepo.findAll());
     }
     @CrossOrigin
     @GetMapping("/get-all")

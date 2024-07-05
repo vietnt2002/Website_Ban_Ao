@@ -5,7 +5,6 @@
 <%--    Thêm thư viện SweetAlert2 để thiển thị thông báo--%>
 <!-- SweetAlert2 CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <!-- SweetAlert2 JS -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -21,7 +20,7 @@
     <title>MSqlnv_Tại quầy</title>
 
     <!-- Custom fonts for this template-->
-    <link href="/view_admin/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
             href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
             rel="stylesheet">
@@ -60,49 +59,6 @@
             background-color: rgb(238, 234, 234);
             border-radius: 5px;
         }
-
-        .image-container {
-            position: relative;
-            display: inline-block;
-        }
-
-        #image-preview {
-            width: 200px;
-            height: 200px;
-            border: 1px dashed gray;
-            cursor: pointer;
-            border-radius: 50%;
-            display: block;
-            padding: 4px;
-        }
-
-        #image-overlay {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: black;
-            font-size: 18px;
-            text-align: center;
-            pointer-events: none;
-            width: 80px; /* Adjust width as needed */
-        }
-
-        #image-preview:hover {
-            background-color: #eee;
-        }
-
-        .file-info {
-            margin-top: 10px;
-            font-size: 14px;
-            color: #333;
-        }
-
-        .error {
-            color: red;
-            font-size: 13px;
-            width: 100%;
-        }
     </style>
 
 </head>
@@ -115,17 +71,18 @@
     <!-- Sidebar -->
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
-        <!-- Sidebar - Brand -->
-        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
-            <div class="sidebar-brand-icon rotate-n-15">
-                <i class="fas fa-laugh-wink"></i>
-            </div>
-            <div class="sidebar-brand-text mx-3">MS - qlnv</div>
-        </a>
+    <!-- Sidebar - Brand -->
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+        <div class="sidebar-brand-icon rotate-n-15">
+            <i class="fas fa-laugh-wink"></i>
+        </div>
+        <div class="sidebar-brand-text mx-3">MS - Store</div>
+    </a>
 
-        <!-- Divider -->
-        <hr class="sidebar-divider my-0">
+    <!-- Divider -->
+    <hr class="sidebar-divider my-0">
 
+        <!-- Nav Item - Dashboard -->
         <c:choose>
             <c:when test="${sessionScope.userRole == 'Quản lý'}">
                 <!-- Nav Item - Dashboard -->
@@ -141,13 +98,12 @@
                         <i class="fas fa-fw fa-chart-area"></i>
                         <span>Thống kê doanh thu</span></a>
                 </li>
-
-                <!-- Nav Item - Charts -->
-                <li class="nav-item">
-                    <a class="nav-link" href="/hoa-don/hien-thi">
-                        <i class="fas fa-fw fa-chart-area"></i>
-                        <span>Quản lý đơn hàng</span></a>
-                </li>
+        <!-- Nav Item - Dashboard -->
+        <li class="nav-item active">
+            <a class="nav-link" href="/ban-hang-tai-quay">
+                <i class="fas fa-fw fa-chart-area"></i>
+                <span>Bán hàng tại quầy</span></a>
+        </li>
 
                 <!-- Nav Item - Charts -->
                 <li class="nav-item">
@@ -180,7 +136,7 @@
 
                 <!-- Nav Item - Charts -->
                 <li class="nav-item">
-                    <a class="nav-link" href="/qlnv/quan-ly-khach-hang">
+                    <a class="nav-link" href="/qlkh/quan-ly-khach-hang">
                         <i class="fas fa-fw fa-chart-area"></i>
                         <span>Quản lý khách hàng</span></a>
                 </li>
@@ -210,14 +166,21 @@
 
                 <!-- Nav Item - Charts -->
                 <li class="nav-item">
-                    <a class="nav-link" href="charts.html">
+                    <a class="nav-link" href="/qlkh/quan-ly-khach-hang">
                         <i class="fas fa-fw fa-chart-area"></i>
                         <span>Quản lý khách hàng</span></a>
                 </li>
+                <!-- Divider -->
+                <hr class="sidebar-divider d-none d-md-block">
+
+                <!-- Sidebar Toggler (Sidebar) -->
+                <div class="text-center d-none d-md-inline">
+                    <button class="rounded-circle border-0" id="sidebarToggle1"></button>
+                </div>
             </c:otherwise>
         </c:choose>
 
-    </ul>
+</ul>
 
     <!--   -----------   -->
     <div id="content-wrapper" class="d-flex flex-column">
@@ -334,8 +297,8 @@
                             </h6>
                             <a class="dropdown-item d-flex align-items-center" href="#">
                                 <div class="dropdown-list-image mr-3">
-                                    <img class="rounded-circle" src="/view_admin/img/undraw_profile_1.svg"
-                                         alt="">
+                                    <img class="rounded-circle" src="img/undraw_profile_1.svg"
+                                         alt="...">
                                     <div class="status-indicator bg-success"></div>
                                 </div>
                                 <div class="font-weight-bold">
@@ -347,8 +310,8 @@
                             </a>
                             <a class="dropdown-item d-flex align-items-center" href="#">
                                 <div class="dropdown-list-image mr-3">
-                                    <img class="rounded-circle" src="/view_admin/img/undraw_profile_2.svg"
-                                         alt="">
+                                    <img class="rounded-circle" src="img/undraw_profile_2.svg"
+                                         alt="...">
                                     <div class="status-indicator"></div>
                                 </div>
                                 <div>
@@ -360,7 +323,7 @@
                             </a>
                             <a class="dropdown-item d-flex align-items-center" href="#">
                                 <div class="dropdown-list-image mr-3">
-                                    <img class="rounded-circle" src="/view_admin/img/undraw_profile_3.svg"
+                                    <img class="rounded-circle" src="img/undraw_profile_3.svg"
                                          alt="...">
                                     <div class="status-indicator bg-warning"></div>
                                 </div>
@@ -417,131 +380,123 @@
             </nav>
 
 
-            <!-- Bán hàng tại quầy -->
+            <!-- Quản lý khách hàng -->
             <div class="container-fluid">
                 <div class="container">
 
-                    <%--      Tìm kiếm & lọc thông tin nhân ciên      --%>
-                    <h5 class="card-title mb-3">Sửa thông tin nhân viên</h5>
-                    <sf:form id="employeeForm" method="post" action="/qlnv/sua-nhan-vien/${nhanVien.id}" enctype="multipart/form-data"
-                             modelAttribute="nhanVien">
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <div class="card text-center" style="height: 550px;">
-                                    <div class="card-body">
-                                        <h5 class="card-title mt-4">Ảnh đại diện</h5>
-                                        <label for="file-input" class="image-container mt-5">
-                                            <img src="/imageUser/${nhanVien.anhDaiDien}" alt="" id="image-preview">
-                                            <div id="image-overlay">+ Upload</div>
-                                            <sf:input type="file" id="file-input" accept="image/*"
-                                                      style="display: none;" path="anhDaiDien"/>
-                                            <input id="img" type="hidden" value="${nhanVien.anhDaiDien}" name="img">
-                                        </label>
-                                        <div id="image-info" class="mt-4"></div>
-                                    </div>
-                                </div>
+                    <%--      Tìm kiếm & lọc thông tin khách hàng      --%>
+                    <h5 class="card-title mb-3">Quản lý thông tin khách hàng</h5>
+                    <div class="row mb-4">
+                        <div class="card">
+                            <div class="card-header">
+                                Tìm kiếm thông tin
                             </div>
-
-
-                            <div class="col-sm-8">
-                                <div class="card" style="height: 550px">
-                                    <div class="card-body">
-                                        <h5 class="card-title mt-4" style="margin-bottom: 25px">Thông tin nhân viên</h5>
-                                        <div class="row">
-                                            <div class="col col-6">
-                                                <div class="mb-3">
-                                                    <label for="tenNhanVien" class="form-label"><span
-                                                            class="text-danger">*</span> Tên nhân viên</label>
-                                                    <sf:input type="text" class="form-control" id="tenNhanVien"
-                                                              placeholder="Nhập họ tên.." path="hoTen"/>
-                                                    <div id="error-tenNhanVien" class="error"></div>
-                                                </div>
-
-                                                <div class="mb-3">
-                                                    <label for="ngaySinh" class="form-label"><span
-                                                            class="text-danger">*</span> Ngày sinh</label>
-                                                    <sf:input type="date" class="form-control" id="ngaySinh"
-                                                              path="ngaySinh"/>
-                                                    <div id="error-ngaySinh" class="error"></div>
-                                                </div>
-
-                                                <div class="mb-3">
-                                                    <label for="taiKhoan" class="form-label"><span
-                                                            class="text-danger">*</span> Tài khoản</label>
-                                                    <sf:input type="text" class="form-control" id="taiKhoan"
-                                                              placeholder="Nhập tài khoản.." path="taiKhoan"/>
-                                                    <div id="error-taiKhoan" class="error"></div>
-                                                </div>
-
-                                                <div class="mb-3">
-                                                    <label for="chucVu" class="form-label"><span
-                                                            class="text-danger">*</span> Chức vụ</label>
-                                                    <sf:select class="form-select"
-                                                               aria-label="Default select example"
-                                                               id="chucVu" path="idCV">
-                                                        <c:forEach items="${listChucVu}" var="chucVu">
-                                                            <option value="${chucVu.id}"
-                                                                    <c:if test="${chucVu.id == nhanVien.idCV.id}">selected</c:if>> ${chucVu.ten}
-                                                            </option>
-                                                        </c:forEach>
-                                                    </sf:select>
-                                                </div>
-                                            </div>
-
-                                            <div class="col col-6">
-                                                <div class="mb-3">
-                                                    <label for="soDienThoai" class="form-label"><span
-                                                            class="text-danger">*</span> Số điện thoại</label>
-                                                    <sf:input type="number" class="form-control" id="soDienThoai"
-                                                              placeholder="Nhập số điện thoại.." path="sdt"/>
-                                                    <div id="error-soDienThoai" class="error"></div>
-                                                </div>
-
-                                                <div class="mb-3">
-                                                    <label class="form-label" style="display: block"><span
-                                                            class="text-danger">*</span> Giới tính</label>
-                                                    <sf:radiobutton path="gioiTinh" id="gioiTinhNam" label="Nam" value="1" cssStyle="margin-top: 5px" />
-                                                    <sf:radiobutton path="gioiTinh" id="gioiTinhNu" label="Nữ" value="0" ssStyle="margin-top: 5px" />
-                                                    <div id="error-gioiTinh" class="error"></div>
-                                                </div>
-
-                                                <div class="mb-3" style="margin-top: 22px">
-                                                    <label for="matKhau" class="form-label"><span
-                                                            class="text-danger">*</span> Mật khẩu</label>
-                                                    <sf:input type="text" class="form-control" id="matKhau"
-                                                              placeholder="Nhập mật khẩu.." path="matKhau"/>
-                                                    <div id="error-matKhau" class="error"></div>
-                                                </div>
-
-                                                 <div class="mb-3">
-                                                    <label for="trangThai" class="form-label"><span
-                                                            class="text-danger">*</span> Trạng thái</label>
-                                                    <sf:select class="form-select" aria-label="Default select example" path="trangThai" id="trangThai">
-                                                        <option value="1">Đang làm</option>
-                                                        <option value="0">Nghỉ làm</option>
-                                                    </sf:select>
-                                                </div>
+                            <div class="card-body">
+                                <form method="post" action="/qlnv/tim-kiem">
+                                    <div class="row mb-2">
+                                        <div class="col-6">
+                                            <label for="timKiem" class="col-sm-2 col-form-label mb-3">Tìm kiếm: </label>
+                                            <div class="col-sm-10 float-right mb-3">
+                                                <input type="text" class="form-control w-75" name="key" id="timKiem"
+                                                       placeholder="Nhập họ tên hoặc Sdt,...">
                                             </div>
                                         </div>
 
-                                        <div class="text-center" style="margin-top: 40px">
-                                            <button type="submit" class="btn btn-warning">Sửa</button>
-                                            <a href="/qlnv/quan-ly-nhan-vien">
-                                                <button type="button" class="btn btn-secondary">Hủy</button>
-                                            </a>
+                                        <div class="col-6">
+                                            <label for="ngaySinh1" class="col-sm-2 col-form-label mb-2">Ngày sinh: </label>
+                                            <div class="col-sm-10 float-right mb-3" style="display: flex">
+                                                <input type="date" class="form-control me-3" id="ngaySinh1" name="ngaySinh1" style="width: 160px;">
+                                                <input type="date" class="form-control" id="ngaySinh2" name="ngaySinh2" style="width: 160px;">
+                                            </div>
                                         </div>
-
                                     </div>
-                                </div>
+
+                                    <div class="text-center">
+                                        <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+                                        <a href="/qlkh/quan-ly-khach-hang"><button type="button" class="btn btn-secondary">Làm mới bộ lọc</button></a>
+                                    </div>
+                                </form>
                             </div>
                         </div>
-                    </sf:form>
+                    </div>
 
+                    <%--      Danh sách khách hàng     --%>
+                    <div class="row">
+                        <div class="card">
+                            <div class="card-header">
+                                <span>Danh sách nhân viên</span>
+                                <a href="/qlkh/them-khach-hang-view"><button class="btn btn-primary float-end">+ Thêm</button></a>
+                            </div>
+                            <div class="card-body">
+                                <table class="table" id="nhanVienTable">
+                                    <thead class="table-secondary">
+                                    <tr>
+                                        <th scope="col">STT</th>
+                                        <th scope="col">Ảnh</th>
+                                        <th scope="col">Họ tên</th>
+                                        <th scope="col">Giới tính</th>
+                                        <th scope="col">Ngày sinh</th>
+                                        <th scope="col">Sdt</th>
+                                        <th scope="col">Email</th>
+                                        <th scope="col">Ngày tạo</th>
+                                        <th scope="col">Trạng thái</th>
+                                        <th scope="col">Thao tác</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <c:forEach varStatus="i" items="${listKhachHang}" var="kh">
+                                        <tr>
+                                            <th>${i.index+1}</th>
+                                            <th><img src="/imageUser/${kh.anhDaiDien}" style="width: 70px; height: 60px"></th>
+                                            <td>${kh.hoTen}</td>
+                                            <td>${kh.gioiTinh == 1 ? "Nam" : "Nữ"}</td>
+                                            <td>${kh.ngaySinh}</td>
+                                            <td>${kh.sdt}</td>
+                                            <td>${kh.email}</td>
+                                            <td>${kh.ngayTao}</td>
+                                            <td>
+                                                <c:if test="${kh.trangThai == 1}">
+                                                    <span class="badge bg-success">Hoạt động</span>
+                                                </c:if>
+                                                <c:if test="${kh.trangThai == 0}">
+                                                    <span class="badge bg-warning">Ngừng hoạt động</span>
+                                                </c:if>
+                                            </td>
+                                            <td>
+                                                <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal${kh.id}">
+                                                    <i class="bi bi-house-door"></i>
+                                                </button>
+                                                <a href="/qlkh/sua-khach-hang-view/${kh.id}"><button class="btn btn-warning"><i class="bi bi-pencil-square"></i></button></a>
+                                                <!-- Button trigger modal -->
+
+                                                <!-- Modal -->
+                                                <div class="modal fade" id="exampleModal${kh.id}" tabindex="-1" aria-labelledby="exampleModalLabel${kh.id}" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalLabel${kh.id}">Danh sách địa chỉ</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                ...
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
 
             </div>
-            <!--  Kết thúc bán hàng tại quầy  -->
+            <!--  Kết thúc quản lý khách hàng  -->
 
         </div>
 
@@ -564,6 +519,8 @@
 <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
 </a>
+
+
 
 <!-- Logout Modal-->
 <%--<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1"--%>
@@ -649,7 +606,6 @@
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
-            cancelButtonText: "Hủy",
             confirmButtonText: "Đăng xuất!"
         }).then((result) => {
             if (result.isConfirmed) {
@@ -666,150 +622,4 @@
     });
 
 </script>
-
-<script>
-    //Chuyển list nhân viên java -> js
-    var listNV = []
-    <c:forEach items="${listNhanVien}" var="nv">
-    if ('${nv.id}' !== '${nhanVien.id}'){
-        var NhanVien = {};
-        NhanVien.id = "${nv.id}";
-        NhanVien.hoTen = "${nv.hoTen}";
-        NhanVien.gioiTinh = "${nv.gioiTinh}";
-        NhanVien.ngaySinh = "${nv.ngaySinh}";
-        NhanVien.sdt = "${nv.sdt}";
-        NhanVien.taiKhoan = "${nv.taiKhoan}";
-        NhanVien.matKhau = "${nv.matKhau}";
-        NhanVien.anhDaiDien = "${nv.anhDaiDien}";
-        NhanVien.trangThai = "${nv.trangThai}";
-        listNV.push(NhanVien);
-    }
-    </c:forEach>
-    console.log(listNV)
-    //Validate form
-
-    function isVietnamesePhoneNumber(phone) {
-        const regex = /(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})\b/;
-        return regex.test(phone);
-    }
-
-    function clearErrors() {
-        document.querySelectorAll('.error').forEach(element => {
-            element.textContent = '';
-        });
-    }
-
-    document.getElementById('employeeForm').addEventListener('submit', function (event) {
-        event.preventDefault();
-
-        clearErrors();
-
-        const tenNhanVien = document.getElementById('tenNhanVien').value.trim();
-        const ngaySinh = document.getElementById('ngaySinh').value.trim();
-        const taiKhoan = document.getElementById('taiKhoan').value.trim();
-        const soDienThoai = document.getElementById('soDienThoai').value.trim();
-        const matKhau = document.getElementById('matKhau').value.trim();
-
-        let hasError = false;
-
-        if (!tenNhanVien) {
-            document.getElementById('error-tenNhanVien').textContent = 'Tên nhân viên không được để trống';
-            hasError = true;
-        }
-
-        if (!ngaySinh) {
-            document.getElementById('error-ngaySinh').textContent = 'Ngày sinh không được để trống';
-            hasError = true;
-        }
-
-        if (!gioiTinhNam && !gioiTinhNu) {
-            document.getElementById('error-gioiTinh').textContent = 'Giới tính không được để trống';
-            hasError = true;
-        }
-
-        if (!taiKhoan) {
-            document.getElementById('error-taiKhoan').textContent = 'Tài khoản không được để trống';
-            hasError = true;
-        } else if (listNV.some(nhanVien => nhanVien.taiKhoan === taiKhoan)) {
-            document.getElementById('error-taiKhoan').textContent = 'Tài khoản đã tồn tại';
-            hasError = true;
-        }
-
-        if (!soDienThoai) {
-            document.getElementById('error-soDienThoai').textContent = 'Số điện thoại không được để trống';
-            hasError = true;
-        } else if (!isVietnamesePhoneNumber(soDienThoai)) {
-            document.getElementById('error-soDienThoai').textContent = 'Số điện thoại không hợp lệ';
-            hasError = true;
-        } else if (listNV.some(nhanVien => nhanVien.sdt === soDienThoai)) {
-            document.getElementById('error-soDienThoai').textContent = 'Số điện thoại đã tồn tại';
-            hasError = true;
-        }
-
-        if (!matKhau) {
-            document.getElementById('error-matKhau').textContent = 'Mật khẩu không được để trống';
-            hasError = true;
-        }
-        debugger
-        if (hasError) {
-            return;
-        }
-
-        event.preventDefault();
-        Swal.fire({
-            title: "Bạn có chắc chắn muốn sửa không?",
-            text: "Bạn sẽ không thể hoàn tác hành động này!",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            cancelButtonText: "Hủy",
-            confirmButtonText: "Sửa"
-        }).then((result) => {
-            if (result.isConfirmed) {
-                Swal.fire({
-                    title: "Đã sửa!",
-                    text: "Bạn đã sửa thông tin nhân viên thành công.",
-                    icon: "success"
-                }).then(() => {
-                    // window.location.href = "/qlnv/quan-ly-nhan-vien";
-
-                    document.getElementById('employeeForm').submit();
-                });
-            }
-        });
-    });
-
-    document.getElementById('file-input').addEventListener('change', function (event) {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                document.getElementById('image-preview').src = e.target.result;
-                document.getElementById('image-overlay').textContent = '';
-                // Lấy thông tin file ảnh
-                const fileInput = document.getElementById('file-input');
-                const file = fileInput.files[0];
-                if (file) {
-                    const fileName = file.name;
-                    document.getElementById('image-info').textContent = fileName;
-                    document.getElementById('img').value = fileName;
-                }
-            }
-            reader.readAsDataURL(file);
-        }
-    });
-</script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const imageUrl = '${nhanVien.anhDaiDien}';
-        if (imageUrl != null) {
-            document.getElementById('image-overlay').textContent = '';
-            document.getElementById('image-info').textContent = '${nhanVien.anhDaiDien}'
-        } else {
-            document.getElementById('image-overlay').textContent = '+ Upload';
-        }
-    });
-</script>
-
 </html>

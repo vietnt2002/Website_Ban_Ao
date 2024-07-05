@@ -1,6 +1,7 @@
 package com.example.java4.repositories;
 
 import com.example.java4.entities.DiaChi;
+import org.eclipse.tags.shaded.org.apache.bcel.generic.Select;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -24,4 +25,9 @@ public interface DiaChiRepository extends JpaRepository<DiaChi,String> {
     DiaChi findDiaChiByID(String id);
     @Query("SELECT diaChi FROM DiaChi diaChi WHERE diaChi.idKhachHang.id = :idKH and diaChi.trangThai=1")
     DiaChi findDiaChiByKhachHangId(@Param("idKH") String idKH);
+
+
+    // Lấy danh sách địa chỉ theo idKH - Tai
+    @Query("Select diaChi FROM DiaChi diaChi WHERE diaChi.idKhachHang.id = :idKH")
+    List<DiaChi> findDiaChiByIdKhachHang(@Param("idKH") String idKH);
 }
