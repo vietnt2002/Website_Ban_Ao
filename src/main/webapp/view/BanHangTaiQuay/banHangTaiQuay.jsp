@@ -697,7 +697,6 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-
                         <form method="post" action="/ban-hang-tai-quay/create">
                             <div class="mb-3 mt-3">
                                 <label for="email" class="form-label">Họ tên khách hàng:</label>
@@ -713,9 +712,7 @@
                             <div class="text-center">
                                 <button type="submit" class="btn btn-primary">Submit</button>
                             </div>
-
                         </form>
-
                     </div>
                 </div>
             </div>

@@ -646,120 +646,13 @@
             });
         });
     });
-
-    function searchByName(param){
-        var txtSearch = param.value;
-        console.log(txtSearch);
-        $.ajax({
-            url: "/ban-hang-tai-quay/search/${hoaDon.id}",
-            type: "POST",
-            data: {
-                txt:txtSearch
-            },
-            success: function (data) {
-                // var row = document.getElementById("content");
-                // row.innerHTML = data;
-                $('#contentAjax').empty()
-                $('#contentAjax').append(data);
-
-                console.log(data);
-            },
-            error: function (xhr) {
-                //Do Something to handle error
-            }
-        });
-    }
-
     <%--    --%>
-
-
-    const deleteButtons = document.querySelectorAll('.delete-button');
-    const checkBtn = document.querySelectorAll('#checkBtn');
-    // Thêm sự kiện click cho từng nút
-    deleteButtons.forEach(button => {
-        button.addEventListener('click', function () {
-            const idhd = this.getAttribute('idhd');
-            Swal.fire({
-                title: 'Bạn có muốn xóa không?',
-                text: "Bạn sẽ không thể khôi phục lại dữ liệu này!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Vâng, xóa nó!',
-                cancelButtonText: 'Hủy'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Thực hiện hành động xóa ở đây, ví dụ:
-                    // Gửi yêu cầu AJAX tới server để xóa dữ liệu
-                    fetch(`/ban-hang-tai-quay/delete-hoa-don/`+idhd, { method: 'GET' }).then(() => {
-                        Swal.fire(
-                            'Đã xóa!',
-                            'Dữ liệu của bạn đã bị xóa.',
-                            'success'
-                        );
-                        // Xóa hàng khỏi bảng sau khi xóa thành công
-                        button.closest('tr').remove();
-                    });
-                    button.closest('tr').remove();
-                }
-            });
-        });
-    });
-
-    checkBtn.forEach(button => {
-        button.addEventListener('click', function () {
-            console.log("test check btn");
-            var idHD = document.getElementsByName("idHD")[0].value;
-            var idKH  = document.getElementsByName("idKH")[0].value;
-            var idKhuyenMai = document.getElementsByName("idKhuyenMai")[0].value;
-            var tongTien = document.getElementsByName("tongTien")[0].value;
-            var thongBao = document.getElementById("errTraLai");
-            var moneyGiven = parseInt(document.getElementById("tienKhachDua").value);
-            var thongBao = document.getElementById("errTraLai");
-            console.log("====================== id hd:",idHD);
-            console.log("====================== id kh:",idKH);
-            console.log("====================== id khuyen mai:",idKhuyenMai);
-            console.log("====================== tong tien:",tongTien);
-            console.log("====================== money given:",moneyGiven);
-            if(tongTien<=moneyGiven&&!isNaN(tongTien)){
-                Swal.fire({
-                    title: 'Xác nhận thanh toán?',
-                    text: "Dữ liệu sẽ được lưu lại!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Vâng,Thanh toán!',
-                    cancelButtonText: 'Hủy'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        fetch(`/ban-hang-tai-quay/thanh-toan/`+idHD+'?idKhuyenMai='+idKhuyenMai+'&idKH='+idKH+'&tongTien='+tongTien,
-                            { method: 'POST' }).then(() => {
-                            Swal.fire(
-                                'Đã thanh toán!',
-                                'Dữ liệu đã được ghi nhận.',
-                                'success'
-                            ).then(() => {
-                                window.location.href = '/ban-hang-tai-quay';
-                            });
-                            button.closest('tr').remove();
-                        });
-                        button.closest('tr').remove();
-                        thongBao.textContent =  "";
-                    }
-                });
-            }
-            else{
-                thongBao.textContent =  "Số tiền khách đưa phải lớn hơn hoặc bằng tổng tiền.";
-            }
-        });
-    });
 </script>
 
 <script>
     let idSPLocal = "";
     let currentPage = 1;
+    let totalPage = 0;
     const loadDSSP = (pageParams) => {
         // get api + scpt.id
         let datatest = "data testing";
@@ -815,17 +708,18 @@
     }
     function navigate(direction,e) {
         e.preventDefault();
-        let items = document.querySelectorAll('.page-item');
-        let activeIndex = Array.from(items).findIndex(item => item.classList.contains('active'));
-        let newIndex = activeIndex + direction;
-        currentPage =newIndex
-        loadDSSP(currentPage);
-        if (newIndex > 0 && newIndex < items.length - 1) {
-            setActive(items[newIndex].querySelector('a'));
+        if(totalPage > 1){
+            let items = document.querySelectorAll('.page-item');
+            let activeIndex = Array.from(items).findIndex(item => item.classList.contains('active'));
+            let newIndex = activeIndex + direction;
+            currentPage =newIndex
+            loadDSSP(currentPage);
+            if (newIndex > 0 && newIndex < items.length - 1) {
+                setActive(items[newIndex].querySelector('a'));
+            }
         }
     }
     updateButtons();
-
     const loadTotalPagination = (currentPage) => {
         fetch("/san-pham/count", {
             headers: {
@@ -837,6 +731,7 @@
                 let html = '';
                 // Check if resp is a number and greater than 0
                 if (typeof resp === 'number' && resp > 0) {
+                    totalPage = Math.ceil(resp/20);
                     for (let i = 1; i <=  Math.ceil(resp/20); i++) {
                         const activeClass = (i === currentPage) ? 'active' : '';
                         html += '<li class="page-item ' + activeClass + '"><a class="page-link" href="#" onclick="setActive(this, ' + i + ')">' + i + '</a></li>';

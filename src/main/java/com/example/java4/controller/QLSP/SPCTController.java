@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 @Controller
 @RequestMapping("chi-tiet-sp")
@@ -34,7 +35,8 @@ public class SPCTController {
     SPCTRepository chiTietSPRepository;
     @Autowired
     SPCTRepoNoMap spctRepoNoMap;
-
+    @Autowired
+    private SearchService search;
     public SPCTController() {
     }
 
@@ -143,7 +145,6 @@ public class SPCTController {
     public ResponseEntity<Boolean> Store(
             @RequestBody @Valid SPCTStore newChiTietSP,
             BindingResult result
-
     ) {
         if (result.hasErrors()) {
             System.out.println("temp error: " + result);
@@ -165,5 +166,11 @@ public class SPCTController {
             spctRepoNoMap.save(chiTietSP);
             return ResponseEntity.ok(true);
         }
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<ChiTietSanPham>> searchChiTietSanPham(@RequestParam Map<String, Object> params) {
+        List<ChiTietSanPham> chiTietSanPhams = search.searchChiTietSanPham(params);
+        return ResponseEntity.ok(chiTietSanPhams);
     }
 }

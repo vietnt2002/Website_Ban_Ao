@@ -96,9 +96,9 @@ public interface SPCTRepository extends JpaRepository<ChiTietSanPham,String>, Jp
     Integer getCountStt1();
     @Query(value = "SELECT COUNT(*) FROM chitietsanpham where trangThai=0",nativeQuery = true)
     Integer getCountStt0();
-    @Query(value = "SELECT COUNT(*) FROM chitietsanpham where IdSP=:idsp",nativeQuery = true)
+    @Query(value = "SELECT COUNT(*) FROM chitietsanpham where IdSanPham=:idsp",nativeQuery = true)
     Integer getCountByidsp(String idsp);
-    @Query(value = "SELECT COUNT(*) FROM chitietsanpham where trangThai=1 and IdSP=:idsp",nativeQuery = true)
+    @Query(value = "SELECT COUNT(*) FROM chitietsanpham where trangThai=1 and IdSanPham=:idsp",nativeQuery = true)
     Integer getCountStt1Byidsp(String idsp);
     @Query(value = "SELECT COUNT(*) FROM chitietsanpham where trangThai=0 and IdSP=:idsp",nativeQuery = true)
     Integer getCountStt0Byidsp(String idsp);

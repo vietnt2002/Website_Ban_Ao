@@ -1,5 +1,4 @@
 package com.example.java4.controller.BanHangTaiQuay;
-
 import com.example.java4.entities.*;
 import com.example.java4.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,12 +11,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
-
 @Controller
 @RequestMapping("/ban_hang_tai_quay")
 public class Ban_Tai_Quay_Controller {

@@ -44,12 +44,12 @@
 
 
     <style>
-        .table-scroll{
+        .table-scroll {
             height: 340px;
             overflow: scroll;
         }
 
-        .table-scroll2{
+        .table-scroll2 {
             height: 460px;
             overflow: scroll;
         }
@@ -72,10 +72,20 @@
         #button {
             flex: none; /* Đảm bảo kích thước button không thay đổi */
         }
-        th,td{
+
+        th, td {
             text-align: center;
         }
 
+    </style>
+
+    <style>
+        .icon-container i {
+            transition: color 0.3s ease;
+        }
+        .icon-container i:hover {
+            color: #4e73df; /* Change this to your desired hover color */
+        }
     </style>
 
 </head>
@@ -345,7 +355,8 @@
                                 Tài khoản của tôi
                             </a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="/store/dang-xuat" id="dang-xuat" data-toggle="modal" data-target="#logoutModal">
+                            <a class="dropdown-item" href="/store/dang-xuat" id="dang-xuat" data-toggle="modal"
+                               data-target="#logoutModal">
                                 <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Đăng xuất
                             </a>
@@ -370,53 +381,64 @@
                             </div>
                             <h5 class="mt-3 border-bottom">Danh sách sản phẩm chi tiết: </h5>
                             <div class="mt-3">
-                                <form method="post" action="/ban-hang-tai-quay/filter">
-                                    <div class="row">
-                                        <div class="col col-md-2">
-                                            <div class="dropdown">
-                                                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
-                                                    Chọn màu sắc
-                                                </button>
-                                                <ul class="dropdown-menu" id="cboMauSac" aria-labelledby="dropdownMenuButton2">
-                                                </ul>
-                                            </div>
+                                <div class="row">
+                                    <div class="col col-md-2">
+                                        <div class="dropdown">
+                                            <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                                    id="lblMauSac" style="width: 150px;" data-bs-toggle="dropdown"
+                                                    aria-expanded="false">
+                                                Chọn màu sắc
+                                            </button>
+                                            <ul class="dropdown-menu" id="cboMauSac"
+                                                aria-labelledby="dropdownMenuButton2">
+                                            </ul>
                                         </div>
-                                        <div class="col col-md-2">
-                                            <div class="dropdown">
-                                                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-expanded="false">
-                                                    Chọn kích thước
-                                                </button>
-                                                <ul class="dropdown-menu" id="cboKichThuoc" aria-labelledby="dropdownMenuButton3">
-                                                        <li><a class="dropdown-item" href="/ban-hang-tai-quay/locSPCTByKichThuoc/${kichThuoc.id}">${kichThuoc.ten}</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        <div class="col col-md-2">
-                                            <div class="dropdown">
-                                                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton4" data-bs-toggle="dropdown" aria-expanded="false">
-                                                    Chọn chất liệu
-                                                </button>
-                                                <ul class="dropdown-menu" id="cboChatLieu" aria-labelledby="dropdownMenuButton4">
-                                                        <li><a class="dropdown-item" href="/ban-hang-tai-quay/locSPCTByChatLieu/${chatLieu.id}">${chatLieu.ten}</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        <div class="col col-md-2">
-                                            <div class="dropdown">
-                                                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton5" data-bs-toggle="dropdown" aria-expanded="false">
-                                                    Chọn kiểu tay
-                                                </button>
-                                                <ul class="dropdown-menu" id="cboKieuTay" aria-labelledby="dropdownMenuButton5">
-                                                        <li><a class="dropdown-item" href="/ban-hang-tai-quay/locSPCTByKieuTay/${kieuTay.id}">${kieuTay.ten}</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        <div class="col col-md-2">
-                                            <button id="btnSearch" class="btn btn-success me-2">Tìm kiếm</button>
-                                        </div>
-
                                     </div>
-                                </form>
+                                    <div class="col col-md-2">
+                                        <div class="dropdown" style="width: 200px;">
+                                            <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                                    id="lblKichThuoc" style="width: 150px;" data-bs-toggle="dropdown"
+                                                    aria-expanded="false">
+                                                Chọn kích thước
+                                            </button>
+                                            <ul class="dropdown-menu" id="cboKichThuoc"
+                                                aria-labelledby="dropdownMenuButton3">
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="col col-md-2">
+                                        <div class="dropdown" style="width: 200px;">
+                                            <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                                    id="lblChatLieu" style="width: 150px;" data-bs-toggle="dropdown"
+                                                    aria-expanded="false">
+                                                Chọn chất liệu
+                                            </button>
+                                            <ul class="dropdown-menu" id="cboChatLieu"
+                                                aria-labelledby="dropdownMenuButton4">
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="col col-md-2">
+                                        <div class="dropdown" style="width: 200px;">
+                                            <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                                    id="lblKieuTay" style="width: 150px;" data-bs-toggle="dropdown"
+                                                    aria-expanded="false">
+                                                Chọn kiểu tay
+                                            </button>
+                                            <ul class="dropdown-menu" id="cboKieuTay"
+                                                aria-labelledby="dropdownMenuButton5">
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="col col-md-3 d-flex gap-3">
+                                        <button id="btnSearch" class="btn btn-success me-2" onclick="search(event)">
+                                            Tìm kiếm
+                                        </button>
+                                        <button id="btnRef" class="btn btn-success me-2" onclick="refresh(event)">
+                                            Refresh
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                             <table class="table table-hover">
                                 <thead>
@@ -440,7 +462,9 @@
                 </div>
             </div>
             <div class="d-flex flex-row-reverse">
-                <button id="btnAdd" class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#ModalAdd">Thêm mới</button>
+                <button id="btnAdd" class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#ModalAdd">Thêm
+                    mới
+                </button>
             </div>
             <div class="d-flex flex-row-reverse">
                 <button onclick="testDataMaping(event)" class="btn btn-success me-2">test</button>
@@ -448,47 +472,146 @@
             <div class="col-12 pb-1">
                 <nav aria-label="Page navigation">
                     <ul class="pagination justify-content-center mb-3">
-                        <li class="page-item" id="prev"><Button class="page-link"  onclick="navigate(-1,event)">Previous</Button></li>
+                        <li class="page-item" id="prev">
+                            <Button class="page-link" onclick="navigate(-1,event)">Previous</Button>
+                        </li>
                         <div class="d-flex" id="paginationBody">
                         </div>
-                        <li class="page-item" id="next"><Button class="page-link"  onclick="navigate(1,event)">Next</Button></li>
+                        <li class="page-item" id="next">
+                            <Button class="page-link" onclick="navigate(1,event)">Next</Button>
+                        </li>
                     </ul>
                 </nav>
             </div>
         </div>
         <!-- ModalSPAdd-->
         <div class="modal fade" id="ModalAdd" tabindex="-1" aria-labelledby="exampleModalLabel4" aria-hidden="true"
-             data-bs-backdrop="static" data-bs-keyboard="false" >
-            <div class="modal-dialog modal-lg">
+             data-bs-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog modal-xl">
                 <div class="modal-content">
                     <div class="modal-header">
                         <div class="row">
-                            <h3 class="modal-title" id="exampleModalLabelAdd">Thêm mới sản phẩm</h3>
+                            <h3 class="modal-title">Chỉnh sửa sản phẩm chi tiết</h3>
                         </div>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body d-flex gap-5">
-                        <div>
-                            <img src="src/main/webapp/image/${hinhAnhdspAdd}" alt="" width="200" height="200">
-                        </div>
-                        <div>
-                            <form id="uploadFormAdd" method="post" enctype="multipart/form-data" action="/upload">
-                                <div class="mb-3">
-                                    <label for="tenSPAdd" class="form-label">Tên sản phẩm</label>
-                                    <input type="text" class="form-control" id="tenSPAdd">
-                                    <p style="color: red;"id="tenSPAddErr"></p>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <div class="row">
+                                <div class="d-flex" style="gap: 500px;">
+                                    <h5 class="border-bottom">Tên sản phẩm:&nbsp&nbsp<span id="tenSPModalAdd"></span></h5>
+                                    <h5 class="border-bottom">Ngày tạo:&nbsp&nbsp<span id="ngayTaoModalAdd"></span></h5>
                                 </div>
-                                <div class="mb-3">
-                                    <label for="hinhAnhAdd" class="form-label">Hình ảnh</label>
-                                    <input type="file" name="file" class="form-control" id="hinhAnhAdd" value="">
-                                    <p style="color: red;" id="hinhAnhAddErr"></p>
+                                <div class="col col-md-3">
+                                    <div class="d-flex">
+                                        <div class="dropdown">
+                                            <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                                    id="lblMauSacModalAdd" style="width: 150px;" data-bs-toggle="dropdown"
+                                                    aria-expanded="false">
+                                                Chọn màu sắc
+                                            </button>
+                                            <ul class="dropdown-menu" id="cboMauSacModalAdd"
+                                                aria-labelledby="dropdownMenuButton2">
+                                            </ul>
+                                        </div>
+                                        <div class="icon-container">
+                                            <i class=" bi bi-folder-plus col-3" style="font-size: 25px"></i>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" role="switch" id="trangThaiAdd" checked>
-                                    <label class="form-check-label" for="trangThaiAdd" id="trangThaiLabeladd"></label>
+                                <div class="col col-md-3">
+                                    <div class="d-flex">
+                                        <div class="dropdown">
+                                            <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                                    id="lblKichThuocModalAdd" style="width: 150px;"
+                                                    data-bs-toggle="dropdown"
+                                                    aria-expanded="false">
+                                                Chọn kích thước
+                                            </button>
+                                            <ul class="dropdown-menu" id="cboKichThuocModalAdd"
+                                                aria-labelledby="dropdownMenuButton3">
+                                            </ul>
+                                        </div>
+                                        <div class="icon-container">
+                                            <i class=" bi bi-folder-plus col-3" style="font-size: 25px"></i>
+                                        </div>
+                                    </div>
                                 </div>
-                                <button type="submit" id="saveAddBtn"  class="btn btn-primary">Lưu</button>
-                            </form>
+                                <div class="col col-md-3">
+                                    <div class="d-flex">
+                                        <div class="dropdown">
+                                            <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                                    id="lblChatLieuModalAdd" style="width: 150px;"
+                                                    data-bs-toggle="dropdown"
+                                                    aria-expanded="false">
+                                                Chọn chất liệu
+                                            </button>
+                                            <ul class="dropdown-menu" id="cboChatLieuModalAdd"
+                                                aria-labelledby="dropdownMenuButton4">
+                                            </ul>
+                                        </div>
+                                        <div class="icon-container">
+                                            <i class=" bi bi-folder-plus col-3" style="font-size: 25px"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col col-md-3">
+                                    <div class="d-flex">
+                                        <div class="dropdown">
+                                            <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                                    id="lblKieuTayModalAdd" style="width: 150px;" data-bs-toggle="dropdown"
+                                                    aria-expanded="false">
+                                                Chọn kiểu tay
+                                            </button>
+                                            <ul class="dropdown-menu" id="cboKieuTayModalAdd"
+                                                aria-labelledby="dropdownMenuButton5">
+                                            </ul>
+                                        </div>
+                                        <div class="icon-container">
+                                            <i class=" bi bi-folder-plus col-3" style="font-size: 25px"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col col-md-4">
+                                    <label for="soLuongModalEdit" class="form-label">Số lượng</label>
+                                    <input type="number" name="file" class="form-control" id="soLuongModalAdd"
+                                           value="">
+                                    <p style="color: red;" id="soLuongModalAddErr"></p>
+                                </div>
+                                <div class="col col-md-4">
+                                    <label for="giaNhapModalEdit" class="form-label">Giá nhập</label>
+                                    <input type="number" name="file" class="form-control" id="giaNhapModalAdd"
+                                           value="">
+                                    <p style="color: red;" id="giaNhapModalAddErr"></p>
+                                </div>
+                                <div class="col col-md-4">
+                                    <label for="giaBanModalEdit" class="form-label">Giá bán</label>
+                                    <input type="number" name="file" class="form-control" id="giaBanModalAdd" value="">
+                                    <p style="color: red;" id="giaBanModalAddErr"></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col col-md-3">
+                                    <label for="moTaModalEdit" class="form-label">Ghi chú</label>
+                                    <textarea class="form-control custom-textarea" style="width: 550px;"
+                                              id="moTaModalAdd" name="moTa"></textarea>
+                                    <p style="color: red;" id="moTaModalAddErr"></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col col-md-3">
+                                    <button type="button" class="btn btn-secondary">Chọn hình ảnh</button>
+                                </div>
+                            </div>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" role="switch" id="trangThaiAdd"
+                                       checked>
+                                <label class="form-check-label" for="trangThaiEdit" id="trangThaiLabelAdd">Trạng
+                                    thái</label>
+                            </div>
+                            <button id="saveAddBtn" type="submit" class="btn btn-primary">Lưu</button>
                         </div>
                     </div>
                 </div>
@@ -497,37 +620,132 @@
         <%--End modal --%>
         <!-- ModalSPEdit-->
         <div class="modal fade" id="ModalEdit" tabindex="-1" aria-labelledby="exampleModalLabel4" aria-hidden="true"
-             data-bs-backdrop="static" data-bs-keyboard="false" >
-            <div class="modal-dialog modal-lg">
+             data-bs-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog modal-xl">
                 <div class="modal-content">
                     <div class="modal-header">
                         <div class="row">
-                            <h3 class="modal-title" id="exampleModalLabel4">Chỉnh sửa sản phẩm</h3>
+                            <h3 class="modal-title" id="exampleModalLabel4">Chỉnh sửa sản phẩm chi tiết</h3>
                         </div>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body d-flex gap-5">
-                        <div class="border">
-                            <img id="hinhAnhEditDisplay" width="200" height="200" alt="">
-                        </div>
-                        <div>
-                            <form id="uploadFormEdit" method="post" enctype="multipart/form-data" action="/upload">
-                                <div class="mb-3">
-                                    <label for="tenSPEdit" class="form-label">Tên sản phẩm</label>
-                                    <input type="text" class="form-control" id="tenSPEdit" aria-describedby="emailHelp" value="">
-                                    <p style="color: red;" id="tenSPEditErr"></p>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <div class="row">
+                                <div class="d-flex" style="gap: 500px;">
+                                    <h5 class="border-bottom">Tên sản phẩm:&nbsp&nbsp<span id="tenSPModalEdit"></span></h5>
+                                    <h5 class="border-bottom">Ngày tạo:&nbsp&nbsp<span id="ngayTaoModalEdit"></span></h5>
                                 </div>
-                                <div class="mb-3">
-                                    <label for="hinhAnhEdit" class="form-label">Hình ảnh</label>
-                                    <input type="file" name="file" class="form-control" id="hinhAnhEdit" value="">
-                                    <p style="color: red;" id="hinhAnhEditErr"></p>
+                                <div class="col col-md-3">
+                                    <div class="d-flex">
+                                        <div class="dropdown">
+                                            <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                                    id="lblMauSacModalEdit" style="width: 150px;" data-bs-toggle="dropdown"
+                                                    aria-expanded="false">
+                                                Chọn màu sắc
+                                            </button>
+                                            <ul class="dropdown-menu" id="cboMauSacModalEdit"
+                                                aria-labelledby="dropdownMenuButton2">
+                                            </ul>
+                                        </div>
+                                        <div class="icon-container">
+                                            <i class=" bi bi-folder-plus col-3" style="font-size: 25px"></i>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" role="switch" id="trangThaiEdit" checked>
-                                    <label class="form-check-label" for="trangThaiEdit" id="trangThaiLabeledit">Trạng thái</label>
+                                <div class="col col-md-3">
+                                    <div class="d-flex">
+                                        <div class="dropdown">
+                                            <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                                    id="lblKichThuocModalEdit" style="width: 150px;"
+                                                    data-bs-toggle="dropdown"
+                                                    aria-expanded="false">
+                                                Chọn kích thước
+                                            </button>
+                                            <ul class="dropdown-menu" id="cboKichThuocModalEdit"
+                                                aria-labelledby="dropdownMenuButton3">
+                                            </ul>
+                                        </div>
+                                        <div class="icon-container">
+                                            <i class=" bi bi-folder-plus col-3" style="font-size: 25px"></i>
+                                        </div>
+                                    </div>
                                 </div>
-                                <button id="saveEditBtn" type="submit"  class="btn btn-primary">Lưu</button>
-                            </form>
+                                <div class="col col-md-3">
+                                    <div class="d-flex">
+                                        <div class="dropdown">
+                                            <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                                    id="lblChatLieuModalEdit" style="width: 150px;"
+                                                    data-bs-toggle="dropdown"
+                                                    aria-expanded="false">
+                                                Chọn chất liệu
+                                            </button>
+                                            <ul class="dropdown-menu" id="cboChatLieuModalEdit"
+                                                aria-labelledby="dropdownMenuButton4">
+                                            </ul>
+                                        </div>
+                                        <div class="icon-container">
+                                            <i class=" bi bi-folder-plus col-3" style="font-size: 25px"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col col-md-3">
+                                    <div class="d-flex">
+                                        <div class="dropdown">
+                                            <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                                    id="lblKieuTayModalEdit" style="width: 150px;" data-bs-toggle="dropdown"
+                                                    aria-expanded="false">
+                                                Chọn kiểu tay
+                                            </button>
+                                            <ul class="dropdown-menu" id="cboKieuTayModalEdit"
+                                                aria-labelledby="dropdownMenuButton5">
+                                            </ul>
+                                        </div>
+                                        <div class="icon-container">
+                                            <i class=" bi bi-folder-plus col-3" style="font-size: 25px"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col col-md-4">
+                                    <label for="soLuongModalEdit" class="form-label">Số lượng</label>
+                                    <input type="number" name="file" class="form-control" id="soLuongModalEdit"
+                                           value="">
+                                    <p style="color: red;" id="soLuongModalEditErr"></p>
+                                </div>
+                                <div class="col col-md-4">
+                                    <label for="giaNhapModalEdit" class="form-label">Giá nhập</label>
+                                    <input type="number" name="file" class="form-control" id="giaNhapModalEdit"
+                                           value="">
+                                    <p style="color: red;" id="giaNhapModalEditErr"></p>
+                                </div>
+                                <div class="col col-md-4">
+                                    <label for="giaBanModalEdit" class="form-label">Giá bán</label>
+                                    <input type="number" name="file" class="form-control" id="giaBanModalEdit" value="">
+                                    <p style="color: red;" id="giaBanModalEditErr"></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col col-md-3">
+                                    <label for="moTaModalEdit" class="form-label">Ghi chú</label>
+                                    <textarea class="form-control custom-textarea" style="width: 550px;"
+                                              id="moTaModalEdit" name="moTa"></textarea>
+                                    <p style="color: red;" id="moTaModalEditErr"></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col col-md-3">
+                                    <button type="button" class="btn btn-secondary">Chọn hình ảnh</button>
+                                </div>
+                            </div>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" role="switch" id="trangThaiEdit"
+                                       checked>
+                                <label class="form-check-label" for="trangThaiEdit" id="trangThaiLabeledit">Trạng
+                                    thái</label>
+                            </div>
+                            <button id="saveEditBtn" type="submit" class="btn btn-primary">Lưu</button>
                         </div>
                     </div>
                 </div>
@@ -589,6 +807,7 @@
     // change sttlbl add
     const inputElementadd = document.getElementById("trangThaiAdd");
     const labelElementadd = document.getElementById("trangThaiLabeladd");
+
     function updateLabeladd() {
         if (inputElementadd.checked) {
             labelElementadd.textContent = "Đang hoạt động";
@@ -596,11 +815,13 @@
             labelElementadd.textContent = "Dừng hoạt động";
         }
     }
+
     inputElementadd.addEventListener("change", updateLabeladd);
     updateLabeladd();
     // change sttlbl edit
     const inputElementedit = document.getElementById("trangThaiEdit");
     const labelElementedit = document.getElementById("trangThaiLabeledit");
+
     function updateLabeledit() {
         if (inputElementedit.checked) {
             labelElementedit.textContent = "Đang hoạt động";
@@ -608,11 +829,12 @@
             labelElementedit.textContent = "Dừng hoạt động";
         }
     }
+
     inputElementedit.addEventListener("change", updateLabeledit);
     //end change sttlbl edit
     updateLabeledit();
     document.querySelectorAll('.delete-button2').forEach(button => {
-        button.addEventListener('click', function() {
+        button.addEventListener('click', function () {
             const form = this.closest('.delete-form');
             Swal.fire({
                 title: 'Bạn có muốn hủy không??',
@@ -629,126 +851,128 @@
             });
         });
     });
-
-    function searchByName(param){
-        var txtSearch = param.value;
-        console.log(txtSearch);
-        $.ajax({
-            url: "/ban-hang-tai-quay/search/${hoaDon.id}",
-            type: "POST",
-            data: {
-                txt:txtSearch
-            },
-            success: function (data) {
-                // var row = document.getElementById("content");
-                // row.innerHTML = data;
-                $('#contentAjax').empty()
-                $('#contentAjax').append(data);
-
-                console.log(data);
-            },
-            error: function (xhr) {
-                //Do Something to handle error
-            }
-        });
-    }
-
-    <%--    --%>
-
-
-    const deleteButtons = document.querySelectorAll('.delete-button');
-    const checkBtn = document.querySelectorAll('#checkBtn');
-    // Thêm sự kiện click cho từng nút
-    deleteButtons.forEach(button => {
-        button.addEventListener('click', function () {
-            const idhd = this.getAttribute('idhd');
-            Swal.fire({
-                title: 'Bạn có muốn xóa không?',
-                text: "Bạn sẽ không thể khôi phục lại dữ liệu này!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Vâng, xóa nó!',
-                cancelButtonText: 'Hủy'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Thực hiện hành động xóa ở đây, ví dụ:
-                    // Gửi yêu cầu AJAX tới server để xóa dữ liệu
-                    fetch(`/ban-hang-tai-quay/delete-hoa-don/`+idhd, { method: 'GET' }).then(() => {
-                        Swal.fire(
-                            'Đã xóa!',
-                            'Dữ liệu của bạn đã bị xóa.',
-                            'success'
-                        );
-                        // Xóa hàng khỏi bảng sau khi xóa thành công
-                        button.closest('tr').remove();
-                    });
-                    button.closest('tr').remove();
-                }
-            });
-        });
-    });
-
-    checkBtn.forEach(button => {
-        button.addEventListener('click', function () {
-            console.log("test check btn");
-            var idHD = document.getElementsByName("idHD")[0].value;
-            var idKH  = document.getElementsByName("idKH")[0].value;
-            var idKhuyenMai = document.getElementsByName("idKhuyenMai")[0].value;
-            var tongTien = document.getElementsByName("tongTien")[0].value;
-            var thongBao = document.getElementById("errTraLai");
-            var moneyGiven = parseInt(document.getElementById("tienKhachDua").value);
-            var thongBao = document.getElementById("errTraLai");
-            console.log("====================== id hd:",idHD);
-            console.log("====================== id kh:",idKH);
-            console.log("====================== id khuyen mai:",idKhuyenMai);
-            console.log("====================== tong tien:",tongTien);
-            console.log("====================== money given:",moneyGiven);
-            if(tongTien<=moneyGiven&&!isNaN(tongTien)){
-                Swal.fire({
-                    title: 'Xác nhận thanh toán?',
-                    text: "Dữ liệu sẽ được lưu lại!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Vâng,Thanh toán!',
-                    cancelButtonText: 'Hủy'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        fetch(`/ban-hang-tai-quay/thanh-toan/`+idHD+'?idKhuyenMai='+idKhuyenMai+'&idKH='+idKH+'&tongTien='+tongTien,
-                            { method: 'POST' }).then(() => {
-                            Swal.fire(
-                                'Đã thanh toán!',
-                                'Dữ liệu đã được ghi nhận.',
-                                'success'
-                            ).then(() => {
-                                window.location.href = '/ban-hang-tai-quay';
-                            });
-                            button.closest('tr').remove();
-                        });
-                        button.closest('tr').remove();
-                        thongBao.textContent =  "";
-                    }
-                });
-            }
-            else{
-                thongBao.textContent =  "Số tiền khách đưa phải lớn hơn hoặc bằng tổng tiền.";
-            }
-        });
-    });
 </script>
 
 <script>
     let idSPLocal = "";
     let currentPage = 1;
+    let totalPage = 0;
     const queryString = window.location.pathname;
     const pathParts = queryString.split('/');
     const pathVariable = pathParts[pathParts.length - 1];
+    let idMauSac = "";
+    let idKichThuoc = "";
+    let idChatLieu = "";
+    let idKieuTay = "";
+    const lblMauSac = document.getElementById("lblMauSac");
+    const lblKichThuoc = document.getElementById("lblKichThuoc");
+    const lblChatLieu = document.getElementById("lblChatLieu");
+    const lblKieuTay = document.getElementById("lblKieuTay");
+    let idMauSacModalEdit = "";
+    let idKichThuocModalEdit = "";
+    let idChatLieuModalEdit = "";
+    let idKieuTayModalEdit = "";
+    const lblMauSacModalEdit = document.getElementById("lblMauSac");
+    const lblKichThuocModalEdit = document.getElementById("lblKichThuoc");
+    const lblChatLieuModalEdit = document.getElementById("lblChatLieu");
+    const lblKieuTayModalEdit = document.getElementById("lblKieuTay");
+    let idMauSacModalAdd = "";
+    let idKichThuocModalAdd = "";
+    let idChatLieuModalAdd = "";
+    let idKieuTayModalAdd = "";
+    const lblMauSacModalAdd = document.getElementById("lblMauSac");
+    const lblKichThuocModalAdd = document.getElementById("lblKichThuoc");
+    const lblChatLieuModalAdd = document.getElementById("lblChatLieu");
+    const lblKieuTayModalAdd = document.getElementById("lblKieuTay");
+    function setMauSac(msString) {
+        const ms = JSON.parse(msString.replace(/&quot;/g, '"'));
+        idMauSac = ms.id;
+        lblMauSac.textContent = ms.ten;
+        console.log('Selected mau sac ID:', idMauSac);
+        // You can add more logic here to handle the selected value
+    }
 
-    const loadSP = ()=>{
-        fetch("/san-pham/detail/"+pathVariable, {
+    function setKichThuoc(ktString) {
+        const kt = JSON.parse(ktString.replace(/&quot;/g, '"'));
+        idKichThuoc = kt.id;
+        lblKichThuoc.textContent = kt.ten;
+        console.log('Selected kich thuoc ID:', idKichThuoc);
+        // You can add more logic here to handle the selected value
+    }
+
+    function setChatLieu(clString) {
+        const cl = JSON.parse(clString.replace(/&quot;/g, '"'));
+        idChatLieu = cl.id;
+        lblChatLieu.textContent = cl.ten;
+        console.log('Selected chat lieu ID:', idChatLieu);
+        // You can add more logic here to handle the selected value
+    }
+    function setMauSacModalEdit(msString) {
+        const ms = JSON.parse(msString.replace(/&quot;/g, '"'));
+        idMauSacModalEdit = ms.id;
+        lblMauSacModalEdit.textContent = ms.ten;
+        console.log('Selected mau sac ID modal edit:', idMauSacModalEdit);
+        // You can add more logic here to handle the selected value
+    }
+
+    function setKichThuocModalEdit(ktString) {
+        const kt = JSON.parse(ktString.replace(/&quot;/g, '"'));
+        idKichThuocModalEdit = kt.id;
+        lblKichThuocModalEdit.textContent = kt.ten;
+        console.log('Selected kich thuoc ID modal edit:', idKichThuocModalEdit);
+        // You can add more logic here to handle the selected value
+    }
+
+    function setChatLieuModalEdit(clString) {
+        const cl = JSON.parse(clString.replace(/&quot;/g, '"'));
+        idChatLieuModalEdit = cl.id;
+        lblChatLieuModalEdit.textContent = cl.ten;
+        console.log('Selected chat lieu ID modal Edit:', idChatLieuModalEdit);
+        // You can add more logic here to handle the selected value
+    }
+
+    function setKieuTayModalEdit(ktString) {
+        const kt = JSON.parse(ktString.replace(/&quot;/g, '"'));
+        idKieuTayModalEdit = kt.id;
+        lblKieuTayModalEdit.textContent = kt.ten;
+        console.log('Selected kieu tay ID modal edit:', idKieuTayModalEdit);
+        // You can add more logic here to handle the selected value
+    }
+
+    function setMauSacModalAdd(msString) {
+        const ms = JSON.parse(msString.replace(/&quot;/g, '"'));
+        idMauSacModalAdd = ms.id;
+        lblMauSacModalAdd.textContent = ms.ten;
+        console.log('Selected mau sac ID modal add:', idMauSacModalAdd);
+        // You can add more logic here to handle the selected value
+    }
+
+    function setKichThuocModalAdd(ktString) {
+        const kt = JSON.parse(ktString.replace(/&quot;/g, '"'));
+        idKichThuocModalAdd = kt.id;
+        lblKichThuocModalAdd.textContent = kt.ten;
+        console.log('Selected kich thuoc ID modal Add:', idKichThuocModalAdd);
+        // You can add more logic here to handle the selected value
+    }
+
+    function setChatLieuModalAdd(clString) {
+        const cl = JSON.parse(clString.replace(/&quot;/g, '"'));
+        idChatLieuModalAdd = cl.id;
+        lblChatLieuModalAdd.textContent = cl.ten;
+        console.log('Selected chat lieu ID modal add:', idChatLieuModalAdd);
+        // You can add more logic here to handle the selected value
+    }
+
+    function setKieuTayModalAdd(ktString) {
+        const kt = JSON.parse(ktString.replace(/&quot;/g, '"'));
+        idKieuTayModalAdd = kt.id;
+        lblKieuTayModalAdd.textContent = kt.ten;
+        console.log('Selected kieu tay ID modal add:', idKieuTayModalAdd);
+        // You can add more logic here to handle the selected value
+    }
+
+    const loadSP = () => {
+        fetch("/san-pham/detail/" + pathVariable, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -756,13 +980,12 @@
         }).then(response => response.json())
             .then(resp => {
                 let trangThaiSP = "";
-                if(resp.trangThai == 1){
+                if (resp.trangThai == 1) {
                     trangThaiSP = "Đang hoạt động";
-                }
-                else{
+                } else {
                     trangThaiSP = "Dừng hoạt động";
                 }
-                $('#hinhAnhSP').attr('src',"/image/"+resp.hinhAnh);
+                $('#hinhAnhSP').attr('src', "/image/" + resp.hinhAnh);
                 $('#tenSP').text(resp.ten);
                 $('#maSP').text(resp.ma);
                 $('#ngayTaoSP').text(resp.ngayTao);
@@ -770,8 +993,7 @@
             });
     }
     loadSP();
-
-    const loadCboMauSac = ()=>{
+    const loadCboMauSac = () => {
         let datatest = "data testing";
         fetch("/mau-sac/index", {
             headers: {
@@ -780,15 +1002,22 @@
             }
         }).then(response => response.json())
             .then(resp => {
-                let html = '';
+                let htmlSearch = '';
+                let htmlCboModalEdit='';
+                let htmCboModalAdd='';
                 resp.map((ms, i) => {
-                    html += '<li><a class="dropdown-item" value="' + ms.id + '">' + ms.ten + '</a></li>';
+                    const msString = JSON.stringify(ms).replace(/"/g, '&quot;');
+                    htmlSearch += '<li><a class="dropdown-item"  onclick="setMauSac(\'' + msString + '\')">' + ms.ten + '</a></li>';
+                    htmlCboModalEdit += '<li><a class="dropdown-item"  onclick="setMauSacModalEdit(\'' + msString + '\')">' + ms.ten + '</a></li>'
+                    htmCboModalAdd += '<li><a class="dropdown-item"  onclick="setMauSacModalAdd(\'' + msString + '\')">' + ms.ten + '</a></li>'
                 });
-                $("#cboMauSac").html(html)
+                $("#cboMauSac").html(htmlSearch);
+                $("#cboMauSacModalAdd").html(htmCboModalAdd);
+                $("#cboMauSacModalEdit").html(htmlCboModalEdit);
             });
     }
     loadCboMauSac();
-    const loadCboKichThuoc = ()=>{
+    const loadCboKichThuoc = () => {
         let datatest = "data testing";
         fetch("/kich-thuoc/index", {
             headers: {
@@ -797,15 +1026,22 @@
             }
         }).then(response => response.json())
             .then(resp => {
-                let html = '';
+                let htmlSearch = '';
+                let htmlCboModalEdit='';
+                let htmlCboModalAdd='';
                 resp.map((kt, i) => {
-                    html += '<li><a class="dropdown-item" value="' + kt.id + '">' + kt.ten + '</a></li>';
+                    const ktString = JSON.stringify(kt).replace(/"/g, '&quot;');
+                    htmlSearch += '<li><a class="dropdown-item" onclick="setKichThuoc(\'' + ktString + '\')">' + kt.ten + '</a></li>';
+                    htmlCboModalEdit += '<li><a class="dropdown-item" onclick="setKichThuocModalEdit(\'' + ktString + '\')">' + kt.ten + '</a></li>';
+                    htmlCboModalAdd += '<li><a class="dropdown-item" onclick="setKichThuocModalAdd(\'' + ktString + '\')">' + kt.ten + '</a></li>';
                 });
-                $("#cboKichThuoc").html(html)
+                $("#cboKichThuoc").html(htmlSearch);
+                $("#cboKichThuocModalAdd").html(htmlCboModalAdd);
+                $("#cboKichThuocModalEdit").html(htmlCboModalEdit);
             });
     }
     loadCboKichThuoc();
-    const loadCboChatLieu = ()=>{
+    const loadCboChatLieu = () => {
         let datatest = "data testing";
         fetch("/chat-lieu/index", {
             headers: {
@@ -814,15 +1050,22 @@
             }
         }).then(response => response.json())
             .then(resp => {
-                let html = '';
+                let htmlSearch = '';
+                let htmlCboModalEdit='';
+                let htmlCboModalAdd='';
                 resp.map((cl, i) => {
-                    html += '<li><a class="dropdown-item" value="' + cl.id + '">' + cl.ten + '</a></li>';
+                    const clString = JSON.stringify(cl).replace(/"/g, '&quot;');
+                    htmlSearch += '<li><a class="dropdown-item" onclick="setChatLieu(\'' + clString + '\')">' + cl.ten + '</a></li>';
+                    htmlCboModalAdd += '<li><a class="dropdown-item" onclick="setChatLieuModalAdd(\'' + clString + '\')">' + cl.ten + '</a></li>';
+                    htmlCboModalEdit += '<li><a class="dropdown-item" onclick="setChatLieuModalEdit(\'' + clString + '\')">' + cl.ten + '</a></li>';
                 });
-                $("#cboChatLieu").html(html)
+                $("#cboChatLieu").html(htmlSearch)
+                $("#cboChatLieuModalAdd").html(htmlCboModalAdd);
+                $("#cboChatLieuModalEdit").html(htmlCboModalEdit);
             });
     }
     loadCboChatLieu();
-    const loadCboKieuTay = ()=>{
+    const loadCboKieuTay = () => {
         let datatest = "data testing";
         fetch("/kieu-tay/index", {
             headers: {
@@ -831,18 +1074,26 @@
             }
         }).then(response => response.json())
             .then(resp => {
-                let html = '';
+                let htmlSearch = '';
+                let htmlCboModalEdit='';
+                let htmlCboModalAdd='';
                 resp.map((kt, i) => {
-                    html += '<li><a class="dropdown-item" value="' + kt.id + '">' + kt.ten + '</a></li>';
+                    const kieuTayString = JSON.stringify(kt).replace(/"/g, '&quot;');
+                    htmlSearch += '<li><a class="dropdown-item"  onclick="setKieuTay(\'' + kieuTayString + '\')">' + kt.ten + '</a></li>';
+                    htmlCboModalEdit += '<li><a class="dropdown-item"  onclick="setKieuTayModalEdit(\'' + kieuTayString + '\')">' + kt.ten + '</a></li>';
+                    htmlCboModalAdd += '<li><a class="dropdown-item"  onclick="setKieuTayModalAdd(\'' + kieuTayString + '\')">' + kt.ten + '</a></li>';
                 });
-                $("#cboKieuTay").html(html)
+                $("#cboKieuTay").html(htmlSearch);
+                $("#cboKieuTayModalAdd").html(htmlCboModalAdd);
+                $("#cboKieuTayModalEdit").html(htmlCboModalEdit);
             });
     }
     loadCboKieuTay();
+
     const loadDSSPCT = (pageParams) => {
         // get api + scpt.id
         let datatest = "data testing";
-        fetch("/chi-tiet-sp/detail-byidsp-all/"+pathVariable+"?page="+pageParams, {
+        fetch("/chi-tiet-sp/detail-byidsp-all/" + pathVariable + "?page=" + pageParams, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -876,39 +1127,96 @@
                 $("#tbl_ds_spct").html(html)
             });
     }
-    function testDataMapping(){
 
+    function search(e) {
+        e.preventDefault();
+        console.log('data mau sac ID:', idMauSac);
+        console.log('data kich thuoc ID:', idKichThuoc);
+        console.log('data chat lieu ID:', idChatLieu);
+        console.log('data kieu tay ID:', idKieuTay);
+        fetch("/chi-tiet-sp/search" + "?idMauSac=" + idMauSac + "&idKichThuoc=" + idKichThuoc + "&idChatLieu=" + idChatLieu + "&idKieuTay=" + idKieuTay, {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        }).then(response => response.json())
+            .then(resp => {
+                let html = '';
+                resp.map((spct, i) => {
+                    const trangThai = spct.trangThai == 1 ? "Hoạt động" : "Dừng hđ";
+                    const mauSac = spct.idMauSac.ten || 'N/A';
+                    const kichThuoc = spct.idKichThuoc.ten || 'N/A';
+                    const chatLieu = spct.idChatLieu.ten || 'N/A';
+                    const kieuTay = spct.idKieuTay.ten || 'N/A';
+                    const soLuong = spct.soLuong || 'N/A';
+                    html += '<tr>' +
+                        '<td>' + (i + 1) + '</td>' +
+                        '<td>' + mauSac + '</td>' +
+                        '<td>' + kichThuoc + '</td>' +
+                        '<td>' + chatLieu + '</td>' +
+                        '<td>' + kieuTay + '</td>' +
+                        '<td>' + soLuong + '</td>' +
+                        '<td>' + trangThai + '</td>' +
+                        '<td>' +
+                        '<div class="d-inline">' +
+                        '<button id="editSPBtn_' + spct.id + '" class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#ModalEdit">Chỉnh sửa</button>' +
+                        '<button id="detailSPBtn_' + spct.id + '" class="btn btn-danger">Chi tiết</button>' +
+                        '</div>' +
+                        '</td>' +
+                        '</tr>';
+                });
+                $("#tbl_ds_spct").html(html)
+            });
     }
+
+    function refresh(e) {
+        e.preventDefault();
+        idMauSac = "";
+        idKichThuoc = "";
+        idChatLieu = "";
+        idKieuTay = "";
+        lblMauSac.textContent = "Chọn màu sắc"
+        lblKichThuoc.textContent = "Chọn kích thước";
+        lblChatLieu.textContent = "Chọn chất liệu";
+        lblKieuTay.textContent = "Chọn kiểu tay";
+        loadDSSPCT(currentPage);
+    }
+
     function setActive(element, page) {
         // Remove active class from all pagination items
         let items = document.querySelectorAll('.page-item');
         items.forEach(item => item.classList.remove('active'));
         element.parentElement.classList.add('active');
-        currentPage = page ;
+        currentPage = page;
         updateButtons();
         loadDSSPCT(currentPage);
     }
+
     function updateButtons() {
         let items = document.querySelectorAll('.page-item');
         let activeIndex = Array.from(items).findIndex(item => item.classList.contains('active'));
         document.getElementById('prev').classList.toggle('disabled', activeIndex === 1);
         document.getElementById('next').classList.toggle('disabled', activeIndex === items.length - 2);
     }
-    function navigate(direction,e) {
+
+    function navigate(direction, e) {
         e.preventDefault();
-        let items = document.querySelectorAll('.page-item');
-        let activeIndex = Array.from(items).findIndex(item => item.classList.contains('active'));
-        let newIndex = activeIndex + direction;
-        currentPage =newIndex
-        loadDSSPCT(currentPage);
-        if (newIndex > 0 && newIndex < items.length - 1) {
-            setActive(items[newIndex].querySelector('a'));
+        if (totalPage > 1) {
+            let items = document.querySelectorAll('.page-item');
+            let activeIndex = Array.from(items).findIndex(item => item.classList.contains('active'));
+            let newIndex = activeIndex + direction;
+            currentPage = newIndex
+            loadDSSPCT(currentPage);
+            if (newIndex > 0 && newIndex < items.length - 1) {
+                setActive(items[newIndex].querySelector('a'));
+            }
         }
     }
+
     updateButtons();
 
     const loadTotalPagination = (currentPage) => {
-        fetch("/san-pham/count", {
+        fetch("/chi-tiet-sp/count-byidsp/" + pathVariable, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -918,7 +1226,8 @@
                 let html = '';
                 // Check if resp is a number and greater than 0
                 if (typeof resp === 'number' && resp > 0) {
-                    for (let i = 1; i <=  Math.ceil(resp/20); i++) {
+                    totalPage = Math.ceil(resp / 20);
+                    for (let i = 1; i <= Math.ceil(resp / 20); i++) {
                         const activeClass = (i === currentPage) ? 'active' : '';
                         html += '<li class="page-item ' + activeClass + '"><a class="page-link" href="#" onclick="setActive(this, ' + i + ')">' + i + '</a></li>';
                     }
@@ -932,11 +1241,12 @@
             // Handle fetch error
         });
     }
+
     loadDSSPCT(currentPage);
     loadTotalPagination(currentPage);
     let tenSpEdit = document.getElementById("tenSPEdit");
     let hinhAnhDisplay = document.getElementById("hinhAnhEditDisplay");
-    let trangThaiEdit  = document.getElementById("trangThaiEdit");
+    let trangThaiEdit = document.getElementById("trangThaiEdit");
     $(document).on('click', "button[id^='editSPBtn_']", e => {
         e.preventDefault();
         const queryString = window.location.pathname;
@@ -944,7 +1254,7 @@
         const pathVariable = pathParts[pathParts.length - 1];
         const spid = e.currentTarget.id.replace("editSPBtn_", "");
         idSPLocal = spid;
-        fetch("/san-pham/detail/"+spid, {
+        fetch("/san-pham/detail/" + spid, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -952,13 +1262,12 @@
         }).then(response => response.json())
             .then(resp => {
                 tenSpEdit.value = resp.ten;
-                console.log("test link image: "+resp.hinhAnh);
-                hinhAnhDisplay.src ="/image/"+ resp.hinhAnh;
-                if(resp.trangThai==1){
+                console.log("test link image: " + resp.hinhAnh);
+                hinhAnhDisplay.src = "/image/" + resp.hinhAnh;
+                if (resp.trangThai == 1) {
                     trangThaiEdit.checked = true;
                     labelElementedit.textContent = "Đang hoạt động";
-                }
-                else{
+                } else {
                     trangThaiEdit.checked = false;
                     labelElementedit.textContent = "Dừng hoạt động";
                 }
@@ -968,7 +1277,7 @@
         e.preventDefault();
         const spid = e.currentTarget.id.replace("detailSPBtn_", "");
         console.log("====================test id button detail: ", spid);
-        window.location.href = '/qlsp/'+spid;
+        window.location.href = '/qlsp/' + spid;
         // fetch(apiGet, {
         //     headers: {
         //         'Accept': 'application/json',
@@ -1000,18 +1309,18 @@
             e.preventDefault();
             console.log("test check btn");
             var idHD = document.getElementsByName("idHD")[0].value;
-            var idKH  = document.getElementsByName("idKH")[0].value;
+            var idKH = document.getElementsByName("idKH")[0].value;
             var idKhuyenMai = document.getElementsByName("idKhuyenMai")[0].value;
             var tongTien = document.getElementsByName("tongTien")[0].value;
             var thongBao = document.getElementById("errTraLai");
             var moneyGiven = parseInt(document.getElementById("tienKhachDua").value);
             var thongBao = document.getElementById("errTraLai");
-            console.log("====================== id hd:",idHD);
-            console.log("====================== id kh:",idKH);
-            console.log("====================== id khuyen mai:",idKhuyenMai);
-            console.log("====================== tong tien:",tongTien);
-            console.log("====================== money given:",moneyGiven);
-            if(tongTien<=moneyGiven&&!isNaN(tongTien)){
+            console.log("====================== id hd:", idHD);
+            console.log("====================== id kh:", idKH);
+            console.log("====================== id khuyen mai:", idKhuyenMai);
+            console.log("====================== tong tien:", tongTien);
+            console.log("====================== money given:", moneyGiven);
+            if (tongTien <= moneyGiven && !isNaN(tongTien)) {
                 Swal.fire({
                     title: 'Xác nhận?',
                     text: "Dữ liệu sẽ được lưu lại!",
@@ -1046,12 +1355,11 @@
                             button.closest('tr').remove();
                         });
                         button.closest('tr').remove();
-                        thongBao.textContent =  "";
+                        thongBao.textContent = "";
                     }
                 });
-            }
-            else{
-                thongBao.textContent =  "Số tiền khách đưa phải lớn hơn hoặc bằng tổng tiền.";
+            } else {
+                thongBao.textContent = "Số tiền khách đưa phải lớn hơn hoặc bằng tổng tiền.";
             }
         });
     });
@@ -1074,34 +1382,31 @@
             var tenSperr = document.getElementById("tenSPAddErr");
             var hinhAnhErr = document.getElementById("hinhAnhAddErr");
             let trangThai = 0;
-            let sttCheck  = 0;
-            console.log("====================== ten sp:",tenSP);
-            console.log("====================== hinh anh:",getFileName(hinhAnh));
-            console.log("====================== trang thai:",trangThairaw);
-            if(trangThairaw==true){
-                trangThai =1;
-            }
-            else{
+            let sttCheck = 0;
+            console.log("====================== ten sp:", tenSP);
+            console.log("====================== hinh anh:", getFileName(hinhAnh));
+            console.log("====================== trang thai:", trangThairaw);
+            if (trangThairaw == true) {
+                trangThai = 1;
+            } else {
                 trangThai = 0;
             }
-            if(validateNull(tenSP)){
+            if (validateNull(tenSP)) {
                 tenSperr.textContent = "Vui lòng nhập tên sản phẩm";
                 sttCheck = 0;
-            }
-            else{
+            } else {
                 tenSperr.textContent = "";
-                sttCheck ++;
+                sttCheck++;
             }
-            if(validateNull(hinhAnh)){
-                hinhAnhErr.textContent ="Vui lòng chọn hình ảnh";
+            if (validateNull(hinhAnh)) {
+                hinhAnhErr.textContent = "Vui lòng chọn hình ảnh";
                 sttCheck = 0;
-            }
-            else{
+            } else {
                 hinhAnhErr.textContent = "";
-                sttCheck ++;
+                sttCheck++;
             }
 
-            if(sttCheck==2){
+            if (sttCheck == 2) {
                 Swal.fire({
                     title: 'Xác nhận?',
                     text: "Dữ liệu sẽ được lưu lại!",
@@ -1126,10 +1431,10 @@
                             data: formData,
                             processData: false,
                             contentType: false,
-                            success: function(response) {
+                            success: function (response) {
                                 console.log("save image success ");
                             },
-                            error: function(xhr, status, error) {
+                            error: function (xhr, status, error) {
                                 console.log("save image =error");
                             }
                         });
@@ -1152,8 +1457,8 @@
                                     }
                                 }).then(response => response.json())
                                     .then(resp => {
-                                        loadDSSPCT(Math.ceil(resp/20));
-                                        currentPage = Math.ceil(resp/20);
+                                        loadDSSPCT(Math.ceil(resp / 20));
+                                        currentPage = Math.ceil(resp / 20);
                                         loadTotalPagination(currentPage);
                                     }).catch(error => {
                                     console.error('Error fetching pagination data:', error);
@@ -1165,18 +1470,16 @@
                         button.closest('tr').remove();
                     }
                 });
-            }
-            else{
+            } else {
 
             }
         });
     });
 
-    function  validateNull(param){
-        if(param===""||param===undefined){
+    function validateNull(param) {
+        if (param === "" || param === undefined) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -1192,32 +1495,29 @@
             var hinhAnhErr = document.getElementById("hinhAnhEditErr");
             let trangThai = 0;
             let sttCheck = 0;
-            console.log("====================== ten sp:",tenSP);
-            console.log("====================== hinh anh:",hinhAnh);
+            console.log("====================== ten sp:", tenSP);
+            console.log("====================== hinh anh:", hinhAnh);
 
-            if(trangThaiRaw==true){
+            if (trangThaiRaw == true) {
                 trangThai = 1;
-            }
-            else{
+            } else {
                 trangThai = 0;
             }
-            if(validateNull(tenSP)){
+            if (validateNull(tenSP)) {
                 tenSperr.textContent = "Vui lòng nhập tên sản phẩm";
                 sttCheck = 0;
-            }
-            else{
+            } else {
                 tenSperr.textContent = "";
-                sttCheck ++;
+                sttCheck++;
             }
-            if(validateNull(hinhAnh)){
-                hinhAnhErr.textContent ="Vui lòng chọn hình ảnh";
+            if (validateNull(hinhAnh)) {
+                hinhAnhErr.textContent = "Vui lòng chọn hình ảnh";
                 sttCheck = 0;
-            }
-            else{
+            } else {
                 hinhAnhErr.textContent = "";
-                sttCheck ++;
+                sttCheck++;
             }
-            if(sttCheck==2){
+            if (sttCheck == 2) {
                 Swal.fire({
                     title: 'Xác nhận?',
                     text: "Dữ liệu sẽ được lưu lại!",
@@ -1242,14 +1542,14 @@
                             data: formData,
                             processData: false,
                             contentType: false,
-                            success: function(response) {
+                            success: function (response) {
                                 console.log("save image success ");
                             },
-                            error: function(xhr, status, error) {
+                            error: function (xhr, status, error) {
                                 console.log("save image =error");
                             }
                         });
-                        fetch(`/san-pham/update/`+idSPLocal, {
+                        fetch(`/san-pham/update/` + idSPLocal, {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'
@@ -1266,17 +1566,16 @@
                         });
                     }
                 });
-            }
-            else{
-                thongBao.textContent =  "Số tiền khách đưa phải lớn hơn hoặc bằng tổng tiền.";
+            } else {
+                thongBao.textContent = "Số tiền khách đưa phải lớn hơn hoặc bằng tổng tiền.";
             }
         });
     });
 
 </script>
 <script>
-    $(document).ready(function() {
-        $('#saveAddBtn').on('click', function(event) {
+    $(document).ready(function () {
+        $('#saveAddBtn').on('click', function (event) {
 
             // Optionally, submit the form normally after AJAX request (if needed)
         });
