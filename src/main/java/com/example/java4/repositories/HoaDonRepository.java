@@ -1,10 +1,6 @@
 package com.example.java4.repositories;
-
 import com.example.java4.entities.HoaDon;
-<<<<<<< HEAD
-=======
 import com.example.java4.response.HoaDonResponse;
->>>>>>> 3d603911edf128be08d4c9052535f3224a839408
 import com.example.java4.entities.KhuyenMai;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -131,12 +127,10 @@ public interface HoaDonRepository
             "WHERE (hd.ma LIKE %?1% OR kh.sdt LIKE %?1%) AND (hd.loaiHoaDon = ?2) AND (hd.ngayTao BETWEEN ?3 AND ?4)")
     Page<HoaDon> searchByMaOrSdtAndLoaiHoaDonAndNgayTao(String keyword, Integer loaiHoaDon, LocalDateTime startDate, LocalDateTime endDate, Pageable pageable);
 
-<<<<<<< HEAD
 
     @Query("select hd from HoaDon hd where hd.id=?1")
     HoaDon findByIdHoaDon(String idHoaDon);
 
-=======
     @Query("select new com.example.java4.response.HoaDonResponse(hd.id, hd.ma, cthd.idCTSP.idSanPham.ten, cthd.soLuong, ha.hinhAnh1, cthd.idCTSP.idMauSac.ten, cthd.idCTSP.idKichThuoc.ten, ctsp.giaBan) from HoaDon hd " +
             "join ChiTietHoaDon cthd on cthd.idHoaDon.id = hd.id " +
             "join ChiTietSanPham ctsp on ctsp.id = cthd.idCTSP.id " +
@@ -168,5 +162,4 @@ public interface HoaDonRepository
 //    where hd.TrangThai = 1 and hd.IdKhachHang = '839D965B-9681-4074-9A66-5ACECE1545E6'
 //    group by hd.Ma, hd.NgayTao, hd.TongTien, hd.TrangThai
 //    order by hd.NgayTao desc
->>>>>>> 3d603911edf128be08d4c9052535f3224a839408
 };

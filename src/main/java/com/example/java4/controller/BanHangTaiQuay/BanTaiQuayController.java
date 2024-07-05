@@ -700,7 +700,6 @@ public class BanTaiQuayController {
             model.addAttribute("nhanVien", nv.get());
             model.addAttribute("listHoaDon",listHoaDon);
         }
-
         return "/view/BanHangTaiQuay/index2.jsp";
     }
     //lọc sản phẩm chi tiết
@@ -753,19 +752,19 @@ public class BanTaiQuayController {
             hoaDonRepository.save(hd);
         }
 
-<<<<<<< HEAD
-=======
-        KhachHang khachHang = new KhachHang();
-        khachHang.setId(idKH);
-        hoaDon.setIdKhachHang(khachHang);
-        //Tạo mã tự sinh
-        hoaDon.setNgayTao(ngayTao);
-        if (UserInfor.idNhanVien != null) {
-            NhanVien nhanVien = nhanVienRepo.findById(UserInfor.idNhanVien).get();
-        }
-        Optional<NhanVien> nv = nhanVienRepo.findById(UserInfor.idNhanVien);
-        hoaDon.setIdNhanVien(nv.get());
->>>>>>> 3d603911edf128be08d4c9052535f3224a839408
+//<<<<<<< HEAD
+//=======
+//        KhachHang khachHang = new KhachHang();
+//        khachHang.setId(idKH);
+//        hoaDon.setIdKhachHang(khachHang);
+//        //Tạo mã tự sinh
+//        hoaDon.setNgayTao(ngayTao);
+//        if (UserInfor.idNhanVien != null) {
+//            NhanVien nhanVien = nhanVienRepo.findById(UserInfor.idNhanVien).get();
+//        }
+//        Optional<NhanVien> nv = nhanVienRepo.findById(UserInfor.idNhanVien);
+//        hoaDon.setIdNhanVien(nv.get());
+//>>>>>>> 3d603911edf128be08d4c9052535f3224a839408
 
 //        HoaDon hoaDon = new HoaDon();
 //        hoaDon.setId(idHoaDon);

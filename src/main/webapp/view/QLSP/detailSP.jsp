@@ -513,6 +513,7 @@
                                             <ul class="dropdown-menu" id="cboMauSacModalAdd"
                                                 aria-labelledby="dropdownMenuButton2">
                                             </ul>
+                                            <p style="color: red;"id="cboMauSacModalAddErr"></p>
                                         </div>
                                         <div class="icon-container">
                                             <i class=" bi bi-folder-plus col-3" style="font-size: 25px"></i>
@@ -531,6 +532,7 @@
                                             <ul class="dropdown-menu" id="cboKichThuocModalAdd"
                                                 aria-labelledby="dropdownMenuButton3">
                                             </ul>
+                                            <p style="color: red;"id="cboKichThuocModalAddErr"></p>
                                         </div>
                                         <div class="icon-container">
                                             <i class=" bi bi-folder-plus col-3" style="font-size: 25px"></i>
@@ -549,6 +551,7 @@
                                             <ul class="dropdown-menu" id="cboChatLieuModalAdd"
                                                 aria-labelledby="dropdownMenuButton4">
                                             </ul>
+                                            <p style="color: red;"id="cboChatLieuModalAddErr"></p>
                                         </div>
                                         <div class="icon-container">
                                             <i class=" bi bi-folder-plus col-3" style="font-size: 25px"></i>
@@ -566,6 +569,7 @@
                                             <ul class="dropdown-menu" id="cboKieuTayModalAdd"
                                                 aria-labelledby="dropdownMenuButton5">
                                             </ul>
+                                            <p style="color: red;"id="cboKieuTayModalAddErr"></p>
                                         </div>
                                         <div class="icon-container">
                                             <i class=" bi bi-folder-plus col-3" style="font-size: 25px"></i>
@@ -647,6 +651,7 @@
                                             <ul class="dropdown-menu" id="cboMauSacModalEdit"
                                                 aria-labelledby="dropdownMenuButton2">
                                             </ul>
+                                            <p style="color: red;"id="cboMauSacModalEditErr"></p>
                                         </div>
                                         <div class="icon-container">
                                             <i class=" bi bi-folder-plus col-3" style="font-size: 25px"></i>
@@ -665,6 +670,7 @@
                                             <ul class="dropdown-menu" id="cboKichThuocModalEdit"
                                                 aria-labelledby="dropdownMenuButton3">
                                             </ul>
+                                            <p style="color: red;"id="cboKichThuocModalEditErr"></p>
                                         </div>
                                         <div class="icon-container">
                                             <i class=" bi bi-folder-plus col-3" style="font-size: 25px"></i>
@@ -683,6 +689,7 @@
                                             <ul class="dropdown-menu" id="cboChatLieuModalEdit"
                                                 aria-labelledby="dropdownMenuButton4">
                                             </ul>
+                                            <p style="color: red;"id="cboChatLieuModalEditErr"></p>
                                         </div>
                                         <div class="icon-container">
                                             <i class=" bi bi-folder-plus col-3" style="font-size: 25px"></i>
@@ -700,6 +707,7 @@
                                             <ul class="dropdown-menu" id="cboKieuTayModalEdit"
                                                 aria-labelledby="dropdownMenuButton5">
                                             </ul>
+                                            <p style="color: red;"id="cboKieuTayModalEditErr"></p>
                                         </div>
                                         <div class="icon-container">
                                             <i class=" bi bi-folder-plus col-3" style="font-size: 25px"></i>
@@ -1376,19 +1384,14 @@
         button.addEventListener('click', function (e) {
             e.preventDefault();
             console.log("test check btn");
+            console.log("id spct local: ", idSPCTLocal);
             let trangThaiModalAdd = 0;
-            if (trangThaiModalAddRaw == true) {
+            if (trangThaiModalAddRaw.checked == true) {
                 trangThaiModalAdd = 1;
             } else {
                 trangThaiModalAdd = 0;
             }
-            if (trangThaiModalAddRaw == true) {
-                trangThaiModalAdd = 1;
-            } else {
-                trangThaiModalAdd = 0;
-            }
-
-            if (validateModalAdd()) {
+            if (validateModalAdd()==7) {
                 Swal.fire({
                     title: 'Xác nhận?',
                     text: "Dữ liệu sẽ được lưu lại!",
@@ -1401,26 +1404,34 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         const data = {
-                            ten: tenSP,
-                            trangThai: trangThai,
-                            hinhAnh: getFileName(hinhAnh)
+                            idSp: pathVariable,
+                            idMauSac: idMauSacModalAdd,
+                            idKichThuoc: idKichThuocModalAdd,
+                            idChatLieu: idChatLieuModalAdd,
+                            idKieuTay: idKieuTayModalAdd,
+                            moTa: ghiChuModalAdd?ghiChuModalAdd.value:null,
+                            soLuong:  soLuongModalAdd.value,
+                            giaNhap: giaNhapModalAdd.value,
+                            giaBan: giaBanModalAdd.value,
+                            trangThai: trangThaiModalAdd
                         };
-                        var formData = new FormData($('#uploadFormAdd')[0]); // Use FormData to get all form data
+                        console.log("data json: ",data);
+                        var formData = new FormData($('#uploadFormEdit')[0]); // Use FormData to get all form data
                         // Handle file upload via AJAX
-                        $.ajax({
-                            url: '/upload',
-                            type: 'POST',
-                            data: formData,
-                            processData: false,
-                            contentType: false,
-                            success: function (response) {
-                                console.log("save image success ");
-                            },
-                            error: function (xhr, status, error) {
-                                console.log("save image =error");
-                            }
-                        });
-                        fetch(`/san-pham/save`, {
+                        // $.ajax({
+                        //     url: '/upload',
+                        //     type: 'POST',
+                        //     data: formData,
+                        //     processData: false,
+                        //     contentType: false,
+                        //     success: function (response) {
+                        //         console.log("save image success ");
+                        //     },
+                        //     error: function (xhr, status, error) {
+                        //         console.log("save image =error");
+                        //     }
+                        // });
+                        fetch(`/chi-tiet-sp/save`, {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'
@@ -1432,24 +1443,9 @@
                                 'Dữ liệu đã được ghi nhận.',
                                 'success'
                             ).then(() => {
-                                fetch("/san-pham/count", {
-                                    headers: {
-                                        'Accept': 'application/json',
-                                        'Content-Type': 'application/json'
-                                    }
-                                }).then(response => response.json())
-                                    .then(resp => {
-                                        loadDSSPCT(Math.ceil(resp / 20));
-                                        currentPage = Math.ceil(resp / 20);
-                                        loadTotalPagination(currentPage);
-                                    }).catch(error => {
-                                    console.error('Error fetching pagination data:', error);
-                                    // Handle fetch error
-                                });
+                                loadDSSPCT(currentPage);
                             });
-                            button.closest('tr').remove();
                         });
-                        button.closest('tr').remove();
                     }
                 });
             } else {
@@ -1459,6 +1455,7 @@
     });
 
     function validateNull(param) {
+        console.log("validate null");
         if (param === "" || param === undefined) {
             return true;
         } else {
@@ -1467,136 +1464,185 @@
     }
 
     function validateModalEdit(){
-        let  led = false;
+        let  checkCount  = 0;
+        var cboMauSacModalEditErr = document.getElementById("cboMauSacModalEditErr");
+        var cboKichThuocModalEditErr = document.getElementById("cboKichThuocModalEditErr");
+        var cboChatLieuModalEditErr = document.getElementById("cboChatLieuModalEditErr");
+        var cboKieuTayModalEditErr = document.getElementById("cboKieuTayModalEditErr");
+        var soLuongModalEditErr = document.getElementById("soLuongModalEditErr");
+        var giaNhapModalEditErr = document.getElementById("giaNhapModalEditErr");
+        var giaBanModalEditErr = document.getElementById("giaBanModalEditErr");
+        console.log("so luong test:",soLuongModalEdit.value);
+        console.log("so luong test:",giaBanModalEdit.value);
+        console.log("so luong test:",giaNhapModalEdit.value);
+
         if(idMauSacModalEdit == ""){
-            cboMauSacErr = "Vui lòng chọn màu sắc ";
-            led = false;
+            cboMauSacModalEditErr.textContent = "Vui lòng chọn màu sắc ";
+            checkCount=0;
         }
         else{
-            led = true;
+            cboMauSacModalEditErr.textContent = "";
+            checkCount++;
         }
         if(idKichThuocModalEdit == ""){
-            cboKichThuocErr = "Vui lòng chọn kích thước";
-            led = false;
+            cboKichThuocModalEditErr.textContent = "Vui lòng chọn kích thước";
+            checkCount=0
         }
         else{
-             led = true;
+            cboKichThuocModalEditErr.textContent = "";
+             checkCount++;
         }
         if(idChatLieuModalEdit == ""){
-            cboChatLieuErr = "Vui lòng chọn chất liệu";
-            led = false;
+            cboChatLieuModalEditErr.textContent = "Vui lòng chọn chất liệu";
+            checkCount=0;
         }
         else{
-            led = true;
+            cboChatLieuModalEditErr.textContent = "";
+            checkCount++;
         }
         if(idKieuTayModalEdit == ""){
-            cboKieuTayErr = "Vui lòng chọn kiểu tay";
-            led = false;
+            cboKieuTayModalEditErr.textContent = "Vui lòng chọn kiểu tay";
+            checkCount=0;
         }
         else{
-            led = true;
+            cboKieuTayModalEditErr.textContent = "";
+            checkCount++;
         }
-        if(validateNull(soLuongModalEdit)){
-            soLuongErr = "Vui lòng nhập số lượng";
-            if(soLuongModalEdit<0){
-                soLuongErr ="Số lượng phải lơn hơn 0";
-                led = false;
+        if(validateNull(soLuongModalEdit.value)){
+            soLuongModalEditErr.textContent = "Vui lòng nhập số lượng";
+            checkCount = 0;
+        }
+        else{
+            if(soLuongModalEdit.value<=0){
+                soLuongModalEditErr.textContent ="Số lượng phải lơn hơn 0";
+                checkCount=0
             }
             else{
-                led = true;
+                soLuongModalEditErr.textContent ="";
+                checkCount++;
             }
         }
-        if(validateNull(giaNhapModalEdit)){
-            giaNhapErr = "Vui lòng nhập giá nhập";
-            if(giaNhapModalEdit<0){
-                giaNhapErr ="Giá nhập phải lớn hơn 0";
-                led = false
+        if(validateNull(giaNhapModalEdit.value)){
+            giaNhapModalEditErr.textContent = "Vui lòng nhập giá nhập";
+            checkCount = 0;
+        }
+        else{
+            if(giaNhapModalEdit.value<=0){
+                giaNhapModalEditErr.textContent ="Giá nhập phải lớn hơn 0";
+                checkCount=0;
             }
             else{
-                led = true;
+                giaNhapModalEditErr.textContent ="";
+                checkCount++;
             }
         }
-        if(validateNull(giaBanModalEdit)){
-            giaBanErr = "Vui lòng nhập giá bán";
-            if(giaBanModalEdit<0){
-                giaBanErr = "Giá bán phải lớn hơn 0";
-                led = false ;
+        if(validateNull(giaBanModalEdit.value)){
+            giaBanModalEditErr.textContent = "Vui lòng nhập giá bán";
+            checkCount = 0;
+        }
+        else{
+            if(giaBanModalEdit.value<=0){
+                giaBanModalEditErr.textContent = "Giá bán phải lớn hơn 0";
+                checkCount=0;
             }
             else{
-                led = true;
+                giaBanModalEditErr.textContent = "";
+                checkCount++;
             }
         }
-        return led;
+        console.log("check count: ", checkCount);
+        return checkCount;
     }
 
     function validateModalAdd(){
-        let  led = false;
-        var cboMauSacErr = document.getElementById("cboMauSacErr");
-        var cboKichThuocErr = document.getElementById("cboKichThuocErr");
-        var cboChatLieuErr = document.getElementById("cboChatLieuErr");
-        var cboKieuTayErr = document.getElementById("cboKieuTayErr");
-        var soLuongErr = document.getElementById("soLuongErr");
-        var giaNhapErr = document.getElementById("giaNhapErr");
-        var giaBanErr = document.getElementById("giaBanErr");
+        let  checkCount  = 0;
+        var cboMauSacModalAddErr = document.getElementById("cboMauSacModalAddErr");
+        var cboKichThuocModalAddErr = document.getElementById("cboKichThuocModalAddErr");
+        var cboChatLieuModalAddErr = document.getElementById("cboChatLieuModalAddErr");
+        var cboKieuTayModalAddErr = document.getElementById("cboKieuTayModalAddErr");
+        var soLuongModalAddErr = document.getElementById("soLuongModalAddErr");
+        var giaNhapModalAddErr = document.getElementById("giaNhapModalAddErr");
+        var giaBanModalAddErr = document.getElementById("giaBanModalAddErr");
+        console.log("so luong test:",soLuongModalAdd.value);
+        console.log("so luong test:",giaBanModalAdd.value);
+        console.log("so luong test:",giaNhapModalAdd.value);
+
         if(idMauSacModalAdd == ""){
-            cboMauSacErr = "Vui lòng chọn màu sắc ";
-            led = false;
+            cboMauSacModalAddErr.textContent = "Vui lòng chọn màu sắc ";
+            checkCount=0;
         }
         else{
-            led = true;
+            cboMauSacModalAddErr.textContent = "";
+            checkCount++;
         }
         if(idKichThuocModalAdd == ""){
-            cboKichThuocErr = "Vui lòng chọn kích thước";
-            led = false;
+            cboKichThuocModalAddErr.textContent = "Vui lòng chọn kích thước";
+            checkCount=0
         }
         else{
-            led = true;
+            cboKichThuocModalAddErr.textContent = "";
+            checkCount++;
         }
         if(idChatLieuModalAdd == ""){
-            cboChatLieuErr = "Vui lòng chọn chất liệu";
-            led = false;
+            cboChatLieuModalAddErr.textContent = "Vui lòng chọn chất liệu";
+            checkCount=0;
         }
         else{
-            led = true;
+            cboChatLieuModalAddErr.textContent = "";
+            checkCount++;
         }
         if(idKieuTayModalAdd == ""){
-            cboKieuTayErr = "Vui lòng chọn kiểu tay";
-            led = false;
+            cboKieuTayModalAddErr.textContent = "Vui lòng chọn kiểu tay";
+            checkCount=0;
         }
         else{
-            led = true;
+            cboKieuTayModalAddErr.textContent = "";
+            checkCount++;
         }
-        if(validateNull(soLuongModalAdd)){
-            soLuongErr = "Vui lòng nhập số lượng";
-            if(soLuongModalAdd<0){
-                soLuongErr ="Số lượng phải lơn hơn 0";
-                led = false;
+        if(validateNull(soLuongModalAdd.value)){
+            soLuongModalAddErr.textContent = "Vui lòng nhập số lượng";
+            checkCount = 0;
+        }
+        else{
+            if(soLuongModalAdd.value<=0){
+                soLuongModalAddErr.textContent ="Số lượng phải lơn hơn 0";
+                checkCount=0
             }
             else{
-                led = true;
+                soLuongModalAddErr.textContent ="";
+                checkCount++;
             }
         }
-        if(validateNull(giaNhapModalAdd)){
-            giaNhapErr = "Vui lòng nhập giá nhập";
-            if(giaNhapModalAdd<0){
-                giaNhapErr ="Giá nhập phải lớn hơn 0";
-                led = false
+        if(validateNull(giaNhapModalAdd.value)){
+            giaNhapModalAddErr.textContent = "Vui lòng nhập giá nhập";
+            checkCount = 0;
+        }
+        else{
+            if(giaNhapModalAdd.value<=0){
+                giaNhapModalAddErr.textContent ="Giá nhập phải lớn hơn 0";
+                checkCount=0;
             }
             else{
-                led = true;
+                giaNhapModalAddErr.textContent ="";
+                checkCount++;
             }
         }
-        if(validateNull(giaBanModalAdd)){
-            giaBanErr = "Vui lòng nhập giá bán";
-            if(giaBanModalAdd<0){
-                giaBanErr = "Giá bán phải lớn hơn 0";
-                led = false ;
+        if(validateNull(giaBanModalAdd.value)){
+            giaBanModalAddErr.textContent = "Vui lòng nhập giá bán";
+            checkCount = 0;
+        }
+        else{
+            if(giaBanModalAdd.value<=0){
+                giaBanModalAddErr.textContent = "Giá bán phải lớn hơn 0";
+                checkCount=0;
             }
             else{
-                led = true;
+                giaBanModalAddErr.textContent = "";
+                checkCount++;
             }
         }
-        return led;
+        console.log("check count: ", checkCount);
+        return checkCount;
     }
 
 
@@ -1611,7 +1657,7 @@
             } else {
                 trangThaiModalEdit = 0;
             }
-            if (validateModalEdit()) {
+            if (validateModalEdit()==7) {
                 Swal.fire({
                     title: 'Xác nhận?',
                     text: "Dữ liệu sẽ được lưu lại!",
@@ -1668,7 +1714,7 @@
                     }
                 });
             } else {
-                thongBao.textContent = "Số tiền khách đưa phải lớn hơn hoặc bằng tổng tiền.";
+
             }
         });
     });
