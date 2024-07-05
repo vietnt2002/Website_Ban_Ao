@@ -824,7 +824,7 @@
     let soLuongModalEdit = document.getElementById("soLuongModalEdit");
     let giaNhapModalEdit = document.getElementById("giaNhapModalEdit");
     let giaBanModalEdit = document.getElementById("giaBanModalEdit");
-    let ghiChuModalEdit = document.getElementById("ghiChuModalEdit");
+    let ghiChuModalEdit = document.getElementById("moTaModalEdit");
     let trangThaiModalEditRaw = document.getElementById("trangThaiModalEdit");
     const trangThaiLabelModalEdit = document.getElementById("trangThaiLabelModalEdit");
 
@@ -839,7 +839,7 @@
     let soLuongModalAdd = document.getElementById("soLuongModalAdd");
     let giaNhapModalAdd = document.getElementById("giaNhapModalAdd");
     let giaBanModalAdd = document.getElementById("giaBanModalAdd");
-    let ghiChuModalAdd = document.getElementById("ghiChuModalAdd");
+    let ghiChuModalAdd = document.getElementById("moTaModalAdd");
     let trangThaiModalAddRaw  = document.getElementById("trangThaiModalAdd");
     const trangThaiLabelModalAdd = document.getElementById("trangThaiLabelModalAdd");
 
@@ -869,7 +869,7 @@
             trangThaiLabelModalEdit.textContent = "Dừng hoạt động";
         }
     }
-    trangThaiModalAddRaw.addEventListener("change", updateLabeledit);
+    trangThaiModalEditRaw.addEventListener("change", updateLabeledit);
     // end change sttlbl edit
     updateLabeledit();
     function setMauSac(msString) {
@@ -1238,9 +1238,6 @@
 
     loadDSSPCT(currentPage);
     loadTotalPagination(currentPage);
-    let tenSpEdit = document.getElementById("tenSPEdit");
-    let hinhAnhDisplay = document.getElementById("hinhAnhEditDisplay");
-    let trangThaiModalEdit = document.getElementById("trangThaiModal Edit");
     $(document).on('click', "button[id^='editSPCTBtn_']", e => {
         e.preventDefault();
         const queryString = window.location.pathname;
@@ -1263,13 +1260,13 @@
                 idKichThuocModalEdit = resp.idKichThuoc.id;
                 idChatLieuModalEdit = resp.idChatLieu.id;
                 idKieuTayModalEdit = resp.idKieuTay.id;
-
+                ghiChuModalEdit.value  = resp.moTa;
                 soLuongModalEdit.value = resp.soLuong;
                 giaNhapModalEdit.value = resp.giaNhap;
                 giaBanModalEdit.value = resp.giaBan;
                 if (resp.trangThai == 1) {
                     trangThaiModalEditRaw.checked = true;
-                    trangThaiModalEditRaw.textContent = "Đang hoạt động";
+                    trangThaiLabelModalEdit.textContent = "Đang hoạt động";
                 } else {
                     trangThaiModalEditRaw.checked = false;
                     trangThaiLabelModalEdit.textContent = "Dừng hoạt động";
@@ -1609,7 +1606,7 @@
             console.log("test check btn");
             console.log("id spct local: ", idSPCTLocal);
             let trangThaiModalEdit = 0;
-            if (trangThaiModalEditRaw == true) {
+            if (trangThaiModalEditRaw.checked == true) {
                 trangThaiModalEdit = 1;
             } else {
                 trangThaiModalEdit = 0;
@@ -1631,7 +1628,7 @@
                             idKichThuoc: idKichThuocModalEdit,
                             idChatLieu: idChatLieuModalEdit,
                             idKieuTay: idKieuTayModalEdit,
-                            moTa: ghiChuModalEdit?giaBanModalEdit.value:null,
+                            moTa: ghiChuModalEdit?ghiChuModalEdit.value:null,
                             soLuong:  soLuongModalEdit.value,
                             giaNhap: giaNhapModalEdit.value,
                             giaBan: giaBanModalEdit.value,
