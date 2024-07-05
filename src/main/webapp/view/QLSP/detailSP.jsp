@@ -516,7 +516,7 @@
                                             <p style="color: red;"id="cboMauSacModalAddErr"></p>
                                         </div>
                                         <div class="icon-container">
-                                            <i class=" bi bi-folder-plus col-3" style="font-size: 25px"></i>
+                                            <i class=" bi bi-folder-plus col-3" data-bs-toggle="modal" data-bs-target="#ModalHotAdd" id="iconHotAddMSModalAdd" style="font-size: 25px"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -535,7 +535,7 @@
                                             <p style="color: red;"id="cboKichThuocModalAddErr"></p>
                                         </div>
                                         <div class="icon-container">
-                                            <i class=" bi bi-folder-plus col-3" style="font-size: 25px"></i>
+                                            <i class=" bi bi-folder-plus col-3" data-bs-toggle="modal" data-bs-target="#ModalHotAdd" id="iconHotAddKTModalAdd" style="font-size: 25px"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -554,7 +554,7 @@
                                             <p style="color: red;"id="cboChatLieuModalAddErr"></p>
                                         </div>
                                         <div class="icon-container">
-                                            <i class=" bi bi-folder-plus col-3" style="font-size: 25px"></i>
+                                            <i class=" bi bi-folder-plus col-3" data-bs-toggle="modal" data-bs-target="#ModalHotAdd" id="iconHotAddCLModalAdd" style="font-size: 25px"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -572,7 +572,7 @@
                                             <p style="color: red;"id="cboKieuTayModalAddErr"></p>
                                         </div>
                                         <div class="icon-container">
-                                            <i class=" bi bi-folder-plus col-3" style="font-size: 25px"></i>
+                                            <i class=" bi bi-folder-plus col-3" data-bs-toggle="modal" data-bs-target="#ModalHotAdd" id="iconHotAddKTAModalAdd" style="font-size: 25px"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -654,7 +654,7 @@
                                             <p style="color: red;"id="cboMauSacModalEditErr"></p>
                                         </div>
                                         <div class="icon-container">
-                                            <i class=" bi bi-folder-plus col-3" style="font-size: 25px"></i>
+                                            <i class=" bi bi-folder-plus col-3" data-bs-toggle="modal" data-bs-target="#ModalHotAdd" style="font-size: 25px"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -673,7 +673,7 @@
                                             <p style="color: red;"id="cboKichThuocModalEditErr"></p>
                                         </div>
                                         <div class="icon-container">
-                                            <i class=" bi bi-folder-plus col-3" style="font-size: 25px"></i>
+                                            <i class=" bi bi-folder-plus col-3"  data-bs-toggle="modal" data-bs-target="#ModalHotAdd" style="font-size: 25px"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -692,7 +692,7 @@
                                             <p style="color: red;"id="cboChatLieuModalEditErr"></p>
                                         </div>
                                         <div class="icon-container">
-                                            <i class=" bi bi-folder-plus col-3" style="font-size: 25px"></i>
+                                            <i class=" bi bi-folder-plus col-3"  data-bs-toggle="modal" data-bs-target="#ModalHotAdd" style="font-size: 25px"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -710,7 +710,7 @@
                                             <p style="color: red;"id="cboKieuTayModalEditErr"></p>
                                         </div>
                                         <div class="icon-container">
-                                            <i class=" bi bi-folder-plus col-3" style="font-size: 25px"></i>
+                                            <i class=" bi bi-folder-plus col-3"  data-bs-toggle="modal" data-bs-target="#ModalHotAdd" style="font-size: 25px"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -760,6 +760,34 @@
             </div>
         </div>
         <%--End modal --%>
+
+        <!-- ModalHotAdd -->
+        <div class="modal fade" id="modalHotAdd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+             data-bs-backdrop="static" data-bs-keyboard="false" >
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="row">
+                            <h5 class="modal-title" id="exampleModalLabel1">Thêm nhanh</h5>
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="post" action="/ban-hang-tai-quay/create">
+                            <div class="mb-3 mt-3">
+                                <label for="tenModalHotAdd" class="form-label">Tên thộc tính:</label>
+                                <input type="text" class="form-control" id="tenModalHotAdd">
+                            </div>
+                            <div class="text-center">
+                                <button class="btn btn-primary">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+<%--        end modal hot add--%>
+
         <!-- Footer -->
         <footer class="sticky-footer bg-white">
             <div class="container my-auto">
@@ -1762,5 +1790,9 @@
         title: "${errorBillMax}"
     });
     </c:if>
+</script>
+<script>
+
+
 </script>
 </html>
