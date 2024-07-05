@@ -42,7 +42,7 @@
             href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
             rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
 
     <style>
         .table-scroll {
@@ -71,16 +71,16 @@
     <!-- Sidebar -->
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
-        <!-- Sidebar - Brand -->
-        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
-            <div class="sidebar-brand-icon rotate-n-15">
-                <i class="fas fa-laugh-wink"></i>
-            </div>
-            <div class="sidebar-brand-text mx-3">MS - Store</div>
-        </a>
+    <!-- Sidebar - Brand -->
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+        <div class="sidebar-brand-icon rotate-n-15">
+            <i class="fas fa-laugh-wink"></i>
+        </div>
+        <div class="sidebar-brand-text mx-3">MS - Store</div>
+    </a>
 
-        <!-- Divider -->
-        <hr class="sidebar-divider my-0">
+    <!-- Divider -->
+    <hr class="sidebar-divider my-0">
 
         <!-- Nav Item - Dashboard -->
         <c:choose>
@@ -98,6 +98,12 @@
                         <i class="fas fa-fw fa-chart-area"></i>
                         <span>Thống kê doanh thu</span></a>
                 </li>
+        <!-- Nav Item - Dashboard -->
+        <li class="nav-item active">
+            <a class="nav-link" href="/ban-hang-tai-quay">
+                <i class="fas fa-fw fa-chart-area"></i>
+                <span>Bán hàng tại quầy</span></a>
+        </li>
 
                 <!-- Nav Item - Charts -->
                 <li class="nav-item">
@@ -174,7 +180,7 @@
             </c:otherwise>
         </c:choose>
 
-    </ul>
+</ul>
 
     <!--   -----------   -->
     <div id="content-wrapper" class="d-flex flex-column">
@@ -381,79 +387,35 @@
                     <%--      Tìm kiếm & lọc thông tin khách hàng      --%>
                     <h5 class="card-title mb-3">Quản lý thông tin khách hàng</h5>
                     <div class="row mb-4">
-                        <div class="col col-4">
-                            <div class="card">
-                                <div class="card-header">
-                                    Tìm kiếm thông tin
-                                </div>
-                                <div class="card-body">
-                                    <form method="post" action="/qlkh/tim-kiem">
-                                        <div class="mb-3">
-                                            <label for="timKiem" class="form-label">Tìm kiếm</label>
-                                            <input type="text" class="form-control" name="key" id="timKiem" placeholder="Nhập họ tên hoặc sdt...">
-                                        </div>
-
-                                        <div class="mb-3">
-                                            <label for="ngaySinh1" class="form-label">Ngày sinh</label>
-                                            <div style="display: flex">
-                                                <input type="date" class="form-control me-3" id="ngaySinh1"
-                                                       name="ngayBatDau" style="width: 187px;">
-                                                <input type="date" class="form-control" id="ngaySinh2" name="ngayKetThuc"
-                                                       style="width: 187px;">
+                        <div class="card">
+                            <div class="card-header">
+                                Tìm kiếm thông tin
+                            </div>
+                            <div class="card-body">
+                                <form method="post" action="/qlnv/tim-kiem">
+                                    <div class="row mb-2">
+                                        <div class="col-6">
+                                            <label for="timKiem" class="col-sm-2 col-form-label mb-3">Tìm kiếm: </label>
+                                            <div class="col-sm-10 float-right mb-3">
+                                                <input type="text" class="form-control w-75" name="key" id="timKiem"
+                                                       placeholder="Nhập họ tên hoặc Sdt,...">
                                             </div>
                                         </div>
 
-                                        <div class="text-center">
-                                            <button type="submit" class="btn btn-primary">Tìm kiếm</button>
-                                            <a href="/qlkh/quan-ly-khach-hang">
-                                                <button type="button" class="btn btn-secondary">Làm mới bộ lọc
-                                                </button>
-                                            </a>
+                                        <div class="col-6">
+                                            <label for="ngaySinh1" class="col-sm-2 col-form-label mb-2">Ngày sinh: </label>
+                                            <div class="col-sm-10 float-right mb-3" style="display: flex">
+                                                <input type="date" class="form-control me-3" id="ngaySinh1" name="ngaySinh1" style="width: 160px;">
+                                                <input type="date" class="form-control" id="ngaySinh2" name="ngaySinh2" style="width: 160px;">
+                                            </div>
                                         </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
+                                    </div>
 
-                        <div class="col col-8">
-                            <div class="card" style="width: 100%; height: 300px">
-                                <div class="card-header">
-                                    Danh sách địa chỉ khách hàng: <span>${khachHang.hoTen}</span>
-                                </div>
-                                <div class="card-body" style="overflow-y: auto">
-                                    <c:if test="${checkDC == true}">
-                                        <table class="table">
-                                            <thead>
-                                            <tr>
-                                                <th scope="col">STT</th>
-                                                <th scope="col">Tên người nhận</th>
-                                                <th scope="col">Sdt người nhận</th>
-                                                <th scope="col">Địa chỉ chi tiết</th>
-                                                <th scope="col">Phường xã</th>
-                                                <th scope="col">Quận huyện</th>
-                                                <th scope="col">Tỉnh thành</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            <c:forEach varStatus="i" items="${listDiaChi}" var="diaChi">
-                                                <tr>
-                                                    <th>${i.index+1}</th>
-                                                    <td>${diaChi.tenNguoiNhan}</td>
-                                                    <td>${diaChi.sdtNguoiNhan}</td>
-                                                    <td>${diaChi.diaChiChiTiet}</td>
-                                                    <td>${diaChi.idPhuongXa}</td>
-                                                    <td>${diaChi.idQuanHuyen}</td>
-                                                    <td>${diaChi.idTinhThanh}</td>
-                                                </tr>
-                                            </c:forEach>
-                                            </tbody>
-                                        </table>
-                                    </c:if>
-
-                                    <c:if test="${checkDC == false}">
-                                        <span class="text-danger">Địa chỉ của khách hàng trống</span>
-                                    </c:if>
-                                </div>
+                                    <div class="text-center">
+                                        <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+                                        <a href="/qlkh/quan-ly-khach-hang"><button type="button" class="btn btn-secondary">Làm mới bộ lọc</button></a>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -462,10 +424,8 @@
                     <div class="row">
                         <div class="card">
                             <div class="card-header">
-                                <span>Danh sách khách hàng</span>
-                                <a href="/qlkh/them-khach-hang-view">
-                                    <button class="btn btn-primary float-end">+ Thêm</button>
-                                </a>
+                                <span>Danh sách nhân viên</span>
+                                <a href="/qlkh/them-khach-hang-view"><button class="btn btn-primary float-end">+ Thêm</button></a>
                             </div>
                             <div class="card-body">
                                 <table class="table" id="nhanVienTable">
@@ -487,8 +447,7 @@
                                     <c:forEach varStatus="i" items="${listKhachHang}" var="kh">
                                         <tr>
                                             <th>${i.index+1}</th>
-                                            <th><img src="/imageUser/${kh.anhDaiDien}"
-                                                     style="width: 70px; height: 60px"></th>
+                                            <th><img src="/imageUser/${kh.anhDaiDien}" style="width: 70px; height: 60px"></th>
                                             <td>${kh.hoTen}</td>
                                             <td>${kh.gioiTinh == 1 ? "Nam" : "Nữ"}</td>
                                             <td>${kh.ngaySinh}</td>
@@ -504,14 +463,27 @@
                                                 </c:if>
                                             </td>
                                             <td>
-                                                <a href="/qlkh/dia-chi-view/${kh.id}">
-                                                    <button class="btn btn-outline-secondary"><i
-                                                            class="bi bi-house-door"></i></button>
-                                                </a>
-                                                <a href="/qlkh/sua-khach-hang-view/${kh.id}">
-                                                    <button class="btn btn-warning"><i class="bi bi-pencil-square"></i>
-                                                    </button>
-                                                </a>
+                                                <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal${kh.id}">
+                                                    <i class="bi bi-house-door"></i>
+                                                </button>
+                                                <a href="/qlkh/sua-khach-hang-view/${kh.id}"><button class="btn btn-warning"><i class="bi bi-pencil-square"></i></button></a>
+                                                <!-- Button trigger modal -->
+
+                                                <!-- Modal -->
+                                                <div class="modal fade" id="exampleModal${kh.id}" tabindex="-1" aria-labelledby="exampleModalLabel${kh.id}" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalLabel${kh.id}">Danh sách địa chỉ</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                ...
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
                                             </td>
                                         </tr>
                                     </c:forEach>
@@ -547,6 +519,7 @@
 <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
 </a>
+
 
 
 <!-- Logout Modal-->
