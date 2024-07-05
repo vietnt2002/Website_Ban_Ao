@@ -18,7 +18,6 @@ public class SPCTUpdate {
     private String idChatLieu;
     @NotEmpty
     private String idKieuTay;
-    @NotEmpty
     private String moTa;
     @Positive
     private String soLuong;

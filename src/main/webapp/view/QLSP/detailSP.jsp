@@ -575,26 +575,26 @@
                             </div>
                             <div class="row">
                                 <div class="col col-md-4">
-                                    <label for="soLuongModalEdit" class="form-label">Số lượng</label>
+                                    <label for="soLuongModalAdd" class="form-label">Số lượng</label>
                                     <input type="number" name="file" class="form-control" id="soLuongModalAdd"
                                            value="">
                                     <p style="color: red;" id="soLuongModalAddErr"></p>
                                 </div>
                                 <div class="col col-md-4">
-                                    <label for="giaNhapModalEdit" class="form-label">Giá nhập</label>
+                                    <label for="giaNhapModalAdd" class="form-label">Giá nhập</label>
                                     <input type="number" name="file" class="form-control" id="giaNhapModalAdd"
                                            value="">
                                     <p style="color: red;" id="giaNhapModalAddErr"></p>
                                 </div>
                                 <div class="col col-md-4">
-                                    <label for="giaBanModalEdit" class="form-label">Giá bán</label>
+                                    <label for="giaBanModalAdd" class="form-label">Giá bán</label>
                                     <input type="number" name="file" class="form-control" id="giaBanModalAdd" value="">
                                     <p style="color: red;" id="giaBanModalAddErr"></p>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col col-md-3">
-                                    <label for="moTaModalEdit" class="form-label">Ghi chú</label>
+                                    <label for="moTaModalAdd" class="form-label">Ghi chú</label>
                                     <textarea class="form-control custom-textarea" style="width: 550px;"
                                               id="moTaModalAdd" name="moTa"></textarea>
                                     <p style="color: red;" id="moTaModalAddErr"></p>
@@ -606,9 +606,9 @@
                                 </div>
                             </div>
                             <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" role="switch" id="trangThaiAdd"
+                                <input class="form-check-input" type="checkbox" role="switch" id="trangThaiModalAdd"
                                        checked>
-                                <label class="form-check-label" for="trangThaiEdit" id="trangThaiLabelAdd">Trạng
+                                <label class="form-check-label" for="trangThaiLabelModalAdd" id="trangThaiLabelModalAdd">Trạng
                                     thái</label>
                             </div>
                             <button id="saveAddBtn" type="submit" class="btn btn-primary">Lưu</button>
@@ -740,9 +740,9 @@
                                 </div>
                             </div>
                             <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" role="switch" id="trangThaiEdit"
+                                <input class="form-check-input" type="checkbox" role="switch" id="trangThaiModalEdit"
                                        checked>
-                                <label class="form-check-label" for="trangThaiEdit" id="trangThaiLabeledit">Trạng
+                                <label class="form-check-label" for="trangThaiLabelModalEdit" id="trangThaiLabelModalEdit">Trạng
                                     thái</label>
                             </div>
                             <button id="saveEditBtn" type="submit" class="btn btn-primary">Lưu</button>
@@ -803,57 +803,6 @@
 </body>
 
 <script>
-
-    // change sttlbl add
-    const inputElementadd = document.getElementById("trangThaiAdd");
-    const labelElementadd = document.getElementById("trangThaiLabeladd");
-
-    function updateLabeladd() {
-        if (inputElementadd.checked) {
-            labelElementadd.textContent = "Đang hoạt động";
-        } else {
-            labelElementadd.textContent = "Dừng hoạt động";
-        }
-    }
-
-    inputElementadd.addEventListener("change", updateLabeladd);
-    updateLabeladd();
-    // change sttlbl edit
-    const inputElementedit = document.getElementById("trangThaiEdit");
-    const labelElementedit = document.getElementById("trangThaiLabeledit");
-
-    function updateLabeledit() {
-        if (inputElementedit.checked) {
-            labelElementedit.textContent = "Đang hoạt động";
-        } else {
-            labelElementedit.textContent = "Dừng hoạt động";
-        }
-    }
-
-    inputElementedit.addEventListener("change", updateLabeledit);
-    //end change sttlbl edit
-    updateLabeledit();
-    document.querySelectorAll('.delete-button2').forEach(button => {
-        button.addEventListener('click', function () {
-            const form = this.closest('.delete-form');
-            Swal.fire({
-                title: 'Bạn có muốn hủy không??',
-                text: "Dữ liệu này sẽ được lưu trữ lại để đối chiếu!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Đồng ý'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    form.submit();
-                }
-            });
-        });
-    });
-</script>
-
-<script>
     let idSPCTLocal = "";
     let currentPage = 1;
     let totalPage = 0;
@@ -876,11 +825,13 @@
     let giaNhapModalEdit = document.getElementById("giaNhapModalEdit");
     let giaBanModalEdit = document.getElementById("giaBanModalEdit");
     let ghiChuModalEdit = document.getElementById("ghiChuModalEdit");
-    let trangThaiModalEditRaw = document.getElementById("trangThaiModalEditRaw");
-    const lblMauSacModalEdit = document.getElementById("lblMauSac");
-    const lblKichThuocModalEdit = document.getElementById("lblKichThuoc");
-    const lblChatLieuModalEdit = document.getElementById("lblChatLieu");
-    const lblKieuTayModalEdit = document.getElementById("lblKieuTay");
+    let trangThaiModalEditRaw = document.getElementById("trangThaiModalEdit");
+    const trangThaiLabelModalEdit = document.getElementById("trangThaiLabelModalEdit");
+
+    const lblMauSacModalEdit = document.getElementById("lblMauSacModalEdit");
+    const lblKichThuocModalEdit = document.getElementById("lblKichThuocModalEdit");
+    const lblChatLieuModalEdit = document.getElementById("lblChatLieuModalEdit");
+    const lblKieuTayModalEdit = document.getElementById("lblKieuTayModalEdit");
     let idMauSacModalAdd = "";
     let idKichThuocModalAdd = "";
     let idChatLieuModalAdd = "";
@@ -889,11 +840,38 @@
     let giaNhapModalAdd = document.getElementById("giaNhapModalAdd");
     let giaBanModalAdd = document.getElementById("giaBanModalAdd");
     let ghiChuModalAdd = document.getElementById("ghiChuModalAdd");
-    let trangThaiModalAddRaw  = document.getElementById("trangThaiModalEditRaw");
-    const lblMauSacModalAdd = document.getElementById("lblMauSac");
-    const lblKichThuocModalAdd = document.getElementById("lblKichThuoc");
-    const lblChatLieuModalAdd = document.getElementById("lblChatLieu");
-    const lblKieuTayModalAdd = document.getElementById("lblKieuTay");
+    let trangThaiModalAddRaw  = document.getElementById("trangThaiModalAdd");
+    const trangThaiLabelModalAdd = document.getElementById("trangThaiLabelModalAdd");
+
+    const lblMauSacModalAdd = document.getElementById("lblMauSacModalAdd");
+    const lblKichThuocModalAdd = document.getElementById("lblKichThuocModalAdd");
+    const lblChatLieuModalAdd = document.getElementById("lblChatLieuModalAdd");
+    const lblKieuTayModalAdd = document.getElementById("lblKieuTayModalAdd");
+
+</script>
+
+<script>
+    // change sttlbl add
+    function updateLabeladd() {
+        if (trangThaiModalAddRaw.checked) {
+            trangThaiLabelModalAdd.textContent = "Đang hoạt động";
+        } else {
+            trangThaiLabelModalAdd.textContent = "Dừng hoạt động";
+        }
+    }
+    trangThaiModalAddRaw.addEventListener("change", updateLabeladd);
+    updateLabeladd();
+    // change sttlbl edit
+    function updateLabeledit() {
+        if (trangThaiModalEditRaw.checked) {
+            trangThaiLabelModalEdit.textContent = "Đang hoạt động";
+        } else {
+            trangThaiLabelModalEdit.textContent = "Dừng hoạt động";
+        }
+    }
+    trangThaiModalAddRaw.addEventListener("change", updateLabeledit);
+    // end change sttlbl edit
+    updateLabeledit();
     function setMauSac(msString) {
         const ms = JSON.parse(msString.replace(/&quot;/g, '"'));
         idMauSac = ms.id;
@@ -1262,7 +1240,7 @@
     loadTotalPagination(currentPage);
     let tenSpEdit = document.getElementById("tenSPEdit");
     let hinhAnhDisplay = document.getElementById("hinhAnhEditDisplay");
-    let trangThaiEdit = document.getElementById("trangThaiEdit");
+    let trangThaiModalEdit = document.getElementById("trangThaiModal Edit");
     $(document).on('click', "button[id^='editSPCTBtn_']", e => {
         e.preventDefault();
         const queryString = window.location.pathname;
@@ -1277,21 +1255,24 @@
             }
         }).then(response => response.json())
             .then(resp => {
-                idMauSacModalEdit = resp.idMauSac;
-                idKichThuocModalEdit = resp.idKichThuoc;
-                idChatLieuModalEdit = resp.idChatLieu;
-                idKieuTayModalEdit  = resp.idKieuTay;
-                soLuongModalEdit = resp.soLuong;
-                giaNhapModalEdit = resp.giaNhap;
-                giaBanModalEdit = resp.giaBan;
-                // console.log("test link image: " + resp.hinhAnh);
-                // hinhAnhDisplay.src = "/image/" + resp.hinhAnh;
+                lblMauSacModalEdit.textContent = resp.idMauSac.ten;
+                lblKichThuocModalEdit.textContent = resp.idKichThuoc.ten;
+                lblChatLieuModalEdit.textContent = resp.idChatLieu.ten;
+                lblKieuTayModalEdit.textContent  = resp.idKieuTay.ten;
+                idMauSacModalEdit = resp.idMauSac.id;
+                idKichThuocModalEdit = resp.idKichThuoc.id;
+                idChatLieuModalEdit = resp.idChatLieu.id;
+                idKieuTayModalEdit = resp.idKieuTay.id;
+
+                soLuongModalEdit.value = resp.soLuong;
+                giaNhapModalEdit.value = resp.giaNhap;
+                giaBanModalEdit.value = resp.giaBan;
                 if (resp.trangThai == 1) {
                     trangThaiModalEditRaw.checked = true;
-                    labelElementedit.textContent = "Đang hoạt động";
+                    trangThaiModalEditRaw.textContent = "Đang hoạt động";
                 } else {
                     trangThaiModalEditRaw.checked = false;
-                    labelElementedit.textContent = "Dừng hoạt động";
+                    trangThaiLabelModalEdit.textContent = "Dừng hoạt động";
                 }
             });
     });
@@ -1626,6 +1607,7 @@
         button.addEventListener('click', function (e) {
             e.preventDefault();
             console.log("test check btn");
+            console.log("id spct local: ", idSPCTLocal);
             let trangThaiModalEdit = 0;
             if (trangThaiModalEditRaw == true) {
                 trangThaiModalEdit = 1;
@@ -1649,26 +1631,29 @@
                             idKichThuoc: idKichThuocModalEdit,
                             idChatLieu: idChatLieuModalEdit,
                             idKieuTay: idKieuTayModalEdit,
-                            soLuong:  soLuongModalEdit,
-                            moTa: ghiChuModalEdit,
+                            moTa: ghiChuModalEdit?giaBanModalEdit.value:null,
+                            soLuong:  soLuongModalEdit.value,
+                            giaNhap: giaNhapModalEdit.value,
+                            giaBan: giaBanModalEdit.value,
                             trangThai: trangThaiModalEdit
                         };
+                        console.log("data json: ",data);
                         var formData = new FormData($('#uploadFormEdit')[0]); // Use FormData to get all form data
                         // Handle file upload via AJAX
-                        $.ajax({
-                            url: '/upload',
-                            type: 'POST',
-                            data: formData,
-                            processData: false,
-                            contentType: false,
-                            success: function (response) {
-                                console.log("save image success ");
-                            },
-                            error: function (xhr, status, error) {
-                                console.log("save image =error");
-                            }
-                        });
-                        fetch(`/san-pham/update/` + idSPCTLocal, {
+                        // $.ajax({
+                        //     url: '/upload',
+                        //     type: 'POST',
+                        //     data: formData,
+                        //     processData: false,
+                        //     contentType: false,
+                        //     success: function (response) {
+                        //         console.log("save image success ");
+                        //     },
+                        //     error: function (xhr, status, error) {
+                        //         console.log("save image =error");
+                        //     }
+                        // });
+                        fetch(`/chi-tiet-sp/update/` + idSPCTLocal, {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'
