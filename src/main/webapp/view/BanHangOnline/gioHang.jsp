@@ -47,7 +47,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
+    <%--    Voucher    --%>
     <style>
+        .voucher-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px; /* Khoảng cách giữa các voucher */
+        }
         .voucher-card {
             border: 2px solid #007bff; /* Màu xanh của btn-primary */
             border-radius: 10px;
@@ -55,6 +61,7 @@
             margin-bottom: 15px;
             background: #fff;
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            width: calc(50% - 15px); /* Giảm chiều rộng để vừa 2 voucher trong 1 hàng */
         }
         .voucher-header {
             display: flex;
@@ -96,7 +103,22 @@
         .voucher-button button:hover {
             background-color: #0056b3; /* Màu xanh đậm hơn khi hover */
         }
+        /* CSS cố định modal */
+        .modal-fixed {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1050;
+            display: none;
+            width: 90%; /* Điều chỉnh kích thước modal */
+            max-width: 500px; /* Giới hạn kích thước modal */
+        }
+        .modal-fixed.show {
+            display: block;
+        }
     </style>
+
     <style>
         .userCart {
             display: flex;
@@ -133,23 +155,6 @@
         }
     </style>
     <style>
-        /*.table-responsive {*/
-        /*    max-height: 420px;*/
-        /*    overflow-y: auto;*/
-        /*}*/
-
-        /*.table tbody {*/
-        /*    display: block;*/
-        /*    height: 135px;*/
-        /*    overflow-y: auto;*/
-        /*}*/
-
-        /*.table thead, .table tbody tr {*/
-        /*    display: table;*/
-        /*    width: 100%;*/
-        /*    table-layout: fixed;*/
-        /*}*/
-
         .align-middle {
             vertical-align: middle !important;
         }
@@ -385,7 +390,7 @@
                 </button>
                 <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                     <div class="navbar-nav mr-auto py-0">
-                        <a href="/store/trang-chu" class="nav-item nav-link active">Trang chủ</a>
+                        <a href="/cua-hang/trang-chu" class="nav-item nav-link active">Trang chủ</a>
                         <a href="detail.html" class="nav-item nav-link">Giới thiệu</a>
                         <a href="contact.html" class="nav-item nav-link">Liên hệ</a>
                     </div>
@@ -404,7 +409,7 @@
     <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
         <h1 class="font-weight-semi-bold text-uppercase mb-3">GIỎ HÀNG CỦA BẠN</h1>
         <div class="d-inline-flex">
-            <p class="m-0"><a href="">Trang chủ</a></p>
+            <p class="m-0"><a href="/cua-hang/trang-chu">Trang chủ</a></p>
             <p class="m-0 px-2">-</p>
             <p class="m-0">Giỏ hàng</p>
         </div>
@@ -631,13 +636,13 @@
 
     <%--Thêm địa chỉ--%>
     <button type="button" class="btn btn-primary mb-3" data-toggle="modal"
-            data-target="#addAddressModal1">
-        + Thêm địa chỉ
+            data-target="#addAddressModal1" style="position: relative; left: 1036px; bottom: -132px;">
+        <i class="bi bi-plus-circle"></i>
     </button>
     <div class="modal fade" id="addAddressModal1" tabindex="-1" role="dialog"
          aria-labelledby="addAddressModalLabel"
          aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="addAddressModalLabel">Thêm địa chỉ mới</h5>
@@ -862,8 +867,7 @@
     </form>
 
     <!-- Modal phiếu giảm giá -->
-    <div id="couponModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="couponModalLabel"
-         aria-hidden="true">
+    <div id="couponModal" class="modal-fixed">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -1661,6 +1665,17 @@
         $('#addAddressModal').modal('hide');
     }
 
+    function showModal() {
+        document.getElementById('couponModal').classList.add('show');
+    }
+
+    // JS để ẩn modal
+    function hideModal() {
+        document.getElementById('couponModal').classList.remove('show');
+    }
+
+    // Thêm sự kiện đóng modal vào nút "Đóng"
+    document.querySelector('[data-dismiss="modal"]').addEventListener('click', hideModal);
 </script>
 
 <%--<script>--%>
