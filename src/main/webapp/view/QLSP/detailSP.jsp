@@ -854,7 +854,7 @@
 </script>
 
 <script>
-    let idSPLocal = "";
+    let idSPCTLocal = "";
     let currentPage = 1;
     let totalPage = 0;
     const queryString = window.location.pathname;
@@ -872,6 +872,11 @@
     let idKichThuocModalEdit = "";
     let idChatLieuModalEdit = "";
     let idKieuTayModalEdit = "";
+    let soLuongModalEdit = document.getElementById("soLuongModalEdit");
+    let giaNhapModalEdit = document.getElementById("giaNhapModalEdit");
+    let giaBanModalEdit = document.getElementById("giaBanModalEdit");
+    let ghiChuModalEdit = document.getElementById("ghiChuModalEdit");
+    let trangThaiModalEditRaw = document.getElementById("trangThaiModalEditRaw");
     const lblMauSacModalEdit = document.getElementById("lblMauSac");
     const lblKichThuocModalEdit = document.getElementById("lblKichThuoc");
     const lblChatLieuModalEdit = document.getElementById("lblChatLieu");
@@ -880,6 +885,11 @@
     let idKichThuocModalAdd = "";
     let idChatLieuModalAdd = "";
     let idKieuTayModalAdd = "";
+    let soLuongModalAdd = document.getElementById("soLuongModalAdd");
+    let giaNhapModalAdd = document.getElementById("giaNhapModalAdd");
+    let giaBanModalAdd = document.getElementById("giaBanModalAdd");
+    let ghiChuModalAdd = document.getElementById("ghiChuModalAdd");
+    let trangThaiModalAddRaw  = document.getElementById("trangThaiModalEditRaw");
     const lblMauSacModalAdd = document.getElementById("lblMauSac");
     const lblKichThuocModalAdd = document.getElementById("lblKichThuoc");
     const lblChatLieuModalAdd = document.getElementById("lblChatLieu");
@@ -907,6 +917,14 @@
         console.log('Selected chat lieu ID:', idChatLieu);
         // You can add more logic here to handle the selected value
     }
+    function setKieuTay(ktString) {
+        const kt = JSON.parse(ktString.replace(/&quot;/g, '"'));
+        idKieuTay = kt.id;
+        lblKieuTay.textContent = kt.ten;
+        console.log('Selected kieu tay ID modal:', idKieuTay);
+        // You can add more logic here to handle the selected value
+    }
+
     function setMauSacModalEdit(msString) {
         const ms = JSON.parse(msString.replace(/&quot;/g, '"'));
         idMauSacModalEdit = ms.id;
@@ -1089,7 +1107,6 @@
             });
     }
     loadCboKieuTay();
-
     const loadDSSPCT = (pageParams) => {
         // get api + scpt.id
         let datatest = "data testing";
@@ -1118,8 +1135,7 @@
                         '<td>' + trangThai + '</td>' +
                         '<td>' +
                         '<div class="d-inline">' +
-                        '<button id="editSPBtn_' + spct.id + '" class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#ModalEdit">Chỉnh sửa</button>' +
-                        '<button id="detailSPBtn_' + spct.id + '" class="btn btn-danger">Chi tiết</button>' +
+                        '<button id="editSPCTBtn_' + spct.id + '" class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#ModalEdit">Chỉnh sửa</button>' +
                         '</div>' +
                         '</td>' +
                         '</tr>';
@@ -1134,7 +1150,8 @@
         console.log('data kich thuoc ID:', idKichThuoc);
         console.log('data chat lieu ID:', idChatLieu);
         console.log('data kieu tay ID:', idKieuTay);
-        fetch("/chi-tiet-sp/search" + "?idMauSac=" + idMauSac + "&idKichThuoc=" + idKichThuoc + "&idChatLieu=" + idChatLieu + "&idKieuTay=" + idKieuTay, {
+        console.log('data sp local ID:', idSPCTLocal);
+        fetch("/chi-tiet-sp/search"+ "?idSanPham=" + pathVariable + "&idMauSac=" + idMauSac + "&idKichThuoc=" + idKichThuoc + "&idChatLieu=" + idChatLieu + "&idKieuTay=" + idKieuTay, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -1159,8 +1176,7 @@
                         '<td>' + trangThai + '</td>' +
                         '<td>' +
                         '<div class="d-inline">' +
-                        '<button id="editSPBtn_' + spct.id + '" class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#ModalEdit">Chỉnh sửa</button>' +
-                        '<button id="detailSPBtn_' + spct.id + '" class="btn btn-danger">Chi tiết</button>' +
+                        '<button id="editSPCTBtn_' + spct.id + '" class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#ModalEdit">Chỉnh sửa</button>' +
                         '</div>' +
                         '</td>' +
                         '</tr>';
@@ -1247,28 +1263,34 @@
     let tenSpEdit = document.getElementById("tenSPEdit");
     let hinhAnhDisplay = document.getElementById("hinhAnhEditDisplay");
     let trangThaiEdit = document.getElementById("trangThaiEdit");
-    $(document).on('click', "button[id^='editSPBtn_']", e => {
+    $(document).on('click', "button[id^='editSPCTBtn_']", e => {
         e.preventDefault();
         const queryString = window.location.pathname;
         const pathParts = queryString.split('/');
         const pathVariable = pathParts[pathParts.length - 1];
-        const spid = e.currentTarget.id.replace("editSPBtn_", "");
-        idSPLocal = spid;
-        fetch("/san-pham/detail/" + spid, {
+        const spctid = e.currentTarget.id.replace("editSPCTBtn_", "");
+        idSPCTLocal = spctid;
+        fetch("/chi-tiet-sp/detail/" + spctid, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             }
         }).then(response => response.json())
             .then(resp => {
-                tenSpEdit.value = resp.ten;
-                console.log("test link image: " + resp.hinhAnh);
-                hinhAnhDisplay.src = "/image/" + resp.hinhAnh;
+                idMauSacModalEdit = resp.idMauSac;
+                idKichThuocModalEdit = resp.idKichThuoc;
+                idChatLieuModalEdit = resp.idChatLieu;
+                idKieuTayModalEdit  = resp.idKieuTay;
+                soLuongModalEdit = resp.soLuong;
+                giaNhapModalEdit = resp.giaNhap;
+                giaBanModalEdit = resp.giaBan;
+                // console.log("test link image: " + resp.hinhAnh);
+                // hinhAnhDisplay.src = "/image/" + resp.hinhAnh;
                 if (resp.trangThai == 1) {
-                    trangThaiEdit.checked = true;
+                    trangThaiModalEditRaw.checked = true;
                     labelElementedit.textContent = "Đang hoạt động";
                 } else {
-                    trangThaiEdit.checked = false;
+                    trangThaiModalEditRaw.checked = false;
                     labelElementedit.textContent = "Dừng hoạt động";
                 }
             });
@@ -1301,7 +1323,7 @@
         //     });
     });
     const addBtn = document.querySelectorAll('#addBtn');
-    const editSPBtn = document.querySelectorAll('#editSPBtn');
+    const editSPCTBtn = document.querySelectorAll('#editSPCTBtn');
     const saveEditBtn = document.querySelectorAll('#saveEditBtn');
     const saveAddBtn = document.querySelectorAll('#saveAddBtn');
     addBtn.forEach(button => {
@@ -1376,37 +1398,19 @@
         button.addEventListener('click', function (e) {
             e.preventDefault();
             console.log("test check btn");
-            var tenSP = document.getElementById('tenSPAdd').value;
-            var hinhAnh = document.getElementById('hinhAnhAdd').value;
-            var trangThairaw = document.getElementById('trangThaiAdd').checked;
-            var tenSperr = document.getElementById("tenSPAddErr");
-            var hinhAnhErr = document.getElementById("hinhAnhAddErr");
-            let trangThai = 0;
-            let sttCheck = 0;
-            console.log("====================== ten sp:", tenSP);
-            console.log("====================== hinh anh:", getFileName(hinhAnh));
-            console.log("====================== trang thai:", trangThairaw);
-            if (trangThairaw == true) {
-                trangThai = 1;
+            let trangThaiModalAdd = 0;
+            if (trangThaiModalAddRaw == true) {
+                trangThaiModalAdd = 1;
             } else {
-                trangThai = 0;
+                trangThaiModalAdd = 0;
             }
-            if (validateNull(tenSP)) {
-                tenSperr.textContent = "Vui lòng nhập tên sản phẩm";
-                sttCheck = 0;
+            if (trangThaiModalAddRaw == true) {
+                trangThaiModalAdd = 1;
             } else {
-                tenSperr.textContent = "";
-                sttCheck++;
-            }
-            if (validateNull(hinhAnh)) {
-                hinhAnhErr.textContent = "Vui lòng chọn hình ảnh";
-                sttCheck = 0;
-            } else {
-                hinhAnhErr.textContent = "";
-                sttCheck++;
+                trangThaiModalAdd = 0;
             }
 
-            if (sttCheck == 2) {
+            if (validateModalAdd()) {
                 Swal.fire({
                     title: 'Xác nhận?',
                     text: "Dữ liệu sẽ được lưu lại!",
@@ -1484,40 +1488,151 @@
         }
     }
 
+    function validateModalEdit(){
+        let  led = false;
+        if(idMauSacModalEdit == ""){
+            cboMauSacErr = "Vui lòng chọn màu sắc ";
+            led = false;
+        }
+        else{
+            led = true;
+        }
+        if(idKichThuocModalEdit == ""){
+            cboKichThuocErr = "Vui lòng chọn kích thước";
+            led = false;
+        }
+        else{
+             led = true;
+        }
+        if(idChatLieuModalEdit == ""){
+            cboChatLieuErr = "Vui lòng chọn chất liệu";
+            led = false;
+        }
+        else{
+            led = true;
+        }
+        if(idKieuTayModalEdit == ""){
+            cboKieuTayErr = "Vui lòng chọn kiểu tay";
+            led = false;
+        }
+        else{
+            led = true;
+        }
+        if(validateNull(soLuongModalEdit)){
+            soLuongErr = "Vui lòng nhập số lượng";
+            if(soLuongModalEdit<0){
+                soLuongErr ="Số lượng phải lơn hơn 0";
+                led = false;
+            }
+            else{
+                led = true;
+            }
+        }
+        if(validateNull(giaNhapModalEdit)){
+            giaNhapErr = "Vui lòng nhập giá nhập";
+            if(giaNhapModalEdit<0){
+                giaNhapErr ="Giá nhập phải lớn hơn 0";
+                led = false
+            }
+            else{
+                led = true;
+            }
+        }
+        if(validateNull(giaBanModalEdit)){
+            giaBanErr = "Vui lòng nhập giá bán";
+            if(giaBanModalEdit<0){
+                giaBanErr = "Giá bán phải lớn hơn 0";
+                led = false ;
+            }
+            else{
+                led = true;
+            }
+        }
+        return led;
+    }
+
+    function validateModalAdd(){
+        let  led = false;
+        var cboMauSacErr = document.getElementById("cboMauSacErr");
+        var cboKichThuocErr = document.getElementById("cboKichThuocErr");
+        var cboChatLieuErr = document.getElementById("cboChatLieuErr");
+        var cboKieuTayErr = document.getElementById("cboKieuTayErr");
+        var soLuongErr = document.getElementById("soLuongErr");
+        var giaNhapErr = document.getElementById("giaNhapErr");
+        var giaBanErr = document.getElementById("giaBanErr");
+        if(idMauSacModalAdd == ""){
+            cboMauSacErr = "Vui lòng chọn màu sắc ";
+            led = false;
+        }
+        else{
+            led = true;
+        }
+        if(idKichThuocModalAdd == ""){
+            cboKichThuocErr = "Vui lòng chọn kích thước";
+            led = false;
+        }
+        else{
+            led = true;
+        }
+        if(idChatLieuModalAdd == ""){
+            cboChatLieuErr = "Vui lòng chọn chất liệu";
+            led = false;
+        }
+        else{
+            led = true;
+        }
+        if(idKieuTayModalAdd == ""){
+            cboKieuTayErr = "Vui lòng chọn kiểu tay";
+            led = false;
+        }
+        else{
+            led = true;
+        }
+        if(validateNull(soLuongModalAdd)){
+            soLuongErr = "Vui lòng nhập số lượng";
+            if(soLuongModalAdd<0){
+                soLuongErr ="Số lượng phải lơn hơn 0";
+                led = false;
+            }
+            else{
+                led = true;
+            }
+        }
+        if(validateNull(giaNhapModalAdd)){
+            giaNhapErr = "Vui lòng nhập giá nhập";
+            if(giaNhapModalAdd<0){
+                giaNhapErr ="Giá nhập phải lớn hơn 0";
+                led = false
+            }
+            else{
+                led = true;
+            }
+        }
+        if(validateNull(giaBanModalAdd)){
+            giaBanErr = "Vui lòng nhập giá bán";
+            if(giaBanModalAdd<0){
+                giaBanErr = "Giá bán phải lớn hơn 0";
+                led = false ;
+            }
+            else{
+                led = true;
+            }
+        }
+        return led;
+    }
+
+
     saveEditBtn.forEach(button => {
         button.addEventListener('click', function (e) {
             e.preventDefault();
             console.log("test check btn");
-            var tenSP = document.getElementById('tenSPEdit').value;
-            var hinhAnh = document.getElementById('hinhAnhEdit').value;
-            var trangThaiRaw = document.getElementById('trangThaiEdit').checked;
-            var tenSperr = document.getElementById("tenSPEditErr");
-            var hinhAnhErr = document.getElementById("hinhAnhEditErr");
-            let trangThai = 0;
-            let sttCheck = 0;
-            console.log("====================== ten sp:", tenSP);
-            console.log("====================== hinh anh:", hinhAnh);
-
-            if (trangThaiRaw == true) {
-                trangThai = 1;
+            let trangThaiModalEdit = 0;
+            if (trangThaiModalEditRaw == true) {
+                trangThaiModalEdit = 1;
             } else {
-                trangThai = 0;
+                trangThaiModalEdit = 0;
             }
-            if (validateNull(tenSP)) {
-                tenSperr.textContent = "Vui lòng nhập tên sản phẩm";
-                sttCheck = 0;
-            } else {
-                tenSperr.textContent = "";
-                sttCheck++;
-            }
-            if (validateNull(hinhAnh)) {
-                hinhAnhErr.textContent = "Vui lòng chọn hình ảnh";
-                sttCheck = 0;
-            } else {
-                hinhAnhErr.textContent = "";
-                sttCheck++;
-            }
-            if (sttCheck == 2) {
+            if (validateModalEdit()) {
                 Swal.fire({
                     title: 'Xác nhận?',
                     text: "Dữ liệu sẽ được lưu lại!",
@@ -1530,9 +1645,13 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         const data = {
-                            ten: tenSP,
-                            hinhAnh: getFileName(hinhAnh),
-                            trangThai: trangThai
+                            idMauSac: idMauSacModalEdit,
+                            idKichThuoc: idKichThuocModalEdit,
+                            idChatLieu: idChatLieuModalEdit,
+                            idKieuTay: idKieuTayModalEdit,
+                            soLuong:  soLuongModalEdit,
+                            moTa: ghiChuModalEdit,
+                            trangThai: trangThaiModalEdit
                         };
                         var formData = new FormData($('#uploadFormEdit')[0]); // Use FormData to get all form data
                         // Handle file upload via AJAX
@@ -1549,7 +1668,7 @@
                                 console.log("save image =error");
                             }
                         });
-                        fetch(`/san-pham/update/` + idSPLocal, {
+                        fetch(`/san-pham/update/` + idSPCTLocal, {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'
