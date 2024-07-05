@@ -42,7 +42,7 @@
             href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
             rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
     <style>
         .table-scroll {
@@ -83,55 +83,89 @@
     <hr class="sidebar-divider my-0">
 
     <!-- Nav Item - Dashboard -->
-    <li class="nav-item active">
-        <a class="nav-link" href="/ban-hang-tai-quay">
-            <i class="fas fa-fw fa-chart-area"></i>
-            <span>Bán hàng tại quầy</span></a>
-    </li>
+        <c:choose>
+            <c:when test="${sessionScope.userRole == 'Quản lý'}">
+                <!-- Nav Item - Dashboard -->
+                <li class="nav-item active">
+                    <a class="nav-link" href="/ban-hang-tai-quay">
+                        <i class="fas fa-fw fa-tachometer-alt"></i>
+                        <span>Bán hàng tại quầy</span></a>
+                </li>
 
-    <!-- Nav Item - Charts -->
-    <li class="nav-item">
-        <a class="nav-link" href="/hoa-don/hien-thi">
-            <i class="fas fa-fw fa-chart-area"></i>
-            <span>Quản lý hóa đơn</span></a>
-    </li>
+                <!-- Nav Item - Charts -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/ban-hang-tai-quay/admin/ban-tai-quay">
+                        <i class="fas fa-fw fa-chart-area"></i>
+                        <span>Thống kê doanh thu</span></a>
+                </li>
 
-    <!-- Nav Item - Charts -->
-    <li class="nav-item">
-        <a class="nav-link" href="/qlnv/quan-ly-nhan-vien">
-            <i class="fas fa-fw fa-chart-area"></i>
-            <span>Quản lý nhân viên</span></a>
-    </li>
+                <!-- Nav Item - Charts -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/hoa-don/hien-thi">
+                        <i class="fas fa-fw fa-chart-area"></i>
+                        <span>Quản lý hóa đơn</span></a>
+                </li>
 
-    <!-- Nav Item - Charts -->
-    <li class="nav-item">
-        <a class="nav-link" href="/hoa-don/hien-thi">
-            <i class="fas fa-fw fa-chart-area"></i>
-            <span>Pending....</span></a>
-    </li>
+                <!-- Nav Item - Pages Collapse Menu -->
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+                       aria-expanded="true" aria-controls="collapseTwo">
+                        <i class="fas fa-fw fa-cog"></i>
+                        <span>Quản lý sản phẩm</span>
+                    </a>
+                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <a class="collapse-item" href="buttons.html">Màu sắc, kích thước các thứ</a>
+                            <a class="collapse-item" href="cards.html">Cards</a>
+                        </div>
+                    </div>
+                </li>
 
-    <!-- Nav Item - Pages Collapse Menu -->
-    <!-- Nav Item - Charts -->
-    <li class="nav-item">
-        <a class="nav-link" href="charts.html">
-            <i class="fas fa-fw fa-chart-area"></i>
-            <span>Pending....</span></a>
-    </li>
+                <!-- Nav Item - Charts -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/qlnv/quan-ly-nhan-vien">
+                        <i class="fas fa-fw fa-chart-area"></i>
+                        <span>Quản lý nhân viên</span></a>
+                </li>
 
-    <!-- Nav Item - Charts -->
-    <li class="nav-item">
-        <a class="nav-link" href="charts.html">
-            <i class="fas fa-fw fa-chart-area"></i>
-            <span>Pending......</span></a>
-    </li>
+                <!-- Nav Item - Charts -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/qlkh/quan-ly-khach-hang">
+                        <i class="fas fa-fw fa-chart-area"></i>
+                        <span>Quản lý khách hàng</span></a>
+                </li>
 
-    <!-- Divider -->
-    <hr class="sidebar-divider d-none d-md-block">
+                <!-- Divider -->
+                <hr class="sidebar-divider d-none d-md-block">
 
-    <!-- Sidebar Toggler (Sidebar) -->
-    <div class="text-center d-none d-md-inline">
-        <button class="rounded-circle border-0" id="sidebarToggle"></button>
-    </div>
+                <!-- Sidebar Toggler (Sidebar) -->
+                <div class="text-center d-none d-md-inline">
+                    <button class="rounded-circle border-0" id="sidebarToggle"></button>
+                </div>
+            </c:when>
+            <c:otherwise>
+                <!-- Nav Item - Dashboard -->
+                <li class="nav-item active">
+                    <a class="nav-link" href="/ban-hang-tai-quay">
+                        <i class="fas fa-fw fa-tachometer-alt"></i>
+                        <span>Bán hàng tại quầy</span></a>
+                </li>
+
+                <!-- Nav Item - Charts -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/hoa-don/hien-thi">
+                        <i class="fas fa-fw fa-chart-area"></i>
+                        <span>Quản lý hóa đơn</span></a>
+                </li>
+
+                <!-- Nav Item - Charts -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/qlkh/quan-ly-khach-hang">
+                        <i class="fas fa-fw fa-chart-area"></i>
+                        <span>Quản lý khách hàng</span></a>
+                </li>
+            </c:otherwise>
+        </c:choose>
 
 </ul>
 
