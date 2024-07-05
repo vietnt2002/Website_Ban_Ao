@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -14,12 +15,10 @@ import java.math.BigDecimal;
 
 public class HoaDonResponse {
 
-    private String idHD;
     private String maHD;
-    private String tenSP;
+    private LocalDateTime ngayTao;
     private Integer soLuong;
-    private String hinhAnh1;
-    private String tenMauSac;
-    private String tenKieuTay;
-    private BigDecimal giaBan;
+    private BigDecimal tongTien;
+    private Integer trangThai;
+
 }

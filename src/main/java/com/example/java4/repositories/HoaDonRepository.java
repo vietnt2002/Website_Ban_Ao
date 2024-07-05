@@ -139,12 +139,24 @@ public interface HoaDonRepository
     @Query("SELECT hd.idKhuyenMai FROM HoaDon hd WHERE hd.id = :hoaDonId")
     KhuyenMai findKhuyenMaiByHoaDonId(@Param("hoaDonId") String hoaDonId);
 
-    @Query("select hd from HoaDon hd where hd.idKhachHang.id = ?1")
+    @Query("select hd from HoaDon hd where hd.idKhachHang.id = ?1 " +
+            "order by hd.ngayTao desc")
     List<HoaDon> getHoaDonByIDKHA(String idKH);
 
-    @Query("select hd from HoaDon hd where hd.idKhachHang.id = ?1 and hd.trangThai = ?2")
+    @Query("select hd from HoaDon hd " +
+            "where hd.idKhachHang.id = ?1 and hd.trangThai = ?2 " +
+            "order by hd.ngayTao desc")
     List<HoaDon> getHoaDonByIDKHAndTrangThai(String idKH, Integer trangThai);
 
     @Query("select count(hd) from HoaDon hd where hd.idKhachHang.id = ?1 and hd.trangThai = ?2")
     int countByHoaDonByTrangThai(String idKH, Integer trangThai);
+
+    @Query("select count(hd) from HoaDon hd where hd.trangThai >= 1")
+    int countByTrangThai();
+
+//    select hd.Ma, hd.NgayTao, sum(cthd.SoLuong) as TongSoLuong, hd.TongTien, hd.TrangThai from HoaDon hd
+//    join ChiTietHoaDon cthd on cthd.idHoaDon = hd.id
+//    where hd.TrangThai = 1 and hd.IdKhachHang = '839D965B-9681-4074-9A66-5ACECE1545E6'
+//    group by hd.Ma, hd.NgayTao, hd.TongTien, hd.TrangThai
+//    order by hd.NgayTao desc
 };

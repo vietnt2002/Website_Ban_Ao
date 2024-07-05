@@ -155,23 +155,6 @@
         }
     </style>
     <style>
-        /*.table-responsive {*/
-        /*    max-height: 420px;*/
-        /*    overflow-y: auto;*/
-        /*}*/
-
-        /*.table tbody {*/
-        /*    display: block;*/
-        /*    height: 135px;*/
-        /*    overflow-y: auto;*/
-        /*}*/
-
-        /*.table thead, .table tbody tr {*/
-        /*    display: table;*/
-        /*    width: 100%;*/
-        /*    table-layout: fixed;*/
-        /*}*/
-
         .align-middle {
             vertical-align: middle !important;
         }
@@ -407,7 +390,7 @@
                 </button>
                 <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                     <div class="navbar-nav mr-auto py-0">
-                        <a href="/store/trang-chu" class="nav-item nav-link active">Trang chủ</a>
+                        <a href="/cua-hang/trang-chu" class="nav-item nav-link active">Trang chủ</a>
                         <a href="detail.html" class="nav-item nav-link">Giới thiệu</a>
                         <a href="contact.html" class="nav-item nav-link">Liên hệ</a>
                     </div>
@@ -426,7 +409,7 @@
     <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
         <h1 class="font-weight-semi-bold text-uppercase mb-3">GIỎ HÀNG CỦA BẠN</h1>
         <div class="d-inline-flex">
-            <p class="m-0"><a href="">Trang chủ</a></p>
+            <p class="m-0"><a href="/cua-hang/trang-chu">Trang chủ</a></p>
             <p class="m-0 px-2">-</p>
             <p class="m-0">Giỏ hàng</p>
         </div>

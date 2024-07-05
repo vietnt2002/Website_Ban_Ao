@@ -590,6 +590,7 @@ public class TrangChuController {
     @GetMapping("/don-mua")
     public String hỉenThi(Model model) {
 
+        boolean check = false;
         //Tính tổng số lượng sản phẩm có trong giỏ hàng
         listHDCT = hdctRepo.findByIdHoaDonByIDKH(UserInfor.idKhachHang, HoaDonRepository.CHO_THANH_TOAN);
         listGioHang = hdctRepo.getAll(UserInfor.idKhachHang, HoaDonRepository.CHO_THANH_TOAN);
@@ -597,21 +598,14 @@ public class TrangChuController {
         for (ChiTietHoaDon chiTietHoaDon : listHDCT) {
             totalSoLuong += chiTietHoaDon.getSoLuong();
         }
-        listHoaDon = hoaDonRepo.getHoaDonByIDKHA(UserInfor.idKhachHang);
-        model.addAttribute("listHD", listHoaDon);
-        model.addAttribute("listHDByChoXacNhan", hoaDonRepo.getHoaDonByIDKHAndTrangThai(UserInfor.idKhachHang, HoaDonRepository.CHO_XAC_NHAN));
-        model.addAttribute("listHDByDaXacNhan", hoaDonRepo.getHoaDonByIDKHAndTrangThai(UserInfor.idKhachHang, HoaDonRepository.DA_XAC_NHAN));
-        model.addAttribute("listHDByChoGiaoHang", hoaDonRepo.getHoaDonByIDKHAndTrangThai(UserInfor.idKhachHang, HoaDonRepository.CHO_GIAO_HANG));
-        model.addAttribute("listHDByDaGiaoHang", hoaDonRepo.getHoaDonByIDKHAndTrangThai(UserInfor.idKhachHang, HoaDonRepository.GIAO_HANG_THANH_CONG));
-        model.addAttribute("listHDByHoanThanh", hoaDonRepo.getHoaDonByIDKHAndTrangThai(UserInfor.idKhachHang, HoaDonRepository.DA_HOAN_THANH));
-        model.addAttribute("listHDDaHuy", hoaDonRepo.getHoaDonByIDKHAndTrangThai(UserInfor.idKhachHang, HoaDonRepository.DA_HUY));
         model.addAttribute("soLuong", totalSoLuong);
 
         //Số lượng hóa đơn theo trạng thái
-        int countAllHoaDon = hoaDonRepo.countAll();
+        int countAllHoaDon = hoaDonRepo.countByTrangThai();
         int countHDByChoXacNhan = hoaDonRepo.countByHoaDonByTrangThai(UserInfor.idKhachHang, HoaDonRepository.CHO_XAC_NHAN);
         int countHDByDaXacNhan = hoaDonRepo.countByHoaDonByTrangThai(UserInfor.idKhachHang, HoaDonRepository.DA_XAC_NHAN);
         int countHDByChoGiaoHang = hoaDonRepo.countByHoaDonByTrangThai(UserInfor.idKhachHang, HoaDonRepository.CHO_GIAO_HANG);
+        int countHDByDangGiaoHang = hoaDonRepo.countByHoaDonByTrangThai(UserInfor.idKhachHang, HoaDonRepository.DANG_GIAO_HANG);
         int countHDByDaGiaoHang = hoaDonRepo.countByHoaDonByTrangThai(UserInfor.idKhachHang, HoaDonRepository.GIAO_HANG_THANH_CONG);
         int countHDByHoanThanh = hoaDonRepo.countByHoaDonByTrangThai(UserInfor.idKhachHang, HoaDonRepository.DA_HOAN_THANH);
         int countHDDaHuy = hoaDonRepo.countByHoaDonByTrangThai(UserInfor.idKhachHang, HoaDonRepository.DA_HUY);
@@ -620,10 +614,20 @@ public class TrangChuController {
         model.addAttribute("countHDByChoXacNhan", countHDByChoXacNhan);
         model.addAttribute("countHDByDaXacNhan", countHDByDaXacNhan);
         model.addAttribute("countHDByChoGiaoHang", countHDByChoGiaoHang);
+        model.addAttribute("countHDByDangGiaoHang", countHDByDangGiaoHang);
         model.addAttribute("countHDByDaGiaoHang", countHDByDaGiaoHang);
         model.addAttribute("countHDByHoanThanh", countHDByHoanThanh);
         model.addAttribute("countHDDaHuy", countHDDaHuy);
 
+        listHoaDon = hoaDonRepo.getHoaDonByIDKHA(UserInfor.idKhachHang);
+        model.addAttribute("listHD", listHoaDon);
+        model.addAttribute("listHDByChoXacNhan", hoaDonRepo.getHoaDonByIDKHAndTrangThai(UserInfor.idKhachHang, HoaDonRepository.CHO_XAC_NHAN));
+        model.addAttribute("listHDByDaXacNhan", hoaDonRepo.getHoaDonByIDKHAndTrangThai(UserInfor.idKhachHang, HoaDonRepository.DA_XAC_NHAN));
+        model.addAttribute("listHDByChoGiaoHang", hoaDonRepo.getHoaDonByIDKHAndTrangThai(UserInfor.idKhachHang, HoaDonRepository.CHO_GIAO_HANG));
+        model.addAttribute("listHDByDangGiaoHang", hoaDonRepo.getHoaDonByIDKHAndTrangThai(UserInfor.idKhachHang, HoaDonRepository.DANG_GIAO_HANG));
+        model.addAttribute("listHDByDaGiaoHang", hoaDonRepo.getHoaDonByIDKHAndTrangThai(UserInfor.idKhachHang, HoaDonRepository.GIAO_HANG_THANH_CONG));
+        model.addAttribute("listHDByHoanThanh", hoaDonRepo.getHoaDonByIDKHAndTrangThai(UserInfor.idKhachHang, HoaDonRepository.DA_HOAN_THANH));
+        model.addAttribute("listHDDaHuy", hoaDonRepo.getHoaDonByIDKHAndTrangThai(UserInfor.idKhachHang, HoaDonRepository.DA_HUY));
 
         return "/view/BanHangOnline/donMua.jsp";
     }
