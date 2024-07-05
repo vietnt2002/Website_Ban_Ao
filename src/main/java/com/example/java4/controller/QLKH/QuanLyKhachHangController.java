@@ -26,7 +26,9 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -113,9 +115,8 @@ public class QuanLyKhachHangController {
     }
 
 
-
     @GetMapping("/sua-khach-hang-view/{id}")
-    public String suaNhanVienView(
+    public String suaKhachHangView(
             Model model,
             @PathVariable("id") KhachHang khachHang
     ) {
@@ -130,7 +131,7 @@ public class QuanLyKhachHangController {
     }
 
     @PostMapping("sua-khach-hang/{id}")
-    public String suaNhanVien(
+    public String suaKhachHang(
             @PathVariable("id") KhachHang khachHang,
             @RequestParam("img") String anhDaiDien,
             @Valid @ModelAttribute("khachHang") KhachHangRequest khReq
@@ -143,9 +144,9 @@ public class QuanLyKhachHangController {
         khachHang.setGioiTinh(khReq.getGioiTinh());
 
         // Lấy ra tên ảnh
-        if (khReq.getAnhDaiDien() == null || khReq.getAnhDaiDien().isEmpty()){
+        if (khReq.getAnhDaiDien() == null || khReq.getAnhDaiDien().isEmpty()) {
             khachHang.setAnhDaiDien(anhDaiDien);
-        }else {
+        } else {
             // Lấy ra tên ảnh
             String imgName = khReq.getAnhDaiDien().getOriginalFilename();
             try {
@@ -165,88 +166,69 @@ public class QuanLyKhachHangController {
         return "redirect:/qlkh/quan-ly-khach-hang";
     }
 
+    @GetMapping("dia-chi-view/{idKH}")
+    public String diaChiView(
+            @PathVariable("idKH") String idKH,
+            Model model
+    ) {
+        //Hiển thị thông tin nhân viên đăng nhập
+        if (UserInfor.idNhanVien != null) {
+            NhanVien nhanVien = nhanVienRepo.findById(UserInfor.idNhanVien).get();
+            model.addAttribute("nv", nhanVien);
+        }
+
+//        Pageable pageable = PageRequest.of(pageParam.orElse(0), 5);
+//        Page<NhanVien> pageNhanVien = nhanVienRepo.getAlll(pageable);
+        List<KhachHang> listKhachHang = khachHangRepo.findAll();
+        boolean checkDC = true;
+        List<DiaChi> listDiaChiByKH = diaChiRepo.findDiaChiByIdKhachHang(idKH);
+        if (listDiaChiByKH.isEmpty()){
+            checkDC = false;
+        }
+
+        //Lấy thông tin khách hàng hiển thị jsp
+        KhachHang khachHang = khachHangRepo.findByIdKH(idKH);
+        model.addAttribute("khachHang", khachHang);
+        model.addAttribute("listKhachHang", listKhachHang);
+        model.addAttribute("listDiaChi", listDiaChiByKH);
+        model.addAttribute("checkDC", checkDC);
+        return "/view/QLKH/quanLyKhachHang.jsp";
+    }
+
     @PostMapping("tim-kiem")
     public String timKiem(
             Model model,
             @RequestParam(value = "key", required = false) String key,
-            @RequestParam(value = "idCV", required = false) String idCV
+            @RequestParam(value = "ngayBatDau", required = false) String ngayBatDau,
+            @RequestParam(value = "ngayKetThuc", required = false) String ngayKetThuc
     ) {
         //Hiển thị thông tin nhân viên đăng nhập
-//        if (UserInfor.idNhanVien != null) {
-//            NhanVien nhanVien = nhanVienRepo.findById(UserInfor.idNhanVien).get();
-//            model.addAttribute("nv", nhanVien);
-//        }
-//
-//        List<NhanVien> listNhanVien = nhanVienRepo.findAll();
-//
-//        if ((key != null || !key.isEmpty()) && idCV.isEmpty()) {
-//            listNhanVien = nhanVienRepo.findByHoTenOrSdt(key);
-//        } else if (key.isEmpty()) {
-//            listNhanVien = nhanVienRepo.findByChucVu(idCV);
-//        } else if (!key.isEmpty() && !idCV.isEmpty()) {
-//            listNhanVien = nhanVienRepo.findByHoTenOrSdtAndChucVu(key, idCV);
-//        }
-//
-//        List<ChucVu> listChucVuByTrangThai = chucVuRepo.findByTrangThai(ChucVuRepository.ACTIVE);
-//        model.addAttribute("listChucVu", listChucVuByTrangThai);
-//        model.addAttribute("listNhanVien", listNhanVien);
-        return "/view/QLNV/quanLyNhanVien.jsp";
+        if (UserInfor.idNhanVien != null) {
+            NhanVien nhanVien = nhanVienRepo.findById(UserInfor.idNhanVien).get();
+            model.addAttribute("nv", nhanVien);
+        }
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        List<KhachHang> listKhachHang = khachHangRepo.findAll();
+
+        if ((key != null || !key.isEmpty()) && (ngayBatDau.isEmpty() && ngayKetThuc.isEmpty())) {
+            listKhachHang = khachHangRepo.findByHoTenOrSdtOrEmail(key);
+        } else if (key.isEmpty() && (!ngayBatDau.isEmpty() && !ngayKetThuc.isEmpty())) {
+            try {
+                listKhachHang = khachHangRepo.findByKhoangNgaySinh(sdf.parse(ngayBatDau), sdf.parse(ngayKetThuc));
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        } else if (!key.isEmpty() && !ngayBatDau.isEmpty() && !ngayKetThuc.isEmpty()) {
+            try {
+                listKhachHang = khachHangRepo.findByHoTenOrSdtOrEmail_NgaySinh(key, sdf.parse(ngayBatDau), sdf.parse(ngayKetThuc));
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+
+        model.addAttribute("listKhachHang", listKhachHang);
+        return "/view/QLKH/quanLyKhachHang.jsp";
     }
 
-
-    @GetMapping("/tai-khoan-cua-toi/{id}")
-    public String taiKhoanDangNhap(
-            Model model,
-            @PathVariable("id") NhanVien nhanVien
-    ) {
-        //Hiển thị thông tin nhân viên đăng nhập
-//        if (UserInfor.idNhanVien != null) {
-//            NhanVien nhanVienTK = nhanVienRepo.findById(UserInfor.idNhanVien).get();
-//            model.addAttribute("nv", nhanVienTK);
-//        }
-//        List<ChucVu> listChucVu = chucVuRepo.findByTrangThai(ChucVuRepository.ACTIVE);
-//        model.addAttribute("nhanVien", nhanVien);
-//        model.addAttribute("listChucVu", listChucVu);
-//        model.addAttribute("listNhanVien", nhanVienRepo.findAll());
-        return "/view/QLNV/taiKhoanDangNhap.jsp";
-    }
-
-    @PostMapping("sua-tai-khoan-cua-toi/{id}")
-    public String suaTaiKhoanDangNhap(
-            @PathVariable("id") NhanVien nhanVien,
-            @RequestParam("img") String anhDaiDien,
-            @Valid @ModelAttribute("nhanVien") NhanVienRequest nvReq
-    ) {
-
-//        ChucVu chucVu = chucVuRepo.findById(nvReq.getIdCV()).get();
-//        nhanVien.setId(nhanVien.getId());
-//        nhanVien.setHoTen(nvReq.getHoTen());
-//        nhanVien.setSdt(nvReq.getSdt());
-//        nhanVien.setNgaySinh(nvReq.getNgaySinh());
-//        nhanVien.setGioiTinh(nvReq.getGioiTinh());
-//        nhanVien.setTaiKhoan(nvReq.getTaiKhoan());
-//        nhanVien.setMatKhau(nvReq.getMatKhau());
-//        nhanVien.setIdCV(chucVu);
-//
-//        if (nvReq.getAnhDaiDien() == null || nvReq.getAnhDaiDien().isEmpty()){
-//            nhanVien.setAnhDaiDien(anhDaiDien);
-//        }else {
-//            // Lấy ra tên ảnh
-//            String imgName = nvReq.getAnhDaiDien().getOriginalFilename();
-//            try {
-//                //Lưu ảnh vào file chung
-//                byte[] bytes = nvReq.getAnhDaiDien().getBytes();
-//                Path path = Paths.get(fileUpload + File.separator + imgName);
-//                Files.write(path, bytes);
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//            nhanVien.setAnhDaiDien(imgName);
-//        }
-//
-//        nhanVien.setNgaySua(LocalDateTime.now());
-//        nhanVien.setTrangThai(nvReq.getTrangThai());
-//        nhanVienRepo.save(nhanVien);
-        return "redirect:/qlnv/quan-ly-nhan-vien";
-    }
 }
