@@ -516,7 +516,7 @@
                                             <p style="color: red;"id="cboMauSacModalAddErr"></p>
                                         </div>
                                         <div class="icon-container">
-                                            <i class=" bi bi-folder-plus col-3" data-bs-toggle="modal" data-bs-target="#ModalHotAdd" id="iconHotAddMSModalAdd" style="font-size: 25px"></i>
+                                            <i class=" bi bi-folder-plus col-3" data-bs-toggle="modal" data-bs-target="#ModalHotAddMS" id="iconHotAddMSModalAdd" style="font-size: 25px"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -535,7 +535,7 @@
                                             <p style="color: red;"id="cboKichThuocModalAddErr"></p>
                                         </div>
                                         <div class="icon-container">
-                                            <i class=" bi bi-folder-plus col-3" data-bs-toggle="modal" data-bs-target="#ModalHotAdd" id="iconHotAddKTModalAdd" style="font-size: 25px"></i>
+                                            <i class=" bi bi-folder-plus col-3" data-bs-toggle="modal" data-bs-target="#ModalHotAddKT" id="iconHotAddKTModalAdd" style="font-size: 25px"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -554,7 +554,7 @@
                                             <p style="color: red;"id="cboChatLieuModalAddErr"></p>
                                         </div>
                                         <div class="icon-container">
-                                            <i class=" bi bi-folder-plus col-3" data-bs-toggle="modal" data-bs-target="#ModalHotAdd" id="iconHotAddCLModalAdd" style="font-size: 25px"></i>
+                                            <i class=" bi bi-folder-plus col-3" data-bs-toggle="modal" data-bs-target="#ModalHotAddCL" id="iconHotAddCLModalAdd" style="font-size: 25px"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -572,7 +572,7 @@
                                             <p style="color: red;"id="cboKieuTayModalAddErr"></p>
                                         </div>
                                         <div class="icon-container">
-                                            <i class=" bi bi-folder-plus col-3" data-bs-toggle="modal" data-bs-target="#ModalHotAdd" id="iconHotAddKTAModalAdd" style="font-size: 25px"></i>
+                                            <i class=" bi bi-folder-plus col-3" data-bs-toggle="modal" data-bs-target="#ModalHotAddKTA" id="iconHotAddKTAModalAdd" style="font-size: 25px"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -654,7 +654,7 @@
                                             <p style="color: red;"id="cboMauSacModalEditErr"></p>
                                         </div>
                                         <div class="icon-container">
-                                            <i class=" bi bi-folder-plus col-3" data-bs-toggle="modal" data-bs-target="#ModalHotAdd" style="font-size: 25px"></i>
+                                            <i class=" bi bi-folder-plus col-3" data-bs-toggle="modal" data-bs-target="#ModalHotAddMS" style="font-size: 25px"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -673,7 +673,7 @@
                                             <p style="color: red;"id="cboKichThuocModalEditErr"></p>
                                         </div>
                                         <div class="icon-container">
-                                            <i class=" bi bi-folder-plus col-3"  data-bs-toggle="modal" data-bs-target="#ModalHotAdd" style="font-size: 25px"></i>
+                                            <i class=" bi bi-folder-plus col-3"  data-bs-toggle="modal" data-bs-target="#ModalHotAddKT" style="font-size: 25px"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -692,7 +692,7 @@
                                             <p style="color: red;"id="cboChatLieuModalEditErr"></p>
                                         </div>
                                         <div class="icon-container">
-                                            <i class=" bi bi-folder-plus col-3"  data-bs-toggle="modal" data-bs-target="#ModalHotAdd" style="font-size: 25px"></i>
+                                            <i class=" bi bi-folder-plus col-3"  data-bs-toggle="modal" data-bs-target="#ModalHotAddCL" style="font-size: 25px"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -710,7 +710,7 @@
                                             <p style="color: red;"id="cboKieuTayModalEditErr"></p>
                                         </div>
                                         <div class="icon-container">
-                                            <i class=" bi bi-folder-plus col-3"  data-bs-toggle="modal" data-bs-target="#ModalHotAdd" style="font-size: 25px"></i>
+                                            <i class=" bi bi-folder-plus col-3"  data-bs-toggle="modal" data-bs-target="#ModalHotAddKTA" style="font-size: 25px"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -761,32 +761,103 @@
         </div>
         <%--End modal --%>
 
-        <!-- ModalHotAdd -->
-        <div class="modal fade" id="modalHotAdd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+        <!-- ModalHotAddMS -->
+        <div class="modal fade" id="modalHotAddMS" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
              data-bs-backdrop="static" data-bs-keyboard="false" >
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <div class="row">
-                            <h5 class="modal-title" id="exampleModalLabel1">Thêm nhanh</h5>
+                            <h5 class="modal-title" id="exampleModalLabel1">Thêm nhanh màu săc</h5>
                         </div>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form method="post" action="/ban-hang-tai-quay/create">
                             <div class="mb-3 mt-3">
-                                <label for="tenModalHotAdd" class="form-label">Tên thộc tính:</label>
-                                <input type="text" class="form-control" id="tenModalHotAdd">
+                                <label for="tenModalHotAddMS" class="form-label">Tên màu sắc:</label>
+                                <input type="text" class="form-control" id="tenModalHotAddMS">
                             </div>
                             <div class="text-center">
-                                <button class="btn btn-primary">Submit</button>
+                                <button class="btn btn-primary" id="btnModalHotAddMS">Lưu</button>
                             </div>
-                        </form>
                     </div>
                 </div>
             </div>
         </div>
-<%--        end modal hot add--%>
+<%--        end modal hot add ms--%>
+
+        <!-- ModalHotAddKT -->
+        <div class="modal fade" id="modalHotAddKT" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+             data-bs-backdrop="static" data-bs-keyboard="false" >
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="row">
+                            <h5 class="modal-title" id="exampleModalLabel2">Thêm nhanh kích thước</h5>
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                            <div class="mb-3 mt-3">
+                                <label for="tenModalHotAddKT" class="form-label">Tên kích thước:</label>
+                                <input type="text" class="form-control" id="tenModalHotAddKT">
+                            </div>
+                            <div class="text-center">
+                                <button class="btn btn-primary" id="btnModalHotAddKT">Lưu</button>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <%--        end modal hot add cl--%>
+        <!-- ModalHotAddCL -->
+        <div class="modal fade" id="modalHotAddCL" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+             data-bs-backdrop="static" data-bs-keyboard="false" >
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="row">
+                            <h5 class="modal-title">Thêm nhanh chất liệu</h5>
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                            <div class="mb-3 mt-3">
+                                <label for="tenModalHotAddCL" class="form-label">Tên chất liệu:</label>
+                                <input type="text" class="form-control" id="tenModalHotAddCL">
+                            </div>
+                            <div class="text-center">
+                                <button class="btn btn-primary" id="btnModalHotAddCL">Lưu</button>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <%--        end modal hot add cl--%>
+        <!-- ModalHotAddKTA -->
+        <div class="modal fade" id="modalHotAddKTA" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+             data-bs-backdrop="static" data-bs-keyboard="false" >
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="row">
+                            <h5 class="modal-title">Thêm nhanh kiểu tay</h5>
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                            <div class="mb-3 mt-3">
+                                <label for="tenModalHotAddKTA" class="form-label">Tên kiểu tay:</label>
+                                <input type="text" class="form-control" id="tenModalHotAddKTA">
+                            </div>
+                            <div class="text-center">
+                                <button class="btn btn-primary"  id="btnModalHotAddKTA">Lưu</button>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <%--        end modal hot add kta--%>
 
         <!-- Footer -->
         <footer class="sticky-footer bg-white">
@@ -883,6 +954,15 @@
     const lblKichThuocModalAdd = document.getElementById("lblKichThuocModalAdd");
     const lblChatLieuModalAdd = document.getElementById("lblChatLieuModalAdd");
     const lblKieuTayModalAdd = document.getElementById("lblKieuTayModalAdd");
+
+    const tenModalHotAddMS = document.getElementById("tenModalHotAddMS");
+    const tenModalHotAddKT = document.getElementById("tenModalHotAddKT");
+    const tenModalHotAddCL = document.getElementById("tenModalHotAddCL");
+    const tenModalHotAddKTA = document.getElementById("tenModalHotAddKTA");
+    const btnAddMS  = document.getElementById("btnModalHotAddMS");
+    const btnAddKT = document.getElementById("btnModalHotAddKT");
+    const btnAddCL = document.getElementById("btnModalHotAddCL");
+    const btnAddKTA = document.getElementById("btnModalHotAddKTA");
 
 </script>
 
@@ -1482,8 +1562,210 @@
         });
     });
 
+        btnAddMS.addEventListener('click', function (e) {
+            e.preventDefault();
+            console.log("test check btn");
+            console.log("id spct local: ", idSPCTLocal);
+            let trangThaiModalAdd = 0;
+            // if (trangThaiModalAddRaw.checked == true) {
+            //     trangThaiModalAdd = 1;
+            // } else {
+            //     trangThaiModalAdd = 0;
+            // }
+            console.log("test ms :", tenModalHotAddMS.value);
+            console.log("test validate null: ", validateNull(tenModalHotAddMS.value));
+            if (!validateNull(tenModalHotAddMS.value)) {
+                Swal.fire({
+                    title: 'Xác nhận?',
+                    text: "Dữ liệu sẽ được lưu lại!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ok!',
+                    cancelButtonText: 'Hủy'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        const data = {
+                            ten: tenModalHotAddMS.value,
+                            trangThai:"1"
+                        };
+                        console.log("data json: ",data);
+                        fetch(`/mau-sac/save`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(data)
+                        }).then(() => {
+                            Swal.fire(
+                                'Đã thanh toán!',
+                                'Dữ liệu đã được ghi nhận.',
+                                'success'
+                            ).then(() => {
+                                loadCboMauSac();
+                                loadDSSPCT(currentPage);
+                            });
+                        });
+                    }
+                });
+            } else {
+
+            }
+        });
+
+        btnAddKT.addEventListener('click', function (e) {
+            e.preventDefault();
+            console.log("test check btn");
+            console.log("id spct local: ", idSPCTLocal);
+            let trangThaiModalAdd = 0;
+            // if (trangThaiModalAddRaw.checked == true) {
+            //     trangThaiModalAdd = 1;
+            // } else {
+            //     trangThaiModalAdd = 0;
+            // }
+            if (!validateNull(tenModalHotAddKT.value)) {
+                Swal.fire({
+                    title: 'Xác nhận?',
+                    text: "Dữ liệu sẽ được lưu lại!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ok!',
+                    cancelButtonText: 'Hủy'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        const data = {
+                            ten: tenModalHotAddKT.value,
+                            trangThai:"1"
+                        };
+                        console.log("data json: ",data);
+                        fetch(`/kich-thuoc/save`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(data)
+                        }).then(() => {
+                            Swal.fire(
+                                'Đã thanh toán!',
+                                'Dữ liệu đã được ghi nhận.',
+                                'success'
+                            ).then(() => {
+                                loadCboKichThuoc();
+                                loadDSSPCT(currentPage);
+                            });
+                        });
+                    }
+                });
+            } else {
+
+            }
+        });
+
+        btnAddCL.addEventListener('click', function (e) {
+            e.preventDefault();
+            console.log("test check btn");
+            console.log("id spct local: ", idSPCTLocal);
+            let trangThaiModalAdd = 0;
+            // if (trangThaiModalAddRaw.checked == true) {
+            //     trangThaiModalAdd = 1;
+            // } else {
+            //     trangThaiModalAdd = 0;
+            // }
+            if (!validateNull(tenModalHotAddCL.value)) {
+                Swal.fire({
+                    title: 'Xác nhận?',
+                    text: "Dữ liệu sẽ được lưu lại!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ok!',
+                    cancelButtonText: 'Hủy'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        const data = {
+                            ten: tenModalHotAddCL.value,
+                            trangThai:"1"
+                        };
+                        console.log("data json: ",data);
+                        fetch(`/chat-lieu/save`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(data)
+                        }).then(() => {
+                            Swal.fire(
+                                'Đã thanh toán!',
+                                'Dữ liệu đã được ghi nhận.',
+                                'success'
+                            ).then(() => {
+                                loadCboChatLieu();
+                                loadDSSPCT(currentPage);
+                            });
+                        });
+                    }
+                });
+            } else {
+
+            }
+        });
+
+        btnAddKTA.addEventListener('click', function (e) {
+            e.preventDefault();
+            console.log("test check btn");
+            console.log("id spct local: ", idSPCTLocal);
+            let trangThaiModalAdd = 0;
+            // if (trangThaiModalAddRaw.checked == true) {
+            //     trangThaiModalAdd = 1;
+            // } else {
+            //     trangThaiModalAdd = 0;
+            // }
+            if (!validateNull(tenModalHotAddKTA.value)) {
+                Swal.fire({
+                    title: 'Xác nhận?',
+                    text: "Dữ liệu sẽ được lưu lại!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ok!',
+                    cancelButtonText: 'Hủy'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        const data = {
+                            ten: tenModalHotAddKTA.value,
+                            trangThai:"1"
+                        };
+                        console.log("data json: ",data);
+                        fetch(`/kieu-tay/save`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(data)
+                        }).then(() => {
+                            Swal.fire(
+                                'Đã thanh toán!',
+                                'Dữ liệu đã được ghi nhận.',
+                                'success'
+                            ).then(() => {
+                                loadCboKieuTay();
+                                loadDSSPCT(currentPage);
+                            });
+                        });
+                    }
+                });
+            } else {
+
+            }
+        });
+
+
     function validateNull(param) {
-        console.log("validate null");
         if (param === "" || param === undefined) {
             return true;
         } else {
