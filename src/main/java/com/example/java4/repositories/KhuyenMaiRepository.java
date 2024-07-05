@@ -6,8 +6,21 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface KhuyenMaiRepository extends JpaRepository<KhuyenMai,String> {
 
+<<<<<<< HEAD
+    public static final int ACTIVE  = 1;
+    public static final int INACTIVE =0;
+
+    @Query("select km from KhuyenMai km where km.trangThai=:trangThai")
+    List<KhuyenMai> findAllKMTrangThai(@Param("trangThai") int trangThai);
+
+    @Query("select km from KhuyenMai km where km.id=?1")
+    KhuyenMai findByIdKM(String idKM);
+=======
+>>>>>>> 3d603911edf128be08d4c9052535f3224a839408
 
 }
