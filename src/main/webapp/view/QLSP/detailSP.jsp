@@ -88,6 +88,30 @@
         }
     </style>
 
+    <style>
+        .fit-img {
+            width: 100%;
+            height: auto;
+        }
+        .hover-effect {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .hover-effect:hover {
+            transform: scale(1.05); /* Slightly increase the size */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a shadow */
+        }
+        .click-effect {
+            transition: transform 0.1s ease;
+            cursor: pointer;
+        }
+
+        .click-effect:active {
+            transform: scale(0.95); /* Slightly decrease the size to mimic a button press */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Add a shadow */
+        }
+    </style>
+
 </head>
 
 <body id="page-top">
@@ -440,7 +464,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <table class="table table-hover">
+                            <table class="table table-hover mt-3">
                                 <thead>
                                 <tr>
                                     <th>STT</th>
@@ -449,6 +473,7 @@
                                     <th>Chất liệu</th>
                                     <th>Kiểu tay</th>
                                     <th>Số lượng</th>
+                                    <th>Giá bán</th>
                                     <th>Trạng thái</th>
                                     <th>Thao tác</th>
                                 </tr>
@@ -495,7 +520,7 @@
                         </div>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body" style="overflow-y: auto; height: 80vh;">
                         <div class="mb-3">
                             <div class="row">
                                 <div class="d-flex" style="gap: 500px;">
@@ -605,8 +630,25 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col col-md-3">
-                                    <button type="button" class="btn btn-secondary">Chọn hình ảnh</button>
+                                <div  class="col col-md-3 hover-effect click-effect" id="btnHinhAnh1ModalAdd">
+                                    <img width="200" height="200"  src="https://editorialist.com/web/2023/2/023/696/210/23696210~navy_1.jpg" alt="" class="fit-img">
+                                    <p class="text-center">Hình ảnh 1</p>
+                                    <input type="file" id="fileHinhAnh1ModalAdd" style="display: none;" />
+                                </div>
+                                <div class="col col-md-3 hover-effect click-effect" id="btnHinhAnh2ModalAdd">
+                                    <img width="200" height="200" src="https://editorialist.com/web/2023/2/023/696/210/23696210~navy_1.jpg" alt="" class="fit-img">
+                                    <p class="text-center">Hình ảnh 2</p>
+                                    <input type="file" id="fileHinhAnh2ModalAdd" style="display: none;" />
+                                </div>
+                                <div class="col col-md-3 hover-effect click-effect" id="btnHinhAnh3ModalAdd">
+                                    <img width="200" height="200" src="https://editorialist.com/web/2023/2/023/696/210/23696210~navy_1.jpg" alt="" class="fit-img">
+                                    <p class="text-center">Hình ảnh 3</p>
+                                    <input type="file" id="fileHinhAnh3ModalAdd" style="display: none;" />
+                                </div>
+                                <div class="col col-md-3 hover-effect click-effect" id="btnHinhAnh4ModalAdd">
+                                    <img width="200" height="200" src="https://editorialist.com/web/2023/2/023/696/210/23696210~navy_1.jpg" alt="" class="fit-img">
+                                    <p class="text-center">Hình ảnh 4</p>
+                                    <input type="file" id="fileHinhAnh4ModalAdd" style="display: none;" />
                                 </div>
                             </div>
                             <div class="form-check form-switch">
@@ -615,7 +657,9 @@
                                 <label class="form-check-label" for="trangThaiLabelModalAdd" id="trangThaiLabelModalAdd">Trạng
                                     thái</label>
                             </div>
-                            <button id="saveAddBtn" type="submit" class="btn btn-primary">Lưu</button>
+                            <div class="d-flex justify-content-end">
+                                <button id="saveAddBtn" type="submit" class="btn btn-primary me-5">Lưu</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1219,6 +1263,7 @@
                     const chatLieu = spct.idChatLieu.ten || 'N/A';
                     const kieuTay = spct.idKieuTay.ten || 'N/A';
                     const soLuong = spct.soLuong || 'N/A';
+                    const giaBan  = spct.giaBan || 'N/A';
                     html += '<tr>' +
                         '<td>' + (i + 1) + '</td>' +
                         '<td>' + mauSac + '</td>' +
@@ -1226,6 +1271,7 @@
                         '<td>' + chatLieu + '</td>' +
                         '<td>' + kieuTay + '</td>' +
                         '<td>' + soLuong + '</td>' +
+                        '<td>' + giaBan + '</td>' +
                         '<td>' + trangThai + '</td>' +
                         '<td>' +
                         '<div class="d-inline">' +
@@ -1763,7 +1809,40 @@
 
             }
         });
+    const btnHinhAnh1ModalAdd = document.getElementById("btnHinhAnh1ModalAdd");
+    const btnHinhAnh2ModalAdd = document.getElementById("btnHinhAnh2ModalAdd");
+    const btnHinhAnh3ModalAdd = document.getElementById("btnHinhAnh3ModalAdd");
+    const btnHinhAnh4ModalAdd = document.getElementById("btnHinhAnh4ModalAdd");
+    const fileHinhAnh1ModalAdd = document.getElementById('fileHinhAnh1ModalAdd');
+    const fileHinhAnh2ModalAdd = document.getElementById('fileHinhAnh2ModalAdd');
+    const fileHinhAnh3ModalAdd = document.getElementById('fileHinhAnh3ModalAdd');
+    const fileHinhAnh4ModalAdd = document.getElementById('fileHinhAnh4ModalAdd');
+    fileHinhAnh1ModalAdd.addEventListener('change', function (e) {
+        const files = e.target.files;
+        if (files.length > 0) {
+            const file = files[0];
+            console.log("File selected: ", file);
+            // Add your file handling logic here
+        }
+    });
 
+    btnHinhAnh1ModalAdd.addEventListener('click', function (e) {
+        e.preventDefault();
+        fileHinhAnh1ModalAdd.click();
+        console.log("test check btn");
+    });
+    btnHinhAnh2ModalAdd.addEventListener('click', function (e) {
+        e.preventDefault();
+        console.log("test check btn");
+    });
+    btnHinhAnh3ModalAdd.addEventListener('click', function (e) {
+        e.preventDefault();
+        console.log("test check btn");
+    });
+    btnHinhAnh4ModalAdd.addEventListener('click', function (e) {
+        e.preventDefault();
+        console.log("test check btn");
+    });
 
     function validateNull(param) {
         if (param === "" || param === undefined) {
