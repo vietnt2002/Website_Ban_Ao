@@ -753,19 +753,16 @@ public class BanTaiQuayController {
             hoaDonRepository.save(hd);
         }
 
-<<<<<<< HEAD
-=======
-        KhachHang khachHang = new KhachHang();
-        khachHang.setId(idKH);
-        hoaDon.setIdKhachHang(khachHang);
-        //Tạo mã tự sinh
-        hoaDon.setNgayTao(ngayTao);
-        if (UserInfor.idNhanVien != null) {
-            NhanVien nhanVien = nhanVienRepo.findById(UserInfor.idNhanVien).get();
-        }
-        Optional<NhanVien> nv = nhanVienRepo.findById(UserInfor.idNhanVien);
-        hoaDon.setIdNhanVien(nv.get());
->>>>>>> 3d603911edf128be08d4c9052535f3224a839408
+//        KhachHang khachHang = new KhachHang();
+//        khachHang.setId(idKH);
+//        hoaDon.setIdKhachHang(khachHang);
+//        //Tạo mã tự sinh
+//        hoaDon.setNgayTao(ngayTao);
+//        if (UserInfor.idNhanVien != null) {
+//            NhanVien nhanVien = nhanVienRepo.findById(UserInfor.idNhanVien).get();
+//        }
+//        Optional<NhanVien> nv = nhanVienRepo.findById(UserInfor.idNhanVien);
+//        hoaDon.setIdNhanVien(nv.get());
 
 //        HoaDon hoaDon = new HoaDon();
 //        hoaDon.setId(idHoaDon);
