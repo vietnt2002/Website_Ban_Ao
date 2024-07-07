@@ -42,7 +42,6 @@
             rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
 
-
     <style>
         .table-scroll {
             height: 340px;
@@ -117,7 +116,7 @@
         .image-container {
             position: relative;
             width: 200px; /* Adjust as needed */
-            height: 250px; /* Adjust as needed */
+            height: 270px; /* Adjust as needed */
         }
 
         .file-input-overlay {
@@ -529,7 +528,7 @@
                 </nav>
             </div>
         </div>
-        <!-- ModalSPAdd-->
+        <!-- AddModal-->
         <div class="modal fade" id="ModalAdd" tabindex="-1" aria-labelledby="exampleModalLabel4" aria-hidden="true"
              data-bs-backdrop="static" data-bs-keyboard="false">
             <div class="modal-dialog modal-xl">
@@ -663,30 +662,32 @@
                             <div class="row">
                                 <div class="col col-md-3 hover-effect click-effect image-container">
                                     <img width="200" height="200"
-                                         src="https://editorialist.com/web/2023/2/023/696/210/23696210~navy_1.jpg"
-                                         alt="" class="fit-img">
+                                         src="/image-icon/pendingIMG.png"
+                                         alt="" class="fit-img" id="hinhAnh1DisplayModalAdd">
                                     <p class="text-center">Hình ảnh 1</p>
-                                    <input type="file" id="fileHinhAnh1ModalAdd" class="file-input-overlay" />
+                                    <input type="file" id="fileHinhAnh1ModalAdd" class="file-input-overlay"/>
                                 </div>
 
                                 <div class="col col-md-3 hover-effect click-effect image-container">
                                     <img width="200" height="200"
-                                         src="https://editorialist.com/web/2023/2/023/696/210/23696210~navy_1.jpg"
-                                         alt="" class="fit-img">
+                                         src="/image-icon/pendingIMG.png"
+                                         alt="" class="fit-img" id="hinhAnh2DisplayModalAdd">
                                     <p class="text-center">Hình ảnh 2</p>
-                                    <input type="file" id="fileHinhAnh2ModalAdd"  class="file-input-overlay"/>
+                                    <input type="file" id="fileHinhAnh2ModalAdd" class="file-input-overlay"/>
                                 </div>
+
                                 <div class="col col-md-3 hover-effect click-effect image-container">
                                     <img width="200" height="200"
-                                         src="https://editorialist.com/web/2023/2/023/696/210/23696210~navy_1.jpg"
-                                         alt="" class="fit-img">
+                                         src="/image-icon/pendingIMG.png"
+                                         alt="" class="fit-img" id="hinhAnh3DisplayModalAdd">
                                     <p class="text-center">Hình ảnh 3</p>
                                     <input type="file" id="fileHinhAnh3ModalAdd" class="file-input-overlay"/>
                                 </div>
+
                                 <div class="col col-md-3 hover-effect click-effect image-container">
                                     <img width="200" height="200"
-                                         src="https://editorialist.com/web/2023/2/023/696/210/23696210~navy_1.jpg"
-                                         alt="" class="fit-img">
+                                         src="/image-icon/pendingIMG.png"
+                                         alt="" class="fit-img" id="hinhAnh4DisplayModalAdd">
                                     <p class="text-center">Hình ảnh 4</p>
                                     <input type="file" id="fileHinhAnh4ModalAdd" class="file-input-overlay"/>
                                 </div>
@@ -698,16 +699,14 @@
                                        id="trangThaiLabelModalAdd">Trạng
                                     thái</label>
                             </div>
-                            <div class="d-flex justify-content-end">
-                                <button id="saveAddBtn" type="submit" class="btn btn-primary me-5">Lưu</button>
-                            </div>
+                            <button id="saveAddBtn" type="submit" class="btn btn-primary me-5">Lưu</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <%--End modal --%>
-        <!-- ModalSPEdit-->
+        <!-- EditModal-->
         <div class="modal fade" id="ModalEdit" tabindex="-1" aria-labelledby="exampleModalLabel4" aria-hidden="true"
              data-bs-backdrop="static" data-bs-keyboard="false">
             <div class="modal-dialog modal-xl">
@@ -718,7 +717,7 @@
                         </div>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body" style="overflow-y: auto; height: 80vh;">
                         <div class="mb-3">
                             <div class="row">
                                 <div class="d-flex" style="gap: 500px;">
@@ -836,8 +835,33 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col col-md-3">
-                                    <button type="button" class="btn btn-secondary">Chọn hình ảnh</button>
+                                <div class="col col-md-3 hover-effect click-effect image-container">
+                                    <img width="200" height="200"
+                                         src="/image-icon/pendingIMG.png"
+                                         alt="" class="fit-img" id="hinhAnh1DisplayModalEdit">
+                                    <p class="text-center">Hình ảnh 1</p>
+                                    <input type="file" id="fileHinhAnh1ModalEdit" class="file-input-overlay"/>
+                                </div>
+                                <div class="col col-md-3 hover-effect click-effect image-container">
+                                    <img width="200" height="200"
+                                         src="/image-icon/pendingIMG.png"
+                                         alt="" class="fit-img" id="hinhAnh2DisplayModalEdit">
+                                    <p class="text-center">Hình ảnh 2</p>
+                                    <input type="file" id="fileHinhAnh2ModalEdit" class="file-input-overlay"/>
+                                </div>
+                                <div class="col col-md-3 hover-effect click-effect image-container">
+                                    <img width="200" height="200"
+                                         src="/image-icon/pendingIMG.png"
+                                         alt="" class="fit-img" id="hinhAnh3DisplayModalEdit">
+                                    <p class="text-center">Hình ảnh 3</p>
+                                    <input type="file" id="fileHinhAnh3ModalEdit" class="file-input-overlay"/>
+                                </div>
+                                <div class="col col-md-3 hover-effect click-effect image-container">
+                                    <img width="200" height="200"
+                                         src="/image-icon/pendingIMG.png"
+                                         alt="" class="fit-img" id="hinhAnh4DisplayModalEdit">
+                                    <p class="text-center">Hình ảnh 4</p>
+                                    <input type="file" id="fileHinhAnh4ModalEdit" class="file-input-overlay"/>
                                 </div>
                             </div>
                             <div class="form-check form-switch">
@@ -1063,49 +1087,112 @@
     const fileHinhAnh3ModalAdd = document.getElementById('fileHinhAnh3ModalAdd');
     const fileHinhAnh4ModalAdd = document.getElementById('fileHinhAnh4ModalAdd');
 
+    const fileHinhAnh1ModalEdit = document.getElementById('fileHinhAnh1ModalEdit');
+    const fileHinhAnh2ModalEdit = document.getElementById('fileHinhAnh2ModalEdit');
+    const fileHinhAnh3ModalEdit = document.getElementById('fileHinhAnh3ModalEdit');
+    const fileHinhAnh4ModalEdit = document.getElementById('fileHinhAnh4ModalEdit');
+
+    const hinhAnh1DisplayModalAdd = document.getElementById('hinhAnh1DisplayModalAdd');
+    const hinhAnh2DisplayModalAdd = document.getElementById('hinhAnh2DisplayModalAdd');
+    const hinhAnh3DisplayModalAdd = document.getElementById('hinhAnh3DisplayModalAdd');
+    const hinhAnh4DisplayModalAdd = document.getElementById('hinhAnh4DisplayModalAdd');
+
+    const hinhAnh1DisplayModalEdit = document.getElementById('hinhAnh1DisplayModalEdit');
+    const hinhAnh2DisplayModalEdit = document.getElementById('hinhAnh2DisplayModalEdit');
+    const hinhAnh3DisplayModalEdit = document.getElementById('hinhAnh3DisplayModalEdit');
+    const hinhAnh4DisplayModalEdit = document.getElementById('hinhAnh4DisplayModalEdit');
 </script>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        fileHinhAnh1ModalAdd.addEventListener('change', function (e) {
-            const files = e.target.files;
-            if (files.length > 0) {
-                const file = files[0];
-                console.log("File selected: ", file);
-            }
-        });
+    // filefunc
+    fileHinhAnh1ModalAdd.addEventListener('change', function (e) {
+        const files = e.target.files;
+        console.log("test change data: ", files);
+        if (files.length > 0) {
+            const file = files[0];
+            console.log("File selected: ", file);
+            console.log("file cmp: ", fileHinhAnh1ModalAdd.files[0]);
+            const imgURL = URL.createObjectURL(fileHinhAnh1ModalAdd.files[0]);
+            hinhAnh1DisplayModalAdd.src = imgURL;
+        }
+    });
+    fileHinhAnh2ModalAdd.addEventListener('change', function (e) {
+        const files = e.target.files;
+        console.log("test change data: ", files);
+        if (files.length > 0) {
+            const file = files[0];
+            console.log("File selected: ", file);
+            console.log("file cmp: ", fileHinhAnh2ModalAdd.files[0]);
+            const imgURL = URL.createObjectURL(fileHinhAnh2ModalAdd.files[0]);
+            hinhAnh2DisplayModalAdd.src = imgURL;
+        }
+    });
+    fileHinhAnh3ModalAdd.addEventListener('change', function (e) {
+        const files = e.target.files;
+        console.log("test change data: ", files);
+        if (files.length > 0) {
+            const file = files[0];
+            console.log("File selected: ", file);
+            console.log("file cmp: ", fileHinhAnh3ModalAdd.files[0]);
+            const imgURL = URL.createObjectURL(fileHinhAnh3ModalAdd.files[0]);
+            hinhAnh3DisplayModalAdd.src = imgURL;
+        }
+    });
+    fileHinhAnh4ModalAdd.addEventListener('change', function (e) {
+        const files = e.target.files;
+        console.log("test change data: ", files);
+        if (files.length > 0) {
+            const file = files[0];
+            console.log("File selected: ", file);
+            console.log("file cmp: ", fileHinhAnh4ModalAdd.files[0]);
+            const imgURL = URL.createObjectURL(fileHinhAnh4ModalAdd.files[0]);
+            hinhAnh4DisplayModalAdd.src = imgURL;
+        }
     });
 
-        // function test(e){
-        //     e.preventDefault();
-        //     console.log("testing")
-        // }
-        //
-        // btnHinhAnh1ModalAdd.addEventListener('click', function (e) {
-        //     e.preventDefault();
-        //     fileHinhAnh1ModalAdd.click();
-        //     console.log("test check btn");
-        // });
-        // fileHinhAnh1ModalAdd.addEventListener('change', function (e) {
-        //     const files = e.target.files;
-        //     console.log("test file chosen");
-        //     if (files.length > 0) {
-        //         const file = files[0];
-        //         console.log("File selected: ", file);
-        //         // Add your file handling logic here
-        //     }
-        // });
-        // btnHinhAnh2ModalAdd.addEventListener('click', function (e) {
-        //     e.preventDefault();
-        //     console.log("test check btn");
-        // });
-        // btnHinhAnh3ModalAdd.addEventListener('click', function (e) {
-        //     e.preventDefault();
-        //     console.log("test check btn");
-        // });
-        // btnHinhAnh4ModalAdd.addEventListener('click', function (e) {
-        //     e.preventDefault();
-        //     console.log("test check btn");
-        // });
+    fileHinhAnh1ModalEdit.addEventListener('change', function (e) {
+        const files = e.target.files;
+        console.log("test change data: ", files);
+        if (files.length > 0) {
+            const file = files[0];
+            console.log("File selected: ", file);
+            console.log("file cmp: ", fileHinhAnh1ModalEdit.files[0]);
+            const imgURL = URL.createObjectURL(fileHinhAnh1ModalEdit.files[0]);
+            hinhAnh1DisplayModalEdit.src = imgURL;
+        }
+    });
+    fileHinhAnh2ModalEdit.addEventListener('change', function (e) {
+        const files = e.target.files;
+        console.log("test change data: ", files);
+        if (files.length > 0) {
+            const file = files[0];
+            console.log("File selected: ", file);
+            console.log("file cmp: ", fileHinhAnh2ModalEdit.files[0]);
+            const imgURL = URL.createObjectURL(fileHinhAnh2ModalEdit.files[0]);
+            hinhAnh2DisplayModalEdit.src = imgURL;
+        }
+    });
+    fileHinhAnh3ModalEdit.addEventListener('change', function (e) {
+        const files = e.target.files;
+        console.log("test change data: ", files);
+        if (files.length > 0) {
+            const file = files[0];
+            console.log("File selected: ", file);
+            console.log("file cmp: ", fileHinhAnh3ModalEdit.files[0]);
+            const imgURL = URL.createObjectURL(fileHinhAnh3ModalEdit.files[0]);
+            hinhAnh3DisplayModalEdit.src = imgURL;
+        }
+    });
+    fileHinhAnh4ModalEdit.addEventListener('change', function (e) {
+        const files = e.target.files;
+        console.log("test change data: ", files);
+        if (files.length > 0) {
+            const file = files[0];
+            console.log("File selected: ", file);
+            console.log("file cmp: ", fileHinhAnh4ModalEdit.files[0]);
+            const imgURL = URL.createObjectURL(fileHinhAnh4ModalEdit.files[0]);
+            hinhAnh4DisplayModalEdit.src = imgURL;
+        }
+    });
 </script>
 <script>
     // change sttlbl add
