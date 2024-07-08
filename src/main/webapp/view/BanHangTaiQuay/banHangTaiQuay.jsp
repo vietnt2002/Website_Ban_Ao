@@ -488,11 +488,11 @@
                                         <td>${hdct.idCTSP.idMauSac.ten}</td>
                                         <td>${hdct.idCTSP.idKichThuoc.ten}</td>
                                         <td style="display: flex; align-items: center;">
-                                            <form class="d-flex" method="post" action="/ban-hang-tai-quay/update-sl/${hdct.idCTSP.id}" onsubmit="return checkValidateAfterUpdate();">
+                                            <form class="d-flex" method="post" action="/ban-hang-tai-quay/update-sl/${hdct.idCTSP.id}" >
                                                 <input type="hidden" name="idHoaDon" value="${hoaDon.id}">
-                                                <input type="hidden" id="tongSL" value="${hdct.idCTSP.soLuong}">
-                                                <input type="hidden" id="soLuongCu" value="${hdct.soLuong}">
-                                                <input id="soLuong" class="form-control me-2" type="text" name="soLuong" value="${hdct.soLuong}" style="width: 45px">
+                                                <input type="hidden" id="tongSL" name="tongSL" value="${hdct.idCTSP.soLuong}">
+                                                <input type="hidden" id="soLuongCu" name="soLuongCu" value="${hdct.soLuong}">
+                                                <input id="soLuong" class="form-control me-2" type="text" name="soLuong" value="${hdct.soLuong}" style="width: 50px">
                                                 <button class="btn btn-light" type="submit">
                                                     <i class="bi bi-pencil"></i>
                                                 </button>
@@ -974,10 +974,11 @@
                                                 <td class="price">${spct.giaBan}</td>
                                                 <td>${spct.trangThai==1?"Còn hàng":"Hết hàng"}</td>
                                                 <td>
-                                                    <form action="/ban-hang-tai-quay/add-san-pham/${spct.id}" method="post"
+                                                    <form action="/ban-hang-tai-quay/add-san-pham/${spct.id}/${spct.giaBan}" method="post"
                                                           onsubmit="return validateBeforeAddToCart();">
                                                         <input type="hidden" name="idHoaDon" value="${hoaDon.id}"
                                                                id="selectedInvoiceId">
+<%--                                                        <input type="hidden" name="donGia" value="${spct.giaBan}">--%>
                                                         <button class="btn btn-success" type="submit">+</button>
                                                     </form>
                                                 </td>
@@ -1237,7 +1238,6 @@
     });
 
 
-
     function searchByName(param){
         var txtSearch = param.value;
         console.log(txtSearch);
@@ -1298,11 +1298,14 @@
 
     function checkValidateAfterUpdate(){
 
-        var soLuongNhap = parseInt(document.getElementById("soLuong").value);
-        var soLuongCu = parseInt(document.getElementById("soLuongCu").value);
-        var tongSL22 = parseInt(document.getElementById("tongSL").value);
+        var soLuongNhap = parseInt(document.querySelectorAll("#soLuong").value);
+        var soLuongCu = parseInt(document.querySelectorAll("#soLuongCu").value);
+        var tongSL22 = parseInt(document.querySelectorAll("#tongSL").value);
         var tt = soLuongCu+tongSL22
 
+        console.log(soLuongNhap)
+        console.log(soLuongCu)
+        console.log(tongSL22)
 
         if (soLuongNhap<=0){
             Swal.fire({

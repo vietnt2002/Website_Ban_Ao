@@ -312,28 +312,39 @@ public class BanTaiQuayController {
     //Cập nhật số lượng
     @PostMapping("update-sl/{idCTSP}")
     public String updateSoLuong(@PathVariable String idCTSP,
-//                                @RequestBody Map<String, Integer> request,
                                 @RequestParam int soLuong,
-                                Model model){
+                                @RequestParam int soLuongCu,
+                                RedirectAttributes redirectAttributes){
 
         ChiTietSanPham chiTietSanPham = sanPhamChiTietRepository.findByIdCTSP(idCTSP);
-//        int newQuantity = request.get("quantity");
 
         tongSL = chiTietSanPham.getSoLuong();
+        int tongSLCheck = tongSL+soLuongCu;
+        System.out.println("-----------------------------------------++++++++: "+tongSL);
+        System.out.println("-----------------------------------------++++++++: "+tongSLCheck);
         for(ChiTietHoaDon chiTietHoaDon : listHDCT){
-            if (chiTietHoaDon.getIdCTSP().getId().equals(idCTSP) && chiTietHoaDon.getIdHoaDon().getId().equals(idHoaDon)) {
 
-                int sl = chiTietHoaDon.getSoLuong();
-                chiTietHoaDon.setSoLuong(soLuong);
+            if (soLuong<=0) {
+                redirectAttributes.addFlashAttribute("error", "Số lượng phải lớn hơn 0!");
+            }else if (soLuong>tongSLCheck){
+                redirectAttributes.addFlashAttribute("error", "Số lượng nhập lớn hơn số lượng trong kho");
+            }else {
+                if (chiTietHoaDon.getIdCTSP().getId().equals(idCTSP) && chiTietHoaDon.getIdHoaDon().getId().equals(idHoaDon)) {
 
-                hoaDonChiTietRepository.save(chiTietHoaDon);
+                    int sl = chiTietHoaDon.getSoLuong();
+                    chiTietHoaDon.setSoLuong(soLuong);
 
-                //Số lượng của sản phẩm chi tiết -1 khi ấn vào button thêm trong giỏ hàng
-                if (chiTietSanPham.getId().equals(idCTSP) ) {
-                    chiTietSanPham.setSoLuong(chiTietSanPham.getSoLuong() - chiTietHoaDon.getSoLuong() + sl);
-                    sanPhamChiTietRepository.save(chiTietSanPham);
+                    hoaDonChiTietRepository.save(chiTietHoaDon);
+
+                    //Số lượng của sản phẩm chi tiết -1 khi ấn vào button thêm trong giỏ hàng
+                    if (chiTietSanPham.getId().equals(idCTSP) ) {
+                        chiTietSanPham.setSoLuong(chiTietSanPham.getSoLuong() - chiTietHoaDon.getSoLuong() + sl);
+                        sanPhamChiTietRepository.save(chiTietSanPham);
+                    }
                 }
             }
+
+
 
         }
 
@@ -367,8 +378,8 @@ public class BanTaiQuayController {
     }
 
 
-    @PostMapping("add-san-pham/{idCTSP}")
-    public String addSanPhamVaoGioHang(@PathVariable String idCTSP, @RequestParam("page") Optional<Integer> pageParam,
+    @PostMapping("add-san-pham/{idCTSP}/{donGia}")
+    public String addSanPhamVaoGioHang(@PathVariable String idCTSP,@PathVariable("donGia") String donGia, @RequestParam("page") Optional<Integer> pageParam,
                                        @RequestParam String idHoaDon, RedirectAttributes redirectAttributes) {
         ChiTietHoaDon hdct = new ChiTietHoaDon();
         ChiTietSanPham chiTietSanPham = sanPhamChiTietRepository.findByIdCTSP(idCTSP);
@@ -409,13 +420,13 @@ public class BanTaiQuayController {
                     }
                 }
             }
-            BigDecimal donGia =  new BigDecimal(0);
+            BigDecimal big = new BigDecimal(donGia);
             if (!spTonTaiTrongGioHang) {
-                for (ChiTietSanPham sp : listCTSP) {
-                    if (sp.getId().equals(idCTSP)) {
-                        donGia = sp.getGiaBan();
-                    }
-                }
+//                for (ChiTietSanPham sp : l) {
+//                    if (sp.getId().equals(idCTSP)) {
+//                        donGia = sp.getGiaBan();
+//                    }
+//                }
                 ChiTietSanPham ctsp = new ChiTietSanPham();
                 ctsp.setId(idCTSP);
                 hdct.setIdCTSP(ctsp);
@@ -423,7 +434,7 @@ public class BanTaiQuayController {
                 hoaDon.setId(idHoaDon);
                 hdct.setIdHoaDon(hoaDon);
                 hdct.setSoLuong(1);
-                hdct.setDonGia(donGia);
+                hdct.setDonGia(big);
                 hoaDonChiTietRepository.save(hdct);
                 //Số lượng của sản phẩm chi tiết bị giảm 1 khi ấn vào button thêm trong giỏ hàng
                 if (chiTietSanPham.getId().equals(idCTSP)) {
@@ -753,19 +764,19 @@ public class BanTaiQuayController {
             hoaDonRepository.save(hd);
         }
 
-<<<<<<< HEAD
-=======
-        KhachHang khachHang = new KhachHang();
-        khachHang.setId(idKH);
-        hoaDon.setIdKhachHang(khachHang);
-        //Tạo mã tự sinh
-        hoaDon.setNgayTao(ngayTao);
-        if (UserInfor.idNhanVien != null) {
-            NhanVien nhanVien = nhanVienRepo.findById(UserInfor.idNhanVien).get();
-        }
-        Optional<NhanVien> nv = nhanVienRepo.findById(UserInfor.idNhanVien);
-        hoaDon.setIdNhanVien(nv.get());
->>>>>>> 3d603911edf128be08d4c9052535f3224a839408
+//<<<<<<< HEAD
+//=======
+//        KhachHang khachHang = new KhachHang();
+//        khachHang.setId(idKH);
+//        hoaDon.setIdKhachHang(khachHang);
+//        //Tạo mã tự sinh
+//        hoaDon.setNgayTao(ngayTao);
+//        if (UserInfor.idNhanVien != null) {
+//            NhanVien nhanVien = nhanVienRepo.findById(UserInfor.idNhanVien).get();
+//        }
+//        Optional<NhanVien> nv = nhanVienRepo.findById(UserInfor.idNhanVien);
+//        hoaDon.setIdNhanVien(nv.get());
+//>>>>>>> 3d603911edf128be08d4c9052535f3224a839408
 
 //        HoaDon hoaDon = new HoaDon();
 //        hoaDon.setId(idHoaDon);
