@@ -70,7 +70,7 @@
                     <td>${spct.idChatLieu.ten}</td>
                     <td>${spct.idKieuTay.ten}</td>
                     <td>${spct.soLuong}</td>
-                    <td>${spct.giaBan}</td>
+                    <td class="price">${spct.giaBan}</td>
                     <td>${spct.trangThai==1?"Còn hàng":"Hết hàng"}</td>
                     <td>
                         <form action="/ban-hang-tai-quay/add-san-pham/${spct.id}" method="post"
@@ -91,5 +91,17 @@
 </div>
 </body>
 
+<script>
+    // Fomat sang VNĐ bảng hóa đơn chi tiết
+    function formatCurrencyVND(amount) {
+        return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
+    }
+
+    document.querySelectorAll('.price').forEach(function(cell) {
+        let amount = parseFloat(cell.textContent);
+        cell.textContent = formatCurrencyVND(amount);
+    });
+    // End
+</script>
 
 </html>
