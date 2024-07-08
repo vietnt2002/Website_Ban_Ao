@@ -356,28 +356,28 @@
 
         <!-- Nav Item - Dashboard -->
         <li class="nav-item active">
-            <a class="nav-link" href="index.html">
+            <a class="nav-link" href="/admin/thong-ke/view">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
                 <span>Thống kê doanh thu</span></a>
         </li>
 
         <!-- Nav Item - Charts -->
         <li class="nav-item">
-            <a class="nav-link" href="/ban-hang-tai-quay/admin/ban-tai-quay">
+            <a class="nav-link" href="/ban-hang-tai-quay">
                 <i class="fas fa-fw fa-chart-area"></i>
                 <span>Bán hàng tại quầy</span></a>
         </li>
 
         <!-- Nav Item - Charts -->
         <li class="nav-item">
-            <a class="nav-link" href="charts.html">
+            <a class="nav-link" href="/hoa-don/hien-thi">
                 <i class="fas fa-fw fa-chart-area"></i>
                 <span>Quản lý hóa đơn</span></a>
         </li>
 
         <!-- Nav Item - Pages Collapse Menu -->
         <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+            <a class="nav-link collapsed" href="/qlsp" data-toggle="collapse" data-target="#collapseTwo"
                aria-expanded="true" aria-controls="collapseTwo">
                 <i class="fas fa-fw fa-cog"></i>
                 <span>Quản lý sản phẩm</span>
@@ -392,16 +392,22 @@
 
         <!-- Nav Item - Charts -->
         <li class="nav-item">
-            <a class="nav-link" href="charts.html">
+            <a class="nav-link" href="/qlnv/quan-ly-nhan-vien">
                 <i class="fas fa-fw fa-chart-area"></i>
                 <span>Quản lý nhân viên</span></a>
         </li>
 
         <!-- Nav Item - Charts -->
         <li class="nav-item">
-            <a class="nav-link" href="charts.html">
+            <a class="nav-link" href="/qlkh/quan-ly-khach-hang">
                 <i class="fas fa-fw fa-chart-area"></i>
                 <span>Quản lý khách hàng</span></a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" href="/admin/quan-ly-khuyen-mai">
+                <i class="fas fa-fw fa-chart-area"></i>
+                <span>Quản lý khuyến mãi</span></a>
         </li>
 
         <!-- Divider -->
@@ -1496,9 +1502,9 @@
                     <c:if test="${hoaDonDTO.loaiHoaDon == 1}">
                         <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
                                 data-bs-target="#addProductModal"
-<%--                                <c:if test="${hoaDonDTO.trangThai != 1}">--%>
-<%--                                    disabled--%>
-<%--                                </c:if> >--%>
+                                <c:if test="${hoaDonDTO.trangThai != 1}">
+                                    disabled
+                                </c:if> >
                             <i class="bi bi-plus text-white"></i>
                             Thêm sản phẩm
                         </button>

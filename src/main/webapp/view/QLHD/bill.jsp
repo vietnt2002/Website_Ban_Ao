@@ -46,6 +46,7 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 
 <body id="page-top">
@@ -69,28 +70,28 @@
 
         <!-- Nav Item - Dashboard -->
         <li class="nav-item active">
-            <a class="nav-link" href="index.html">
+            <a class="nav-link" href="/admin/thong-ke/view">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
                 <span>Thống kê doanh thu</span></a>
         </li>
 
         <!-- Nav Item - Charts -->
         <li class="nav-item">
-            <a class="nav-link" href="/ban-hang-tai-quay/admin/ban-tai-quay">
+            <a class="nav-link" href="/ban-hang-tai-quay">
                 <i class="fas fa-fw fa-chart-area"></i>
                 <span>Bán hàng tại quầy</span></a>
         </li>
 
         <!-- Nav Item - Charts -->
         <li class="nav-item">
-            <a class="nav-link" href="charts.html">
+            <a class="nav-link" href="/hoa-don/hien-thi">
                 <i class="fas fa-fw fa-chart-area"></i>
                 <span>Quản lý hóa đơn</span></a>
         </li>
 
         <!-- Nav Item - Pages Collapse Menu -->
         <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+            <a class="nav-link collapsed" href="/qlsp" data-toggle="collapse" data-target="#collapseTwo"
                aria-expanded="true" aria-controls="collapseTwo">
                 <i class="fas fa-fw fa-cog"></i>
                 <span>Quản lý sản phẩm</span>
@@ -105,16 +106,22 @@
 
         <!-- Nav Item - Charts -->
         <li class="nav-item">
-            <a class="nav-link" href="charts.html">
+            <a class="nav-link" href="/qlnv/quan-ly-nhan-vien">
                 <i class="fas fa-fw fa-chart-area"></i>
                 <span>Quản lý nhân viên</span></a>
         </li>
 
         <!-- Nav Item - Charts -->
         <li class="nav-item">
-            <a class="nav-link" href="charts.html">
+            <a class="nav-link" href="/qlkh/quan-ly-khach-hang">
                 <i class="fas fa-fw fa-chart-area"></i>
                 <span>Quản lý khách hàng</span></a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" href="/admin/quan-ly-khuyen-mai">
+                <i class="fas fa-fw fa-chart-area"></i>
+                <span>Quản lý khuyến mãi</span></a>
         </li>
 
         <!-- Divider -->

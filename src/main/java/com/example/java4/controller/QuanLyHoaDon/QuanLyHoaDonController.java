@@ -212,24 +212,6 @@ public class QuanLyHoaDonController {
         model.addAttribute("countDaHoanThanh", hoaDonRepository.countByTrangThai(HoaDonRepository.DA_HOAN_THANH));
         model.addAttribute("countDaHuy", hoaDonRepository.countByTrangThai(HoaDonRepository.DA_HUY));
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     // Chức năng xem thông tin chi tiết hóa đơn theo IDHD
     @GetMapping("/detail/{idHD}")
     public String detailHDCT(Model model,
