@@ -1623,6 +1623,19 @@
                     trangThaiLabelModalEdit.textContent = "Dừng hoạt động";
                 }
             });
+
+        fetch("/hinh-anh/detail-byidspct/" + spctid, {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        }).then(response => response.json())
+            .then(resp => {
+                fileHinhAnh1ModalEdit.src= resp.hinhAnh?"/image/"+resp.hinhAnh:"/image-icon/pendingIMG.png";
+                fileHinhAnh2ModalEdit.src= resp.hinhAnh?"/image/"+resp.hinhAnh:"/image-icon/pendingIMG.png";
+                fileHinhAnh3ModalEdit.src= resp.hinhAnh?"/image/"+resp.hinhAnh:"/image-icon/pendingIMG.png";
+                fileHinhAnh4ModalEdit.src= resp.hinhAnh?"/image/"+resp.hinhAnh:"/image-icon/pendingIMG.png";
+            });
     });
     $(document).on('click', "button[id^='detailSPBtn_']", e => {
         e.preventDefault();

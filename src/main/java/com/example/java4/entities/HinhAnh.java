@@ -1,7 +1,7 @@
 package com.example.java4.entities;
 
 import jakarta.persistence.*;
-
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
@@ -11,6 +11,8 @@ public class HinhAnh {
     private String hinhAnh1;
     private String hinhAnh2;
     private String hinhAnh3;
+    private String hinhAnh4;
+    private LocalDateTime ngayTao;
     private Integer trangThai;
 
     @Id
@@ -51,6 +53,24 @@ public class HinhAnh {
         this.hinhAnh3 = hinhAnh3;
     }
 
+    @Column(name = "HinhAnh4")
+    public String getHinhAnh4() {
+        return hinhAnh4;
+    }
+
+    public void setHinhAnh4(String hinhAnh4) {
+        this.hinhAnh4 = hinhAnh4;
+    }
+
+    @Column(name = "NgayTao")
+    public LocalDateTime getNgayTao() {
+        return ngayTao;
+    }
+
+    public void setNgayTao(LocalDateTime ngayTao) {
+        this.ngayTao = ngayTao;
+    }
+
     @Column(name = "TrangThai")
     public Integer getTrangThai() {
         return trangThai;
@@ -65,12 +85,18 @@ public class HinhAnh {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         HinhAnh hinhAnh = (HinhAnh) o;
-        return Objects.equals(id, hinhAnh.id) && Objects.equals(hinhAnh1, hinhAnh.hinhAnh1) && Objects.equals(hinhAnh2, hinhAnh.hinhAnh2) && Objects.equals(hinhAnh3, hinhAnh.hinhAnh3) && Objects.equals(trangThai, hinhAnh.trangThai);
+        return Objects.equals(id, hinhAnh.id) &&
+                Objects.equals(hinhAnh1, hinhAnh.hinhAnh1) &&
+                Objects.equals(hinhAnh2, hinhAnh.hinhAnh2) &&
+                Objects.equals(hinhAnh3, hinhAnh.hinhAnh3) &&
+                Objects.equals(hinhAnh4, hinhAnh.hinhAnh4) &&
+                Objects.equals(ngayTao, hinhAnh.ngayTao) &&
+                Objects.equals(trangThai, hinhAnh.trangThai);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, hinhAnh1, hinhAnh2, hinhAnh3, trangThai);
+        return Objects.hash(id, hinhAnh1, hinhAnh2, hinhAnh3, hinhAnh4, ngayTao, trangThai);
     }
 
     @ManyToOne
