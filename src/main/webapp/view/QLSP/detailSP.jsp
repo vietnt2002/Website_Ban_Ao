@@ -1631,10 +1631,9 @@
             }
         }).then(response => response.json())
             .then(resp => {
-                fileHinhAnh1ModalEdit.src= resp.hinhAnh?"/image/"+resp.hinhAnh:"/image-icon/pendingIMG.png";
-                fileHinhAnh2ModalEdit.src= resp.hinhAnh?"/image/"+resp.hinhAnh:"/image-icon/pendingIMG.png";
-                fileHinhAnh3ModalEdit.src= resp.hinhAnh?"/image/"+resp.hinhAnh:"/image-icon/pendingIMG.png";
-                fileHinhAnh4ModalEdit.src= resp.hinhAnh?"/image/"+resp.hinhAnh:"/image-icon/pendingIMG.png";
+                fileHinhAnh1ModalEdit.src= resp.hinhAnh1?"/image/"+resp.hinhAnh1:"/image-icon/pendingIMG.png";
+                fileHinhAnh2ModalEdit.src= resp.hinhAnh2?"/image/"+resp.hinhAnh2:"/image-icon/pendingIMG.png";
+                fileHinhAnh3ModalEdit.src= resp.hinhAnh3?"/image/"+resp.hinhAnh3:"/image-icon/pendingIMG.png";
             });
     });
     $(document).on('click', "button[id^='detailSPBtn_']", e => {

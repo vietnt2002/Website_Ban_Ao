@@ -19,8 +19,6 @@ public class HinhAnhUpdate {
     @NotEmpty
     private String hinhAnh3;
     @NotEmpty
-    private String hinhAnh4;
-    @NotEmpty
     private Integer trangThai;
     @NotEmpty
     private LocalDateTime ngayTao;

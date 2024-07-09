@@ -65,7 +65,11 @@ public class HinhAnhController {
     public ResponseEntity<HinhAnh> getDetail(@PathVariable(value = "id") HinhAnh hinhAnh){
         return ResponseEntity.ok(hinhAnh);
     }
-
+    @GetMapping("/detail-byidspct/{idspct}")
+    public ResponseEntity<HinhAnh> getDetailByIdspct(@PathVariable(value = "idspct") String idspct){
+        HinhAnh hinhAnh = hinhAnhRepo.findByIdCTSP(idspct);
+        return ResponseEntity.ok(hinhAnh);
+    }
     @CrossOrigin
     @PostMapping("/update/{id}")
     public ResponseEntity<Boolean> doUpdate(@RequestBody @Valid HinhAnhUpdate newHinhAnh, BindingResult result,
@@ -78,7 +82,6 @@ public class HinhAnhController {
             hinhAnh.setHinhAnh1(newHinhAnh.getHinhAnh1());
             hinhAnh.setHinhAnh2(newHinhAnh.getHinhAnh2());
             hinhAnh.setHinhAnh3(newHinhAnh.getHinhAnh3());
-            hinhAnh.setHinhAnh4(newHinhAnh.getHinhAnh4());
             hinhAnh.setNgayTao(newHinhAnh.getNgayTao());
             hinhAnh.setTrangThai(newHinhAnh.getTrangThai());
             hinhAnhRepo.save(hinhAnh);
@@ -98,7 +101,6 @@ public class HinhAnhController {
             hinhAnh.setHinhAnh1(newHinhAnh.getHinhAnh1());
             hinhAnh.setHinhAnh2(newHinhAnh.getHinhAnh2());
             hinhAnh.setHinhAnh3(newHinhAnh.getHinhAnh3());
-            hinhAnh.setHinhAnh4(newHinhAnh.getHinhAnh4());
             hinhAnh.setNgayTao(newHinhAnh.getNgayTao());
             hinhAnh.setTrangThai(newHinhAnh.getTrangThai());
             hinhAnhRepo.save(hinhAnh);
@@ -136,7 +138,6 @@ public class HinhAnhController {
             hinhAnh.setHinhAnh1(newHinhAnh.getHinhAnh1());
             hinhAnh.setHinhAnh2(newHinhAnh.getHinhAnh2());
             hinhAnh.setHinhAnh3(newHinhAnh.getHinhAnh3());
-            hinhAnh.setHinhAnh4(newHinhAnh.getHinhAnh4());
             hinhAnh.setNgayTao(newHinhAnh.getNgayTao());
             hinhAnh.setTrangThai(newHinhAnh.getTrangThai());
             hinhAnhRepo.save(hinhAnh);
