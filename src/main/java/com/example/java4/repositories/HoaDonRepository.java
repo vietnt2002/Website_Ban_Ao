@@ -26,7 +26,7 @@ public interface HoaDonRepository
     public static final int DA_XAC_NHAN = 2;
     public static final int CHO_GIAO_HANG = 3;
     public static final int DANG_GIAO_HANG = 4;
-    public static final int GIAO_HANG_THANH_CONG = 5;
+    public static final int DA_THANH_TOAN = 5;
     public static final int DA_HOAN_THANH = 6;
     public static final int DA_HUY= 7;
     //Phương thức thanh toán
@@ -48,7 +48,6 @@ public interface HoaDonRepository
 //    @Query(value = "SELECT TOP 5 * FROM HoaDon where trangThai = 1 ORDER BY ngayTao DESC",
 //            nativeQuery = true)
     Page<HoaDon>  findByTrangThai(int trangThai,Pageable pageable);
-
 
 
     //    public Optional<HoaDon_Tai> findById(String id);
@@ -157,9 +156,7 @@ public interface HoaDonRepository
     @Query("select count(hd) from HoaDon hd where hd.trangThai >= 1")
     int countByTrangThai();
 
-//    select hd.Ma, hd.NgayTao, sum(cthd.SoLuong) as TongSoLuong, hd.TongTien, hd.TrangThai from HoaDon hd
-//    join ChiTietHoaDon cthd on cthd.idHoaDon = hd.id
-//    where hd.TrangThai = 1 and hd.IdKhachHang = '839D965B-9681-4074-9A66-5ACECE1545E6'
-//    group by hd.Ma, hd.NgayTao, hd.TongTien, hd.TrangThai
-//    order by hd.NgayTao desc
+    @Query("SELECT hd FROM HoaDon hd WHERE NOT (hd.loaiHoaDon = 0 AND hd.trangThai = 0)")
+    Page<HoaDon> findAllExcludingSpecificTypeAndStatus(Pageable pageable);
+
 };

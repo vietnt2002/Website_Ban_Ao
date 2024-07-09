@@ -106,6 +106,7 @@
         .custom-card-body::-webkit-scrollbar-thumb:active {
             background-color: #333;
         }
+
         /* Stepper container */
         .stepper-horizontal {
             display: flex;
@@ -227,7 +228,8 @@
                 top: 0;
                 width: 100%;
             }
-            delivery-logo{
+
+            delivery-logo {
                 width: 150px;
             }
 
@@ -293,7 +295,7 @@
         }
 
 
-    .bordered-section {
+        .bordered-section {
             border: 1px solid #ddd;
             padding: 15px;
             margin-bottom: 20px;
@@ -321,7 +323,6 @@
         /*    max-width: 230px;*/
         /*    height: 150px;*/
         /*}*/
-
 
 
         @page {
@@ -639,13 +640,6 @@
 
             <!-- Begin Page Content -->
             <div class="container-fluid">
-                <%--              Hiển thị thông báo lỗi nếu không tìm thấy hóa đơn      --%>
-                <c:if test="${not empty errorMessage}">
-                    <div class="alert alert-danger" role="alert">
-                            ${errorMessage}
-                    </div>
-                </c:if>
-
                 <div class="d-flex justify-content-end">
                     <!-- Nút in ra phiếu hóa đơn khi giao hàng theo dạng file PDF -->
                     <c:if test="${hoaDonDTO.loaiHoaDon == 1 && hoaDonDTO.trangThai != 1 }">
@@ -700,25 +694,6 @@
                                                 <div class="step-date">${hoaDonDTO.ngayTao}</div>
                                             </div>
                                         </c:when>
-                                        <c:when test="${step == 'confirmed'}">
-                                            <div class="step active" id="step_online_1">
-                                                <div class="step-icon-wrapper">
-                                                    <i class="bi bi-hourglass-split step-icon"></i>
-                                                </div>
-                                                <div class="step-title">Chờ xác nhận</div>
-                                                <div class="step-date">${hoaDonDTO.ngayTao}</div>
-                                            </div>
-                                            <div class="step-arrow">
-                                                <i class="bi bi-arrow-right"></i>
-                                            </div>
-                                            <div class="step active" id="step_online_2">
-                                                <div class="step-icon-wrapper">
-                                                    <i class="bi bi-check-circle step-icon"></i>
-                                                </div>
-                                                <div class="step-title">Đã xác nhận</div>
-                                                <div class="step-date">${hoaDonDTO.ngayDaXacNhan}</div>
-                                            </div>
-                                        </c:when>
                                         <c:when test="${step == 'delivery'}">
                                             <div class="step active" id="step_online_1">
                                                 <div class="step-icon-wrapper">
@@ -734,18 +709,8 @@
                                                 <div class="step-icon-wrapper">
                                                     <i class="bi bi-check-circle step-icon"></i>
                                                 </div>
-                                                <div class="step-title">Đã xác nhận</div>
-                                                <div class="step-date">${hoaDonDTO.ngayDaXacNhan}</div>
-                                            </div>
-                                            <div class="step-arrow">
-                                                <i class="bi bi-arrow-right"></i>
-                                            </div>
-                                            <div class="step active" id="step_online_3">
-                                                <div class="step-icon-wrapper">
-                                                    <i class="bi bi-truck step-icon"></i>
-                                                </div>
                                                 <div class="step-title">Chờ giao hàng</div>
-                                                <div class="step-date">${hoaDonDTO.ngayChoGiaoHang}</div>
+                                                <div class="step-date">${hoaDonDTO.ngayDaXacNhan}</div>
                                             </div>
                                         </c:when>
                                         <c:when test="${step == 'delivering'}">
@@ -759,22 +724,12 @@
                                             <div class="step-arrow">
                                                 <i class="bi bi-arrow-right"></i>
                                             </div>
-                                            <div class="step active" id="step_online_2">
-                                                <div class="step-icon-wrapper">
-                                                    <i class="bi bi-check-circle step-icon"></i>
-                                                </div>
-                                                <div class="step-title">Đã xác nhận</div>
-                                                <div class="step-date">${hoaDonDTO.ngayDaXacNhan}</div>
-                                            </div>
-                                            <div class="step-arrow">
-                                                <i class="bi bi-arrow-right"></i>
-                                            </div>
                                             <div class="step active" id="step_online_3">
                                                 <div class="step-icon-wrapper">
                                                     <i class="bi bi-truck step-icon"></i>
                                                 </div>
                                                 <div class="step-title">Chờ giao hàng</div>
-                                                <div class="step-date">${hoaDonDTO.ngayChoGiaoHang}</div>
+                                                <div class="step-date">${hoaDonDTO.ngayDaXacNhan}</div>
                                             </div>
                                             <div class="step-arrow">
                                                 <i class="bi bi-arrow-right"></i>
@@ -783,59 +738,8 @@
                                                 <div class="step-icon-wrapper">
                                                     <i class="bi bi-box-seam step-icon"></i>
                                                 </div>
-                                                <div class="step-title">Đang giao hàng</div>
+                                                <div class="step-title">Đang Vận Chuyển</div>
                                                 <div class="step-date">${hoaDonDTO.ngayDangGiaoHang}</div>
-                                            </div>
-                                        </c:when>
-
-                                        <c:when test="${step == 'delivered'}">
-                                            <div class="step active" id="step_online_1">
-                                                <div class="step-icon-wrapper">
-                                                    <i class="bi bi-hourglass-split step-icon"></i>
-                                                </div>
-                                                <div class="step-title">Chờ xác nhận</div>
-                                                <div class="step-date">${hoaDonDTO.ngayTao}</div>
-                                            </div>
-                                            <div class="step-arrow">
-                                                <i class="bi bi-arrow-right"></i>
-                                            </div>
-                                            <div class="step active" id="step_online_2">
-                                                <div class="step-icon-wrapper">
-                                                    <i class="bi bi-check-circle step-icon"></i>
-                                                </div>
-                                                <div class="step-title">Đã xác nhận</div>
-                                                <div class="step-date">${hoaDonDTO.ngayDaXacNhan}</div>
-                                            </div>
-                                            <div class="step-arrow">
-                                                <i class="bi bi-arrow-right"></i>
-                                            </div>
-                                            <div class="step active" id="step_online_3">
-                                                <div class="step-icon-wrapper">
-                                                    <i class="bi bi-truck step-icon"></i>
-                                                </div>
-                                                <div class="step-title">Chờ giao hàng</div>
-                                                <div class="step-date">${hoaDonDTO.ngayChoGiaoHang}</div>
-                                            </div>
-                                            <div class="step-arrow">
-                                                <i class="bi bi-arrow-right"></i>
-                                            </div>
-                                            <div class="step active" id="step_online_4">
-                                                <div class="step-icon-wrapper">
-                                                    <i class="bi bi-box-seam step-icon"></i>
-                                                </div>
-                                                <div class="step-title">Đang vận chuyển</div>
-                                                <div class="step-date">${hoaDonDTO.ngayDangGiaoHang}</div>
-                                            </div>
-                                            <div class="step-arrow">
-                                                <i class="bi bi-arrow-right"></i>
-                                            </div>
-
-                                            <div class="step active" id="step_online_5">
-                                                <div class="step-icon-wrapper">
-                                                    <i class="bi bi-box-arrow-in-right step-icon"></i>
-                                                </div>
-                                                <div class="step-title">Đã giao hàng</div>
-                                                <div class="step-date">${hoaDonDTO.ngayCapNhat}</div>
                                             </div>
                                         </c:when>
                                         <c:when test="${step == 'accomplished'}">
@@ -849,29 +753,18 @@
                                             <div class="step-arrow">
                                                 <i class="bi bi-arrow-right"></i>
                                             </div>
-                                            <div class="step active" id="step_online_2">
-                                                <div class="step-icon-wrapper">
-                                                    <i class="bi bi-check-circle step-icon"></i>
-                                                </div>
-                                                <div class="step-title">Đã xác nhận</div>
-                                                <div class="step-date">${hoaDonDTO.ngayDaXacNhan}</div>
-                                            </div>
-                                            <div class="step-arrow">
-                                                <i class="bi bi-arrow-right"></i>
-                                            </div>
                                             <div class="step active" id="step_online_3">
                                                 <div class="step-icon-wrapper">
                                                     <i class="bi bi-truck step-icon"></i>
                                                 </div>
                                                 <div class="step-title">Chờ giao hàng</div>
-                                                <div class="step-date">${hoaDonDTO.ngayChoGiaoHang}</div>
+                                                <div class="step-date">${hoaDonDTO.ngayDaXacNhan}</div>
                                             </div>
                                             <div class="step-arrow">
                                                 <i class="bi bi-arrow-right"></i>
                                             </div>
-
                                             <div class="step active" id="step_online_4">
-                                                <div class="step-icon-wrapper">
+                                                <div class="step-icon-wrapper" >
                                                     <i class="bi bi-box-seam step-icon"></i>
                                                 </div>
                                                 <div class="step-title">Đang vận chuyển</div>
@@ -880,18 +773,7 @@
                                             <div class="step-arrow">
                                                 <i class="bi bi-arrow-right"></i>
                                             </div>
-
-                                            <div class="step active" id="step_online_5">
-                                                <div class="step-icon-wrapper">
-                                                    <i class="bi bi-box-arrow-in-right step-icon"></i>
-                                                </div>
-                                                <div class="step-title">Đã giao hàng</div>
-                                                <div class="step-date">${hoaDonDTO.ngayCapNhat}</div>
-                                            </div>
-                                            <div class="step-arrow">
-                                                <i class="bi bi-arrow-right"></i>
-                                            </div>
-                                            <div class="step active" id="step_online_5">
+                                            <div class="step active" id="step_online_5" >
                                                 <div class="step-icon-wrapper">
                                                     <i class="bi bi-credit-card-2-back step-icon"></i>
                                                 </div>
@@ -931,7 +813,7 @@
                                             <c:when test="${hoaDonDTO.trangThai == 2}">
                                                 <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal"
                                                         data-bs-target="#confirmModal" id="btnChoGiaoHang" name="btnChoGiaoHang">
-                                                  Xác nhận chờ giao hàng
+                                                    Xác nhận chờ giao hàng
                                                 </button>
                                             </c:when>
                                             <c:when test="${hoaDonDTO.trangThai == 3}">
@@ -943,7 +825,7 @@
                                             <c:when test="${hoaDonDTO.trangThai == 4}">
                                                 <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal"
                                                         data-bs-target="#confirmModal" id="btnDaGiaoHang" name="btnDaGiaoHang">
-                                                   Xác nhận lấy hàng
+                                                    Xác nhận lấy hàng
                                                 </button>
                                             </c:when>
                                             <c:when test="${hoaDonDTO.trangThai == 5}">
@@ -954,27 +836,31 @@
                                             </c:when>
                                         </c:choose>
 
-
                                         <button type="button" class="btn btn-danger" id="cancelButton"
                                                 data-bs-toggle="modal"
                                                 data-bs-target="#cancelModal"
-                                                <c:if test="${hoaDonDTO.trangThai != 1}">disabled </c:if>
+                                                <c:if test="${hoaDonDTO.trangThai != 1}">disabled</c:if>
                                         >
                                             Hủy đơn
                                         </button>
                                     </c:if>
 
-<%--                                                <!-- --%>
-                             <c:if test="${hoaDonDTO.trangThai != 1 && hoaDonDTO.trangThai != 6}">
-                                <a href="/hoa-don/hoan-tac/${hoaDonDTO.id}">
-                                    <button type="button" class="btn btn-warning" id="">
-                                        Hoàn tác
-                                    </button>
-                                </a>
-                                 </c:if>
+                                    <c:if test="${hoaDonDTO.trangThai != 1 && hoaDonDTO.trangThai != 6}">
+                                        <a href="/hoa-don/hoan-tac/${hoaDonDTO.id}">
+                                            <button type="button" class="btn btn-warning" id="">
+                                                Hoàn tác
+                                            </button>
+                                        </a>
+                                    </c:if>
                                 </div>
+
+                                <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                                        data-bs-target="#historyModal">
+                                    <i class="bi bi-clock-history text-white"></i> Lịch sử
+                                </button>
                             </div>
                         </div>
+
                     </c:if>
 
 
@@ -986,21 +872,27 @@
                      aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
-                            <form id="confirmForm" method="post" action="/hoa-don/xac-nhan/${hoaDonDTO.id}" onsubmit="return handleFormSubmit(e, ${hoaDonDTO.trangThai})">
+                            <form id="confirmForm" method="post" action="/hoa-don/xac-nhan/${hoaDonDTO.id}"
+                                  onsubmit="return handleFormSubmit(e, ${hoaDonDTO.trangThai})">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="confirmModalLabel">Xác nhận đơn hàng</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
                                     <input type="hidden" name="trangThai" value="${hoaDonDTO.trangThai + 1}">
                                     <div class="mb-3">
                                         <label for="moTa" class="form-label">Mô tả</label>
-                                        <textarea placeholder="Nhập nội dung mô tả..." class="form-control" id="moTa" name="moTa" rows="3"></textarea>
-                                        <div id="moTaError" class="text-danger" style="display: none;">Vui lòng điền mô tả.</div>
+                                        <textarea placeholder="Nhập nội dung mô tả..." class="form-control" id="moTa"
+                                                  name="moTa" rows="3"></textarea>
+                                        <div id="moTaError" class="text-danger" style="display: none;">Vui lòng điền mô
+                                            tả.
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng
+                                    </button>
                                     <button onclick="Test()" type="submit" class="btn btn-primary">Xác nhận</button>
                                 </div>
                             </form>
@@ -1043,7 +935,56 @@
                 </div>
 
 
-                <%--    Bảng lịch sử thanh toán--%>
+                <!-- Modal lịch sử hóa đơn-->
+                <div class="modal fade" id="historyModal" tabindex="-1" aria-labelledby="historyModalLabel" aria-hidden="true">
+                    <div class="modal-dialog  modal-xl">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="historyModalLabel">Lịch sử trạng thái hóa đơn</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <table class="table table-striped table-hover">
+                                    <thead class="table-primary">
+                                    <tr>
+                                        <th>STT</th>
+                                        <th>Trạng thái</th>
+                                        <th>Thời gian</th>
+                                        <th>Người xác nhận</th>
+                                        <th>Ghi chú</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <c:forEach var="lichSuHD" varStatus="i" items="${listLichSuHoaDon}">
+                                    <tr>
+                                        <td>${i.index + 1}</td>
+                                        <td>
+                                                  <span class="badge rounded-pill ${hoaDonDTO.maMau}">
+                                                          ${hoaDonDTO.trangThaiText}
+                                                  </span>
+                                        </td>
+                                        <td>${lichSuHD.ngayCapNhat} </td>
+                                        <td>${lichSuHD.idNhanVien.hoTen}</td>
+                                        <td>${lichSuHD.ghiChu}</td>
+                                    </tr>
+                                    </c:forEach>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+            <%--    Bảng lịch sử thanh toán--%>
+
+
                 <div class="card mb-3">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h5 class="card-title mb-0">Lịch sử thanh toán:</h5>
@@ -1077,39 +1018,33 @@
                             </thead>
 
                             <tbody>
-                            <%--                            <c:if test="${hoaDonDTO.trangThai == 4 || hoaDonDTO.loaiHoaDon == 0}">--%>
-                            <tr>
-                                <td>1</td>
-                                <td><fmt:formatNumber value="${tongTienThanhToan}" type="currency"
-                                                      currencySymbol="₫"
-                                                      groupingUsed="true"/>
-                                </td>
-                                <td>
+                            <c:if test="${(hoaDonDTO.loaiHoaDon == 1 || hoaDonDTO.loaiHoaDon == 0) && hoaDonDTO.trangThai == 6}">
+                                <tr>
+                                    <td>1</td>
+                                    <td><fmt:formatNumber value="${tongTienThanhToan}" type="currency"
+                                                          currencySymbol="₫"
+                                                          groupingUsed="true"/>
+                                    </td>
+                                    <td>
                                     <span class="badge rounded-pill bg-success">
-                                           Thành công
+                                        Thành công
                                     </span>
-                                </td>
-                                <td>
-                                    ${hoaDonDTO.ngayThanhToan}
-                                </td>
-                                <td>
-                                    <span class="badge rounded-pill bg-primary">${hoaDonDTO.phuongThucThanhToan == 0 ? "Tiền mặt" :"Chuyển khoản"}</span>
-                                </td>
+                                    </td>
+                                    <td>
+                                            ${hoaDonDTO.ngayThanhToan}
+                                    </td>
+                                    <td>
+                                        <span class="badge rounded-pill bg-primary">${hoaDonDTO.phuongThucThanhToan == 0 ? "Tiền mặt" :"Chuyển khoản"}</span>
+                                    </td>
 
-                                <td>
-
-                                    <%--                                            <c:choose>--%>
-                                    <%--                                                <c:when test="${hoaDonDTO.loaiHoaDon == 1}">--%>
-                                    ${hoaDonDTO.nhanVien.hoTen}
-                                    <%--                                                </c:when>--%>
-
-                                    <%--                                            </c:choose>--%>
-                                </td>
-                                <td>
-                                    ${hoaDonDTO.ghiChu}
-                                </td>
-                            </tr>
-                            <%--                            </c:if>--%>
+                                    <td>
+                                            ${hoaDonDTO.nhanVien.hoTen}
+                                    </td>
+                                    <td>
+                                            ${hoaDonDTO.ghiChu}
+                                    </td>
+                                </tr>
+                            </c:if>
 
                             </tbody>
 
@@ -1178,8 +1113,6 @@
                         </div>
                     </div>
                 </div>
-
-
 
 
                 <%--                <!-- Thông tin đơn hàng -->--%>
@@ -1369,7 +1302,8 @@
                                         <p class="fw-bold mb-1 pb-3 small d-flex justify-content-between">
                                             <span>Phí vận chuyển:</span>
                                             <span class="fw-normal" id="phiVanChuyen">
-                                                <fmt:formatNumber value="${phiVanChuyen}" type="currency" currencySymbol="₫"
+                                                <fmt:formatNumber value="${phiVanChuyen}" type="currency"
+                                                                  currencySymbol="₫"
                                                                   groupingUsed="true"/>
                                             </span>
                                         </p>
@@ -1544,7 +1478,7 @@
                                 </td>
                                 <td>${chiTiet.idCTSP.idSanPham.ten}</td>
                                 <td class="total-amount" id="total-${chiTiet.idCTSP.id} ">
-                                    <span class="text-danger"  id="donGiaSanPham">
+                                    <span class="text-danger" id="donGiaSanPham">
                                          <fmt:formatNumber value="${chiTiet.donGia}" type="currency"
                                                            currencySymbol="₫" groupingUsed="true"/>
                                     </span>
@@ -1571,9 +1505,9 @@
                                         </c:choose>
                                     </c:if>
                                 </td>
-                                <td class="" id="tongTienSanPham-${chiTiet.idCTSP.id}">
+                                <td class="text-danger fw-bold" id="tongTienSanPham-${chiTiet.idCTSP.id}">
                                     <c:set var="tongTienSanPham" value="${chiTiet.donGia * chiTiet.soLuong}"></c:set>
-                                    <span class="text-danger fw-bold" >
+                                    <span class="text-danger fw-bold">
                                          <fmt:formatNumber value="${tongTienSanPham}" type="currency"
                                                            currencySymbol="₫" groupingUsed="true"/>
                                     </span>
@@ -1777,7 +1711,8 @@
                         <p class="mb-0">Ngày Đặt Đơn: ${hoaDonDTO.ngayTao}</p>
                     </div>
                     <div class="col-md-6 text-right">
-                        <img src="https://cdn.prod.website-files.com/5fb85f26f126ce08d792d2d9/607cdb2f875a62174a2ac9e3_After_GHN.png" alt="Giao hàng nhanh" class="delivery-logo">
+                        <img src="https://cdn.prod.website-files.com/5fb85f26f126ce08d792d2d9/607cdb2f875a62174a2ac9e3_After_GHN.png"
+                             alt="Giao hàng nhanh" class="delivery-logo">
                     </div>
                 </div>
             </div>
@@ -1790,7 +1725,8 @@
                             <h5>Thông tin Bên Gửi:</h5>
                             <div>
                                 <p>Người gửi: MS-STORE</p>
-                                <p>Địa chỉ: Tòa nhà FPT Polytechnic, Phố Trịnh Văn Bô, Xuân Phương, Nam Từ Liêm, Hà Nội</p>
+                                <p>Địa chỉ: Tòa nhà FPT Polytechnic, Phố Trịnh Văn Bô, Xuân Phương, Nam Từ Liêm, Hà
+                                    Nội</p>
                                 <p>Số điện thoại: 0123 456 789</p>
                             </div>
                         </div>
@@ -1800,7 +1736,8 @@
                             <h5>Thông tin Bên Nhận:</h5>
                             <div>
                                 <p>Người nhận: ${hoaDonDTO.khachHang.hoTen}</p>
-                                <p>Địa chỉ: ${diaChiKhachHang.diaChiChiTiet}, ${diaChiKhachHang.idPhuongXa}, ${diaChiKhachHang.idQuanHuyen}, ${diaChiKhachHang.idTinhThanh}</p>
+                                <p>Địa
+                                    chỉ: ${diaChiKhachHang.diaChiChiTiet}, ${diaChiKhachHang.idPhuongXa}, ${diaChiKhachHang.idQuanHuyen}, ${diaChiKhachHang.idTinhThanh}</p>
                                 <p>Số điện thoại: ${hoaDonDTO.khachHang.sdt}</p>
                             </div>
                         </div>
@@ -1830,8 +1767,10 @@
                             <td>${chiTiet.idCTSP.idMauSac.ten}</td>
                             <td>${chiTiet.idCTSP.idKichThuoc.ten}</td>
                             <td>${chiTiet.soLuong}</td>
-                            <td><fmt:formatNumber value="${chiTiet.donGia}" type="currency" currencySymbol="₫" groupingUsed="true"/></td>
-                            <td><fmt:formatNumber value="${chiTiet.donGia * chiTiet.soLuong}" type="currency" currencySymbol="₫" groupingUsed="true"/></td>
+                            <td><fmt:formatNumber value="${chiTiet.donGia}" type="currency" currencySymbol="₫"
+                                                  groupingUsed="true"/></td>
+                            <td><fmt:formatNumber value="${chiTiet.donGia * chiTiet.soLuong}" type="currency"
+                                                  currencySymbol="₫" groupingUsed="true"/></td>
                         </tr>
                     </c:forEach>
                     </tbody>
@@ -1840,7 +1779,9 @@
 
             <div class="d-flex justify-content-between align-items-start mb-4">
                 <div>
-                    <h5 class="mb-0">Tiền thu hộ: <span><fmt:formatNumber value="${hoaDonDTO.tongTien}" type="currency" currencySymbol="₫" groupingUsed="true"/></span></h5>
+                    <h5 class="mb-0">Tiền thu hộ: <span><fmt:formatNumber value="${hoaDonDTO.tongTien}" type="currency"
+                                                                          currencySymbol="₫"
+                                                                          groupingUsed="true"/></span></h5>
                 </div>
                 <div class="signature-box">
                     <p class="mb-1">Chữ ký người nhận</p>
@@ -1848,7 +1789,6 @@
                 </div>
             </div>
         </div>
-
 
 
         <!-- Footer -->
@@ -1965,6 +1905,14 @@
     });
     </c:if>
 
+    <%--    Thông báo hủy hóa đơn thất bại --%>
+    <c:if test="${not empty errorMessage}">
+    Toast.fire({
+        icon: "error",
+        title: "${errorMessage}"
+    });
+    </c:if>
+
 
 
     // Nút in hóa đơn để giao hàng
@@ -1990,104 +1938,6 @@
         // Ẩn lại phần tử invoiceSection sau khi in xong (nếu bạn muốn)
         document.getElementById('invoiceSection').style.display = 'none';
     }
-
-
-
-
-
-
-    <%--function handleFormSubmit(e, currentStatus) {--%>
-    <%--    e.preventDefault();  // Ngăn chặn hành động mặc định của form--%>
-    <%--    console.log("zo")--%>
-    <%--    const form = e.target;--%>
-
-    <%--    // Gửi form sử dụng Fetch API--%>
-    <%--    fetch(form.action, {--%>
-    <%--        method: form.method,--%>
-    <%--        body: new FormData(form)--%>
-    <%--    })--%>
-    <%--        .then(response => {--%>
-    <%--            if (!response.ok) {--%>
-    <%--                throw new Error('Network response was not ok');--%>
-    <%--            }--%>
-    <%--            return response.json();  // Giả sử server trả về JSON--%>
-    <%--        })--%>
-    <%--        .then(data => {--%>
-    <%--            // Kiểm tra nếu phản hồi chỉ ra thành công--%>
-    <%--            if (data.success) {--%>
-
-    <%--                // Đóng modal--%>
-    <%--                const modal = document.getElementById('confirmModal');--%>
-    <%--                const modalInstance = bootstrap.Modal.getInstance(modal);--%>
-    <%--                modalInstance.hide();--%>
-
-    <%--                // In hóa đơn nếu trạng thái thay đổi từ "chờ xác nhận" (1) sang "đã xác nhận" (2)--%>
-    <%--                const newStatus = data.newStatus;--%>
-    <%--                if (currentStatus == 1 && newStatus == 2) {--%>
-    <%--                    console.log("oki")--%>
-    <%--                    printDeliveryNote();--%>
-    <%--                }--%>
-    <%--            } else {--%>
-    <%--                console.log("no")--%>
-    <%--                // Xử lý lỗi (ví dụ: hiển thị thông báo lỗi)--%>
-    <%--                document.getElementById('moTaError').style.display = 'block';--%>
-    <%--            }--%>
-    <%--        })--%>
-    <%--        .catch(error => {--%>
-    <%--            console.error('Có vấn đề xảy ra khi gửi yêu cầu:', error);--%>
-    <%--        });--%>
-    <%--}--%>
-
-    <%--function printDeliveryNote() {--%>
-    <%--    const container = document.querySelector('.delivery');--%>
-    <%--    container.style.display = 'block'; // Hiển thị phần container chứa hóa đơn--%>
-
-    <%--    // Tạo một cửa sổ in ẩn--%>
-    <%--    const printWindow = window.open('', '_blank');--%>
-    <%--    printWindow.document.open();--%>
-
-    <%--    // Tạo nội dung HTML để in--%>
-    <%--    const htmlContent = `--%>
-    <%--    <!DOCTYPE html>--%>
-    <%--    <html lang="en">--%>
-    <%--    <head>--%>
-    <%--        <meta charset="UTF-8">--%>
-    <%--        <meta name="viewport" content="width=device-width, initial-scale=1.0">--%>
-    <%--        <title>Delivery Note</title>--%>
-    <%--        <style>--%>
-    <%--            /* Thêm các kiểu CSS cho hóa đơn tại đây */--%>
-    <%--            /* Ví dụ: */--%>
-    <%--            body {--%>
-    <%--                font-family: Arial, sans-serif;--%>
-    <%--                line-height: 1.6;--%>
-    <%--            }--%>
-    <%--            .container {--%>
-    <%--                margin: 20px;--%>
-    <%--                padding: 20px;--%>
-    <%--                border: 1px solid #ccc;--%>
-    <%--                background-color: #fff;--%>
-    <%--            }--%>
-    <%--            /* Các kiểu CSS khác tùy thuộc vào nhu cầu của bạn */--%>
-    <%--        </style>--%>
-    <%--    </head>--%>
-    <%--    <body>--%>
-    <%--        ${container.innerHTML}--%>
-    <%--    </body>--%>
-    <%--    </html>--%>
-    <%--`;--%>
-
-    <%--    // Đưa nội dung HTML vào cửa sổ in--%>
-    <%--    printWindow.document.write(htmlContent);--%>
-    <%--    printWindow.document.close();--%>
-
-    <%--    // Đợi cho tài liệu HTML được tạo hoàn thành trước khi in--%>
-    <%--    printWindow.onload = function() {--%>
-    <%--        printWindow.focus(); // Focus vào cửa sổ in--%>
-    <%--        printWindow.print(); // Thực hiện lệnh in--%>
-    <%--        printWindow.close(); // Đóng cửa sổ in sau khi in xong--%>
-    <%--    };--%>
-    <%--}--%>
-
 
 
     // Validate ô input mô tả xác nhận
@@ -2486,6 +2336,9 @@
                         $('#tongTienGiam').text(formatCurrency(tongTienGiam));
                         $('#tongTienThanhToanValue').text(formatCurrency(tongTienGiam));
 
+                        // Thêm class 'text-danger' và 'fw-bold' vào các giá trị tổng tiền
+                        $('#tongTienValue, #tongTienGiam, #tongTienThanhToanValue,#tongTienSanPham').addClass('text-danger fw-bold');
+
                         // Hiển thị thông báo cập nhật thành công
                         Toast.fire({
                             title: 'Cập nhật số lượng sản phẩm thành công',
@@ -2503,79 +2356,8 @@
             });
         });
     });
-//     phân trang
 
 </script>
-<%--<script>--%>
-<%--    const rowsPerPage = 15;--%>
-<%--    // Các hàng dữ liệu trong bảng--%>
-<%--    const tableRows = document.getElementById('tbl_ds_spct');--%>
-<%--    // Tính số trang dựa trên số hàng dữ liệu--%>
-<%--    const totalPagess = Math.ceil(tableRows.length / rowsPerPage);--%>
-<%--    let currentPagee = 1; // Trang hiện tại--%>
-
-<%--    showPage(1); // Hiển thị trang đầu tiên khi trang web được tải--%>
-<%--    // Tạo và thêm nút phân trang vào phần tử có lớp là "pagination"--%>
-<%--    const pagination = document.querySelector('.pagination');--%>
-<%--    updatePagination(currentPagee);--%>
-
-<%--    function updatePagination(currentPagee) {--%>
-<%--        pagination.innerHTML = ''; // Xóa hết các button cũ--%>
-<%--        const maxButtons = 5; // Số lượng button tối đa được hiển thị--%>
-<%--        const startPage = Math.max(1, currentPagee - Math.floor(maxButtons / 2));--%>
-<%--        const endPage = Math.min(totalPagess, startPage + maxButtons - 1);--%>
-
-<%--        if (startPage > 1) {--%>
-<%--            const previousPage = document.createElement('button');--%>
-<%--            previousPage.innerText = '<';--%>
-<%--            previousPage.addEventListener('click', function() {--%>
-<%--                currentPagee = Math.max(1, currentPagee - 1); // Di chuyển đến trang trước đó--%>
-<%--                showPage(currentPagee);--%>
-<%--                updatePagination(currentPagee);--%>
-<%--            });--%>
-<%--            pagination.appendChild(previousPage);--%>
-<%--        }--%>
-
-<%--        for (let i = startPage; i <= endPage; i++) {--%>
-<%--            const button = document.createElement('button');--%>
-<%--            button.innerText = i;--%>
-<%--            button.addEventListener('click', function() {--%>
-<%--                currentPagee = i;--%>
-<%--                showPage(currentPagee);--%>
-<%--                updatePagination(currentPagee);--%>
-<%--            });--%>
-<%--            if (i === currentPagee) {--%>
-<%--                button.classList.add('active');--%>
-<%--                button.style.backgroundColor = 'darkgray';--%>
-<%--            }--%>
-<%--            pagination.appendChild(button);--%>
-<%--        }--%>
-<%--        if (endPage < totalPagess) {--%>
-<%--            const nextPage = document.createElement('button');--%>
-<%--            nextPage.innerText = '>';--%>
-<%--            nextPage.addEventListener('click', function() {--%>
-<%--                currentPagee = Math.min(totalPagess, currentPagee + 1); // Di chuyển đến trang kế tiếp--%>
-<%--                showPage(currentPagee);--%>
-<%--                updatePagination(currentPagee);--%>
-<%--            });--%>
-<%--            pagination.appendChild(nextPage);--%>
-<%--        }--%>
-
-<%--    }--%>
-
-<%--    // Hiển thị các hàng dữ liệu tương ứng với trang được chọn--%>
-<%--    function showPage(pageNumber) {--%>
-<%--        const startIndex = (pageNumber - 1) * rowsPerPage;--%>
-<%--        const endIndex = startIndex + rowsPerPage;--%>
-<%--        tableRows.forEach((row, index) => {--%>
-<%--            if (index >= startIndex && index < endIndex) {--%>
-<%--                row.style.display = '';--%>
-<%--            } else {--%>
-<%--                row.style.display = 'none';--%>
-<%--            }--%>
-<%--        });--%>
-<%--    }--%>
-<%--</script>--%>
 
 
 

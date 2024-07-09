@@ -1,6 +1,5 @@
 package com.example.java4.controller.QuanLyHoaDon;
 
-import com.example.java4.config.EmailUtil;
 import com.example.java4.config.HoaDonUtil;
 import com.example.java4.config.UserInfor;
 import com.example.java4.entities.*;
@@ -24,7 +23,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -32,8 +30,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/hoa-don")
 public class QuanLyHoaDonController {
 
-//    @Autowired
-//    HoaDonRepository _hoaDonRepo;
+
 
     @Autowired
     KhachHangRepository _khachHangRepo;
@@ -86,9 +83,12 @@ public class QuanLyHoaDonController {
     @Autowired
     HinhAnhRepository _hinhAnhRepo;
 
+    @Autowired
+    LichSuHoaDonRepository _lichSuThanhToanRepo;
+
     private final RestTemplate restTemplate = new RestTemplate();
 
-    private List<MauSac> listMauSac;
+    private List<MauSac> listMauSac ;
     private List<KichThuoc> listKichThuoc;
     private List<SanPham> listSanPham;
     private List<KieuTay> listKieuTay;
@@ -148,7 +148,7 @@ public class QuanLyHoaDonController {
                 // Lấy ra Page<HoaDon> theo trạng thái
                 pageHD = getPageByStatus(status, pageable);
             } else {
-                pageHD = (loaiHoaDon != null && loaiHoaDon != -1) ? hoaDonRepository.findByLoaiHoaDon(loaiHoaDon, pageable) : hoaDonRepository.findAll(pageable);
+                pageHD = (loaiHoaDon != null && loaiHoaDon != -1) ? hoaDonRepository.findByLoaiHoaDon(loaiHoaDon, pageable) : hoaDonRepository.findAllExcludingSpecificTypeAndStatus(pageable);
             }
         }
 
@@ -165,7 +165,6 @@ public class QuanLyHoaDonController {
 
         // Đếm số lượng các hóa đơn theo trạng thái
         addStatusCountsToModel(model);
-
         model.addAttribute("hoaDonPage", listHoaDonDTO);
         model.addAttribute("pageHD", pageHD);
         model.addAttribute("currentStatus", status);
@@ -181,23 +180,19 @@ public class QuanLyHoaDonController {
     private Page<HoaDon> getPageByStatus(String status, Pageable pageable) {
         switch (status) {
             case "all":
-                return hoaDonRepository.findAll(pageable);
+                return hoaDonRepository.findAllExcludingSpecificTypeAndStatus(pageable);
             case "confirmation":
                 return hoaDonRepository.findByTrangThai(HoaDonRepository.CHO_XAC_NHAN, pageable);
-            case "confirmed":
-                return hoaDonRepository.findByTrangThai(HoaDonRepository.DA_XAC_NHAN, pageable);
             case "delivery":
                 return hoaDonRepository.findByTrangThai(HoaDonRepository.CHO_GIAO_HANG, pageable);
             case "delivering":
                 return hoaDonRepository.findByTrangThai(HoaDonRepository.DANG_GIAO_HANG, pageable);
-            case "delivered":
-                return hoaDonRepository.findByTrangThai(HoaDonRepository.GIAO_HANG_THANH_CONG, pageable);
             case "accomplished":
                 return hoaDonRepository.findByTrangThai(HoaDonRepository.DA_HOAN_THANH, pageable);
             case "cancelled":
                 return hoaDonRepository.findByTrangThai(HoaDonRepository.DA_HUY, pageable);
             default:
-                return hoaDonRepository.findAll(pageable);
+                return hoaDonRepository.findAllExcludingSpecificTypeAndStatus(pageable);
         }
     }
 
@@ -208,23 +203,25 @@ public class QuanLyHoaDonController {
         model.addAttribute("countDaXacNhan", hoaDonRepository.countByTrangThai(HoaDonRepository.DA_XAC_NHAN));
         model.addAttribute("countChoGiaoHang", hoaDonRepository.countByTrangThai(HoaDonRepository.CHO_GIAO_HANG));
         model.addAttribute("countDangGiaoHang", hoaDonRepository.countByTrangThai(HoaDonRepository.DANG_GIAO_HANG));
-        model.addAttribute("countDaGiaoHang", hoaDonRepository.countByTrangThai(HoaDonRepository.GIAO_HANG_THANH_CONG));
+        model.addAttribute("countDaThanhToan", hoaDonRepository.countByTrangThai(HoaDonRepository.DA_THANH_TOAN));
         model.addAttribute("countDaHoanThanh", hoaDonRepository.countByTrangThai(HoaDonRepository.DA_HOAN_THANH));
         model.addAttribute("countDaHuy", hoaDonRepository.countByTrangThai(HoaDonRepository.DA_HUY));
     }
+
     // Chức năng xem thông tin chi tiết hóa đơn theo IDHD
     @GetMapping("/detail/{idHD}")
     public String detailHDCT(Model model,
                              @PathVariable("idHD") String idHD,
                              @RequestParam(value = "page", defaultValue = "0") String pageParam
     ) {
+
+        //Tìm đối tượng nhân viên
         NhanVien nhanVien = new NhanVien();
         if (UserInfor.idNhanVien != null) {
             nhanVien = nhanVienRepo.findById(UserInfor.idNhanVien).get();
             if(nhanVien == null){
                 nhanVien = _nhanVienRepo.findById("BF29DB87-6ED2-46E8-B34C-135B2EA4CCA6").get();
             }
-            model.addAttribute("nv", nhanVien);
         }
 
         // Lấy danh sách chi tiết hóa đơn
@@ -257,7 +254,6 @@ public class QuanLyHoaDonController {
         }
 
         // Chuyển đổi từ HoaDon sang HoaDonDTO
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         HoaDonUtil hoaDonUtil = new HoaDonUtil();
         HoaDonDTO hoaDonDTO = HoaDonDTO.fromEntity(hoaDon);
         hoaDonDTO.setTrangThaiText(hoaDonUtil.getTrangThaiName(hoaDon.getTrangThai()));
@@ -265,29 +261,11 @@ public class QuanLyHoaDonController {
         hoaDonDTO.setGiamGia(khuyenMai.getSoTienGiam());
 
         // Tính tổng tiền đơn hàng từ danh sách chi tiết hóa đơn
-        BigDecimal tongTien = BigDecimal.ZERO;
-        Map<String, HinhAnh> hinhAnhMap = new HashMap<>();
-        for (ChiTietHoaDon hdct : listHDCT) {
-            BigDecimal donGia = hdct.getDonGia();
-            int soLuong = hdct.getSoLuong();
-            tongTien = tongTien.add(donGia.multiply(BigDecimal.valueOf(soLuong)));
+        BigDecimal tongTien = calculateTongTien(listHDCT);
+        // Lấy hình ảnh cho các chi tiết sản phẩm và các hình ảnh trong hóa đơn chi tiết
+        Map<String, HinhAnh> hinhAnhMap = getHinhAnhMap(listHDCT);
+        Map<String, HinhAnh> hinhAnhMapCTSP = getHinhAnhMapCTSP();
 
-            // Lấy hình ảnh cho từng chi tiết sản phẩm
-            HinhAnh hinhAnh = _hinhAnhRepo.findByIdCTSP(hdct.getIdCTSP().getId());
-            if (hinhAnh != null) {
-                hinhAnhMap.put(hdct.getIdCTSP().getId(), hinhAnh);
-            }
-        }
-        // Lấy hình ảnh của từng chi tiết sản phẩm
-        Map<String, HinhAnh> hinhAnhMapCTSP = new HashMap<>();
-        listChiTietSanPham = _chiTietSanPhamRepo.findAll();
-        for (ChiTietSanPham ctsp : listChiTietSanPham) {
-            HinhAnh hinhAnh = _hinhAnhRepo.findByIdCTSP(ctsp.getId());
-            // Lấy hình ảnh cho từng chi tiết sản phẩm
-            if (hinhAnh != null) {
-                hinhAnhMapCTSP.put(ctsp.getId(), hinhAnh);
-            }
-        }
         // Lấy ra đối tượng giao hàng theo IdHoaDon
         GiaoHang giaoHang = _giaoHangRepo.findByHoaDonId(idHD);
         if (giaoHang == null) {
@@ -303,60 +281,14 @@ public class QuanLyHoaDonController {
         if(khuyenMai != null){
             phiGiamGia  = khuyenMai.getSoTienGiam();
         }
-        // Nếu tổng tiền thanh toán nhỏ hơn 0 thì gán lại giá trị bằng 0
-        BigDecimal tongTienThanhToan =  BigDecimal.ZERO;
-        tongTienThanhToan = tongTien.subtract(phiGiamGia);
-        if(giaoHang != null ){
-            if(giaoHang.getPhiShip() == null){
-                giaoHang.setPhiShip(BigDecimal.valueOf(0.0));
-            }
-            tongTienThanhToan = tongTienThanhToan.add(giaoHang.getPhiShip());
-        }
-        tongTienThanhToan = tongTienThanhToan.max(BigDecimal.ZERO);
-
-        // Hiển thị danh sách hóa đơn theo trạng thái
-        switch (hoaDon.getTrangThai()) {
-            case HoaDonRepository.CHO_XAC_NHAN:
-                model.addAttribute("step", "confirmation");
-                break;
-            case HoaDonRepository.DA_XAC_NHAN:
-                model.addAttribute("step", "confirmed");
-                break;
-            case HoaDonRepository.CHO_GIAO_HANG:
-                model.addAttribute("step", "delivery");
-                break;
-            case HoaDonRepository.DANG_GIAO_HANG:
-                model.addAttribute("step", "delivering");
-                break;
-            case HoaDonRepository.GIAO_HANG_THANH_CONG:
-                model.addAttribute("step", "delivered");
-                break;
-            case HoaDonRepository.DA_HOAN_THANH:
-                model.addAttribute("step", "accomplished");
-                break;
-            default:
-                model.addAttribute("step", "default");
-                break;
-        }
-
         // Lấy ra danh sách chi tiết sản phẩm để hiển thị lên modal Thêm sản phẩm
-        Pageable pageable = PageRequest.of(Integer.valueOf(pageParam), 10);
-        Page<ChiTietSanPham> listCTSP = _sanPhamChiTietRepo.findByTrangThai(1, pageable);
-        for (ChiTietSanPham ctsp : listCTSP) {
-            if (ctsp.getSoLuong() <= 0) {
-                ctsp.setTrangThai(_sanPhamChiTietRepo.INACTIVE);
-                listCTSP = _sanPhamChiTietRepo.findByTrangThai(_sanPhamChiTietRepo.INACTIVE, pageable);
-                _sanPhamChiTietRepo.save(ctsp);
-            }
-        }
+        Page<ChiTietSanPham> listCTSP = getListChiTietSanPham(pageParam);
 
-        listMauSac = mauSacRepository.findAll();
-        listKichThuoc = kichThuocRepo.findAll();
-        listKieuTay = kieuTayRepo.findAll();
-        listChatLieu = chatLieuRepo.findAll();
-        listKhuyenMai = khuyenMaiRepo.findAll();
+        // Thêm danh sách lịch sử hóa đơn theo id Hoa đơn
+        List<LichSuHoaDon> listLichSuHoaDon = _lichSuThanhToanRepo.findListByIdHoaDon(hoaDon.getId());
 
         // Thêm các thông tin vào model để truyền sang JSP
+        model.addAttribute("nv", nhanVien);
         model.addAttribute("hinhAnhMap",hinhAnhMap);
         model.addAttribute("hinhAnhMapCTSP",hinhAnhMapCTSP);
         model.addAttribute("khachHang",khachHang);
@@ -366,18 +298,100 @@ public class QuanLyHoaDonController {
         model.addAttribute("giaoHangDTO", giaoHangDTO);
         model.addAttribute("tongTienDonHang",tongTien.doubleValue());
         model.addAttribute("phiGiamGia",phiGiamGia.doubleValue());
-        model.addAttribute("tongTienThanhToan",tongTienThanhToan.doubleValue());
-        model.addAttribute("listMauSac", listMauSac);
-        model.addAttribute("listKichThuoc", listKichThuoc);
-        model.addAttribute("listChatLieu", listChatLieu);
-        model.addAttribute("listKieuTay", listKieuTay);
-        model.addAttribute("listSanPham", listSanPham);
-        model.addAttribute("listKM", listKhuyenMai);
+        model.addAttribute("tongTienThanhToan", calculateTongTienThanhToan(tongTien, khuyenMai, giaoHang).doubleValue());
+        model.addAttribute("listMauSac", mauSacRepository.findAll());
+        model.addAttribute("listKichThuoc", kichThuocRepo.findAll());
+        model.addAttribute("listChatLieu", chatLieuRepo.findAll());
+        model.addAttribute("listKieuTay", kieuTayRepo.findAll());
+        model.addAttribute("listSanPham", _sanPhamChiTietRepo.findAll());
+        model.addAttribute("listKM", khuyenMaiRepo.findAll());
         model.addAttribute("listCTSP", listCTSP);
         model.addAttribute("pageCTSP", listCTSP);
+        model.addAttribute("listLichSuHoaDon", listLichSuHoaDon);
+
+        // Hiển thị danh sách hóa đơn theo trạng thái
+        model.addAttribute("step", getStepText(hoaDon.getTrangThai()));
+
         return "/view/QLHD/detail_bill.jsp";
     }
 
+
+    // Tính tổng tiền trong hóa đơn chi tiết
+    private BigDecimal calculateTongTien(List<ChiTietHoaDon> listHDCT) {
+        BigDecimal tongTien = BigDecimal.ZERO;
+        for (ChiTietHoaDon hdct : listHDCT) {
+            BigDecimal donGia = hdct.getDonGia();
+            int soLuong = hdct.getSoLuong();
+            tongTien = tongTien.add(donGia.multiply(BigDecimal.valueOf(soLuong)));
+        }
+        return tongTien;
+    }
+
+    // Lấy ra hình ảnh trong hóa đơn chi tiết
+    private Map<String, HinhAnh> getHinhAnhMap(List<ChiTietHoaDon> listHDCT) {
+        Map<String, HinhAnh> hinhAnhMap = new HashMap<>();
+        for (ChiTietHoaDon hdct : listHDCT) {
+            HinhAnh hinhAnh = _hinhAnhRepo.findByIdCTSP(hdct.getIdCTSP().getId());
+            if (hinhAnh != null) {
+                hinhAnhMap.put(hdct.getIdCTSP().getId(), hinhAnh);
+            }
+        }
+        return hinhAnhMap;
+    }
+
+    //Lấy ra hình ảnh trong chi tiết sản phẩm
+    private Map<String, HinhAnh> getHinhAnhMapCTSP() {
+        Map<String, HinhAnh> hinhAnhMapCTSP = new HashMap<>();
+        List<ChiTietSanPham> listChiTietSanPham = _chiTietSanPhamRepo.findAll();
+        for (ChiTietSanPham ctsp : listChiTietSanPham) {
+            HinhAnh hinhAnh = _hinhAnhRepo.findByIdCTSP(ctsp.getId());
+            if (hinhAnh != null) {
+                hinhAnhMapCTSP.put(ctsp.getId(), hinhAnh);
+            }
+        }
+        return hinhAnhMapCTSP;
+    }
+
+    // Lấy ra danh sách chi tiết sản phẩm
+    private Page<ChiTietSanPham> getListChiTietSanPham(String pageParam) {
+        Pageable pageable = PageRequest.of(Integer.valueOf(pageParam), 10);
+        Page<ChiTietSanPham> listCTSP = _sanPhamChiTietRepo.findByTrangThai(1, pageable);
+        for (ChiTietSanPham ctsp : listCTSP) {
+            if (ctsp.getSoLuong() <= 0) {
+                ctsp.setTrangThai(_sanPhamChiTietRepo.INACTIVE);
+                listCTSP = _sanPhamChiTietRepo.findByTrangThai(_sanPhamChiTietRepo.INACTIVE, pageable);
+                _sanPhamChiTietRepo.save(ctsp);
+            }
+        }
+        return listCTSP;
+    }
+
+
+    // Tính ra tổng tiền cần phải thanh toán
+    private BigDecimal calculateTongTienThanhToan(BigDecimal tongTien, KhuyenMai khuyenMai, GiaoHang giaoHang) {
+        BigDecimal phiGiamGia = khuyenMai != null ? khuyenMai.getSoTienGiam() : BigDecimal.ZERO;
+        BigDecimal tongTienThanhToan = tongTien.subtract(phiGiamGia).max(BigDecimal.ZERO);
+        if (giaoHang != null && giaoHang.getPhiShip() != null) {
+            tongTienThanhToan = tongTienThanhToan.add(giaoHang.getPhiShip());
+        }
+        return tongTienThanhToan;
+    }
+
+    // Lấy ra từng trạng thái của hóa đơn
+    private String getStepText(int trangThai) {
+        switch (trangThai) {
+            case HoaDonRepository.CHO_XAC_NHAN:
+                return "confirmation";
+            case HoaDonRepository.CHO_GIAO_HANG:
+                return "delivery";
+            case HoaDonRepository.DANG_GIAO_HANG:
+                return "delivering";
+            case HoaDonRepository.DA_HOAN_THANH:
+                return "accomplished";
+            default:
+                return "default";
+        }
+    }
 
     // Chức năng xác nhận đơn hàng
     @PostMapping("/xac-nhan/{idHD}")
@@ -398,8 +412,9 @@ public class QuanLyHoaDonController {
             if (UserInfor.idNhanVien != null) {
                 nhanVien = _nhanVienRepo.findById(UserInfor.idNhanVien).orElse(null);
                 if (nhanVien == null) {
-                    redirectAttributes.addFlashAttribute("confirmError", "Không tìm thấy nhân viên.");
-                    return "redirect:/hoa-don/detail/" + idHD;
+                    nhanVien = _nhanVienRepo.findById("BF29DB87-6ED2-46E8-B34C-135B2EA4CCA6").get();
+//                    redirectAttributes.addFlashAttribute("confirmError", "Không tìm thấy nhân viên.");
+//                    return "redirect:/hoa-don/detail/" + idHD;
                 }
             }
 
@@ -433,11 +448,17 @@ public class QuanLyHoaDonController {
             }
 
             GiaoHang giaoHang = new GiaoHang();
-
-
-
-            updateHoaDonStatus(hoaDon, nhanVien, trangThai,giaoHang);
+            updateHoaDonStatus(hoaDon, nhanVien, trangThai,giaoHang,moTa);
             _hoaDonRepo.save(hoaDon);
+
+            LichSuHoaDon lichSuHoaDon = new LichSuHoaDon();
+            lichSuHoaDon.setIdHoaDon(hoaDon);
+            lichSuHoaDon.setIdNhanVien(nhanVien);
+            lichSuHoaDon.setGhiChu(moTa);
+//            lichSuHoaDon.setNgayTao(LocalDateTime.now());
+            lichSuHoaDon.setNgayCapNhat(LocalDateTime.now());
+            _lichSuThanhToanRepo.save(lichSuHoaDon);
+
             HoaDonDTO hoaDonDTO = HoaDonDTO.fromEntity(hoaDon);
             redirectAttributes.addFlashAttribute("hoaDonDTO", hoaDonDTO);
             redirectAttributes.addFlashAttribute("confirmSuccess", "Cập nhật trạng thái đơn hàng thành công.");
@@ -449,53 +470,55 @@ public class QuanLyHoaDonController {
         return "redirect:/hoa-don/detail/" + idHD;
     }
 
-    private void updateHoaDonStatus(HoaDon hoaDon, NhanVien nhanVien, int trangThai,GiaoHang giaoHang) {
+    private void updateHoaDonStatus(HoaDon hoaDon, NhanVien nhanVien, int trangThai,GiaoHang giaoHang,String moTa) {
+
+//        LichSuHoaDon lichSuHoaDon = _lichSuThanhToanRepo.findByIdHoaDon(hoaDon.getId());
+//        if(lichSuHoaDon == null){
+//            lichSuHoaDon = new LichSuHoaDon();
+//        }
         switch (hoaDon.getTrangThai()) {
             case HoaDonRepository.CHO_XAC_NHAN:
-                hoaDon.setTrangThai(HoaDonRepository.DA_XAC_NHAN);
+                hoaDon.setTrangThai(HoaDonRepository.CHO_GIAO_HANG);
                 hoaDon.setIdNhanVien(nhanVien);
                 hoaDon.setNgayDaXacNhan(LocalDateTime.now());
                 // Gửi Email khi đã xác nhận đơn hàng
-                EmailUtil emailUtil = new EmailUtil("taintph29115@fpt.edu.vn","ellnixtbfelwynxt",1);
-                String toEmail = "tuantain2003@gmail.com";
-                String subject = "Chi tiết đơn hàng";
-                String htmlContent = "<h1>Đặt hàng thành công</h1>"
-                        + "<p>Cảm ơn bạn đã đặt hàng. Đây là chi tiết đơn hàng của bạn:</p>"
-                        + "<table border='1'>"
-                        + "<tr><th>Sản phẩm</th><th>Số lượng</th><th>Giá</th></tr>"
-                        + "<tr><td>Sản phẩm A</td><td>2</td><td>200,000₫</td></tr>"
-                        + "<tr><td>Sản phẩm B</td><td>1</td><td>100,000₫</td></tr>"
-                        + "</table>"
-                        + "<p>Tổng cộng: 300,000₫</p>";
+//                EmailUtil emailUtil = new EmailUtil("taintph29115@fpt.edu.vn","ellnixtbfelwynxt",1);
+//                String toEmail = "tuantain2003@gmail.com";
+//                String subject = "Chi tiết đơn hàng";
+//                String htmlContent = "<h1>Đặt hàng thành công</h1>"
+//                        + "<p>Cảm ơn bạn đã đặt hàng. Đây là chi tiết đơn hàng của bạn:</p>"
+//                        + "<table border='1'>"
+//                        + "<tr><th>Sản phẩm</th><th>Số lượng</th><th>Giá</th></tr>"
+//                        + "<tr><td>Sản phẩm A</td><td>2</td><td>200,000₫</td></tr>"
+//                        + "<tr><td>Sản phẩm B</td><td>1</td><td>100,000₫</td></tr>"
+//                        + "</table>"
+//                        + "<p>Tổng cộng: 300,000₫</p>";
+//
+//                emailUtil.sendContentToVer2HTML(toEmail, subject, htmlContent);
+////                emailUtil.sendContentToVer2("tuantain2003@gmail.com","Chi tiết đơn hàng","Đăt hàng thành công");
+//                System.out.println("Thanh cong");
 
-                emailUtil.sendContentToVer2HTML(toEmail, subject, htmlContent);
-//                emailUtil.sendContentToVer2("tuantain2003@gmail.com","Chi tiết đơn hàng","Đăt hàng thành công");
-                System.out.println("Thanh cong");
-                break;
-            case HoaDonRepository.DA_XAC_NHAN:
-                hoaDon.setTrangThai(HoaDonRepository.CHO_GIAO_HANG);
-                hoaDon.setNgayChoGiaoHang(LocalDateTime.now());
-                hoaDon.setIdNhanVien(nhanVien);
+//                lichSuHoaDon.setIdHoaDon(hoaDon);
+//                lichSuHoaDon.setIdNhanVien(nhanVien);
+//                lichSuHoaDon.setGhiChu(moTa);
                 break;
             case HoaDonRepository.CHO_GIAO_HANG:
                 hoaDon.setTrangThai(HoaDonRepository.DANG_GIAO_HANG);
                 hoaDon.setNgayDangGiaoHang(LocalDateTime.now());
                 hoaDon.setIdNhanVien(nhanVien);
+//                lichSuHoaDon.setIdHoaDon(hoaDon);
+//                lichSuHoaDon.setIdNhanVien(nhanVien);
+//                lichSuHoaDon.setGhiChu(moTa);
                 break;
             case HoaDonRepository.DANG_GIAO_HANG:
-                hoaDon.setTrangThai(HoaDonRepository.GIAO_HANG_THANH_CONG);
+                hoaDon.setTrangThai(HoaDonRepository.DA_HOAN_THANH);
                 hoaDon.setNgayCapNhat(LocalDateTime.now());
                 hoaDon.setIdNhanVien(nhanVien);
                 giaoHang.setNgayNhan(LocalDateTime.now());
+//                lichSuHoaDon.setIdHoaDon(hoaDon);
+//                lichSuHoaDon.setIdNhanVien(nhanVien);
+//                lichSuHoaDon.setGhiChu(moTa);
                 break;
-            case HoaDonRepository.GIAO_HANG_THANH_CONG:
-                hoaDon.setTrangThai(HoaDonRepository.DA_HOAN_THANH);
-                hoaDon.setNgayThanhToan(LocalDateTime.now());
-                hoaDon.setIdNhanVien(nhanVien);
-                break;
-
-
-
             default:
                 throw new IllegalArgumentException("Trạng thái không hợp lệ.");
         }
@@ -536,7 +559,7 @@ public class QuanLyHoaDonController {
 
 
             switch (hoaDon.getTrangThai()) {
-                case HoaDonRepository.DA_XAC_NHAN:
+                case HoaDonRepository.CHO_GIAO_HANG:
                     hoaDon.setTrangThai(HoaDonRepository.CHO_XAC_NHAN);
                     hoaDon.setNgayCapNhat(LocalDateTime.now());
                     hoaDon.setNgayDaXacNhan(null);
@@ -556,12 +579,12 @@ public class QuanLyHoaDonController {
                     }
 //                    hoaDon.setIdNhanVien(nhanVien);
                     break;
-                case HoaDonRepository.CHO_GIAO_HANG:
-                    hoaDon.setTrangThai(HoaDonRepository.DA_XAC_NHAN);
-                    hoaDon.setNgayCapNhat(LocalDateTime.now());
-                    hoaDon.setNgayChoGiaoHang(null);
-//                    hoaDon.setIdNhanVien(nhanVien);
-                    break;
+//                case HoaDonRepository.CHO_GIAO_HANG:
+//                    hoaDon.setTrangThai(HoaDonRepository.CHO_XAC_NHAN);
+//                    hoaDon.setNgayCapNhat(LocalDateTime.now());
+//                    hoaDon.setNgayChoGiaoHang(null);
+////                    hoaDon.setIdNhanVien(nhanVien);
+//                    break;
 
                 case HoaDonRepository.DANG_GIAO_HANG:
                     hoaDon.setTrangThai(HoaDonRepository.CHO_GIAO_HANG);
@@ -569,14 +592,14 @@ public class QuanLyHoaDonController {
 //                    hoaDon.setIdNhanVien(nhanVien);
                     break;
 
-                case HoaDonRepository.GIAO_HANG_THANH_CONG:
-                    hoaDon.setTrangThai(HoaDonRepository.DANG_GIAO_HANG);
-                    hoaDon.setNgayCapNhat(LocalDateTime.now());
-//                    hoaDon.setIdNhanVien(nhanVien);
-                    break;
+//                case HoaDonRepository.DA_THANH_TOAN:
+//                    hoaDon.setTrangThai(HoaDonRepository.DANG_GIAO_HANG);
+//                    hoaDon.setNgayCapNhat(LocalDateTime.now());
+////                    hoaDon.setIdNhanVien(nhanVien);
+//                    break;
 
                 case HoaDonRepository.DA_HOAN_THANH:
-                    hoaDon.setTrangThai(HoaDonRepository.GIAO_HANG_THANH_CONG);
+                    hoaDon.setTrangThai(HoaDonRepository.DANG_GIAO_HANG);
                     hoaDon.setNgayCapNhat(LocalDateTime.now());
 //                    hoaDon.setIdNhanVien(nhanVien);
                     break;
@@ -649,6 +672,22 @@ public class QuanLyHoaDonController {
             redirectAttributes.addFlashAttribute("errorMessage", "Không tìm thấy thông tin đơn hàng");
             return "redirect:/hoa-don/detail/" + hoaDonId;
         }
+
+        // Kiểm tra nếu trạng thái không phải là chờ xác nhận thì không cho huy don
+        if (hoaDon.getTrangThai() != hoaDonRepository.CHO_XAC_NHAN) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Không thể hủy đơn hàng, trạng thái hiện tại đang là đã xác nhận");
+            return "redirect:/hoa-don/detail/" + hoaDonId;
+        }
+
+        // Kiểm tra nếu đơn hàng quá 3 ngày sau khi thành công thì không cho hủy đơn
+        if (hoaDon.getTrangThai() == hoaDonRepository.DA_HOAN_THANH) {
+            LocalDateTime threeDaysAfterSuccess = hoaDon.getNgayThanhToan().plusDays(3);
+            if (LocalDateTime.now().isAfter(threeDaysAfterSuccess)) {
+                redirectAttributes.addFlashAttribute("errorMessage", "Không thể hủy đơn hàng sau 3 ngày kể từ khi giao hàng thành công");
+                return "redirect:/hoa-don/detail/" + hoaDonId;
+            }
+        }
+
         NhanVien nhanVien = new NhanVien();
         if (UserInfor.idNhanVien != null) {
              nhanVien = nhanVienRepo.findById(UserInfor.idNhanVien).get();

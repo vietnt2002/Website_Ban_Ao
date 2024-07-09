@@ -204,10 +204,10 @@ public class TrangChuController {
             }
             BigDecimal tienGioiHan = new BigDecimal(50000);
             BigDecimal tienSauKhiThem = chiTietSanPham.getGiaBan().multiply(BigDecimal.valueOf(soLuong));
-            if (tongTien.add(tienSauKhiThem).compareTo(tienGioiHan) > 0) {
-                redirectAttributes.addFlashAttribute("error", "Giới hạn hóa đơn của bạn là 10 triệu!");
-                return "redirect:/cua-hang/detail-san-pham/" + idCTSP;
-            }
+//            if (tongTien.add(tienSauKhiThem).compareTo(tienGioiHan) > 0) {
+//                redirectAttributes.addFlashAttribute("error", "Giới hạn hóa đơn của bạn là 10 triệu!");
+//                return "redirect:/cua-hang/detail-san-pham/" + idCTSP;
+//            }
 
             //Nếu khách hàng chưa có hóa đơn thì tạo mới hóa đơn -> thêm sản phẩm giỏ hàng
             if (hoaDonCuaKH == null) {
@@ -606,7 +606,7 @@ public class TrangChuController {
         int countHDByDaXacNhan = hoaDonRepo.countByHoaDonByTrangThai(UserInfor.idKhachHang, HoaDonRepository.DA_XAC_NHAN);
         int countHDByChoGiaoHang = hoaDonRepo.countByHoaDonByTrangThai(UserInfor.idKhachHang, HoaDonRepository.CHO_GIAO_HANG);
         int countHDByDangGiaoHang = hoaDonRepo.countByHoaDonByTrangThai(UserInfor.idKhachHang, HoaDonRepository.DANG_GIAO_HANG);
-        int countHDByDaGiaoHang = hoaDonRepo.countByHoaDonByTrangThai(UserInfor.idKhachHang, HoaDonRepository.GIAO_HANG_THANH_CONG);
+        int countHDByDaGiaoHang = hoaDonRepo.countByHoaDonByTrangThai(UserInfor.idKhachHang, HoaDonRepository.DA_THANH_TOAN);
         int countHDByHoanThanh = hoaDonRepo.countByHoaDonByTrangThai(UserInfor.idKhachHang, HoaDonRepository.DA_HOAN_THANH);
         int countHDDaHuy = hoaDonRepo.countByHoaDonByTrangThai(UserInfor.idKhachHang, HoaDonRepository.DA_HUY);
 
@@ -625,7 +625,7 @@ public class TrangChuController {
         model.addAttribute("listHDByDaXacNhan", hoaDonRepo.getHoaDonByIDKHAndTrangThai(UserInfor.idKhachHang, HoaDonRepository.DA_XAC_NHAN));
         model.addAttribute("listHDByChoGiaoHang", hoaDonRepo.getHoaDonByIDKHAndTrangThai(UserInfor.idKhachHang, HoaDonRepository.CHO_GIAO_HANG));
         model.addAttribute("listHDByDangGiaoHang", hoaDonRepo.getHoaDonByIDKHAndTrangThai(UserInfor.idKhachHang, HoaDonRepository.DANG_GIAO_HANG));
-        model.addAttribute("listHDByDaGiaoHang", hoaDonRepo.getHoaDonByIDKHAndTrangThai(UserInfor.idKhachHang, HoaDonRepository.GIAO_HANG_THANH_CONG));
+        model.addAttribute("listHDByDaGiaoHang", hoaDonRepo.getHoaDonByIDKHAndTrangThai(UserInfor.idKhachHang, HoaDonRepository.DA_THANH_TOAN));
         model.addAttribute("listHDByHoanThanh", hoaDonRepo.getHoaDonByIDKHAndTrangThai(UserInfor.idKhachHang, HoaDonRepository.DA_HOAN_THANH));
         model.addAttribute("listHDDaHuy", hoaDonRepo.getHoaDonByIDKHAndTrangThai(UserInfor.idKhachHang, HoaDonRepository.DA_HUY));
 
