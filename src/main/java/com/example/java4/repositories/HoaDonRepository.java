@@ -3,6 +3,7 @@ package com.example.java4.repositories;
 import com.example.java4.entities.HoaDon;
 import com.example.java4.response.HoaDonResponse;
 import com.example.java4.entities.KhuyenMai;
+import com.example.java4.response.SanPhamChiTietResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -157,9 +158,7 @@ public interface HoaDonRepository
     @Query("select count(hd) from HoaDon hd where hd.trangThai >= 1")
     int countByTrangThai();
 
-//    select hd.Ma, hd.NgayTao, sum(cthd.SoLuong) as TongSoLuong, hd.TongTien, hd.TrangThai from HoaDon hd
-//    join ChiTietHoaDon cthd on cthd.idHoaDon = hd.id
-//    where hd.TrangThai = 1 and hd.IdKhachHang = '839D965B-9681-4074-9A66-5ACECE1545E6'
-//    group by hd.Ma, hd.NgayTao, hd.TongTien, hd.TrangThai
-//    order by hd.NgayTao desc
+    @Query("select hd from HoaDon hd " +
+            "where hd.idKhachHang.id = ?1 and hd.id = ?2")
+    List<HoaDon> getListHDbyIDKHAndIDHD(String idKH, String idHD);
 };

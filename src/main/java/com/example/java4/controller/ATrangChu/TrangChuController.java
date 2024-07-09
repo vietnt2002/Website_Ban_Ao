@@ -631,4 +631,28 @@ public class TrangChuController {
 
         return "/view/BanHangOnline/donMua.jsp";
     }
+
+    List<ChiTietHoaDon> chiTietHoaDonList = new ArrayList<>();
+    @GetMapping("don-mua/{idHD}")
+    public String detailDonMua(Model model, @PathVariable("idHD") String idHD) {
+
+        chiTietHoaDonList = hdctRepo.tongTienHD(UserInfor.idKhachHang, idHD);
+        BigDecimal tongTienBigDecimal = new BigDecimal(0.0);
+        for (ChiTietHoaDon chiTietHoaDon : chiTietHoaDonList) {
+            BigDecimal soLuongDecimal = new BigDecimal(chiTietHoaDon.getSoLuong());
+            tongTienBigDecimal = tongTienBigDecimal.add(chiTietHoaDon.getDonGia().multiply(soLuongDecimal));
+        }
+        model.addAttribute("tongTien", tongTienBigDecimal);
+
+        List<HoaDonChiTietResponse> listHDCT = hdctRepo.getListHDbyIdKH(UserInfor.idKhachHang, idHD);
+        List<GiaoHang> giaoHang = giaoHangRepo.getListGiaoHangByIdKHAndidHD(UserInfor.idKhachHang, idHD);
+        List<HoaDon> hoaDon = hoaDonRepo.getListHDbyIDKHAndIDHD(UserInfor.idKhachHang, idHD);
+
+        model.addAttribute("listHDCT", listHDCT);
+        model.addAttribute("giaoHang", giaoHang);
+        model.addAttribute("hoaDon", hoaDon);
+
+
+        return "/view/BanHangOnline/detailDonMua.jsp";
+    }
 }
