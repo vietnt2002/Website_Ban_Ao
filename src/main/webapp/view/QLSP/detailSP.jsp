@@ -1070,22 +1070,18 @@
     const fileHinhAnh1ModalAdd = document.getElementById('fileHinhAnh1ModalAdd');
     const fileHinhAnh2ModalAdd = document.getElementById('fileHinhAnh2ModalAdd');
     const fileHinhAnh3ModalAdd = document.getElementById('fileHinhAnh3ModalAdd');
-    const fileHinhAnh4ModalAdd = document.getElementById('fileHinhAnh4ModalAdd');
 
     const fileHinhAnh1ModalEdit = document.getElementById('fileHinhAnh1ModalEdit');
     const fileHinhAnh2ModalEdit = document.getElementById('fileHinhAnh2ModalEdit');
     const fileHinhAnh3ModalEdit = document.getElementById('fileHinhAnh3ModalEdit');
-    const fileHinhAnh4ModalEdit = document.getElementById('fileHinhAnh4ModalEdit');
 
     const hinhAnh1DisplayModalAdd = document.getElementById('hinhAnh1DisplayModalAdd');
     const hinhAnh2DisplayModalAdd = document.getElementById('hinhAnh2DisplayModalAdd');
     const hinhAnh3DisplayModalAdd = document.getElementById('hinhAnh3DisplayModalAdd');
-    const hinhAnh4DisplayModalAdd = document.getElementById('hinhAnh4DisplayModalAdd');
 
     const hinhAnh1DisplayModalEdit = document.getElementById('hinhAnh1DisplayModalEdit');
     const hinhAnh2DisplayModalEdit = document.getElementById('hinhAnh2DisplayModalEdit');
     const hinhAnh3DisplayModalEdit = document.getElementById('hinhAnh3DisplayModalEdit');
-    const hinhAnh4DisplayModalEdit = document.getElementById('hinhAnh4DisplayModalEdit');
 </script>
 <script>
     // filefunc
@@ -1122,17 +1118,6 @@
             hinhAnh3DisplayModalAdd.src = imgURL;
         }
     });
-    fileHinhAnh4ModalAdd.addEventListener('change', function (e) {
-        const files = e.target.files;
-        console.log("test change data: ", files);
-        if (files.length > 0) {
-            const file = files[0];
-            console.log("File selected: ", file);
-            console.log("file cmp: ", fileHinhAnh4ModalAdd.files[0]);
-            const imgURL = URL.createObjectURL(fileHinhAnh4ModalAdd.files[0]);
-            hinhAnh4DisplayModalAdd.src = imgURL;
-        }
-    });
 
     fileHinhAnh1ModalEdit.addEventListener('change', function (e) {
         const files = e.target.files;
@@ -1165,17 +1150,6 @@
             console.log("file cmp: ", fileHinhAnh3ModalEdit.files[0]);
             const imgURL = URL.createObjectURL(fileHinhAnh3ModalEdit.files[0]);
             hinhAnh3DisplayModalEdit.src = imgURL;
-        }
-    });
-    fileHinhAnh4ModalEdit.addEventListener('change', function (e) {
-        const files = e.target.files;
-        console.log("test change data: ", files);
-        if (files.length > 0) {
-            const file = files[0];
-            console.log("File selected: ", file);
-            console.log("file cmp: ", fileHinhAnh4ModalEdit.files[0]);
-            const imgURL = URL.createObjectURL(fileHinhAnh4ModalEdit.files[0]);
-            hinhAnh4DisplayModalEdit.src = imgURL;
         }
     });
 </script>
@@ -2204,7 +2178,13 @@
                             giaBan: giaBanModalEdit.value,
                             trangThai: trangThaiModalEdit
                         };
+                        const dataFile = {
+                            fileHinhAnh1: fileHinhAnh1ModalEdit.files[0],
+                            fileHinhAnh2: fileHinhAnh2ModalEdit.files[0],
+                            fileHinhAnh3: fileHinhAnh3ModalEdit.files[0]
+                        }
                         console.log("data json: ", data);
+                        console.log("data file test: ", dataFile);
                         var formData = new FormData($('#uploadFormEdit')[0]); // Use FormData to get all form data
                         fetch(`/chi-tiet-sp/update/` + idSPCTLocal, {
                             method: 'POST',
@@ -2221,18 +2201,20 @@
                                 loadDSSPCT(currentPage);
                             });
                         });
-                        $.ajax({
-                            url: '/upload',
-                            type: 'POST',
-                            data: formData,
-                            processData: false,
-                            contentType: false,
-                            success: function(response) {
-                                console.log("save image success ");
+                        fetch(`/hinh-anh/upload`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
                             },
-                            error: function(xhr, status, error) {
-                                console.log("save image =error");
-                            }
+                            body: JSON.stringify(dataFile)
+                        }).then(() => {
+                            Swal.fire(
+                                'Đã thanh toán!',
+                                'Dữ liệu đã được ghi nhận.',
+                                'success'
+                            ).then(() => {
+
+                            });
                         });
                     }
                 });

@@ -173,7 +173,7 @@ public class HinhAnhController {
     @PostMapping("upload")
     public void saveUploadFile(
             @RequestBody @Valid HinhAnhFileStore newHinhAnhFile,
-            BindingResult result, Model model
+            Model model
     ) {
         if (newHinhAnhFile.getFileHinhAnh1().isEmpty()) {
             model.addAttribute("message", "Vui lòng chọn hình ảnh 1.");

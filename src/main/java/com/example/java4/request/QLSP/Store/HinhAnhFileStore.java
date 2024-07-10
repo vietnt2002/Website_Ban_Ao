@@ -11,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 @NoArgsConstructor
 @AllArgsConstructor
 public class HinhAnhFileStore {
-     MultipartFile fileHinhAnh1;
-     MultipartFile fileHinhAnh2;
-     MultipartFile fileHinhAnh3;
+     private MultipartFile fileHinhAnh1;
+     private MultipartFile fileHinhAnh2;
+     private MultipartFile fileHinhAnh3;
 }
