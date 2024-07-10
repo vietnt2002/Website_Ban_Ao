@@ -683,14 +683,6 @@
                                     <p class="text-center">Hình ảnh 3</p>
                                     <input type="file" id="fileHinhAnh3ModalAdd" class="file-input-overlay"/>
                                 </div>
-
-                                <div class="col col-md-3 hover-effect click-effect image-container">
-                                    <img width="200" height="200"
-                                         src="/image-icon/pendingIMG.png"
-                                         alt="" class="fit-img" id="hinhAnh4DisplayModalAdd">
-                                    <p class="text-center">Hình ảnh 4</p>
-                                    <input type="file" id="fileHinhAnh4ModalAdd" class="file-input-overlay"/>
-                                </div>
                             </div>
                             <div class="form-check form-switch">
                                 <input class="form-check-input" type="checkbox" role="switch" id="trangThaiModalAdd"
@@ -855,13 +847,6 @@
                                          alt="" class="fit-img" id="hinhAnh3DisplayModalEdit">
                                     <p class="text-center">Hình ảnh 3</p>
                                     <input type="file" id="fileHinhAnh3ModalEdit" class="file-input-overlay"/>
-                                </div>
-                                <div class="col col-md-3 hover-effect click-effect image-container">
-                                    <img width="200" height="200"
-                                         src="/image-icon/pendingIMG.png"
-                                         alt="" class="fit-img" id="hinhAnh4DisplayModalEdit">
-                                    <p class="text-center">Hình ảnh 4</p>
-                                    <input type="file" id="fileHinhAnh4ModalEdit" class="file-input-overlay"/>
                                 </div>
                             </div>
                             <div class="form-check form-switch">
@@ -1631,9 +1616,12 @@
             }
         }).then(response => response.json())
             .then(resp => {
-                fileHinhAnh1ModalEdit.src= resp.hinhAnh1?"/image/"+resp.hinhAnh1:"/image-icon/pendingIMG.png";
-                fileHinhAnh2ModalEdit.src= resp.hinhAnh2?"/image/"+resp.hinhAnh2:"/image-icon/pendingIMG.png";
-                fileHinhAnh3ModalEdit.src= resp.hinhAnh3?"/image/"+resp.hinhAnh3:"/image-icon/pendingIMG.png";
+                console.log("hinhanh1 : ",resp.hinhAnh1);
+                console.log("hinhanh2 : ",resp.hinhAnh2);
+                console.log("hinhanh3 : ",resp.hinhAnh3);
+                hinhAnh1DisplayModalEdit.src= resp.hinhAnh1?"/image/"+resp.hinhAnh1:"/image-icon/pendingIMG.png";
+                hinhAnh2DisplayModalEdit.src= resp.hinhAnh2?"/image/"+resp.hinhAnh2:"/image-icon/pendingIMG.png";
+                hinhAnh3DisplayModalEdit.src= resp.hinhAnh3?"/image/"+resp.hinhAnh3:"/image-icon/pendingIMG.png";
             });
     });
     $(document).on('click', "button[id^='detailSPBtn_']", e => {
@@ -2218,20 +2206,6 @@
                         };
                         console.log("data json: ", data);
                         var formData = new FormData($('#uploadFormEdit')[0]); // Use FormData to get all form data
-                        // Handle file upload via AJAX
-                        // $.ajax({
-                        //     url: '/upload',
-                        //     type: 'POST',
-                        //     data: formData,
-                        //     processData: false,
-                        //     contentType: false,
-                        //     success: function (response) {
-                        //         console.log("save image success ");
-                        //     },
-                        //     error: function (xhr, status, error) {
-                        //         console.log("save image =error");
-                        //     }
-                        // });
                         fetch(`/chi-tiet-sp/update/` + idSPCTLocal, {
                             method: 'POST',
                             headers: {
@@ -2246,6 +2220,19 @@
                             ).then(() => {
                                 loadDSSPCT(currentPage);
                             });
+                        });
+                        $.ajax({
+                            url: '/upload',
+                            type: 'POST',
+                            data: formData,
+                            processData: false,
+                            contentType: false,
+                            success: function(response) {
+                                console.log("save image success ");
+                            },
+                            error: function(xhr, status, error) {
+                                console.log("save image =error");
+                            }
                         });
                     }
                 });

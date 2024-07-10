@@ -4,18 +4,27 @@ import com.example.java4.entities.SanPham;
 import com.example.java4.repositories.HinhAnhRepository;
 import com.example.java4.repositories.SPCTRepository;
 import com.example.java4.repositories.SanPhamRepository;
+import com.example.java4.request.QLSP.Store.HinhAnhFileStore;
 import com.example.java4.request.QLSP.Store.HinhAnhStore;
 import com.example.java4.request.QLSP.Store.SanPhamStore;
 import com.example.java4.request.QLSP.Update.HinhAnhUpdate;
 import com.example.java4.request.QLSP.Update.SanPhamUpdate;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -27,6 +36,8 @@ public class HinhAnhController {
     HinhAnhRepository hinhAnhRepo;
     @Autowired
     SPCTRepository spctRepo;
+    @Value("${file.upload-dir}")
+    private String uploadDir;
     public HinhAnhController() {
     }
 
@@ -97,13 +108,25 @@ public class HinhAnhController {
             return ResponseEntity.ok(false);
         }
         else{
-            HinhAnh hinhAnh  = hinhAnhRepo.findByIdCTSP(idctsp);
-            hinhAnh.setHinhAnh1(newHinhAnh.getHinhAnh1());
-            hinhAnh.setHinhAnh2(newHinhAnh.getHinhAnh2());
-            hinhAnh.setHinhAnh3(newHinhAnh.getHinhAnh3());
-            hinhAnh.setNgayTao(newHinhAnh.getNgayTao());
-            hinhAnh.setTrangThai(newHinhAnh.getTrangThai());
-            hinhAnhRepo.save(hinhAnh);
+            if(!hinhAnhRepo.findByIdCTSP(idctsp).equals(null)){
+                HinhAnh hinhAnh  = hinhAnhRepo.findByIdCTSP(idctsp);
+                hinhAnh.setHinhAnh1(newHinhAnh.getHinhAnh1());
+                hinhAnh.setHinhAnh2(newHinhAnh.getHinhAnh2());
+                hinhAnh.setHinhAnh3(newHinhAnh.getHinhAnh3());
+                hinhAnh.setNgayTao(newHinhAnh.getNgayTao());
+                hinhAnh.setTrangThai(newHinhAnh.getTrangThai());
+                hinhAnhRepo.save(hinhAnh);
+            }
+            else{
+                HinhAnh hinhAnh = new HinhAnh();
+                hinhAnh.setIdCTSP(spctRepo.findByIdCTSP(idctsp));
+                hinhAnh.setHinhAnh1(newHinhAnh.getHinhAnh1());
+                hinhAnh.setHinhAnh2(newHinhAnh.getHinhAnh2());
+                hinhAnh.setHinhAnh3(newHinhAnh.getHinhAnh3());
+                hinhAnh.setNgayTao(newHinhAnh.getNgayTao());
+                hinhAnh.setTrangThai(newHinhAnh.getTrangThai());
+                hinhAnhRepo.save(hinhAnh);
+            }
             return ResponseEntity.ok(true);
         }
     }
@@ -142,6 +165,38 @@ public class HinhAnhController {
             hinhAnh.setTrangThai(newHinhAnh.getTrangThai());
             hinhAnhRepo.save(hinhAnh);
             return ResponseEntity.ok(true);
+        }
+    }
+
+
+    @CrossOrigin
+    @PostMapping("upload")
+    public void saveUploadFile(
+            @RequestBody @Valid HinhAnhFileStore newHinhAnhFile,
+            BindingResult result, Model model
+    ) {
+        if (newHinhAnhFile.getFileHinhAnh1().isEmpty()) {
+            model.addAttribute("message", "Vui lòng chọn hình ảnh 1.");
+        }
+        if(newHinhAnhFile.getFileHinhAnh2().isEmpty()){
+            model.addAttribute("message", "Vui lòng chọn hình ảnh 2.");
+        }
+        if(newHinhAnhFile.getFileHinhAnh3().isEmpty()){
+            model.addAttribute("message", "Vui lòng chọn hình ảnh 3.");
+        }
+
+        try {
+            byte[] bytesHinhAnh1 = newHinhAnhFile.getFileHinhAnh1().getBytes();
+            byte[] bytesHinhAnh2 = newHinhAnhFile.getFileHinhAnh2().getBytes();
+            byte[] bytesHinhAnh3 = newHinhAnhFile.getFileHinhAnh3().getBytes();
+            Path path = Paths.get(uploadDir + File.separator +newHinhAnhFile.getFileHinhAnh1().getOriginalFilename());
+            Files.write(path, bytesHinhAnh1);
+            Files.write(path, bytesHinhAnh2);
+            Files.write(path, bytesHinhAnh3);
+            model.addAttribute("message", "You successfully uploaded");
+        } catch (IOException e) {
+            e.printStackTrace();
+            model.addAttribute("message", "Failed to upload");
         }
     }
 }
