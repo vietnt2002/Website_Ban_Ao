@@ -764,7 +764,7 @@
                                                 <i class="bi bi-arrow-right"></i>
                                             </div>
                                             <div class="step active" id="step_online_4">
-                                                <div class="step-icon-wrapper" >
+                                                <div class="step-icon-wrapper">
                                                     <i class="bi bi-box-seam step-icon"></i>
                                                 </div>
                                                 <div class="step-title">Đang vận chuyển</div>
@@ -773,7 +773,7 @@
                                             <div class="step-arrow">
                                                 <i class="bi bi-arrow-right"></i>
                                             </div>
-                                            <div class="step active" id="step_online_5" >
+                                            <div class="step active" id="step_online_5">
                                                 <div class="step-icon-wrapper">
                                                     <i class="bi bi-credit-card-2-back step-icon"></i>
                                                 </div>
@@ -798,48 +798,50 @@
                         </c:choose>
                     </div>
 
-                    <c:if test="${hoaDonDTO.loaiHoaDon == 1 && hoaDonDTO.trangThai != 6}">
-                        <div class="card-footer">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
+                    <div class="card-footer">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <c:if test="${hoaDonDTO.loaiHoaDon == 1 && hoaDonDTO.trangThai != 6}">
+                                <div class="d-flex">
                                     <c:if test="${hoaDonDTO.trangThai != 6}">
                                         <c:choose>
                                             <c:when test="${hoaDonDTO.trangThai == 1}">
-                                                <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal"
-                                                        data-bs-target="#confirmModal" id="btnXacNhan" name="btnXacNhan">
-                                                    Xác nhận đơn hàng
+                                                <button type="button" class="btn btn-primary me-2"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#confirmModal" id="btnXacNhan"
+                                                        name="btnXacNhan">
+                                                    Xác nhận
                                                 </button>
                                             </c:when>
                                             <c:when test="${hoaDonDTO.trangThai == 2}">
-                                                <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal"
-                                                        data-bs-target="#confirmModal" id="btnChoGiaoHang" name="btnChoGiaoHang">
-                                                    Xác nhận chờ giao hàng
+                                                <button type="button" class="btn btn-primary me-2"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#confirmModal" id="btnChoGiaoHang"
+                                                        name="btnChoGiaoHang">
+                                                    Chờ giao hàng
                                                 </button>
                                             </c:when>
                                             <c:when test="${hoaDonDTO.trangThai == 3}">
-                                                <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal"
-                                                        data-bs-target="#confirmModal" id="btnDangGiaoHang" name="btnDangGiaoHang">
-                                                    Xác nhận đang vận chuyển
+                                                <button type="button" class="btn btn-primary me-2"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#confirmModal" id="btnDangGiaoHang"
+                                                        name="btnDangGiaoHang">
+                                                    Đang vận chuyển
                                                 </button>
                                             </c:when>
                                             <c:when test="${hoaDonDTO.trangThai == 4}">
-                                                <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal"
-                                                        data-bs-target="#confirmModal" id="btnDaGiaoHang" name="btnDaGiaoHang">
-                                                    Xác nhận lấy hàng
-                                                </button>
-                                            </c:when>
-                                            <c:when test="${hoaDonDTO.trangThai == 5}">
-                                                <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal"
-                                                        data-bs-target="#confirmModal" id="btnHoanThanh" name="btnHoanThanh">
+                                                <button type="button" class="btn btn-primary me-2"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#confirmModal" id="btnHoanThanh"
+                                                        name="btnHoanThanh">
                                                     Hoàn thành
                                                 </button>
                                             </c:when>
                                         </c:choose>
 
-                                        <button type="button" class="btn btn-danger" id="cancelButton"
+                                        <button type="button" class="btn btn-danger me-1" id="cancelButton"
                                                 data-bs-toggle="modal"
                                                 data-bs-target="#cancelModal"
-                                                <c:if test="${hoaDonDTO.trangThai != 1}">disabled</c:if>
+                                                <c:if test="${hoaDonDTO.trangThai != 1 || hoaDonDTO.trangThai != 2 }">disabled</c:if>
                                         >
                                             Hủy đơn
                                         </button>
@@ -847,21 +849,23 @@
 
                                     <c:if test="${hoaDonDTO.trangThai != 1 && hoaDonDTO.trangThai != 6}">
                                         <a href="/hoa-don/hoan-tac/${hoaDonDTO.id}">
-                                            <button type="button" class="btn btn-warning" id="">
+                                            <button type="button" class="btn btn-warning ml-3" id="">
                                                 Hoàn tác
                                             </button>
                                         </a>
                                     </c:if>
                                 </div>
+                            </c:if>
 
+                            <div class="ms-auto">
                                 <button type="button" class="btn btn-success" data-bs-toggle="modal"
                                         data-bs-target="#historyModal">
                                     <i class="bi bi-clock-history text-white"></i> Lịch sử
                                 </button>
                             </div>
                         </div>
+                    </div>
 
-                    </c:if>
 
 
                 </div>
@@ -936,12 +940,14 @@
 
 
                 <!-- Modal lịch sử hóa đơn-->
-                <div class="modal fade" id="historyModal" tabindex="-1" aria-labelledby="historyModalLabel" aria-hidden="true">
+                <div class="modal fade" id="historyModal" tabindex="-1" aria-labelledby="historyModalLabel"
+                     aria-hidden="true">
                     <div class="modal-dialog  modal-xl">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="historyModalLabel">Lịch sử trạng thái hóa đơn</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <h5 class="modal-title" id="historyModalLabel">Lịch sử hóa đơn</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <table class="table table-striped table-hover">
@@ -955,22 +961,18 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <c:forEach var="lichSuHD" varStatus="i" items="${listLichSuHoaDon}">
-                                    <tr>
-                                        <td>${i.index + 1}</td>
-                                        <td>
-                                                  <span class="badge rounded-pill ${hoaDonDTO.maMau}">
-                                                          ${hoaDonDTO.trangThaiText}
-                                                  </span>
-                                        </td>
-                                        <td>${lichSuHD.ngayCapNhat} </td>
-                                        <td>${lichSuHD.idNhanVien.hoTen}</td>
-                                        <td>${lichSuHD.ghiChu}</td>
-                                    </tr>
+                                    <c:forEach var="lichSuHD" varStatus="i" items="${listLichSuHoaDonDTO}">
+                                        <tr>
+                                            <td>${i.index + 1}</td>
+                                            <td>${lichSuHD.trangThai}</td>
+                                            <td>${lichSuHD.thoiGian}</td>
+                                            <td>${lichSuHD.hoTen}</td>
+                                            <td>${lichSuHD.ghiChu}</td>
+                                        </tr>
                                     </c:forEach>
-
                                     </tbody>
                                 </table>
+
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
@@ -980,9 +982,7 @@
                 </div>
 
 
-
-
-            <%--    Bảng lịch sử thanh toán--%>
+                <%--    Bảng lịch sử thanh toán--%>
 
 
                 <div class="card mb-3">
@@ -1433,7 +1433,7 @@
             <div class="card shadow mb-4 mx-2" id="custom-card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="m-0 font-weight-bold">Thông tin sản phẩm đã mua</h5>
-                    <c:if test="${hoaDonDTO.loaiHoaDon == 1}">
+                    <c:if test="${hoaDonDTO.loaiHoaDon == 1 || hoaDonDTO.phuongThucThanhToan != 1}">
                         <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
                                 data-bs-target="#addProductModal"
                                 <c:if test="${hoaDonDTO.trangThai != 1}">
@@ -1457,7 +1457,7 @@
                             <th>Kích thước</th>
                             <th>Số lượng</th>
                             <th>Tổng Tiền</th>
-                            <c:if test="${hoaDonDTO.loaiHoaDon == 1}">
+                            <c:if test="${hoaDonDTO.loaiHoaDon == 1 || hoaDonDTO.phuongThucThanhToan != 1}">
                                 <th>Thao tác</th>
                             </c:if>
                         </tr>
@@ -1512,7 +1512,7 @@
                                                            currencySymbol="₫" groupingUsed="true"/>
                                     </span>
                                 </td>
-                                <c:if test="${hoaDonDTO.loaiHoaDon == 1}">
+                                <c:if test="${hoaDonDTO.loaiHoaDon == 1 || hoaDonDTO.phuongThucThanhToan != 1}">
                                     <td>
                                         <c:choose>
                                             <c:when test="${hoaDonDTO.trangThai != 1}">
@@ -2358,7 +2358,6 @@
     });
 
 </script>
-
 
 
 </body>
