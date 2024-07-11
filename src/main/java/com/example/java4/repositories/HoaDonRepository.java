@@ -155,8 +155,8 @@ public interface HoaDonRepository
     @Query("select count(hd) from HoaDon hd where hd.idKhachHang.id = ?1 and hd.trangThai = ?2")
     int countByHoaDonByTrangThai(String idKH, Integer trangThai);
 
-    @Query("select count(hd) from HoaDon hd where hd.trangThai >= 1")
-    int countByTrangThai();
+    @Query("select count(hd) from HoaDon hd where hd.trangThai >= 1 and hd.idKhachHang.id = ?1")
+    int countByTrangThai(String idKH);
 
     @Query("select hd from HoaDon hd " +
             "where hd.idKhachHang.id = ?1 and hd.id = ?2")

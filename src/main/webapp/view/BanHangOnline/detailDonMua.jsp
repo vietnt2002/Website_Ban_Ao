@@ -155,19 +155,19 @@
                         </c:when>
                         <c:otherwise>
                             <!-- Hiển thị nút đăng xuất khi đã đăng nhập -->
-                            <li><a class="dropdown-item" href="#">Đơn mua</a></li>
+                            <li><a class="dropdown-item" href="/cua-hang/don-mua">Đơn mua</a></li>
                             <li><a class="dropdown-item" href="#">Quản lý tài khoản</a></li>
-                            <li><a class="dropdown-item" href="/home/logout">Đăng xuất</a></li>
+                            <li><a class="dropdown-item" href="/cua-hang/logout">Đăng xuất</a></li>
                         </c:otherwise>
                     </c:choose>
                 </ul>
             </div>
             <div class="col-lg-3 col-6 text-right" style="position: relative">
-                <a href="gio-hang" class="btn border">
+                <a href="/cua-hang/gio-hang" class="btn border">
                     <i class="fas fa-shopping-cart text-primary"></i>
                     <c:if test="${soLuong > 0}">
                         <span class="totalQuantityCart"
-                              style="display: flex; justify-content: center; align-items: center">${soLuong}</span>
+                              style="display: flex; justify-content: center; align-items: center" >${soLuong}</span>
                     </c:if>
                     <c:if test="${soLuong == null}">
                         <span class="totalQuantityCart"
@@ -324,48 +324,50 @@
 
 <!-- Boby -->
 
-<div class="container-fluid" style="padding-left: 100px; padding-right: 100px; padding-bottom: 150px;">
+<div class="container-fluid pt-7" style="padding-left: 100px; padding-right: 100px; padding-bottom: 150px;">
     <%-- Trạng thái hóa đơn --%>
-    <div class="mb-5" style="position: relative; left: 1050px">
-        <c:forEach var="i" items="${listHDCT}" varStatus="index">
-            <c:if test="${index.index == 0}">
-                <span>Mã hóa đơn: ${i.ma}</span> |
-                <c:choose>
-                    <c:when test="${i.trangThai == 1}">
-                        <div class="badge badge-warning" style="border-radius: 10px;">
-                            Chờ xác nhận
-                        </div>
-                    </c:when>
-                    <c:when test="${i.trangThai == 3}">
-                        <div class="badge badge-warning" style="border-radius: 10px;">
-                            Chờ giao hàng
-                        </div>
-                    </c:when>
-                    <c:when test="${i.trangThai == 4}">
-                        <div class="badge badge-info" style="border-radius: 10px;">
-                            Chờ giao hàng
-                        </div>
-                    </c:when>
-                    <c:when test="${i.trangThai == 6}">
-                        <div class="badge badge-success" style="border-radius: 10px;">
-                            Hoàn thành
-                        </div>
-                    </c:when>
-                    <c:when test="${i.trangThai == 7}">
-                        <div class="badge badge-danger" style="border-radius: 10px;">
-                            Đơn hủy
-                        </div>
-                    </c:when>
-                </c:choose>
-            </c:if>
-        </c:forEach>
+    <div class="row">
+        <div class="mb-5" style="position: relative; left: 1050px">
+            <c:forEach var="i" items="${listHDCT}" varStatus="index">
+                <c:if test="${index.index == 0}">
+                    <span>Mã hóa đơn: ${i.ma}</span> |
+                    <c:choose>
+                        <c:when test="${i.trangThai == 1}">
+                            <div class="badge badge-warning" style="border-radius: 10px;">
+                                Chờ xác nhận
+                            </div>
+                        </c:when>
+                        <c:when test="${i.trangThai == 3}">
+                            <div class="badge badge-warning" style="border-radius: 10px;">
+                                Chờ giao hàng
+                            </div>
+                        </c:when>
+                        <c:when test="${i.trangThai == 4}">
+                            <div class="badge badge-info" style="border-radius: 10px;">
+                                Chờ giao hàng
+                            </div>
+                        </c:when>
+                        <c:when test="${i.trangThai == 6}">
+                            <div class="badge badge-success" style="border-radius: 10px;">
+                                Hoàn thành
+                            </div>
+                        </c:when>
+                        <c:when test="${i.trangThai == 7}">
+                            <div class="badge badge-danger" style="border-radius: 10px;">
+                                Đơn hủy
+                            </div>
+                        </c:when>
+                    </c:choose>
+                </c:if>
+            </c:forEach>
+        </div>
     </div>
 
 
     <div class="row">
         <%-- Địa chỉ giao hàng --%>
         <div class="col-6">
-            <div class="row d-flex align-items-stretch">
+            <div class="row d-flex align-items-stretch mb-5" style="position: relative; left: 18px;">
                 <div class="col-12 mb-3 d-flex align-items-stretch">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h5>Địa chỉ nhận hàng</h5>
@@ -383,69 +385,65 @@
                 </div>
             </div>
         </div>
-        <div class="col-6">
-            <%-- Thông tin thanh toán --%>
-            <div class="row d-flex align-items-stretch">
-                <div class="col-12 mb-3 d-flex align-items-stretch">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5>Thanh toán</h5>
-                    </div>
-                </div>
-
-                <div class="col-12 mb-3 d-flex align-items-stretch">
-                    <c:forEach var="i" items="${hoaDon}">
-                        <div class="card-body text-end">
-                            <p>Tổng tiền hàng: ${tongTien}</p>
-                            <p>Phí vận chuyển: 0₫</p>
-                            <p>Voucher của cửa hàng: ${i.idKhuyenMai.soTienGiam}₫</p>
-                        </div>
-                    </c:forEach>
-                </div>
-
-                <div class="col-12 mb-3 d-flex align-items-stretch">
-                    <c:forEach var="i" items="${hoaDon}">
-                        <div class="card-footer text-end">
-                            <p class="fw-bold mb-1 pb-3 small d-flex justify-content-between">
-                                <span>Thanh toán: ${i.tongTien}</span>
-                            </p>
-                        </div>
-                    </c:forEach>
-                </div>
-            </div>
-
-        </div>
     </div>
 
 
     <%-- Danh sách sản phẩm --%>
-    <div class="card-body custom-card-body">
-        <table class="table table-bordered custom-table">
-            <thead>
+    <div class="row px-xl-5 mb-5">
+        <table class="table table-bordered mb-0">
+            <thead class="bg-secondary text-dark">
             <tr>
-                <th>Tên sản phẩm</th>
-                <th>Số lượng</th>
-                <th>Màu sắc</th>
-                <th>Kích thước</th>
-                <th>Giá sản phẩm</th>
+                <th class="text-center">Tên sản phẩm</th>
+                <th class="text-center">Số lượng</th>
+                <th class="text-center">Màu sắc</th>
+                <th class="text-center">Kích thước</th>
+                <th class="text-center">Giá sản phẩm</th>
             </tr>
             </thead>
             <c:forEach var="i" items="${listHDCT}" varStatus="">
-                <tbody class="align-middle">
+                <tbody class="">
                 <tr>
-                    <td class="align-middle align-center"><img src="/image/${i.hinhAnh1}" alt=""
+                    <td class=""><img src="/image/${i.hinhAnh1}" alt=""
                                                                style="width: 50px;">
                             ${i.tenSP}
                     </td>
-                    <td class="align-middle">${i.soLuong}</td>
-                    <td class="align-middle">${i.mauSac}</td>
-                    <td class="align-middle">${i.tenKieuTay}</td>
-                    <td class="align-middle">${i.giaBan}</td>
+                    <td class="text-center">${i.soLuong}</td>
+                    <td class="text-center">${i.mauSac}</td>
+                    <td class="text-center">${i.tenKieuTay}</td>
+                    <td class="text-center">${i.giaBan}</td>
                 </tr>
                 </tbody>
             </c:forEach>
         </table>
+
     </div>
-    <%--    </div>--%>
+    <%-- Thông tin thanh toán --%>
+    <div class="row d-flex align-items-stretch" style="text-align: end; position: relative; right: 75px;">
+        <div class="col-12 mb-3 d-flex align-items-stretch">
+            <c:forEach var="i" items="${hoaDon}">
+                <div class="card-body">
+                    <p>Tổng tiền hàng: ${tongTien}₫</p>
+                    <p>Phí vận chuyển: 0₫</p>
+                    <c:if test="${i.idKhuyenMai == null}" >
+                        <p>Voucher của cửa hàng: 0₫</p>
+                    </c:if>
+                    <c:if test="${i.idKhuyenMai != null}" >
+                        <p>Voucher của cửa hàng: ${i.idKhuyenMai.soTienGiam}₫</p>
+                    </c:if>
+                </div>
+            </c:forEach>
+        </div>
+
+        <div class="col-12 mb-3 d-flex align-items-stretch">
+            <c:forEach var="i" items="${hoaDon}">
+                <div class="card-footer" style="color: red; position: relative; font-size: x-large; left: 1269px;">
+                    <p class="fw-bold mb-1 pb-3 small d-flex justify-content-between">
+                        <span>Thành tiền:  ${i.tongTien}₫</span>
+                    </p>
+                </div>
+            </c:forEach>
+        </div>
+    </div>
 </div>
 
 

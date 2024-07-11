@@ -88,7 +88,7 @@ public class TrangChuController {
             System.out.println("crette dto");
             model.addAttribute("khachHangDTO", new KhachHangDTO());
         }
-        Pageable pageable = PageRequest.of(pageParam.orElse(0), 9);
+        Pageable pageable = PageRequest.of(pageParam.orElse(0), 12);
         Page pageSP = spctRepo.getAllSP(pageable);
         model.addAttribute("pageSP", pageSP);
         model.addAttribute("soLuong", hdctRepo.findByKHnStt(khachHangRepo.findByIdKH(UserInfor.idKhachHang)));
@@ -366,7 +366,7 @@ public class TrangChuController {
         listCTSP = spctRepo.findAll();
         listSanPham = sanPhamRepo.findAll();
         DiaChi diaChi = diaChiRepo.getDiaChiByIdKhachHangAndTrangThai(UserInfor.idKhachHang, DiaChiRepository.MAC_DINH);
-        listDiaChi = diaChiRepo.getAllDiaChi();
+        listDiaChi = diaChiRepo.getAllDiaChi(UserInfor.idKhachHang);
         listKhuyenMai = khuyenMaiRepo.findAll();
         HoaDon hoaDon = hoaDonRepo.findByIdKhachHang(UserInfor.idKhachHang, HoaDonRepository.CHO_THANH_TOAN);
         boolean check = false;
@@ -412,7 +412,7 @@ public class TrangChuController {
                                    @RequestParam("tenQuanHuyen") String idQuan,
                                    @RequestParam("tenPhuongXa") String idPhuong, RedirectAttributes redirectAttributes) {
         KhachHang khachHang = khachHangRepo.findByIdKH(UserInfor.idKhachHang);
-        listDiaChi = diaChiRepo.findAll();
+        listDiaChi = diaChiRepo.getAllDiaChi(UserInfor.idKhachHang);
 
         DiaChi diaChi = new DiaChi();
         diaChi.setTenNguoiNhan(request.getTenNguoiNhan());
@@ -601,7 +601,7 @@ public class TrangChuController {
         model.addAttribute("soLuong", totalSoLuong);
 
         //Số lượng hóa đơn theo trạng thái
-        int countAllHoaDon = hoaDonRepo.countByTrangThai();
+        int countAllHoaDon = hoaDonRepo.countByTrangThai(UserInfor.idKhachHang);
         int countHDByChoXacNhan = hoaDonRepo.countByHoaDonByTrangThai(UserInfor.idKhachHang, HoaDonRepository.CHO_XAC_NHAN);
         int countHDByDaXacNhan = hoaDonRepo.countByHoaDonByTrangThai(UserInfor.idKhachHang, HoaDonRepository.DA_XAC_NHAN);
         int countHDByChoGiaoHang = hoaDonRepo.countByHoaDonByTrangThai(UserInfor.idKhachHang, HoaDonRepository.CHO_GIAO_HANG);
@@ -636,6 +636,14 @@ public class TrangChuController {
     @GetMapping("don-mua/{idHD}")
     public String detailDonMua(Model model, @PathVariable("idHD") String idHD) {
 
+        //Tính tổng số lượng sản phẩm có trong giỏ hàng
+        Integer totalSoLuong = 0;
+        for (ChiTietHoaDon chiTietHoaDon : listHDCT) {
+            totalSoLuong += chiTietHoaDon.getSoLuong();
+        }
+        model.addAttribute("soLuong", totalSoLuong);
+
+        //Tổng tiền của đơn hàng
         chiTietHoaDonList = hdctRepo.tongTienHD(UserInfor.idKhachHang, idHD);
         BigDecimal tongTienBigDecimal = new BigDecimal(0.0);
         for (ChiTietHoaDon chiTietHoaDon : chiTietHoaDonList) {
@@ -644,6 +652,7 @@ public class TrangChuController {
         }
         model.addAttribute("tongTien", tongTienBigDecimal);
 
+        listGioHang = hdctRepo.getAll(UserInfor.idKhachHang, HoaDonRepository.CHO_THANH_TOAN);
         List<HoaDonChiTietResponse> listHDCT = hdctRepo.getListHDbyIdKH(UserInfor.idKhachHang, idHD);
         List<GiaoHang> giaoHang = giaoHangRepo.getListGiaoHangByIdKHAndidHD(UserInfor.idKhachHang, idHD);
         List<HoaDon> hoaDon = hoaDonRepo.getListHDbyIDKHAndIDHD(UserInfor.idKhachHang, idHD);
