@@ -711,6 +711,7 @@
                     </div>
                     <div class="modal-body" style="overflow-y: auto; height: 80vh;">
                         <div class="mb-3">
+                            <form id="uploadFormEdit" method="post" enctype="multipart/form-data" action="/hinh-anh/upload">
                             <div class="row">
                                 <div class="d-flex" style="gap: 500px;">
                                     <h5 class="border-bottom">Tên sản phẩm:&nbsp&nbsp<span id="tenSPModalEdit"></span>
@@ -832,21 +833,21 @@
                                          src="/image-icon/pendingIMG.png"
                                          alt="" class="fit-img" id="hinhAnh1DisplayModalEdit">
                                     <p class="text-center">Hình ảnh 1</p>
-                                    <input type="file" id="fileHinhAnh1ModalEdit" class="file-input-overlay"/>
+                                    <input type="file" name="hinhAnh1File" id="fileHinhAnh1ModalEdit" class="file-input-overlay"/>
                                 </div>
                                 <div class="col col-md-3 hover-effect click-effect image-container">
                                     <img width="200" height="200"
                                          src="/image-icon/pendingIMG.png"
                                          alt="" class="fit-img" id="hinhAnh2DisplayModalEdit">
                                     <p class="text-center">Hình ảnh 2</p>
-                                    <input type="file" id="fileHinhAnh2ModalEdit" class="file-input-overlay"/>
+                                    <input type="file" name="hinhAnh2File" id="fileHinhAnh2ModalEdit" class="file-input-overlay"/>
                                 </div>
                                 <div class="col col-md-3 hover-effect click-effect image-container">
                                     <img width="200" height="200"
                                          src="/image-icon/pendingIMG.png"
                                          alt="" class="fit-img" id="hinhAnh3DisplayModalEdit">
                                     <p class="text-center">Hình ảnh 3</p>
-                                    <input type="file" id="fileHinhAnh3ModalEdit" class="file-input-overlay"/>
+                                    <input type="file" name="hinhAnh3File" id="fileHinhAnh3ModalEdit" class="file-input-overlay"/>
                                 </div>
                             </div>
                             <div class="form-check form-switch">
@@ -856,7 +857,8 @@
                                        id="trangThaiLabelModalEdit">Trạng
                                     thái</label>
                             </div>
-                            <button id="saveEditBtn" type="submit" class="btn btn-primary">Lưu</button>
+                            <button id="saveEditBtn" class="btn btn-primary">Lưu</button>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -1074,6 +1076,7 @@
     const fileHinhAnh1ModalEdit = document.getElementById('fileHinhAnh1ModalEdit');
     const fileHinhAnh2ModalEdit = document.getElementById('fileHinhAnh2ModalEdit');
     const fileHinhAnh3ModalEdit = document.getElementById('fileHinhAnh3ModalEdit');
+    let fileHinhAnh1ModalEditObject = null;
 
     const hinhAnh1DisplayModalAdd = document.getElementById('hinhAnh1DisplayModalAdd');
     const hinhAnh2DisplayModalAdd = document.getElementById('hinhAnh2DisplayModalAdd');
@@ -1118,7 +1121,6 @@
             hinhAnh3DisplayModalAdd.src = imgURL;
         }
     });
-
     fileHinhAnh1ModalEdit.addEventListener('change', function (e) {
         const files = e.target.files;
         console.log("test change data: ", files);
@@ -1126,6 +1128,7 @@
             const file = files[0];
             console.log("File selected: ", file);
             console.log("file cmp: ", fileHinhAnh1ModalEdit.files[0]);
+            fileHinhAnh1ModalEditObject = fileHinhAnh1ModalEdit.files[0];
             const imgURL = URL.createObjectURL(fileHinhAnh1ModalEdit.files[0]);
             hinhAnh1DisplayModalEdit.src = imgURL;
         }
@@ -2178,14 +2181,8 @@
                             giaBan: giaBanModalEdit.value,
                             trangThai: trangThaiModalEdit
                         };
-                        const dataFile = {
-                            fileHinhAnh1: fileHinhAnh1ModalEdit.files[0],
-                            fileHinhAnh2: fileHinhAnh2ModalEdit.files[0],
-                            fileHinhAnh3: fileHinhAnh3ModalEdit.files[0]
-                        }
                         console.log("data json: ", data);
-                        console.log("data file test: ", dataFile);
-                        var formData = new FormData($('#uploadFormEdit')[0]); // Use FormData to get all form data
+                        console.log("data params file: ", formData);
                         fetch(`/chi-tiet-sp/update/` + idSPCTLocal, {
                             method: 'POST',
                             headers: {
@@ -2201,20 +2198,19 @@
                                 loadDSSPCT(currentPage);
                             });
                         });
-                        fetch(`/hinh-anh/upload`, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
+                        var formData = new FormData($('#uploadFormEdit')[0]);
+                        $.ajax({
+                            url: '/uploads',
+                            type: 'POST',
+                            data: formData,
+                            processData: false,
+                            contentType: false,
+                            success: function(response) {
+                                console.log("save image success ");
                             },
-                            body: JSON.stringify(dataFile)
-                        }).then(() => {
-                            Swal.fire(
-                                'Đã thanh toán!',
-                                'Dữ liệu đã được ghi nhận.',
-                                'success'
-                            ).then(() => {
-
-                            });
+                            error: function(xhr, status, error) {
+                                console.log("save image =error");
+                            }
                         });
                     }
                 });

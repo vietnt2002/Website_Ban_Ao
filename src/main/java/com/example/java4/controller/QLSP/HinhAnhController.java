@@ -1,14 +1,9 @@
 package com.example.java4.controller.QLSP;
 import com.example.java4.entities.HinhAnh;
-import com.example.java4.entities.SanPham;
 import com.example.java4.repositories.HinhAnhRepository;
 import com.example.java4.repositories.SPCTRepository;
-import com.example.java4.repositories.SanPhamRepository;
-import com.example.java4.request.QLSP.Store.HinhAnhFileStore;
 import com.example.java4.request.QLSP.Store.HinhAnhStore;
-import com.example.java4.request.QLSP.Store.SanPhamStore;
 import com.example.java4.request.QLSP.Update.HinhAnhUpdate;
-import com.example.java4.request.QLSP.Update.SanPhamUpdate;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
@@ -168,31 +164,33 @@ public class HinhAnhController {
         }
     }
 
-
     @CrossOrigin
-    @PostMapping("upload")
+    @PostMapping("/upload")
     public void saveUploadFile(
-            @RequestBody @Valid HinhAnhFileStore newHinhAnhFile,
+            @RequestParam("hinhAnh1File") MultipartFile newHinhAnh1File,
+            @RequestParam("hinhAnh2File") MultipartFile newHinhAnh2File,
+            @RequestParam("hinhAnh3File") MultipartFile newHinhAnh3File,
             Model model
     ) {
-        if (newHinhAnhFile.getFileHinhAnh1().isEmpty()) {
+        if (newHinhAnh1File.isEmpty()) {
             model.addAttribute("message", "Vui lòng chọn hình ảnh 1.");
         }
-        if(newHinhAnhFile.getFileHinhAnh2().isEmpty()){
+        if(newHinhAnh2File.isEmpty()){
             model.addAttribute("message", "Vui lòng chọn hình ảnh 2.");
         }
-        if(newHinhAnhFile.getFileHinhAnh3().isEmpty()){
+        if(newHinhAnh3File.isEmpty()){
             model.addAttribute("message", "Vui lòng chọn hình ảnh 3.");
         }
-
         try {
-            byte[] bytesHinhAnh1 = newHinhAnhFile.getFileHinhAnh1().getBytes();
-            byte[] bytesHinhAnh2 = newHinhAnhFile.getFileHinhAnh2().getBytes();
-            byte[] bytesHinhAnh3 = newHinhAnhFile.getFileHinhAnh3().getBytes();
-            Path path = Paths.get(uploadDir + File.separator +newHinhAnhFile.getFileHinhAnh1().getOriginalFilename());
-            Files.write(path, bytesHinhAnh1);
-            Files.write(path, bytesHinhAnh2);
-            Files.write(path, bytesHinhAnh3);
+            byte[] bytesHinhAnh1 = newHinhAnh1File.getBytes();
+            byte[] bytesHinhAnh2 = newHinhAnh2File.getBytes();
+            byte[] bytesHinhAnh3 = newHinhAnh3File.getBytes();
+            Path path1 = Paths.get(uploadDir + File.separator +newHinhAnh1File.getOriginalFilename());
+            Path path2 = Paths.get(uploadDir + File.separator +newHinhAnh2File.getOriginalFilename());
+            Path path3 = Paths.get(uploadDir + File.separator +newHinhAnh3File.getOriginalFilename());
+            Files.write(path1, bytesHinhAnh1);
+            Files.write(path2, bytesHinhAnh2);
+            Files.write(path3, bytesHinhAnh3);
             model.addAttribute("message", "You successfully uploaded");
         } catch (IOException e) {
             e.printStackTrace();
