@@ -1,21 +1,23 @@
 package com.example.java4.entities;
 
 import jakarta.persistence.*;
-
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
+@Table(name = "HinhAnh")
 public class HinhAnh {
     private String id;
     private ChiTietSanPham idCTSP;
     private String hinhAnh1;
     private String hinhAnh2;
     private String hinhAnh3;
+    private LocalDateTime ngayTao;
     private Integer trangThai;
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "ID")
+    @Column(name = "ID", unique = true, nullable = false)
     public String getId() {
         return id;
     }
@@ -51,6 +53,15 @@ public class HinhAnh {
         this.hinhAnh3 = hinhAnh3;
     }
 
+    @Column(name = "NgayTao")
+    public LocalDateTime getNgayTao() {
+        return ngayTao;
+    }
+
+    public void setNgayTao(LocalDateTime ngayTao) {
+        this.ngayTao = ngayTao;
+    }
+
     @Column(name = "TrangThai")
     public Integer getTrangThai() {
         return trangThai;
@@ -65,21 +76,26 @@ public class HinhAnh {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         HinhAnh hinhAnh = (HinhAnh) o;
-        return Objects.equals(id, hinhAnh.id) && Objects.equals(hinhAnh1, hinhAnh.hinhAnh1) && Objects.equals(hinhAnh2, hinhAnh.hinhAnh2) && Objects.equals(hinhAnh3, hinhAnh.hinhAnh3) && Objects.equals(trangThai, hinhAnh.trangThai);
+        return Objects.equals(id, hinhAnh.id) &&
+                Objects.equals(hinhAnh1, hinhAnh.hinhAnh1) &&
+                Objects.equals(hinhAnh2, hinhAnh.hinhAnh2) &&
+                Objects.equals(hinhAnh3, hinhAnh.hinhAnh3) &&
+                Objects.equals(ngayTao, hinhAnh.ngayTao) &&
+                Objects.equals(trangThai, hinhAnh.trangThai);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, hinhAnh1, hinhAnh2, hinhAnh3, trangThai);
+        return Objects.hash(id, hinhAnh1, hinhAnh2, hinhAnh3, ngayTao, trangThai);
     }
 
-    @ManyToOne
-    @JoinColumn(name = "IdCTSP", referencedColumnName = "ID")
+    @OneToOne
+    @JoinColumn(name = "IdCTSP", referencedColumnName = "ID", unique = true)
     public ChiTietSanPham getIdCTSP() {
         return idCTSP;
     }
 
-    public void setIdCTSP(ChiTietSanPham chiTietSanPhamByIdCtsp) {
-        this.idCTSP = chiTietSanPhamByIdCtsp;
+    public void setIdCTSP(ChiTietSanPham idCTSP) {
+        this.idCTSP = idCTSP;
     }
 }

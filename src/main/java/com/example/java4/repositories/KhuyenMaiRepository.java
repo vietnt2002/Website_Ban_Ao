@@ -13,9 +13,10 @@ public interface KhuyenMaiRepository extends JpaRepository<KhuyenMai,String> {
 
     public static final int ACTIVE  = 1;
     public static final int INACTIVE =0;
+
     @Query("select km from KhuyenMai km where km.trangThai=:trangThai")
     List<KhuyenMai> findAllKMTrangThai(@Param("trangThai") int trangThai);
+
     @Query("select km from KhuyenMai km where km.id=?1")
     KhuyenMai findByIdKM(String idKM);
-
 }

@@ -731,7 +731,7 @@ public class QuanLyHoaDonController {
 
             // Lưu lại thay đổi
             _hoaDonRepo.save(hoaDon);
-//            createLichSuHoaDon(hoaDon,nhanVien,"");
+            createLichSuHoaDon(hoaDon,nhanVien,"");
             redirectAttributes.addFlashAttribute("confirmSuccess", "Cập nhật trạng thái đơn hàng thành công.");
         } catch (Exception e) {
             e.printStackTrace();

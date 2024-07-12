@@ -100,7 +100,7 @@ public class SanPhamController {
         }
         else{
             LocalDateTime localNow = LocalDateTime.now();
-            String ma = "SPMSS"+(spRepo.getCount()+1);
+            String ma = "SPHMSS"+(spRepo.getCount()+1);
             SanPham sp = new SanPham();
             sp.setTen(newSanPham.getTen());
             sp.setMa(ma);

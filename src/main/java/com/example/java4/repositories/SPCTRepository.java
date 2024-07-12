@@ -56,7 +56,6 @@ public interface SPCTRepository extends JpaRepository<ChiTietSanPham,String>, Jp
             "join HinhAnh ha on ctsp.id = ha.idCTSP.id " +
             "where ctsp.id in (select min (innerCtsp.id) from ChiTietSanPham innerCtsp group by innerCtsp.idSanPham.id)")
     Page<SPCTResponse> getAllSP(Pageable pageable);
-
     //Lấy danh sách màu sắc, kích thước, số lượng để sang js lọc
     @Query("select new com.example.java4.response.MauSizeSL (kth.ten, ms.ten, ctsp.soLuong) " +
             "from ChiTietSanPham ctsp " +

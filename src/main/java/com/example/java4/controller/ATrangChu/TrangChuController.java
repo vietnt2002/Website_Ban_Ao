@@ -1,5 +1,5 @@
-//package com.example.java4.controller.ATrangChu;
 //
+//package com.example.java4.controller.ATrangChu;
 //import com.example.java4.config.UserInfor;
 //import com.example.java4.entities.*;
 //import com.example.java4.repositories.*;
@@ -22,7 +22,6 @@
 //import java.math.BigDecimal;
 //import java.time.LocalDateTime;
 //import java.util.*;
-//
 //@Controller
 //@RequestMapping("cua-hang")
 //public class TrangChuController {
@@ -88,8 +87,9 @@
 //            System.out.println("crette dto");
 //            model.addAttribute("khachHangDTO", new KhachHangDTO());
 //        }
-//        Pageable pageable = PageRequest.of(pageParam.orElse(0), 9);
+//        Pageable pageable = PageRequest.of(pageParam.orElse(0), 12);
 //        Page pageSP = spctRepo.getAllSP(pageable);
+//        System.out.println("test page :"+ pageSP.getContent());
 //        model.addAttribute("pageSP", pageSP);
 //        model.addAttribute("soLuong", hdctRepo.findByKHnStt(khachHangRepo.findByIdKH(UserInfor.idKhachHang)));
 //        System.out.println("================================test user info :" + UserInfor.idKhachHang);
@@ -204,10 +204,10 @@
 //            }
 //            BigDecimal tienGioiHan = new BigDecimal(50000);
 //            BigDecimal tienSauKhiThem = chiTietSanPham.getGiaBan().multiply(BigDecimal.valueOf(soLuong));
-////            if (tongTien.add(tienSauKhiThem).compareTo(tienGioiHan) > 0) {
-////                redirectAttributes.addFlashAttribute("error", "Giới hạn hóa đơn của bạn là 10 triệu!");
-////                return "redirect:/cua-hang/detail-san-pham/" + idCTSP;
-////            }
+//            if (tongTien.add(tienSauKhiThem).compareTo(tienGioiHan) > 0) {
+//                redirectAttributes.addFlashAttribute("error", "Giới hạn hóa đơn của bạn là 10 triệu!");
+//                return "redirect:/cua-hang/detail-san-pham/" + idCTSP;
+//            }
 //
 //            //Nếu khách hàng chưa có hóa đơn thì tạo mới hóa đơn -> thêm sản phẩm giỏ hàng
 //            if (hoaDonCuaKH == null) {
@@ -366,7 +366,7 @@
 //        listCTSP = spctRepo.findAll();
 //        listSanPham = sanPhamRepo.findAll();
 //        DiaChi diaChi = diaChiRepo.getDiaChiByIdKhachHangAndTrangThai(UserInfor.idKhachHang, DiaChiRepository.MAC_DINH);
-//        listDiaChi = diaChiRepo.getAllDiaChi();
+//        listDiaChi = diaChiRepo.getAllDiaChi(UserInfor.idKhachHang);
 //        listKhuyenMai = khuyenMaiRepo.findAll();
 //        HoaDon hoaDon = hoaDonRepo.findByIdKhachHang(UserInfor.idKhachHang, HoaDonRepository.CHO_THANH_TOAN);
 //        boolean check = false;
@@ -412,7 +412,7 @@
 //                                   @RequestParam("tenQuanHuyen") String idQuan,
 //                                   @RequestParam("tenPhuongXa") String idPhuong, RedirectAttributes redirectAttributes) {
 //        KhachHang khachHang = khachHangRepo.findByIdKH(UserInfor.idKhachHang);
-//        listDiaChi = diaChiRepo.findAll();
+//        listDiaChi = diaChiRepo.getAllDiaChi(UserInfor.idKhachHang);
 //
 //        DiaChi diaChi = new DiaChi();
 //        diaChi.setTenNguoiNhan(request.getTenNguoiNhan());
@@ -601,12 +601,12 @@
 //        model.addAttribute("soLuong", totalSoLuong);
 //
 //        //Số lượng hóa đơn theo trạng thái
-//        int countAllHoaDon = hoaDonRepo.countByTrangThai();
+//        int countAllHoaDon = hoaDonRepo.countByTrangThai(UserInfor.idKhachHang);
 //        int countHDByChoXacNhan = hoaDonRepo.countByHoaDonByTrangThai(UserInfor.idKhachHang, HoaDonRepository.CHO_XAC_NHAN);
 //        int countHDByDaXacNhan = hoaDonRepo.countByHoaDonByTrangThai(UserInfor.idKhachHang, HoaDonRepository.DA_XAC_NHAN);
 //        int countHDByChoGiaoHang = hoaDonRepo.countByHoaDonByTrangThai(UserInfor.idKhachHang, HoaDonRepository.CHO_GIAO_HANG);
 //        int countHDByDangGiaoHang = hoaDonRepo.countByHoaDonByTrangThai(UserInfor.idKhachHang, HoaDonRepository.DANG_GIAO_HANG);
-//        int countHDByDaGiaoHang = hoaDonRepo.countByHoaDonByTrangThai(UserInfor.idKhachHang, HoaDonRepository.DA_THANH_TOAN);
+//        int countHDByDaGiaoHang = hoaDonRepo.countByHoaDonByTrangThai(UserInfor.idKhachHang, HoaDonRepository.GIAO_HANG_THANH_CONG);
 //        int countHDByHoanThanh = hoaDonRepo.countByHoaDonByTrangThai(UserInfor.idKhachHang, HoaDonRepository.DA_HOAN_THANH);
 //        int countHDDaHuy = hoaDonRepo.countByHoaDonByTrangThai(UserInfor.idKhachHang, HoaDonRepository.DA_HUY);
 //
@@ -625,10 +625,44 @@
 //        model.addAttribute("listHDByDaXacNhan", hoaDonRepo.getHoaDonByIDKHAndTrangThai(UserInfor.idKhachHang, HoaDonRepository.DA_XAC_NHAN));
 //        model.addAttribute("listHDByChoGiaoHang", hoaDonRepo.getHoaDonByIDKHAndTrangThai(UserInfor.idKhachHang, HoaDonRepository.CHO_GIAO_HANG));
 //        model.addAttribute("listHDByDangGiaoHang", hoaDonRepo.getHoaDonByIDKHAndTrangThai(UserInfor.idKhachHang, HoaDonRepository.DANG_GIAO_HANG));
-//        model.addAttribute("listHDByDaGiaoHang", hoaDonRepo.getHoaDonByIDKHAndTrangThai(UserInfor.idKhachHang, HoaDonRepository.DA_THANH_TOAN));
+//        model.addAttribute("listHDByDaGiaoHang", hoaDonRepo.getHoaDonByIDKHAndTrangThai(UserInfor.idKhachHang, HoaDonRepository.GIAO_HANG_THANH_CONG));
 //        model.addAttribute("listHDByHoanThanh", hoaDonRepo.getHoaDonByIDKHAndTrangThai(UserInfor.idKhachHang, HoaDonRepository.DA_HOAN_THANH));
 //        model.addAttribute("listHDDaHuy", hoaDonRepo.getHoaDonByIDKHAndTrangThai(UserInfor.idKhachHang, HoaDonRepository.DA_HUY));
 //
 //        return "/view/BanHangOnline/donMua.jsp";
 //    }
+//
+//    List<ChiTietHoaDon> chiTietHoaDonList = new ArrayList<>();
+//    @GetMapping("don-mua/{idHD}")
+//    public String detailDonMua(Model model, @PathVariable("idHD") String idHD) {
+//
+//        //Tính tổng số lượng sản phẩm có trong giỏ hàng
+//        Integer totalSoLuong = 0;
+//        for (ChiTietHoaDon chiTietHoaDon : listHDCT) {
+//            totalSoLuong += chiTietHoaDon.getSoLuong();
+//        }
+//        model.addAttribute("soLuong", totalSoLuong);
+//
+//        //Tổng tiền của đơn hàng
+//        chiTietHoaDonList = hdctRepo.tongTienHD(UserInfor.idKhachHang, idHD);
+//        BigDecimal tongTienBigDecimal = new BigDecimal(0.0);
+//        for (ChiTietHoaDon chiTietHoaDon : chiTietHoaDonList) {
+//            BigDecimal soLuongDecimal = new BigDecimal(chiTietHoaDon.getSoLuong());
+//            tongTienBigDecimal = tongTienBigDecimal.add(chiTietHoaDon.getDonGia().multiply(soLuongDecimal));
+//        }
+//        model.addAttribute("tongTien", tongTienBigDecimal);
+//
+//        listGioHang = hdctRepo.getAll(UserInfor.idKhachHang, HoaDonRepository.CHO_THANH_TOAN);
+//        List<HoaDonChiTietResponse> listHDCT = hdctRepo.getListHDbyIdKH(UserInfor.idKhachHang, idHD);
+//        List<GiaoHang> giaoHang = giaoHangRepo.getListGiaoHangByIdKHAndidHD(UserInfor.idKhachHang, idHD);
+//        List<HoaDon> hoaDon = hoaDonRepo.getListHDbyIDKHAndIDHD(UserInfor.idKhachHang, idHD);
+//
+//        model.addAttribute("listHDCT", listHDCT);
+//        model.addAttribute("giaoHang", giaoHang);
+//        model.addAttribute("hoaDon", hoaDon);
+//
+//
+//        return "/view/BanHangOnline/detailDonMua.jsp";
+//    }
 //}
+//>>>>>>> c0c8b51b028879bacaa4576e64dca63077596e61

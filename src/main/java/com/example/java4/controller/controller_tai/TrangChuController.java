@@ -390,7 +390,7 @@ public class TrangChuController {
         listCTSP = spctRepo.findAll();
         listSanPham = sanPhamRepo.findAll();
         DiaChi diaChi = diaChiRepo.getDiaChiByIdKhachHangAndTrangThai(UserInfor.idKhachHang, DiaChiRepository.MAC_DINH);
-        listDiaChi = diaChiRepo.getAllDiaChi();
+//        listDiaChi = diaChiRepo.getAllDiaChi();
         listKhuyenMai = khuyenMaiRepo.findAll();
         HoaDon hoaDon = hoaDonRepo.findByIdKhachHang(UserInfor.idKhachHang, HoaDonRepository.CHO_THANH_TOAN);
         boolean check = false;
@@ -627,7 +627,7 @@ public class TrangChuController {
         model.addAttribute("soLuong", totalSoLuong);
 
         //Số lượng hóa đơn theo trạng thái
-        int countAllHoaDon = hoaDonRepo.countByTrangThai();
+//        int countAllHoaDon = hoaDonRepo.countByTrangThai();
         int countHDByChoXacNhan = hoaDonRepo.countByHoaDonByTrangThai(UserInfor.idKhachHang, HoaDonRepository.CHO_XAC_NHAN);
         int countHDByDaXacNhan = hoaDonRepo.countByHoaDonByTrangThai(UserInfor.idKhachHang, HoaDonRepository.DA_XAC_NHAN);
         int countHDByChoGiaoHang = hoaDonRepo.countByHoaDonByTrangThai(UserInfor.idKhachHang, HoaDonRepository.CHO_GIAO_HANG);
@@ -636,7 +636,7 @@ public class TrangChuController {
         int countHDByHoanThanh = hoaDonRepo.countByHoaDonByTrangThai(UserInfor.idKhachHang, HoaDonRepository.DA_HOAN_THANH);
         int countHDDaHuy = hoaDonRepo.countByHoaDonByTrangThai(UserInfor.idKhachHang, HoaDonRepository.DA_HUY);
 
-        model.addAttribute("countAllHoaDon", countAllHoaDon);
+//        model.addAttribute("countAllHoaDon", countAllHoaDon);
         model.addAttribute("countHDByChoXacNhan", countHDByChoXacNhan);
         model.addAttribute("countHDByDaXacNhan", countHDByDaXacNhan);
         model.addAttribute("countHDByChoGiaoHang", countHDByChoGiaoHang);

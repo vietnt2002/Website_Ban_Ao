@@ -1209,7 +1209,6 @@
                                 <input type="hidden" name="tenPhuongXa" id="tenPhuongXa">
 
 
-
                                 <div class="mb-3">
                                     <label for="hoTen" class="form-label">Họ tên:</label>
                                     <input type="text" class="form-control" id="hoTen" name="hoTen"
@@ -1234,7 +1233,7 @@
                                         <select class="form-select" id="tinh" name="idTinhThanh"
                                                 title="Chọn tỉnh thành">
                                             <!-- Options populated dynamically -->
-                                            <option value="${giaoHangDTO.idTinhThanh}" >${giaoHangDTO.idTinhThanh}</option>
+                                            <option value="${giaoHangDTO.idTinhThanh}">${giaoHangDTO.idTinhThanh}</option>
                                         </select>
                                         <div id="tinhError" class="text-danger"></div>
                                     </div>
@@ -1243,7 +1242,7 @@
                                         <select class="form-select" id="huyen" name="idQuanHuyen"
                                                 title="Chọn quận huyện">
                                             <!-- Options populated dynamically -->
-                                            <option value="${giaoHangDTO.idQuanHuyen}" >${giaoHangDTO.idQuanHuyen}</option>
+                                            <option value="${giaoHangDTO.idQuanHuyen}">${giaoHangDTO.idQuanHuyen}</option>
                                         </select>
                                         <div id="huyenError" class="text-danger"></div>
                                     </div>
@@ -1251,8 +1250,8 @@
                                         <label for="xa" class="form-label">Phường/Xã:</label>
                                         <select class="form-select" id="xa" name="idPhuongXa" title="Chọn phường xã">
                                             <!-- Options populated dynamically -->
-<%--                                            <option value="" selected>Chọn phường xã</option>--%>
-                                            <option value="${giaoHangDTO.idPhuongXa}" >${giaoHangDTO.idPhuongXa}</option>
+                                            <%--                                            <option value="" selected>Chọn phường xã</option>--%>
+                                            <option value="${giaoHangDTO.idPhuongXa}">${giaoHangDTO.idPhuongXa}</option>
                                         </select>
                                         <div id="xaError" class="text-danger"></div>
                                     </div>
@@ -1488,17 +1487,17 @@
                             <tbody id="tbl_ds_spct">
                             <c:forEach var="product" items="${listCTSP.content}" varStatus="status">
                                 <tr>
-<%--                                <c:if test="${product.soLuong > 0 }">--%>
+                                        <%--                                <c:if test="${product.soLuong > 0 }">--%>
                                     <td>${status.index + 1}</td>
                                     <td>${product.idSanPham.ten}</td>
-                                            <td>
-                                                <c:set var="hinhAnh" value="${hinhAnhMapCTSP[product.id]}"/>
-                                                <c:choose>
-                                                    <c:when test="${not empty hinhAnh}">
-                                                        <img src="/image/${hinhAnh.hinhAnh1}" alt="Ảnh sản phẩm" width="50">
-                                                    </c:when>
-                                                </c:choose>
-                                            </td>
+                                    <td>
+                                        <c:set var="hinhAnh" value="${hinhAnhMapCTSP[product.id]}"/>
+                                        <c:choose>
+                                            <c:when test="${not empty hinhAnh}">
+                                                <img src="/image/${hinhAnh.hinhAnh1}" alt="Ảnh sản phẩm" width="50">
+                                            </c:when>
+                                        </c:choose>
+                                    </td>
                                     <td>${product.idMauSac.ten}</td>
                                     <td>${product.idKichThuoc.ten}</td>
                                     <td>${product.soLuong}</td>
@@ -1514,8 +1513,8 @@
                                             <button class="btn btn-primary btn-sm">Chọn</button>
                                         </a>
                                     </td>
-                                    </tr>
-<%--                                </c:if>--%>
+                                </tr>
+                                <%--                                </c:if>--%>
                             </c:forEach>
                             </tbody>
                         </table>
@@ -1870,7 +1869,6 @@
         // Form submission handler
 
 
-
         $('#updateButton').click(function () {
             $('#updateForm').submit();
         });
@@ -1953,9 +1951,6 @@
             $(errorId).text('');
         });
     });
-
-
-
 
 
     // Validate form hủy đơn hàng

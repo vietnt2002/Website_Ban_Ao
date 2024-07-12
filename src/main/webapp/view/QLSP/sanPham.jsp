@@ -937,6 +937,7 @@
                         };
                         var formData = new FormData($('#uploadFormAdd')[0]); // Use FormData to get all form data
                         // Handle file upload via AJAX
+
                         $.ajax({
                             url: '/upload',
                             type: 'POST',
@@ -1053,6 +1054,7 @@
                         };
                         var formData = new FormData($('#uploadFormEdit')[0]); // Use FormData to get all form data
                         // Handle file upload via AJAX
+                        console.log("form data: ",$('#uploadFormEdit')[0]);
                         $.ajax({
                             url: '/upload',
                             type: 'POST',

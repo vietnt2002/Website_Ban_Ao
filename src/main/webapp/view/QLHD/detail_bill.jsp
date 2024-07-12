@@ -1797,10 +1797,24 @@
     </c:if>
 
 
-    document.getElementById('confirmForm').onsubmit = function() {
+    // Mở máy in sau khi update thành công
+    // document.getElementById('confirmForm').onsubmit = function() {
+    //     // Lấy giá trị trạng thái từ Controller
+    //     sessionStorage.setItem('printAfterReload', 'true');
+    // };
+
+    document.getElementById('confirmForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Ngăn form submit mặc định để xử lý logic riêng
+
         // Lấy giá trị trạng thái từ Controller
-        sessionStorage.setItem('printAfterReload', 'true');
-    };
+        const trangThai = ${hoaDonDTO.trangThai + 1};
+
+        // Lưu trạng thái vào sessionStorage để kiểm tra sau khi reload
+        sessionStorage.setItem('printAfterReload', trangThai === 2 ? 'true' : 'false');
+
+        // Submit form
+        this.submit();
+    });
 
 
     // Nút in hóa đơn để giao hàng
@@ -1828,57 +1842,6 @@
             openPrintDeliveryModal();
         }
     };
-
-
-    function handleFormSubmit(trangThai) {
-        const moTa = document.getElementById('moTa').value.trim();
-        const moTaError = document.getElementById('moTaError');
-
-        // Kiểm tra mô tả có rỗng không
-        if (!moTa) {
-            moTaError.style.display = 'block';
-            return false;
-        } else {
-            moTaError.style.display = 'none';
-        }
-
-        // Lấy dữ liệu form
-        const formData = new FormData();
-        formData.append('trangThai', trangThai);
-        formData.append('moTa', moTa);
-
-        // Gửi request đến server
-        fetch('/hoa-don/xac-nhan/${hoaDonDTO.id}', {
-            method: 'POST',
-            body: formData,
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Đóng modal xác nhận
-                    const confirmModal = new bootstrap.Modal(document.getElementById('confirmModal'));
-                    confirmModal.hide();
-                    alert('Xác nhận đơn hàng thành công!');
-
-                    // Nếu trạng thái chuyển từ 1 (chờ xác nhận) đến 3 (chờ giao hàng)
-                    if (trangThai === 3) {
-                        openPrintDeliveryModal(); // Gọi hàm mở máy in
-                    }
-                } else {
-                    // Xử lý khi xác nhận đơn hàng thất bại
-                    alert('Xác nhận đơn hàng thất bại!');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Đã xảy ra lỗi khi xác nhận đơn hàng!');
-            });
-
-        return false;
-    }
-
-
-
 
     // Validate ô input mô tả xác nhận
     $(document).ready(function () {
