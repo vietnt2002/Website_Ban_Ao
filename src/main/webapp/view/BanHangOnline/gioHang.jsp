@@ -2,8 +2,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="f" uri="jakarta.tags.functions" %>
 <%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form" %>
-<%--<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>--%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -53,19 +53,21 @@
             display: flex;
             flex-wrap: wrap;
             gap: 15px; /* Khoảng cách giữa các voucher */
-            max-height: 300px; /* Hoặc bạn có thể đặt chiều cao mà bạn muốn */
+            max-height: 377px; /* Hoặc bạn có thể đặt chiều cao mà bạn muốn */
             overflow-y: scroll;
             padding-right: 15px; /* Đảm bảo rằng thanh cuộn không che mất nội dung */
         }
+
         .voucher-card {
             border: 2px solid #007bff; /* Màu xanh của btn-primary */
             border-radius: 10px;
             padding: 15px;
             margin-bottom: 15px;
             background: #fff;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             width: calc(50% - 15px); /* Giảm chiều rộng để vừa 2 voucher trong 1 hàng */
         }
+
         .voucher-header {
             display: flex;
             justify-content: space-between;
@@ -74,23 +76,28 @@
             padding-bottom: 10px;
             margin-bottom: 10px;
         }
+
         .voucher-discount {
             color: #007bff; /* Màu xanh của btn-primary */
             font-size: 1.5em;
             font-weight: bold;
         }
+
         .voucher-expiry {
             font-size: 0.9em;
             color: #888;
         }
+
         .voucher-code {
             font-size: 1.2em;
             font-weight: bold;
             margin: 10px 0;
         }
+
         .voucher-button {
             text-align: center;
         }
+
         .voucher-button button {
             background-color: #007bff; /* Màu xanh của btn-primary */
             border: none;
@@ -103,9 +110,11 @@
             border-radius: 5px;
             cursor: pointer;
         }
+
         .voucher-button button:hover {
             background-color: #0056b3; /* Màu xanh đậm hơn khi hover */
         }
+
         /* CSS cố định modal */
         .modal-fixed {
             position: fixed;
@@ -117,6 +126,7 @@
             width: 90%; /* Điều chỉnh kích thước modal */
             max-width: 500px; /* Giới hạn kích thước modal */
         }
+
         .modal-fixed.show {
             display: block;
         }
@@ -469,8 +479,12 @@
                             </td>
                             <td class="align-middle">${i.tenMauSac}</td>
                             <td class="align-middle">${i.tenKichThuoc}</td>
-                            <td class="align-middle">${i.donGia}</td>
-                            <td class="align-middle">${i.soLuong*i.donGia}</td>
+                            <td class="align-middle">
+                                <fmt:formatNumber value="${i.donGia}" type="currency" currencySymbol="₫"/>
+                            </td>
+                            <td class="align-middle">
+                                <fmt:formatNumber value="${i.soLuong*i.donGia}" type="currency" currencySymbol="₫"/>
+                            </td>
                             <td class="align-middle">
                                 <a href="/cua-hang/delete/${i.idHDCT}">
                                     <button type="button" class="btn btn-sm btn-primary">
@@ -819,11 +833,16 @@
                         </div>
                         <div class="d-flex justify-content-between mb-3 pt-1">
                             <h6 class="font-weight-medium">Tổng tiền hàng: </h6>
-                            <h6 class="font-weight-medium" style="font-size: 18px">${tongTien}</h6>
+                            <h6 class="font-weight-medium" style="font-size: 18px">
+                                <fmt:formatNumber value="${tongTien}" type="currency" currencySymbol="₫"/>
+                            </h6>
                         </div>
                         <div class="d-flex justify-content-between mb-3 pt-1">
                             <h6 class="font-weight-medium">Số tiền giảm: </h6>
-                            <h6 class="font-weight-medium" style="font-size: 18px">${hoaDon.idKhuyenMai.soTienGiam}</h6>
+                            <h6 class="font-weight-medium" style="font-size: 18px">
+                                <fmt:formatNumber value="${hoaDon.idKhuyenMai.soTienGiam}" type="currency"
+                                                  currencySymbol="₫"/>
+                            </h6>
                         </div>
                         <div class="d-flex justify-content-between">
                             <h6 class="font-weight-medium">Phí vận chuyển: </h6>
@@ -855,7 +874,10 @@
                         <div class="d-flex justify-content-between mt-2">
                             <h5 class="font-weight-bold" style="margin-left: 18px">Tổng thanh toán:</h5>
                             <h5 class="font-weight-bold"
-                                style="margin-right: 18px; font-size: 22px">${tongTien - hoaDon.idKhuyenMai.soTienGiam}₫</h5>
+                                style="margin-right: 18px; font-size: 22px">
+                                <fmt:formatNumber value="${tongTien - hoaDon.idKhuyenMai.soTienGiam}" type="currency"
+                                                  currencySymbol="₫"/>
+                            </h5>
                         </div>
 
                         <div class="card-footer border-secondary bg-transparent">
@@ -863,6 +885,15 @@
                                     class="btn btn-block btn-primary my-3 py-3">
                                 <b>Đặt hàng ngay</b></button>
                         </div>
+                            <%--                        <c:if test="${hoaDon.phuongThucThanhToan == 0}">--%>
+                            <%--                            <div class="card-footer border-secondary bg-transparent">--%>
+                            <%--                                <a href="/cua-hang/pay/${tongTien - hoaDon.idKhuyenMai.soTienGiam}">--%>
+                            <%--                                    <button type="button" style="font-size: 26px"--%>
+                            <%--                                            class="btn btn-block btn-primary my-3 py-3">--%>
+                            <%--                                        <b>Đặt hàng ngay</b></button>--%>
+                            <%--                                </a>--%>
+                            <%--                            </div>--%>
+                            <%--                        </c:if>--%>
                     </div>
                 </div>
             </div>
@@ -872,7 +903,7 @@
     <!-- Modal phiếu giảm giá -->
     <div id="couponModal" class="modal-fixed">
         <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
+            <div class="modal-content" style=" width: 1000px; height: 560px; right: 230px">
                 <div class="modal-header">
                     <h5 class="modal-title" id="couponModalLabel">Phiếu giảm giá</h5>
                 </div>
@@ -881,7 +912,7 @@
                         <c:forEach var="i" items="${listKhuyenMai}">
                             <div class="voucher-card">
                                 <div class="voucher-header">
-                                    <div class="voucher-discount">Giảm ${i.soTienGiam}</div>
+                                    <div class="voucher-discount">Giảm <fmt:formatNumber value="${i.soTienGiam}" type="currency" currencySymbol="₫"/></div>
                                     <div class="voucher-expiry">Hết hạn ${i.ngayKetThuc}</div>
                                 </div>
                                 <div class="voucher-code">Mã: ${i.ma}</div>

@@ -2,6 +2,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="f" uri="jakarta.tags.functions" %>
 <%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -509,8 +511,8 @@
                                 <div class="card-footer d-flex justify-content-between bg-light border float-start"
                                      style="margin-top: -3px; margin-bottom: -3px">
                                     <div class="d-flex justify-content-center mb-0" style="margin-bottom: 3px">
-                                        <h6>${sp.giaBan} <span
-                                                style="font-size: 16px; text-decoration: underline">đ</span></h6>
+                                        <h6><fmt:formatNumber value="${sp.giaBan}" type="currency" currencySymbol="₫"/><span
+                                                style="font-size: 16px; text-decoration: underline"></span></h6>
                                     </div>
                                     <a href="/cua-hang/detail-san-pham/${sp.idCTSP}"
                                        class="btn btn-sm text-dark p-0"><i

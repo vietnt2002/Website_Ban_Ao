@@ -58,11 +58,20 @@ public interface SPCTRepository extends JpaRepository<ChiTietSanPham,String>, Jp
     Page<SPCTResponse> getAllSP(Pageable pageable);
 
     //Lấy danh sách màu sắc, kích thước, số lượng để sang js lọc
-    @Query("select new com.example.java4.response.MauSizeSL (kth.ten, ms.ten, ctsp.soLuong) " +
+//    @Query("select new com.example.java4.response.MauSizeSL (kth.ten, ms.ten, ctsp.soLuong) " +
+//            "from ChiTietSanPham ctsp " +
+//            "join KichThuoc kth on kth.id = ctsp.idKichThuoc.id " +
+//            "join SanPham sp on sp.id = ctsp.idSanPham.id " +
+//            "join MauSac ms on ms.id = ctsp.idMauSac.id " +
+//            "where sp.id = ?1")
+//    List<MauSizeSL> getListMauSizeSL(String idSP);
+
+    @Query("select new com.example.java4.response.MauSizeSL (ha.hinhAnh1, ha.hinhAnh2, ha.hinhAnh3, kth.ten, ms.ten, ctsp.soLuong) " +
             "from ChiTietSanPham ctsp " +
             "join KichThuoc kth on kth.id = ctsp.idKichThuoc.id " +
             "join SanPham sp on sp.id = ctsp.idSanPham.id " +
             "join MauSac ms on ms.id = ctsp.idMauSac.id " +
+            "join HinhAnh ha on ctsp.id = ha.idCTSP.id " +
             "where sp.id = ?1")
     List<MauSizeSL> getListMauSizeSL(String idSP);
 
