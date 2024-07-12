@@ -1,9 +1,11 @@
 package com.example.java4.controller.BanHangTaiQuay;
 
+import com.example.java4.config.ConfigVNpay;
 import com.example.java4.config.UserInfor;
 import com.example.java4.entities.*;
 import com.example.java4.repositories.*;
 import com.example.java4.request.dangNhap.NVSignUpRequest;
+import com.example.java4.request.req_khang.PaymentResDTO;
 import com.example.java4.request.req_viet.NhanVienRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -12,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,7 +22,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
@@ -476,6 +483,7 @@ public class BanTaiQuayController {
         newHoaDon.setNgayThanhToan(now);
         newHoaDon.setTongTien(tongTien);
         newHoaDon.setLoaiHoaDon(0);
+        newHoaDon.setPhuongThucThanhToan(0);
         newHoaDon.setTrangThai(6);
         hoaDonRepository.save(newHoaDon);
         return "redirect:/ban-hang-tai-quay";
@@ -1073,6 +1081,132 @@ public class BanTaiQuayController {
     @GetMapping("api/get-hd/{idHoaDon}")
     public ResponseEntity<HoaDon> getHoaDon(@PathVariable("idHoaDon") String idHoaDon){
         return ResponseEntity.ok(hoaDonRepository.findById(idHoaDon).get());
+    }
+
+    // Tích hợp VNPay
+    @GetMapping("/pay/{tongTien}/{maHoaDon}")
+    public ResponseEntity<?> getPay(
+            @PathVariable Long tongTien,
+            @PathVariable String maHoaDon
+    ) throws UnsupportedEncodingException, UnsupportedEncodingException {
+
+        String vnp_Version = "2.1.0";
+        String vnp_Command = "pay";
+        String orderType = "other";
+        long amount = tongTien*100;
+        String bankCode = "NCB";
+
+//        String vnp_TxnRef = ConfigVNpay.getRandomNumber(8);
+        String vnp_TxnRef = maHoaDon;
+        String vnp_IpAddr = "127.0.0.1";
+
+        String vnp_TmnCode = ConfigVNpay.vnp_TmnCode;
+
+        Map<String, String> vnp_Params = new HashMap<>();
+        vnp_Params.put("vnp_Version", vnp_Version);
+        vnp_Params.put("vnp_Command", vnp_Command);
+        vnp_Params.put("vnp_TmnCode", vnp_TmnCode);
+        vnp_Params.put("vnp_Amount", String.valueOf(amount));
+        vnp_Params.put("vnp_CurrCode", "VND");
+
+        vnp_Params.put("vnp_BankCode", bankCode);
+        vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
+        vnp_Params.put("vnp_OrderInfo", "Thanh toan don hang:" + vnp_TxnRef);
+        vnp_Params.put("vnp_OrderType", orderType);
+
+        vnp_Params.put("vnp_Locale", "vn");
+        vnp_Params.put("vnp_ReturnUrl", ConfigVNpay.vnp_ReturnUrl);
+        vnp_Params.put("vnp_IpAddr", vnp_IpAddr);
+
+        Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
+        String vnp_CreateDate = formatter.format(cld.getTime());
+        vnp_Params.put("vnp_CreateDate", vnp_CreateDate);
+
+        cld.add(Calendar.MINUTE, 15);
+        String vnp_ExpireDate = formatter.format(cld.getTime());
+        vnp_Params.put("vnp_ExpireDate", vnp_ExpireDate);
+
+        List fieldNames = new ArrayList(vnp_Params.keySet());
+        Collections.sort(fieldNames);
+        StringBuilder hashData = new StringBuilder();
+        StringBuilder query = new StringBuilder();
+        Iterator itr = fieldNames.iterator();
+        while (itr.hasNext()) {
+            String fieldName = (String) itr.next();
+            String fieldValue = (String) vnp_Params.get(fieldName);
+            if ((fieldValue != null) && (fieldValue.length() > 0)) {
+                //Build hash data
+                hashData.append(fieldName);
+                hashData.append('=');
+                hashData.append(URLEncoder.encode(fieldValue, StandardCharsets.US_ASCII.toString()));
+                //Build query
+                query.append(URLEncoder.encode(fieldName, StandardCharsets.US_ASCII.toString()));
+                query.append('=');
+                query.append(URLEncoder.encode(fieldValue, StandardCharsets.US_ASCII.toString()));
+                if (itr.hasNext()) {
+                    query.append('&');
+                    hashData.append('&');
+                }
+            }
+        }
+        String queryUrl = query.toString();
+        String vnp_SecureHash = ConfigVNpay.hmacSHA512(ConfigVNpay.secretKey, hashData.toString());
+        queryUrl += "&vnp_SecureHash=" + vnp_SecureHash;
+        String paymentUrl = ConfigVNpay.vnp_PayUrl + "?" + queryUrl;
+        PaymentResDTO paymentResDTO = new PaymentResDTO();
+        paymentResDTO.setStatus("ok");
+        paymentResDTO.setMessage("Successfully");
+        paymentResDTO.setURL(paymentUrl);
+
+        LocalDateTime now =LocalDateTime.now();
+        HoaDon hoaDon = hoaDonRepository.findByIdHoaDon(idHoaDon);
+        if (hoaDon.getId().equals(idHoaDon)){
+            BigDecimal big = new BigDecimal(tongTien);
+            hoaDon.setTongTien(big);
+            hoaDon.setNgayThanhToan(now);
+            hoaDon.setLoaiHoaDon(0);
+            hoaDon.setTrangThai(6);
+            hoaDon.setPhuongThucThanhToan(1);
+            hoaDonRepository.save(hoaDon);
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(paymentResDTO);
+
+//        return ResponseEntity.ok(paymentUrl);
+    }
+
+
+    @GetMapping("/payment-info")
+    public String transaction(
+            @RequestParam(value = "vnp_Amount") String amount,
+            @RequestParam(value = "vnp_BankCode") String bankCode,
+            @RequestParam(value = "vnp_ResponseCode") String responseCode,
+            @RequestParam(value = "vnp_OrderInfo") String orderInfo,
+            @RequestParam(value = "vnp_CardType") String cardType, Model model
+    ){
+
+//        int tt = Integer.valueOf(amount)/100;
+        System.out.println("----------------------------------"+amount);
+        System.out.println("----------------------------------"+bankCode);
+        System.out.println("----------------------------------"+responseCode);
+        System.out.println("----------------------------------"+orderInfo);
+        System.out.println("----------------------------------"+cardType);
+
+        if (responseCode.equals("00")){
+            model.addAttribute("message","Thanh toán thành công");
+        }else {
+            model.addAttribute("message","Thanh toán thất bại");
+        }
+
+        LocalDateTime now =LocalDateTime.now();
+
+        model.addAttribute("amount",amount);
+        model.addAttribute("ngayTao",now);
+        model.addAttribute("maHD",orderInfo);
+
+//        return ResponseEntity.ok("Thanh toán thành công");
+        return "/view/BanHangTaiQuay/thongBao.jsp";
     }
 
 }

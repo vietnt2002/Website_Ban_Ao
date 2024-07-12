@@ -78,6 +78,10 @@
             text-align: center;
         }
 
+        .hidden {
+            display: none;
+        }
+
     </style>
 
 </head>
@@ -584,28 +588,63 @@
                                                    readonly/>
                                         </c:if>
                                     </div>
+
+                                    <%--    chọn phương thức thanh toán   --%>
                                     <div class="mb-3">
-                                        <label class="form-label">Tiền Khách Đưa</label>
-                                        <div class="row align-items-center">
-                                            <div class="col-sm-10 d-flex align-items-center">
-                                                <input id="tienKhachDua" class="form-control" type="text" required>
+                                        <label class="form-label">Phương Thức Thanh Toán:</label>
+                                        <div class="form-check" style="margin-left: 14px;">
+                                            <input type="radio" class="form-check-input" id="radio1" name="optradio" value="1" checked>
+                                            <label class="form-check-label" for="radio1">Tiền mặt</label>
+                                        </div>
+                                        <div class="form-check" style="margin-left: 14px;">
+                                            <input type="radio" class="form-check-input" id="radio2" name="optradio" value="2">
+                                            <label class="form-check-label" for="radio2">Thanh toán qua VNPay</label>
+                                        </div>
+                                    </div>
+                                 <%--   Hiển thị khi chọn radio    --%>
+                                    <div id="cash-div" class="content-div">
+                                        <div class="mb-3">
+                                            <label class="form-label">Tiền Khách Đưa</label>
+                                            <div class="row align-items-center">
+                                                <div class="col-sm-10 d-flex align-items-center">
+                                                    <input id="tienKhachDua" class="form-control" type="text" required>
+
+                                                </div>
+                                                <div class="col-sm-2 d-flex">
+                                                    <i id="calculateChangeButton" class="bi bi-chevron-double-down" style="font-size: 20px; cursor: pointer;" onclick="calculateChange()"></i>
+                                                </div>
+                                                <span id="errTraLai" style="color: red; margin-left: 10px;"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Trả Lại</label>
+                                            <input id="tienTraLai" type="text" class="form-control" required readonly>
+                                        </div>
+                                        <div class="row mb-3 mt-4 justify-content-end text-end">
+                                            <div class="col-sm-10">
+                                                <button id="checkBtn" idhd =${hoaDon.id} type="submit" class="btn btn-success ">THANH TOÁN</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div id="vnpay-div" class="content-div hidden">
+                                        <div class="row mb-3 mt-4 justify-content-end text-end">
+                                            <div class="col-sm-10">
+                                                <div class="col-sm-10">
+                                                    <button id="checkBtn2" idhd =${hoaDon.id} type="submit" class="btn btn-success ">THANH TOÁN</button>
+                                                </div>
+
+                                                <form class="thanhToan-form" action="/ban-hang-tai-quay/pay/${total-hoaDon.idKhuyenMai.soTienGiam}/${hoaDon.ma}" method="get">
+                                                    <button class="thanhToan-button2 btn btn-success" type="button" >THANH TOÁN</button>
+                                                </form>
 
                                             </div>
-                                            <div class="col-sm-2 d-flex">
-                                                <i id="calculateChangeButton" class="bi bi-chevron-double-down" style="font-size: 20px; cursor: pointer;" onclick="calculateChange()"></i>
-                                            </div>
-                                            <span id="errTraLai" style="color: red; margin-left: 10px;"></span>
                                         </div>
                                     </div>
-                                    <div class="mb-3">
-                                        <label class="form-label">Trả Lại</label>
-                                        <input id="tienTraLai" type="text" class="form-control" required readonly>
-                                    </div>
-                                    <div class="row mb-3 mt-4 justify-content-end text-end">
-                                        <div class="col-sm-10">
-                                            <button id="checkBtn" idhd =${hoaDon.id} type="submit" class="btn btn-success ">THANH TOÁN</button>
-                                        </div>
-                                    </div>
+
+
+
+
 
                                        <%-- Cũ --%>
 <%--                                        <div class="row mb-3">--%>
@@ -1061,6 +1100,25 @@
 
 <script>
 
+    //chọn phương thức hiển thị khi chọn radio
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const radioButtons = document.querySelectorAll('input[name="optradio"]');
+        const cashDiv = document.getElementById('cash-div');
+        const vnpayDiv = document.getElementById('vnpay-div');
+
+        radioButtons.forEach(radio => {
+            radio.addEventListener('change', () => {
+                if (radio.value === '1') {
+                    cashDiv.classList.remove('hidden');
+                    vnpayDiv.classList.add('hidden');
+                } else if (radio.value === '2') {
+                    cashDiv.classList.add('hidden');
+                    vnpayDiv.classList.remove('hidden');
+                }
+            });
+        });
+    });
+
     // Fomat sang VNĐ bảng hóa đơn chi tiết
     function formatCurrencyVND(amount) {
         return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
@@ -1455,7 +1513,7 @@
                 // thongBao.textContent =  "Vui lòng kiểm tra lại thanh toán";
                 Swal.fire({
                     title: 'Lỗi!',
-                    text: 'Vui lòng kiểm tra lại thanh toán.',
+                    text: 'Vui lòng nhập tiền khách đưa trước khi thanh toán.',
                     icon: 'error',
                     confirmButtonText: 'OK'
                 });
@@ -1464,12 +1522,89 @@
     });
 
 
+    //Test button VNPay
+    const checkBtn2 = document.querySelectorAll('#checkBtn2');
+    checkBtn2.forEach(button => {
+        button.addEventListener('click', function () {
+            console.log("test check btn");
+            var idHD = document.getElementsByName("idHD")[0].value;
+            var idKH  = document.getElementsByName("idKH")[0].value;
+            var idKhuyenMai = document.getElementsByName("idKhuyenMai")[0].value;
 
-    //Test
+            var tongTienInput = document.getElementById('tongTien');
+            function getRawValue(input) {
+                var value = input.value.replace(/\D/g, ''); // Loại bỏ tất cả các ký tự không phải số
+                return parseInt(value, 10);
+            }
+            var tongTien = getRawValue(tongTienInput);
+
+            console.log("====================== id hd:",idHD);
+            console.log("====================== id kh:",idKH);
+            console.log("====================== id khuyen mai:",idKhuyenMai);
+            console.log("====================== tong tien:",tongTien);
+            if(!isNaN(tongTien)){
+                Swal.fire({
+                    title: 'Xác nhận thanh toán?',
+                    text: "Dữ liệu sẽ được lưu lại!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Vâng,Thanh toán!',
+                    cancelButtonText: 'Hủy'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        fetch(`/ban-hang-tai-quay/pay/`+idHD+'?idKhuyenMai='+idKhuyenMai+'&idKH='+idKH+'&tongTien='+tongTien,
+                            { method: 'POST' }).then(() => {
+                            Swal.fire(
+                                'Đã thanh toán!',
+                                'Dữ liệu đã được ghi nhận.',
+                                'success'
+                            )
+                                .then(() => {
+                                window.location.href = '/ban-hang-tai-quay';
+                            });
+                            button.closest('tr').remove();
+                        });
+                        button.closest('tr').remove();
+                        thongBao.textContent =  "";
+                    }
+                });
+            }
+            else{
+                // thongBao.textContent =  "Vui lòng kiểm tra lại thanh toán";
+                Swal.fire({
+                    title: 'Lỗi!',
+                    text: 'Vui lòng nhập tiền khách đưa trước khi thanh toán.',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+            }
+        });
+    });
 
 
+    //C2
+    document.querySelectorAll('.thanhToan-button2').forEach(button => {
+        button.addEventListener('click', function() {
+            const form = this.closest('.thanhToan-form');
+            Swal.fire({
+                title: 'Bạn có muốn thanh toán không??',
+                text: "Dữ liệu này sẽ được lưu lại!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Đồng ý'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        });
+    });
 
-
+   // Kết thúc test VNPay
 
 </script>
 <script>
