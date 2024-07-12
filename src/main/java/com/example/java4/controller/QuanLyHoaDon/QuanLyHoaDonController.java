@@ -20,6 +20,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -98,6 +99,8 @@ public class QuanLyHoaDonController {
     private List<ChatLieu> listChatLieu;
     private List<KhuyenMai> listKhuyenMai;
     private List<ChiTietSanPham> listChiTietSanPham;
+
+    private String idHoaDon;
 
 
     // Chức năng hiển thị danh sach hoa don theo trang thai
@@ -217,7 +220,6 @@ public class QuanLyHoaDonController {
                              @PathVariable("idHD") String idHD,
                              @RequestParam(value = "page", defaultValue = "0") String pageParam
     ) {
-
         //Tìm đối tượng nhân viên
         NhanVien nhanVien = new NhanVien();
         if (UserInfor.idNhanVien != null) {
@@ -226,11 +228,11 @@ public class QuanLyHoaDonController {
                 nhanVien = _nhanVienRepo.findById("BF29DB87-6ED2-46E8-B34C-135B2EA4CCA6").get();
             }
         }
-
         // Lấy danh sách chi tiết hóa đơn
         List<ChiTietHoaDon> listHDCT = _hoaDonChiTietRepo.findAllByHoaDon_Id(idHD);
         // Lấy ra hóa đơn theo ID
         HoaDon hoaDon = _hoaDonRepo.findById(idHD).orElse(null);
+        idHoaDon = idHD;
         if (hoaDon == null) {
             model.addAttribute("errorMessage", "Không tìm thấy hóa đơn.");
             return "/view/QLHD/detail_bill.jsp";
@@ -299,11 +301,25 @@ public class QuanLyHoaDonController {
                 Comparator.nullsLast(Comparator.naturalOrder())
         ));
 
+        ModelAndView modelAndView = new ModelAndView("/view/QLHD/detail_bill.jsp");
+        modelAndView.addObject("listLichSuHoaDonDTO", listLichSuHoaDonDTO);
+        modelAndView.addObject("tongTienThanhToan", calculateTongTienThanhToan(tongTien, khuyenMai, giaoHang).doubleValue());
+        modelAndView.addObject("step", getStepText(hoaDon.getTrangThai()));
         model.addAttribute("listLichSuHoaDonDTO", listLichSuHoaDonDTO);
         model.addAttribute("tongTienThanhToan", calculateTongTienThanhToan(tongTien, khuyenMai, giaoHang).doubleValue());
         model.addAttribute("step", getStepText(hoaDon.getTrangThai()));
         // Thêm các thông tin vào model để truyền sang JSP
         addAttributesToModel(model, nhanVien, hoaDonDTO, khachHang, diaChiKhachHang, giaoHangDTO, listHDCT, listCTSP, listLichSuHoaDon, tongTien, phiGiamGia);
+
+
+        ModelAndView printModelAndView = new ModelAndView("/view/QLHD/phieugiaohang.jsp");
+        printModelAndView.addObject("hoaDon", hoaDonDTO);
+        printModelAndView.addObject("khachHang", khachHang);
+        printModelAndView.addObject("diaChiKhachHang", diaChiKhachHang);
+        printModelAndView.addObject("listHDCT", listHDCT);
+        model.addAttribute("printView", printModelAndView);
+
+
         return "/view/QLHD/detail_bill.jsp";
     }
 
@@ -403,6 +419,59 @@ public class QuanLyHoaDonController {
         model.addAttribute("pageCTSP", listCTSP);
         model.addAttribute("listLichSuHoaDon", listLichSuHoaDon);
     }
+
+        // chức năng in phiếu giao hàng
+        @GetMapping("/in-phieu-giao-hang")
+    public String printDelivery(Model model
+    ) {
+        // Lấy danh sách chi tiết hóa đơn
+        List<ChiTietHoaDon> listHDCT = _hoaDonChiTietRepo.findAllByHoaDon_Id(idHoaDon);
+        // Lấy ra hóa đơn theo ID
+        HoaDon hoaDon = _hoaDonRepo.findById(idHoaDon).orElse(null);
+        if (hoaDon == null) {
+            model.addAttribute("errorMessage", "Không tìm thấy hóa đơn.");
+            return "/view/QLHD/detail_bill.jsp";
+        }
+
+        KhachHang khachHang = hoaDon.getIdKhachHang();
+        DiaChi diaChiKhachHang = new DiaChi();
+        if(khachHang == null){
+            khachHang = new KhachHang(); // Assume you have a default constructor
+            khachHang.setHoTen("Khách lẻ"); // Default name
+        }
+        if(diaChiKhachHang == null){
+            diaChiKhachHang = new DiaChi();
+            diaChiKhachHang.setDiaChiChiTiet("");
+        }else {
+            List<DiaChi> diaChiList = _diaChiRepository.findDiaChiByIdKhachHang(khachHang.getId());
+            diaChiKhachHang = diaChiList.isEmpty() ? new DiaChi() : diaChiList.get(0);
+        }
+
+        KhuyenMai khuyenMai = _hoaDonRepo.findKhuyenMaiByHoaDonId(idHoaDon);
+        if(khuyenMai == null){
+            khuyenMai = new KhuyenMai();
+            khuyenMai.setSoTienGiam(BigDecimal.valueOf(0.0));
+        }
+
+        // Tính tổng tiền đơn hàng từ danh sách chi tiết hóa đơn
+        BigDecimal tongTien = calculateTongTien(listHDCT);
+        // Lấy ra đối tượng giao hàng theo IdHoaDon
+        GiaoHang giaoHang = _giaoHangRepo.findByHoaDonId(idHoaDon);
+        if (giaoHang == null) {
+            model.addAttribute("errorDelivery", "Không tìm thấy đối tượng giao hàng");
+        }
+
+        // Chuyển đổi từ HoaDon sang HoaDonDTO
+        HoaDonUtil hoaDonUtil = new HoaDonUtil();
+        HoaDonDTO hoaDonDTO = HoaDonDTO.fromEntity(hoaDon);
+        hoaDonDTO.setGiamGia(khuyenMai.getSoTienGiam());
+        model.addAttribute("hoaDonDTO", hoaDonDTO);
+        model.addAttribute("diaChiKhachHang", diaChiKhachHang);
+        model.addAttribute("listHDCT", listHDCT);
+        model.addAttribute("tongTienThanhToan", calculateTongTienThanhToan(tongTien, khuyenMai, giaoHang).doubleValue());
+        return "/view/QLHD/in_phieu_giao_hang.jsp";
+    }
+
 
     // Chức năng xử lý danh sách lịch sử hóa đơn
     private LichSuHoaDonDTO processLichSuHoaDon(LichSuHoaDon lichSuHD) {
@@ -518,9 +587,7 @@ public class QuanLyHoaDonController {
             GiaoHang giaoHang = new GiaoHang();
             updateHoaDonStatus(hoaDon, nhanVien, trangThai,giaoHang,moTa);
             _hoaDonRepo.save(hoaDon);
-
             createLichSuHoaDon(hoaDon,nhanVien,moTa);
-
             HoaDonDTO hoaDonDTO = HoaDonDTO.fromEntity(hoaDon);
             redirectAttributes.addFlashAttribute("hoaDonDTO", hoaDonDTO);
             redirectAttributes.addFlashAttribute("confirmSuccess", "Cập nhật trạng thái đơn hàng thành công.");
@@ -596,8 +663,8 @@ public class QuanLyHoaDonController {
 
     @GetMapping("/hoan-tac/{idHD}")
     public String undoBill(@PathVariable("idHD") String idHD,
-                              @PathVariable("trangThai") int trangThai,
-                              @RequestParam("moTa") String moTa,
+//                              @PathVariable("trangThai") int trangThai,
+//                              @RequestParam("moTa") String moTa,
                            Model model,
                            RedirectAttributes redirectAttributes) {
         try {
@@ -608,6 +675,7 @@ public class QuanLyHoaDonController {
                 redirectAttributes.addFlashAttribute("confirmError", "Không tìm thấy hóa đơn.");
                 return "redirect:/hoa-don/detail/" + idHD;
             }
+
 
             GiaoHang giaoHang = _giaoHangRepo.findByHoaDonId(idHD);
             if (giaoHang == null) {
@@ -625,7 +693,6 @@ public class QuanLyHoaDonController {
 
             }
 
-            createLichSuHoaDon(hoaDon,nhanVien,moTa);
 
             switch (hoaDon.getTrangThai()) {
                 case HoaDonRepository.CHO_GIAO_HANG:
@@ -664,9 +731,7 @@ public class QuanLyHoaDonController {
 
             // Lưu lại thay đổi
             _hoaDonRepo.save(hoaDon);
-            // Chuyển đổi HoaDon sang HoaDonDTO sau khi cập nhật và thêm vào model
-
-
+//            createLichSuHoaDon(hoaDon,nhanVien,"");
             redirectAttributes.addFlashAttribute("confirmSuccess", "Cập nhật trạng thái đơn hàng thành công.");
         } catch (Exception e) {
             e.printStackTrace();

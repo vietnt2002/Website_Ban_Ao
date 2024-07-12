@@ -212,117 +212,9 @@
         /*}*/
 
 
-        @media print {
-            /* Ẩn tất cả các phần tử khác trừ phần tử với id invoiceSection */
-            body * {
-                visibility: hidden;
-            }
-
-            #invoiceSection, #invoiceSection * {
-                visibility: visible;
-            }
-
-            #invoiceSection {
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
-            }
-
-            delivery-logo {
-                width: 150px;
-            }
-
-            .bordered-section {
-                border: 1px solid #ddd;
-                padding: 15px;
-                margin-bottom: 20px;
-            }
-
-            .separator {
-                border-top: 1px solid #ccc;
-                margin: 20px 0;
-            }
-
-            .table-bordered {
-                width: 100%;
-                border-collapse: collapse;
-            }
-
-            .table-bordered th,
-            .table-bordered td {
-                border: 1px solid #ddd;
-                padding: 8px;
-            }
-
-            .signature-box {
-                border: 1px solid #ccc;
-                padding: 10px;
-                max-width: 200px;
-            }
-
-            .table th, .table td {
-                page-break-inside: avoid;
-            }
-        }
-
-        .bordered-section {
-            border: 1px solid #ddd;
-            padding: 15px;
-            margin-bottom: 20px;
-        }
-
-        .separator {
-            border-top: 1px solid #ccc;
-            margin: 20px 0;
-        }
-
-        .table-bordered {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .table-bordered th,
-        .table-bordered td {
-            border: 1px solid #ddd;
-            padding: 8px;
-        }
-
-        .signature-box {
-            border: 1px solid #ccc;
-            padding: 10px;
-            max-width: 200px;
-        }
 
 
-        .bordered-section {
-            border: 1px solid #ddd;
-            padding: 15px;
-            margin-bottom: 20px;
-        }
 
-        .separator {
-            border-top: 1px solid #ccc;
-            margin: 20px 0;
-        }
-
-        .table-bordered {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .table-bordered th,
-        .table-bordered td {
-            border: 1px solid #ddd;
-            padding: 8px;
-        }
-
-        /*.signature-box {*/
-        /*    border: 1px solid #ccc;*/
-        /*    padding: 10px;*/
-        /*    max-width: 230px;*/
-        /*    height: 150px;*/
-        /*}*/
 
 
         @page {
@@ -331,7 +223,23 @@
         }
 
 
-        .
+        /*.print-overlay {*/
+        /*    display: none;*/
+        /*    position: fixed;*/
+        /*    top: 0;*/
+        /*    left: 0;*/
+        /*    width: 100%;*/
+        /*    height: 100%;*/
+        /*    background-color: rgba(0, 0, 0, 0.5); !* Màu nền tối *!*/
+        /*    z-index: 9999;*/
+        /*    justify-content: center;*/
+        /*    align-items: center;*/
+        /*}*/
+        /*.print-frame {*/
+        /*    width: 100%;*/
+        /*    height: 100%;*/
+        /*    border: none;*/
+        /*}*/
     </style>
 
 </head>
@@ -409,7 +317,7 @@
             <a class="nav-link" href="/admin/quan-ly-khuyen-mai">
                 <i class="fas fa-fw fa-chart-area"></i>
                 <span>Quản lý khuyến mãi</span></a>
-        </li>
+        </li>In
 
         <!-- Divider -->
         <hr class="sidebar-divider d-none d-md-block">
@@ -644,7 +552,7 @@
                     <!-- Nút in ra phiếu hóa đơn khi giao hàng theo dạng file PDF -->
                     <c:if test="${hoaDonDTO.loaiHoaDon == 1 && hoaDonDTO.trangThai != 1 }">
                         <div class="d-flex ms-auto">
-                            <button id="printDeliveryButton" class="btn btn-primary my-3" onclick="openPrintModal()">
+                            <button id="printDeliveryButton" class="btn btn-primary my-3" onclick="openPrintDeliveryModal()">
                                 <i class="bi bi-printer"></i> In hóa đơn
                             </button>
                         </div>
@@ -841,7 +749,7 @@
                                         <button type="button" class="btn btn-danger me-1" id="cancelButton"
                                                 data-bs-toggle="modal"
                                                 data-bs-target="#cancelModal"
-                                                <c:if test="${hoaDonDTO.trangThai != 1 || hoaDonDTO.trangThai != 2 }">disabled</c:if>
+                                                <c:if test="${hoaDonDTO.trangThai != 1 && hoaDonDTO.trangThai != 2 }">disabled</c:if>
                                         >
                                             Hủy đơn
                                         </button>
@@ -849,7 +757,7 @@
 
                                     <c:if test="${hoaDonDTO.trangThai != 1 && hoaDonDTO.trangThai != 6}">
                                         <a href="/hoa-don/hoan-tac/${hoaDonDTO.id}">
-                                            <button type="button" class="btn btn-warning ml-3" id="">
+                                            <button type="button" class="btn btn-warning ml-1" id="">
                                                 Hoàn tác
                                             </button>
                                         </a>
@@ -865,45 +773,34 @@
                             </div>
                         </div>
                     </div>
-
-
-
                 </div>
 
-
                 <!-- Modal xác nhận -->
-                <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel"
-                     aria-hidden="true">
+                <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
-                            <form id="confirmForm" method="post" action="/hoa-don/xac-nhan/${hoaDonDTO.id}"
-                                  onsubmit="return handleFormSubmit(e, ${hoaDonDTO.trangThai})">
+                            <form id="confirmForm" method="post" action="/hoa-don/xac-nhan/${hoaDonDTO.id}">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="confirmModalLabel">Xác nhận đơn hàng</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
                                     <input type="hidden" name="trangThai" value="${hoaDonDTO.trangThai + 1}">
                                     <div class="mb-3">
                                         <label for="moTa" class="form-label">Mô tả</label>
-                                        <textarea placeholder="Nhập nội dung mô tả..." class="form-control" id="moTa"
-                                                  name="moTa" rows="3"></textarea>
-                                        <div id="moTaError" class="text-danger" style="display: none;">Vui lòng điền mô
-                                            tả.
-                                        </div>
+                                        <textarea placeholder="Nhập nội dung mô tả..." class="form-control" id="moTa" name="moTa" rows="3"></textarea>
+                                        <div id="moTaError" class="text-danger" style="display: none;">Vui lòng điền mô tả.</div>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng
-                                    </button>
-                                    <button onclick="Test()" type="submit" class="btn btn-primary">Xác nhận</button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                    <button type="submit" class="btn btn-primary">Xác nhận</button>
                                 </div>
                             </form>
-
                         </div>
                     </div>
                 </div>
+
 
 
                 <!-- Modal  hủy hóa đơn -->
@@ -1018,7 +915,7 @@
                             </thead>
 
                             <tbody>
-                            <c:if test="${(hoaDonDTO.loaiHoaDon == 1 || hoaDonDTO.loaiHoaDon == 0) && hoaDonDTO.trangThai == 6}">
+                            <c:if test="${(hoaDonDTO.loaiHoaDon == 1 || hoaDonDTO.loaiHoaDon == 0 ) && hoaDonDTO.trangThai == 6 || hoaDonDTO.phuongThucThanhToan == 1}">
                                 <tr>
                                     <td>1</td>
                                     <td><fmt:formatNumber value="${tongTienThanhToan}" type="currency"
@@ -1436,7 +1333,7 @@
                     <c:if test="${hoaDonDTO.loaiHoaDon == 1 || hoaDonDTO.phuongThucThanhToan != 1}">
                         <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
                                 data-bs-target="#addProductModal"
-                                <c:if test="${hoaDonDTO.trangThai != 1}">
+                                <c:if test="${hoaDonDTO.trangThai != 1 && hoaDonDTO.trangThai != 3 }">
                                     disabled
                                 </c:if> >
                             <i class="bi bi-plus text-white"></i>
@@ -1515,7 +1412,7 @@
                                 <c:if test="${hoaDonDTO.loaiHoaDon == 1 || hoaDonDTO.phuongThucThanhToan != 1}">
                                     <td>
                                         <c:choose>
-                                            <c:when test="${hoaDonDTO.trangThai != 1}">
+                                            <c:when test="${hoaDonDTO.trangThai != 1 && hoaDonDTO.trangThai != 3}">
                                                 <button type="button" class="btn btn-outline-warning"
                                                         id="editBtn-${chiTiet.idCTSP.id}" disabled>
                                                     <i class="bi bi-arrow-clockwise" style="font-size: 1.0em;"></i>
@@ -1702,90 +1599,70 @@
 
 
         <%--  Phiếu hóa đơn để giao hàng(In hóa đơn) --%>
-        <div id="invoiceSection" class="container mt-5 p-4 shadow delivery" style="display: none">
-            <div class="bordered-section">
+        <!-- Nội dung phiếu giao hàng -->
+        <div class="delivery" id="deliveryReceipt" style="display: none">
+            <div class="container mt-5 p-4 shadow delivery">
                 <div class="row">
-                    <div class="col-md-6">
-                        <h1 class="mb-0">MS-STORE</h1>
+                    <div class="col-md-12 text-center">
+                        <h1>MS-STORE</h1>
                         <p class="mb-1">Mã Hóa Đơn: ${hoaDonDTO.ma}</p>
                         <p class="mb-0">Ngày Đặt Đơn: ${hoaDonDTO.ngayTao}</p>
                     </div>
-                    <div class="col-md-6 text-right">
-                        <img src="https://cdn.prod.website-files.com/5fb85f26f126ce08d792d2d9/607cdb2f875a62174a2ac9e3_After_GHN.png"
-                             alt="Giao hàng nhanh" class="delivery-logo">
+                </div>
+                <div class="separator"></div>
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <h5>Thông tin Bên Gửi:</h5>
+                        <div class="d-flex flex-column">
+                            <p>Người gửi: MS-STORE</p>
+                            <p>Địa chỉ: Tòa nhà FPT Polytechnic, Phố Trịnh Văn Bô, Xuân Phương, Nam Từ Liêm, Hà Nội</p>
+                            <p>Số điện thoại: 0123 456 789</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <h5>Thông tin Bên Nhận:</h5>
+                        <div class="d-flex flex-column">
+                            <p>Người nhận: ${hoaDonDTO.khachHang.hoTen}</p>
+                            <p>Địa chỉ: ${diaChiKhachHang.diaChiChiTiet}, ${diaChiKhachHang.idPhuongXa}, ${diaChiKhachHang.idQuanHuyen}, ${diaChiKhachHang.idTinhThanh}</p>
+                            <p>Số điện thoại: ${hoaDonDTO.khachHang.sdt}</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="separator"></div>
-            <table style="width: 100%;">
-                <tr>
-                    <td style="width: 50%; padding-right: 10px;">
-                        <div class="bordered-section">
-                            <h5>Thông tin Bên Gửi:</h5>
-                            <div>
-                                <p>Người gửi: MS-STORE</p>
-                                <p>Địa chỉ: Tòa nhà FPT Polytechnic, Phố Trịnh Văn Bô, Xuân Phương, Nam Từ Liêm, Hà
-                                    Nội</p>
-                                <p>Số điện thoại: 0123 456 789</p>
-                            </div>
-                        </div>
-                    </td>
-                    <td style="width: 50%; padding-left: 10px;">
-                        <div class="bordered-section">
-                            <h5>Thông tin Bên Nhận:</h5>
-                            <div>
-                                <p>Người nhận: ${hoaDonDTO.khachHang.hoTen}</p>
-                                <p>Địa
-                                    chỉ: ${diaChiKhachHang.diaChiChiTiet}, ${diaChiKhachHang.idPhuongXa}, ${diaChiKhachHang.idQuanHuyen}, ${diaChiKhachHang.idTinhThanh}</p>
-                                <p>Số điện thoại: ${hoaDonDTO.khachHang.sdt}</p>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-            </table>
-
-            <div class="separator"></div>
-
-            <div class="mb-4 bordered-section">
-                <h5>Nội dung đơn hàng</h5>
-                <table class="table table-bordered">
-                    <thead class="thead-light">
-                    <tr>
-                        <th>Tên Sản Phẩm</th>
-                        <th>Màu Sắc</th>
-                        <th>Kích Thước</th>
-                        <th>Số Lượng</th>
-                        <th>Đơn Giá</th>
-                        <th>Tổng tiền</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <c:forEach var="chiTiet" items="${listHDCT}" varStatus="i">
+                <div class="mb-4">
+                    <h5>Nội dung đơn hàng</h5>
+                    <table class="table table-bordered">
+                        <thead class="thead-light">
                         <tr>
-                            <td>${chiTiet.idCTSP.idSanPham.ten}</td>
-                            <td>${chiTiet.idCTSP.idMauSac.ten}</td>
-                            <td>${chiTiet.idCTSP.idKichThuoc.ten}</td>
-                            <td>${chiTiet.soLuong}</td>
-                            <td><fmt:formatNumber value="${chiTiet.donGia}" type="currency" currencySymbol="₫"
-                                                  groupingUsed="true"/></td>
-                            <td><fmt:formatNumber value="${chiTiet.donGia * chiTiet.soLuong}" type="currency"
-                                                  currencySymbol="₫" groupingUsed="true"/></td>
+                            <th>Tên Sản Phẩm</th>
+                            <th>Màu Sắc</th>
+                            <th>Kích Thước</th>
+                            <th>Số Lượng</th>
+                            <th>Đơn Giá</th>
+                            <th>Tổng tiền</th>
                         </tr>
-                    </c:forEach>
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="d-flex justify-content-between align-items-start mb-4">
-                <div>
-                    <h5 class="mb-0">Tiền thu hộ: <span><fmt:formatNumber value="${hoaDonDTO.tongTien}" type="currency"
-                                                                          currencySymbol="₫"
-                                                                          groupingUsed="true"/></span></h5>
+                        </thead>
+                        <tbody>
+                        <c:forEach var="chiTiet" items="${listHDCT}" varStatus="i">
+                            <tr>
+                                <td>${chiTiet.idCTSP.idSanPham.ten}</td>
+                                <td>${chiTiet.idCTSP.idMauSac.ten}</td>
+                                <td>${chiTiet.idCTSP.idKichThuoc.ten}</td>
+                                <td>${chiTiet.soLuong}</td>
+                                <td><fmt:formatNumber value="${chiTiet.donGia}" type="currency" currencySymbol="₫" groupingUsed="true"/></td>
+                                <td><fmt:formatNumber value="${chiTiet.donGia * chiTiet.soLuong}" type="currency" currencySymbol="₫" groupingUsed="true"/></td>
+                            </tr>
+                        </c:forEach>
+                        </tbody>
+                    </table>
                 </div>
-                <div class="signature-box">
-                    <p class="mb-1">Chữ ký người nhận</p>
-                    <p class="mb-0">(Xác nhận hàng nguyên vẹn, không móp, méo)</p>
+                <div class="d-flex justify-content-between align-items-start mb-4">
+                    <div>
+                        <h5 class="mb-0">Tiền thu hộ: <span><fmt:formatNumber value="${hoaDonDTO.tongTien}" type="currency" currencySymbol="₫" groupingUsed="true"/></span></h5>
+                    </div>
+                    <div class="text-right mr-5">
+                        <p class="mb-1 mr-5">Chữ ký người nhận</p>
+                        <p class="mb-0">(Xác nhận hàng nguyên vẹn, không móp, méo)</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1800,6 +1677,12 @@
             </div>
         </footer>
         <!-- End of Footer -->
+
+        <!-- Lớp phủ và iframe ẩn để in -->
+        <div id="printOverlay" class="print-overlay">
+            <iframe id="printFrame" class="print-frame"></iframe>
+        </div>
+
 
     </div>
     <!-- End of Content Wrapper -->
@@ -1914,30 +1797,87 @@
     </c:if>
 
 
+    document.getElementById('confirmForm').onsubmit = function() {
+        // Lấy giá trị trạng thái từ Controller
+        sessionStorage.setItem('printAfterReload', 'true');
+    };
+
 
     // Nút in hóa đơn để giao hàng
-    // document.getElementById('printDeliveryButton').addEventListener('click', () => {
-    //     const element = document.querySelector('.container');
-    //     const opt = {
-    //         margin: 1,
-    //         filename: 'phieu_giao_hang.pdf',
-    //         image: {type: 'jpeg', quality: 0.98},
-    //         html2canvas: {scale: 2},
-    //         jsPDF: {unit: 'cm', format: 'a4', orientation: 'portrait'}
-    //     };
-    //     html2pdf().from(element).set(opt).save();
-    // });
+    function openPrintDeliveryModal() {
+        const overlay = document.getElementById('printOverlay');
+        const iframe = document.getElementById('printFrame');
 
-    function openPrintModal() {
-        // Hiển thị phần tử invoiceSection để in
-        document.getElementById('invoiceSection').style.display = 'block';
+        overlay.style.display = 'flex';
+        iframe.onload = function() {
+            iframe.contentWindow.focus();
+            iframe.contentWindow.print();
+            overlay.style.display = 'none';
+        };
 
-        // Mở cửa sổ in
-        window.print();
-
-        // Ẩn lại phần tử invoiceSection sau khi in xong (nếu bạn muốn)
-        document.getElementById('invoiceSection').style.display = 'none';
+        iframe.src = '/hoa-don/in-phieu-giao-hang';
+        // Xóa sessionStorage sau khi in
+        sessionStorage.removeItem('printAfterReload');
     }
+
+
+    // Kiểm tra nếu có sessionStorage để in sau khi reload
+    window.onload = function() {
+        const printAfterReload = sessionStorage.getItem('printAfterReload');
+        if (printAfterReload === 'true') {
+            openPrintDeliveryModal();
+        }
+    };
+
+
+    function handleFormSubmit(trangThai) {
+        const moTa = document.getElementById('moTa').value.trim();
+        const moTaError = document.getElementById('moTaError');
+
+        // Kiểm tra mô tả có rỗng không
+        if (!moTa) {
+            moTaError.style.display = 'block';
+            return false;
+        } else {
+            moTaError.style.display = 'none';
+        }
+
+        // Lấy dữ liệu form
+        const formData = new FormData();
+        formData.append('trangThai', trangThai);
+        formData.append('moTa', moTa);
+
+        // Gửi request đến server
+        fetch('/hoa-don/xac-nhan/${hoaDonDTO.id}', {
+            method: 'POST',
+            body: formData,
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Đóng modal xác nhận
+                    const confirmModal = new bootstrap.Modal(document.getElementById('confirmModal'));
+                    confirmModal.hide();
+                    alert('Xác nhận đơn hàng thành công!');
+
+                    // Nếu trạng thái chuyển từ 1 (chờ xác nhận) đến 3 (chờ giao hàng)
+                    if (trangThai === 3) {
+                        openPrintDeliveryModal(); // Gọi hàm mở máy in
+                    }
+                } else {
+                    // Xử lý khi xác nhận đơn hàng thất bại
+                    alert('Xác nhận đơn hàng thất bại!');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Đã xảy ra lỗi khi xác nhận đơn hàng!');
+            });
+
+        return false;
+    }
+
+
 
 
     // Validate ô input mô tả xác nhận
