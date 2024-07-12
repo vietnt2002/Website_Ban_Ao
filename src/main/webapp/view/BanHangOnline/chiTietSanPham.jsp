@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="f" uri="jakarta.tags.functions" %>
 <%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -52,6 +53,7 @@
         .dropdown ul li:hover {
             text-decoration: underline;
         }
+
         .totalQuantityCart {
             width: 15px;
             height: 15px;
@@ -125,7 +127,7 @@
                 </div>
             </form>
         </div>
-<%--        usercarthere--%>
+        <%--        usercarthere--%>
         <div class="col-lg-3 col-6 text-right userCart">
             <div class="dropdown">
                 <button class="btn btn-secondary bg-light" style="padding: 4px; font-size: 19px; margin-right: 3px"
@@ -137,12 +139,14 @@
                         <c:when test="${empty sessionScope.user}">
                             <!-- Hiển thị nút đăng nhập khi chưa đăng nhập -->
                             <li><a class="dropdown-item text-center" href="#">
-                                <button class="btn btn-primary w-100 px-5" data-toggle="modal" data-target="#loginModal">Đăng nhập
+                                <button class="btn btn-primary w-100 px-5" data-toggle="modal"
+                                        data-target="#loginModal">Đăng nhập
                                 </button>
                             </a></li>
 
                             <li><a class="dropdown-item text-center mt-3 " href="#">
-                                <button class="btn btn-primary w-100 px-5" data-toggle="modal" data-target="#registerModal">Đăng ký
+                                <button class="btn btn-primary w-100 px-5" data-toggle="modal"
+                                        data-target="#registerModal">Đăng ký
                                 </button>
                             </a></li>
                         </c:when>
@@ -159,10 +163,12 @@
                 <a href="/cua-hang/gio-hang" class="btn border">
                     <i class="fas fa-shopping-cart text-primary"></i>
                     <c:if test="${soLuong > 0}">
-                        <span class="totalQuantityCart" style="display: flex; justify-content: center; align-items: center">${soLuong}</span>
+                        <span class="totalQuantityCart"
+                              style="display: flex; justify-content: center; align-items: center">${soLuong}</span>
                     </c:if>
                     <c:if test="${soLuong == null}">
-                        <span class="totalQuantityCart" style="display: flex; justify-content: center; align-items: center">0</span>
+                        <span class="totalQuantityCart"
+                              style="display: flex; justify-content: center; align-items: center">0</span>
                     </c:if>
                 </a>
             </div>
@@ -225,13 +231,13 @@
             <div id="product-carousel" class="carousel slide" data-ride="carousel">
                 <div class="carousel-inner border">
                     <div class="carousel-item active">
-                        <img class="w-100 h-100" src="/image/${hinhAnh.hinhAnh1}" alt="Image">
+                        <img class="w-100 h-100" src="/image/${hinhAnh.hinhAnh1}" alt="Image" id="hinhAnh1">
                     </div>
                     <div class="carousel-item">
-                        <img class="w-100 h-100" src="/image/${hinhAnh.hinhAnh2}" alt="Image">
+                        <img class="w-100 h-100" src="/image/${hinhAnh.hinhAnh2}" alt="Image" id="hinhAnh2">
                     </div>
                     <div class="carousel-item">
-                        <img class="w-100 h-100" src="/image/${hinhAnh.hinhAnh3}" alt="Image">
+                        <img class="w-100 h-100" src="/image/${hinhAnh.hinhAnh3}" alt="Image" id="hinhAnh3">
                     </div>
                 </div>
                 <a class="carousel-control-prev" href="#product-carousel" data-slide="prev">
@@ -254,8 +260,6 @@
                     <small class="far fa-star"></small>
                 </div>
             </div>
-            <h3 class="font-weight-semi-bold mb-4">${ctsp.giaBan} <span
-                    style="font-size: 25px; text-decoration: underline">đ</span></h3>
 
             <h3 class="font-weight-semi-bold mb-4">
                 <fmt:formatNumber value="${ctsp.giaBan}" type="currency" currencySymbol="₫"/>
@@ -271,45 +275,55 @@
             </div>
 
 
-                <form method="post" action="/cua-hang/add-gio-hang">
-                    <input type="hidden" name="idCTSP" value="${ctsp.id}">
-                    <div class="d-flex mb-3">
-                        <p class="text-dark font-weight-medium mb-0 mr-3">Kích thước:</p>
-                        <c:forEach items="${listKichThuoc}" var="kichThuoc" varStatus="i">
-                            <div class="custom-control custom-radio custom-control-inline">
-                                <input onchange="onchangeByKichThuoc('${kichThuoc.tenKth}')" type="radio" class="custom-control-input" id="${kichThuoc.idKth}" <c:if test="${i.index==0}">checked</c:if> value="${kichThuoc.tenKth}" name="kichThuoc">
-                                <label class="custom-control-label" for="${kichThuoc.idKth}">${kichThuoc.tenKth}</label>
-                            </div>
-                        </c:forEach>
-                    </div>
-
-                    <div class="d-flex mb-4">
-                        <p class="text-dark font-weight-medium mb-0 mr-3">Màu sắc:</p>
-                        <c:forEach items="${listMauSac}" var="mauSac" varStatus="i">
-                            <div class="custom-control custom-radio custom-control-inline">
-                                <input onchange="onchangeByMauSac('${mauSac.tenMS}')" type="radio" class="custom-control-input" id="${mauSac.idMS}" <c:if test="${i.index==0}">checked</c:if> value="${mauSac.tenMS}" name="mauSac">
-                                <label class="custom-control-label" for="${mauSac.idMS}">${mauSac.tenMS}</label>
-                            </div>
-                        </c:forEach>
-                    </div>
-
-                    <div class="d-flex align-items-center mb-4 pt-2">
-                        <div class="input-group quantity mr-3" style="width: 130px;">
-                            <div class="input-group-btn">
-                                <button type="button" class="btn btn-primary btn-minus">
-                                    <i class="fa fa-minus"></i>
-                                </button>
-                            </div>
-                            <input type="text" class="form-control bg-secondary text-center" id="soLuong" name="soLuong" value="1">
-                            <div class="input-group-btn">
-                                <button type="button" class="btn btn-primary btn-plus">
-                                    <i class="fa fa-plus"></i>
-                                </button>
-                            </div>
+            <form method="post" action="/cua-hang/add-gio-hang">
+                <input type="hidden" name="idCTSP" value="${ctsp.id}">
+                <div class="d-flex mb-3">
+                    <p class="text-dark font-weight-medium mb-0 mr-3">Kích thước:</p>
+                    <c:forEach items="${listKichThuoc}" var="kichThuoc" varStatus="i">
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input onchange="onchangeByKichThuoc('${kichThuoc.tenKth}')" type="radio"
+                                   class="custom-control-input" id="${kichThuoc.idKth}"
+                                   <c:if test="${i.index==0}">checked</c:if> value="${kichThuoc.tenKth}"
+                                   name="kichThuoc">
+                            <label class="custom-control-label" for="${kichThuoc.idKth}">${kichThuoc.tenKth}</label>
                         </div>
-                        <button type="submit" class="btn btn-primary px-3"><i class="fa fa-shopping-cart mr-1"></i> Thêm vào giỏ hàng</button>
+                    </c:forEach>
+                </div>
+
+                <div class="d-flex mb-4">
+                    <p class="text-dark font-weight-medium mb-0 mr-3">Màu sắc:</p>
+                    <c:forEach items="${listMauSac}" var="mauSac" varStatus="i">
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input onchange="onchangeByMauSac('${mauSac.tenMS}')" type="radio"
+                                   class="custom-control-input"
+                                   id="${mauSac.idMS}"
+                                   <c:if test="${i.index==0}">checked</c:if>
+                                   value="${mauSac.tenMS}" name="mauSac">
+                            <label class="custom-control-label" for="${mauSac.idMS}">${mauSac.tenMS}</label>
+                        </div>
+                    </c:forEach>
+                </div>
+
+                <div class="d-flex align-items-center mb-4 pt-2">
+                    <div class="input-group quantity mr-3" style="width: 130px;">
+                        <div class="input-group-btn">
+                            <button type="button" class="btn btn-primary btn-minus">
+                                <i class="fa fa-minus"></i>
+                            </button>
+                        </div>
+                        <input type="text" class="form-control bg-secondary text-center" id="soLuong" name="soLuong"
+                               value="1">
+                        <div class="input-group-btn">
+                            <button type="button" class="btn btn-primary btn-plus">
+                                <i class="fa fa-plus"></i>
+                            </button>
+                        </div>
                     </div>
-                </form>
+                    <button type="submit" class="btn btn-primary px-3"><i class="fa fa-shopping-cart mr-1"></i> Thêm
+                        vào giỏ hàng
+                    </button>
+                </div>
+            </form>
 
 
             <div class="d-flex pt-2">
@@ -672,45 +686,67 @@
 </body>
 
 <script>
-    var list = []
+    var list = [];
     <c:forEach items="${listMauSizeSL}" var="item">
     var MauSizeSL = {};
+    MauSizeSL.hinhAnh1 = "${item.hinhAnh1}";
+    MauSizeSL.hinhAnh2 = "${item.hinhAnh2}";
+    MauSizeSL.hinhAnh3 = "${item.hinhAnh3}";
     MauSizeSL.tenMauSac = "${item.tenMauSac}";
     MauSizeSL.tenKichThuoc = "${item.tenKichThuoc}";
     MauSizeSL.soLuong = "${item.soLuong}";
     list.push(MauSizeSL);
     </c:forEach>
 
-    //Lọc số lượng tồn spct theo kích thước khi chọn màu sắc
-    function onchangeByMauSac (tenMauSac){
-        var listKichThuoc = document.getElementsByName("kichThuoc");
-        var tenKichThuoc = "";
-        for (var i = 0; i<listKichThuoc.length; i++){
-            if (listKichThuoc.item(i).checked){
-                tenKichThuoc = listKichThuoc.item(i).value;
-            }
-        }
-        var soLuong;
+    // Tìm và set giá trị ban đầu
+    var initialSelectedMauSac = document.querySelector('input[name="mauSac"]:checked').value;
+    var initialSelectedKichThuoc = document.querySelector('input[name="kichThuoc"]:checked').value;
+    setHinhAnhAndSoLuong(initialSelectedMauSac, initialSelectedKichThuoc);
+
+    // Lọc số lượng tồn spct theo kích thước khi chọn màu sắc
+    function onchangeByMauSac(tenMauSac) {
+        var tenKichThuoc = document.querySelector('input[name="kichThuoc"]:checked').value;
+        setHinhAnhAndSoLuong(tenMauSac, tenKichThuoc);
+    }
+
+    // Hàm cập nhật hình ảnh và số lượng
+    function setHinhAnhAndSoLuong(tenMauSac, tenKichThuoc) {
+        var soLuong = 0;
+        var hinhAnh1 = "";
+        var hinhAnh2 = "";
+        var hinhAnh3 = "";
+
         list.forEach(item => {
-            if (item.tenMauSac == tenMauSac  && item.tenKichThuoc == tenKichThuoc){
-                soLuong = item.soLuong
+            if (item.tenMauSac == tenMauSac && item.tenKichThuoc == tenKichThuoc) {
+                soLuong = item.soLuong;
+                hinhAnh1 = item.hinhAnh1;
+                hinhAnh2 = item.hinhAnh2;
+                hinhAnh3 = item.hinhAnh3;
             }
         });
-        document.getElementById("soLuongTon").textContent = soLuong != null ? soLuong : 0;
+
+        if (soLuong < 0 || soLuong == null) {
+            soLuong = 0;
+        }
+
+        document.getElementById("soLuongTon").textContent = soLuong;
+        document.getElementById("hinhAnh1").src = "/image/" + hinhAnh1;
+        document.getElementById("hinhAnh2").src = "/image/" + hinhAnh2;
+        document.getElementById("hinhAnh3").src = "/image/" + hinhAnh3;
     }
 
     //Lọc số lượng tồn ctsp theo màu sắc khi chọn kích thước
-    function onchangeByKichThuoc (tenKichThuoc){
+    function onchangeByKichThuoc(tenKichThuoc) {
         var listMauSac = document.getElementsByName("mauSac");
         var tenMauSac = "";
-        for (var i = 0; i<listMauSac.length; i++){
-            if (listMauSac.item(i).checked){
+        for (var i = 0; i < listMauSac.length; i++) {
+            if (listMauSac.item(i).checked) {
                 tenMauSac = listMauSac.item(i).value;
             }
         }
         var soLuong;
         list.forEach(item => {
-            if (item.tenKichThuoc == tenKichThuoc && item.tenMauSac == tenMauSac){
+            if (item.tenKichThuoc == tenKichThuoc && item.tenMauSac == tenMauSac) {
                 soLuong = item.soLuong
             }
         });
