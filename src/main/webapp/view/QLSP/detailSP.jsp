@@ -1686,13 +1686,7 @@
                             giaBan: giaBanModalAdd.value,
                             trangThai: trangThaiModalAdd
                         };
-                        const dataHinhAnh={
-                            idSPCT: "",
-                            hinhAnh1 :!(fileHinhAnh1ModalAdd.value=="")?getFileName(fileHinhAnh1ModalAdd.value):"pendingIMG.png",
-                            hinhAnh2 :!(fileHinhAnh2ModalAdd.value=="")?getFileName(fileHinhAnh2ModalAdd.value):"pendingIMG.png",
-                            hinhAnh3 :!(fileHinhAnh3ModalAdd.value=="")?getFileName(fileHinhAnh3ModalAdd.value):"pendingIMG.png",
-                            trangThai: "1"
-                        }
+
                         console.log("data json: ", data);
                         var formData = new FormData($('#uploadFormEdit')[0]); // Use FormData to get all form data
                         fetch(`/chi-tiet-sp/save`, {
@@ -1701,27 +1695,35 @@
                                 'Content-Type': 'application/json'
                             },
                             body: JSON.stringify(data)
-                        }).then(() => {
+                        }).then(response=>response.json()).then(resp => {
+                            console.log("test resp: "+resp);
+                            const dataHinhAnh={
+                                idSPCT:resp.id,
+                                hinhAnh1 :!(fileHinhAnh1ModalAdd.value=="")?getFileName(fileHinhAnh1ModalAdd.value):"pendingIMG.png",
+                                hinhAnh2 :!(fileHinhAnh2ModalAdd.value=="")?getFileName(fileHinhAnh2ModalAdd.value):"pendingIMG.png",
+                                hinhAnh3 :!(fileHinhAnh3ModalAdd.value=="")?getFileName(fileHinhAnh3ModalAdd.value):"pendingIMG.png",
+                                trangThai: "1"
+                            }
+                            fetch(`/hinh-anh/save`, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify(dataHinhAnh)
+                            }).then(() => {
+                                Swal.fire(
+                                    'Đã thanh toán!',
+                                    'Dữ liệu đã được ghi nhận.',
+                                    'success'
+                                ).then(() => {
+                                });
+                            });
                             Swal.fire(
                                 'Đã thanh toán!',
                                 'Dữ liệu đã được ghi nhận.',
                                 'success'
                             ).then(() => {
                                 loadDSSPCT(currentPage);
-                            });
-                        });
-                        fetch(`/hinh-anh/save`, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify(dataHinhAnh)
-                        }).then(() => {
-                            Swal.fire(
-                                'Đã thanh toán!',
-                                'Dữ liệu đã được ghi nhận.',
-                                'success'
-                            ).then(() => {
                             });
                         });
                         var formData = new FormData($('#uploadFormAdd')[0]);
