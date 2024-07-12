@@ -10,98 +10,140 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Phiếu Giao Hàng</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+     <title>Phiếu Giao Hàng</title>
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> -->
     <style>
+        .print-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px dotted #000;
+            padding-bottom: 10px;
+            /* margin-bottom: 20px; */
+        }
+        .logo {
+            width: 200px;
+        }
+        .separator {
+            border-bottom: 1px dotted #000;
+            margin: 10px 0;
+        }
+        .info-section {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .info-section div {
+            width: 48%;
+        }
+        .product-details {
+            margin-bottom: 20px;
+            border-bottom: 1px dotted #000;
+        }
+        .product-details h5 {
+            font-weight: bold;
+        }
+        .product-item {
+            display: flex;
+            justify-content: space-between;
+        }
+        .signature {
+            display: flex;
+            justify-content: space-between;
+            /* align-items: center; */
+            padding-top: 10px;
+            /* margin-top: 50px; */
+        }
+        .signature-box {
+            border: 1px solid #000;
+            padding: 20px;
+            text-align: center;
+            padding-bottom: 100px;
 
+        }
+
+        .product-details h5{
+            margin: 0px;
+        }
+
+        .product-item p{
+            margin: 6px;
+            padding-bottom: 5px;
+        }
+
+        .signature .money{
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .signature-box .confirm {
+            margin: 0px;
+        }
+
+        .signature-box .sign {
+            margin: 0px;
+            padding-bottom: 5px;
+        }
+
+        @media print {
+            /* Ẩn tiêu đề và ngày của trình duyệt khi in */
+            @page {
+                size: auto;
+                margin: 0;
+            }
+        }
     </style>
 </head>
 <body>
-<div class="container mt-5 p-4 shadow delivery">
-    <div class="text-center mb-4">
-        <h1>Phiếu Giao Hàng</h1>
-    </div>
-
-    <div class="mb-4">
-        <h5>Thông tin Bên Gửi:</h5>
-        <p>Người gửi: MS-STORE</p>
-        <p>Địa chỉ: Tòa nhà FPT Polytechnic, Phố Trịnh Văn Bô, Xuân Phương, Nam Từ Liêm, Hà Nội</p>
-        <p>Số điện thoại: 0123 456 789</p>
-    </div>
-
-    <div class="mb-4">
-        <h5>Thông tin Bên Nhận:</h5>
-        <p>Người nhận: ${hoaDonDTO.khachHang.hoTen}</p>
-        <p>Địa chỉ: ${diaChiKhachHang.diaChiChiTiet}, ${diaChiKhachHang.idPhuongXa}, ${diaChiKhachHang.idQuanHuyen}, ${diaChiKhachHang.idTinhThanh}</p>
-        <p>Số điện thoại: ${hoaDonDTO.khachHang.sdt}</p>
-    </div>
-
-    <div class="mb-4">
-        <h5>Nội dung đơn hàng</h5>
-        <table class="table table-bordered">
-            <thead class="thead-light">
-            <tr>
-                <th>Tên Sản Phẩm</th>
-                <th>Màu Sắc</th>
-                <th>Kích Thước</th>
-                <th>Số Lượng</th>
-                <th>Đơn Giá</th>
-                <th>Tổng tiền</th>
-            </tr>
-            </thead>
-            <tbody>
-            <c:forEach var="chiTiet" items="${listHDCT}" varStatus="i">
-                <tr>
-                    <td>${chiTiet.idCTSP.idSanPham.ten}</td>
-                    <td>${chiTiet.idCTSP.idMauSac.ten}</td>
-                    <td>${chiTiet.idCTSP.idKichThuoc.ten}</td>
-                    <td>${chiTiet.soLuong}</td>
-                    <td><fmt:formatNumber value="${chiTiet.donGia}" type="currency" currencySymbol="₫" groupingUsed="true"/></td>
-                    <td><fmt:formatNumber value="${chiTiet.donGia * chiTiet.soLuong}" type="currency" currencySymbol="₫" groupingUsed="true"/></td>
-                </tr>
-            </c:forEach>
-            </tbody>
-        </table>
-    </div>
-
-    <div class="d-flex justify-content-between align-items-start mb-4">
+<div class=" mt-5 p-4 shadow delivery" id="deliveryReceipt">
+    <div class="print-header">
         <div>
-            <h5 class="mb-0">Tiền thu hộ: <span>200VND</span></h5>
-<%--            <p class="font-weight-bold mb-0">--%>
-<%--                <fmt:formatNumber value="${hoaDonDTO.tongTien}" type="currency" currencySymbol="₫" groupingUsed="true"/>--%>
-<%--            </p>--%>
+            <h1>MS-STORE</h1>
+            <p class="mb-1">Mã Hóa Đơn: ${hoaDonDTO.ma}</p>
+            <p class="mb-0">Ngày Đặt Đơn:${hoaDonDTO.ngayTao}</p>
         </div>
-        <div class="text-right mr-5">
-            <p class="mb-1 mr-5">Chữ ký người nhận</p>
-            <p class="mb-0">(Xác nhận hàng nguyên vẹn, không móp, méo)</p>
+        <div>
+            <img src="https://cdn.haitrieu.com/wp-content/uploads/2022/05/Logo-GHN-Slogan-En.png" alt="Logo" class="logo">
+        </div>
+    </div>
+    <div class="info-section">
+        <div>
+            <h5>Thông tin Bên Gửi:</h5>
+            <p>Người gửi: MS-STORE</p>
+            <p>Địa chỉ: Tòa nhà FPT Polytechnic, Phố Trịnh Văn Bô, Xuân Phương, Nam Từ Liêm, Hà Nội</p>
+            <p>Số điện thoại: 0123 456 789</p>
+        </div>
+        <div>
+            <h5>Thông tin Bên Nhận:</h5>
+            <p>Người nhận: ${hoaDonDTO.khachHang.hoTen}</p>
+            <p>Địa chỉ: ${diaChiKhachHang.diaChiChiTiet}, ${diaChiKhachHang.idPhuongXa}, ${diaChiKhachHang.idQuanHuyen}, ${diaChiKhachHang.idTinhThanh}</p>
+            <p>Số điện thoại: ${hoaDonDTO.khachHang.sdt}</p>
+        </div>
+    </div>
+    <div class="separator"></div>
+    <div class="product-details">
+        <h5 >Nội dung đơn hàng (Tổng số lượng sản phẩm:)</h5>
+        <c:forEach var="chiTietHoaDon" items="${listHDCT}" varStatus="item">
+            <div class="product-item">
+                <p><span>${item.index + 1}</span> ${chiTietHoaDon.idCTSP.idSanPham.ten}(${chiTietHoaDon.idCTSP.idMauSac.ten},Size:${chiTietHoaDon.idCTSP.idKichThuoc.ten})</p>
+                <p>SL: ${chiTietHoaDon.soLuong}</p>
+            </div>
+        </c:forEach>
+    </div>
+    <div class="signature">
+        <div>
+            <p class="mb-0">Tiền thu hộ: <span class="money">
+                 <fmt:formatNumber value="${tongTienThanhToan}" type="currency" currencySymbol="₫"
+                                   groupingUsed="true"/>
+
+            </span></p>
+        </div>
+        <div class="signature-box">
+            <p class="mb-0 sign">Chữ ký người nhận</p>
+            <p class="mb-0  confirm">(Xác nhận hàng nguyên vẹn, không móp, méo)</p>
         </div>
     </div>
 </div>
-
-<div class="text-center mt-4">
-    <button id="downloadPdf" class="btn btn-primary">
-        <i class="bi bi-printer"></i> Download PDF
-    </button>
-</div>
-
-<!-- jQuery and Bootstrap Bundle (includes Popper) -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
-<!-- html2pdf.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
-<script>
-    document.getElementById('downloadPdf').addEventListener('click', () => {
-        const element = document.querySelector('.container');
-        const opt = {
-            margin: 1,
-            filename: 'phieu_giao_hang.pdf',
-            image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 2 },
-            jsPDF: { unit: 'cm', format: 'a4', orientation: 'landscape' }
-        };
-        html2pdf().from(element).set(opt).save();
-    });
-</script>
 </body>
+</html>
 </html>
