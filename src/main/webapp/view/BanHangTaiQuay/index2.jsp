@@ -73,7 +73,7 @@
                     <td class="price">${spct.giaBan}</td>
                     <td>${spct.trangThai==1?"Còn hàng":"Hết hàng"}</td>
                     <td>
-                        <form action="/ban-hang-tai-quay/add-san-pham/${spct.id}" method="post"
+                        <form action="/ban-hang-tai-quay/add-san-pham/${spct.id}/${spct.giaBan}" method="post"
                               onsubmit="return validateBeforeAddToCart();">
                             <input type="hidden" name="idHoaDon" value="${hoaDon.id}"
                                    id="selectedInvoiceId">
