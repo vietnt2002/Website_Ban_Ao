@@ -20,7 +20,5 @@ public class HinhAnhStore {
     @NotEmpty
     private String hinhAnh3;
     @NotEmpty
-    private Integer trangThai;
-    @NotEmpty
-    private LocalDateTime ngayTao;
+    private String trangThai;
 }
