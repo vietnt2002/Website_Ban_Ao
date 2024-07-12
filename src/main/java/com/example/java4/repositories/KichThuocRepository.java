@@ -1,5 +1,6 @@
 package com.example.java4.repositories;
 
+import com.example.java4.entities.ChiTietSanPham;
 import com.example.java4.entities.KichThuoc;
 import com.example.java4.entities.KichThuoc;
 import com.example.java4.response.KichThuocRespone;
@@ -42,4 +43,14 @@ public interface KichThuocRepository
     Integer getCountStt1();
     @Query(value = "SELECT COUNT(*) FROM kichthuoc where trangThai=0",nativeQuery = true)
     Integer getCountStt0();
+
+
+    @Query("SELECT DISTINCT kt.ten, ms.ten, ctsp.soLuong, ha.hinhAnh1, ha.hinhAnh2, ha.hinhAnh3 " +
+            "FROM KichThuoc kt LEFT JOIN ChiTietSanPham ctsp \n" +
+            "ON ctsp.idKichThuoc.id = kt.id\n" +
+            "JOIN SanPham sp ON sp.id = ctsp.idSanPham.id\n" +
+            "JOIN MauSac ms ON ms.id = ctsp.idMauSac.id\n" +
+            "JOIN HinhAnh ha ON ha.idCTSP.id = ctsp.id\n" +
+            "WHERE sp.id = ?1")
+    List<KichThuoc> getListSPCTByIDSP(String idSP);
 };

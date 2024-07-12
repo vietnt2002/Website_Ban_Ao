@@ -42,7 +42,6 @@
             rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
 
-
     <style>
         .table-scroll {
             height: 340px;
@@ -83,9 +82,53 @@
         .icon-container i {
             transition: color 0.3s ease;
         }
+
         .icon-container i:hover {
             color: #4e73df; /* Change this to your desired hover color */
         }
+    </style>
+
+    <style>
+        .fit-img {
+            width: 100%;
+            height: auto;
+        }
+
+        .hover-effect {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .hover-effect:hover {
+            transform: scale(1.05); /* Slightly increase the size */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a shadow */
+        }
+
+        .click-effect {
+            transition: transform 0.1s ease;
+            cursor: pointer;
+        }
+
+        .click-effect:active {
+            transform: scale(0.95); /* Slightly decrease the size to mimic a button press */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Add a shadow */
+        }
+
+        .image-container {
+            position: relative;
+            width: 200px; /* Adjust as needed */
+            height: 270px; /* Adjust as needed */
+        }
+
+        .file-input-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
     </style>
 
 </head>
@@ -440,7 +483,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <table class="table table-hover">
+                            <table class="table table-hover mt-3">
                                 <thead>
                                 <tr>
                                     <th>STT</th>
@@ -449,6 +492,7 @@
                                     <th>Chất liệu</th>
                                     <th>Kiểu tay</th>
                                     <th>Số lượng</th>
+                                    <th>Giá bán</th>
                                     <th>Trạng thái</th>
                                     <th>Thao tác</th>
                                 </tr>
@@ -484,7 +528,7 @@
                 </nav>
             </div>
         </div>
-        <!-- ModalSPAdd-->
+        <!-- AddModal-->
         <div class="modal fade" id="ModalAdd" tabindex="-1" aria-labelledby="exampleModalLabel4" aria-hidden="true"
              data-bs-backdrop="static" data-bs-keyboard="false">
             <div class="modal-dialog modal-xl">
@@ -495,27 +539,33 @@
                         </div>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body" style="overflow-y: auto; height: 80vh;">
                         <div class="mb-3">
+                            <form id="uploadFormAdd" method="post" enctype="multipart/form-data" action="/uploads">
                             <div class="row">
                                 <div class="d-flex" style="gap: 500px;">
-                                    <h5 class="border-bottom">Tên sản phẩm:&nbsp&nbsp<span id="tenSPModalAdd"></span></h5>
+                                    <h5 class="border-bottom">Tên sản phẩm:&nbsp&nbsp<span id="tenSPModalAdd"></span>
+                                    </h5>
                                     <h5 class="border-bottom">Ngày tạo:&nbsp&nbsp<span id="ngayTaoModalAdd"></span></h5>
                                 </div>
                                 <div class="col col-md-3">
                                     <div class="d-flex">
                                         <div class="dropdown">
                                             <button class="btn btn-outline-secondary dropdown-toggle" type="button"
-                                                    id="lblMauSacModalAdd" style="width: 150px;" data-bs-toggle="dropdown"
+                                                    id="lblMauSacModalAdd" style="width: 150px;"
+                                                    data-bs-toggle="dropdown"
                                                     aria-expanded="false">
                                                 Chọn màu sắc
                                             </button>
                                             <ul class="dropdown-menu" id="cboMauSacModalAdd"
                                                 aria-labelledby="dropdownMenuButton2">
                                             </ul>
+                                            <p style="color: red;" id="cboMauSacModalAddErr"></p>
                                         </div>
                                         <div class="icon-container">
-                                            <i class=" bi bi-folder-plus col-3" style="font-size: 25px"></i>
+                                            <i class=" bi bi-folder-plus col-3" data-bs-toggle="modal"
+                                               data-bs-target="#ModalHotAddMS" id="iconHotAddMSModalAdd"
+                                               style="font-size: 25px"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -531,9 +581,12 @@
                                             <ul class="dropdown-menu" id="cboKichThuocModalAdd"
                                                 aria-labelledby="dropdownMenuButton3">
                                             </ul>
+                                            <p style="color: red;" id="cboKichThuocModalAddErr"></p>
                                         </div>
                                         <div class="icon-container">
-                                            <i class=" bi bi-folder-plus col-3" style="font-size: 25px"></i>
+                                            <i class=" bi bi-folder-plus col-3" data-bs-toggle="modal"
+                                               data-bs-target="#ModalHotAddKT" id="iconHotAddKTModalAdd"
+                                               style="font-size: 25px"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -549,9 +602,12 @@
                                             <ul class="dropdown-menu" id="cboChatLieuModalAdd"
                                                 aria-labelledby="dropdownMenuButton4">
                                             </ul>
+                                            <p style="color: red;" id="cboChatLieuModalAddErr"></p>
                                         </div>
                                         <div class="icon-container">
-                                            <i class=" bi bi-folder-plus col-3" style="font-size: 25px"></i>
+                                            <i class=" bi bi-folder-plus col-3" data-bs-toggle="modal"
+                                               data-bs-target="#ModalHotAddCL" id="iconHotAddCLModalAdd"
+                                               style="font-size: 25px"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -559,16 +615,20 @@
                                     <div class="d-flex">
                                         <div class="dropdown">
                                             <button class="btn btn-outline-secondary dropdown-toggle" type="button"
-                                                    id="lblKieuTayModalAdd" style="width: 150px;" data-bs-toggle="dropdown"
+                                                    id="lblKieuTayModalAdd" style="width: 150px;"
+                                                    data-bs-toggle="dropdown"
                                                     aria-expanded="false">
                                                 Chọn kiểu tay
                                             </button>
                                             <ul class="dropdown-menu" id="cboKieuTayModalAdd"
                                                 aria-labelledby="dropdownMenuButton5">
                                             </ul>
+                                            <p style="color: red;" id="cboKieuTayModalAddErr"></p>
                                         </div>
                                         <div class="icon-container">
-                                            <i class=" bi bi-folder-plus col-3" style="font-size: 25px"></i>
+                                            <i class=" bi bi-folder-plus col-3" data-bs-toggle="modal"
+                                               data-bs-target="#ModalHotAddKTA" id="iconHotAddKTAModalAdd"
+                                               style="font-size: 25px"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -601,24 +661,46 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col col-md-3">
-                                    <button type="button" class="btn btn-secondary">Chọn hình ảnh</button>
+                                <div class="col col-md-3 hover-effect click-effect image-container">
+                                    <img width="200" height="200"
+                                         src="/image-icon/pendingIMG.png"
+                                         alt="" class="fit-img" id="hinhAnh1DisplayModalAdd">
+                                    <p class="text-center">Hình ảnh 1</p>
+                                    <input type="file" id="fileHinhAnh1ModalAdd" class="file-input-overlay" accept="image/*"/>
+                                </div>
+
+                                <div class="col col-md-3 hover-effect click-effect image-container">
+                                    <img width="200" height="200"
+                                         src="/image-icon/pendingIMG.png"
+                                         alt="" class="fit-img" id="hinhAnh2DisplayModalAdd">
+                                    <p class="text-center">Hình ảnh 2</p>
+                                    <input type="file" id="fileHinhAnh2ModalAdd" class="file-input-overlay" accept="image/*"/>
+                                </div>
+
+                                <div class="col col-md-3 hover-effect click-effect image-container">
+                                    <img width="200" height="200"
+                                         src="/image-icon/pendingIMG.png"
+                                         alt="" class="fit-img" id="hinhAnh3DisplayModalAdd">
+                                    <p class="text-center">Hình ảnh 3</p>
+                                    <input type="file" id="fileHinhAnh3ModalAdd" class="file-input-overlay" accept="image/*"/>
                                 </div>
                             </div>
                             <div class="form-check form-switch">
                                 <input class="form-check-input" type="checkbox" role="switch" id="trangThaiModalAdd"
                                        checked>
-                                <label class="form-check-label" for="trangThaiLabelModalAdd" id="trangThaiLabelModalAdd">Trạng
+                                <label class="form-check-label" for="trangThaiLabelModalAdd"
+                                       id="trangThaiLabelModalAdd">Trạng
                                     thái</label>
                             </div>
-                            <button id="saveAddBtn" type="submit" class="btn btn-primary">Lưu</button>
+                            <button id="saveAddBtn" class="btn btn-primary me-5">Lưu</button>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <%--End modal --%>
-        <!-- ModalSPEdit-->
+        <!-- EditModal-->
         <div class="modal fade" id="ModalEdit" tabindex="-1" aria-labelledby="exampleModalLabel4" aria-hidden="true"
              data-bs-backdrop="static" data-bs-keyboard="false">
             <div class="modal-dialog modal-xl">
@@ -629,27 +711,33 @@
                         </div>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body" style="overflow-y: auto; height: 80vh;">
                         <div class="mb-3">
+                            <form id="uploadFormEdit" method="post" enctype="multipart/form-data" action="/hinh-anh/upload">
                             <div class="row">
                                 <div class="d-flex" style="gap: 500px;">
-                                    <h5 class="border-bottom">Tên sản phẩm:&nbsp&nbsp<span id="tenSPModalEdit"></span></h5>
-                                    <h5 class="border-bottom">Ngày tạo:&nbsp&nbsp<span id="ngayTaoModalEdit"></span></h5>
+                                    <h5 class="border-bottom">Tên sản phẩm:&nbsp&nbsp<span id="tenSPModalEdit"></span>
+                                    </h5>
+                                    <h5 class="border-bottom">Ngày tạo:&nbsp&nbsp<span id="ngayTaoModalEdit"></span>
+                                    </h5>
                                 </div>
                                 <div class="col col-md-3">
                                     <div class="d-flex">
                                         <div class="dropdown">
                                             <button class="btn btn-outline-secondary dropdown-toggle" type="button"
-                                                    id="lblMauSacModalEdit" style="width: 150px;" data-bs-toggle="dropdown"
+                                                    id="lblMauSacModalEdit" style="width: 150px;"
+                                                    data-bs-toggle="dropdown"
                                                     aria-expanded="false">
                                                 Chọn màu sắc
                                             </button>
                                             <ul class="dropdown-menu" id="cboMauSacModalEdit"
                                                 aria-labelledby="dropdownMenuButton2">
                                             </ul>
+                                            <p style="color: red;" id="cboMauSacModalEditErr"></p>
                                         </div>
                                         <div class="icon-container">
-                                            <i class=" bi bi-folder-plus col-3" style="font-size: 25px"></i>
+                                            <i class=" bi bi-folder-plus col-3" data-bs-toggle="modal"
+                                               data-bs-target="#ModalHotAddMS" style="font-size: 25px"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -665,9 +753,11 @@
                                             <ul class="dropdown-menu" id="cboKichThuocModalEdit"
                                                 aria-labelledby="dropdownMenuButton3">
                                             </ul>
+                                            <p style="color: red;" id="cboKichThuocModalEditErr"></p>
                                         </div>
                                         <div class="icon-container">
-                                            <i class=" bi bi-folder-plus col-3" style="font-size: 25px"></i>
+                                            <i class=" bi bi-folder-plus col-3" data-bs-toggle="modal"
+                                               data-bs-target="#ModalHotAddKT" style="font-size: 25px"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -683,9 +773,11 @@
                                             <ul class="dropdown-menu" id="cboChatLieuModalEdit"
                                                 aria-labelledby="dropdownMenuButton4">
                                             </ul>
+                                            <p style="color: red;" id="cboChatLieuModalEditErr"></p>
                                         </div>
                                         <div class="icon-container">
-                                            <i class=" bi bi-folder-plus col-3" style="font-size: 25px"></i>
+                                            <i class=" bi bi-folder-plus col-3" data-bs-toggle="modal"
+                                               data-bs-target="#ModalHotAddCL" style="font-size: 25px"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -693,16 +785,19 @@
                                     <div class="d-flex">
                                         <div class="dropdown">
                                             <button class="btn btn-outline-secondary dropdown-toggle" type="button"
-                                                    id="lblKieuTayModalEdit" style="width: 150px;" data-bs-toggle="dropdown"
+                                                    id="lblKieuTayModalEdit" style="width: 150px;"
+                                                    data-bs-toggle="dropdown"
                                                     aria-expanded="false">
                                                 Chọn kiểu tay
                                             </button>
                                             <ul class="dropdown-menu" id="cboKieuTayModalEdit"
                                                 aria-labelledby="dropdownMenuButton5">
                                             </ul>
+                                            <p style="color: red;" id="cboKieuTayModalEditErr"></p>
                                         </div>
                                         <div class="icon-container">
-                                            <i class=" bi bi-folder-plus col-3" style="font-size: 25px"></i>
+                                            <i class=" bi bi-folder-plus col-3" data-bs-toggle="modal"
+                                               data-bs-target="#ModalHotAddKTA" style="font-size: 25px"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -735,23 +830,142 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col col-md-3">
-                                    <button type="button" class="btn btn-secondary">Chọn hình ảnh</button>
+                                <div class="col col-md-3 hover-effect click-effect image-container">
+                                    <img width="200" height="200"
+                                         src="/image-icon/pendingIMG.png"
+                                         alt="" class="fit-img" id="hinhAnh1DisplayModalEdit">
+                                    <p class="text-center">Hình ảnh 1</p>
+                                    <input type="file" name="hinhAnh1File" id="fileHinhAnh1ModalEdit" class="file-input-overlay"/>
+                                </div>
+                                <div class="col col-md-3 hover-effect click-effect image-container">
+                                    <img width="200" height="200"
+                                         src="/image-icon/pendingIMG.png"
+                                         alt="" class="fit-img" id="hinhAnh2DisplayModalEdit">
+                                    <p class="text-center">Hình ảnh 2</p>
+                                    <input type="file" name="hinhAnh2File" id="fileHinhAnh2ModalEdit" class="file-input-overlay"/>
+                                </div>
+                                <div class="col col-md-3 hover-effect click-effect image-container">
+                                    <img width="200" height="200"
+                                         src="/image-icon/pendingIMG.png"
+                                         alt="" class="fit-img" id="hinhAnh3DisplayModalEdit">
+                                    <p class="text-center">Hình ảnh 3</p>
+                                    <input type="file" name="hinhAnh3File" id="fileHinhAnh3ModalEdit" class="file-input-overlay"/>
                                 </div>
                             </div>
                             <div class="form-check form-switch">
                                 <input class="form-check-input" type="checkbox" role="switch" id="trangThaiModalEdit"
                                        checked>
-                                <label class="form-check-label" for="trangThaiLabelModalEdit" id="trangThaiLabelModalEdit">Trạng
+                                <label class="form-check-label" for="trangThaiLabelModalEdit"
+                                       id="trangThaiLabelModalEdit">Trạng
                                     thái</label>
                             </div>
-                            <button id="saveEditBtn" type="submit" class="btn btn-primary">Lưu</button>
+                            <button id="saveEditBtn" class="btn btn-primary">Lưu</button>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <%--End modal --%>
+
+        <!-- ModalHotAddMS -->
+        <div class="modal fade" id="modalHotAddMS" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+             data-bs-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="row">
+                            <h5 class="modal-title" id="exampleModalLabel1">Thêm nhanh màu săc</h5>
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3 mt-3">
+                            <label for="tenModalHotAddMS" class="form-label">Tên màu sắc:</label>
+                            <input type="text" class="form-control" id="tenModalHotAddMS">
+                        </div>
+                        <div class="text-center">
+                            <button class="btn btn-primary" id="btnModalHotAddMS">Lưu</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <%--        end modal hot add ms--%>
+
+        <!-- ModalHotAddKT -->
+        <div class="modal fade" id="modalHotAddKT" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+             data-bs-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="row">
+                            <h5 class="modal-title" id="exampleModalLabel2">Thêm nhanh kích thước</h5>
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3 mt-3">
+                            <label for="tenModalHotAddKT" class="form-label">Tên kích thước:</label>
+                            <input type="text" class="form-control" id="tenModalHotAddKT">
+                        </div>
+                        <div class="text-center">
+                            <button class="btn btn-primary" id="btnModalHotAddKT">Lưu</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <%--        end modal hot add cl--%>
+        <!-- ModalHotAddCL -->
+        <div class="modal fade" id="modalHotAddCL" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+             data-bs-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="row">
+                            <h5 class="modal-title">Thêm nhanh chất liệu</h5>
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3 mt-3">
+                            <label for="tenModalHotAddCL" class="form-label">Tên chất liệu:</label>
+                            <input type="text" class="form-control" id="tenModalHotAddCL">
+                        </div>
+                        <div class="text-center">
+                            <button class="btn btn-primary" id="btnModalHotAddCL">Lưu</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <%--        end modal hot add cl--%>
+        <!-- ModalHotAddKTA -->
+        <div class="modal fade" id="modalHotAddKTA" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+             data-bs-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="row">
+                            <h5 class="modal-title">Thêm nhanh kiểu tay</h5>
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3 mt-3">
+                            <label for="tenModalHotAddKTA" class="form-label">Tên kiểu tay:</label>
+                            <input type="text" class="form-control" id="tenModalHotAddKTA">
+                        </div>
+                        <div class="text-center">
+                            <button class="btn btn-primary" id="btnModalHotAddKTA">Lưu</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <%--        end modal hot add kta--%>
+
         <!-- Footer -->
         <footer class="sticky-footer bg-white">
             <div class="container my-auto">
@@ -840,7 +1054,7 @@
     let giaNhapModalAdd = document.getElementById("giaNhapModalAdd");
     let giaBanModalAdd = document.getElementById("giaBanModalAdd");
     let ghiChuModalAdd = document.getElementById("moTaModalAdd");
-    let trangThaiModalAddRaw  = document.getElementById("trangThaiModalAdd");
+    let trangThaiModalAddRaw = document.getElementById("trangThaiModalAdd");
     const trangThaiLabelModalAdd = document.getElementById("trangThaiLabelModalAdd");
 
     const lblMauSacModalAdd = document.getElementById("lblMauSacModalAdd");
@@ -848,8 +1062,102 @@
     const lblChatLieuModalAdd = document.getElementById("lblChatLieuModalAdd");
     const lblKieuTayModalAdd = document.getElementById("lblKieuTayModalAdd");
 
-</script>
+    const tenModalHotAddMS = document.getElementById("tenModalHotAddMS");
+    const tenModalHotAddKT = document.getElementById("tenModalHotAddKT");
+    const tenModalHotAddCL = document.getElementById("tenModalHotAddCL");
+    const tenModalHotAddKTA = document.getElementById("tenModalHotAddKTA");
+    const btnAddMS = document.getElementById("btnModalHotAddMS");
+    const btnAddKT = document.getElementById("btnModalHotAddKT");
+    const btnAddCL = document.getElementById("btnModalHotAddCL");
+    const btnAddKTA = document.getElementById("btnModalHotAddKTA");
 
+    const fileHinhAnh1ModalAdd = document.getElementById('fileHinhAnh1ModalAdd');
+    const fileHinhAnh2ModalAdd = document.getElementById('fileHinhAnh2ModalAdd');
+    const fileHinhAnh3ModalAdd = document.getElementById('fileHinhAnh3ModalAdd');
+
+    const fileHinhAnh1ModalEdit = document.getElementById('fileHinhAnh1ModalEdit');
+    const fileHinhAnh2ModalEdit = document.getElementById('fileHinhAnh2ModalEdit');
+    const fileHinhAnh3ModalEdit = document.getElementById('fileHinhAnh3ModalEdit');
+    let fileHinhAnh1ModalEditObject = null;
+
+    const hinhAnh1DisplayModalAdd = document.getElementById('hinhAnh1DisplayModalAdd');
+    const hinhAnh2DisplayModalAdd = document.getElementById('hinhAnh2DisplayModalAdd');
+    const hinhAnh3DisplayModalAdd = document.getElementById('hinhAnh3DisplayModalAdd');
+
+    const hinhAnh1DisplayModalEdit = document.getElementById('hinhAnh1DisplayModalEdit');
+    const hinhAnh2DisplayModalEdit = document.getElementById('hinhAnh2DisplayModalEdit');
+    const hinhAnh3DisplayModalEdit = document.getElementById('hinhAnh3DisplayModalEdit');
+</script>
+<script>
+    // filefunc
+    fileHinhAnh1ModalAdd.addEventListener('change', function (e) {
+        const files = e.target.files;
+        console.log("test change data: ", files);
+        if (files.length > 0) {
+            const file = files[0];
+            console.log("File selected: ", file);
+            console.log("file cmp: ", fileHinhAnh1ModalAdd.files[0]);
+            const imgURL = URL.createObjectURL(fileHinhAnh1ModalAdd.files[0]);
+            hinhAnh1DisplayModalAdd.src = imgURL;
+        }
+    });
+    fileHinhAnh2ModalAdd.addEventListener('change', function (e) {
+        const files = e.target.files;
+        console.log("test change data: ", files);
+        if (files.length > 0) {
+            const file = files[0];
+            console.log("File selected: ", file);
+            console.log("file cmp: ", fileHinhAnh2ModalAdd.files[0]);
+            const imgURL = URL.createObjectURL(fileHinhAnh2ModalAdd.files[0]);
+            hinhAnh2DisplayModalAdd.src = imgURL;
+        }
+    });
+    fileHinhAnh3ModalAdd.addEventListener('change', function (e) {
+        const files = e.target.files;
+        console.log("test change data: ", files);
+        if (files.length > 0) {
+            const file = files[0];
+            console.log("File selected: ", file);
+            console.log("file cmp: ", fileHinhAnh3ModalAdd.files[0]);
+            const imgURL = URL.createObjectURL(fileHinhAnh3ModalAdd.files[0]);
+            hinhAnh3DisplayModalAdd.src = imgURL;
+        }
+    });
+    fileHinhAnh1ModalEdit.addEventListener('change', function (e) {
+        const files = e.target.files;
+        console.log("test change data: ", files);
+        if (files.length > 0) {
+            const file = files[0];
+            console.log("File selected: ", file);
+            console.log("file cmp: ", fileHinhAnh1ModalEdit.files[0]);
+            fileHinhAnh1ModalEditObject = fileHinhAnh1ModalEdit.files[0];
+            const imgURL = URL.createObjectURL(fileHinhAnh1ModalEdit.files[0]);
+            hinhAnh1DisplayModalEdit.src = imgURL;
+        }
+    });
+    fileHinhAnh2ModalEdit.addEventListener('change', function (e) {
+        const files = e.target.files;
+        console.log("test change data: ", files);
+        if (files.length > 0) {
+            const file = files[0];
+            console.log("File selected: ", file);
+            console.log("file cmp: ", fileHinhAnh2ModalEdit.files[0]);
+            const imgURL = URL.createObjectURL(fileHinhAnh2ModalEdit.files[0]);
+            hinhAnh2DisplayModalEdit.src = imgURL;
+        }
+    });
+    fileHinhAnh3ModalEdit.addEventListener('change', function (e) {
+        const files = e.target.files;
+        console.log("test change data: ", files);
+        if (files.length > 0) {
+            const file = files[0];
+            console.log("File selected: ", file);
+            console.log("file cmp: ", fileHinhAnh3ModalEdit.files[0]);
+            const imgURL = URL.createObjectURL(fileHinhAnh3ModalEdit.files[0]);
+            hinhAnh3DisplayModalEdit.src = imgURL;
+        }
+    });
+</script>
 <script>
     // change sttlbl add
     function updateLabeladd() {
@@ -859,8 +1167,10 @@
             trangThaiLabelModalAdd.textContent = "Dừng hoạt động";
         }
     }
+
     trangThaiModalAddRaw.addEventListener("change", updateLabeladd);
     updateLabeladd();
+
     // change sttlbl edit
     function updateLabeledit() {
         if (trangThaiModalEditRaw.checked) {
@@ -869,9 +1179,11 @@
             trangThaiLabelModalEdit.textContent = "Dừng hoạt động";
         }
     }
+
     trangThaiModalEditRaw.addEventListener("change", updateLabeledit);
     // end change sttlbl edit
     updateLabeledit();
+
     function setMauSac(msString) {
         const ms = JSON.parse(msString.replace(/&quot;/g, '"'));
         idMauSac = ms.id;
@@ -895,6 +1207,7 @@
         console.log('Selected chat lieu ID:', idChatLieu);
         // You can add more logic here to handle the selected value
     }
+
     function setKieuTay(ktString) {
         const kt = JSON.parse(ktString.replace(/&quot;/g, '"'));
         idKieuTay = kt.id;
@@ -999,8 +1312,8 @@
         }).then(response => response.json())
             .then(resp => {
                 let htmlSearch = '';
-                let htmlCboModalEdit='';
-                let htmCboModalAdd='';
+                let htmlCboModalEdit = '';
+                let htmCboModalAdd = '';
                 resp.map((ms, i) => {
                     const msString = JSON.stringify(ms).replace(/"/g, '&quot;');
                     htmlSearch += '<li><a class="dropdown-item"  onclick="setMauSac(\'' + msString + '\')">' + ms.ten + '</a></li>';
@@ -1023,8 +1336,8 @@
         }).then(response => response.json())
             .then(resp => {
                 let htmlSearch = '';
-                let htmlCboModalEdit='';
-                let htmlCboModalAdd='';
+                let htmlCboModalEdit = '';
+                let htmlCboModalAdd = '';
                 resp.map((kt, i) => {
                     const ktString = JSON.stringify(kt).replace(/"/g, '&quot;');
                     htmlSearch += '<li><a class="dropdown-item" onclick="setKichThuoc(\'' + ktString + '\')">' + kt.ten + '</a></li>';
@@ -1047,8 +1360,8 @@
         }).then(response => response.json())
             .then(resp => {
                 let htmlSearch = '';
-                let htmlCboModalEdit='';
-                let htmlCboModalAdd='';
+                let htmlCboModalEdit = '';
+                let htmlCboModalAdd = '';
                 resp.map((cl, i) => {
                     const clString = JSON.stringify(cl).replace(/"/g, '&quot;');
                     htmlSearch += '<li><a class="dropdown-item" onclick="setChatLieu(\'' + clString + '\')">' + cl.ten + '</a></li>';
@@ -1071,8 +1384,8 @@
         }).then(response => response.json())
             .then(resp => {
                 let htmlSearch = '';
-                let htmlCboModalEdit='';
-                let htmlCboModalAdd='';
+                let htmlCboModalEdit = '';
+                let htmlCboModalAdd = '';
                 resp.map((kt, i) => {
                     const kieuTayString = JSON.stringify(kt).replace(/"/g, '&quot;');
                     htmlSearch += '<li><a class="dropdown-item"  onclick="setKieuTay(\'' + kieuTayString + '\')">' + kt.ten + '</a></li>';
@@ -1103,6 +1416,7 @@
                     const chatLieu = spct.idChatLieu.ten || 'N/A';
                     const kieuTay = spct.idKieuTay.ten || 'N/A';
                     const soLuong = spct.soLuong || 'N/A';
+                    const giaBan = spct.giaBan || 'N/A';
                     html += '<tr>' +
                         '<td>' + (i + 1) + '</td>' +
                         '<td>' + mauSac + '</td>' +
@@ -1110,6 +1424,7 @@
                         '<td>' + chatLieu + '</td>' +
                         '<td>' + kieuTay + '</td>' +
                         '<td>' + soLuong + '</td>' +
+                        '<td>' + giaBan + '</td>' +
                         '<td>' + trangThai + '</td>' +
                         '<td>' +
                         '<div class="d-inline">' +
@@ -1129,7 +1444,7 @@
         console.log('data chat lieu ID:', idChatLieu);
         console.log('data kieu tay ID:', idKieuTay);
         console.log('data sp local ID:', idSPCTLocal);
-        fetch("/chi-tiet-sp/search"+ "?idSanPham=" + pathVariable + "&idMauSac=" + idMauSac + "&idKichThuoc=" + idKichThuoc + "&idChatLieu=" + idChatLieu + "&idKieuTay=" + idKieuTay, {
+        fetch("/chi-tiet-sp/search" + "?idSanPham=" + pathVariable + "&idMauSac=" + idMauSac + "&idKichThuoc=" + idKichThuoc + "&idChatLieu=" + idChatLieu + "&idKieuTay=" + idKieuTay, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -1255,12 +1570,12 @@
                 lblMauSacModalEdit.textContent = resp.idMauSac.ten;
                 lblKichThuocModalEdit.textContent = resp.idKichThuoc.ten;
                 lblChatLieuModalEdit.textContent = resp.idChatLieu.ten;
-                lblKieuTayModalEdit.textContent  = resp.idKieuTay.ten;
+                lblKieuTayModalEdit.textContent = resp.idKieuTay.ten;
                 idMauSacModalEdit = resp.idMauSac.id;
                 idKichThuocModalEdit = resp.idKichThuoc.id;
                 idChatLieuModalEdit = resp.idChatLieu.id;
                 idKieuTayModalEdit = resp.idKieuTay.id;
-                ghiChuModalEdit.value  = resp.moTa;
+                ghiChuModalEdit.value = resp.moTa;
                 soLuongModalEdit.value = resp.soLuong;
                 giaNhapModalEdit.value = resp.giaNhap;
                 giaBanModalEdit.value = resp.giaBan;
@@ -1271,6 +1586,21 @@
                     trangThaiModalEditRaw.checked = false;
                     trangThaiLabelModalEdit.textContent = "Dừng hoạt động";
                 }
+            });
+        console.log("spct id: ", spctid);
+        fetch("/hinh-anh/detail-byidspct/" + spctid, {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        }).then(response => response.json())
+            .then(resp => {
+                console.log("hinhanh1 : ",resp.hinhAnh1);
+                console.log("hinhanh2 : ",resp.hinhAnh2);
+                console.log("hinhanh3 : ",resp.hinhAnh3);
+                hinhAnh1DisplayModalEdit.src= resp.hinhAnh1?"/image/"+resp.hinhAnh1:"/image-icon/pendingIMG.png";
+                hinhAnh2DisplayModalEdit.src= resp.hinhAnh2?"/image/"+resp.hinhAnh2:"/image-icon/pendingIMG.png";
+                hinhAnh3DisplayModalEdit.src= resp.hinhAnh3?"/image/"+resp.hinhAnh3:"/image-icon/pendingIMG.png";
             });
     });
     $(document).on('click', "button[id^='detailSPBtn_']", e => {
@@ -1300,67 +1630,16 @@
         //         });
         //     });
     });
-    const addBtn = document.querySelectorAll('#addBtn');
+    const addBtn = document.querySelectorAll('#btnAdd');
     const editSPCTBtn = document.querySelectorAll('#editSPCTBtn');
     const saveEditBtn = document.querySelectorAll('#saveEditBtn');
     const saveAddBtn = document.querySelectorAll('#saveAddBtn');
     addBtn.forEach(button => {
         button.addEventListener('click', function (e) {
             e.preventDefault();
-            console.log("test check btn");
-            var idHD = document.getElementsByName("idHD")[0].value;
-            var idKH = document.getElementsByName("idKH")[0].value;
-            var idKhuyenMai = document.getElementsByName("idKhuyenMai")[0].value;
-            var tongTien = document.getElementsByName("tongTien")[0].value;
-            var thongBao = document.getElementById("errTraLai");
-            var moneyGiven = parseInt(document.getElementById("tienKhachDua").value);
-            var thongBao = document.getElementById("errTraLai");
-            console.log("====================== id hd:", idHD);
-            console.log("====================== id kh:", idKH);
-            console.log("====================== id khuyen mai:", idKhuyenMai);
-            console.log("====================== tong tien:", tongTien);
-            console.log("====================== money given:", moneyGiven);
-            if (tongTien <= moneyGiven && !isNaN(tongTien)) {
-                Swal.fire({
-                    title: 'Xác nhận?',
-                    text: "Dữ liệu sẽ được lưu lại!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Ok!',
-                    cancelButtonText: 'Hủy'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        const data = {
-                            idHD: idHD,
-                            idKhuyenMai: idKhuyenMai,
-                            idKH: idKH,
-                            tongTien: tongTien
-                        };
-                        fetch(`/san-pham/save/`, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify(data)
-                        }).then(() => {
-                            Swal.fire(
-                                'Đã thanh toán!',
-                                'Dữ liệu đã được ghi nhận.',
-                                'success'
-                            ).then(() => {
-                                window.location.href = '/ban-hang-tai-quay';
-                            });
-                            button.closest('tr').remove();
-                        });
-                        button.closest('tr').remove();
-                        thongBao.textContent = "";
-                    }
-                });
-            } else {
-                thongBao.textContent = "Số tiền khách đưa phải lớn hơn hoặc bằng tổng tiền.";
-            }
+            hinhAnh1DisplayModalAdd.src= "/image-icon/pendingIMG.png";
+            hinhAnh2DisplayModalAdd.src= "/image-icon/pendingIMG.png";
+            hinhAnh3DisplayModalAdd.src= "/image-icon/pendingIMG.png";
         });
     });
 
@@ -1376,19 +1655,14 @@
         button.addEventListener('click', function (e) {
             e.preventDefault();
             console.log("test check btn");
+            console.log("id spct local: ", idSPCTLocal);
             let trangThaiModalAdd = 0;
-            if (trangThaiModalAddRaw == true) {
+            if (trangThaiModalAddRaw.checked == true) {
                 trangThaiModalAdd = 1;
             } else {
                 trangThaiModalAdd = 0;
             }
-            if (trangThaiModalAddRaw == true) {
-                trangThaiModalAdd = 1;
-            } else {
-                trangThaiModalAdd = 0;
-            }
-
-            if (validateModalAdd()) {
+            if (validateModalAdd() == 7) {
                 Swal.fire({
                     title: 'Xác nhận?',
                     text: "Dữ liệu sẽ được lưu lại!",
@@ -1401,61 +1675,279 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         const data = {
-                            ten: tenSP,
-                            trangThai: trangThai,
-                            hinhAnh: getFileName(hinhAnh)
+                            idSp: pathVariable,
+                            idMauSac: idMauSacModalAdd,
+                            idKichThuoc: idKichThuocModalAdd,
+                            idChatLieu: idChatLieuModalAdd,
+                            idKieuTay: idKieuTayModalAdd,
+                            moTa: ghiChuModalAdd ? ghiChuModalAdd.value : null,
+                            soLuong: soLuongModalAdd.value,
+                            giaNhap: giaNhapModalAdd.value,
+                            giaBan: giaBanModalAdd.value,
+                            trangThai: trangThaiModalAdd
                         };
-                        var formData = new FormData($('#uploadFormAdd')[0]); // Use FormData to get all form data
-                        // Handle file upload via AJAX
-                        $.ajax({
-                            url: '/upload',
-                            type: 'POST',
-                            data: formData,
-                            processData: false,
-                            contentType: false,
-                            success: function (response) {
-                                console.log("save image success ");
-                            },
-                            error: function (xhr, status, error) {
-                                console.log("save image =error");
-                            }
-                        });
-                        fetch(`/san-pham/save`, {
+
+                        console.log("data json: ", data);
+                        var formData = new FormData($('#uploadFormEdit')[0]); // Use FormData to get all form data
+                        fetch(`/chi-tiet-sp/save`, {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'
                             },
                             body: JSON.stringify(data)
-                        }).then(() => {
+                        }).then(response=>response.json()).then(resp => {
+                            console.log("test resp: "+resp);
+                            const dataHinhAnh={
+                                idSPCT:resp.id,
+                                hinhAnh1 :!(fileHinhAnh1ModalAdd.value=="")?getFileName(fileHinhAnh1ModalAdd.value):"pendingIMG.png",
+                                hinhAnh2 :!(fileHinhAnh2ModalAdd.value=="")?getFileName(fileHinhAnh2ModalAdd.value):"pendingIMG.png",
+                                hinhAnh3 :!(fileHinhAnh3ModalAdd.value=="")?getFileName(fileHinhAnh3ModalAdd.value):"pendingIMG.png",
+                                trangThai: "1"
+                            }
+                            fetch(`/hinh-anh/save`, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify(dataHinhAnh)
+                            }).then(() => {
+                                Swal.fire(
+                                    'Đã thanh toán!',
+                                    'Dữ liệu đã được ghi nhận.',
+                                    'success'
+                                ).then(() => {
+                                });
+                            });
                             Swal.fire(
                                 'Đã thanh toán!',
                                 'Dữ liệu đã được ghi nhận.',
                                 'success'
                             ).then(() => {
-                                fetch("/san-pham/count", {
-                                    headers: {
-                                        'Accept': 'application/json',
-                                        'Content-Type': 'application/json'
-                                    }
-                                }).then(response => response.json())
-                                    .then(resp => {
-                                        loadDSSPCT(Math.ceil(resp / 20));
-                                        currentPage = Math.ceil(resp / 20);
-                                        loadTotalPagination(currentPage);
-                                    }).catch(error => {
-                                    console.error('Error fetching pagination data:', error);
-                                    // Handle fetch error
-                                });
+                                loadDSSPCT(currentPage);
                             });
-                            button.closest('tr').remove();
                         });
-                        button.closest('tr').remove();
+                        var formData = new FormData($('#uploadFormAdd')[0]);
+                        $.ajax({
+                            url: '/uploads',
+                            type: 'POST',
+                            data: formData,
+                            processData: false,
+                            contentType: false,
+                            success: function(response) {
+                                console.log("save image success ");
+                            },
+                            error: function(xhr, status, error) {
+                                console.log("save image =error");
+                            }
+                        });
                     }
                 });
             } else {
 
             }
         });
+    });
+
+    btnAddMS.addEventListener('click', function (e) {
+        e.preventDefault();
+        console.log("test check btn");
+        console.log("id spct local: ", idSPCTLocal);
+        let trangThaiModalAdd = 0;
+        // if (trangThaiModalAddRaw.checked == true) {
+        //     trangThaiModalAdd = 1;
+        // } else {
+        //     trangThaiModalAdd = 0;
+        // }
+        console.log("test ms :", tenModalHotAddMS.value);
+        console.log("test validate null: ", validateNull(tenModalHotAddMS.value));
+        if (!validateNull(tenModalHotAddMS.value)) {
+            Swal.fire({
+                title: 'Xác nhận?',
+                text: "Dữ liệu sẽ được lưu lại!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ok!',
+                cancelButtonText: 'Hủy'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const data = {
+                        ten: tenModalHotAddMS.value,
+                        trangThai: "1"
+                    };
+                    console.log("data json: ", data);
+                    fetch(`/mau-sac/save`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    }).then(() => {
+                        Swal.fire(
+                            'Đã thanh toán!',
+                            'Dữ liệu đã được ghi nhận.',
+                            'success'
+                        ).then(() => {
+                            loadCboMauSac();
+                            loadDSSPCT(currentPage);
+                        });
+                    });
+                }
+            });
+        } else {
+
+        }
+    });
+
+    btnAddKT.addEventListener('click', function (e) {
+        e.preventDefault();
+        console.log("test check btn");
+        console.log("id spct local: ", idSPCTLocal);
+        let trangThaiModalAdd = 0;
+        // if (trangThaiModalAddRaw.checked == true) {
+        //     trangThaiModalAdd = 1;
+        // } else {
+        //     trangThaiModalAdd = 0;
+        // }
+        if (!validateNull(tenModalHotAddKT.value)) {
+            Swal.fire({
+                title: 'Xác nhận?',
+                text: "Dữ liệu sẽ được lưu lại!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ok!',
+                cancelButtonText: 'Hủy'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const data = {
+                        ten: tenModalHotAddKT.value,
+                        trangThai: "1"
+                    };
+                    console.log("data json: ", data);
+                    fetch(`/kich-thuoc/save`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    }).then(() => {
+                        Swal.fire(
+                            'Đã thanh toán!',
+                            'Dữ liệu đã được ghi nhận.',
+                            'success'
+                        ).then(() => {
+                            loadCboKichThuoc();
+                            loadDSSPCT(currentPage);
+                        });
+                    });
+                }
+            });
+        } else {
+
+        }
+    });
+
+    btnAddCL.addEventListener('click', function (e) {
+        e.preventDefault();
+        console.log("test check btn");
+        console.log("id spct local: ", idSPCTLocal);
+        let trangThaiModalAdd = 0;
+        // if (trangThaiModalAddRaw.checked == true) {
+        //     trangThaiModalAdd = 1;
+        // } else {
+        //     trangThaiModalAdd = 0;
+        // }
+        if (!validateNull(tenModalHotAddCL.value)) {
+            Swal.fire({
+                title: 'Xác nhận?',
+                text: "Dữ liệu sẽ được lưu lại!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ok!',
+                cancelButtonText: 'Hủy'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const data = {
+                        ten: tenModalHotAddCL.value,
+                        trangThai: "1"
+                    };
+                    console.log("data json: ", data);
+                    fetch(`/chat-lieu/save`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    }).then(() => {
+                        Swal.fire(
+                            'Đã thanh toán!',
+                            'Dữ liệu đã được ghi nhận.',
+                            'success'
+                        ).then(() => {
+                            loadCboChatLieu();
+                            loadDSSPCT(currentPage);
+                        });
+                    });
+                }
+            });
+        } else {
+
+        }
+    });
+
+    btnAddKTA.addEventListener('click', function (e) {
+        e.preventDefault();
+        console.log("test check btn");
+        console.log("id spct local: ", idSPCTLocal);
+        let trangThaiModalAdd = 0;
+        // if (trangThaiModalAddRaw.checked == true) {
+        //     trangThaiModalAdd = 1;
+        // } else {
+        //     trangThaiModalAdd = 0;
+        // }
+        if (!validateNull(tenModalHotAddKTA.value)) {
+            Swal.fire({
+                title: 'Xác nhận?',
+                text: "Dữ liệu sẽ được lưu lại!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ok!',
+                cancelButtonText: 'Hủy'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const data = {
+                        ten: tenModalHotAddKTA.value,
+                        trangThai: "1"
+                    };
+                    console.log("data json: ", data);
+                    fetch(`/kieu-tay/save`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    }).then(() => {
+                        Swal.fire(
+                            'Đã thanh toán!',
+                            'Dữ liệu đã được ghi nhận.',
+                            'success'
+                        ).then(() => {
+                            loadCboKieuTay();
+                            loadDSSPCT(currentPage);
+                        });
+                    });
+                }
+            });
+        } else {
+
+        }
     });
 
     function validateNull(param) {
@@ -1466,139 +1958,174 @@
         }
     }
 
-    function validateModalEdit(){
-        let  led = false;
-        if(idMauSacModalEdit == ""){
-            cboMauSacErr = "Vui lòng chọn màu sắc ";
-            led = false;
+    function validateModalEdit() {
+        let checkCount = 0;
+        var cboMauSacModalEditErr = document.getElementById("cboMauSacModalEditErr");
+        var cboKichThuocModalEditErr = document.getElementById("cboKichThuocModalEditErr");
+        var cboChatLieuModalEditErr = document.getElementById("cboChatLieuModalEditErr");
+        var cboKieuTayModalEditErr = document.getElementById("cboKieuTayModalEditErr");
+        var soLuongModalEditErr = document.getElementById("soLuongModalEditErr");
+        var giaNhapModalEditErr = document.getElementById("giaNhapModalEditErr");
+        var giaBanModalEditErr = document.getElementById("giaBanModalEditErr");
+        console.log("so luong test:", soLuongModalEdit.value);
+        console.log("so luong test:", giaBanModalEdit.value);
+        console.log("so luong test:", giaNhapModalEdit.value);
+
+        if (idMauSacModalEdit == "") {
+            cboMauSacModalEditErr.textContent = "Vui lòng chọn màu sắc ";
+            checkCount = 0;
+        } else {
+            cboMauSacModalEditErr.textContent = "";
+            checkCount++;
         }
-        else{
-            led = true;
+        if (idKichThuocModalEdit == "") {
+            cboKichThuocModalEditErr.textContent = "Vui lòng chọn kích thước";
+            checkCount = 0
+        } else {
+            cboKichThuocModalEditErr.textContent = "";
+            checkCount++;
         }
-        if(idKichThuocModalEdit == ""){
-            cboKichThuocErr = "Vui lòng chọn kích thước";
-            led = false;
+        if (idChatLieuModalEdit == "") {
+            cboChatLieuModalEditErr.textContent = "Vui lòng chọn chất liệu";
+            checkCount = 0;
+        } else {
+            cboChatLieuModalEditErr.textContent = "";
+            checkCount++;
         }
-        else{
-             led = true;
+        if (idKieuTayModalEdit == "") {
+            cboKieuTayModalEditErr.textContent = "Vui lòng chọn kiểu tay";
+            checkCount = 0;
+        } else {
+            cboKieuTayModalEditErr.textContent = "";
+            checkCount++;
         }
-        if(idChatLieuModalEdit == ""){
-            cboChatLieuErr = "Vui lòng chọn chất liệu";
-            led = false;
-        }
-        else{
-            led = true;
-        }
-        if(idKieuTayModalEdit == ""){
-            cboKieuTayErr = "Vui lòng chọn kiểu tay";
-            led = false;
-        }
-        else{
-            led = true;
-        }
-        if(validateNull(soLuongModalEdit)){
-            soLuongErr = "Vui lòng nhập số lượng";
-            if(soLuongModalEdit<0){
-                soLuongErr ="Số lượng phải lơn hơn 0";
-                led = false;
-            }
-            else{
-                led = true;
-            }
-        }
-        if(validateNull(giaNhapModalEdit)){
-            giaNhapErr = "Vui lòng nhập giá nhập";
-            if(giaNhapModalEdit<0){
-                giaNhapErr ="Giá nhập phải lớn hơn 0";
-                led = false
-            }
-            else{
-                led = true;
-            }
-        }
-        if(validateNull(giaBanModalEdit)){
-            giaBanErr = "Vui lòng nhập giá bán";
-            if(giaBanModalEdit<0){
-                giaBanErr = "Giá bán phải lớn hơn 0";
-                led = false ;
-            }
-            else{
-                led = true;
+        if (validateNull(soLuongModalEdit.value)) {
+            soLuongModalEditErr.textContent = "Vui lòng nhập số lượng";
+            checkCount = 0;
+        } else {
+            if (soLuongModalEdit.value <= 0) {
+                soLuongModalEditErr.textContent = "Số lượng phải lơn hơn 0";
+                checkCount = 0
+            } else {
+                soLuongModalEditErr.textContent = "";
+                checkCount++;
             }
         }
-        return led;
+        if (validateNull(giaNhapModalEdit.value)) {
+            giaNhapModalEditErr.textContent = "Vui lòng nhập giá nhập";
+            checkCount = 0;
+        } else {
+            if (giaNhapModalEdit.value <= 0) {
+                giaNhapModalEditErr.textContent = "Giá nhập phải lớn hơn 0";
+                checkCount = 0;
+            } else {
+                giaNhapModalEditErr.textContent = "";
+                checkCount++;
+            }
+        }
+        if (validateNull(giaBanModalEdit.value)) {
+            giaBanModalEditErr.textContent = "Vui lòng nhập giá bán";
+            checkCount = 0;
+        } else {
+            if (giaBanModalEdit.value <= 0) {
+                giaBanModalEditErr.textContent = "Giá bán phải lớn hơn 0";
+                checkCount = 0;
+            } else {
+                giaBanModalEditErr.textContent = "";
+                checkCount++;
+            }
+        }
+        console.log("check count: ", checkCount);
+        return checkCount;
     }
 
-    function validateModalAdd(){
-        let  led = false;
-        var cboMauSacErr = document.getElementById("cboMauSacErr");
-        var cboKichThuocErr = document.getElementById("cboKichThuocErr");
-        var cboChatLieuErr = document.getElementById("cboChatLieuErr");
-        var cboKieuTayErr = document.getElementById("cboKieuTayErr");
-        var soLuongErr = document.getElementById("soLuongErr");
-        var giaNhapErr = document.getElementById("giaNhapErr");
-        var giaBanErr = document.getElementById("giaBanErr");
-        if(idMauSacModalAdd == ""){
-            cboMauSacErr = "Vui lòng chọn màu sắc ";
-            led = false;
-        }
-        else{
-            led = true;
-        }
-        if(idKichThuocModalAdd == ""){
-            cboKichThuocErr = "Vui lòng chọn kích thước";
-            led = false;
-        }
-        else{
-            led = true;
-        }
-        if(idChatLieuModalAdd == ""){
-            cboChatLieuErr = "Vui lòng chọn chất liệu";
-            led = false;
-        }
-        else{
-            led = true;
-        }
-        if(idKieuTayModalAdd == ""){
-            cboKieuTayErr = "Vui lòng chọn kiểu tay";
-            led = false;
-        }
-        else{
-            led = true;
-        }
-        if(validateNull(soLuongModalAdd)){
-            soLuongErr = "Vui lòng nhập số lượng";
-            if(soLuongModalAdd<0){
-                soLuongErr ="Số lượng phải lơn hơn 0";
-                led = false;
-            }
-            else{
-                led = true;
-            }
-        }
-        if(validateNull(giaNhapModalAdd)){
-            giaNhapErr = "Vui lòng nhập giá nhập";
-            if(giaNhapModalAdd<0){
-                giaNhapErr ="Giá nhập phải lớn hơn 0";
-                led = false
-            }
-            else{
-                led = true;
-            }
-        }
-        if(validateNull(giaBanModalAdd)){
-            giaBanErr = "Vui lòng nhập giá bán";
-            if(giaBanModalAdd<0){
-                giaBanErr = "Giá bán phải lớn hơn 0";
-                led = false ;
-            }
-            else{
-                led = true;
-            }
-        }
-        return led;
-    }
+    function validateModalAdd() {
+        let checkCount = 0;
+        var cboMauSacModalAddErr = document.getElementById("cboMauSacModalAddErr");
+        var cboKichThuocModalAddErr = document.getElementById("cboKichThuocModalAddErr");
+        var cboChatLieuModalAddErr = document.getElementById("cboChatLieuModalAddErr");
+        var cboKieuTayModalAddErr = document.getElementById("cboKieuTayModalAddErr");
+        var soLuongModalAddErr = document.getElementById("soLuongModalAddErr");
+        var giaNhapModalAddErr = document.getElementById("giaNhapModalAddErr");
+        var giaBanModalAddErr = document.getElementById("giaBanModalAddErr");
+        console.log("so luong test:", soLuongModalAdd.value);
+        console.log("so luong test:", giaBanModalAdd.value);
+        console.log("so luong test:", giaNhapModalAdd.value);
 
+        if (idMauSacModalAdd == "") {
+            cboMauSacModalAddErr.textContent = "Vui lòng chọn màu sắc ";
+            checkCount = 0;
+        } else {
+            cboMauSacModalAddErr.textContent = "";
+            checkCount++;
+        }
+        if (idKichThuocModalAdd == "") {
+            cboKichThuocModalAddErr.textContent = "Vui lòng chọn kích thước";
+            checkCount = 0
+        } else {
+            cboKichThuocModalAddErr.textContent = "";
+            checkCount++;
+        }
+        if (idChatLieuModalAdd == "") {
+            cboChatLieuModalAddErr.textContent = "Vui lòng chọn chất liệu";
+            checkCount = 0;
+        } else {
+            cboChatLieuModalAddErr.textContent = "";
+            checkCount++;
+        }
+        if (idKieuTayModalAdd == "") {
+            cboKieuTayModalAddErr.textContent = "Vui lòng chọn kiểu tay";
+            checkCount = 0;
+        } else {
+            cboKieuTayModalAddErr.textContent = "";
+            checkCount++;
+        }
+        if (validateNull(soLuongModalAdd.value)) {
+            soLuongModalAddErr.textContent = "Vui lòng nhập số lượng";
+            checkCount = 0;
+        } else {
+            if (soLuongModalAdd.value <= 0) {
+                soLuongModalAddErr.textContent = "Số lượng phải lơn hơn 0";
+                checkCount = 0
+            } else {
+                soLuongModalAddErr.textContent = "";
+                checkCount++;
+            }
+        }
+        if (validateNull(giaNhapModalAdd.value)) {
+            giaNhapModalAddErr.textContent = "Vui lòng nhập giá nhập";
+            checkCount = 0;
+        } else {
+            if (giaNhapModalAdd.value <= 0) {
+                giaNhapModalAddErr.textContent = "Giá nhập phải lớn hơn 0";
+                checkCount = 0;
+            } else {
+                giaNhapModalAddErr.textContent = "";
+                checkCount++;
+            }
+        }
+        if (validateNull(giaBanModalAdd.value)) {
+            giaBanModalAddErr.textContent = "Vui lòng nhập giá bán";
+            checkCount = 0;
+        } else {
+            if (giaBanModalAdd.value <= 0) {
+                giaBanModalAddErr.textContent = "Giá bán phải lớn hơn 0";
+                checkCount = 0;
+            } else {
+                giaBanModalAddErr.textContent = "";
+                checkCount++;
+            }
+        }
+        console.log("check count: ", checkCount);
+        return checkCount;
+    }
+    function getFileName(fullPath) {
+        // Check for the last occurrence of the backslash or forward slash
+        var startIndex = Math.max(fullPath.lastIndexOf('\\'), fullPath.lastIndexOf('/'));
+        // Extract the file name
+        var fileName = fullPath.substring(startIndex + 1);
+        return fileName;
+    }
 
     saveEditBtn.forEach(button => {
         button.addEventListener('click', function (e) {
@@ -1611,7 +2138,7 @@
             } else {
                 trangThaiModalEdit = 0;
             }
-            if (validateModalEdit()) {
+            if (validateModalEdit() == 7) {
                 Swal.fire({
                     title: 'Xác nhận?',
                     text: "Dữ liệu sẽ được lưu lại!",
@@ -1628,28 +2155,21 @@
                             idKichThuoc: idKichThuocModalEdit,
                             idChatLieu: idChatLieuModalEdit,
                             idKieuTay: idKieuTayModalEdit,
-                            moTa: ghiChuModalEdit?ghiChuModalEdit.value:null,
-                            soLuong:  soLuongModalEdit.value,
+                            moTa: ghiChuModalEdit ? ghiChuModalEdit.value : null,
+                            soLuong: soLuongModalEdit.value,
                             giaNhap: giaNhapModalEdit.value,
                             giaBan: giaBanModalEdit.value,
                             trangThai: trangThaiModalEdit
                         };
-                        console.log("data json: ",data);
-                        var formData = new FormData($('#uploadFormEdit')[0]); // Use FormData to get all form data
-                        // Handle file upload via AJAX
-                        // $.ajax({
-                        //     url: '/upload',
-                        //     type: 'POST',
-                        //     data: formData,
-                        //     processData: false,
-                        //     contentType: false,
-                        //     success: function (response) {
-                        //         console.log("save image success ");
-                        //     },
-                        //     error: function (xhr, status, error) {
-                        //         console.log("save image =error");
-                        //     }
-                        // });
+                        const dataHinhAnh={
+                            hinhAnh1: !(fileHinhAnh1ModalEdit.value=="")?getFileName(fileHinhAnh1ModalEdit.value):getFileName(fileHinhAnh1ModalEdit.src),
+                            hinhAnh2 :!(fileHinhAnh2ModalEdit.value=="")?getFileName(fileHinhAnh2ModalEdit.value):getFileName(fileHinhAnh1ModalEdit.src),
+                            hinhAnh3 :!(fileHinhAnh3ModalEdit.value=="")?getFileName(fileHinhAnh3ModalEdit.value):getFileName(fileHinhAnh3ModalEdit.src),
+                            trangThai: "1"
+                        }
+                        console.log("data hinh anh: ", dataHinhAnh);
+                        console.log("data json: ", data);
+                        console.log("data params file: ", formData);
                         fetch(`/chi-tiet-sp/update/` + idSPCTLocal, {
                             method: 'POST',
                             headers: {
@@ -1665,10 +2185,38 @@
                                 loadDSSPCT(currentPage);
                             });
                         });
+                        fetch(`/hinh-anh/update-byidctsp/` + idSPCTLocal, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(dataHinhAnh)
+                        }).then(() => {
+                            Swal.fire(
+                                'Đã thanh toán!',
+                                'Dữ liệu đã được ghi nhận.',
+                                'success'
+                            ).then(() => {
+                            });
+                        });
+                        var formData = new FormData($('#uploadFormEdit')[0]);
+                        $.ajax({
+                            url: '/uploads',
+                            type: 'POST',
+                            data: formData,
+                            processData: false,
+                            contentType: false,
+                            success: function(response) {
+                                console.log("save image success ");
+                            },
+                            error: function(xhr, status, error) {
+                                console.log("save image =error");
+                            }
+                        });
                     }
                 });
             } else {
-                thongBao.textContent = "Số tiền khách đưa phải lớn hơn hoặc bằng tổng tiền.";
+
             }
         });
     });
@@ -1717,4 +2265,5 @@
     });
     </c:if>
 </script>
+
 </html>

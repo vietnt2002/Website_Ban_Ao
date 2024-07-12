@@ -64,6 +64,9 @@
 //    @Autowired
 //    Validator validator;
 //
+//    @Autowired
+//    LichSuHoaDonRepository _lichSuHoaDonRepo;
+//
 //    private List<KhuyenMai> listKhuyenMai;
 //    private List<HoaDon> listHoaDon;
 //    private List<ChiTietHoaDon> listHDCT;
@@ -128,6 +131,8 @@
 ////            }
 ////        }
 ////    }
+//
+//
 //
 //    @GetMapping("dang-xuat")
 //    public String dangXuat(){
@@ -255,6 +260,8 @@
 //        hoaDon.setMa(ma);
 //        hoaDon.setTrangThai(0);
 //        hoaDon.setLoaiHoaDon(0);
+//
+//
 //        try {
 //            //gửi dữ liệu success từ Controller sang View(file.jsp)
 //            this.hoaDonRepository.save(hoaDon);
@@ -263,13 +270,25 @@
 //            redirectAttributes.addFlashAttribute("error", "Đã xảy ra lỗi khi tạo hóa đơn.");
 //        }
 //        hoaDonRepository.save(hoaDon);
+//        createLichSuHoaDon(hoaDon,nv.get(),"Chưa thanh toán");
 //        return "redirect:/ban-hang-tai-quay";
+//    }
+//
+//    // Hàm thêm đối tượng lịch sử hóa đơn
+//    public void createLichSuHoaDon(HoaDon hoaDon, NhanVien nhanVien,String ghiChu) {
+//        LichSuHoaDon lichSuHoaDon = new LichSuHoaDon();
+//        lichSuHoaDon.setIdHoaDon(hoaDon);
+//        lichSuHoaDon.setIdNhanVien(nhanVien);
+//        lichSuHoaDon.setNgayTao(LocalDateTime.now());
+//        lichSuHoaDon.setNgayCapNhat(LocalDateTime.now());
+//        lichSuHoaDon.setTrangThai(hoaDon.getTrangThai());
+//        lichSuHoaDon.setGhiChu(ghiChu);
+//        _lichSuHoaDonRepo.save(lichSuHoaDon);
 //    }
 //
 //    //  Delete hóa đơn
 //    @GetMapping("delete-hoa-don/{idHoaDon}")
 //    public String deleteHoaDon(@PathVariable String idHoaDon){
-//
 //        for (HoaDon hoaDon: listHoaDon){
 //            if (hoaDon.getId().equals(idHoaDon)){
 //                hoaDonRepository.delete(hoaDon);
@@ -466,6 +485,7 @@
 //        newHoaDon.setTongTien(tongTien);
 //        newHoaDon.setLoaiHoaDon(0);
 //        newHoaDon.setTrangThai(6);
+//        createLichSuHoaDon(newHoaDon,newHoaDon.getIdNhanVien(),"Đã hoàn thành");
 //        hoaDonRepository.save(newHoaDon);
 //        return "redirect:/ban-hang-tai-quay";
 //    }
@@ -523,17 +543,34 @@
 //            @PathVariable("idSanPham") String idSanPham,
 //            @RequestParam("page") Optional<Integer> pageParam
 //    ){
-//        listHoaDon = hoaDonRepository.selectTop5();
-//        Pageable pageable = PageRequest.of(pageParam.orElse(0), 10);
-//        Page<ChiTietSanPham> listCTSP = sanPhamChiTietRepository.locCTSPByIdSanPham(idSanPham,SPCTRepository.ACTIVE, pageable);
-//        model.addAttribute("listCTSP", listCTSP);
-//        model.addAttribute("listSanPham",sanPhamRepo.findAll());
-//        model.addAttribute("listMauSac",mauSacRepository.findAll());
-//        model.addAttribute("listKichThuoc",kichThuocRepo.findAll());
-//        model.addAttribute("listChatLieu",chatLieuRepo.findAll());
-//        model.addAttribute("listKieuTay",kieuTayRepo.findAll());
-//        model.addAttribute("listHoaDon",  listHoaDon);
-//        return "/view/BanHangTaiQuay/banHangTaiQuay.jsp";
+//        if (idHoaDon.equals("")){
+//            listHoaDon = hoaDonRepository.selectTop5();
+//            Pageable pageable = PageRequest.of(pageParam.orElse(0), 10);
+//            Page<ChiTietSanPham> listCTSP = sanPhamChiTietRepository.locCTSPByIdSanPham(idSanPham,SPCTRepository.ACTIVE, pageable);
+//            model.addAttribute("listCTSP", listCTSP);
+//            model.addAttribute("listSanPham",sanPhamRepo.findAll());
+//            model.addAttribute("listMauSac",mauSacRepository.findAll());
+//            model.addAttribute("listKichThuoc",kichThuocRepo.findAll());
+//            model.addAttribute("listChatLieu",chatLieuRepo.findAll());
+//            model.addAttribute("listKieuTay",kieuTayRepo.findAll());
+//            model.addAttribute("listHoaDon",  listHoaDon);
+//        }else {
+//            Optional<HoaDon> hoaDon = hoaDonRepository.findById(idHoaDon);
+//            model.addAttribute("hoaDon",hoaDon.get());
+//
+//            listHoaDon = hoaDonRepository.selectTop5();
+//            Pageable pageable = PageRequest.of(pageParam.orElse(0), 10);
+//            Page<ChiTietSanPham> listCTSP = sanPhamChiTietRepository.locCTSPByIdSanPham(idSanPham,SPCTRepository.ACTIVE, pageable);
+//            model.addAttribute("listCTSP", listCTSP);
+//            model.addAttribute("listSanPham",sanPhamRepo.findAll());
+//            model.addAttribute("listMauSac",mauSacRepository.findAll());
+//            model.addAttribute("listKichThuoc",kichThuocRepo.findAll());
+//            model.addAttribute("listChatLieu",chatLieuRepo.findAll());
+//            model.addAttribute("listKieuTay",kieuTayRepo.findAll());
+//            model.addAttribute("listHoaDon",  listHoaDon);
+//        }
+//
+//        return "/view/BanHangTaiQuay/index2.jsp";
 //    }
 //
 //    //Lọc màu sắc
@@ -543,17 +580,34 @@
 //            @PathVariable("idMauSac") String idMauSac,
 //            @RequestParam("page") Optional<Integer> pageParam
 //    ){
-//        listHoaDon = hoaDonRepository.selectTop5();
-//        Pageable pageable = PageRequest.of(pageParam.orElse(0), 10);
-//        Page<ChiTietSanPham> listCTSP = sanPhamChiTietRepository.locCTSPByIdMauSac(idMauSac,SPCTRepository.ACTIVE, pageable);
-//        model.addAttribute("listCTSP", listCTSP);
-//        model.addAttribute("listSanPham",sanPhamRepo.findAll());
-//        model.addAttribute("listMauSac",mauSacRepository.findAll());
-//        model.addAttribute("listKichThuoc",kichThuocRepo.findAll());
-//        model.addAttribute("listChatLieu",chatLieuRepo.findAll());
-//        model.addAttribute("listKieuTay",kieuTayRepo.findAll());
-//        model.addAttribute("listHoaDon",listHoaDon);
-//        return "/view/BanHangTaiQuay/banHangTaiQuay.jsp";
+//        if (idHoaDon.equals("")){
+//            listHoaDon = hoaDonRepository.selectTop5();
+//            Pageable pageable = PageRequest.of(pageParam.orElse(0), 10);
+//            Page<ChiTietSanPham> listCTSP = sanPhamChiTietRepository.locCTSPByIdMauSac(idMauSac,SPCTRepository.ACTIVE, pageable);
+//            model.addAttribute("listCTSP", listCTSP);
+//            model.addAttribute("listSanPham",sanPhamRepo.findAll());
+//            model.addAttribute("listMauSac",mauSacRepository.findAll());
+//            model.addAttribute("listKichThuoc",kichThuocRepo.findAll());
+//            model.addAttribute("listChatLieu",chatLieuRepo.findAll());
+//            model.addAttribute("listKieuTay",kieuTayRepo.findAll());
+//            model.addAttribute("listHoaDon",listHoaDon);
+//        }else {
+//            Optional<HoaDon> hoaDon = hoaDonRepository.findById(idHoaDon);
+//            model.addAttribute("hoaDon",hoaDon.get());
+//
+//            listHoaDon = hoaDonRepository.selectTop5();
+//            Pageable pageable = PageRequest.of(pageParam.orElse(0), 10);
+//            Page<ChiTietSanPham> listCTSP = sanPhamChiTietRepository.locCTSPByIdMauSac(idMauSac,SPCTRepository.ACTIVE, pageable);
+//            model.addAttribute("listCTSP", listCTSP);
+//            model.addAttribute("listSanPham",sanPhamRepo.findAll());
+//            model.addAttribute("listMauSac",mauSacRepository.findAll());
+//            model.addAttribute("listKichThuoc",kichThuocRepo.findAll());
+//            model.addAttribute("listChatLieu",chatLieuRepo.findAll());
+//            model.addAttribute("listKieuTay",kieuTayRepo.findAll());
+//            model.addAttribute("listHoaDon",listHoaDon);
+//        }
+//
+//        return "/view/BanHangTaiQuay/index2.jsp";
 //    }
 //    //Lọc kích thước
 //    @GetMapping("locSPCTByKichThuoc/{idKichThuoc}")
@@ -562,17 +616,34 @@
 //            @PathVariable("idKichThuoc") String idKichThuoc,
 //            @RequestParam("page") Optional<Integer> pageParam
 //    ){
-//        listHoaDon = hoaDonRepository.selectTop5();
-//        Pageable pageable = PageRequest.of(pageParam.orElse(0), 10);
-//        Page<ChiTietSanPham> listCTSP = sanPhamChiTietRepository.locCTSPByIdKichThuoc(idKichThuoc,SPCTRepository.ACTIVE, pageable);
-//        model.addAttribute("listCTSP", listCTSP);
-//        model.addAttribute("listSanPham",sanPhamRepo.findAll());
-//        model.addAttribute("listMauSac",mauSacRepository.findAll());
-//        model.addAttribute("listKichThuoc",kichThuocRepo.findAll());
-//        model.addAttribute("listChatLieu",chatLieuRepo.findAll());
-//        model.addAttribute("listKieuTay",kieuTayRepo.findAll());
-//        model.addAttribute("listHoaDon", listHoaDon);
-//        return "/view/BanHangTaiQuay/banHangTaiQuay.jsp";
+//        if (idHoaDon.equals("")){
+//            listHoaDon = hoaDonRepository.selectTop5();
+//            Pageable pageable = PageRequest.of(pageParam.orElse(0), 10);
+//            Page<ChiTietSanPham> listCTSP = sanPhamChiTietRepository.locCTSPByIdKichThuoc(idKichThuoc,SPCTRepository.ACTIVE, pageable);
+//            model.addAttribute("listCTSP", listCTSP);
+//            model.addAttribute("listSanPham",sanPhamRepo.findAll());
+//            model.addAttribute("listMauSac",mauSacRepository.findAll());
+//            model.addAttribute("listKichThuoc",kichThuocRepo.findAll());
+//            model.addAttribute("listChatLieu",chatLieuRepo.findAll());
+//            model.addAttribute("listKieuTay",kieuTayRepo.findAll());
+//            model.addAttribute("listHoaDon", listHoaDon);
+//        }else {
+//
+//            Optional<HoaDon> hoaDon = hoaDonRepository.findById(idHoaDon);
+//            model.addAttribute("hoaDon",hoaDon.get());
+//
+//            listHoaDon = hoaDonRepository.selectTop5();
+//            Pageable pageable = PageRequest.of(pageParam.orElse(0), 10);
+//            Page<ChiTietSanPham> listCTSP = sanPhamChiTietRepository.locCTSPByIdKichThuoc(idKichThuoc,SPCTRepository.ACTIVE, pageable);
+//            model.addAttribute("listCTSP", listCTSP);
+//            model.addAttribute("listSanPham",sanPhamRepo.findAll());
+//            model.addAttribute("listMauSac",mauSacRepository.findAll());
+//            model.addAttribute("listKichThuoc",kichThuocRepo.findAll());
+//            model.addAttribute("listChatLieu",chatLieuRepo.findAll());
+//            model.addAttribute("listKieuTay",kieuTayRepo.findAll());
+//            model.addAttribute("listHoaDon", listHoaDon);
+//        }
+//        return "/view/BanHangTaiQuay/index2.jsp";
 //    }
 //    //Lọc chất liệu
 //    @GetMapping("locSPCTByChatLieu/{idChatLieu}")
@@ -581,17 +652,35 @@
 //            @PathVariable("idChatLieu") String idChatLieu,
 //            @RequestParam("page") Optional<Integer> pageParam
 //    ){
-//        listHoaDon = hoaDonRepository.selectTop5();
-//        Pageable pageable = PageRequest.of(pageParam.orElse(0), 10);
-//        Page<ChiTietSanPham> listCTSP = sanPhamChiTietRepository.locCTSPByIdChatLieu(idChatLieu,SPCTRepository.ACTIVE, pageable);
-//        model.addAttribute("listCTSP", listCTSP);
-//        model.addAttribute("listSanPham",sanPhamRepo.findAll());
-//        model.addAttribute("listMauSac",mauSacRepository.findAll());
-//        model.addAttribute("listKichThuoc",kichThuocRepo.findAll());
-//        model.addAttribute("listChatLieu",chatLieuRepo.findAll());
-//        model.addAttribute("listKieuTay",kieuTayRepo.findAll());
-//        model.addAttribute("listHoaDon",listHoaDon);
-//        return "/view/BanHangTaiQuay/banHangTaiQuay.jsp";
+//        if (idHoaDon.equals("")){
+//            listHoaDon = hoaDonRepository.selectTop5();
+//            Pageable pageable = PageRequest.of(pageParam.orElse(0), 10);
+//            Page<ChiTietSanPham> listCTSP = sanPhamChiTietRepository.locCTSPByIdChatLieu(idChatLieu,SPCTRepository.ACTIVE, pageable);
+//            model.addAttribute("listCTSP", listCTSP);
+//            model.addAttribute("listSanPham",sanPhamRepo.findAll());
+//            model.addAttribute("listMauSac",mauSacRepository.findAll());
+//            model.addAttribute("listKichThuoc",kichThuocRepo.findAll());
+//            model.addAttribute("listChatLieu",chatLieuRepo.findAll());
+//            model.addAttribute("listKieuTay",kieuTayRepo.findAll());
+//            model.addAttribute("listHoaDon",listHoaDon);
+//        }else {
+//            Optional<HoaDon> hoaDon = hoaDonRepository.findById(idHoaDon);
+//            model.addAttribute("hoaDon",hoaDon.get());
+//
+//            listHoaDon = hoaDonRepository.selectTop5();
+//            Pageable pageable = PageRequest.of(pageParam.orElse(0), 10);
+//            Page<ChiTietSanPham> listCTSP = sanPhamChiTietRepository.locCTSPByIdChatLieu(idChatLieu,SPCTRepository.ACTIVE, pageable);
+//            model.addAttribute("listCTSP", listCTSP);
+//            model.addAttribute("listSanPham",sanPhamRepo.findAll());
+//            model.addAttribute("listMauSac",mauSacRepository.findAll());
+//            model.addAttribute("listKichThuoc",kichThuocRepo.findAll());
+//            model.addAttribute("listChatLieu",chatLieuRepo.findAll());
+//            model.addAttribute("listKieuTay",kieuTayRepo.findAll());
+//            model.addAttribute("listHoaDon",listHoaDon);
+//        }
+//
+////        return "/view/BanHangTaiQuay/ban-hang-tai-quay.jsp";
+//        return "/view/BanHangTaiQuay/index2.jsp";
 //    }
 //    //Lọc kiểu tay
 //    @GetMapping("locSPCTByKieuTay/{idKieuTay}")
@@ -600,19 +689,38 @@
 //            @PathVariable("idKieuTay") String idKieuTay,
 //            @RequestParam("page") Optional<Integer> pageParam
 //    ){
-//        listHoaDon = hoaDonRepository.selectTop5();
-//        Pageable pageable = PageRequest.of(pageParam.orElse(0), 10);
-//        Page<ChiTietSanPham> listCTSP = sanPhamChiTietRepository.locCTSPByIdKieuTay(idKieuTay,SPCTRepository.ACTIVE, pageable);
-//        Optional<NhanVien> nv = nhanVienRepo.findById(idNV);
-//        model.addAttribute("listCTSP", listCTSP);
-//        model.addAttribute("listSanPham",sanPhamRepo.findAll());
-//        model.addAttribute("listMauSac",mauSacRepository.findAll());
-//        model.addAttribute("listKichThuoc",kichThuocRepo.findAll());
-//        model.addAttribute("listChatLieu",chatLieuRepo.findAll());
-//        model.addAttribute("listKieuTay",kieuTayRepo.findAll());
-//        model.addAttribute("nhanVien", nv.get());
-//        model.addAttribute("listHoaDon",listHoaDon);
-//        return "/view/BanHangTaiQuay/banHangTaiQuay.jsp";
+//
+//        if (idHoaDon.equals("")){
+//            listHoaDon = hoaDonRepository.selectTop5();
+//            Pageable pageable = PageRequest.of(pageParam.orElse(0), 10);
+//            Page<ChiTietSanPham> listCTSP = sanPhamChiTietRepository.locCTSPByIdKieuTay(idKieuTay,SPCTRepository.ACTIVE, pageable);
+//            Optional<NhanVien> nv = nhanVienRepo.findById(idNV);
+//            model.addAttribute("listCTSP", listCTSP);
+//            model.addAttribute("listSanPham",sanPhamRepo.findAll());
+//            model.addAttribute("listMauSac",mauSacRepository.findAll());
+//            model.addAttribute("listKichThuoc",kichThuocRepo.findAll());
+//            model.addAttribute("listChatLieu",chatLieuRepo.findAll());
+//            model.addAttribute("listKieuTay",kieuTayRepo.findAll());
+//            model.addAttribute("nhanVien", nv.get());
+//            model.addAttribute("listHoaDon",listHoaDon);
+//        }else {
+//            Optional<HoaDon> hoaDon = hoaDonRepository.findById(idHoaDon);
+//            model.addAttribute("hoaDon",hoaDon.get());
+//
+//            listHoaDon = hoaDonRepository.selectTop5();
+//            Pageable pageable = PageRequest.of(pageParam.orElse(0), 10);
+//            Page<ChiTietSanPham> listCTSP = sanPhamChiTietRepository.locCTSPByIdKieuTay(idKieuTay,SPCTRepository.ACTIVE, pageable);
+//            Optional<NhanVien> nv = nhanVienRepo.findById(idNV);
+//            model.addAttribute("listCTSP", listCTSP);
+//            model.addAttribute("listSanPham",sanPhamRepo.findAll());
+//            model.addAttribute("listMauSac",mauSacRepository.findAll());
+//            model.addAttribute("listKichThuoc",kichThuocRepo.findAll());
+//            model.addAttribute("listChatLieu",chatLieuRepo.findAll());
+//            model.addAttribute("listKieuTay",kieuTayRepo.findAll());
+//            model.addAttribute("nhanVien", nv.get());
+//            model.addAttribute("listHoaDon",listHoaDon);
+//        }
+//        return "/view/BanHangTaiQuay/index2.jsp";
 //    }
 //    //lọc sản phẩm chi tiết
 //    @PostMapping("filter")
@@ -650,31 +758,56 @@
 //                                  @RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") LocalDateTime ngayTao){
 //
 //
-//        HoaDon hoaDon = new HoaDon();
-//        hoaDon.setId(idHoaDon);
+//        System.out.println("---------------------------------------------------------"+idKH);
+//        System.out.println("---------------------------------------------------------"+idHoaDon);
+//        System.out.println("---------------------------------------------------------"+maHoaDon);
+//        System.out.println("---------------------------------------------------------"+idNV);
 //
-//        String ma1="HD";
-//        Integer sum = hoaDonRepository.countHD() + 1;
-//        //test
 //
-//        String ma = ma1 + sum;
-//        System.out.println("==============test hoa don:"+ma);
-//
-//        KhachHang khachHang = new KhachHang();
-//        khachHang.setId(idKH);
-//        hoaDon.setIdKhachHang(khachHang);
-//        //Tạo mã tự sinh
-//        hoaDon.setNgayTao(ngayTao);
-//        if (UserInfor.idNhanVien != null) {
-//            NhanVien nhanVien = nhanVienRepo.findById(UserInfor.idNhanVien).get();
+//        HoaDon hd = hoaDonRepository.findByIdHoaDon(idHoaDon);
+//        if (hd.getId().equals(idHoaDon)){
+//            KhachHang khachHang = new KhachHang();
+//            khachHang.setId(idKH);
+//            hd.setIdKhachHang(khachHang);
+//            hoaDonRepository.save(hd);
 //        }
-//        Optional<NhanVien> nv = nhanVienRepo.findById(UserInfor.idNhanVien);
-//        hoaDon.setIdNhanVien(nv.get());
 //
-//        hoaDon.setMa(maHoaDon);
-//        hoaDon.setTrangThai(0);
+////<<<<<<< HEAD
+////=======
+////        KhachHang khachHang = new KhachHang();
+////        khachHang.setId(idKH);
+////        hoaDon.setIdKhachHang(khachHang);
+////        //Tạo mã tự sinh
+////        hoaDon.setNgayTao(ngayTao);
+////        if (UserInfor.idNhanVien != null) {
+////            NhanVien nhanVien = nhanVienRepo.findById(UserInfor.idNhanVien).get();
+////        }
+////        Optional<NhanVien> nv = nhanVienRepo.findById(UserInfor.idNhanVien);
+////        hoaDon.setIdNhanVien(nv.get());
+////>>>>>>> 3d603911edf128be08d4c9052535f3224a839408
 //
-//        hoaDonRepository.save(hoaDon);
+////        HoaDon hoaDon = new HoaDon();
+////        hoaDon.setId(idHoaDon);
+////
+////        String ma1="HD";
+////        Integer sum = hoaDonRepository.countHD() + 1;
+////        //test
+////
+////        String ma = ma1 + sum;
+////        System.out.println("==============test hoa don:"+ma);
+////
+////        KhachHang khachHang = new KhachHang();
+////        khachHang.setId(idKH);
+////        hoaDon.setIdKhachHang(khachHang);
+////        //Tạo mã tự sinh
+////        hoaDon.setNgayTao(ngayTao);
+////        Optional<NhanVien> nv = nhanVienRepo.findById(idNV);
+////        hoaDon.setIdNhanVien(nv.get());
+////
+////        hoaDon.setMa(maHoaDon);
+////        hoaDon.setTrangThai(0);
+////
+////        hoaDonRepository.save(hoaDon);
 //
 //        return "redirect:/ban-hang-tai-quay/detail-hoa-don/" + idHoaDon;
 //    }
@@ -683,20 +816,72 @@
 //    // Find khuyến mãi
 //    @PostMapping("/find-khuyen-mai/{idKM}")
 //    public String findKhuyenMai(@PathVariable String idKM,
-//                                @RequestParam String idHoaDon){
+//                                @RequestParam String idHoaDon,
+//                                @RequestParam String idKMBanDau){
+//
+//        KhuyenMai km = khuyenMaiRepo.findByIdKM(idKM);
+//        System.out.println("------------------------------------------------------------------------"+km.getSoLuong());
+//
+//        for (KhuyenMai km2: listKhuyenMai){
+//            if (km2.getId().equals(idKMBanDau)){
+//                km2.setSoLuong(km2.getSoLuong()+1);
+//                khuyenMaiRepo.save(km2);
+//            }
+//        }
 //
 //        for (HoaDon hoaDon:listHoaDon){
+//
 //            if (hoaDon.getId().equals(idHoaDon)){
 //                KhuyenMai khuyenMai = new KhuyenMai();
 //                khuyenMai.setId(idKM);
 //                hoaDon.setIdKhuyenMai(khuyenMai);
 //                hoaDonRepository.save(hoaDon);
+//                if (km.getId().equals(idKM)){
+//                    km.setSoLuong(km.getSoLuong()-1);
+//                    khuyenMaiRepo.save(km);
+//                }
 //            }
+//
 //        }
 //
 //        return "redirect:/ban-hang-tai-quay/detail-hoa-don/" + idHoaDon;
 //    }
 //
+////    @PostMapping("/find-khuyen-mai/{idKM}")
+////    public String findKhuyenMai(@PathVariable String idKM,
+////                                @RequestParam String idHoaDon){
+////
+////        for (HoaDon hoaDon:listHoaDon){
+////            if (hoaDon.getId().equals(idHoaDon)){
+////                KhuyenMai khuyenMai = new KhuyenMai();
+////                khuyenMai.setId(idKM);
+////                hoaDon.setIdKhuyenMai(khuyenMai);
+////                hoaDonRepository.save(hoaDon);
+////            }
+////        }
+////
+////        return "redirect:/ban-hang-tai-quay/detail-hoa-don/" + idHoaDon;
+////    }
+//
+//
+//    //Bỏ khuyến mãi
+//    @GetMapping("/huy-khuyen-mai/{idKM}")
+//    public String huyKhuyenMai(@PathVariable String idKM){
+//
+//        KhuyenMai km = khuyenMaiRepo.findByIdKM(idKM);
+//
+//        for (HoaDon hoaDon:listHoaDon){
+//            if (hoaDon.getId().equals(idHoaDon)){
+//                hoaDon.setIdKhuyenMai(null);
+//                hoaDonRepository.save(hoaDon);
+//                if (km.getId().equals(idKM)){
+//                    km.setSoLuong(km.getSoLuong()+1);
+//                    khuyenMaiRepo.save(km);
+//                }
+//            }
+//        }
+//        return "redirect:/ban-hang-tai-quay/detail-hoa-don/" + idHoaDon;
+//    }
 //
 //    //Search khách hàng
 //    @PostMapping("search/{idHD}")

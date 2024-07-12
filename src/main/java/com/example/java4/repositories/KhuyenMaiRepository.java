@@ -10,8 +10,6 @@ import java.util.List;
 
 @Repository
 public interface KhuyenMaiRepository extends JpaRepository<KhuyenMai,String> {
-
-
     public static final int ACTIVE  = 1;
     public static final int INACTIVE =0;
 
@@ -20,6 +18,4 @@ public interface KhuyenMaiRepository extends JpaRepository<KhuyenMai,String> {
 
     @Query("select km from KhuyenMai km where km.id=?1")
     KhuyenMai findByIdKM(String idKM);
-
-
 }

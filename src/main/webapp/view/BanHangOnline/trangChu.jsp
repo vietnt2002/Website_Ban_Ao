@@ -2,6 +2,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="f" uri="jakarta.tags.functions" %>
 <%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -150,7 +152,7 @@
                             <!-- Hiển thị nút đăng xuất khi đã đăng nhập -->
                             <li><a class="dropdown-item" href="/cua-hang/don-mua">Đơn mua</a></li>
                             <li><a class="dropdown-item" href="#">Quản lý tài khoản</a></li>
-                            <li><a class="dropdown-item" href="/home/logout">Đăng xuất</a></li>
+                            <li><a class="dropdown-item" href="/cua-hang/logout">Đăng xuất</a></li>
                         </c:otherwise>
                     </c:choose>
                 </ul>
@@ -173,7 +175,8 @@
 </div>
 <!-- Topbar End -->
 
-<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true"
      data-backdrop="true" data-keyboard="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -204,7 +207,8 @@
                             <input type="submit" name="submit" class="btn btn-info btn-md w-100" value="Submit">
                         </div>
                         <div id="register-link" class="text-right">
-                            <a href="#" class="text-info " data-toggle="modal" data-target="#registerModal" data-dismiss="modal">Register here</a>
+                            <a href="#" class="text-info " data-toggle="modal" data-target="#registerModal"
+                               data-dismiss="modal">Register here</a>
                         </div>
                     </form>
                 </div>
@@ -215,7 +219,8 @@
 <!-- Login Modal End -->
 
 <!-- Registration Modal Start (Modal Form đăng ký) -->
-<div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel" aria-hidden="true"
+<div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel"
+     aria-hidden="true"
      data-backdrop="true" data-keyboard="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -227,11 +232,11 @@
             </div>
             <div class="modal-body">
                 <div class="register-form-wrapper">
-                    <form id="register-form" class="form" action="register" method="post"  modelAttribute="khachHangDTO">
+                    <form id="register-form" class="form" action="register" method="post" modelAttribute="khachHangDTO">
                         <div class="form-group">
                             <label for="registerUsername" class="text-info">Username:</label><br>
                             <input placeholder="Username" type="text" id="registerUsername" name="taiKhoan"
-                                   class="form-control"  value="${khachHangDTO.taiKhoan}">
+                                   class="form-control" value="${khachHangDTO.taiKhoan}">
                             <small id="registerUsernameError" class="text-danger"></small>
                         </div>
                         <div class="form-group">
@@ -249,14 +254,15 @@
                         <div class="form-group">
                             <label for="registerPassword" class="text-info">Password:</label><br>
                             <input placeholder="Password" type="password" id="registerPassword" name="matKhau"
-                                   class="form-control"  value="${khachHangDTO.matKhau}">
+                                   class="form-control" value="${khachHangDTO.matKhau}">
                             <small id="registerPasswordError" class="text-danger"></small>
                         </div>
                         <div class="form-group">
                             <input type="submit" name="submit" class="btn btn-info btn-md w-100" value="Register">
                         </div>
                         <div id="login-link" class="text-right">
-                            <a href="#" class="text-info " data-toggle="modal" data-target="#loginModal" data-dismiss="modal">Back to Login</a>
+                            <a href="#" class="text-info " data-toggle="modal" data-target="#loginModal"
+                               data-dismiss="modal">Back to Login</a>
                         </div>
                     </form>
                 </div>
@@ -489,7 +495,6 @@
                     </div>
                 </div>
 
-
                 <c:forEach varStatus="i" items="${pageSP.content}" var="sp">
                     <a href="/cua-hang/detail-san-pham/${sp.idCTSP}" style="text-decoration: none">
                         <div class="col-lg-4 col-md-6 col-sm-12 pb-1">
@@ -506,37 +511,44 @@
                                 <div class="card-footer d-flex justify-content-between bg-light border float-start"
                                      style="margin-top: -3px; margin-bottom: -3px">
                                     <div class="d-flex justify-content-center mb-0" style="margin-bottom: 3px">
-                                        <h6>${sp.giaBan} <span
-                                                style="font-size: 16px; text-decoration: underline">đ</span></h6>
+                                        <h6><fmt:formatNumber value="${sp.giaBan}" type="currency" currencySymbol="₫"/><span
+                                                style="font-size: 16px; text-decoration: underline"></span></h6>
                                     </div>
                                     <a href="/cua-hang/detail-san-pham/${sp.idCTSP}"
-                                       class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>Chi
-                                        tiết</a>
+                                       class="btn btn-sm text-dark p-0"><i
+                                            class="fas fa-eye text-primary mr-1"></i>Chi tiết</a>
                                 </div>
                             </div>
                         </div>
                     </a>
                 </c:forEach>
 
-
                 <div class="col-12 pb-1">
                     <nav aria-label="Page navigation">
-                        <ul class="pagination justify-content-center mb-3">
-                            <li class="page-item disabled">
-                                <a class="page-link" href="#" aria-label="Previous">
-                                    <span aria-hidden="true">&laquo;</span>
-                                    <span class="sr-only">Previous</span>
-                                </a>
-                            </li>
-                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Next">
-                                    <span aria-hidden="true">&raquo;</span>
-                                    <span class="sr-only">Next</span>
-                                </a>
-                            </li>
+                        <ul class="pagination justify-content-center mb-3" id="pagination">
+                            <c:if test="${pageSP.number > 0}">
+                                <li class="page-item">
+                                    <a class="page-link" href="?page=${pageSP.number - 1}" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                        <span class="sr-only">Previous</span>
+                                    </a>
+                                </li>
+                            </c:if>
+
+                            <c:forEach var="i" begin="0" end="${pageSP.totalPages - 1}">
+                                <li class="page-item ${pageSP.number == i ? 'active' : ''}">
+                                    <a class="page-link" href="?page=${i}">${i + 1}</a>
+                                </li>
+                            </c:forEach>
+
+                            <c:if test="${pageSP.number < pageSP.totalPages - 1}">
+                                <li class="page-item">
+                                    <a class="page-link" href="?page=${pageSP.number + 1}" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                        <span class="sr-only">Next</span>
+                                    </a>
+                                </li>
+                            </c:if>
                         </ul>
                     </nav>
                 </div>
@@ -788,8 +800,7 @@
                 $('#registerPasswordError').text('Vui lòng nhập mật khẩu.');
                 $('#registerPassword').addClass('border-danger');
                 hasError = true;
-            }
-            else if (password.length < 6) {
+            } else if (password.length < 6) {
                 $('#registerPasswordError').text('Mật khẩu phải có ít nhất 6 ký tự.');
                 $('#registerPassword').addClass('border-danger');
                 hasError = true;
@@ -811,7 +822,6 @@
         });
 
 
-
         // Ẩn lỗi khi người dùng click vào trường input
         $('input').focus(function () {
             $(this).siblings('.text-danger').text('');
@@ -821,7 +831,7 @@
         // Hiển thị lỗi từ Controller (nếu có)
         var errorUsername = '<%= request.getAttribute("errorUsername") %>';
         var errorPassword = '<%= request.getAttribute("errorPassword") %>';
-        var errorUsernameExit= '<%= request.getAttribute("errorUsernameExit") %>';
+        var errorUsernameExit = '<%= request.getAttribute("errorUsernameExit") %>';
 
         if (errorUsername && errorUsername !== 'null') {
             $('#taiKhoanError').text(errorUsername);
@@ -862,4 +872,5 @@
         return regex.test(phoneNumber);
     }
 </script>
+
 </html>
