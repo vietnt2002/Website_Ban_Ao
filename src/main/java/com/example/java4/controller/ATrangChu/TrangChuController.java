@@ -90,6 +90,7 @@ public class TrangChuController {
         }
         Pageable pageable = PageRequest.of(pageParam.orElse(0), 12);
         Page pageSP = spctRepo.getAllSP(pageable);
+        System.out.println("test page :"+ pageSP.getContent());
         model.addAttribute("pageSP", pageSP);
         model.addAttribute("soLuong", hdctRepo.findByKHnStt(khachHangRepo.findByIdKH(UserInfor.idKhachHang)));
         System.out.println("================================test user info :" + UserInfor.idKhachHang);
