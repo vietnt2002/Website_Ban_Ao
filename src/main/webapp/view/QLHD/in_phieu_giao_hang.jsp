@@ -125,7 +125,7 @@
         <h5 >Nội dung đơn hàng (Tổng số lượng sản phẩm:)</h5>
         <c:forEach var="chiTietHoaDon" items="${listHDCT}" varStatus="item">
             <div class="product-item">
-                <p><span>${item.index + 1}</span> ${chiTietHoaDon.idCTSP.idSanPham.ten},${chiTietHoaDon.idCTSP.idMauSac.ten},${chiTietHoaDon.idCTSP.idKichThuoc.ten} </p>
+                <p><span>${item.index + 1}</span> ${chiTietHoaDon.idCTSP.idSanPham.ten}(${chiTietHoaDon.idCTSP.idMauSac.ten},Size:${chiTietHoaDon.idCTSP.idKichThuoc.ten})</p>
                 <p>SL: ${chiTietHoaDon.soLuong}</p>
             </div>
         </c:forEach>
