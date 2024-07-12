@@ -252,7 +252,7 @@
                             <!-- Hiển thị nút đăng xuất khi đã đăng nhập -->
                             <li><a class="dropdown-item" href="/cua-hang/don-mua">Đơn mua</a></li>
                             <li><a class="dropdown-item" href="#">Quản lý tài khoản</a></li>
-                            <li><a class="dropdown-item" href="/home/logout">Đăng xuất</a></li>
+                            <li><a class="dropdown-item" href="/cua-hang/logout">Đăng xuất</a></li>
                         </c:otherwise>
                     </c:choose>
                 </ul>
@@ -412,7 +412,7 @@
     <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
         <h1 class="font-weight-semi-bold text-uppercase mb-3">GIỎ HÀNG CỦA BẠN</h1>
         <div class="d-inline-flex">
-            <p class="m-0"><a href="/cua-hang/trang-chuf">Trang chủ</a></p>
+            <p class="m-0"><a href="/cua-hang/trang-chu">Trang chủ</a></p>
             <p class="m-0 px-2">-</p>
             <p class="m-0">Giỏ hàng</p>
         </div>
@@ -646,7 +646,7 @@
          aria-labelledby="addAddressModalLabel"
          aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
+            <div class="modal-content" style="width: 880px; left: -173px; top: 80px">
                 <div class="modal-header">
                     <h5 class="modal-title" id="addAddressModalLabel">Thêm địa chỉ mới</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">

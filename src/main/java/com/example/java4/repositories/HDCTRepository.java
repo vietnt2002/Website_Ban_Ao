@@ -5,6 +5,7 @@ import com.example.java4.entities.ChiTietSanPham;
 import com.example.java4.entities.KhachHang;
 import com.example.java4.response.GioHangResponse;
 import com.example.java4.response.HoaDonChiTietDTO;
+import com.example.java4.response.HoaDonChiTietResponse;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -84,4 +85,17 @@ public interface HDCTRepository
     @Modifying
     @Query("DELETE FROM ChiTietHoaDon hdct WHERE hdct.idHoaDon.id = :idHoaDon AND hdct.idCTSP.id = :idCTSP")
     int deleteByHoaDon_IdAndIdCTSP_Id(@Param("idHoaDon") String idHoaDon, @Param("idCTSP") String idCTSP);
+
+    @Query("select new com.example.java4.response.HoaDonChiTietResponse(hd.id, hd.ma, ha.hinhAnh1, ctsp.idSanPham.ten, cthd.soLuong, ctsp.idMauSac.ten, ctsp.idKichThuoc.ten, ctsp.giaBan, hd.trangThai) " +
+            "from ChiTietHoaDon cthd " +
+            "join ChiTietSanPham ctsp on ctsp.id = cthd.idCTSP.id " +
+            "join HinhAnh ha on ha.idCTSP.id = ctsp.id " +
+            "join HoaDon hd on hd.id = cthd.idHoaDon.id " +
+            "where hd.idKhachHang.id = ?1 and hd.id = ?2")
+    List<HoaDonChiTietResponse> getListHDbyIdKH(String idKH, String idHD);
+
+    @Query("select cthd from ChiTietHoaDon cthd\n" +
+            "join HoaDon hd on hd.id = cthd.idHoaDon.id\n" +
+            "where hd.idKhachHang.id = ?1 and hd.id = ?2")
+    List<ChiTietHoaDon> tongTienHD(String idKH, String idHD);
 };
