@@ -757,9 +757,9 @@
 
                                     <c:if test="${hoaDonDTO.trangThai != 1 && hoaDonDTO.trangThai != 6}">
                                         <a href="/hoa-don/hoan-tac/${hoaDonDTO.id}">
-                                            <button type="button" class="btn btn-warning ml-1" id="">
-                                                Hoàn tác
-                                            </button>
+<%--                                            <button type="button" class="btn btn-warning ml-1" id="">--%>
+<%--                                                Hoàn tác--%>
+<%--                                            </button>--%>
                                         </a>
                                     </c:if>
                                 </div>

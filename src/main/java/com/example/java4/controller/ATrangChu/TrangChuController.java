@@ -56,6 +56,8 @@ public class TrangChuController {
     DiaChiRepository diaChiRepo;
     @Autowired
     KhuyenMaiRepository khuyenMaiRepo;
+    @Autowired
+    LichSuHoaDonRepository _lichSuHoaDonRepo;
 
     private List<HoaDon> listHoaDon = new ArrayList<>();
     private List<ChiTietHoaDon> listHDCT = new ArrayList<>();
@@ -463,7 +465,6 @@ public class TrangChuController {
         DiaChi diaChi = diaChiRepo.findDiaChiByID(id);
         diaChiRepo.delete(diaChi);
         redirectAttributes.addFlashAttribute("successMessage", "Xóa địa chỉ thành công");
-
         return "redirect:/cua-hang/gio-hang";
     }
 
@@ -516,7 +517,6 @@ public class TrangChuController {
                 hdctRepo.save(chiTietHoaDon);
             }
         }
-
         return "redirect:/cua-hang/gio-hang";
     }
 
@@ -547,17 +547,14 @@ public class TrangChuController {
             HoaDon hoaDon = hoaDonRepo.findByIdKhachHang(UserInfor.idKhachHang, HoaDonRepository.CHO_THANH_TOAN);
             hoaDon.setPhuongThucThanhToan(phuongThucThanhToan);
             hoaDon.setNgayThanhToan(LocalDateTime.now().withNano(0));
-
             // Trừ đi số tiền giảm giá nếu có
             BigDecimal soTienGiam = hoaDon.getIdKhuyenMai() != null ? hoaDon.getIdKhuyenMai().getSoTienGiam() : BigDecimal.ZERO;
             BigDecimal tongThanhToan = tongTienBigDecimal.subtract(soTienGiam);
-
             hoaDon.setTongTien(tongThanhToan);
             hoaDon.setTrangThai(HoaDonRepository.CHO_XAC_NHAN);
             hoaDon.setLoaiHoaDon(HoaDonRepository.HOA_DON_ONL);
             hoaDon.setNgayThanhToan(LocalDateTime.now().withNano(0));
             hoaDonRepo.save(hoaDon);
-
             GiaoHang giaoHang = new GiaoHang();
             giaoHang.setIdHoaDon(hoaDon);
             giaoHang.setTenNguoiNhan(request.getTenNguoiNhan());
@@ -570,6 +567,7 @@ public class TrangChuController {
             giaoHang.setGhiChu(request.getGhiChu());
             giaoHangRepo.save(giaoHang);
             redirectAttributes.addFlashAttribute("successMessage", "Đặt hàng thành công");
+            createLichSuHoaDon(hoaDon);
             return "redirect:/cua-hang/gio-hang";
         } else {
             BigDecimal tongTienBigDecimal = BigDecimal.ZERO;
@@ -602,21 +600,19 @@ public class TrangChuController {
             giaoHang.setTrangThai(HoaDonRepository.CHO_XAC_NHAN);
             giaoHang.setGhiChu(request.getGhiChu());
             giaoHangRepo.save(giaoHang);
+
             return "redirect:/cua-hang/pay/" + tongThanhToan;
         }
     }
 
     @PostMapping("/khuyen-mai/{id}")
     public String findKhuyenMai(@PathVariable String id) {
-
         System.out.println("==========================================================" + id);
-
         HoaDon hoaDon = hoaDonRepo.findByIdKhachHang(UserInfor.idKhachHang, HoaDonRepository.CHO_THANH_TOAN);
         KhuyenMai khuyenMai = new KhuyenMai();
         khuyenMai.setId(id);
         hoaDon.setIdKhuyenMai(khuyenMai);
         hoaDonRepo.save(hoaDon);
-
         return "redirect:/cua-hang/gio-hang";
     }
 
@@ -624,7 +620,6 @@ public class TrangChuController {
     public String xoayKhuyenMai(@PathVariable("id") HoaDon hoaDon) {
         hoaDon.setIdKhuyenMai(null);
         hoaDonRepo.save(hoaDon);
-
         return "redirect:/cua-hang/gio-hang";
     }
 
@@ -788,5 +783,22 @@ public class TrangChuController {
         }
 
         return ResponseEntity.ok("Thanh toán thành công");
+    }
+
+
+//     Thêm lịch sử hoa don
+    public void createLichSuHoaDon(HoaDon hoaDon) {
+        LichSuHoaDon lichSuHoaDon = new LichSuHoaDon();
+        lichSuHoaDon.setIdHoaDon(hoaDon);
+        lichSuHoaDon.setNgayTao(LocalDateTime.now());
+        lichSuHoaDon.setNgayCapNhat(LocalDateTime.now());
+        lichSuHoaDon.setTrangThai(hoaDon.getTrangThai());
+        if (hoaDon.getPhuongThucThanhToan() == HoaDonRepository.TIEN_MAT){
+            lichSuHoaDon.setGhiChu("Chưa thanh toán");
+        }else {
+            lichSuHoaDon.setGhiChu("Đã thanh toán");
+        }
+
+        _lichSuHoaDonRepo.save(lichSuHoaDon);
     }
 }
