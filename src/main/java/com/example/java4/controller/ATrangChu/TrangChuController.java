@@ -72,6 +72,7 @@ public class TrangChuController {
     //Test api địa chỉ
     @GetMapping("apiDiaChi")
     public String apiDC() {
+        System.out.println("test");
         return "/view/view_viet/testApiDiaChi.jsp";
     }
 
