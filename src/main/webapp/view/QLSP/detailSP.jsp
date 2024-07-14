@@ -541,6 +541,7 @@
                     </div>
                     <div class="modal-body" style="overflow-y: auto; height: 80vh;">
                         <div class="mb-3">
+                            <form id="uploadFormAdd" method="post" enctype="multipart/form-data" action="/uploads">
                             <div class="row">
                                 <div class="d-flex" style="gap: 500px;">
                                     <h5 class="border-bottom">Tên sản phẩm:&nbsp&nbsp<span id="tenSPModalAdd"></span>
@@ -665,7 +666,7 @@
                                          src="/image-icon/pendingIMG.png"
                                          alt="" class="fit-img" id="hinhAnh1DisplayModalAdd">
                                     <p class="text-center">Hình ảnh 1</p>
-                                    <input type="file" id="fileHinhAnh1ModalAdd" class="file-input-overlay"/>
+                                    <input type="file" id="fileHinhAnh1ModalAdd" class="file-input-overlay" accept="image/*"/>
                                 </div>
 
                                 <div class="col col-md-3 hover-effect click-effect image-container">
@@ -673,7 +674,7 @@
                                          src="/image-icon/pendingIMG.png"
                                          alt="" class="fit-img" id="hinhAnh2DisplayModalAdd">
                                     <p class="text-center">Hình ảnh 2</p>
-                                    <input type="file" id="fileHinhAnh2ModalAdd" class="file-input-overlay"/>
+                                    <input type="file" id="fileHinhAnh2ModalAdd" class="file-input-overlay" accept="image/*"/>
                                 </div>
 
                                 <div class="col col-md-3 hover-effect click-effect image-container">
@@ -681,7 +682,7 @@
                                          src="/image-icon/pendingIMG.png"
                                          alt="" class="fit-img" id="hinhAnh3DisplayModalAdd">
                                     <p class="text-center">Hình ảnh 3</p>
-                                    <input type="file" id="fileHinhAnh3ModalAdd" class="file-input-overlay"/>
+                                    <input type="file" id="fileHinhAnh3ModalAdd" class="file-input-overlay" accept="image/*"/>
                                 </div>
                             </div>
                             <div class="form-check form-switch">
@@ -691,7 +692,8 @@
                                        id="trangThaiLabelModalAdd">Trạng
                                     thái</label>
                             </div>
-                            <button id="saveAddBtn" type="submit" class="btn btn-primary me-5">Lưu</button>
+                            <button id="saveAddBtn" class="btn btn-primary me-5">Lưu</button>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -1585,7 +1587,7 @@
                     trangThaiLabelModalEdit.textContent = "Dừng hoạt động";
                 }
             });
-
+        console.log("spct id: ", spctid);
         fetch("/hinh-anh/detail-byidspct/" + spctid, {
             headers: {
                 'Accept': 'application/json',
@@ -1628,67 +1630,16 @@
         //         });
         //     });
     });
-    const addBtn = document.querySelectorAll('#addBtn');
+    const addBtn = document.querySelectorAll('#btnAdd');
     const editSPCTBtn = document.querySelectorAll('#editSPCTBtn');
     const saveEditBtn = document.querySelectorAll('#saveEditBtn');
     const saveAddBtn = document.querySelectorAll('#saveAddBtn');
     addBtn.forEach(button => {
         button.addEventListener('click', function (e) {
             e.preventDefault();
-            console.log("test check btn");
-            var idHD = document.getElementsByName("idHD")[0].value;
-            var idKH = document.getElementsByName("idKH")[0].value;
-            var idKhuyenMai = document.getElementsByName("idKhuyenMai")[0].value;
-            var tongTien = document.getElementsByName("tongTien")[0].value;
-            var thongBao = document.getElementById("errTraLai");
-            var moneyGiven = parseInt(document.getElementById("tienKhachDua").value);
-            var thongBao = document.getElementById("errTraLai");
-            console.log("====================== id hd:", idHD);
-            console.log("====================== id kh:", idKH);
-            console.log("====================== id khuyen mai:", idKhuyenMai);
-            console.log("====================== tong tien:", tongTien);
-            console.log("====================== money given:", moneyGiven);
-            if (tongTien <= moneyGiven && !isNaN(tongTien)) {
-                Swal.fire({
-                    title: 'Xác nhận?',
-                    text: "Dữ liệu sẽ được lưu lại!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Ok!',
-                    cancelButtonText: 'Hủy'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        const data = {
-                            idHD: idHD,
-                            idKhuyenMai: idKhuyenMai,
-                            idKH: idKH,
-                            tongTien: tongTien
-                        };
-                        fetch(`/san-pham/save/`, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify(data)
-                        }).then(() => {
-                            Swal.fire(
-                                'Đã thanh toán!',
-                                'Dữ liệu đã được ghi nhận.',
-                                'success'
-                            ).then(() => {
-                                window.location.href = '/ban-hang-tai-quay';
-                            });
-                            button.closest('tr').remove();
-                        });
-                        button.closest('tr').remove();
-                        thongBao.textContent = "";
-                    }
-                });
-            } else {
-                thongBao.textContent = "Số tiền khách đưa phải lớn hơn hoặc bằng tổng tiền.";
-            }
+            hinhAnh1DisplayModalAdd.src= "/image-icon/pendingIMG.png";
+            hinhAnh2DisplayModalAdd.src= "/image-icon/pendingIMG.png";
+            hinhAnh3DisplayModalAdd.src= "/image-icon/pendingIMG.png";
         });
     });
 
@@ -1735,29 +1686,38 @@
                             giaBan: giaBanModalAdd.value,
                             trangThai: trangThaiModalAdd
                         };
+
                         console.log("data json: ", data);
                         var formData = new FormData($('#uploadFormEdit')[0]); // Use FormData to get all form data
-                        // Handle file upload via AJAX
-                        // $.ajax({
-                        //     url: '/upload',
-                        //     type: 'POST',
-                        //     data: formData,
-                        //     processData: false,
-                        //     contentType: false,
-                        //     success: function (response) {
-                        //         console.log("save image success ");
-                        //     },
-                        //     error: function (xhr, status, error) {
-                        //         console.log("save image =error");
-                        //     }
-                        // });
                         fetch(`/chi-tiet-sp/save`, {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'
                             },
                             body: JSON.stringify(data)
-                        }).then(() => {
+                        }).then(response=>response.json()).then(resp => {
+                            console.log("test resp: "+resp);
+                            const dataHinhAnh={
+                                idSPCT:resp.id,
+                                hinhAnh1 :!(fileHinhAnh1ModalAdd.value=="")?getFileName(fileHinhAnh1ModalAdd.value):"pendingIMG.png",
+                                hinhAnh2 :!(fileHinhAnh2ModalAdd.value=="")?getFileName(fileHinhAnh2ModalAdd.value):"pendingIMG.png",
+                                hinhAnh3 :!(fileHinhAnh3ModalAdd.value=="")?getFileName(fileHinhAnh3ModalAdd.value):"pendingIMG.png",
+                                trangThai: "1"
+                            }
+                            fetch(`/hinh-anh/save`, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify(dataHinhAnh)
+                            }).then(() => {
+                                Swal.fire(
+                                    'Đã thanh toán!',
+                                    'Dữ liệu đã được ghi nhận.',
+                                    'success'
+                                ).then(() => {
+                                });
+                            });
                             Swal.fire(
                                 'Đã thanh toán!',
                                 'Dữ liệu đã được ghi nhận.',
@@ -1765,6 +1725,20 @@
                             ).then(() => {
                                 loadDSSPCT(currentPage);
                             });
+                        });
+                        var formData = new FormData($('#uploadFormAdd')[0]);
+                        $.ajax({
+                            url: '/uploads',
+                            type: 'POST',
+                            data: formData,
+                            processData: false,
+                            contentType: false,
+                            success: function(response) {
+                                console.log("save image success ");
+                            },
+                            error: function(xhr, status, error) {
+                                console.log("save image =error");
+                            }
                         });
                     }
                 });
@@ -2145,7 +2119,13 @@
         console.log("check count: ", checkCount);
         return checkCount;
     }
-
+    function getFileName(fullPath) {
+        // Check for the last occurrence of the backslash or forward slash
+        var startIndex = Math.max(fullPath.lastIndexOf('\\'), fullPath.lastIndexOf('/'));
+        // Extract the file name
+        var fileName = fullPath.substring(startIndex + 1);
+        return fileName;
+    }
 
     saveEditBtn.forEach(button => {
         button.addEventListener('click', function (e) {
@@ -2181,6 +2161,13 @@
                             giaBan: giaBanModalEdit.value,
                             trangThai: trangThaiModalEdit
                         };
+                        const dataHinhAnh={
+                            hinhAnh1: !(fileHinhAnh1ModalEdit.value=="")?getFileName(fileHinhAnh1ModalEdit.value):getFileName(fileHinhAnh1ModalEdit.src),
+                            hinhAnh2 :!(fileHinhAnh2ModalEdit.value=="")?getFileName(fileHinhAnh2ModalEdit.value):getFileName(fileHinhAnh1ModalEdit.src),
+                            hinhAnh3 :!(fileHinhAnh3ModalEdit.value=="")?getFileName(fileHinhAnh3ModalEdit.value):getFileName(fileHinhAnh3ModalEdit.src),
+                            trangThai: "1"
+                        }
+                        console.log("data hinh anh: ", dataHinhAnh);
                         console.log("data json: ", data);
                         console.log("data params file: ", formData);
                         fetch(`/chi-tiet-sp/update/` + idSPCTLocal, {
@@ -2196,6 +2183,20 @@
                                 'success'
                             ).then(() => {
                                 loadDSSPCT(currentPage);
+                            });
+                        });
+                        fetch(`/hinh-anh/update-byidctsp/` + idSPCTLocal, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(dataHinhAnh)
+                        }).then(() => {
+                            Swal.fire(
+                                'Đã thanh toán!',
+                                'Dữ liệu đã được ghi nhận.',
+                                'success'
+                            ).then(() => {
                             });
                         });
                         var formData = new FormData($('#uploadFormEdit')[0]);

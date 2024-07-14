@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -58,6 +57,8 @@ public class TrangChuController {
     DiaChiRepository diaChiRepo;
     @Autowired
     KhuyenMaiRepository khuyenMaiRepo;
+    @Autowired
+    LichSuHoaDonRepository _lichSuHoaDonRepo;
 
     private List<HoaDon> listHoaDon = new ArrayList<>();
     private List<ChiTietHoaDon> listHDCT = new ArrayList<>();
@@ -72,7 +73,6 @@ public class TrangChuController {
     //Test api địa chỉ
     @GetMapping("apiDiaChi")
     public String apiDC() {
-        System.out.println("test");
         return "/view/view_viet/testApiDiaChi.jsp";
     }
 
@@ -573,6 +573,7 @@ public class TrangChuController {
             giaoHang.setGhiChu(request.getGhiChu());
             giaoHangRepo.save(giaoHang);
             redirectAttributes.addFlashAttribute("successMessage", "Đặt hàng thành công");
+            createLichSuHoaDon(hoaDon);
             return "redirect:/cua-hang/gio-hang";
         } else {
             BigDecimal tongTienBigDecimal = BigDecimal.ZERO;
@@ -647,29 +648,23 @@ public class TrangChuController {
         //Số lượng hóa đơn theo trạng thái
         int countAllHoaDon = hoaDonRepo.countByTrangThai(UserInfor.idKhachHang);
         int countHDByChoXacNhan = hoaDonRepo.countByHoaDonByTrangThai(UserInfor.idKhachHang, HoaDonRepository.CHO_XAC_NHAN);
-        int countHDByDaXacNhan = hoaDonRepo.countByHoaDonByTrangThai(UserInfor.idKhachHang, HoaDonRepository.DA_XAC_NHAN);
         int countHDByChoGiaoHang = hoaDonRepo.countByHoaDonByTrangThai(UserInfor.idKhachHang, HoaDonRepository.CHO_GIAO_HANG);
         int countHDByDangGiaoHang = hoaDonRepo.countByHoaDonByTrangThai(UserInfor.idKhachHang, HoaDonRepository.DANG_GIAO_HANG);
-        int countHDByDaGiaoHang = hoaDonRepo.countByHoaDonByTrangThai(UserInfor.idKhachHang, HoaDonRepository.GIAO_HANG_THANH_CONG);
         int countHDByHoanThanh = hoaDonRepo.countByHoaDonByTrangThai(UserInfor.idKhachHang, HoaDonRepository.DA_HOAN_THANH);
         int countHDDaHuy = hoaDonRepo.countByHoaDonByTrangThai(UserInfor.idKhachHang, HoaDonRepository.DA_HUY);
 
         model.addAttribute("countAllHoaDon", countAllHoaDon);
         model.addAttribute("countHDByChoXacNhan", countHDByChoXacNhan);
-        model.addAttribute("countHDByDaXacNhan", countHDByDaXacNhan);
         model.addAttribute("countHDByChoGiaoHang", countHDByChoGiaoHang);
         model.addAttribute("countHDByDangGiaoHang", countHDByDangGiaoHang);
-        model.addAttribute("countHDByDaGiaoHang", countHDByDaGiaoHang);
         model.addAttribute("countHDByHoanThanh", countHDByHoanThanh);
         model.addAttribute("countHDDaHuy", countHDDaHuy);
 
         listHoaDon = hoaDonRepo.getHoaDonByIDKHA(UserInfor.idKhachHang);
         model.addAttribute("listHD", listHoaDon);
         model.addAttribute("listHDByChoXacNhan", hoaDonRepo.getHoaDonByIDKHAndTrangThai(UserInfor.idKhachHang, HoaDonRepository.CHO_XAC_NHAN));
-        model.addAttribute("listHDByDaXacNhan", hoaDonRepo.getHoaDonByIDKHAndTrangThai(UserInfor.idKhachHang, HoaDonRepository.DA_XAC_NHAN));
         model.addAttribute("listHDByChoGiaoHang", hoaDonRepo.getHoaDonByIDKHAndTrangThai(UserInfor.idKhachHang, HoaDonRepository.CHO_GIAO_HANG));
         model.addAttribute("listHDByDangGiaoHang", hoaDonRepo.getHoaDonByIDKHAndTrangThai(UserInfor.idKhachHang, HoaDonRepository.DANG_GIAO_HANG));
-        model.addAttribute("listHDByDaGiaoHang", hoaDonRepo.getHoaDonByIDKHAndTrangThai(UserInfor.idKhachHang, HoaDonRepository.GIAO_HANG_THANH_CONG));
         model.addAttribute("listHDByHoanThanh", hoaDonRepo.getHoaDonByIDKHAndTrangThai(UserInfor.idKhachHang, HoaDonRepository.DA_HOAN_THANH));
         model.addAttribute("listHDDaHuy", hoaDonRepo.getHoaDonByIDKHAndTrangThai(UserInfor.idKhachHang, HoaDonRepository.DA_HUY));
 
@@ -710,83 +705,10 @@ public class TrangChuController {
         return "/view/BanHangOnline/detailDonMua.jsp";
     }
 
-//    @GetMapping("/pay/{tongTien}")
-//    public ResponseEntity<?> getPay(
-//            @PathVariable("tongTien") BigDecimal tongTien
-//    ) throws UnsupportedEncodingException {
-//
-//        String vnp_Version = "2.1.0";
-//        String vnp_Command = "pay";
-//        String orderType = "other";
-//        BigDecimal amount = tongTien.multiply(new BigDecimal(100));
-//        String bankCode = "NCB";
-//
-//        String vnp_TxnRef = Config_Online.getRandomNumber(8);
-//        String vnp_IpAddr = "127.0.0.1";
-//
-//        String vnp_TmnCode = Config_Online.vnp_TmnCode;
-//
-//        Map<String, String> vnp_Params = new HashMap<>();
-//        vnp_Params.put("vnp_Version", vnp_Version);
-//        vnp_Params.put("vnp_Command", vnp_Command);
-//        vnp_Params.put("vnp_TmnCode", vnp_TmnCode);
-//        vnp_Params.put("vnp_Amount", String.valueOf(amount));
-//        vnp_Params.put("vnp_CurrCode", "VND");
-//
-//        vnp_Params.put("vnp_BankCode", bankCode);
-//        vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
-//        vnp_Params.put("vnp_OrderInfo", "Thanh toan don hang:" + vnp_TxnRef);
-//        vnp_Params.put("vnp_OrderType", orderType);
-//
-//        vnp_Params.put("vnp_Locale", "vn");
-//        vnp_Params.put("vnp_ReturnUrl", Config_Online.vnp_ReturnUrl);
-//        vnp_Params.put("vnp_IpAddr", vnp_IpAddr);
-//
-//        Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
-//        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
-//        String vnp_CreateDate = formatter.format(cld.getTime());
-//        vnp_Params.put("vnp_CreateDate", vnp_CreateDate);
-//
-//        cld.add(Calendar.MINUTE, 15);
-//        String vnp_ExpireDate = formatter.format(cld.getTime());
-//        vnp_Params.put("vnp_ExpireDate", vnp_ExpireDate);
-//
-//        List fieldNames = new ArrayList(vnp_Params.keySet());
-//        Collections.sort(fieldNames);
-//        StringBuilder hashData = new StringBuilder();
-//        StringBuilder query = new StringBuilder();
-//        Iterator itr = fieldNames.iterator();
-//        while (itr.hasNext()) {
-//            String fieldName = (String) itr.next();
-//            String fieldValue = (String) vnp_Params.get(fieldName);
-//            if ((fieldValue != null) && (fieldValue.length() > 0)) {
-//                //Build hash data
-//                hashData.append(fieldName);
-//                hashData.append('=');
-//                hashData.append(URLEncoder.encode(fieldValue, StandardCharsets.US_ASCII.toString()));
-//                //Build query
-//                query.append(URLEncoder.encode(fieldName, StandardCharsets.US_ASCII.toString()));
-//                query.append('=');
-//                query.append(URLEncoder.encode(fieldValue, StandardCharsets.US_ASCII.toString()));
-//                if (itr.hasNext()) {
-//                    query.append('&');
-//                    hashData.append('&');
-//                }
-//            }
-//        }
-//        String queryUrl = query.toString();
-//        String vnp_SecureHash = Config_Online.hmacSHA512(Config_Online.secretKey, hashData.toString());
-//        queryUrl += "&vnp_SecureHash=" + vnp_SecureHash;
-//        String paymentUrl = Config_Online.vnp_PayUrl + "?" + queryUrl;
-//
-//        return ResponseEntity.ok(paymentUrl);
-//    }
-
     @GetMapping("/pay/{tongTien}")
-    public void getPay(
-            @PathVariable("tongTien") BigDecimal tongTien,
-            HttpServletResponse response
-    ) throws UnsupportedEncodingException, IOException {
+    public ResponseEntity<?> getPay(
+            @PathVariable("tongTien") BigDecimal tongTien
+    ) throws UnsupportedEncodingException {
 
         String vnp_Version = "2.1.0";
         String vnp_Command = "pay";
@@ -824,16 +746,24 @@ public class TrangChuController {
         String vnp_ExpireDate = formatter.format(cld.getTime());
         vnp_Params.put("vnp_ExpireDate", vnp_ExpireDate);
 
-        List<String> fieldNames = new ArrayList<>(vnp_Params.keySet());
+        List fieldNames = new ArrayList(vnp_Params.keySet());
         Collections.sort(fieldNames);
         StringBuilder hashData = new StringBuilder();
         StringBuilder query = new StringBuilder();
-        for (String fieldName : fieldNames) {
-            String fieldValue = vnp_Params.get(fieldName);
-            if (fieldValue != null && fieldValue.length() > 0) {
-                hashData.append(fieldName).append('=').append(URLEncoder.encode(fieldValue, StandardCharsets.US_ASCII.toString()));
-                query.append(URLEncoder.encode(fieldName, StandardCharsets.US_ASCII.toString())).append('=').append(URLEncoder.encode(fieldValue, StandardCharsets.US_ASCII.toString()));
-                if (!fieldName.equals(fieldNames.get(fieldNames.size() - 1))) {
+        Iterator itr = fieldNames.iterator();
+        while (itr.hasNext()) {
+            String fieldName = (String) itr.next();
+            String fieldValue = (String) vnp_Params.get(fieldName);
+            if ((fieldValue != null) && (fieldValue.length() > 0)) {
+                //Build hash data
+                hashData.append(fieldName);
+                hashData.append('=');
+                hashData.append(URLEncoder.encode(fieldValue, StandardCharsets.US_ASCII.toString()));
+                //Build query
+                query.append(URLEncoder.encode(fieldName, StandardCharsets.US_ASCII.toString()));
+                query.append('=');
+                query.append(URLEncoder.encode(fieldValue, StandardCharsets.US_ASCII.toString()));
+                if (itr.hasNext()) {
                     query.append('&');
                     hashData.append('&');
                 }
@@ -844,7 +774,7 @@ public class TrangChuController {
         queryUrl += "&vnp_SecureHash=" + vnp_SecureHash;
         String paymentUrl = Config_Online.vnp_PayUrl + "?" + queryUrl;
 
-        response.sendRedirect(paymentUrl);
+        return ResponseEntity.ok(paymentUrl);
     }
 
 
@@ -863,5 +793,21 @@ public class TrangChuController {
         }
 
         return ResponseEntity.ok("Thanh toán thành công");
+    }
+
+    //     Thêm lịch sử hoa don
+    public void createLichSuHoaDon(HoaDon hoaDon) {
+        LichSuHoaDon lichSuHoaDon = new LichSuHoaDon();
+        lichSuHoaDon.setIdHoaDon(hoaDon);
+        lichSuHoaDon.setNgayTao(LocalDateTime.now());
+        lichSuHoaDon.setNgayCapNhat(LocalDateTime.now());
+        lichSuHoaDon.setTrangThai(hoaDon.getTrangThai());
+        if (hoaDon.getPhuongThucThanhToan() == HoaDonRepository.TIEN_MAT) {
+            lichSuHoaDon.setGhiChu("Chưa thanh toán");
+        } else {
+            lichSuHoaDon.setGhiChu("Đã thanh toán");
+        }
+
+        _lichSuHoaDonRepo.save(lichSuHoaDon);
     }
 }

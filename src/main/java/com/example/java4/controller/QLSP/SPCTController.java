@@ -155,13 +155,13 @@ public class SPCTController {
 
     @CrossOrigin
     @PostMapping("save")
-    public ResponseEntity<Boolean> Store(
+    public ResponseEntity<ChiTietSanPhamNoMap> Store(
             @RequestBody @Valid SPCTStore newChiTietSP,
             BindingResult result
     ) {
         if (result.hasErrors()) {
             System.out.println("temp error: " + result);
-            return ResponseEntity.ok(false);
+            return ResponseEntity.ok(null);
         } else {
             ChiTietSanPhamNoMap spctChecked = spctRepoNoMap.findDuplicatedRecord(newChiTietSP.getIdSp(), newChiTietSP.getIdMauSac(), newChiTietSP.getIdKichThuoc(), newChiTietSP.getIdChatLieu(), newChiTietSP.getIdKieuTay());
             if (spctChecked != null) {
@@ -171,7 +171,7 @@ public class SPCTController {
                 spctChecked.setTrangThai(Integer.valueOf(newChiTietSP.getTrangThai()));
                 spctChecked.setSoLuong(Integer.valueOf(newChiTietSP.getSoLuong()) + spctChecked.getSoLuong());
                 spctChecked.setMoTa(newChiTietSP.getMoTa());
-                spctRepoNoMap.save(spctChecked);
+                return ResponseEntity.ok(spctRepoNoMap.save(spctChecked));
             } else {
                 System.out.println("do normal adding");
                 LocalDateTime localNow = LocalDateTime.now();
@@ -187,9 +187,8 @@ public class SPCTController {
                 chiTietSP.setGiaBan(BigDecimal.valueOf(Long.valueOf(newChiTietSP.getGiaBan())));
                 chiTietSP.setTrangThai(Integer.valueOf(newChiTietSP.getTrangThai()));
                 chiTietSP.setNgayTao(localNow);
-                spctRepoNoMap.save(chiTietSP);
+                return ResponseEntity.ok(spctRepoNoMap.save(chiTietSP));
             }
-            return ResponseEntity.ok(true);
         }
     }
 

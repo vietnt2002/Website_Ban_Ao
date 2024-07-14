@@ -75,7 +75,13 @@ public class HinhAnhController {
     @GetMapping("/detail-byidspct/{idspct}")
     public ResponseEntity<HinhAnh> getDetailByIdspct(@PathVariable(value = "idspct") String idspct){
         HinhAnh hinhAnh = hinhAnhRepo.findByIdCTSP(idspct);
-        return ResponseEntity.ok(hinhAnh);
+        if(hinhAnh.equals("")){
+            System.out.println("=============================test"+hinhAnh);
+            return ResponseEntity.ok(null);
+        }
+        else{
+            return ResponseEntity.ok(hinhAnh);
+        }
     }
     @CrossOrigin
     @PostMapping("/update/{id}")
@@ -86,11 +92,12 @@ public class HinhAnhController {
             return ResponseEntity.ok(false);
         }
         else{
+            LocalDateTime localNow = LocalDateTime.now();
             hinhAnh.setHinhAnh1(newHinhAnh.getHinhAnh1());
             hinhAnh.setHinhAnh2(newHinhAnh.getHinhAnh2());
             hinhAnh.setHinhAnh3(newHinhAnh.getHinhAnh3());
-            hinhAnh.setNgayTao(newHinhAnh.getNgayTao());
-            hinhAnh.setTrangThai(newHinhAnh.getTrangThai());
+            hinhAnh.setNgayTao(localNow);
+            hinhAnh.setTrangThai(Integer.valueOf(newHinhAnh.getTrangThai()));
             hinhAnhRepo.save(hinhAnh);
             return ResponseEntity.ok(true);
         }
@@ -104,23 +111,25 @@ public class HinhAnhController {
             return ResponseEntity.ok(false);
         }
         else{
-            if(!hinhAnhRepo.findByIdCTSP(idctsp).equals(null)){
+            if(!(hinhAnhRepo.findByIdCTSP(idctsp)==null)){
+                LocalDateTime localNow = LocalDateTime.now();
                 HinhAnh hinhAnh  = hinhAnhRepo.findByIdCTSP(idctsp);
                 hinhAnh.setHinhAnh1(newHinhAnh.getHinhAnh1());
                 hinhAnh.setHinhAnh2(newHinhAnh.getHinhAnh2());
                 hinhAnh.setHinhAnh3(newHinhAnh.getHinhAnh3());
-                hinhAnh.setNgayTao(newHinhAnh.getNgayTao());
-                hinhAnh.setTrangThai(newHinhAnh.getTrangThai());
+                hinhAnh.setNgayTao(localNow);
+                hinhAnh.setTrangThai(Integer.valueOf(newHinhAnh.getTrangThai()));
                 hinhAnhRepo.save(hinhAnh);
             }
             else{
+                LocalDateTime localNow = LocalDateTime.now();
                 HinhAnh hinhAnh = new HinhAnh();
                 hinhAnh.setIdCTSP(spctRepo.findByIdCTSP(idctsp));
                 hinhAnh.setHinhAnh1(newHinhAnh.getHinhAnh1());
                 hinhAnh.setHinhAnh2(newHinhAnh.getHinhAnh2());
                 hinhAnh.setHinhAnh3(newHinhAnh.getHinhAnh3());
-                hinhAnh.setNgayTao(newHinhAnh.getNgayTao());
-                hinhAnh.setTrangThai(newHinhAnh.getTrangThai());
+                hinhAnh.setNgayTao(localNow);
+                hinhAnh.setTrangThai(Integer.valueOf(newHinhAnh.getTrangThai()));
                 hinhAnhRepo.save(hinhAnh);
             }
             return ResponseEntity.ok(true);
@@ -157,44 +166,11 @@ public class HinhAnhController {
             hinhAnh.setHinhAnh1(newHinhAnh.getHinhAnh1());
             hinhAnh.setHinhAnh2(newHinhAnh.getHinhAnh2());
             hinhAnh.setHinhAnh3(newHinhAnh.getHinhAnh3());
-            hinhAnh.setNgayTao(newHinhAnh.getNgayTao());
-            hinhAnh.setTrangThai(newHinhAnh.getTrangThai());
+            hinhAnh.setNgayTao(localNow);
+            hinhAnh.setTrangThai(Integer.valueOf(newHinhAnh.getTrangThai()));
             hinhAnhRepo.save(hinhAnh);
             return ResponseEntity.ok(true);
         }
     }
 
-    @CrossOrigin
-    @PostMapping("/upload")
-    public void saveUploadFile(
-            @RequestParam("hinhAnh1File") MultipartFile newHinhAnh1File,
-            @RequestParam("hinhAnh2File") MultipartFile newHinhAnh2File,
-            @RequestParam("hinhAnh3File") MultipartFile newHinhAnh3File,
-            Model model
-    ) {
-        if (newHinhAnh1File.isEmpty()) {
-            model.addAttribute("message", "Vui lòng chọn hình ảnh 1.");
-        }
-        if(newHinhAnh2File.isEmpty()){
-            model.addAttribute("message", "Vui lòng chọn hình ảnh 2.");
-        }
-        if(newHinhAnh3File.isEmpty()){
-            model.addAttribute("message", "Vui lòng chọn hình ảnh 3.");
-        }
-        try {
-            byte[] bytesHinhAnh1 = newHinhAnh1File.getBytes();
-            byte[] bytesHinhAnh2 = newHinhAnh2File.getBytes();
-            byte[] bytesHinhAnh3 = newHinhAnh3File.getBytes();
-            Path path1 = Paths.get(uploadDir + File.separator +newHinhAnh1File.getOriginalFilename());
-            Path path2 = Paths.get(uploadDir + File.separator +newHinhAnh2File.getOriginalFilename());
-            Path path3 = Paths.get(uploadDir + File.separator +newHinhAnh3File.getOriginalFilename());
-            Files.write(path1, bytesHinhAnh1);
-            Files.write(path2, bytesHinhAnh2);
-            Files.write(path3, bytesHinhAnh3);
-            model.addAttribute("message", "You successfully uploaded");
-        } catch (IOException e) {
-            e.printStackTrace();
-            model.addAttribute("message", "Failed to upload");
-        }
-    }
 }
