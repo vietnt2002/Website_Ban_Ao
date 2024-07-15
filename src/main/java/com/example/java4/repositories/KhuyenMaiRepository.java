@@ -10,7 +10,6 @@ import java.util.List;
 
 @Repository
 public interface KhuyenMaiRepository extends JpaRepository<KhuyenMai,String> {
-
     public static final int ACTIVE  = 1;
     public static final int INACTIVE =0;
 

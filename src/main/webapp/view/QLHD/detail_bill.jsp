@@ -672,9 +672,17 @@
                                     </c:if>
 
                                     <c:if test="${hoaDonDTO.trangThai != 1 && hoaDonDTO.trangThai != 6}">
+<<<<<<< HEAD
                                         <button type="button" class="btn btn-warning ml-1" data-bs-toggle="modal" data-bs-target="#undoModal">
                                             Hoàn tác
                                         </button>
+=======
+                                        <a href="/hoa-don/hoan-tac/${hoaDonDTO.id}">
+<%--                                            <button type="button" class="btn btn-warning ml-1" id="">--%>
+<%--                                                Hoàn tác--%>
+<%--                                            </button>--%>
+                                        </a>
+>>>>>>> 00512ffeecd219f04328600e20e9c038ab8d60ab
                                     </c:if>
                                 </div>
                             </c:if>

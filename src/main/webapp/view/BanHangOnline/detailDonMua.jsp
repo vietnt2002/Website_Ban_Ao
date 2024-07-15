@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="f" uri="jakarta.tags.functions" %>
 <%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form" %>
-<%--<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>--%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -167,7 +167,7 @@
                     <i class="fas fa-shopping-cart text-primary"></i>
                     <c:if test="${soLuong > 0}">
                         <span class="totalQuantityCart"
-                              style="display: flex; justify-content: center; align-items: center" >${soLuong}</span>
+                              style="display: flex; justify-content: center; align-items: center">${soLuong}</span>
                     </c:if>
                     <c:if test="${soLuong == null}">
                         <span class="totalQuantityCart"
@@ -398,19 +398,25 @@
                 <th class="text-center">Màu sắc</th>
                 <th class="text-center">Kích thước</th>
                 <th class="text-center">Giá sản phẩm</th>
+                <th class="text-center">Thành tiền</th>
             </tr>
             </thead>
             <c:forEach var="i" items="${listHDCT}" varStatus="">
                 <tbody class="">
                 <tr>
                     <td class=""><img src="/image/${i.hinhAnh1}" alt=""
-                                                               style="width: 50px;">
+                                      style="width: 50px;">
                             ${i.tenSP}
                     </td>
                     <td class="text-center">${i.soLuong}</td>
                     <td class="text-center">${i.mauSac}</td>
                     <td class="text-center">${i.tenKieuTay}</td>
-                    <td class="text-center">${i.giaBan}</td>
+                    <td class="text-center">
+                        <fmt:formatNumber value="${i.giaBan}" type="currency" currencySymbol="₫"/>
+                    </td>
+                    <td class="text-center">
+                        <fmt:formatNumber value="${i.giaBan * i.soLuong}" type="currency" currencySymbol="₫"/>
+                    </td>
                 </tr>
                 </tbody>
             </c:forEach>
@@ -419,17 +425,31 @@
     </div>
     <%-- Thông tin thanh toán --%>
     <div class="row d-flex align-items-stretch" style="text-align: end; position: relative; right: 75px;">
-        <div class="col-12 mb-3 d-flex align-items-stretch">
+        <div class="col-4 mb-3 d-flex align-items-stretch">
             <c:forEach var="i" items="${hoaDon}">
-                <div class="card-body">
-                    <p>Tổng tiền hàng: ${tongTien}₫</p>
-                    <p>Phí vận chuyển: 0₫</p>
-                    <c:if test="${i.idKhuyenMai == null}" >
-                        <p>Voucher của cửa hàng: 0₫</p>
-                    </c:if>
-                    <c:if test="${i.idKhuyenMai != null}" >
-                        <p>Voucher của cửa hàng: ${i.idKhuyenMai.soTienGiam}₫</p>
-                    </c:if>
+                <div class="card-body" style="position: relative; left: 1020px;">
+                    <div class="d-flex justify-content-between mb-3 pt-1">
+                        <h6 class="font-weight-medium">Tổng tiền hàng: </h6>
+                        <h6 class="font-weight-medium" style="font-size: 18px">
+                            <fmt:formatNumber value="${tongTien}" type="currency" currencySymbol="₫"/>
+                        </h6>
+                    </div>
+                    <div class="d-flex justify-content-between mb-3 pt-1">
+                        <h6 class="font-weight-medium">Phí vận chuyển: </h6>
+                        <h6 class="font-weight-medium" style="font-size: 18px">0₫</h6>
+                    </div>
+                    <div class="d-flex justify-content-between mb-3 pt-1">
+                        <h6 class="font-weight-medium">Voucher của cửa hàng: </h6>
+                        <c:if test="${i.idKhuyenMai == null}">
+                            <h6 class="font-weight-medium" style="font-size: 18px">0₫</h6>
+                        </c:if>
+                        <c:if test="${i.idKhuyenMai != null}">
+                            <h6 class="font-weight-medium" style="font-size: 18px"><fmt:formatNumber
+                                    value="${i.idKhuyenMai.soTienGiam}" type="currency" currencySymbol="₫"/>
+                            </h6>
+                        </c:if>
+                    </div>
+
                 </div>
             </c:forEach>
         </div>
@@ -438,7 +458,9 @@
             <c:forEach var="i" items="${hoaDon}">
                 <div class="card-footer" style="color: red; position: relative; font-size: x-large; left: 1269px;">
                     <p class="fw-bold mb-1 pb-3 small d-flex justify-content-between">
-                        <span>Thành tiền:  ${i.tongTien}₫</span>
+                        <span>Thành tiền:
+                            <fmt:formatNumber value="${i.tongTien}" type="currency" currencySymbol="₫"/>
+                        </span>
                     </p>
                 </div>
             </c:forEach>

@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="f" uri="jakarta.tags.functions" %>
 <%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form" %>
-<%--<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>--%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -456,7 +456,10 @@
                                             <div><strong>Ngày thanh toán:</strong> ${i.ngayThanhToan}</div>
                                         </div>
                                         <div class="col-2">
-                                            <div><strong>Tổng:</strong> ${i.tongTien}</div>
+                                            <div><strong>Tổng:</strong>
+                                                <fmt:formatNumber value="${i.tongTien}" type="currency"
+                                                                  currencySymbol="₫"/>
+                                            </div>
                                         </div>
                                         <div class="col-2 d-flex align-items-center justify-content-center">
                                             <c:choose>
@@ -517,7 +520,10 @@
                                         <div><strong>Ngày thanh toán:</strong> ${i.ngayThanhToan}</div>
                                     </div>
                                     <div class="col-2">
-                                        <div><strong>Tổng:</strong> ${i.tongTien}</div>
+                                        <div><strong>Tổng:</strong>
+                                            <fmt:formatNumber value="${i.tongTien}" type="currency"
+                                                              currencySymbol="₫"/>
+                                        </div>
                                     </div>
                                     <div class="col-2 d-flex align-items-center justify-content-center">
                                         <c:if test="${i.trangThai == 1}">
@@ -554,7 +560,10 @@
                                         <div><strong>Ngày thanh toán:</strong> ${i.ngayThanhToan}</div>
                                     </div>
                                     <div class="col-2">
-                                        <div><strong>Tổng:</strong> ${i.tongTien}</div>
+                                        <div><strong>Tổng:</strong>
+                                            <fmt:formatNumber value="${i.tongTien}" type="currency"
+                                                              currencySymbol="₫"/>
+                                        </div>
                                     </div>
                                     <div class="col-2 d-flex align-items-center justify-content-center">
                                         <c:if test="${i.trangThai == 3}">
@@ -592,7 +601,10 @@
                                         <div><strong>Ngày thanh toán:</strong> ${i.ngayThanhToan}</div>
                                     </div>
                                     <div class="col-2">
-                                        <div><strong>Tổng:</strong> ${i.tongTien}</div>
+                                        <div><strong>Tổng:</strong>
+                                            <fmt:formatNumber value="${i.tongTien}" type="currency"
+                                                              currencySymbol="₫"/>
+                                        </div>
                                     </div>
                                     <div class="col-2 d-flex align-items-center justify-content-center">
                                         <c:if test="${i.trangThai == 4}">
@@ -629,7 +641,10 @@
                                         <div><strong>Ngày thanh toán:</strong> ${i.ngayThanhToan}</div>
                                     </div>
                                     <div class="col-2">
-                                        <div><strong>Tổng:</strong> ${i.tongTien}</div>
+                                        <div><strong>Tổng:</strong>
+                                            <fmt:formatNumber value="${i.tongTien}" type="currency"
+                                                              currencySymbol="₫"/>
+                                        </div>
                                     </div>
                                     <div class="col-2 d-flex align-items-center justify-content-center">
                                         <c:if test="${i.trangThai == 6}">
@@ -667,7 +682,10 @@
                                         <div><strong>Ngày thanh toán:</strong> ${i.ngayThanhToan}</div>
                                     </div>
                                     <div class="col-2">
-                                        <div><strong>Tổng:</strong> ${i.tongTien}</div>
+                                        <div><strong>Tổng:</strong>
+                                            <fmt:formatNumber value="${i.tongTien}" type="currency"
+                                                              currencySymbol="₫"/>
+                                        </div>
                                     </div>
                                     <div class="col-2 d-flex align-items-center justify-content-center">
                                         <c:if test="${i.trangThai == 7}">
