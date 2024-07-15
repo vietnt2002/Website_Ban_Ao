@@ -274,21 +274,8 @@
                 </div>
             </div>
 
-
             <form method="post" action="/cua-hang/add-gio-hang">
                 <input type="hidden" name="idCTSP" value="${ctsp.id}">
-                <div class="d-flex mb-3">
-                    <p class="text-dark font-weight-medium mb-0 mr-3">Kích thước:</p>
-                    <c:forEach items="${listKichThuoc}" var="kichThuoc" varStatus="i">
-                        <div class="custom-control custom-radio custom-control-inline">
-                            <input onchange="onchangeByKichThuoc('${kichThuoc.tenKth}')" type="radio"
-                                   class="custom-control-input" id="${kichThuoc.idKth}"
-                                   <c:if test="${i.index==0}">checked</c:if> value="${kichThuoc.tenKth}"
-                                   name="kichThuoc">
-                            <label class="custom-control-label" for="${kichThuoc.idKth}">${kichThuoc.tenKth}</label>
-                        </div>
-                    </c:forEach>
-                </div>
 
                 <div class="d-flex mb-4">
                     <p class="text-dark font-weight-medium mb-0 mr-3">Màu sắc:</p>
@@ -300,6 +287,19 @@
                                    <c:if test="${i.index==0}">checked</c:if>
                                    value="${mauSac.tenMS}" name="mauSac">
                             <label class="custom-control-label" for="${mauSac.idMS}">${mauSac.tenMS}</label>
+                        </div>
+                    </c:forEach>
+                </div>
+
+                <div class="d-flex mb-3">
+                    <p class="text-dark font-weight-medium mb-0 mr-3">Kích thước:</p>
+                    <c:forEach items="${listKichThuoc}" var="kichThuoc" varStatus="i">
+                        <div class="custom-control custom-radio custom-control-inline kichThuocOption">
+                            <input onchange="onchangeByKichThuoc('${kichThuoc.tenKth}')" type="radio"
+                                   class="custom-control-input" id="${kichThuoc.idKth}"
+                                   <c:if test="${i.index==0}">checked</c:if> value="${kichThuoc.tenKth}"
+                                   name="kichThuoc">
+                            <label class="custom-control-label" for="${kichThuoc.idKth}">${kichThuoc.tenKth}</label>
                         </div>
                     </c:forEach>
                 </div>
@@ -324,7 +324,6 @@
                     </button>
                 </div>
             </form>
-
 
             <div class="d-flex pt-2">
                 <p class="text-dark font-weight-medium mb-0 mr-2">Share on:</p>
@@ -706,7 +705,24 @@
     // Lọc số lượng tồn spct theo kích thước khi chọn màu sắc
     function onchangeByMauSac(tenMauSac) {
         var tenKichThuoc = document.querySelector('input[name="kichThuoc"]:checked').value;
+        var isKichThuocValid = list.some(item => item.tenMauSac === tenMauSac && item.tenKichThuoc === tenKichThuoc);
+
+        if (!isKichThuocValid) {
+            // Chọn kích thước đầu tiên có sẵn cho màu sắc mới
+            var kichThuocOptions = document.querySelectorAll('.kichThuocOption');
+            for (var option of kichThuocOptions) {
+                var input = option.querySelector('input[name="kichThuoc"]');
+                var isMatch = list.some(item => item.tenMauSac === tenMauSac && item.tenKichThuoc === input.value);
+                if (isMatch) {
+                    input.checked = true;
+                    tenKichThuoc = input.value;
+                    break;
+                }
+            }
+        }
+
         setHinhAnhAndSoLuong(tenMauSac, tenKichThuoc);
+        filterKichThuocOptions(tenMauSac);
     }
 
     // Hàm cập nhật hình ảnh và số lượng
@@ -733,6 +749,21 @@
         document.getElementById("hinhAnh1").src = "/image/" + hinhAnh1;
         document.getElementById("hinhAnh2").src = "/image/" + hinhAnh2;
         document.getElementById("hinhAnh3").src = "/image/" + hinhAnh3;
+    }
+
+    // Lọc các tùy chọn kích thước dựa trên màu sắc
+    function filterKichThuocOptions(tenMauSac) {
+        var kichThuocOptions = document.querySelectorAll('.kichThuocOption');
+        kichThuocOptions.forEach(option => {
+            var input = option.querySelector('input[name="kichThuoc"]');
+            var isMatch = list.some(item => item.tenMauSac === tenMauSac && item.tenKichThuoc === input.value);
+            option.style.display = isMatch ? 'inline-block' : 'none';
+        });
+        // Chọn kích thước đầu tiên hiển thị
+        var visibleOptions = Array.from(kichThuocOptions).filter(option => option.style.display !== 'none');
+        if (visibleOptions.length > 0) {
+            visibleOptions[0].querySelector('input').checked = true;
+        }
     }
 
     //Lọc số lượng tồn ctsp theo màu sắc khi chọn kích thước

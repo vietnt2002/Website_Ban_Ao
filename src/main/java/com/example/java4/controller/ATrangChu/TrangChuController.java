@@ -8,12 +8,12 @@ import com.example.java4.request.req_sang.DiaChiRequest;
 import com.example.java4.request.req_sang.GiaoHangRequest;
 import com.example.java4.request.req_tai.KhachHangDTO;
 import com.example.java4.response.*;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +21,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.net.URLEncoder;
@@ -465,6 +466,7 @@ public class TrangChuController {
         DiaChi diaChi = diaChiRepo.findDiaChiByID(id);
         diaChiRepo.delete(diaChi);
         redirectAttributes.addFlashAttribute("successMessage", "Xóa địa chỉ thành công");
+
         return "redirect:/cua-hang/gio-hang";
     }
 
@@ -517,6 +519,7 @@ public class TrangChuController {
                 hdctRepo.save(chiTietHoaDon);
             }
         }
+
         return "redirect:/cua-hang/gio-hang";
     }
 
@@ -547,14 +550,17 @@ public class TrangChuController {
             HoaDon hoaDon = hoaDonRepo.findByIdKhachHang(UserInfor.idKhachHang, HoaDonRepository.CHO_THANH_TOAN);
             hoaDon.setPhuongThucThanhToan(phuongThucThanhToan);
             hoaDon.setNgayThanhToan(LocalDateTime.now().withNano(0));
+
             // Trừ đi số tiền giảm giá nếu có
             BigDecimal soTienGiam = hoaDon.getIdKhuyenMai() != null ? hoaDon.getIdKhuyenMai().getSoTienGiam() : BigDecimal.ZERO;
             BigDecimal tongThanhToan = tongTienBigDecimal.subtract(soTienGiam);
+
             hoaDon.setTongTien(tongThanhToan);
             hoaDon.setTrangThai(HoaDonRepository.CHO_XAC_NHAN);
             hoaDon.setLoaiHoaDon(HoaDonRepository.HOA_DON_ONL);
             hoaDon.setNgayThanhToan(LocalDateTime.now().withNano(0));
             hoaDonRepo.save(hoaDon);
+
             GiaoHang giaoHang = new GiaoHang();
             giaoHang.setIdHoaDon(hoaDon);
             giaoHang.setTenNguoiNhan(request.getTenNguoiNhan());
@@ -600,19 +606,21 @@ public class TrangChuController {
             giaoHang.setTrangThai(HoaDonRepository.CHO_XAC_NHAN);
             giaoHang.setGhiChu(request.getGhiChu());
             giaoHangRepo.save(giaoHang);
-
             return "redirect:/cua-hang/pay/" + tongThanhToan;
         }
     }
 
     @PostMapping("/khuyen-mai/{id}")
     public String findKhuyenMai(@PathVariable String id) {
+
         System.out.println("==========================================================" + id);
+
         HoaDon hoaDon = hoaDonRepo.findByIdKhachHang(UserInfor.idKhachHang, HoaDonRepository.CHO_THANH_TOAN);
         KhuyenMai khuyenMai = new KhuyenMai();
         khuyenMai.setId(id);
         hoaDon.setIdKhuyenMai(khuyenMai);
         hoaDonRepo.save(hoaDon);
+
         return "redirect:/cua-hang/gio-hang";
     }
 
@@ -620,6 +628,7 @@ public class TrangChuController {
     public String xoayKhuyenMai(@PathVariable("id") HoaDon hoaDon) {
         hoaDon.setIdKhuyenMai(null);
         hoaDonRepo.save(hoaDon);
+
         return "redirect:/cua-hang/gio-hang";
     }
 
@@ -699,7 +708,7 @@ public class TrangChuController {
     @GetMapping("/pay/{tongTien}")
     public ResponseEntity<?> getPay(
             @PathVariable("tongTien") BigDecimal tongTien
-    ) throws UnsupportedEncodingException, UnsupportedEncodingException {
+    ) throws UnsupportedEncodingException {
 
         String vnp_Version = "2.1.0";
         String vnp_Command = "pay";
@@ -768,6 +777,7 @@ public class TrangChuController {
         return ResponseEntity.ok(paymentUrl);
     }
 
+
     @GetMapping("/payment-info")
     public ResponseEntity<?> transaction(
             @RequestParam(value = "vnp_Amount") String amount,
@@ -785,17 +795,16 @@ public class TrangChuController {
         return ResponseEntity.ok("Thanh toán thành công");
     }
 
-
-//     Thêm lịch sử hoa don
+    //     Thêm lịch sử hoa don
     public void createLichSuHoaDon(HoaDon hoaDon) {
         LichSuHoaDon lichSuHoaDon = new LichSuHoaDon();
         lichSuHoaDon.setIdHoaDon(hoaDon);
         lichSuHoaDon.setNgayTao(LocalDateTime.now());
         lichSuHoaDon.setNgayCapNhat(LocalDateTime.now());
         lichSuHoaDon.setTrangThai(hoaDon.getTrangThai());
-        if (hoaDon.getPhuongThucThanhToan() == HoaDonRepository.TIEN_MAT){
+        if (hoaDon.getPhuongThucThanhToan() == HoaDonRepository.TIEN_MAT) {
             lichSuHoaDon.setGhiChu("Chưa thanh toán");
-        }else {
+        } else {
             lichSuHoaDon.setGhiChu("Đã thanh toán");
         }
 
