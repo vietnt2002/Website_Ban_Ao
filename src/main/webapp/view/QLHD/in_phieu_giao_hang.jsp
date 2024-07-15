@@ -92,6 +92,11 @@
                 margin: 0;
             }
         }
+
+        .delivery{
+            padding: 20px;
+
+        }
     </style>
 </head>
 <body>

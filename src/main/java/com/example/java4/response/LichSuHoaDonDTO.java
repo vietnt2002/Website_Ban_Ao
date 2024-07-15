@@ -16,5 +16,6 @@ public class LichSuHoaDonDTO {
     private String trangThai;
     private String thoiGian;
     private String hoTen;
+    private String chucVu;
     private String ghiChu;
 }

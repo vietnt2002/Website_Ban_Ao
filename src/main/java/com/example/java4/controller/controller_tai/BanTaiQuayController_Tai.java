@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
@@ -89,48 +90,48 @@ public class BanTaiQuayController_Tai {
         tongSL = 0;
 //        tongTien = BigDecimal.ZERO;
     }
-//    @GetMapping("dang-nhap-view")
-//    public String getDangNhapview(Model model){
-//        NVSignUpRequest nhanVienRequest = new NVSignUpRequest();
-//        model.addAttribute("nhanVien", nhanVienRequest);
-//        return "/view/BanHangTaiQuay/dangNhapAdmin.jsp";
-//    }
-//
-//    @PostMapping("dang-nhap")
-//    public String dangNhap(
-//            Model model,
-//            @Valid @ModelAttribute("nhanVien") NVSignUpRequest nvReq,
-//            BindingResult result,
-//            RedirectAttributes redirectAttributes,
-//            HttpSession session
-//    ){
-//        if (result.hasErrors()){
-//            System.out.println("Có lỗi");
-//            System.out.println("result error:"+result.toString());
-//            return "/view/BanHangTaiQuay/dangNhapAdmin.jsp";
-//        }
-//
-//        //Tìm kiếm nhân viên theo tên tài khoản
-//        boolean checkRole = false;
-//        NhanVien nhanVienByTK = nhanVienRepo.findByTaiKhoan(nvReq.getTaiKhoan());
-//        if (nhanVienByTK == null){
-//            redirectAttributes.addFlashAttribute("error", "Tên tài khoản không tồn tại!");
-//            return "redirect:/admin/dang-nhap-view";
-//        }else {
-//            if (nvReq.getMatKhau().equals(nhanVienByTK.getMatKhau())){
-//                UserInfor.idNhanVien = nhanVienByTK.getId();
-//                //Check admin hay nhân viên
-//                String role = nhanVienByTK.getIdCV().getTen();
-//                session.setAttribute("userRole", role);
-//
-//                redirectAttributes.addFlashAttribute("success", "Đăng nhập thành công");
-//                return "redirect:/ban-hang-tai-quay";
-//            }else {
-//                redirectAttributes.addFlashAttribute("error", "Mật khẩu nhập vào chưa đúng!");
-//                return "redirect:/admin/dang-nhap-view";
-//            }
-//        }
-//    }
+    @GetMapping("dang-nhap-view")
+    public String getDangNhapview(Model model){
+        NVSignUpRequest nhanVienRequest = new NVSignUpRequest();
+        model.addAttribute("nhanVien", nhanVienRequest);
+        return "/view/BanHangTaiQuay/dangNhapAdmin.jsp";
+    }
+
+    @PostMapping("dang-nhap")
+    public String dangNhap(
+            Model model,
+            @Valid @ModelAttribute("nhanVien") NVSignUpRequest nvReq,
+            BindingResult result,
+            RedirectAttributes redirectAttributes,
+            HttpSession session
+    ){
+        if (result.hasErrors()){
+            System.out.println("Có lỗi");
+            System.out.println("result error:"+result.toString());
+            return "/view/BanHangTaiQuay/dangNhapAdmin.jsp";
+        }
+
+        //Tìm kiếm nhân viên theo tên tài khoản
+        boolean checkRole = false;
+        NhanVien nhanVienByTK = nhanVienRepo.findByTaiKhoan(nvReq.getTaiKhoan());
+        if (nhanVienByTK == null){
+            redirectAttributes.addFlashAttribute("error", "Tên tài khoản không tồn tại!");
+            return "redirect:/admin/dang-nhap-view";
+        }else {
+            if (nvReq.getMatKhau().equals(nhanVienByTK.getMatKhau())){
+                UserInfor.idNhanVien = nhanVienByTK.getId();
+                //Check admin hay nhân viên
+                String role = nhanVienByTK.getIdCV().getTen();
+                session.setAttribute("userRole", role);
+
+                redirectAttributes.addFlashAttribute("success", "Đăng nhập thành công");
+                return "redirect:/ban-hang-tai-quay";
+            }else {
+                redirectAttributes.addFlashAttribute("error", "Mật khẩu nhập vào chưa đúng!");
+                return "redirect:/admin/dang-nhap-view";
+            }
+        }
+    }
 
 
 
@@ -275,12 +276,15 @@ public class BanTaiQuayController_Tai {
     }
 
     // Hàm thêm đối tượng lịch sử hóa đơn
-    public void createLichSuHoaDon(HoaDon hoaDon, NhanVien nhanVien,String ghiChu) {
+    public void createLichSuHoaDon(HoaDon hoaDon, NhanVien nhanVien, String ghiChu) {
         LichSuHoaDon lichSuHoaDon = new LichSuHoaDon();
         lichSuHoaDon.setIdHoaDon(hoaDon);
         lichSuHoaDon.setIdNhanVien(nhanVien);
-        lichSuHoaDon.setNgayTao(LocalDateTime.now());
-        lichSuHoaDon.setNgayCapNhat(LocalDateTime.now());
+        lichSuHoaDon.setNgayTao(hoaDon.getNgayTao() != null ? hoaDon.getNgayTao() :null);
+        lichSuHoaDon.setNgayChoXacNhan(hoaDon.getNgayTao() != null ? hoaDon.getNgayTao() :null);
+        if(hoaDon.getPhuongThucThanhToan() == 1){
+            lichSuHoaDon.setNgayHoanThanh(hoaDon.getNgayThanhToan() != null ? hoaDon.getNgayThanhToan() :null);
+        }
         lichSuHoaDon.setTrangThai(hoaDon.getTrangThai());
         lichSuHoaDon.setGhiChu(ghiChu);
         _lichSuHoaDonRepo.save(lichSuHoaDon);
@@ -485,7 +489,7 @@ public class BanTaiQuayController_Tai {
         newHoaDon.setTongTien(tongTien);
         newHoaDon.setLoaiHoaDon(0);
         newHoaDon.setTrangThai(6);
-        createLichSuHoaDon(newHoaDon,newHoaDon.getIdNhanVien(),"Đã hoàn thành");
+        createLichSuHoaDon(newHoaDon,newHoaDon.getIdNhanVien(),"Đã hoàn thành");;
         hoaDonRepository.save(newHoaDon);
         return "redirect:/ban-hang-tai-quay";
     }

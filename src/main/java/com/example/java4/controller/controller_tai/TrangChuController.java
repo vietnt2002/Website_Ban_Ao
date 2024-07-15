@@ -302,14 +302,13 @@ public class TrangChuController {
         LichSuHoaDon lichSuHoaDon = new LichSuHoaDon();
         lichSuHoaDon.setIdHoaDon(hoaDon);
         lichSuHoaDon.setNgayTao(LocalDateTime.now());
-        lichSuHoaDon.setNgayCapNhat(LocalDateTime.now());
         lichSuHoaDon.setTrangThai(hoaDon.getTrangThai());
         if (hoaDon.getPhuongThucThanhToan() == HoaDonRepository.TIEN_MAT){
             lichSuHoaDon.setGhiChu("Chưa thanh toán");
         }else {
             lichSuHoaDon.setGhiChu("Đã thanh toán");
+//            lichSuHoaDon.setNgayHoanThanh(LocalDateTime.now());
         }
-
         _lichSuHoaDonRepo.save(lichSuHoaDon);
     }
 
