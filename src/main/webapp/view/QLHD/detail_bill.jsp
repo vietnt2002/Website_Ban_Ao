@@ -42,9 +42,11 @@
             href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
             rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <%--In ra file PDF    --%>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <style>
 
 
@@ -117,15 +119,27 @@
             margin-bottom: 40px;
         }
 
+        .stepper-horizontal.single-step .step {
+            flex: 1; /* Đảm bảo mỗi bước chiếm không gian bằng nhau */
+        }
+
+        .stepper-horizontal.single-step .step:first-child {
+            margin-left: 0; /* Đặt margin-left thành 0 khi chỉ có một step */
+        }
+
+        .stepper-horizontal .step {
+            text-align: center;
+            position: relative;
+            flex: 1; /* Đảm bảo mỗi bước chiếm không gian bằng nhau */
+        }
+
+        .stepper-horizontal .step:not(:first-child) {
+            margin-left: 10px; /* Khoảng cách giữa các step */
+        }
+
         .step-wrapper {
             display: flex;
             align-items: center;
-        }
-
-        .step {
-            text-align: center;
-            position: relative;
-            flex: 1; /* Ensure each step takes up equal space */
         }
 
         .step-icon-wrapper {
@@ -200,24 +214,6 @@
         .form-select {
             width: 100%;
         }
-
-        /*@media (min-width: 768px) {*/
-        /*    .modal-lg {*/
-        /*        max-width: 80%;*/
-        /*    }*/
-        /*}*/
-
-        /*.icon {*/
-        /*    font-size: 1.2rem; !* Đặt kích thước font chữ cho icon *!*/
-        /*    vertical-align: text-top; !* Căn chỉnh icon theo dòng chữ *!*/
-        /*    margin-right: 5px; !* Khoảng cách phía bên phải của icon *!*/
-        /*}*/
-
-
-
-
-
-
 
         @page {
             size: A4;
@@ -303,7 +299,7 @@
             <a class="nav-link" href="/admin/quan-ly-khuyen-mai">
                 <i class="fas fa-fw fa-chart-area"></i>
                 <span>Quản lý khuyến mãi</span></a>
-        </li>In
+        </li>
 
         <!-- Divider -->
         <hr class="sidebar-divider d-none d-md-block">
@@ -536,13 +532,13 @@
             <div class="container-fluid">
                 <div class="d-flex justify-content-end">
                     <!-- Nút in ra phiếu hóa đơn khi giao hàng theo dạng file PDF -->
-                    <c:if test="${hoaDonDTO.loaiHoaDon == 1 && hoaDonDTO.trangThai != 1 }">
-                        <div class="d-flex ms-auto">
-                            <button id="printDeliveryButton" class="btn btn-primary my-3" onclick="openPrintDeliveryModal()">
-                                <i class="bi bi-printer"></i> In hóa đơn
-                            </button>
-                        </div>
-                    </c:if>
+<%--                    <c:if test="${hoaDonDTO.loaiHoaDon == 1 && hoaDonDTO.trangThai != 1 }">--%>
+<%--                        <div class="d-flex ms-auto">--%>
+<%--                            <button id="printDeliveryButton" class="btn btn-primary my-3" onclick="openPrintDeliveryModal()">--%>
+<%--                                <i class="bi bi-printer"></i> In hóa đơn--%>
+<%--                            </button>--%>
+<%--                        </div>--%>
+<%--                    </c:if>--%>
                 </div>
 
                 <%--Bảng theo dõi hóa đơn--%>
@@ -595,6 +591,9 @@
                                                         <c:when test="${step.trangThai eq 'Hoàn Thành'}">
                                                             <i class="bi bi-credit-card-2-back step-icon"></i>
                                                         </c:when>
+                                                        <c:when test="${step.trangThai eq 'Hủy đơn hàng'}">
+                                                            <i class="bi bi-x-circle-fill step-icon"></i>
+                                                        </c:when>
                                                         <c:otherwise>
                                                             <i class="bi bi-hourglass-split step-icon"></i>
                                                         </c:otherwise>
@@ -624,7 +623,7 @@
 
                     <div class="card-footer">
                         <div class="d-flex justify-content-between align-items-center">
-                            <c:if test="${hoaDonDTO.loaiHoaDon == 1 && hoaDonDTO.trangThai != 6}">
+                            <c:if test="${hoaDonDTO.loaiHoaDon == 1 && (hoaDonDTO.trangThai != 6 && hoaDonDTO.trangThai != 7)}">
                                 <div class="d-flex">
                                     <c:if test="${hoaDonDTO.trangThai != 6}">
                                         <c:choose>
@@ -672,17 +671,9 @@
                                     </c:if>
 
                                     <c:if test="${hoaDonDTO.trangThai != 1 && hoaDonDTO.trangThai != 6}">
-<<<<<<< HEAD
                                         <button type="button" class="btn btn-warning ml-1" data-bs-toggle="modal" data-bs-target="#undoModal">
                                             Hoàn tác
                                         </button>
-=======
-                                        <a href="/hoa-don/hoan-tac/${hoaDonDTO.id}">
-<%--                                            <button type="button" class="btn btn-warning ml-1" id="">--%>
-<%--                                                Hoàn tác--%>
-<%--                                            </button>--%>
-                                        </a>
->>>>>>> 00512ffeecd219f04328600e20e9c038ab8d60ab
                                     </c:if>
                                 </div>
                             </c:if>
@@ -716,7 +707,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                                    <button type="submit" class="btn btn-primary">Xác nhận</button>
+                                    <button type="submit" class="btn btn-primary"  id="confirmButtonInModal">Xác nhận</button>
                                 </div>
                             </form>
                         </div>
@@ -874,7 +865,7 @@
                             </thead>
 
                             <tbody>
-                            <c:if test="${(hoaDonDTO.loaiHoaDon == 1 || hoaDonDTO.loaiHoaDon == 0 ) && hoaDonDTO.trangThai == 6 || hoaDonDTO.phuongThucThanhToan == 1}">
+                            <c:if test="${(hoaDonDTO.phuongThucThanhToan == 1 || (hoaDonDTO.phuongThucThanhToan == 0 && hoaDonDTO.trangThai == 6))}">
                                 <tr>
                                     <td>1</td>
                                     <td><fmt:formatNumber value="${tongTienThanhToan}" type="currency"
@@ -1292,7 +1283,7 @@
                     <c:if test="${hoaDonDTO.loaiHoaDon == 1 || hoaDonDTO.phuongThucThanhToan != 1}">
                         <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
                                 data-bs-target="#addProductModal"
-                                <c:if test="${hoaDonDTO.trangThai != 1 && hoaDonDTO.trangThai != 3 }">
+                                <c:if test="${hoaDonDTO.trangThai != 1 && hoaDonDTO.trangThai != 2 }">
                                     disabled
                                 </c:if> >
                             <i class="bi bi-plus text-white"></i>
@@ -1313,7 +1304,7 @@
                             <th>Kích thước</th>
                             <th>Số lượng</th>
                             <th>Tổng Tiền</th>
-                            <c:if test="${hoaDonDTO.loaiHoaDon == 1 || hoaDonDTO.phuongThucThanhToan != 1}">
+                            <c:if test="${hoaDonDTO.loaiHoaDon == 1 && hoaDonDTO.phuongThucThanhToan != 1}">
                                 <th>Thao tác</th>
                             </c:if>
                         </tr>
@@ -1368,10 +1359,10 @@
                                                            currencySymbol="₫" groupingUsed="true"/>
                                     </span>
                                 </td>
-                                <c:if test="${hoaDonDTO.loaiHoaDon == 1 || hoaDonDTO.phuongThucThanhToan != 1}">
+                                <c:if test="${hoaDonDTO.loaiHoaDon == 1 && hoaDonDTO.phuongThucThanhToan != 1}">
                                     <td>
                                         <c:choose>
-                                            <c:when test="${hoaDonDTO.trangThai != 1 && hoaDonDTO.trangThai != 3}">
+                                            <c:when test="${hoaDonDTO.trangThai != 1 && hoaDonDTO.trangThai != 2}">
                                                 <button type="button" class="btn btn-outline-warning"
                                                         id="editBtn-${chiTiet.idCTSP.id}" disabled>
                                                     <i class="bi bi-arrow-clockwise" style="font-size: 1.0em;"></i>
@@ -1412,8 +1403,9 @@
 
 
         <%--  Modal thêm sản phẩm vào hóa đơn--%>
+        <%--  Modal thêm sản phẩm vào hóa đơn--%>
         <div class="modal fade" name="addProductModal" id="addProductModal" tabindex="-1"
-             aria-labelledby="addProductModalLabel" aria-hidden="true">
+             aria-labelledby="addProductModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
             <div class="modal-dialog modal-xl">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -1428,51 +1420,55 @@
                         <!-- Phần input tìm kiếm và các select -->
                         <div class="mb-3 p-3" style="background-color: #f0f0f0;">
                             <!-- Phần input tìm kiếm và nút tìm kiếm -->
-                            <div class="input-group">
-                                <input type="text" class="form-control" id="searchInput"
-                                       placeholder="Nhập từ khóa tìm kiếm...">
-                                <button class="btn btn-outline-secondary" type="button" id="searchButton">Tìm kiếm
-                                </button>
+                            <div class="d-flex align-items-center">
+                                <input type="text" class="form-control" name="search" id="searchInput" placeholder="Nhập từ khóa tìm kiếm..." style="width: 750px;">
+                                <button class="btn btn-primary mx-3" type="button" id="searchButton">Tìm kiếm</button>
+                                <button class="btn btn-danger mx-2" type="button" id="refreshButton">Làm mới</button>
                             </div>
 
                             <!-- Các select -->
-                            <div class="row mt-3">
-                                <div class="col-md-3">
-                                    <label for="colorSelect" class="form-label">Màu sắc</label>
-                                    <select class="form-select" id="colorSelect">
-                                        <c:forEach var="mauSac" items="${listMauSac}">
-                                            <option value="${mauSac.id}">${mauSac.ten}</option>
-                                        </c:forEach>
-                                    </select>
+                            <%-- Lọc theo thuộc tính                             --%>
+                            <form method="post" action="/hoa-don/filter">
+                                <div class="row mt-3">
+                                    <div class="col-md-3">
+                                        <label for="colorSelect" class="form-label">Màu sắc</label>
+                                        <select class="form-select" id="colorSelect">
+                                            <option value="">Tất cả</option> <!-- Option cho tất cả -->
+                                            <c:forEach var="mauSac" items="${listMauSac}">
+                                                <option value="${mauSac.id}">${mauSac.ten}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="sizeSelect" class="form-label">Kích thước</label>
+                                        <select class="form-select" id="sizeSelect">
+                                            <option value="">Tất cả</option> <!-- Option cho tất cả -->
+                                            <c:forEach var="kichThuoc" items="${listKichThuoc}">
+                                                <option value="${kichThuoc.id}">${kichThuoc.ten}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="materialSelect" class="form-label">Chất liệu</label>
+                                        <select class="form-select" id="materialSelect">
+                                            <option value="">Tất cả</option> <!-- Option cho tất cả -->
+                                            <c:forEach var="chatLieu" items="${listChatLieu}">
+                                                <option value="${chatLieu.id}">${chatLieu.ten}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="sleeveSelect" class="form-label">Kiểu tay</label>
+                                        <select class="form-select" id="sleeveSelect">
+                                            <option value="">Tất cả</option> <!-- Option cho tất cả -->
+                                            <c:forEach var="kieuTay" items="${listKieuTay}">
+                                                <option value="${kieuTay.id}">${kieuTay.ten}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
                                 </div>
-                                <div class="col-md-3">
-                                    <label for="sizeSelect" class="form-label">Kích thước</label>
-                                    <select class="form-select" id="sizeSelect">
-                                        <c:forEach var="kichThuoc" items="${listKichThuoc}">
-                                            <option value="${kichThuoc.id}">${kichThuoc.ten}</option>
-                                        </c:forEach>
-                                    </select>
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="materialSelect" class="form-label">Chất liệu</label>
-                                    <select class="form-select" id="materialSelect">
-                                        <c:forEach var="chatLieu" items="${listChatLieu}">
-                                            <option value="${chatLieu.id}">${chatLieu.ten}</option>
-                                        </c:forEach>
-                                    </select>
-                                </div>
+                            </form>
 
-
-                                <div class="col-md-3">
-                                    <label for="materialSelect" class="form-label">Kiểu tay</label>
-                                    <select class="form-select" id="sleeveSelect">
-                                        <c:forEach var="kieuTay" items="${listKieuTay}">
-                                            <option value="${kieuTay.id}">${kieuTay.ten}</option>
-                                        </c:forEach>
-                                    </select>
-                                </div>
-
-                            </div>
                         </div>
 
                         <!-- Bảng thông tin sản phẩm -->
@@ -1490,7 +1486,7 @@
                                 <th>Thao tác</th>
                             </tr>
                             </thead>
-                            <tbody id="tbl_ds_spct">
+                            <tbody id="chiTietSanPhamTableBody">
                             <c:forEach var="product" items="${listCTSP.content}" varStatus="status">
                                 <tr>
                                 <c:if test="${product.soLuong > 0 }">
@@ -1557,7 +1553,9 @@
         </div>
 
 
-        <%--  Phiếu hóa đơn để giao hàng(In hóa đơn) --%>
+
+
+    <%--  Phiếu hóa đơn để giao hàng(In hóa đơn) --%>
         <!-- Nội dung phiếu giao hàng -->
         <div class="delivery" id="deliveryReceipt" style="display: none">
             <div class="container mt-5 p-4 shadow delivery">
@@ -1636,13 +1634,6 @@
             </div>
         </footer>
         <!-- End of Footer -->
-
-        <!-- Lớp phủ và iframe ẩn để in -->
-        <div id="printOverlay" class="print-overlay">
-            <iframe id="printFrame" class="print-frame"></iframe>
-        </div>
-
-
     </div>
     <!-- End of Content Wrapper -->
 
@@ -2055,6 +2046,46 @@
     });
 
 
+
+    // Thêm Confirm trước khi xác nhận đơn hàng ở Modal xác nhận
+    $(document).ready(function () {
+        $('#confirmButtonInModal').click(function (e) {
+            e.preventDefault(); // Ngăn chặn hành vi mặc định của nút Xác nhận
+
+            var moTa = $('#moTa').val().trim();
+            if (moTa === "") {
+                $('#moTaError').show();
+            } else {
+                $('#moTaError').hide();
+                $('#confirmModal').fadeOut('normal', function() {
+                    $(this).modal('hide');
+                });
+
+                Swal.fire({
+                    title: 'Xác Nhận',
+                    text:'Xác nhận đơn hàng?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Xác nhận',
+                    cancelButtonText: 'Hủy'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $('#confirmModal').modal('hide'); // Đóng modal
+                        // Sau khi đóng modal, gửi form
+                        $('#confirmForm').off('submit').submit();
+                    } else {
+                        // Đóng modal hoặc thực hiện hành động khác khi không xác nhận
+                        $('#confirmModal').modal('hide');
+                    }
+                });
+            }
+        });
+    });
+
+
+
 </script>
 
 
@@ -2233,6 +2264,134 @@
             });
         });
     });
+
+</script>
+
+<%--Chức năng lọc và tìm kiếm và phân trang trong Modal thêm sản phẩm--%>
+<script>
+    //Lọc màu sắc
+    $(document).ready(function(){
+        $('#colorSelect').on('change', function() {
+            var productId = $(this).val();
+            $.ajax({
+                url: "/hoa-don/locSPCTByMauSac/"+productId,
+                type: 'GET',
+                data: {id: productId},
+                success: function(data) {
+                    $('#contentModalAddProduct').empty()
+                    $('#contentModalAddProduct').append(data);
+                }
+            });
+        });
+    });
+
+
+    //Lọc kích thước
+    $(document).ready(function(){
+        $('#sizeSelect').on('change', function() {
+            var productId = $(this).val();
+            alert(productId);
+            $.ajax({
+                url: "/hoa-don/locSPCTByKichThuoc/"+productId,
+                type: 'GET',
+                data: {id: productId},
+                success: function(data) {
+                    $('#contentModalAddProduct').empty()
+                    $('#contentModalAddProduct').append(data);
+                }
+            });
+        });
+    });
+
+    //Lọc chất liệu
+    $(document).ready(function(){
+        $('#materialSelect').on('change', function() {
+            var productId = $(this).val();
+            $.ajax({
+                url: "/hoa-don/locSPCTByChatLieu/"+productId,
+                type: 'GET',
+                data: {id: productId},
+                success: function(data) {
+                    $('#contentModalAddProduct').empty()
+                    $('#contentModalAddProduct').append(data);
+                }
+            });
+        });
+    });
+
+    //Lọc theo kiểu tay
+    $(document).ready(function(){
+        $('#sleeveSelect').on('change', function() {
+            var productId = $(this).val();
+            $.ajax({
+                url: "/hoa-don/locSPCTByKieuTay/${hoaDon.id}/"+productId,
+                type: 'GET',
+                data: {id: productId},
+                success: function(data) {
+                    $('#contentModalAddProduct').empty()
+                    $('#contentModalAddProduct').append(data);
+                }
+            });
+        });
+    });
+
+
+    function bindEvents() {
+        $('#colorSelect').on('change', function() {
+            var colorId = $(this).val();
+            updateModalContent("/hoa-don/locSPCTByMauSac/" + colorId);
+        });
+
+        $('#sizeSelect').on('change', function() {
+            var sizeId = $(this).val();
+            updateModalContent("/hoa-don/locSPCTByKichThuoc/" + sizeId);
+        });
+
+        $('#materialSelect').on('change', function() {
+            var materialId = $(this).val();
+            updateModalContent("/hoa-don/locSPCTByChatLieu/" + materialId);
+        });
+
+        $('#sleeveSelect').on('change', function() {
+            var sleeveId = $(this).val();
+            updateModalContent("/hoa-don/locSPCTByKieuTay/" + sleeveId);
+        });
+
+        $('#searchButton').on('click', function() {
+            var searchQuery = $('#searchInput').val();
+            updateModalContent("/hoa-don/searchSPCT/{id}?search=" + searchQuery);
+        });
+
+        $('#refreshButton').on('click', function() {
+            updateModalContent("/hoa-don/searchSPCT/{id}?search=");
+        });
+
+        // Bind events to the add buttons
+        $('.addProductBtn').on('click', function() {
+            var productId = $(this).data('product-id');
+            // Add your logic to handle adding the product
+            alert('Product ' + productId + ' added!');
+        });
+    }
+
+    bindEvents(); // Initial binding
+
+    function updateModalContent(url) {
+        $.ajax({
+            type: "GET",
+            url: url,
+            success: function(data) {
+                $('#modalContent').html(data); // Thay đổi nội dung của modal
+                bindEvents(); // Sau khi cập nhật nội dung, tái kết nối các sự kiện
+            },
+            error: function(xhr, status, error) {
+                console.error("Error while fetching data:", error);
+                // Xử lý lỗi, ví dụ như hiển thị thông báo lỗi cho người dùng
+            }
+        });
+    }
+
+
 
 </script>
 

@@ -107,6 +107,7 @@ public class QuanLyHoaDonController {
     private List<ChatLieu> listChatLieu;
     private List<KhuyenMai> listKhuyenMai;
     private List<ChiTietSanPham> listChiTietSanPham;
+    private List<HoaDon> listHoaDon;
 
     private String idHoaDon;
 
@@ -148,7 +149,7 @@ public class QuanLyHoaDonController {
                 session.setAttribute("userRole", role);
 
                 redirectAttributes.addFlashAttribute("success", "Đăng nhập thành công");
-                return "redirect:/ban-hang-tai-quay";
+                return "redirect:/hoa-don/hien-thi";
             }else {
                 redirectAttributes.addFlashAttribute("error", "Mật khẩu nhập vào chưa đúng!");
                 return "redirect:/hoa-don/dang-nhap-view";
@@ -177,6 +178,10 @@ public class QuanLyHoaDonController {
             NhanVien nhanVien = nhanVienRepo.findById(UserInfor.idNhanVien).get();
             model.addAttribute("nv", nhanVien);
         }
+        else {
+            return "redirect:/hoa-don/dang-nhap-view";
+        }
+
         //Lớp Util để xử chuyển đổi trạng thái
         HoaDonUtil hoaDonUtil = new HoaDonUtil();
         // Xử lý ngày tạo
@@ -284,9 +289,9 @@ public class QuanLyHoaDonController {
         NhanVien nhanVien = new NhanVien();
         if (UserInfor.idNhanVien != null) {
             nhanVien = nhanVienRepo.findById(UserInfor.idNhanVien).get();
-            if(nhanVien == null){
-                nhanVien = _nhanVienRepo.findById("BF29DB87-6ED2-46E8-B34C-135B2EA4CCA6").get();
-            }
+        }
+        else {
+            return  "redirect:/admin/dang-nhap-view";
         }
         // Lấy danh sách chi tiết hóa đơn
         List<ChiTietHoaDon> listHDCT = _hoaDonChiTietRepo.findAllByHoaDon_Id(idHD);
@@ -364,8 +369,9 @@ public class QuanLyHoaDonController {
                 Comparator.nullsLast(Comparator.naturalOrder())
         ));
         model.addAttribute("listLichSuHoaDonDTO", listLichSuHoaDonDTO);
+        model.addAttribute("hinhAnhMap", hinhAnhMap);
+        model.addAttribute("hinhAnhMapCTSP", hinhAnhMapCTSP);
         model.addAttribute("tongTienThanhToan", calculateTongTienThanhToan(tongTien, khuyenMai, giaoHang).doubleValue());
-//        model.addAttribute("step", getStepText(hoaDon.getTrangThai()));
         // Thêm các thông tin vào model để truyền sang JSP
         addAttributesToModel(model, nhanVien, hoaDonDTO, khachHang, diaChiKhachHang, giaoHangDTO, listHDCT, listCTSP, listLichSuHoaDon, tongTien, phiGiamGia);
         return "/view/QLHD/detail_bill.jsp";
@@ -596,7 +602,6 @@ public class QuanLyHoaDonController {
                 }
 
                 for (ChiTietHoaDon chiTietHD : chiTietList) {
-
                     String idChiTietHoaDon = chiTietHD.getId();
                     Optional<ChiTietSanPham> chiTietSanPhamOptional = _chiTietSanPhamRepo.findByHoaDonChiTietId(idChiTietHoaDon);
                     if (chiTietSanPhamOptional.isPresent()) {
@@ -832,7 +837,6 @@ public class QuanLyHoaDonController {
                               RedirectAttributes redirectAttributes) {
         // Tìm đối tượng DiaChi theo IdHoaDon (hoaDonId)
         HoaDon hoaDon = _hoaDonRepo.findById(hoaDonId).get();
-
         if (hoaDon == null) {
             redirectAttributes.addFlashAttribute("errorMessage", "Không tìm thấy thông tin đơn hàng");
             return "redirect:/hoa-don/detail/" + hoaDonId;
@@ -856,20 +860,16 @@ public class QuanLyHoaDonController {
         NhanVien nhanVien = new NhanVien();
         if (UserInfor.idNhanVien != null) {
              nhanVien = nhanVienRepo.findById(UserInfor.idNhanVien).get();
-            if(nhanVien == null){
-                nhanVien = _nhanVienRepo.findById("BF29DB87-6ED2-46E8-B34C-135B2EA4CCA6").get();
-            }
         }
-
         hoaDon.setTrangThai(hoaDonRepository.DA_HUY);
         hoaDon.setNgayCapNhat(LocalDateTime.now());
         hoaDon.setIdNhanVien(nhanVien);
         // Lưu lại vào cơ sở dữ liệu
+
+         LichSuHoaDon lichSuHoaDon = createLichSuHoaDon(hoaDon,nhanVien,lyDo);
+        lichSuHoaDon.setNgayCapNhat(LocalDateTime.now());
+        _lichSuHoaDonRepo.save(lichSuHoaDon);
         _hoaDonRepo.save(hoaDon);
-
-        createLichSuHoaDon(hoaDon,nhanVien,lyDo);
-
-        // Thêm thông báo thành công và chuyển hướng
         System.out.println("Thành công");
         redirectAttributes.addFlashAttribute("cancelSuccess", "Hủy hóa đơn thành công");
         return "redirect:/hoa-don/hien-thi";
@@ -1083,5 +1083,150 @@ public class QuanLyHoaDonController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "Đã xảy ra lỗi khi cập nhật số lượng sản phẩm."));
         }
     }
+
+
+
+//    ===================== LỌC VÀ TÌM KIẾM==================
+    // Chức năng tìm kiem, loc và phan trang trong Modal them san pham
+    @PostMapping("/searchSPCT/{id}")
+    public String searchSPCT(
+            @PathVariable String id,
+            Model model,
+            @RequestParam("search") String search,
+            @RequestParam("page") Optional<Integer> pageParam
+    ) {
+        Optional<HoaDon> hoaDon = hoaDonRepository.findById(id);
+        model.addAttribute("hoaDon", hoaDon.orElse(null));
+        Pageable pageable = PageRequest.of(pageParam.orElse(0), 10);
+        Page<ChiTietSanPham> listCTSP = _sanPhamChiTietRepo.timKiem(search, SPCTRepository.ACTIVE, pageable);
+        setupCommonAttributes(model);
+        Map<String, HinhAnh> hinhAnhMapCTSP = getHinhAnhMapCTSP();
+        model.addAttribute("listCTSP", listCTSP);
+        model.addAttribute("hinhAnhMapCTSP", hinhAnhMapCTSP);
+        return "/view/QLHD/modalThemSanPham.jsp";
+    }
+
+    //Lọc màu sắc
+    @GetMapping("/locSPCTByMauSac/{idMauSac}")
+    public String locSPCTByMauSac(
+            Model model,
+            @PathVariable String idMauSac,
+            @RequestParam("page") Optional<Integer> pageParam
+    ) {
+        Pageable pageable = PageRequest.of(pageParam.orElse(0), 10);
+        Page<ChiTietSanPham> listCTSP = _sanPhamChiTietRepo.locCTSPByIdMauSac(idMauSac, SPCTRepository.ACTIVE, pageable);
+        setupCommonAttributes(model);
+        Map<String, HinhAnh> hinhAnhMapCTSP = getHinhAnhMapCTSP();
+        model.addAttribute("listCTSP", listCTSP);
+        model.addAttribute("hinhAnhMapCTSP", hinhAnhMapCTSP);
+        return "/view/QLHD/modalThemSanPham.jsp";
+    }
+    //Lọc kích thước
+    @GetMapping("/locSPCTByKichThuoc/{idKichThuoc}")
+    public String locSPCTByKichThuoc(
+            Model model,
+            @PathVariable String idKichThuoc,
+            @RequestParam("page") Optional<Integer> pageParam
+    ) {
+        Pageable pageable = PageRequest.of(pageParam.orElse(0), 10);
+        Page<ChiTietSanPham> listCTSP = _sanPhamChiTietRepo.locCTSPByIdKichThuoc(idKichThuoc, SPCTRepository.ACTIVE, pageable);
+
+        setupCommonAttributes(model);
+
+        Map<String, HinhAnh> hinhAnhMapCTSP = getHinhAnhMapCTSP();
+        model.addAttribute("listCTSP", listCTSP);
+        model.addAttribute("hinhAnhMapCTSP", hinhAnhMapCTSP);
+        return "/view/QLHD/modalThemSanPham.jsp";
+    }
+
+    //Lọc chất liệu
+    @GetMapping("/locSPCTByChatLieu/{idChatLieu}")
+    public String locSPCTByChatLieu(
+            Model model,
+            @PathVariable String idChatLieu,
+            @RequestParam("page") Optional<Integer> pageParam
+    ) {
+
+        Pageable pageable = PageRequest.of(pageParam.orElse(0), 10);
+        Page<ChiTietSanPham> listCTSP = _sanPhamChiTietRepo.locCTSPByIdChatLieu(idChatLieu, SPCTRepository.ACTIVE, pageable);
+        setupCommonAttributes(model);
+        Map<String, HinhAnh> hinhAnhMapCTSP = getHinhAnhMapCTSP();
+        model.addAttribute("listCTSP", listCTSP);
+        model.addAttribute("hinhAnhMapCTSP", hinhAnhMapCTSP);
+        return "/view/QLHD/modalThemSanPham.jsp";
+    }
+
+    //Lọc kiểu tay
+    @GetMapping("/locSPCTByKieuTay/{idKieuTay}")
+    public String locSPCTByKieuTay(
+            Model model,
+            @PathVariable String idKieuTay,
+            @RequestParam("page") Optional<Integer> pageParam
+    ) {
+
+        Pageable pageable = PageRequest.of(pageParam.orElse(0), 10);
+        Page<ChiTietSanPham> listCTSP = _sanPhamChiTietRepo.locCTSPByIdKieuTay(idKieuTay, SPCTRepository.ACTIVE, pageable);
+
+        setupCommonAttributes(model);
+
+        Map<String, HinhAnh> hinhAnhMapCTSP = getHinhAnhMapCTSP();
+        model.addAttribute("listCTSP", listCTSP);
+        model.addAttribute("hinhAnhMapCTSP", hinhAnhMapCTSP);
+        return "/view/QLHD/modalThemSanPham.jsp";
+    }
+
+    // Thiết lập các thuộc tính chung cho model
+    private void setupCommonAttributes(Model model) {
+        model.addAttribute("listHoaDon", hoaDonRepository.findAll());
+        model.addAttribute("listHDCT", hoaDonRepository.findAll());
+        model.addAttribute("listKH", _khachHangRepo.findAll());
+        model.addAttribute("listMauSac", mauSacRepository.findAll());
+        model.addAttribute("listKichThuoc", kichThuocRepo.findAll());
+        model.addAttribute("listChatLieu", chatLieuRepo.findAll());
+        model.addAttribute("listKieuTay", kieuTayRepo.findAll());
+    }
+
+    //lọc sản phẩm chi tiết
+    @PostMapping("filter")
+    public String filter(
+            Model model,
+            @RequestParam("idSanPham") String idSanPham,
+            @RequestParam("idMauSac") String idMauSac,
+            @RequestParam("idKichThuoc") String idKichThuoc,
+            @RequestParam("idChatLieu") String idChatLieu,
+            @RequestParam("idKieuTay") String idKieuTay,
+            @RequestParam("page") Optional<Integer> pageParam
+    ){
+        System.out.println("=========================================SANPHAM:===="+idSanPham);
+        System.out.println("=========================================MAUSAC:===="+idMauSac);
+        System.out.println("=========================================KICHTHUOC:===="+idKichThuoc);
+        System.out.println("=========================================CHATLIEU:===="+idChatLieu);
+        System.out.println("=========================================KIEUTAY:===="+idKieuTay);
+        Pageable pageable = PageRequest.of(pageParam.orElse(0), 10);
+//        Page<ChiTietSanPham> listCTSP = sanPhamChiTietRepository.findOneCombobox(idSanPham, idMauSac, idKichThuoc, idChatLieu, idKieuTay, pageable);
+
+        model.addAttribute("listHoaDon",hoaDonRepository.findAll());
+        model.addAttribute("listCTSP", _hoaDonChiTietRepo.findAll());
+        model.addAttribute("listKH",_khachHangRepo.findAll());
+        return "/view/QLHD/detail_bill.jsp";
+    }
+
+
+
+    // Chức năng phân trang chuyển page
+    @GetMapping("/api/detail/{idHD}/products")
+    @ResponseBody
+    public ResponseEntity<?> getProductsByPage(@PathVariable("idHD") String idHD,
+                                               @RequestParam(value = "page", defaultValue = "0") int pageParam) {
+        Page<ChiTietSanPham> listCTSP = getListChiTietSanPham(String.valueOf(pageParam));
+        Map<String, Object> response = new HashMap<>();
+        response.put("listCTSP", listCTSP.getContent());
+        response.put("totalPages", listCTSP.getTotalPages());
+
+        return ResponseEntity.ok(response);
+    }
+
+
+
 }
 

@@ -14,7 +14,6 @@ public class MauSizeSL {
     private String hinhAnh1;
     private String hinhAnh2;
     private String hinhAnh3;
-
     private String tenKichThuoc;
     private String tenMauSac;
     private Integer soLuong;

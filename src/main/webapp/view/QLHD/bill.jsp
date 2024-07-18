@@ -396,7 +396,7 @@
                             </div>
                             <div class="col-md-12 mt-3 d-flex justify-content-end">
                                 <input type="hidden" id="page" name="page" value="${param.page != null ? param.page : '0'}">
-                                <button type="submit" class="btn btn-success mr-2">Tìm kiếm</button>
+                                <button type="submit" class="btn btn-primary mr-2">Tìm kiếm</button>
                                 <a href="/hoa-don/hien-thi">
                                     <button type="button" class="btn btn-danger">Làm Mới</button>
                                 </a>

@@ -157,12 +157,6 @@ public interface HoaDonRepository
     @Query("select count(hd) from HoaDon hd where hd.trangThai >= 1 and hd.idKhachHang.id = ?1")
     int countByTrangThai(String idKH);
 
-//    select hd.Ma, hd.NgayTao, sum(cthd.SoLuong) as TongSoLuong, hd.TongTien, hd.TrangThai from HoaDon hd
-//    join ChiTietHoaDon cthd on cthd.idHoaDon = hd.id
-//    where hd.TrangThai = 1 and hd.IdKhachHang = '839D965B-9681-4074-9A66-5ACECE1545E6'
-//    group by hd.Ma, hd.NgayTao, hd.TongTien, hd.TrangThai
-//    order by hd.NgayTao desc
-
     @Query("SELECT hd FROM HoaDon hd WHERE NOT (hd.loaiHoaDon = 0 AND hd.trangThai = 0)")
     Page<HoaDon> findAllExcludingSpecificTypeAndStatus(Pageable pageable);
 
