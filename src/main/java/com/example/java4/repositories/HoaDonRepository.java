@@ -1,9 +1,9 @@
 package com.example.java4.repositories;
 
 import com.example.java4.entities.HoaDon;
-
 import com.example.java4.response.HoaDonResponse;
 import com.example.java4.entities.KhuyenMai;
+import com.example.java4.response.SanPhamChiTietResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -28,7 +28,7 @@ public interface HoaDonRepository
     public static final int DA_XAC_NHAN = 2;
     public static final int CHO_GIAO_HANG = 3;
     public static final int DANG_GIAO_HANG = 4;
-    public static final int GIAO_HANG_THANH_CONG = 5;
+    public static final int DA_THANH_TOAN = 5;
     public static final int DA_HOAN_THANH = 6;
     public static final int DA_HUY= 7;
     //Phương thức thanh toán
@@ -50,7 +50,6 @@ public interface HoaDonRepository
 //    @Query(value = "SELECT TOP 5 * FROM HoaDon where trangThai = 1 ORDER BY ngayTao DESC",
 //            nativeQuery = true)
     Page<HoaDon>  findByTrangThai(int trangThai,Pageable pageable);
-
 
 
     //    public Optional<HoaDon_Tai> findById(String id);
@@ -129,7 +128,6 @@ public interface HoaDonRepository
             "WHERE (hd.ma LIKE %?1% OR kh.sdt LIKE %?1%) AND (hd.loaiHoaDon = ?2) AND (hd.ngayTao BETWEEN ?3 AND ?4)")
     Page<HoaDon> searchByMaOrSdtAndLoaiHoaDonAndNgayTao(String keyword, Integer loaiHoaDon, LocalDateTime startDate, LocalDateTime endDate, Pageable pageable);
 
-
     @Query("select hd from HoaDon hd where hd.id=?1")
     HoaDon findByIdHoaDon(String idHoaDon);
 
@@ -156,8 +154,8 @@ public interface HoaDonRepository
     @Query("select count(hd) from HoaDon hd where hd.idKhachHang.id = ?1 and hd.trangThai = ?2")
     int countByHoaDonByTrangThai(String idKH, Integer trangThai);
 
-    @Query("select count(hd) from HoaDon hd where hd.trangThai >= 1")
-    int countByTrangThai();
+    @Query("select count(hd) from HoaDon hd where hd.trangThai >= 1 and hd.idKhachHang.id = ?1")
+    int countByTrangThai(String idKH);
 
 //    select hd.Ma, hd.NgayTao, sum(cthd.SoLuong) as TongSoLuong, hd.TongTien, hd.TrangThai from HoaDon hd
 //    join ChiTietHoaDon cthd on cthd.idHoaDon = hd.id
@@ -165,4 +163,10 @@ public interface HoaDonRepository
 //    group by hd.Ma, hd.NgayTao, hd.TongTien, hd.TrangThai
 //    order by hd.NgayTao desc
 
+    @Query("SELECT hd FROM HoaDon hd WHERE NOT (hd.loaiHoaDon = 0 AND hd.trangThai = 0)")
+    Page<HoaDon> findAllExcludingSpecificTypeAndStatus(Pageable pageable);
+
+    @Query("select hd from HoaDon hd " +
+            "where hd.idKhachHang.id = ?1 and hd.id = ?2")
+    List<HoaDon> getListHDbyIDKHAndIDHD(String idKH, String idHD);
 };

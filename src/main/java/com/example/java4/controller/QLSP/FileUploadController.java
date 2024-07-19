@@ -42,4 +42,37 @@ public class FileUploadController {
             model.addAttribute("message", "Failed to upload '" + file.getOriginalFilename() + "'");
         }
     }
+    @PostMapping("/uploads")
+    public void saveUploadFile(
+            @RequestParam("hinhAnh1File") MultipartFile newHinhAnh1File,
+            @RequestParam("hinhAnh2File") MultipartFile newHinhAnh2File,
+            @RequestParam("hinhAnh3File") MultipartFile newHinhAnh3File,
+            Model model
+    ) {
+        if (newHinhAnh1File.isEmpty()) {
+            model.addAttribute("message", "Vui lòng chọn hình ảnh 1.");
+        }
+        if(newHinhAnh2File.isEmpty()){
+            model.addAttribute("message", "Vui lòng chọn hình ảnh 2.");
+        }
+        if(newHinhAnh3File.isEmpty()){
+            model.addAttribute("message", "Vui lòng chọn hình ảnh 3.");
+        }
+        try {
+            byte[] bytesHinhAnh1 = newHinhAnh1File.getBytes();
+            byte[] bytesHinhAnh2 = newHinhAnh2File.getBytes();
+            byte[] bytesHinhAnh3 = newHinhAnh3File.getBytes();
+            Path path1 = Paths.get(uploadDir + File.separator +newHinhAnh1File.getOriginalFilename());
+            Path path2 = Paths.get(uploadDir + File.separator +newHinhAnh2File.getOriginalFilename());
+            Path path3 = Paths.get(uploadDir + File.separator +newHinhAnh3File.getOriginalFilename());
+            Files.write(path1, bytesHinhAnh1);
+            Files.write(path2, bytesHinhAnh2);
+            Files.write(path3, bytesHinhAnh3);
+            model.addAttribute("message", "You successfully uploaded");
+        } catch (IOException e) {
+            e.printStackTrace();
+            model.addAttribute("message", "Failed to upload");
+        }
+    }
+
 }

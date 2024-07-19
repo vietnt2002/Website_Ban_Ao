@@ -1,4 +1,5 @@
 package com.example.java4.controller.QLSP;
+
 import com.example.java4.entities.ChiTietSanPham;
 import com.example.java4.entities.noMap.ChiTietSanPhamNoMap;
 import com.example.java4.repositories.*;
@@ -19,6 +20,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
 @Controller
 @RequestMapping("chi-tiet-sp")
 public class SPCTController {
@@ -37,82 +39,93 @@ public class SPCTController {
     SPCTRepoNoMap spctRepoNoMap;
     @Autowired
     private SearchService search;
+
     public SPCTController() {
     }
 
     @CrossOrigin
     @GetMapping("/index")
-    public ResponseEntity<List<ChiTietSanPham>> index(@RequestParam("page")Optional<Integer> pageParam) {
+    public ResponseEntity<List<ChiTietSanPham>> index(@RequestParam("page") Optional<Integer> pageParam) {
         int page = pageParam.orElse(1);
-        Pageable pageable = PageRequest.of(page-1,20);
-        return ResponseEntity.ok(chiTietSPRepository.findByTrangThai(1,pageable).getContent());
+        Pageable pageable = PageRequest.of(page - 1, 20);
+        return ResponseEntity.ok(chiTietSPRepository.findByTrangThai(1, pageable).getContent());
     }
 
     @CrossOrigin
     @GetMapping("/detail-byidsp-stt1/{idSP}")
-    public ResponseEntity<List<ChiTietSanPham>> GetIndexByIdSP1(@PathVariable(value = "idSP") String idSP,@RequestParam("page")Optional<Integer> pageParam) {
+    public ResponseEntity<List<ChiTietSanPham>> GetIndexByIdSP1(@PathVariable(value = "idSP") String idSP, @RequestParam("page") Optional<Integer> pageParam) {
         int page = pageParam.orElse(1);
-        Pageable pageable = PageRequest.of(page-1,20);
-        return ResponseEntity.ok(chiTietSPRepository.findByIdSP(1,idSP,pageable).getContent());
+        Pageable pageable = PageRequest.of(page - 1, 20);
+        return ResponseEntity.ok(chiTietSPRepository.findByIdSP(1, idSP, pageable).getContent());
     }
+
     @CrossOrigin
     @GetMapping("/detail-byidsp-all/{idSP}")
-    public ResponseEntity<List<ChiTietSanPham>> GetIndexByIdSPAll(@PathVariable(value = "idSP") String idSP,@RequestParam("page")Optional<Integer> pageParam) {
+    public ResponseEntity<List<ChiTietSanPham>> GetIndexByIdSPAll(@PathVariable(value = "idSP") String idSP, @RequestParam("page") Optional<Integer> pageParam) {
         int page = pageParam.orElse(1);
-        Pageable pageable = PageRequest.of(page-1,20);
-        return ResponseEntity.ok(chiTietSPRepository.findByIdSPAll(idSP,pageable).getContent());
+        Pageable pageable = PageRequest.of(page - 1, 20);
+        return ResponseEntity.ok(chiTietSPRepository.findByIdSPAll(idSP, pageable).getContent());
     }
+
     @CrossOrigin
     @GetMapping("/get-all")
-    public ResponseEntity<List<ChiTietSanPham>> getAll(@RequestParam("page")Optional<Integer> pageParam) {
+    public ResponseEntity<List<ChiTietSanPham>> getAll(@RequestParam("page") Optional<Integer> pageParam) {
         int page = pageParam.orElse(1);
-        Pageable pageable = PageRequest.of(page-1,20);
+        Pageable pageable = PageRequest.of(page - 1, 20);
         return ResponseEntity.ok(chiTietSPRepository.findAllByPage(pageable).getContent());
     }
+
     @CrossOrigin
     @GetMapping("count")
     public ResponseEntity<Integer> getCount() {
         return ResponseEntity.ok(chiTietSPRepository.getCount());
     }
+
     @CrossOrigin
     @GetMapping("count-stt1")
     public ResponseEntity<Integer> getCountstt1() {
         return ResponseEntity.ok(chiTietSPRepository.getCountStt1());
     }
+
     @CrossOrigin
     @GetMapping("count-stt0")
     public ResponseEntity<Integer> getCountstt0() {
         return ResponseEntity.ok(chiTietSPRepository.getCountStt0());
     }
+
     @CrossOrigin
     @GetMapping("count-byidsp/{idsp}")
     public ResponseEntity<Integer> getCountByidsp(@PathVariable("idsp") String idSP) {
         return ResponseEntity.ok(chiTietSPRepository.getCountByidsp(idSP));
     }
+
     @CrossOrigin
     @GetMapping("count-stt1-byidsp/{idsp}")
     public ResponseEntity<Integer> getCountstt1ByIdsp(@PathVariable("idsp") String idSP) {
         return ResponseEntity.ok(chiTietSPRepository.getCountStt1Byidsp(idSP));
     }
+
     @CrossOrigin
     @GetMapping("count-stt0-byidsp/{idsp}")
     public ResponseEntity<Integer> getCountstt0ByIdsp(@PathVariable("idsp") String idSP) {
         return ResponseEntity.ok(chiTietSPRepository.getCountStt0Byidsp(idSP));
     }
+
     @CrossOrigin
     @GetMapping("/detail/{id}")
     public ResponseEntity<ChiTietSanPham> getDetail(@PathVariable(value = "id") ChiTietSanPham chiTietSP) {
         return ResponseEntity.ok(chiTietSP);
     }
+
     @CrossOrigin
     @PostMapping("/update/{id}")
     public ResponseEntity<Boolean> doUpdate(@PathVariable(value = "id") ChiTietSanPhamNoMap chiTietSP,
                                             @RequestBody @Valid SPCTUpdate newChiTietSP,
                                             BindingResult rs) {
-        if(rs.hasErrors()){
-            System.out.println("update error: "+rs);
+        if (rs.hasErrors()) {
+            System.out.println("update error: " + rs);
             return ResponseEntity.ok(false);
-        } else{
+        } else {
             chiTietSP.setIdMauSac(newChiTietSP.getIdMauSac());
             chiTietSP.setIdKichThuoc(newChiTietSP.getIdKichThuoc());
             chiTietSP.setIdChatLieu(newChiTietSP.getIdChatLieu());
@@ -123,7 +136,7 @@ public class SPCTController {
             chiTietSP.setGiaBan(BigDecimal.valueOf(Long.valueOf(newChiTietSP.getGiaBan())));
             chiTietSP.setTrangThai(Integer.valueOf(newChiTietSP.getTrangThai()));
             spctRepoNoMap.save(chiTietSP);
-            return  ResponseEntity.ok(true);
+            return ResponseEntity.ok(true);
         }
     }
 
@@ -142,29 +155,40 @@ public class SPCTController {
 
     @CrossOrigin
     @PostMapping("save")
-    public ResponseEntity<Boolean> Store(
+    public ResponseEntity<ChiTietSanPhamNoMap> Store(
             @RequestBody @Valid SPCTStore newChiTietSP,
             BindingResult result
     ) {
         if (result.hasErrors()) {
             System.out.println("temp error: " + result);
-            return ResponseEntity.ok(false);
+            return ResponseEntity.ok(null);
         } else {
-            LocalDateTime localNow = LocalDateTime.now();
-            ChiTietSanPhamNoMap chiTietSP = new ChiTietSanPhamNoMap();
-            chiTietSP.setIdSanPham(newChiTietSP.getIdSp());
-            chiTietSP.setIdMauSac(newChiTietSP.getIdMauSac());
-            chiTietSP.setIdKichThuoc(newChiTietSP.getIdKichThuoc());
-            chiTietSP.setIdChatLieu(newChiTietSP.getIdChatLieu());
-            chiTietSP.setIdKieuTay(newChiTietSP.getIdKieuTay());
-            chiTietSP.setMoTa(newChiTietSP.getMoTa());
-            chiTietSP.setSoLuong(Integer.valueOf(newChiTietSP.getSoLuong()));
-            chiTietSP.setGiaBan(BigDecimal.valueOf(Long.valueOf(newChiTietSP.getGiaNhap())));
-            chiTietSP.setGiaBan(BigDecimal.valueOf(Long.valueOf(newChiTietSP.getGiaBan())));
-            chiTietSP.setTrangThai(Integer.valueOf(newChiTietSP.getTrangThai()));
-            chiTietSP.setNgayTao(localNow);
-            spctRepoNoMap.save(chiTietSP);
-            return ResponseEntity.ok(true);
+            ChiTietSanPhamNoMap spctChecked = spctRepoNoMap.findDuplicatedRecord(newChiTietSP.getIdSp(), newChiTietSP.getIdMauSac(), newChiTietSP.getIdKichThuoc(), newChiTietSP.getIdChatLieu(), newChiTietSP.getIdKieuTay());
+            if (spctChecked != null) {
+                System.out.println("do duplicated adding");
+                spctChecked.setGiaNhap(BigDecimal.valueOf(Long.valueOf(newChiTietSP.getGiaNhap())));
+                spctChecked.setGiaBan(BigDecimal.valueOf(Long.valueOf(newChiTietSP.getGiaBan())));
+                spctChecked.setTrangThai(Integer.valueOf(newChiTietSP.getTrangThai()));
+                spctChecked.setSoLuong(Integer.valueOf(newChiTietSP.getSoLuong()) + spctChecked.getSoLuong());
+                spctChecked.setMoTa(newChiTietSP.getMoTa());
+                return ResponseEntity.ok(spctRepoNoMap.save(spctChecked));
+            } else {
+                System.out.println("do normal adding");
+                LocalDateTime localNow = LocalDateTime.now();
+                ChiTietSanPhamNoMap chiTietSP = new ChiTietSanPhamNoMap();
+                chiTietSP.setIdSanPham(newChiTietSP.getIdSp());
+                chiTietSP.setIdMauSac(newChiTietSP.getIdMauSac());
+                chiTietSP.setIdKichThuoc(newChiTietSP.getIdKichThuoc());
+                chiTietSP.setIdChatLieu(newChiTietSP.getIdChatLieu());
+                chiTietSP.setIdKieuTay(newChiTietSP.getIdKieuTay());
+                chiTietSP.setMoTa(newChiTietSP.getMoTa());
+                chiTietSP.setSoLuong(Integer.valueOf(newChiTietSP.getSoLuong()));
+                chiTietSP.setGiaNhap(BigDecimal.valueOf(Long.valueOf(newChiTietSP.getGiaNhap())));
+                chiTietSP.setGiaBan(BigDecimal.valueOf(Long.valueOf(newChiTietSP.getGiaBan())));
+                chiTietSP.setTrangThai(Integer.valueOf(newChiTietSP.getTrangThai()));
+                chiTietSP.setNgayTao(localNow);
+                return ResponseEntity.ok(spctRepoNoMap.save(chiTietSP));
+            }
         }
     }
 
