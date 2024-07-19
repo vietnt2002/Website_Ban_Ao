@@ -14,6 +14,7 @@ public class KhuyenMai {
     private Date ngayBatDau;
     private Date ngayKetThuc;
     private BigDecimal soTienGiam;
+    private BigDecimal apDung;
     private Integer soLuong;
     private Integer trangThai;
 
@@ -73,6 +74,15 @@ public class KhuyenMai {
         this.soTienGiam = soTienGiam;
     }
 
+    @Column(name = "ApDung")
+    public BigDecimal getApDung() {
+        return apDung;
+    }
+
+    public void setApDung(BigDecimal apDung) {
+        this.apDung = apDung;
+    }
+
     @Column(name = "SoLuong")
     public Integer getSoLuong() {
         return soLuong;
@@ -96,11 +106,11 @@ public class KhuyenMai {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         KhuyenMai khuyenMai = (KhuyenMai) o;
-        return Objects.equals(id, khuyenMai.id) && Objects.equals(ma, khuyenMai.ma) && Objects.equals(ten, khuyenMai.ten) && Objects.equals(ngayBatDau, khuyenMai.ngayBatDau) && Objects.equals(ngayKetThuc, khuyenMai.ngayKetThuc) && Objects.equals(soTienGiam, khuyenMai.soTienGiam) && Objects.equals(soLuong, khuyenMai.soLuong) && Objects.equals(trangThai, khuyenMai.trangThai);
+        return Objects.equals(id, khuyenMai.id) && Objects.equals(ma, khuyenMai.ma) && Objects.equals(ten, khuyenMai.ten) && Objects.equals(ngayBatDau, khuyenMai.ngayBatDau) && Objects.equals(ngayKetThuc, khuyenMai.ngayKetThuc) && Objects.equals(soTienGiam, khuyenMai.soTienGiam) && Objects.equals(apDung, khuyenMai.apDung) && Objects.equals(soLuong, khuyenMai.soLuong) && Objects.equals(trangThai, khuyenMai.trangThai);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, ma, ten, ngayBatDau, ngayKetThuc, soTienGiam, soLuong, trangThai);
+        return Objects.hash(id, ma, ten, ngayBatDau, ngayKetThuc, soTienGiam, apDung, soLuong, trangThai);
     }
 }

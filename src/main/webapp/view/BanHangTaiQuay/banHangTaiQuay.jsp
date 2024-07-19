@@ -56,6 +56,11 @@
             overflow: scroll;
         }
 
+        .table-scroll3{
+            height: 370px;
+            overflow: scroll;
+        }
+
         ::-webkit-scrollbar {
             width: 10px;
             background-color: lightgray;
@@ -630,9 +635,9 @@
                                     <div id="vnpay-div" class="content-div hidden">
                                         <div class="row mb-3 mt-4 justify-content-end text-end">
                                             <div class="col-sm-10">
-                                                <div class="col-sm-10">
-                                                    <button id="checkBtn2" idhd =${hoaDon.id} type="submit" class="btn btn-success ">THANH TOÁN</button>
-                                                </div>
+<%--                                                <div class="col-sm-10">--%>
+<%--                                                    <button id="checkBtn2" idhd =${hoaDon.id} type="submit" class="btn btn-success ">THANH TOÁN</button>--%>
+<%--                                                </div>--%>
 
                                                 <form class="thanhToan-form" action="/ban-hang-tai-quay/pay/${total-hoaDon.idKhuyenMai.soTienGiam}/${hoaDon.ma}" method="get">
                                                     <button class="thanhToan-button2 btn btn-success" type="button" >THANH TOÁN</button>
@@ -763,37 +768,42 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
+                      <div class="">
+                          <table class="table table-hover">
+                              <thead>
+                              <tr>
+                                  <th>Tên</th>
+                                  <th>Giảm tối đa</th>
+                                  <th>Áp dụng</th>
+                                  <th>Số lượng</th>
+                                  <th>Chọn</th>
+                              </tr>
+                              </thead>
+                              <tbody>
 
-                        <table class="table table-hover">
-                            <thead>
-                            <tr>
-                                <th>Mã</th>
-                                <th>Tên</th>
-                                <th>Giảm tối đa</th>
-                                <%--                                <th>Áp dụng</th>--%>
-                                <th>Chọn</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <c:forEach items="${listKM}" var="km">
-                                <tr>
-                                    <td>${km.ma}</td>
-                                    <td>${km.ten}</td>
-                                    <td>${km.soTienGiam}</td>
-                                    <td>
-                                        <form action="/ban-hang-tai-quay/find-khuyen-mai/${km.id}" method="post" onsubmit="return validateAddToMaGiamGia();">
-                                            <input id="selectedMaGiamGia" type="hidden" name="idHoaDon" value="${hoaDon.id}">
-                                            <input  type="hidden" name="idKMBanDau" value="${hoaDon.idKhuyenMai.id}">
-                                            <button class="btn btn-primary" type="submit">
-                                                <i class="bi bi-plus-square"></i>
-                                            </button>
-                                        </form>
-                                    </td>
-                                </tr>
-                            </c:forEach>
-                            </tbody>
-                        </table>
+                                  <c:forEach items="${listKM}" var="km">
+                                      <c:if test="${km.apDung<=total}">
+                                      <tr>
+                                          <td>${km.ten}</td>
+                                          <td class="price">${km.soTienGiam}</td>
+                                          <td class="price">${km.apDung}</td>
+                                          <td>${km.soLuong}</td>
+                                          <td>
+                                              <form action="/ban-hang-tai-quay/find-khuyen-mai/${km.id}" method="post" onsubmit="return validateAddToMaGiamGia();">
+                                                  <input id="selectedMaGiamGia" type="hidden" name="idHoaDon" value="${hoaDon.id}">
+                                                  <input  type="hidden" name="idKMBanDau" value="${hoaDon.idKhuyenMai.id}">
+                                                  <button class="btn btn-primary" type="submit">
+                                                      <i class="bi bi-plus-square"></i>
+                                                  </button>
+                                              </form>
+                                          </td>
+                                      </tr>
+                                      </c:if>
+                                  </c:forEach>
 
+                              </tbody>
+                          </table>
+                      </div>
                     </div>
                 </div>
             </div>
@@ -1523,65 +1533,65 @@
 
 
     //Test button VNPay
-    const checkBtn2 = document.querySelectorAll('#checkBtn2');
-    checkBtn2.forEach(button => {
-        button.addEventListener('click', function () {
-            console.log("test check btn");
-            var idHD = document.getElementsByName("idHD")[0].value;
-            var idKH  = document.getElementsByName("idKH")[0].value;
-            var idKhuyenMai = document.getElementsByName("idKhuyenMai")[0].value;
-
-            var tongTienInput = document.getElementById('tongTien');
-            function getRawValue(input) {
-                var value = input.value.replace(/\D/g, ''); // Loại bỏ tất cả các ký tự không phải số
-                return parseInt(value, 10);
-            }
-            var tongTien = getRawValue(tongTienInput);
-
-            console.log("====================== id hd:",idHD);
-            console.log("====================== id kh:",idKH);
-            console.log("====================== id khuyen mai:",idKhuyenMai);
-            console.log("====================== tong tien:",tongTien);
-            if(!isNaN(tongTien)){
-                Swal.fire({
-                    title: 'Xác nhận thanh toán?',
-                    text: "Dữ liệu sẽ được lưu lại!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Vâng,Thanh toán!',
-                    cancelButtonText: 'Hủy'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        fetch(`/ban-hang-tai-quay/pay/`+idHD+'?idKhuyenMai='+idKhuyenMai+'&idKH='+idKH+'&tongTien='+tongTien,
-                            { method: 'POST' }).then(() => {
-                            Swal.fire(
-                                'Đã thanh toán!',
-                                'Dữ liệu đã được ghi nhận.',
-                                'success'
-                            )
-                                .then(() => {
-                                window.location.href = '/ban-hang-tai-quay';
-                            });
-                            button.closest('tr').remove();
-                        });
-                        button.closest('tr').remove();
-                        thongBao.textContent =  "";
-                    }
-                });
-            }
-            else{
-                // thongBao.textContent =  "Vui lòng kiểm tra lại thanh toán";
-                Swal.fire({
-                    title: 'Lỗi!',
-                    text: 'Vui lòng nhập tiền khách đưa trước khi thanh toán.',
-                    icon: 'error',
-                    confirmButtonText: 'OK'
-                });
-            }
-        });
-    });
+    // const checkBtn2 = document.querySelectorAll('#checkBtn2');
+    // checkBtn2.forEach(button => {
+    //     button.addEventListener('click', function () {
+    //         console.log("test check btn");
+    //         var idHD = document.getElementsByName("idHD")[0].value;
+    //         var idKH  = document.getElementsByName("idKH")[0].value;
+    //         var idKhuyenMai = document.getElementsByName("idKhuyenMai")[0].value;
+    //
+    //         var tongTienInput = document.getElementById('tongTien');
+    //         function getRawValue(input) {
+    //             var value = input.value.replace(/\D/g, ''); // Loại bỏ tất cả các ký tự không phải số
+    //             return parseInt(value, 10);
+    //         }
+    //         var tongTien = getRawValue(tongTienInput);
+    //
+    //         console.log("====================== id hd:",idHD);
+    //         console.log("====================== id kh:",idKH);
+    //         console.log("====================== id khuyen mai:",idKhuyenMai);
+    //         console.log("====================== tong tien:",tongTien);
+    //         if(!isNaN(tongTien)){
+    //             Swal.fire({
+    //                 title: 'Xác nhận thanh toán?',
+    //                 text: "Dữ liệu sẽ được lưu lại!",
+    //                 icon: 'warning',
+    //                 showCancelButton: true,
+    //                 confirmButtonColor: '#3085d6',
+    //                 cancelButtonColor: '#d33',
+    //                 confirmButtonText: 'Vâng,Thanh toán!',
+    //                 cancelButtonText: 'Hủy'
+    //             }).then((result) => {
+    //                 if (result.isConfirmed) {
+    //                     fetch(`/ban-hang-tai-quay/pay/`+idHD+'?idKhuyenMai='+idKhuyenMai+'&idKH='+idKH+'&tongTien='+tongTien,
+    //                         { method: 'POST' }).then(() => {
+    //                         Swal.fire(
+    //                             'Đã thanh toán!',
+    //                             'Dữ liệu đã được ghi nhận.',
+    //                             'success'
+    //                         )
+    //                             .then(() => {
+    //                             window.location.href = '/ban-hang-tai-quay';
+    //                         });
+    //                         button.closest('tr').remove();
+    //                     });
+    //                     button.closest('tr').remove();
+    //                     thongBao.textContent =  "";
+    //                 }
+    //             });
+    //         }
+    //         else{
+    //             // thongBao.textContent =  "Vui lòng kiểm tra lại thanh toán";
+    //             Swal.fire({
+    //                 title: 'Lỗi!',
+    //                 text: 'Vui lòng nhập tiền khách đưa trước khi thanh toán.',
+    //                 icon: 'error',
+    //                 confirmButtonText: 'OK'
+    //             });
+    //         }
+    //     });
+    // });
 
 
     //C2

@@ -7,6 +7,7 @@ import com.example.java4.repositories.*;
 import com.example.java4.request.dangNhap.NVSignUpRequest;
 import com.example.java4.request.req_khang.PaymentResDTO;
 import com.example.java4.request.req_viet.NhanVienRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.net.URLEncoder;
@@ -1085,16 +1087,18 @@ public class BanTaiQuayController {
 
     // Tích hợp VNPay
     @GetMapping("/pay/{tongTien}/{maHoaDon}")
-    public ResponseEntity<?> getPay(
+    public void redirectToPaymentGateway(
+            @RequestParam(value = "bankcode", required = false) String bankCode,
             @PathVariable Long tongTien,
-            @PathVariable String maHoaDon
-    ) throws UnsupportedEncodingException, UnsupportedEncodingException {
+            @PathVariable String maHoaDon,
+            HttpServletResponse response
+    ) throws IOException {
 
         String vnp_Version = "2.1.0";
         String vnp_Command = "pay";
         String orderType = "other";
         long amount = tongTien*100;
-        String bankCode = "NCB";
+//        String bankCode = "NCB";
 
 //        String vnp_TxnRef = ConfigVNpay.getRandomNumber(8);
         String vnp_TxnRef = maHoaDon;
@@ -1109,7 +1113,11 @@ public class BanTaiQuayController {
         vnp_Params.put("vnp_Amount", String.valueOf(amount));
         vnp_Params.put("vnp_CurrCode", "VND");
 
-        vnp_Params.put("vnp_BankCode", bankCode);
+        if (bankCode != null && !bankCode.isEmpty()) {
+            vnp_Params.put("vnp_BankCode", bankCode);
+        }
+
+//        vnp_Params.put("vnp_BankCode", bankCode);
         vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
         vnp_Params.put("vnp_OrderInfo", "Thanh toan don hang:" + vnp_TxnRef);
         vnp_Params.put("vnp_OrderType", orderType);
@@ -1158,22 +1166,28 @@ public class BanTaiQuayController {
         paymentResDTO.setStatus("ok");
         paymentResDTO.setMessage("Successfully");
         paymentResDTO.setURL(paymentUrl);
+////
+        String redirectUrl = String.format(
+                "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html?vnp_Amount=%s&vnp_Command=%s&vnp_CreateDate=%s&vnp_CurrCode=%s&vnp_ExpireDate=%s&vnp_IpAddr=%s&vnp_Locale=%s&vnp_OrderInfo=%s&vnp_OrderType=%s&vnp_ReturnUrl=%s&vnp_TmnCode=%s&vnp_TxnRef=%s&vnp_Version=%s&vnp_SecureHash=%s",
+                String.valueOf(amount), vnp_Command, vnp_CreateDate, "VND", vnp_ExpireDate, vnp_IpAddr, "vn", "Thanh toan don hang:" + vnp_TxnRef, "other", ConfigVNpay.vnp_ReturnUrl, vnp_TmnCode, vnp_TxnRef, vnp_Version, vnp_SecureHash
+        );
+////
 
-        LocalDateTime now =LocalDateTime.now();
-        HoaDon hoaDon = hoaDonRepository.findByIdHoaDon(idHoaDon);
-        if (hoaDon.getId().equals(idHoaDon)){
-            BigDecimal big = new BigDecimal(tongTien);
-            hoaDon.setTongTien(big);
-            hoaDon.setNgayThanhToan(now);
-            hoaDon.setLoaiHoaDon(0);
-            hoaDon.setTrangThai(6);
-            hoaDon.setPhuongThucThanhToan(1);
-            hoaDonRepository.save(hoaDon);
-        }
+//        LocalDateTime now =LocalDateTime.now();
+//        HoaDon hoaDon = hoaDonRepository.findByIdHoaDon(idHoaDon);
+//        if (hoaDon.getId().equals(idHoaDon)){
+//            BigDecimal big = new BigDecimal(tongTien);
+//            hoaDon.setTongTien(big);
+//            hoaDon.setNgayThanhToan(now);
+//            hoaDon.setLoaiHoaDon(0);
+//            hoaDon.setTrangThai(6);
+//            hoaDon.setPhuongThucThanhToan(1);
+//            hoaDonRepository.save(hoaDon);
+//        }
 
-        return ResponseEntity.status(HttpStatus.OK).body(paymentResDTO);
+//        return ResponseEntity.status(HttpStatus.OK).body(paymentResDTO);
 
-//        return ResponseEntity.ok(paymentUrl);
+        response.sendRedirect(redirectUrl);
     }
 
 
@@ -1186,8 +1200,8 @@ public class BanTaiQuayController {
             @RequestParam(value = "vnp_CardType") String cardType, Model model
     ){
 
-//        int tt = Integer.valueOf(amount)/100;
-        System.out.println("----------------------------------"+amount);
+        int tt = Integer.valueOf(amount)/100;
+        System.out.println("----------------------------------"+tt);
         System.out.println("----------------------------------"+bankCode);
         System.out.println("----------------------------------"+responseCode);
         System.out.println("----------------------------------"+orderInfo);
@@ -1200,10 +1214,21 @@ public class BanTaiQuayController {
         }
 
         LocalDateTime now =LocalDateTime.now();
+        HoaDon hoaDon = hoaDonRepository.findByIdHoaDon(idHoaDon);
+        if (hoaDon.getId().equals(idHoaDon)){
+            BigDecimal big = new BigDecimal(tt);
+            hoaDon.setTongTien(big);
+            hoaDon.setNgayThanhToan(now);
+            hoaDon.setLoaiHoaDon(0);
+            hoaDon.setTrangThai(6);
+            hoaDon.setPhuongThucThanhToan(1);
+            hoaDonRepository.save(hoaDon);
+        }
 
         model.addAttribute("amount",amount);
         model.addAttribute("ngayTao",now);
         model.addAttribute("maHD",orderInfo);
+
 
 //        return ResponseEntity.ok("Thanh toán thành công");
         return "/view/BanHangTaiQuay/thongBao.jsp";
