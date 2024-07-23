@@ -55,9 +55,20 @@ public interface SPCTRepository extends JpaRepository<ChiTietSanPham, String>, J
     @Query("SELECT ctsp  FROM ChiTietSanPham ctsp WHERE ctsp.id = ?1 ")
     ChiTietSanPham findByIdCTSP(String id);
 
-//    @Query("")
 
     @Query("SELECT new com.example.java4.response.SPCTResponse(ctsp.id, sp.id, sp.ma, sp.ten, kta.ten, ctsp.giaBan, ha.hinhAnh1)" +
+            "from ChiTietSanPham ctsp " +
+            "join SanPham sp on sp.id = ctsp.idSanPham.id " +
+            "join MauSac ms on ms.id = ctsp.idMauSac.id " +
+            "join KichThuoc kth on  kth.id = ctsp.idKichThuoc.id " +
+            "join ChatLieu cl on cl.id = ctsp.idChatLieu.id " +
+            "join KieuTay kta on kta.id = ctsp.idKieuTay.id " +
+            "join HinhAnh ha on ctsp.id = ha.idCTSP.id " +
+            "where ctsp.id in (select min (innerCtsp.id) from ChiTietSanPham innerCtsp group by innerCtsp.idSanPham.id)")
+    Page<SPCTResponse> getAllSP(Pageable pageable);
+
+
+    @Query(
             "FROM ChiTietSanPham ctsp " +
             "JOIN SanPham sp ON sp.id = ctsp.idSanPham.id " +
             "JOIN MauSac ms ON ms.id = ctsp.idMauSac.id " +
@@ -78,6 +89,7 @@ public interface SPCTRepository extends JpaRepository<ChiTietSanPham, String>, J
 //            "where sp.id = ?1")
 //    List<MauSizeSL> getListMauSizeSL(String idSP);
 
+    //Lấy danh sách màu sắc, kích thước, số lượng để sang js lọc
     @Query("select new com.example.java4.response.MauSizeSL (ha.hinhAnh1, ha.hinhAnh2, ha.hinhAnh3, kth.ten, ms.ten, ctsp.soLuong) " +
             "from ChiTietSanPham ctsp " +
             "join KichThuoc kth on kth.id = ctsp.idKichThuoc.id " +

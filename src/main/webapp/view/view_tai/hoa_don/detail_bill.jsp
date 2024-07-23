@@ -551,7 +551,6 @@
                             <%-- Hiển thị stepper cho bán hàng online (LoaiHD != 0) --%>
                             <c:otherwise>
                                 <div class="stepper-horizontal" id="stepper_online">
-
                                     <c:choose>
                                         <c:when test="${step == 'confirmation'}">
                                             <div class="step active" id="step_online_1">
@@ -560,25 +559,6 @@
                                                 </div>
                                                 <div class="step-title">Chờ xác nhận</div>
                                                 <div class="step-date">${hoaDonDTO.ngayTao}</div>
-                                            </div>
-                                        </c:when>
-                                        <c:when test="${step == 'confirmed'}">
-                                            <div class="step active" id="step_online_1">
-                                                <div class="step-icon-wrapper">
-                                                    <i class="bi bi-hourglass-split step-icon"></i>
-                                                </div>
-                                                <div class="step-title">Chờ xác nhận</div>
-                                                <div class="step-date">${hoaDonDTO.ngayTao}</div>
-                                            </div>
-                                            <div class="step-arrow">
-                                                <i class="bi bi-arrow-right"></i>
-                                            </div>
-                                            <div class="step active" id="step_online_2">
-                                                <div class="step-icon-wrapper">
-                                                    <i class="bi bi-check-circle step-icon"></i>
-                                                </div>
-                                                <div class="step-title">Đã xác nhận</div>
-                                                <div class="step-date">${hoaDonDTO.ngayDaXacNhan}</div>
                                             </div>
                                         </c:when>
                                         <c:when test="${step == 'delivery'}">
@@ -596,21 +576,11 @@
                                                 <div class="step-icon-wrapper">
                                                     <i class="bi bi-check-circle step-icon"></i>
                                                 </div>
-                                                <div class="step-title">Đã xác nhận</div>
+                                                <div class="step-title">Chờ giao hàng</div>
                                                 <div class="step-date">${hoaDonDTO.ngayDaXacNhan}</div>
                                             </div>
-                                            <div class="step-arrow">
-                                                <i class="bi bi-arrow-right"></i>
-                                            </div>
-                                            <div class="step active" id="step_online_3">
-                                                <div class="step-icon-wrapper">
-                                                    <i class="bi bi-truck step-icon"></i>
-                                                </div>
-                                                <div class="step-title">Chờ giao hàng</div>
-                                                <div class="step-date">${hoaDonDTO.ngayChoGiaoHang}</div>
-                                            </div>
                                         </c:when>
-                                        <c:when test="${step == 'delivered'}">
+                                        <c:when test="${step == 'delivering'}">
                                             <div class="step active" id="step_online_1">
                                                 <div class="step-icon-wrapper">
                                                     <i class="bi bi-hourglass-split step-icon"></i>
@@ -621,22 +591,12 @@
                                             <div class="step-arrow">
                                                 <i class="bi bi-arrow-right"></i>
                                             </div>
-                                            <div class="step active" id="step_online_2">
-                                                <div class="step-icon-wrapper">
-                                                    <i class="bi bi-check-circle step-icon"></i>
-                                                </div>
-                                                <div class="step-title">Đã xác nhận</div>
-                                                <div class="step-date">${hoaDonDTO.ngayDaXacNhan}</div>
-                                            </div>
-                                            <div class="step-arrow">
-                                                <i class="bi bi-arrow-right"></i>
-                                            </div>
                                             <div class="step active" id="step_online_3">
                                                 <div class="step-icon-wrapper">
                                                     <i class="bi bi-truck step-icon"></i>
                                                 </div>
                                                 <div class="step-title">Chờ giao hàng</div>
-                                                <div class="step-date">${hoaDonDTO.ngayChoGiaoHang}</div>
+                                                <div class="step-date">${hoaDonDTO.ngayDaXacNhan}</div>
                                             </div>
                                             <div class="step-arrow">
                                                 <i class="bi bi-arrow-right"></i>
@@ -645,7 +605,7 @@
                                                 <div class="step-icon-wrapper">
                                                     <i class="bi bi-box-seam step-icon"></i>
                                                 </div>
-                                                <div class="step-title">Đang giao hàng</div>
+                                                <div class="step-title">Đang Vận Chuyển</div>
                                                 <div class="step-date">${hoaDonDTO.ngayDangGiaoHang}</div>
                                             </div>
                                         </c:when>
@@ -660,22 +620,12 @@
                                             <div class="step-arrow">
                                                 <i class="bi bi-arrow-right"></i>
                                             </div>
-                                            <div class="step active" id="step_online_2">
-                                                <div class="step-icon-wrapper">
-                                                    <i class="bi bi-check-circle step-icon"></i>
-                                                </div>
-                                                <div class="step-title">Đã xác nhận</div>
-                                                <div class="step-date">${hoaDonDTO.ngayDaXacNhan}</div>
-                                            </div>
-                                            <div class="step-arrow">
-                                                <i class="bi bi-arrow-right"></i>
-                                            </div>
                                             <div class="step active" id="step_online_3">
                                                 <div class="step-icon-wrapper">
                                                     <i class="bi bi-truck step-icon"></i>
                                                 </div>
                                                 <div class="step-title">Chờ giao hàng</div>
-                                                <div class="step-date">${hoaDonDTO.ngayChoGiaoHang}</div>
+                                                <div class="step-date">${hoaDonDTO.ngayDaXacNhan}</div>
                                             </div>
                                             <div class="step-arrow">
                                                 <i class="bi bi-arrow-right"></i>
@@ -684,7 +634,7 @@
                                                 <div class="step-icon-wrapper">
                                                     <i class="bi bi-box-seam step-icon"></i>
                                                 </div>
-                                                <div class="step-title">Đang giao hàng</div>
+                                                <div class="step-title">Đang vận chuyển</div>
                                                 <div class="step-date">${hoaDonDTO.ngayDangGiaoHang}</div>
                                             </div>
                                             <div class="step-arrow">
@@ -694,7 +644,7 @@
                                                 <div class="step-icon-wrapper">
                                                     <i class="bi bi-credit-card-2-back step-icon"></i>
                                                 </div>
-                                                <div class="step-title">Đã hoàn thành</div>
+                                                <div class="step-title">Hoàn thành</div>
                                                 <div class="step-date">${hoaDonDTO.ngayThanhToan}</div>
                                             </div>
                                         </c:when>
@@ -1745,18 +1695,6 @@
     </c:if>
 
 
-    // Nút in hóa đơn để giao hàng
-    // document.getElementById('printDeliveryButton').addEventListener('click', () => {
-    //     const element = document.querySelector('.container');
-    //     const opt = {
-    //         margin: 1,
-    //         filename: 'phieu_giao_hang.pdf',
-    //         image: {type: 'jpeg', quality: 0.98},
-    //         html2canvas: {scale: 2},
-    //         jsPDF: {unit: 'cm', format: 'a4', orientation: 'portrait'}
-    //     };
-    //     html2pdf().from(element).set(opt).save();
-    // });
 
     // Validate ô input mô tả xác nhận
     $(document).ready(function () {

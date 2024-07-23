@@ -1214,7 +1214,7 @@ public class BanTaiQuayController {
 //        return ResponseEntity.ok("Thanh toán thành công");
         return "/view/BanHangTaiQuay/thongBao.jsp";
     }
-        // Hàm thêm đối tượng lịch sử hóa đơn
+    // Hàm thêm đối tượng lịch sử hóa đơn
     public void createLichSuHoaDon(HoaDon hoaDon, NhanVien nhanVien,String ghiChu) {
         LichSuHoaDon lichSuHoaDon = new LichSuHoaDon();
         lichSuHoaDon.setIdHoaDon(hoaDon);
