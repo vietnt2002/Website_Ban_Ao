@@ -54,6 +54,17 @@
             text-decoration: underline;
         }
 
+        .dropdown-menu {
+            display: none;
+        }
+
+        .dropdown:hover .dropdown-menu {
+            display: block;
+            position: absolute;
+            top: 100%;
+            z-index: 1000;
+        }
+
         .totalQuantityCart {
             width: 15px;
             height: 15px;
@@ -127,14 +138,29 @@
                 </div>
             </form>
         </div>
-        <%--        usercarthere--%>
         <div class="col-lg-3 col-6 text-right userCart">
-            <div class="dropdown">
-                <button class="btn btn-secondary bg-light" style="padding: 4px; font-size: 19px; margin-right: 3px"
+            <div class="dropdown" onmouseover="showDropdown()" onmouseout="hideDropdown()">
+                <button class="btn btn-light bg-light" style="font-size: 19px; margin-right: 3px"
                         type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="bi bi-person-circle" style="color:#D19C97; margin: 5px"></i>
+                    <c:choose>
+                        <c:when test="${not empty sessionScope.user}">
+                            <!-- Hiển thị tên và hình ảnh người dùng nếu đã đăng nhập -->
+                            <span class="info-text" style="font-size: 14px">${sessionScope.user.taiKhoan}</span>
+                            <c:if test="${sessionScope.user.anhDaiDien != null}">
+                                <img src="/image/${sessionScope.user.anhDaiDien}" alt=""
+                                     style="width: 30px; height: 30px; border-radius: 50%; margin-left: 5px;">
+                            </c:if>
+                            <c:if test="${sessionScope.user.anhDaiDien == null}">
+                                <i class="bi bi-person-circle" style="color:#D19C97; margin: 5px"></i>
+                            </c:if>
+                        </c:when>
+                        <c:otherwise>
+                            <!-- Hiển thị biểu tượng mặc định nếu chưa đăng nhập -->
+                            <i class="bi bi-person-circle" style="color:#D19C97; margin: 5px"></i>
+                        </c:otherwise>
+                    </c:choose>
                 </button>
-                <ul class="dropdown-menu btn border" aria-labelledby="dropdownMenuButton1">
+                <ul class="dropdown-menu btn border" aria-labelledby="dropdownMenuButton1" id="dropdownContent">
                     <c:choose>
                         <c:when test="${empty sessionScope.user}">
                             <!-- Hiển thị nút đăng nhập khi chưa đăng nhập -->
@@ -153,7 +179,7 @@
                         <c:otherwise>
                             <!-- Hiển thị nút đăng xuất khi đã đăng nhập -->
                             <li><a class="dropdown-item" href="/cua-hang/don-mua">Đơn mua</a></li>
-                            <li><a class="dropdown-item" href="#">Quản lý tài khoản</a></li>
+                            <li><a class="dropdown-item" href="/cua-hang/quan-ly-tai-khoan">Quản lý tài khoản</a></li>
                             <li><a class="dropdown-item" href="/cua-hang/logout">Đăng xuất</a></li>
                         </c:otherwise>
                     </c:choose>
@@ -162,13 +188,13 @@
             <div class="col-lg-3 col-6 text-right" style="position: relative">
                 <a href="/cua-hang/gio-hang" class="btn border">
                     <i class="fas fa-shopping-cart text-primary"></i>
-                    <c:if test="${soLuong > 0}">
-                        <span class="totalQuantityCart"
-                              style="display: flex; justify-content: center; align-items: center">${soLuong}</span>
+                    <c:if test="${soLuongGioHang > 0}">
+                    <span class="totalQuantityCart"
+                          style="display: flex; justify-content: center; align-items: center">${soLuongGioHang}</span>
                     </c:if>
-                    <c:if test="${soLuong == null}">
-                        <span class="totalQuantityCart"
-                              style="display: flex; justify-content: center; align-items: center">0</span>
+                    <c:if test="${soLuongGioHang == null}">
+                    <span class="totalQuantityCart"
+                          style="display: flex; justify-content: center; align-items: center">0</span>
                     </c:if>
                 </a>
             </div>
@@ -176,6 +202,103 @@
     </div>
 </div>
 <!-- Topbar End -->
+
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true"
+     data-backdrop="true" data-keyboard="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title text-center text-info w-100">Login</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="login-form-wrapper">
+                    <form id="login-form" class="form" action="login" method="post" modelAttribute="khachHangDTO">
+                        <div class="form-group">
+                            <label for="taiKhoan" class="text-info">Username:</label><br>
+                            <input placeholder="Username" type="text" id="taiKhoan" name="taiKhoan"
+                                   value="${khachHangDTO.taiKhoan}" class="form-control">
+                            <small id="taiKhoanError" class="text-danger"></small>
+                        </div>
+                        <div class="form-group">
+                            <label for="matKhau" class="text-info">Password:</label><br>
+                            <input placeholder="Password" type="password" id="matKhau" name="matKhau"
+                                   value="${khachHangDTO.matKhau}" class="form-control">
+                            <small id="matKhauError" class="text-danger"></small>
+                        </div>
+                        <div class="form-group">
+                            <label for="remember-me" class="text-info"><span>Remember me</span> <span><input
+                                    id="remember-me" name="remember-me" type="checkbox"></span></label><br>
+                            <input type="submit" name="submit" class="btn btn-info btn-md w-100" value="Submit">
+                        </div>
+                        <div id="register-link" class="text-right">
+                            <a href="#" class="text-info " data-toggle="modal" data-target="#registerModal"
+                               data-dismiss="modal">Register here</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Login Modal End -->
+
+<!-- Registration Modal Start (Modal Form đăng ký) -->
+<div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel"
+     aria-hidden="true"
+     data-backdrop="true" data-keyboard="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title text-center text-info w-100">Register</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="register-form-wrapper">
+                    <form id="register-form" class="form" action="register" method="post" modelAttribute="khachHangDTO">
+                        <div class="form-group">
+                            <label for="registerUsername" class="text-info">Username:</label><br>
+                            <input placeholder="Username" type="text" id="registerUsername" name="taiKhoan"
+                                   class="form-control" value="${khachHangDTO.taiKhoan}">
+                            <small id="registerUsernameError" class="text-danger"></small>
+                        </div>
+                        <div class="form-group">
+                            <label for="registerEmail" class="text-info">Email:</label><br>
+                            <input placeholder="Email" type="email" id="registerEmail" name="email"
+                                   class="form-control" value="${khachHangDTO.email}">
+                            <small id="registerEmailError" class="text-danger"></small>
+                        </div>
+                        <div class="form-group">
+                            <label for="registerPhone" class="text-info">Phone:</label><br>
+                            <input placeholder="Phone" type="text" id="registerPhone" name="sdt"
+                                   class="form-control" value="${khachHangDTO.sdt}">
+                            <small id="registerPhoneError" class="text-danger"></small>
+                        </div>
+                        <div class="form-group">
+                            <label for="registerPassword" class="text-info">Password:</label><br>
+                            <input placeholder="Password" type="password" id="registerPassword" name="matKhau"
+                                   class="form-control" value="${khachHangDTO.matKhau}">
+                            <small id="registerPasswordError" class="text-danger"></small>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" name="submit" class="btn btn-info btn-md w-100" value="Register">
+                        </div>
+                        <div id="login-link" class="text-right">
+                            <a href="#" class="text-info " data-toggle="modal" data-target="#loginModal"
+                               data-dismiss="modal">Back to Login</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Registration Modal End -->
 
 
 <!-- Navbar Start -->
@@ -701,6 +824,7 @@
     var initialSelectedMauSac = document.querySelector('input[name="mauSac"]:checked').value;
     var initialSelectedKichThuoc = document.querySelector('input[name="kichThuoc"]:checked').value;
     setHinhAnhAndSoLuong(initialSelectedMauSac, initialSelectedKichThuoc);
+    filterKichThuocOptions(initialSelectedMauSac);
 
     // Lọc số lượng tồn spct theo kích thước khi chọn màu sắc
     function onchangeByMauSac(tenMauSac) {
@@ -720,10 +844,10 @@
                 }
             }
         }
-
         setHinhAnhAndSoLuong(tenMauSac, tenKichThuoc);
         filterKichThuocOptions(tenMauSac);
     }
+
 
     // Hàm cập nhật hình ảnh và số lượng
     function setHinhAnhAndSoLuong(tenMauSac, tenKichThuoc) {
@@ -811,6 +935,216 @@
         title: "${success}"
     });
     </c:if>
+</script>
+
+<script>
+    //  // Hiển thị thông báo thất bại nếu đăng nhập thất bại
+    const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+        }
+    });
+
+    <%--    Hiển thị thông báo thành công khi đăng nhập thất bại--%>
+    <c:if test="${not empty error}">
+    Toast.fire({
+        icon: "error",
+        title: "${error}"
+    });
+    </c:if>
+
+    <%--    Hiển thị thông báo thành công khi đăng nhập thành công--%>
+    <c:if test="${not empty successMessage}">
+    Toast.fire({
+        icon: "success",
+        title: "${successMessage}"
+    });
+    </c:if>
+    <%--Validate Form đăng nhặp--%>
+    $(document).ready(function () {
+        // Bắt lỗi khi submit form
+        $('#login-form').submit(function (event) {
+            event.preventDefault(); // Ngăn form submit mặc định
+
+            var form = $(this);
+            var username = $('#taiKhoan').val().trim();
+            var password = $('#matKhau').val().trim();
+
+            var hasError = false;
+
+            if (!username) {
+                $('#taiKhoanError').text('Vui lòng nhập username.');
+                $('#taiKhoan').addClass('border-danger');
+                hasError = true;
+            } else {
+                $('#taiKhoanError').text('');
+                $('#taiKhoan').removeClass('border-danger');
+            }
+
+            if (!password) {
+                $('#matKhauError').text('Vui lòng nhập password.');
+                $('#matKhau').addClass('border-danger');
+                hasError = true;
+            } else {
+                $('#matKhauError').text('');
+                $('#matKhau').removeClass('border-danger');
+            }
+
+            if (!hasError) {
+                // Gửi yêu cầu đăng nhập bằng AJAX
+                $.ajax({
+                    type: 'POST',
+                    url: form.attr('action'),
+                    data: form.serialize(),
+                    success: function (response) {
+                        if (response.success) {
+                            // Đăng nhập thành công, điều hướng sang trang home
+                            Toast.fire({
+                                icon: "success",
+                                title: response.successMessage
+                            });
+
+                            setTimeout(function () {
+                                window.location.href = response.redirectUrl;
+                            }, 2000);
+                        } else {
+                            // Đăng nhập không thành công, hiển thị lỗi
+                            if (response.errorUsername) {
+                                $('#taiKhoanError').text(response.errorUsername);
+                                $('#taiKhoan').addClass('border-danger');
+                            }
+                            if (response.errorPassword) {
+                                $('#matKhauError').text(response.errorPassword);
+                                $('#matKhau').addClass('border-danger');
+                            }
+
+                        }
+                    },
+                    error: function () {
+                        console.error('Đã xảy ra lỗi khi gửi yêu cầu đăng nhập.');
+                    }
+                });
+            }
+        });
+
+        // Xử lý lỗi và hiển thị modal khi submit form đăng ký
+        $('#register-form').submit(function (event) {
+            var form = $(this);
+            var hasError = false;
+
+            var username = $('#registerUsername').val().trim();
+            var email = $('#registerEmail').val().trim();
+            var phone = $('#registerPhone').val().trim();
+            var password = $('#registerPassword').val().trim();
+
+            // Clear previous errors
+            $('.text-danger').text('');
+            $('.form-control').removeClass('border-danger');
+
+            // Validate fields
+            if (!username) {
+                $('#registerUsernameError').text('Vui lòng nhập username.');
+                $('#registerUsername').addClass('border-danger');
+                hasError = true;
+            }
+            if (!email) {
+                $('#registerEmailError').text('Vui lòng nhập email.');
+                $('#registerEmail').addClass('border-danger');
+                hasError = true;
+            } else if (!isValidEmail(email)) {
+                $('#registerEmailError').text('Email không hợp lệ.');
+                $('#registerEmail').addClass('border-danger');
+                hasError = true;
+            }
+            if (!phone) {
+                $('#registerPhoneError').text('Vui lòng nhập số điện thoại.');
+                $('#registerPhone').addClass('border-danger');
+                hasError = true;
+            } else if (!isValidVietnamesePhoneNumber(phone)) {
+                $('#registerPhoneError').text('Số điện thoại không hợp lệ');
+                $('#registerPhone').addClass('border-danger');
+                hasError = true;
+            }
+            if (!password) {
+                $('#registerPasswordError').text('Vui lòng nhập mật khẩu.');
+                $('#registerPassword').addClass('border-danger');
+                hasError = true;
+            } else if (password.length < 6) {
+                $('#registerPasswordError').text('Mật khẩu phải có ít nhất 6 ký tự.');
+                $('#registerPassword').addClass('border-danger');
+                hasError = true;
+            }
+
+            // If any validation errors exist, prevent form submission
+            if (hasError) {
+                event.preventDefault();
+            }
+        });
+
+
+        // Ẩn lỗi khi người dùng click vào trường input
+        $('input').focus(function () {
+            $(this).siblings('.text-danger').text('');
+            $(this).removeClass('border-danger');
+        });
+
+        // Hiển thị lỗi từ Controller (nếu có)
+        var errorUsername = '<%= request.getAttribute("errorUsername") %>';
+        var errorPassword = '<%= request.getAttribute("errorPassword") %>';
+        var errorUsernameExit = '<%= request.getAttribute("errorUsernameExit") %>';
+
+        if (errorUsername && errorUsername !== 'null') {
+            $('#taiKhoanError').text(errorUsername);
+            $('#taiKhoan').addClass('border-danger');
+        }
+        if (errorPassword && errorPassword !== 'null') {
+            $('#matKhauError').text(errorPassword);
+            $('#matKhau').addClass('border-danger');
+        }
+
+        if (errorUsernameExit !== 'null') {
+            $('#registerUsername').text(errorUsernameExit);
+            $('#taiKhoan').addClass('border-danger');
+        }
+
+        // Khi modal được mở, thêm class "modal-open" vào body
+        $('#loginModal').on('shown.bs.modal', function () {
+            $('body').addClass('modal-open');
+        });
+
+        // Khi modal được đóng, loại bỏ class "modal-open" khỏi body
+        $('#loginModal').on('hidden.bs.modal', function () {
+            $('body').removeClass('modal-open');
+        });
+    });
+
+    // Hàm kiểm tra định dạng email
+    function isValidEmail(email) {
+        // Biểu thức chính quy để kiểm tra định dạng email
+        var regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return regex.test(email);
+    }
+
+    // Hàm kiểm tra định dạng số điện thoại
+    function isValidVietnamesePhoneNumber(phoneNumber) {
+        // Biểu thức chính quy để kiểm tra định dạng số điện thoại (theo quy định của Việt Nam)
+        var regex = /^(0|\+84)\d{9,10}$/;
+        return regex.test(phoneNumber);
+    }
+
+    function showDropdown() {
+        document.getElementById('dropdownContent').style.display = 'block';
+    }
+
+    function hideDropdown() {
+        document.getElementById('dropdownContent').style.display = 'none';
+    }
 </script>
 
 </html>

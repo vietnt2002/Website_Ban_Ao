@@ -48,11 +48,19 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
     <style>
-
-        body.modal-open {
-            overflow-y: auto;
-            padding-right: 0 !important;
+        .nav-link {
+            border: none !important;
+            outline: none !important;
+            box-shadow: none !important;
         }
+
+        .nav-link:focus, .nav-link:active {
+            outline: none !important;
+            box-shadow: none !important;
+        }
+    </style>
+
+    <style>
 
         .profile-menu {
             width: 250px;
@@ -166,6 +174,39 @@
             right: 17px;
             margin: 0;
             min-width: 0;
+        }
+    </style>
+
+    <style>
+        .search-box {
+            position: relative;
+            width: 300px;
+            margin: 50px auto;
+        }
+
+        .search-box input[type="text"] {
+            width: 100%;
+            padding: 10px 40px 10px 20px;
+            border: 2px solid #ccc;
+            border-radius: 25px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .search-box button {
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .search-box button img {
+            width: 20px;
+            height: 20px;
         }
     </style>
 </head>
@@ -416,8 +457,8 @@
 </div>
 <!-- Navbar End -->
 
-<!-- Boby -->
 
+<%--        Body Giao diện quản lý hồ sơ cá nhân--%>
 <div class="container-fluid">
     <div class="row">
         <div class="col-1"></div>
@@ -439,158 +480,88 @@
                 </ul>
             </div>
         </div>
-        <div class="col-7">
+        <div class="col-7" style="box-shadow: 3px 8px 38px -13px;">
             <div class="d-flex flex-column align-items justify-content-center" style="min-height: 150px">
-                <h5 class="font-weight-semi-bold text-uppercase mb-3">Chi tiết hóa đơn</h5>
+                <h5 class="font-weight-semi-bold text-uppercase mb-3">Thông tin tài khoản</h5>
             </div>
-            <div style="padding-bottom: 150px;">
-                <%-- Trạng thái hóa đơn --%>
-                <div class="mb-5" style="position: absolute; left: 625px; top: 157px;">
-                    <c:forEach var="i" items="${listHDCT}" varStatus="index">
-                        <c:if test="${index.index == 0}">
-                            <span>Mã hóa đơn: ${i.ma}</span> |
-                            <c:choose>
-                                <c:when test="${i.trangThai == 1}">
-                                    <div class="badge badge-warning" style="border-radius: 10px;">
-                                        Chờ xác nhận
-                                    </div>
-                                </c:when>
-                                <c:when test="${i.trangThai == 3}">
-                                    <div class="badge badge-warning" style="border-radius: 10px;">
-                                        Chờ giao hàng
-                                    </div>
-                                </c:when>
-                                <c:when test="${i.trangThai == 4}">
-                                    <div class="badge badge-info" style="border-radius: 10px;">
-                                        Chờ giao hàng
-                                    </div>
-                                </c:when>
-                                <c:when test="${i.trangThai == 6}">
-                                    <div class="badge badge-success" style="border-radius: 10px;">
-                                        Hoàn thành
-                                    </div>
-                                </c:when>
-                                <c:when test="${i.trangThai == 7}">
-                                    <div class="badge badge-danger" style="border-radius: 10px;">
-                                        Đơn hủy
-                                    </div>
-                                </c:when>
-                            </c:choose>
-                        </c:if>
-                    </c:forEach>
-                </div>
+            <form:form action="/cua-hang/cap-nhat-thong-tin" method="post" modelAttribute="user"
+                       enctype="multipart/form-data"
+                       id="updateProfileForm">
                 <div class="row">
-                    <%-- Địa chỉ giao hàng --%>
-                    <div class="col-6">
-                        <div class="row d-flex align-items-stretch mb-5" style="position: relative; left: 18px;">
-                            <div class="col-12 mb-3 d-flex align-items-stretch">
-                                <div class="card-header d-flex justify-content-between align-items-center">
-                                    <h5>Địa chỉ nhận hàng</h5>
+                    <!-- Thông tin cá nhân -->
+                    <div class="col-md-4">
+                        <div class="mb-2">
+                            <label for="username" class="form-label"><b>Tên đăng nhập:</b></label>
+                            <form:input readonly="true" path="taiKhoan" id="username" placeholder="Tên đăng nhập"
+                                        cssClass="form-control"/>
+                            <div class="text-danger" id="usernameError"></div>
+                        </div>
+                        <div class="mb-2">
+                            <label for="fullName" class="form-label"><b>Họ và tên:</b></label>
+                            <form:input path="hoTen" id="fullName" placeholder="Họ và tên" cssClass="form-control"/>
+                            <div class="text-danger" id="fullNameError"></div>
+                        </div>
+                        <div class="mb-2">
+                            <label for="email" class="form-label"><b>Email:</b></label>
+                            <form:input path="email" type="email" id="email" placeholder="Email"
+                                        cssClass="form-control"/>
+                            <div class="text-danger" id="emailError"></div>
+                        </div>
+                        <div class="mb-2">
+                            <label for="phone" class="form-label"><b>Số điện thoại:</b></label>
+                            <form:input path="sdt" id="phone" placeholder="Số điện thoại" cssClass="form-control"/>
+                            <div class="text-danger" id="phoneError"></div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-form-label"><b>Giới tính:</b></label>
+                            <div class="col-sm-12">
+                                <div class="form-check form-check-inline">
+                                    <form:radiobutton path="gioiTinh" id="genderMale" value="1"
+                                                      cssClass="form-check-input"/>
+                                    <label class="form-check-label" for="genderMale">Nam</label>
                                 </div>
-                            </div>
-
-                            <div class="col-12 mb-3 d-flex align-items-stretch">
-                                <c:forEach var="i" items="${giaoHang}">
-                                    <div class="card-body">
-                                        <p>${i.tenNguoiNhan}</p>
-                                        <p>${i.sdtNguoiNhan}</p>
-                                        <p>${i.diaChiChiTiet}, ${i.idPhuongXa}, ${i.idQuanHuyen}, ${i.idTinhThanh} </p>
-                                    </div>
-                                </c:forEach>
+                                <div class="form-check form-check-inline">
+                                    <form:radiobutton path="gioiTinh" id="genderFemale" value="2"
+                                                      cssClass="form-check-input"/>
+                                    <label class="form-check-label" for="genderFemale">Nữ</label>
+                                </div>
+                                <div class="text-danger" id="genderError"></div>
                             </div>
                         </div>
+                        <div class="mb-3">
+                            <label for="dob" class="form-label"><b>Ngày sinh:</b></label>
+                            <form:input path="ngaySinh" type="date" id="dob" cssClass="form-control"/>
+                            <div class="text-danger" id="dobError"></div>
+                        </div>
+                    </div>
+                    <!-- Hình ảnh -->
+                    <div class="col-md-8 text-center">
+                        <div class="profile-image-wrapper mb-3 d-flex justify-content-center align-items-center">
+                            <label for="profileImage">
+                                <img style="width: 150px; height: 150px;"
+                                     src="/image/<c:out value="${user.anhDaiDien != null ? user.anhDaiDien : 'https://via.placeholder.com/100'}" />"
+                                     alt="Profile Image" id="profileImagePreview" class="profile-image">
+                            </label>
+                        </div>
+                        <input type="file" id="profileImage" name="profileImage" accept="image/*"
+                               style="display: none;">
+                        <label for="profileImage" class="btn btn-outline-secondary" style="color: black">Chọn
+                            ảnh</label>
+                        <div class="text-danger" id="profileImageError"></div>
+                        <p class="info-text mt-3 p-0">Định dạng: jpg, png, jpeg</p>
+                        <p class="info-text m-0 p-0">Dung lượng tối đa: 2MB.</p>
                     </div>
                 </div>
-
-
-                <%-- Danh sách sản phẩm --%>
-                <div class="row px-xl-5 mb-5">
-                    <table class="table table-bordered mb-0">
-                        <thead class="bg-secondary text-dark">
-                        <tr>
-                            <th class="text-center">Tên sản phẩm</th>
-                            <th class="text-center">Số lượng</th>
-                            <th class="text-center">Màu sắc</th>
-                            <th class="text-center">Kích thước</th>
-                            <th class="text-center">Giá sản phẩm</th>
-                            <th class="text-center">Thành tiền</th>
-                        </tr>
-                        </thead>
-                        <c:forEach var="i" items="${listHDCT}" varStatus="">
-                            <tbody class="">
-                            <tr>
-                                <td class=""><img src="/image/${i.hinhAnh1}" alt="" style="width: 50px;">
-                                        ${i.tenSP}
-                                </td>
-                                <td class="text-center">${i.soLuong}</td>
-                                <td class="text-center">${i.mauSac}</td>
-                                <td class="text-center">${i.tenKieuTay}</td>
-                                <td class="text-center">
-                                    <fmt:formatNumber value="${i.giaBan}" type="currency" currencySymbol="₫"/>
-                                </td>
-                                <td class="text-center">
-                                    <fmt:formatNumber value="${i.giaBan * i.soLuong}" type="currency"
-                                                      currencySymbol="₫"/>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </c:forEach>
-                    </table>
-
-                </div>
-                <%-- Thông tin thanh toán --%>
-                <div class="row d-flex align-items-stretch" style="text-align: end; position: relative; right: 75px;">
-                    <div class="col-4 mb-3 d-flex align-items-stretch">
-                        <c:forEach var="i" items="${hoaDon}">
-                            <div class="card-body" style="position: relative; left: 688px   ;">
-                                <div class="d-flex justify-content-between mb-3 pt-1">
-                                    <h6 class="font-weight-medium">Tổng tiền hàng: </h6>
-                                    <h6 class="font-weight-medium" style="font-size: 18px">
-                                        <fmt:formatNumber value="${tongTien}" type="currency" currencySymbol="₫"/>
-                                    </h6>
-                                </div>
-                                <div class="d-flex justify-content-between mb-3 pt-1">
-                                    <h6 class="font-weight-medium">Phí vận chuyển: </h6>
-                                    <h6 class="font-weight-medium" style="font-size: 18px">0₫</h6>
-                                </div>
-                                <div class="d-flex justify-content-between mb-3 pt-1">
-                                    <h6 class="font-weight-medium">Voucher: </h6>
-                                    <c:if test="${i.idKhuyenMai == null}">
-                                        <h6 class="font-weight-medium" style="font-size: 18px">0₫</h6>
-                                    </c:if>
-                                    <c:if test="${i.idKhuyenMai != null}">
-                                        <h6 class="font-weight-medium" style="font-size: 18px"><fmt:formatNumber
-                                                value="${i.idKhuyenMai.soTienGiam}" type="currency" currencySymbol="₫"/>
-                                        </h6>
-                                    </c:if>
-                                </div>
-
-                            </div>
-                        </c:forEach>
-                    </div>
-
-                    <div class="col-12 mb-3 d-flex align-items-stretch">
-                        <c:forEach var="i" items="${hoaDon}">
-                            <div class="card-footer"
-                                 style="color: red; position: relative; font-size: x-large; left: 788px;">
-                                <p class="fw-bold mb-1 pb-3 small d-flex justify-content-between">
-                        <span>Thành tiền:
-                            <fmt:formatNumber value="${i.tongTien}" type="currency" currencySymbol="₫"/>
-                        </span>
-                                </p>
-                            </div>
-                        </c:forEach>
-                    </div>
-                </div>
-            </div>
+                <button type="submit" class="btn btn-primary w-25"
+                        style="position: relative; left: 525px; bottom: 100px;">Lưu
+                </button>
+            </form:form>
         </div>
         <div class="col-1">
         </div>
     </div>
 </div>
 
-
-<!-- Body End -->
 
 <!-- Footer Start -->
 <div class="container-fluid bg-secondary text-dark mt-5 pt-5">
@@ -600,8 +571,7 @@
                 <h1 class="mb-4 display-5 font-weight-semi-bold"><span
                         class="text-primary font-weight-bold border border-white px-3 mr-1">MS</span>Store</h1>
             </a>
-            <p>Dolore erat dolor sit lorem vero amet. Sed sit lorem magna, ipsum no sit erat lorem et magna ipsum
-                dolore
+            <p>Dolore erat dolor sit lorem vero amet. Sed sit lorem magna, ipsum no sit erat lorem et magna ipsum dolore
                 amet erat.</p>
             <p class="mb-2"><i class="fa fa-map-marker-alt text-primary mr-3"></i>123 Street, New York, USA</p>
             <p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i>info@example.com</p>
@@ -613,32 +583,28 @@
                     <h5 class="font-weight-bold text-dark mb-4">Quick Links</h5>
                     <div class="d-flex flex-column justify-content-start">
                         <a class="text-dark mb-2" href="index.html"><i class="fa fa-angle-right mr-2"></i>Home</a>
-                        <a class="text-dark mb-2" href="shop.html"><i class="fa fa-angle-right mr-2"></i>Our
-                            Shop</a>
+                        <a class="text-dark mb-2" href="shop.html"><i class="fa fa-angle-right mr-2"></i>Our Shop</a>
                         <a class="text-dark mb-2" href="detail.html"><i class="fa fa-angle-right mr-2"></i>Shop
                             Detail</a>
                         <a class="text-dark mb-2" href="cart.html"><i class="fa fa-angle-right mr-2"></i>Shopping
                             Cart</a>
                         <a class="text-dark mb-2" href="checkout.html"><i
                                 class="fa fa-angle-right mr-2"></i>Checkout</a>
-                        <a class="text-dark" href="contact.html"><i class="fa fa-angle-right mr-2"></i>Contact
-                            Us</a>
+                        <a class="text-dark" href="contact.html"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
                     </div>
                 </div>
                 <div class="col-md-4 mb-5">
                     <h5 class="font-weight-bold text-dark mb-4">Quick Links</h5>
                     <div class="d-flex flex-column justify-content-start">
                         <a class="text-dark mb-2" href="index.html"><i class="fa fa-angle-right mr-2"></i>Home</a>
-                        <a class="text-dark mb-2" href="shop.html"><i class="fa fa-angle-right mr-2"></i>Our
-                            Shop</a>
+                        <a class="text-dark mb-2" href="shop.html"><i class="fa fa-angle-right mr-2"></i>Our Shop</a>
                         <a class="text-dark mb-2" href="detail.html"><i class="fa fa-angle-right mr-2"></i>Shop
                             Detail</a>
                         <a class="text-dark mb-2" href="cart.html"><i class="fa fa-angle-right mr-2"></i>Shopping
                             Cart</a>
                         <a class="text-dark mb-2" href="checkout.html"><i
                                 class="fa fa-angle-right mr-2"></i>Checkout</a>
-                        <a class="text-dark" href="contact.html"><i class="fa fa-angle-right mr-2"></i>Contact
-                            Us</a>
+                        <a class="text-dark" href="contact.html"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
                     </div>
                 </div>
                 <div class="col-md-4 mb-5">
@@ -653,8 +619,7 @@
                                    required="required"/>
                         </div>
                         <div>
-                            <button class="btn btn-primary btn-block border-0 py-3" type="submit">Subscribe Now
-                            </button>
+                            <button class="btn btn-primary btn-block border-0 py-3" type="submit">Subscribe Now</button>
                         </div>
                     </form>
                 </div>
@@ -677,6 +642,7 @@
 </div>
 <!-- Footer End -->
 
+
 <!-- Back to Top -->
 <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
 
@@ -693,7 +659,154 @@
 
 <!-- Template Javascript -->
 <script src="/view_ban_hang/js/main.js"></script>
+
+<%--Validate form--%>
 <script>
+    //Hiển thị thông báo
+    const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+        }
+    });
+
+    // Thông báo lỗi không tìm thấy người dùng
+    <c:if test="${not empty errorMessage}">
+    Toast.fire({
+        icon: "error",
+        title: "${errorMessage}"
+    });
+    </c:if>
+
+
+    // Hiển thị thông báo cập nhật thông tin cá nhân thành công
+    <c:if test="${not empty successAccount}">
+    Toast.fire({
+        icon: "success",
+        title: "${successAccount}"
+    });
+    </c:if>
+
+
+
+    <%--Validate Form hồ sơ cá nhân--%>
+    $(document).ready(function () {
+        $('#updateProfileForm').submit(function (event) {
+            event.preventDefault(); // Ngăn form submit mặc định
+
+            var form = $(this);
+            var fullName = $('#fullName').val().trim();
+            var email = $('#email').val().trim();
+            var phone = $('#phone').val().trim();
+            var dob = $('#dob').val().trim();
+            var gender = $('input[name="gioiTinh"]:checked').val();
+            var profileImage = $('#profileImage')[0].files[0];
+
+            var hasError = false;
+
+            // Clear previous errors
+            $('.text-danger').text('');
+            $('.form-control').removeClass('border-danger');
+
+            if (!fullName) {
+                $('#fullNameError').text('Vui lòng nhập họ và tên.');
+                $('#fullName').addClass('border-danger');
+                hasError = true;
+            }
+
+            if (!email) {
+                $('#emailError').text('Vui lòng nhập email.');
+                $('#email').addClass('border-danger');
+                hasError = true;
+            } else if (!isValidEmail(email)) {
+                $('#emailError').text('Email không hợp lệ.');
+                $('#email').addClass('border-danger');
+                hasError = true;
+            }
+
+            if (!phone) {
+                $('#phoneError').text('Vui lòng nhập số điện thoại.');
+                $('#phone').addClass('border-danger');
+                hasError = true;
+            } else if (!isValidVietnamesePhoneNumber(phone)) {
+                $('#phoneError').text('Số điện thoại không hợp lệ.');
+                $('#phone').addClass('border-danger');
+                hasError = true;
+            }
+
+            if (!dob) {
+                $('#dobError').text('Vui lòng nhập ngày sinh.');
+                $('#dob').addClass('border-danger');
+                hasError = true;
+            }
+
+            if (!gender) {
+                $('#genderError').text('Vui lòng chọn giới tính.');
+                hasError = true;
+            }
+
+            if (profileImage) {
+                var allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
+                if (!allowedExtensions.exec(profileImage.name)) {
+                    $('#profileImageError').text('Định dạng ảnh không hợp lệ.');
+                    hasError = true;
+                } else if (profileImage.size > 2097152) {
+                    $('#profileImageError').text('Dung lượng ảnh tối đa là 2MB.');
+                    hasError = true;
+                }
+            }
+
+            if (!hasError) {
+                form.unbind('submit').submit(); // Allow form submission
+            }
+        });
+
+        // Ẩn lỗi khi người dùng click vào trường input
+        $('input').focus(function () {
+            $(this).siblings('.text-danger').text('');
+            $(this).removeClass('border-danger');
+        });
+
+        // Hàm kiểm tra định dạng email
+        function isValidEmail(email) {
+            var regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return regex.test(email);
+        }
+
+        // Hàm kiểm tra định dạng số điện thoại
+        function isValidVietnamesePhoneNumber(phoneNumber) {
+            var regex = /^(0|\+84)\d{9,10}$/;
+            return regex.test(phoneNumber);
+        }
+    });
+
+
+    // Hàm hiển thị hình ảnh khi chọn ảnh ở trang quản lý tài khoản
+    function previewImage() {
+        const fileInput = document.getElementById('profileImage');
+        const imagePreview = document.getElementById('profileImagePreview');
+
+        fileInput.addEventListener('change', function () {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+
+                reader.addEventListener('load', function () {
+                    imagePreview.setAttribute('src', this.result);
+                });
+
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', previewImage);
+
     function showDropdown() {
         document.getElementById('dropdownContent').style.display = 'block';
     }

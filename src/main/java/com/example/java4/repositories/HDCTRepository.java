@@ -86,6 +86,7 @@ public interface HDCTRepository
     @Query("DELETE FROM ChiTietHoaDon hdct WHERE hdct.idHoaDon.id = :idHoaDon AND hdct.idCTSP.id = :idCTSP")
     int deleteByHoaDon_IdAndIdCTSP_Id(@Param("idHoaDon") String idHoaDon, @Param("idCTSP") String idCTSP);
 
+
     @Query("select new com.example.java4.response.HoaDonChiTietResponse(hd.id, hd.ma, ha.hinhAnh1, ctsp.idSanPham.ten, cthd.soLuong, ctsp.idMauSac.ten, ctsp.idKichThuoc.ten, ctsp.giaBan, hd.trangThai) " +
             "from ChiTietHoaDon cthd " +
             "join ChiTietSanPham ctsp on ctsp.id = cthd.idCTSP.id " +
@@ -98,4 +99,5 @@ public interface HDCTRepository
             "join HoaDon hd on hd.id = cthd.idHoaDon.id\n" +
             "where hd.idKhachHang.id = ?1 and hd.id = ?2")
     List<ChiTietHoaDon> tongTienHD(String idKH, String idHD);
+
 };
