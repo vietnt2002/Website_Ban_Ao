@@ -144,12 +144,12 @@ public interface HoaDonRepository
 
     @Query("select hd from HoaDon hd where hd.idKhachHang.id = ?1 " +
             "order by hd.ngayTao desc")
-    List<HoaDon> getHoaDonByIDKHA(String idKH);
+    Page<HoaDon> getHoaDonByIDKHA(String idKH, Pageable pageable);
 
     @Query("select hd from HoaDon hd " +
             "where hd.idKhachHang.id = ?1 and hd.trangThai = ?2 " +
             "order by hd.ngayTao desc")
-    List<HoaDon> getHoaDonByIDKHAndTrangThai(String idKH, Integer trangThai);
+    Page<HoaDon> getHoaDonByIDKHAndTrangThai(String idKH, Integer trangThai, Pageable pageable);
 
     @Query("select count(hd) from HoaDon hd where hd.idKhachHang.id = ?1 and hd.trangThai = ?2")
     int countByHoaDonByTrangThai(String idKH, Integer trangThai);

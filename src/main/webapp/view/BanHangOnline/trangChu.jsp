@@ -49,9 +49,6 @@
             justify-content: end;
         }
 
-        .dropdown ul li:hover {
-            text-decoration: underline;
-        }
 
         .totalQuantityCart {
             width: 15px;
@@ -70,6 +67,21 @@
             right: 17px;
             margin: 0;
             min-width: 0;
+        }
+
+        .dropdown ul li:hover {
+            text-decoration: underline;
+        }
+
+        .dropdown-menu {
+            display: none;
+        }
+
+        .dropdown:hover .dropdown-menu {
+            display: block;
+            position: absolute;
+            top: 100%;
+            z-index: 1000;
         }
     </style>
 </head>
@@ -117,7 +129,7 @@
         <div class="col-lg-6 col-6 text-left">
             <form action="">
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search for products">
+                    <input style="border-radius: 10px; color: black" type="text" name="search" class="form-control" placeholder="Tìm kiếm">
                     <div class="input-group-append">
                             <span class="input-group-text bg-transparent text-primary">
                                 <i class="fa fa-search"></i>
@@ -127,12 +139,28 @@
             </form>
         </div>
         <div class="col-lg-3 col-6 text-right userCart">
-            <div class="dropdown">
-                <button class="btn btn-secondary bg-light" style="padding: 4px; font-size: 19px; margin-right: 3px"
+            <div class="dropdown" onmouseover="showDropdown()" onmouseout="hideDropdown()">
+                <button class="btn btn-light bg-light" style="font-size: 19px; margin-right: 3px"
                         type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="bi bi-person-circle" style="color:#D19C97; margin: 5px"></i>
+                    <c:choose>
+                        <c:when test="${not empty sessionScope.user}">
+                            <!-- Hiển thị tên và hình ảnh người dùng nếu đã đăng nhập -->
+                            <span class="info-text" style="font-size: 14px">${sessionScope.user.taiKhoan}</span>
+                            <c:if test="${sessionScope.user.anhDaiDien != null}">
+                                <img src="/image/${sessionScope.user.anhDaiDien}" alt=""
+                                     style="width: 30px; height: 30px; border-radius: 50%; margin-left: 5px;">
+                            </c:if>
+                            <c:if test="${sessionScope.user.anhDaiDien == null}">
+                                <i class="bi bi-person-circle" style="color:#D19C97; margin: 5px"></i>
+                            </c:if>
+                        </c:when>
+                        <c:otherwise>
+                            <!-- Hiển thị biểu tượng mặc định nếu chưa đăng nhập -->
+                            <i class="bi bi-person-circle" style="color:#D19C97; margin: 5px"></i>
+                        </c:otherwise>
+                    </c:choose>
                 </button>
-                <ul class="dropdown-menu btn border" aria-labelledby="dropdownMenuButton1">
+                <ul class="dropdown-menu btn border" aria-labelledby="dropdownMenuButton1" id="dropdownContent">
                     <c:choose>
                         <c:when test="${empty sessionScope.user}">
                             <!-- Hiển thị nút đăng nhập khi chưa đăng nhập -->
@@ -151,7 +179,7 @@
                         <c:otherwise>
                             <!-- Hiển thị nút đăng xuất khi đã đăng nhập -->
                             <li><a class="dropdown-item" href="/cua-hang/don-mua">Đơn mua</a></li>
-                            <li><a class="dropdown-item" href="#">Quản lý tài khoản</a></li>
+                            <li><a class="dropdown-item" href="/cua-hang/quan-ly-tai-khoan">Quản lý tài khoản</a></li>
                             <li><a class="dropdown-item" href="/cua-hang/logout">Đăng xuất</a></li>
                         </c:otherwise>
                     </c:choose>
@@ -160,13 +188,13 @@
             <div class="col-lg-3 col-6 text-right" style="position: relative">
                 <a href="/cua-hang/gio-hang" class="btn border">
                     <i class="fas fa-shopping-cart text-primary"></i>
-                    <c:if test="${soLuong > 0}">
-                            <span class="totalQuantityCart"
-                                  style="display: flex; justify-content: center; align-items: center">${soLuong}</span>
+                    <c:if test="${soLuongGioHang == null}">
+                    <span class="totalQuantityCart"
+                          style="display: flex; justify-content: center; align-items: center">0</span>
                     </c:if>
-                    <c:if test="${soLuong == null}">
-                            <span class="totalQuantityCart"
-                                  style="display: flex; justify-content: center; align-items: center">0</span>
+                    <c:if test="${soLuongGioHang > 0}">
+                    <span class="totalQuantityCart"
+                          style="display: flex; justify-content: center; align-items: center">${soLuongGioHang}</span>
                     </c:if>
                 </a>
             </div>
@@ -464,22 +492,11 @@
         </div>
         <!-- Shop Sidebar End -->
 
-
         <!-- Shop Product Start -->
         <div class="col-lg-9 col-md-12">
             <div class="row pb-3">
                 <div class="col-12 pb-1">
                     <div class="d-flex align-items-center justify-content-between mb-4">
-                        <form action="">
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Search by name">
-                                <div class="input-group-append">
-                                        <span class="input-group-text bg-transparent text-primary">
-                                            <i class="fa fa-search"></i>
-                                        </span>
-                                </div>
-                            </div>
-                        </form>
                         <div class="dropdown ml-4">
                             <button class="btn border dropdown-toggle" type="button" id="triggerId"
                                     data-toggle="dropdown" aria-haspopup="true"
@@ -526,29 +543,32 @@
                 <div class="col-12 pb-1">
                     <nav aria-label="Page navigation">
                         <ul class="pagination justify-content-center mb-3" id="pagination">
-                            <c:if test="${pageSP.number > 0}">
-                                <li class="page-item">
-                                    <a class="page-link" href="?page=${pageSP.number - 1}" aria-label="Previous">
-                                        <span aria-hidden="true">&laquo;</span>
-                                        <span class="sr-only">Previous</span>
-                                    </a>
-                                </li>
+                            <c:if test="${pageSP.totalPages > 0}">
+                                <c:if test="${pageSP.number > 0}">
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page=${pageSP.number - 1}" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                            <span class="sr-only">Previous</span>
+                                        </a>
+                                    </li>
+                                </c:if>
+
+                                <c:forEach var="i" begin="0" end="${pageSP.totalPages - 1}">
+                                    <li class="page-item ${pageSP.number == i ? 'active' : ''}">
+                                        <a class="page-link" href="?page=${i}">${i + 1}</a>
+                                    </li>
+                                </c:forEach>
+
+                                <c:if test="${pageSP.number < pageSP.totalPages - 1}">
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page=${pageSP.number + 1}" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                            <span class="sr-only">Next</span>
+                                        </a>
+                                    </li>
+                                </c:if>
                             </c:if>
 
-                            <c:forEach var="i" begin="0" end="${pageSP.totalPages - 1}">
-                                <li class="page-item ${pageSP.number == i ? 'active' : ''}">
-                                    <a class="page-link" href="?page=${i}">${i + 1}</a>
-                                </li>
-                            </c:forEach>
-
-                            <c:if test="${pageSP.number < pageSP.totalPages - 1}">
-                                <li class="page-item">
-                                    <a class="page-link" href="?page=${pageSP.number + 1}" aria-label="Next">
-                                        <span aria-hidden="true">&raquo;</span>
-                                        <span class="sr-only">Next</span>
-                                    </a>
-                                </li>
-                            </c:if>
                         </ul>
                     </nav>
                 </div>
@@ -870,6 +890,14 @@
         // Biểu thức chính quy để kiểm tra định dạng số điện thoại (theo quy định của Việt Nam)
         var regex = /^(0|\+84)\d{9,10}$/;
         return regex.test(phoneNumber);
+    }
+
+    function showDropdown() {
+        document.getElementById('dropdownContent').style.display = 'block';
+    }
+
+    function hideDropdown() {
+        document.getElementById('dropdownContent').style.display = 'none';
     }
 </script>
 

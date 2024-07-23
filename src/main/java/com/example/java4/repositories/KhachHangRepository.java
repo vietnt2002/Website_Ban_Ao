@@ -49,4 +49,7 @@ public interface KhachHangRepository
 
     @Query("select kh from KhachHang kh where (kh.hoTen like %?1% or kh.sdt like %?1% or kh.email like %?1%) and (kh.ngaySinh between ?2 and ?3)")
     List<KhachHang> findByHoTenOrSdtOrEmail_NgaySinh(String key, Date ngayBatDau, Date ngayKetThuc);
+
+    KhachHang findByEmail(String email);
+    KhachHang findBySdt(String sdt);
 };

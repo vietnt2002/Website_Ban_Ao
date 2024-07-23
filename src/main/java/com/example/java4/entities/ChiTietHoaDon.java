@@ -3,6 +3,7 @@ package com.example.java4.entities;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
@@ -14,6 +15,7 @@ public class ChiTietHoaDon {
     private Integer hdctOld; // dùng để làm đổi trả
     private HoaDon idHoaDon;
     private ChiTietSanPham idCTSP;
+    private LocalDateTime ngayTao;
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -62,12 +64,21 @@ public class ChiTietHoaDon {
         this.hdctOld = hdctOld;
     }
 
+    @Column(name = "NgayTao")
+    public LocalDateTime getNgayTao() {
+        return ngayTao;
+    }
+
+    public void setNgayTao(LocalDateTime ngayTao) {
+        this.ngayTao = ngayTao;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ChiTietHoaDon that = (ChiTietHoaDon) o;
-        return Objects.equals(id, that.id) && Objects.equals(soLuong, that.soLuong) && Objects.equals(donGia, that.donGia) && Objects.equals(trangThai, that.trangThai) && Objects.equals(hdctOld, that.hdctOld);
+        return Objects.equals(id, that.id) && Objects.equals(soLuong, that.soLuong) && Objects.equals(donGia, that.donGia) && Objects.equals(trangThai, that.trangThai) && Objects.equals(ngayTao, that.ngayTao) && Objects.equals(hdctOld, that.hdctOld);
     }
 
     @Override
