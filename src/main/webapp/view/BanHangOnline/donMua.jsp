@@ -61,6 +61,81 @@
     </style>
 
     <style>
+
+        .profile-menu {
+            width: 250px;
+            padding: 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .profile-pic {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .username {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .menu-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .menu-item {
+            margin-bottom: 10px;
+        }
+
+        .menu-item > a {
+            text-decoration: none;
+            color: #333;
+            font-size: 16px;
+            display: block;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .menu-item > a:hover {
+            background-color: #f0f0f0;
+        }
+
+        .submenu-list {
+            list-style: none;
+            padding-left: 20px;
+            display: none;
+        }
+
+        .submenu-list.show {
+            display: block;
+        }
+
+        .submenu-item > a {
+            text-decoration: none;
+            color: #555;
+            font-size: 14px;
+            display: block;
+            padding: 5px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .submenu-item > a:hover {
+            background-color: #f0f0f0;
+        }
+    </style>
+
+    <style>
         .userCart {
             display: flex;
             align-items: center;
@@ -69,6 +144,17 @@
 
         .dropdown ul li:hover {
             text-decoration: underline;
+        }
+
+        .dropdown-menu {
+            display: none;
+        }
+
+        .dropdown:hover .dropdown-menu {
+            display: block;
+            position: absolute;
+            top: 100%;
+            z-index: 1000;
         }
 
         .totalQuantityCart {
@@ -178,12 +264,28 @@
             </form>
         </div>
         <div class="col-lg-3 col-6 text-right userCart">
-            <div class="dropdown">
-                <button class="btn btn-secondary bg-light" style="padding: 4px; font-size: 19px; margin-right: 3px"
+            <div class="dropdown" onmouseover="showDropdown()" onmouseout="hideDropdown()">
+                <button class="btn btn-light bg-light" style="font-size: 19px; margin-right: 3px"
                         type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="bi bi-person-circle" style="color:#D19C97; margin: 5px"></i>
+                    <c:choose>
+                        <c:when test="${not empty sessionScope.user}">
+                            <!-- Hiển thị tên và hình ảnh người dùng nếu đã đăng nhập -->
+                            <span class="info-text" style="font-size: 14px">${sessionScope.user.taiKhoan}</span>
+                            <c:if test="${sessionScope.user.anhDaiDien != null}">
+                                <img src="/image/${sessionScope.user.anhDaiDien}" alt=""
+                                     style="width: 30px; height: 30px; border-radius: 50%; margin-left: 5px;">
+                            </c:if>
+                            <c:if test="${sessionScope.user.anhDaiDien == null}">
+                                <i class="bi bi-person-circle" style="color:#D19C97; margin: 5px"></i>
+                            </c:if>
+                        </c:when>
+                        <c:otherwise>
+                            <!-- Hiển thị biểu tượng mặc định nếu chưa đăng nhập -->
+                            <i class="bi bi-person-circle" style="color:#D19C97; margin: 5px"></i>
+                        </c:otherwise>
+                    </c:choose>
                 </button>
-                <ul class="dropdown-menu btn border" aria-labelledby="dropdownMenuButton1">
+                <ul class="dropdown-menu btn border" aria-labelledby="dropdownMenuButton1" id="dropdownContent">
                     <c:choose>
                         <c:when test="${empty sessionScope.user}">
                             <!-- Hiển thị nút đăng nhập khi chưa đăng nhập -->
@@ -202,22 +304,22 @@
                         <c:otherwise>
                             <!-- Hiển thị nút đăng xuất khi đã đăng nhập -->
                             <li><a class="dropdown-item" href="/cua-hang/don-mua">Đơn mua</a></li>
-                            <li><a class="dropdown-item" href="#">Quản lý tài khoản</a></li>
+                            <li><a class="dropdown-item" href="/cua-hang/quan-ly-tai-khoan">Quản lý tài khoản</a></li>
                             <li><a class="dropdown-item" href="/cua-hang/logout">Đăng xuất</a></li>
                         </c:otherwise>
                     </c:choose>
                 </ul>
             </div>
             <div class="col-lg-3 col-6 text-right" style="position: relative">
-                <a href="gio-hang" class="btn border">
+                <a href="/cua-hang/gio-hang" class="btn border">
                     <i class="fas fa-shopping-cart text-primary"></i>
-                    <c:if test="${soLuong > 0}">
-                        <span class="totalQuantityCart"
-                              style="display: flex; justify-content: center; align-items: center">${soLuong}</span>
+                    <c:if test="${soLuongGioHang > 0}">
+                    <span class="totalQuantityCart"
+                          style="display: flex; justify-content: center; align-items: center">${soLuongGioHang}</span>
                     </c:if>
-                    <c:if test="${soLuong == null}">
-                        <span class="totalQuantityCart"
-                              style="display: flex; justify-content: center; align-items: center">0</span>
+                    <c:if test="${soLuongGioHang == null}">
+                    <span class="totalQuantityCart"
+                          style="display: flex; justify-content: center; align-items: center">0</span>
                     </c:if>
                 </a>
             </div>
@@ -355,365 +457,565 @@
 </div>
 <!-- Navbar End -->
 
-<!-- Page Header Start -->
-<div class="container-fluid bg-secondary mb-5">
-    <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
-        <h1 class="font-weight-semi-bold text-uppercase mb-3">Đơn mua của tôi</h1>
-        <div class="d-inline-flex">
-            <p class="m-0"><a href="/cua-hang/trang-chu">Trang chủ</a></p>
-            <p class="m-0 px-2">-</p>
-            <p class="m-0">Đơn mua</p>
-        </div>
-    </div>
-</div>
-<!-- Page Header End -->
-
 <!-- Boby -->
 <div class="container-fluid">
-    <div class="card shadow mb-4">
-        <div class="card-header py-3 d-flex align-items-center" style="padding: 300px;">
-            <i class="bi bi-card-list mr-3"></i>
-            <h6 class="m-0 font-weight-bold">Đơn mua</h6>
+    <div class="row">
+        <div class="col-1"></div>
+        <div class="col-3">
+            <div class="profile-menu" style="position: relative; top: 41px;">
+                <div class="profile-header">
+                    <img src="/image/${sessionScope.user.anhDaiDien}" alt="Profile Picture" class="profile-pic">
+                    <span class="username">${sessionScope.user.taiKhoan}</span>
+                </div>
+                <ul class="menu-list">
+                    <li class="menu-item">
+                        <a href="#">Quản Lý Tài Khoản</a>
+                        <ul class="submenu-list">
+                            <li class="submenu-item"><a href="/cua-hang/quan-ly-tai-khoan">Hồ Sơ</a></li>
+                            <li class="submenu-item"><a href="/cua-hang/dia-chi">Địa Chỉ</a></li>
+                        </ul>
+                    </li>
+                    <li class="menu-item"><a href="/cua-hang/don-mua">Đơn Mua</a></li>
+                </ul>
+            </div>
         </div>
-        <div class="row px-xl-5">
-            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist" style="position: relative; left: 267px;">
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#tat-ca"
-                            type="button" role="tab" aria-controls="tat-ca" aria-selected="true">Tất cả
-                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-                              style="z-index: 1000; color: white">
-                            ${countAllHoaDon}
-                        </span>
-                    </button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#cho-xac-nhan"
-                            type="button" role="tab" aria-controls="#cho-xac-nhan" aria-selected="false">Chờ xác
-                        nhận
-                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-                              style="z-index: 1000; color: white">
-                            ${countHDByChoXacNhan}
-                        </span>
-                    </button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill"
-                            data-bs-target="#cho-giao-hang"
-                            type="button" role="tab" aria-controls="#cho-giao-hang" aria-selected="false">Chờ giao
-                        hàng
-                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-                              style="z-index: 1000; color: white">
-                            ${countHDByChoGiaoHang}
-                        </span>
-                    </button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill"
-                            data-bs-target="#dang-giao-hang"
-                            type="button" role="tab" aria-controls="#dang-giao-hang" aria-selected="false">Đang giao
-                        hàng
-                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-                              style="z-index: 1000; color: white">
-                            ${countHDByDangGiaoHang}
-                        </span>
-                    </button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#hoan-thanh"
-                            type="button" role="tab" aria-controls="#hoan-thanh" aria-selected="false">Hoàn thành
-                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-                              style="z-index: 1000; color: white">
-                            ${countHDByHoanThanh}
-                        </span>
-                    </button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#don-huy"
-                            type="button" role="tab" aria-controls="#don-huy" aria-selected="false">Đơn hủy
-                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-                              style="z-index: 1000; color: white">
-                            ${countHDDaHuy}
-                        </span>
-                    </button>
-                </li>
-            </ul>
-            <form id="searchForm">
-                <input type="text" id="searchInput" placeholder="Nhập mã hóa đơn...">
-            </form>
+        <div class="col-7">
+            <div class="d-flex flex-column align-items justify-content-center" style="min-height: 150px">
+                <h5 class="font-weight-semi-bold text-uppercase mb-3">Đơn mua</h5>
+            </div>
+            <div class="row px-xl-3">
+                <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill"
+                                data-bs-target="#tat-ca"
+                                type="button" role="tab" aria-controls="tat-ca" aria-selected="true">Tất cả
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                                  style="z-index: 1000; color: white">
+                                ${countAllHoaDon}
+                            </span>
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill"
+                                data-bs-target="#cho-xac-nhan"
+                                type="button" role="tab" aria-controls="#cho-xac-nhan" aria-selected="false">Chờ
+                            xác
+                            nhận
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                                  style="z-index: 1000; color: white">
+                                ${countHDByChoXacNhan}
+                            </span>
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill"
+                                data-bs-target="#cho-giao-hang"
+                                type="button" role="tab" aria-controls="#cho-giao-hang" aria-selected="false">Chờ
+                            giao
+                            hàng
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                                  style="z-index: 1000; color: white">
+                                ${countHDByChoGiaoHang}
+                            </span>
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill"
+                                data-bs-target="#dang-giao-hang"
+                                type="button" role="tab" aria-controls="#dang-giao-hang" aria-selected="false">Đang
+                            giao
+                            hàng
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                                  style="z-index: 1000; color: white">
+                                ${countHDByDangGiaoHang}
+                            </span>
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill"
+                                data-bs-target="#hoan-thanh"
+                                type="button" role="tab" aria-controls="#hoan-thanh" aria-selected="false">Hoàn
+                            thành
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                                  style="z-index: 1000; color: white">
+                                ${countHDByHoanThanh}
+                            </span>
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill"
+                                data-bs-target="#don-huy"
+                                type="button" role="tab" aria-controls="#don-huy" aria-selected="false">Đơn hủy
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                                  style="z-index: 1000; color: white">
+                                ${countHDDaHuy}
+                            </span>
+                        </button>
+                    </li>
+                </ul>
+                <div class="tab-content" id="pills-tabContent">
+                    <%-- Tất cả danh sách --%>
+                    <div class="tab-pane fade show active" id="tat-ca" role="tabpanel" aria-labelledby="tat-ca-tab">
+                        <div class="container mt-5">
+                            <c:if test="${not empty listHD.content}">
+                                <c:forEach var="i" items="${listHD.content}">
+                                    <c:if test="${i.trangThai >= 1}">
+                                        <div class="row mb-4 rounded p-5" style="border: 1px solid #D19C97">
+                                            <div class="col-3">
+                                                <div><strong>Mã hóa đơn:</strong> ${i.ma}</div>
+                                            </div>
+                                            <div class="col-5">
+                                                <div><strong>Ngày đặt hàng:</strong> ${i.ngayThanhToan}</div>
+                                            </div>
+                                            <div class="col-3">
+                                                <div><strong>Tổng:</strong>
+                                                    <fmt:formatNumber value="${i.tongTien}" type="currency"
+                                                                      currencySymbol="₫"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-1 d-flex align-items-center justify-content-center">
+                                                <c:choose>
+                                                    <c:when test="${i.trangThai == 1}">
+                                                        <div class="badge badge-warning"
+                                                             style="border-radius: 10px;">
+                                                            Chờ xác nhận
+                                                        </div>
+                                                    </c:when>
+                                                    <c:when test="${i.trangThai == 3}">
+                                                        <div class="badge badge-warning"
+                                                             style="border-radius: 10px;">
+                                                            Chờ giao hàng
+                                                        </div>
+                                                    </c:when>
+                                                    <c:when test="${i.trangThai == 4}">
+                                                        <div class="badge badge-info" style="border-radius: 10px;">
+                                                            Chờ giao hàng
+                                                        </div>
+                                                    </c:when>
+                                                    <c:when test="${i.trangThai == 6}">
+                                                        <div class="badge badge-success"
+                                                             style="border-radius: 10px;">
+                                                            Hoàn thành
+                                                        </div>
+                                                    </c:when>
+                                                    <c:when test="${i.trangThai == 7}">
+                                                        <div class="badge badge-danger"
+                                                             style="border-radius: 10px;">
+                                                            Đơn hủy
+                                                        </div>
+                                                    </c:when>
+                                                </c:choose>
+                                            </div>
+                                            <div class="col-12 mt-3 text-center">
+                                                <a href="/cua-hang/don-mua/${i.id}">
+                                                    <button class="btn btn-primary" style="border-radius: 10px;">Chi
+                                                        tiết
+                                                    </button>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </c:if>
+                                </c:forEach>
+                            </c:if>
+                            <c:if test="${empty listHD.content}">
+                                <div class="row mt-4 p-3 text-center"
+                                     style="position: relative; left: 300px; top: 40px; margin-bottom: 5rem !important;">
+                                    <h5>Không có hóa đơn</h5>
+                                </div>
+                            </c:if>
+                        </div>
+                        <!-- Phân trang -->
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination justify-content-center">
+                                <c:if test="${listHD.number > 0}">
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page=${listHD.number - 1}"
+                                           aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                </c:if>
+                                <c:if test="${listHD.totalPages > 0}">
+                                    <c:forEach var="i" begin="0" end="${listHD.totalPages - 1}">
+                                        <li class="page-item ${i == listHD.number ? 'active' : ''}">
+                                            <a class="page-link" href="?page=${i}">${i + 1}</a>
+                                        </li>
+                                    </c:forEach>
+                                </c:if>
+                                <c:if test="${listHD.number < listHD.totalPages - 1}">
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page=${listHD.number + 1}"
+                                           aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                </c:if>
+                            </ul>
+                        </nav>
+                    </div>
 
-            <div class="tab-content" id="pills-tabContent" style="position: relative; left: 314px;">
-                <%-- Tất cả danh sách --%>
-                <div class="tab-pane fade show active" id="tat-ca" role="tabpanel" aria-labelledby="tat-ca-tab">
-                    <div class="container mt-5">
-                        <c:if test="${not empty listHD}">
-                            <c:forEach var="i" items="${listHD}">
-                                <c:if test="${i.trangThai >= 1}">
-                                    <div class="row mb-4 rounded p-3" style="border: 1px solid #D19C97">
+                    <%-- Danh sách chờ xác nhận --%>
+                    <div class="tab-pane fade" id="cho-xac-nhan" role="tabpanel" aria-labelledby="cho-xac-nhan-tab">
+                        <div class="container mt-5">
+                            <c:if test="${not empty listHDByChoXacNhan.content}">
+                                <c:forEach var="i" items="${listHDByChoXacNhan.content}">
+                                    <div class="row mb-4 rounded p-5" style="border: 1px solid #D19C97">
                                         <div class="col-3">
                                             <div><strong>Mã hóa đơn:</strong> ${i.ma}</div>
                                         </div>
                                         <div class="col-5">
-                                            <div><strong>Ngày thanh toán:</strong> ${i.ngayThanhToan}</div>
+                                            <div><strong>Ngày đặt hàng:</strong> ${i.ngayThanhToan}</div>
                                         </div>
-                                        <div class="col-2">
+                                        <div class="col-3">
                                             <div><strong>Tổng:</strong>
                                                 <fmt:formatNumber value="${i.tongTien}" type="currency"
                                                                   currencySymbol="₫"/>
                                             </div>
                                         </div>
-                                        <div class="col-2 d-flex align-items-center justify-content-center">
-                                            <c:choose>
-                                                <c:when test="${i.trangThai == 1}">
-                                                    <div class="badge badge-warning" style="border-radius: 10px;">
-                                                        Chờ xác nhận
-                                                    </div>
-                                                </c:when>
-                                                <c:when test="${i.trangThai == 3}">
-                                                    <div class="badge badge-warning" style="border-radius: 10px;">
-                                                        Chờ giao hàng
-                                                    </div>
-                                                </c:when>
-                                                <c:when test="${i.trangThai == 4}">
-                                                    <div class="badge badge-info" style="border-radius: 10px;">
-                                                        Chờ giao hàng
-                                                    </div>
-                                                </c:when>
-                                                <c:when test="${i.trangThai == 6}">
-                                                    <div class="badge badge-success" style="border-radius: 10px;">
-                                                        Hoàn thành
-                                                    </div>
-                                                </c:when>
-                                                <c:when test="${i.trangThai == 7}">
-                                                    <div class="badge badge-danger" style="border-radius: 10px;">
-                                                        Đơn hủy
-                                                    </div>
-                                                </c:when>
-                                            </c:choose>
+                                        <div class="col-1 d-flex align-items-center justify-content-center">
+                                            <c:if test="${i.trangThai == 1}">
+                                                <div class="badge badge-warning" style="border-radius: 10px;">
+                                                    Chờ xác nhận
+                                                </div>
+                                            </c:if>
                                         </div>
                                         <div class="col-12 mt-3 text-center">
                                             <a href="/cua-hang/don-mua/${i.id}">
-                                                <button class="btn btn-primary" style="border-radius: 10px;">Chi tiết
+                                                <button class="btn btn-primary" style="border-radius: 10px;">Chi
+                                                    tiết
                                                 </button>
                                             </a>
                                         </div>
                                     </div>
+                                </c:forEach>
+                            </c:if>
+                            <c:if test="${empty listHDByChoXacNhan.content}">
+                                <div class="row mt-4 p-3 text-center"
+                                     style="position: relative; left: 300px; top: 40px; margin-bottom: 5rem !important;">
+                                    <h5>Không có hóa đơn</h5>
+                                </div>
+                            </c:if>
+                        </div>
+                        <!-- Phân trang -->
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination justify-content-center">
+                                <c:if test="${listHDByChoXacNhan.number > 0}">
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page=${listHDByChoXacNhan.number - 1}"
+                                           aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
                                 </c:if>
-                            </c:forEach>
-                        </c:if>
-                        <c:if test="${empty listHD}">
-                            <div class="row mb-4 p-3 text-center" style="position: relative; right: 692px; top: 10px;">
-                                <h5>Không có hóa đơn</h5>
-                            </div>
-                        </c:if>
+                                <c:if test="${listHDByChoXacNhan.totalPages > 0}">
+                                    <c:forEach var="i" begin="0" end="${listHDByChoXacNhan.totalPages - 1}">
+                                        <li class="page-item ${i == listHDByChoXacNhan.number ? 'active' : ''}">
+                                            <a class="page-link" href="?page=${i}">${i + 1}</a>
+                                        </li>
+                                    </c:forEach>
+                                </c:if>
+                                <c:if test="${listHDByChoXacNhan.number < listHDByChoXacNhan.totalPages - 1}">
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page=${listHDByChoXacNhan.number + 1}"
+                                           aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                </c:if>
+                            </ul>
+                        </nav>
                     </div>
-                </div>
-                <%-- Danh sách chờ xác nhận --%>
-                <div class="tab-pane fade" id="cho-xac-nhan" role="tabpanel" aria-labelledby="cho-xac-nhan-tab">
-                    <div class="container mt-5">
-                        <c:if test="${not empty listHDByChoXacNhan}">
-                            <c:forEach var="i" items="${listHDByChoXacNhan}">
-                                <div class="row mb-4 rounded p-3" style="border: 1px solid #D19C97">
-                                    <div class="col-3">
-                                        <div><strong>Mã hóa đơn:</strong> ${i.ma}</div>
-                                    </div>
-                                    <div class="col-5">
-                                        <div><strong>Ngày thanh toán:</strong> ${i.ngayThanhToan}</div>
-                                    </div>
-                                    <div class="col-2">
-                                        <div><strong>Tổng:</strong>
-                                            <fmt:formatNumber value="${i.tongTien}" type="currency"
-                                                              currencySymbol="₫"/>
+                    <%-- Danh sách chờ giao-hang --%>
+                    <div class="tab-pane fade" id="cho-giao-hang" role="tabpanel"
+                         aria-labelledby="cho-giao-hang-tab">
+                        <div class="container mt-5">
+                            <c:if test="${not empty listHDByChoGiaoHang.content}">
+                                <c:forEach var="i" items="${listHDByChoGiaoHang.content}">
+                                    <div class="row mb-4 rounded p-5" style="border: 1px solid #D19C97">
+                                        <div class="col-3">
+                                            <div><strong>Mã hóa đơn:</strong> ${i.ma}</div>
+                                        </div>
+                                        <div class="col-5">
+                                            <div><strong>Ngày đặt hàng:</strong> ${i.ngayThanhToan}</div>
+                                        </div>
+                                        <div class="col-3">
+                                            <div><strong>Tổng:</strong>
+                                                <fmt:formatNumber value="${i.tongTien}" type="currency"
+                                                                  currencySymbol="₫"/>
+                                            </div>
+                                        </div>
+                                        <div class="col-1 d-flex align-items-center justify-content-center">
+                                            <c:if test="${i.trangThai == 3}">
+                                                <div class="badge badge-warning" style="border-radius: 10px;">
+                                                    Chờ giao hàng
+                                                </div>
+                                            </c:if>
+                                        </div>
+                                        <div class="col-12 mt-3 text-center">
+                                            <a href="/cua-hang/don-mua/${i.id}">
+                                                <button class="btn btn-primary" style="border-radius: 10px;">Chi
+                                                    tiết
+                                                </button>
+                                            </a>
                                         </div>
                                     </div>
-                                    <div class="col-2 d-flex align-items-center justify-content-center">
-                                        <c:if test="${i.trangThai == 1}">
-                                            <div class="badge badge-warning" style="border-radius: 10px;">
-                                                Chờ xác nhận
-                                            </div>
-                                        </c:if>
-                                    </div>
-                                    <div class="col-12 mt-3 text-center">
-                                        <a href="/cua-hang/don-mua/${i.id}">
-                                            <button class="btn btn-primary" style="border-radius: 10px;">Chi tiết
-                                            </button>
-                                        </a>
-                                    </div>
+                                </c:forEach>
+                            </c:if>
+                            <c:if test="${empty listHDByChoGiaoHang.content}">
+                                <div class="row mt-4 p-3 text-center"
+                                     style="position: relative; left: 300px; top: 40px; margin-bottom: 5rem !important;">
+                                    <h5>Không có hóa đơn</h5>
                                 </div>
-                            </c:forEach>
-                        </c:if>
-                        <c:if test="${empty listHDByChoXacNhan}">
-                            <div class="row mb-4 p-3 text-center" style="position: relative; right: 692px; top: 10px;">
-                                <h5>Không có hóa đơn</h5>
-                            </div>
-                        </c:if>
+                            </c:if>
+                        </div>
+                        <!-- Phân trang -->
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination justify-content-center">
+                                <c:if test="${listHDByChoGiaoHang.number > 0}">
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page=${listHDByChoGiaoHang.number - 1}"
+                                           aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                </c:if>
+                                <c:if test="${listHDByChoGiaoHang.totalPages > 0}">
+                                    <c:forEach var="i" begin="0" end="${listHDByChoGiaoHang.totalPages - 1}">
+                                        <li class="page-item ${i == listHDByChoGiaoHang.number ? 'active' : ''}">
+                                            <a class="page-link" href="?page=${i}">${i + 1}</a>
+                                        </li>
+                                    </c:forEach>
+                                </c:if>
+                                <c:if test="${listHDByChoGiaoHang.number < listHDByChoGiaoHang.totalPages - 1}">
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page=${listHDByChoGiaoHang.number + 1}"
+                                           aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                </c:if>
+                            </ul>
+                        </nav>
                     </div>
-                </div>
-                <div class="tab-pane fade" id="cho-giao-hang" role="tabpanel" aria-labelledby="cho-giao-hang-tab">
-                    <div class="container mt-5">
-                        <c:if test="${not empty listHDByChoGiaoHang}">
-                            <c:forEach var="i" items="${listHDByChoGiaoHang}">
-                                <div class="row mb-4 rounded p-3" style="border: 1px solid #D19C97">
-                                    <div class="col-3">
-                                        <div><strong>Mã hóa đơn:</strong> ${i.ma}</div>
-                                    </div>
-                                    <div class="col-5">
-                                        <div><strong>Ngày thanh toán:</strong> ${i.ngayThanhToan}</div>
-                                    </div>
-                                    <div class="col-2">
-                                        <div><strong>Tổng:</strong>
-                                            <fmt:formatNumber value="${i.tongTien}" type="currency"
-                                                              currencySymbol="₫"/>
+                    <%-- Danh sách đang giao-hang --%>
+                    <div class="tab-pane fade" id="dang-giao-hang" role="tabpanel"
+                         aria-labelledby="dang-giao-hang-tab">
+                        <div class="container mt-5">
+                            <c:if test="${not empty listHDByDangGiaoHang.content}">
+                                <c:forEach var="i" items="${listHDByDangGiaoHang.content}">
+                                    <div class="row mb-4 rounded p-5" style="border: 1px solid #D19C97">
+                                        <div class="col-3">
+                                            <div><strong>Mã hóa đơn:</strong> ${i.ma}</div>
+                                        </div>
+                                        <div class="col-5">
+                                            <div><strong>Ngày đặt hàng:</strong> ${i.ngayThanhToan}</div>
+                                        </div>
+                                        <div class="col-3">
+                                            <div><strong>Tổng:</strong>
+                                                <fmt:formatNumber value="${i.tongTien}" type="currency"
+                                                                  currencySymbol="₫"/>
+                                            </div>
+                                        </div>
+                                        <div class="col-1 d-flex align-items-center justify-content-center">
+                                            <c:if test="${i.trangThai == 4}">
+                                                <div class="badge badge-info" style="border-radius: 10px;">
+                                                    Chờ xác nhận
+                                                </div>
+                                            </c:if>
+                                        </div>
+                                        <div class="col-12 mt-3 text-center">
+                                            <a href="/cua-hang/don-mua/${i.id}">
+                                                <button class="btn btn-primary" style="border-radius: 10px;">Chi
+                                                    tiết
+                                                </button>
+                                            </a>
                                         </div>
                                     </div>
-                                    <div class="col-2 d-flex align-items-center justify-content-center">
-                                        <c:if test="${i.trangThai == 3}">
-                                            <div class="badge badge-warning" style="border-radius: 10px;">
-                                                Chờ giao hàng
-                                            </div>
-                                        </c:if>
-                                    </div>
-                                    <div class="col-12 mt-3 text-center">
-                                        <a href="/cua-hang/don-mua/${i.id}">
-                                            <button class="btn btn-primary" style="border-radius: 10px;">Chi tiết
-                                            </button>
-                                        </a>
-                                    </div>
+                                </c:forEach>
+                            </c:if>
+                            <c:if test="${empty listHDByDangGiaoHang.content}">
+                                <div class="row mt-4 p-3 text-center"
+                                     style="position: relative; left: 300px; top: 40px; margin-bottom: 5rem !important;">
+                                    <h5>Không có hóa đơn</h5>
                                 </div>
-                            </c:forEach>
-                        </c:if>
-                        <c:if test="${empty listHDByChoGiaoHang}">
-                            <div class="row mb-4 p-3 text-center" style="position: relative; right: 692px; top: 10px;">
-                                <h5>Không có hóa đơn</h5>
-                            </div>
-                        </c:if>
+                            </c:if>
+                        </div>
+                        <!-- Phân trang -->
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination justify-content-center">
+                                <c:if test="${listHDByDangGiaoHang.number > 0}">
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page=${listHDByDangGiaoHang.number - 1}"
+                                           aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                </c:if>
+                                <c:if test="${listHDByDangGiaoHang.totalPages > 0}">
+                                    <c:forEach var="i" begin="0" end="${listHDByDangGiaoHang.totalPages - 1}">
+                                        <li class="page-item ${i == listHDByDangGiaoHang.number ? 'active' : ''}">
+                                            <a class="page-link" href="?page=${i}">${i + 1}</a>
+                                        </li>
+                                    </c:forEach>
+                                </c:if>
+                                <c:if test="${listHDByDangGiaoHang.number < listHDByDangGiaoHang.totalPages - 1}">
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page=${listHDByDangGiaoHang.number + 1}"
+                                           aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                </c:if>
+                            </ul>
+                        </nav>
                     </div>
-                </div>
-                <%-- Danh sách đang giao-hang --%>
-                <div class="tab-pane fade" id="dang-giao-hang" role="tabpanel" aria-labelledby="dang-giao-hang-tab">
-                    <div class="container mt-5">
-                        <c:if test="${not empty listHDByDangGiaoHang}">
-                            <c:forEach var="i" items="${listHDByDangGiaoHang}">
-                                <div class="row mb-4 rounded p-3" style="border: 1px solid #D19C97">
-                                    <div class="col-3">
-                                        <div><strong>Mã hóa đơn:</strong> ${i.ma}</div>
-                                    </div>
-                                    <div class="col-5">
-                                        <div><strong>Ngày thanh toán:</strong> ${i.ngayThanhToan}</div>
-                                    </div>
-                                    <div class="col-2">
-                                        <div><strong>Tổng:</strong>
-                                            <fmt:formatNumber value="${i.tongTien}" type="currency"
-                                                              currencySymbol="₫"/>
+                    <div class="tab-pane fade" id="hoan-thanh" role="tabpanel" aria-labelledby="hoan-thanh-tab">
+                        <div class="container mt-5">
+                            <c:if test="${not empty listHDByHoanThanh.content}">
+                                <c:forEach var="i" items="${listHDByHoanThanh.content}">
+                                    <div class="row mb-4 p-5" style="border: 1px solid #D19C97">
+                                        <div class="col-3">
+                                            <div><strong>Mã hóa đơn:</strong> ${i.ma}</div>
+                                        </div>
+                                        <div class="col-5">
+                                            <div><strong>Ngày đặt hàng:</strong> ${i.ngayThanhToan}</div>
+                                        </div>
+                                        <div class="col-3">
+                                            <div><strong>Tổng:</strong>
+                                                <fmt:formatNumber value="${i.tongTien}" type="currency"
+                                                                  currencySymbol="₫"/>
+                                            </div>
+                                        </div>
+                                        <div class="col-1 d-flex align-items-center justify-content-center">
+                                            <c:if test="${i.trangThai == 6}">
+                                                <div class="badge badge-success" style="border-radius: 10px;">
+                                                    Hoàn thành
+                                                </div>
+                                            </c:if>
+                                        </div>
+                                        <div class="col-12 mt-3 text-center">
+                                            <a href="/cua-hang/don-mua/${i.id}">
+                                                <button class="btn btn-primary" style="border-radius: 10px;">Chi
+                                                    tiết
+                                                </button>
+                                            </a>
                                         </div>
                                     </div>
-                                    <div class="col-2 d-flex align-items-center justify-content-center">
-                                        <c:if test="${i.trangThai == 4}">
-                                            <div class="badge badge-info" style="border-radius: 10px;">
-                                                Chờ xác nhận
-                                            </div>
-                                        </c:if>
-                                    </div>
-                                    <div class="col-12 mt-3 text-center">
-                                        <a href="/cua-hang/don-mua/${i.id}">
-                                            <button class="btn btn-primary" style="border-radius: 10px;">Chi tiết
-                                            </button>
-                                        </a>
-                                    </div>
+                                </c:forEach>
+                            </c:if>
+                            <c:if test="${empty listHDByHoanThanh.content}">
+                                <div class="row mt-4 p-3 text-center"
+                                     style="position: relative; left: 300px; top: 40px; margin-bottom: 5rem !important;">
+                                    <h5>Không có hóa đơn</h5>
                                 </div>
-                            </c:forEach>
-                        </c:if>
-                        <c:if test="${empty listHDByDangGiaoHang}">
-                            <div class="row mb-4 p-3 text-center" style="position: relative; right: 692px; top: 10px;">
-                                <h5>Không có hóa đơn</h5>
-                            </div>
-                        </c:if>
+                            </c:if>
+                        </div>
+                        <!-- Phân trang -->
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination justify-content-center">
+                                <c:if test="${listHDByHoanThanh.number > 0}">
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page=${listHDByHoanThanh.number - 1}"
+                                           aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                </c:if>
+                                <c:if test="${listHDByHoanThanh.totalPages > 0}">
+                                    <c:forEach var="i" begin="0" end="${listHDByHoanThanh.totalPages - 1}">
+                                        <li class="page-item ${i == listHDByHoanThanh.number ? 'active' : ''}">
+                                            <a class="page-link" href="?page=${i}">${i + 1}</a>
+                                        </li>
+                                    </c:forEach>
+                                </c:if>
+                                <c:if test="${listHDByHoanThanh.number < listHDByHoanThanh.totalPages - 1}">
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page=${listHDByHoanThanh.number + 1}"
+                                           aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                </c:if>
+                            </ul>
+                        </nav>
                     </div>
-                </div>
-                <div class="tab-pane fade" id="hoan-thanh" role="tabpanel" aria-labelledby="hoan-thanh-tab">
-                    <div class="container mt-5">
-                        <c:if test="${not empty listHDByHoanThanh}">
-                            <c:forEach var="i" items="${listHDByHoanThanh}">
-                                <div class="row mb-4 p-3" style="border: 1px solid #D19C97">
-                                    <div class="col-3">
-                                        <div><strong>Mã hóa đơn:</strong> ${i.ma}</div>
-                                    </div>
-                                    <div class="col-5">
-                                        <div><strong>Ngày thanh toán:</strong> ${i.ngayThanhToan}</div>
-                                    </div>
-                                    <div class="col-2">
-                                        <div><strong>Tổng:</strong>
-                                            <fmt:formatNumber value="${i.tongTien}" type="currency"
-                                                              currencySymbol="₫"/>
+                    <%-- Danh sách đơn hủy --%>
+                    <div class="tab-pane fade" id="don-huy" role="tabpanel" aria-labelledby="don-huy-tab">
+                        <div class="container mt-5">
+                            <c:if test="${not empty listHDDaHuy.content}">
+                                <c:forEach var="i" items="${listHDDaHuy.content}">
+                                    <div class="row mb-4 p-5" style="border: 1px solid #D19C97">
+                                        <div class="col-3">
+                                            <div><strong>Mã hóa đơn:</strong> ${i.ma}</div>
+                                        </div>
+                                        <div class="col-5">
+                                            <div><strong>Ngày đặt hàng:</strong> ${i.ngayThanhToan}</div>
+                                        </div>
+                                        <div class="col-3">
+                                            <div><strong>Tổng:</strong>
+                                                <fmt:formatNumber value="${i.tongTien}" type="currency"
+                                                                  currencySymbol="₫"/>
+                                            </div>
+                                        </div>
+                                        <div class="col-1 d-flex align-items-center justify-content-center">
+                                            <c:if test="${i.trangThai == 7}">
+                                                <div class="badge badge-danger" style="border-radius: 10px;">
+                                                    Đơn hủy
+                                                </div>
+                                            </c:if>
+                                        </div>
+                                        <div class="col-12 mt-3 text-center">
+                                            <a href="/cua-hang/don-mua/${i.id}">
+                                                <button class="btn btn-primary" style="border-radius: 10px;">Chi
+                                                    tiết
+                                                </button>
+                                            </a>
                                         </div>
                                     </div>
-                                    <div class="col-2 d-flex align-items-center justify-content-center">
-                                        <c:if test="${i.trangThai == 6}">
-                                            <div class="badge badge-success" style="border-radius: 10px;">
-                                                Hoàn thành
-                                            </div>
-                                        </c:if>
-                                    </div>
-                                    <div class="col-12 mt-3 text-center">
-                                        <a href="/cua-hang/don-mua/${i.id}">
-                                            <button class="btn btn-primary" style="border-radius: 10px;">Chi tiết
-                                            </button>
-                                        </a>
-                                    </div>
+                                </c:forEach>
+                            </c:if>
+                            <c:if test="${empty listHDDaHuy.content}">
+                                <div class="row mt-4 p-3 text-center"
+                                     style="position: relative; left: 300px; top: 40px; margin-bottom: 5rem !important;">
+                                    <h5>Không có hóa đơn</h5>
                                 </div>
-                            </c:forEach>
-                        </c:if>
-                        <c:if test="${empty listHDByHoanThanh}">
-                            <div class="row mb-4 p-3 text-center" style="position: relative; right: 692px; top: 10px;">
-                                <h5>Không có hóa đơn</h5>
-                            </div>
-                        </c:if>
-                    </div>
-                </div>
-                <%-- Danh sách đơn hủy --%>
-                <div class="tab-pane fade" id="don-huy" role="tabpanel" aria-labelledby="don-huy-tab">
-                    <div class="container mt-5">
-                        <c:if test="${not empty listHDDaHuy}">
-                            <c:forEach var="i" items="${listHDDaHuy}">
-                                <div class="row mb-4 p-3" style="border: 1px solid #D19C97">
-                                    <div class="col-3">
-                                        <div><strong>Mã hóa đơn:</strong> ${i.ma}</div>
-                                    </div>
-                                    <div class="col-5">
-                                        <div><strong>Ngày thanh toán:</strong> ${i.ngayThanhToan}</div>
-                                    </div>
-                                    <div class="col-2">
-                                        <div><strong>Tổng:</strong>
-                                            <fmt:formatNumber value="${i.tongTien}" type="currency"
-                                                              currencySymbol="₫"/>
-                                        </div>
-                                    </div>
-                                    <div class="col-2 d-flex align-items-center justify-content-center">
-                                        <c:if test="${i.trangThai == 7}">
-                                            <div class="badge badge-danger" style="border-radius: 10px;">
-                                                Đơn hủy
-                                            </div>
-                                        </c:if>
-                                    </div>
-                                    <div class="col-12 mt-3 text-center">
-                                        <a href="/cua-hang/don-mua/${i.id}">
-                                            <button class="btn btn-primary" style="border-radius: 10px;">Chi tiết
-                                            </button>
+                            </c:if>
+                        </div>
+                        <!-- Phân trang -->
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination justify-content-center">
+                                <c:if test="${listHDDaHuy.number > 0}">
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page=${listHDDaHuy.number - 1}"
+                                           aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
                                         </a>
-                                    </div>
-                                </div>
-                            </c:forEach>
-                        </c:if>
-                        <c:if test="${empty listHDDaHuy}">
-                            <div class="row mb-4 p-3 text-center" style="position: relative; right: 692px; top: 10px;">
-                                <h5>Không có hóa đơn</h5>
-                            </div>
-                        </c:if>
+                                    </li>
+                                </c:if>
+                                <c:if test="${listHDDaHuy.totalPages > 0}">
+                                    <c:forEach var="i" begin="0" end="${listHDDaHuy.totalPages - 1}">
+                                        <li class="page-item ${i == listHDDaHuy.number ? 'active' : ''}">
+                                            <a class="page-link" href="?page=${i}">${i + 1}</a>
+                                        </li>
+                                    </c:forEach>
+                                </c:if>
+                                <c:if test="${listHDDaHuy.number < listHDDaHuy.totalPages - 1}">
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page=${listHDDaHuy.number + 1}"
+                                           aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                </c:if>
+                            </ul>
+                        </nav>
                     </div>
                 </div>
             </div>
         </div>
+        <div class="col-1">
+        </div>
     </div>
-</div>
 </div>
 
 
@@ -829,6 +1131,25 @@
                     $(this).show();
                 }
             });
+        });
+    });
+
+    function showDropdown() {
+        document.getElementById('dropdownContent').style.display = 'block';
+    }
+
+    function hideDropdown() {
+        document.getElementById('dropdownContent').style.display = 'none';
+    }
+</script>
+
+<script>
+    document.querySelectorAll('.menu-item > a').forEach(item => {
+        item.addEventListener('click', event => {
+            const submenu = item.nextElementSibling;
+            if (submenu) {
+                submenu.classList.toggle('show');
+            }
         });
     });
 </script>
