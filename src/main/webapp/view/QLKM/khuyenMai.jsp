@@ -655,10 +655,10 @@
     let idSPLocal = "";
     let currentPage = 1;
     let totalPage = 0;
-    const loadDSSP = (pageParams) => {
+    const loadDSKM = (pageParams) => {
         // get api + scpt.id
         let datatest = "data testing";
-        fetch("/san-pham/index"+"?page="+pageParams, {
+        fetch("/khuyen-mai/get-all"+"?page="+pageParams, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -666,23 +666,27 @@
         }).then(response => response.json())
             .then(resp => {
                 let html = '';
-                resp.map((sp,i)=>{
-                    const maSanPham = sp.ma || 'N/A';
-                    const tenSanPham = sp.ten || 'N/A';
-                    const hinhAnh = sp.hinhAnh || 'N/A';
-                    const ngayTao = sp.ngayTao || 'N/A';
-                    const trangThai = sp.trangThai == 1 ? "Hoạt động" : "Dừng hđ";
+                resp.map((km,i)=>{
+                    const maKhuyenMai = km.ma || 'N/A';
+                    const tenKhuyenMai = km.ten || 'N/A';
+                    const ngayBatDau = km.ngayBatDau || 'N/A';
+                    const ngayKetThuc = km.ngayKetThuc || 'N/A';
+                    const soTienGiam = km.soTienGiam || 'N/A';
+                    const soLuong = km.soLuong || 'N/A';
+                    const trangThai = km.trangThai == 1 ? "Hoạt động" : "Dừng hđ";
                     html += '<tr>' +
                         '<td>' + (i + 1) + '</td>' +
-                        '<td><img src="' + hinhAnh + '" alt="Image" class="img-fluid" /></td>' +
-                        '<td>' + maSanPham + '</td>' +
-                        '<td>' + tenSanPham + '</td>' +
-                        '<td>' + ngayTao + '</td>' +
+                        '<td>' + maKhuyenMai + '</td>' +
+                        '<td>' + tenKhuyenMai + '</td>' +
+                        '<td>' + ngayBatDau + '</td>' +
+                        '<td>' + ngayKetThuc + '</td>' +
+                        '<td>' + soTienGiam + '</td>' +
+                        '<td>' + soLuong + '</td>' +
                         '<td>' + trangThai + '</td>' +
                         '<td>' +
                         '<div class="d-inline">' +
-                        '<button id="editSPBtn_' + sp.id + '" class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#ModalEdit">Chỉnh sửa</button>' +
-                        '<button id="detailSPBtn_' + sp.id + '" class="btn btn-danger">Chi tiết</button>' +
+                        '<button id="editSPBtn_' + km.id + '" class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#ModalEdit">Chỉnh sửa</button>' +
+                        '<button id="detailSPBtn_' + km.id + '" class="btn btn-danger">Chi tiết</button>' +
                         '</div>' +
                         '</td>' +
                         '</tr>';
@@ -700,7 +704,7 @@
         element.parentElement.classList.add('active');
         currentPage = page ;
         updateButtons();
-        loadDSSP(currentPage);
+        loadDSKM(currentPage);
     }
     function updateButtons() {
         let items = document.querySelectorAll('.page-item');
@@ -715,7 +719,7 @@
             let activeIndex = Array.from(items).findIndex(item => item.classList.contains('active'));
             let newIndex = activeIndex + direction;
             currentPage =newIndex
-            loadDSSP(currentPage);
+            loadDSKM(currentPage);
             if (newIndex > 0 && newIndex < items.length - 1) {
                 setActive(items[newIndex].querySelector('a'));
             }
@@ -723,7 +727,7 @@
     }
     updateButtons();
     const loadTotalPagination = (currentPage) => {
-        fetch("/san-pham/count", {
+        fetch("/khuyen-mai/count", {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -748,7 +752,7 @@
             // Handle fetch error
         });
     }
-    loadDSSP(currentPage);
+    loadDSKM(currentPage);
     loadTotalPagination(currentPage);
     let tenSpEdit = document.getElementById("tenSPEdit");
     let hinhAnhDisplay = document.getElementById("hinhAnhEditDisplay");
@@ -760,7 +764,7 @@
         const pathVariable = pathParts[pathParts.length - 1];
         const spid = e.currentTarget.id.replace("editSPBtn_", "");
         idSPLocal = spid;
-        fetch("/san-pham/detail/"+spid, {
+        fetch("/khuyen-mai/detail/"+spid, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -848,7 +852,7 @@
                             idKH: idKH,
                             tongTien: tongTien
                         };
-                        fetch(`/san-pham/save/`, {
+                        fetch(`/khuyen-mai/save/`, {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'
@@ -953,7 +957,7 @@
                                 console.log("save image =error");
                             }
                         });
-                        fetch(`/san-pham/save`, {
+                        fetch(`/khuyen-mai/save`, {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'
@@ -965,14 +969,14 @@
                                 'Dữ liệu đã được ghi nhận.',
                                 'success'
                             ).then(() => {
-                                fetch("/san-pham/count", {
+                                fetch("/khuyen-mai/count", {
                                     headers: {
                                         'Accept': 'application/json',
                                         'Content-Type': 'application/json'
                                     }
                                 }).then(response => response.json())
                                     .then(resp => {
-                                        loadDSSP(Math.ceil(resp/20));
+                                        loadDSKM(Math.ceil(resp/20));
                                         currentPage = Math.ceil(resp/20);
                                         loadTotalPagination(currentPage);
                                     }).catch(error => {
@@ -1070,7 +1074,7 @@
                                 console.log("save image =error");
                             }
                         });
-                        fetch(`/san-pham/update/`+idSPLocal, {
+                        fetch(`/khuyen-mai/update/`+idSPLocal, {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'
@@ -1082,7 +1086,7 @@
                                 'Dữ liệu đã được ghi nhận.',
                                 'success'
                             ).then(() => {
-                                loadDSSP(currentPage);
+                                loadDSKM(currentPage);
                             });
                         });
                     }

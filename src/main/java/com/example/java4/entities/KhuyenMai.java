@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
@@ -16,6 +17,8 @@ public class KhuyenMai {
     private BigDecimal soTienGiam;
     private Integer soLuong;
     private Integer trangThai;
+    private LocalDateTime ngayTao;
+    private BigDecimal apDung;
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -91,16 +94,43 @@ public class KhuyenMai {
         this.trangThai = trangThai;
     }
 
+    @Column(name = "NgayTao")
+    public LocalDateTime getNgayTao() {
+        return ngayTao;
+    }
+
+    public void setNgayTao(LocalDateTime ngayTao) {
+        this.ngayTao = ngayTao;
+    }
+
+    @Column(name = "ApDung")
+    public BigDecimal getApDung() {
+        return apDung;
+    }
+
+    public void setApDung(BigDecimal apDung) {
+        this.apDung = apDung;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         KhuyenMai khuyenMai = (KhuyenMai) o;
-        return Objects.equals(id, khuyenMai.id) && Objects.equals(ma, khuyenMai.ma) && Objects.equals(ten, khuyenMai.ten) && Objects.equals(ngayBatDau, khuyenMai.ngayBatDau) && Objects.equals(ngayKetThuc, khuyenMai.ngayKetThuc) && Objects.equals(soTienGiam, khuyenMai.soTienGiam) && Objects.equals(soLuong, khuyenMai.soLuong) && Objects.equals(trangThai, khuyenMai.trangThai);
+        return Objects.equals(id, khuyenMai.id) &&
+                Objects.equals(ma, khuyenMai.ma) &&
+                Objects.equals(ten, khuyenMai.ten) &&
+                Objects.equals(ngayBatDau, khuyenMai.ngayBatDau) &&
+                Objects.equals(ngayKetThuc, khuyenMai.ngayKetThuc) &&
+                Objects.equals(soTienGiam, khuyenMai.soTienGiam) &&
+                Objects.equals(soLuong, khuyenMai.soLuong) &&
+                Objects.equals(trangThai, khuyenMai.trangThai) &&
+                Objects.equals(ngayTao, khuyenMai.ngayTao) &&
+                Objects.equals(apDung, khuyenMai.apDung);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, ma, ten, ngayBatDau, ngayKetThuc, soTienGiam, soLuong, trangThai);
+        return Objects.hash(id, ma, ten, ngayBatDau, ngayKetThuc, soTienGiam, soLuong, trangThai, ngayTao, apDung);
     }
 }

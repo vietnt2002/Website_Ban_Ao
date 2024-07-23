@@ -1,12 +1,17 @@
 package com.example.java4.repositories;
 
+import com.example.java4.entities.ChiTietSanPham;
 import com.example.java4.entities.KhuyenMai;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface KhuyenMaiRepository extends JpaRepository<KhuyenMai,String> {
@@ -18,4 +23,21 @@ public interface KhuyenMaiRepository extends JpaRepository<KhuyenMai,String> {
 
     @Query("select km from KhuyenMai km where km.id=?1")
     KhuyenMai findByIdKM(String idKM);
+
+    //Nguyenxloc
+    @Query(value = "SELECT km FROM KhuyenMai km where km.trangThai=:trangThai ORDER BY km.ngayTao asc")
+    Page<KhuyenMai> findByTrangThaiAsc(int trangThai, Pageable pageable);
+    @Query(value = "SELECT km FROM KhuyenMai km where km.trangThai=1 ORDER BY km.ngayTao asc")
+    Page<KhuyenMai> findAllByPage(Pageable pageable);
+    @Modifying(clearAutomatically = true)
+    @Query("UPDATE KhuyenMai km SET km.trangThai = 1 WHERE km.id=:id")
+    int enableStt(@Param("id") String id);
+    @Query("UPDATE KhuyenMai km SET km.trangThai = 0 WHERE km.id=:id")
+    int disableStt(@Param("id")String id);
+    @Query(value = "SELECT COUNT(*) FROM khuyenMai",nativeQuery = true)
+    Integer getCount();
+    @Query(value = "SELECT COUNT(*) FROM khuyenMai where trangThai=1",nativeQuery = true)
+    Integer getCountStt1();
+    @Query(value = "SELECT COUNT(*) FROM khuyenMai where trangThai=0",nativeQuery = true)
+    Integer getCountStt0();
 }
