@@ -2,6 +2,8 @@ package com.example.java4.repositories;
 
 import com.example.java4.entities.HoaDon;
 import com.example.java4.response.ThongKeDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -59,4 +61,20 @@ public interface ThongKeRepository extends JpaRepository<HoaDon,String> {
             "WHERE DATEPART(YEAR, hd.NgayTao) = DATEPART(YEAR, :date)",
             nativeQuery = true)
     List<Object[]> getYearlyStatistics(@Param("date") LocalDateTime date);
+
+
+    // Thống kê danh sách sản phẩm sắp hết hàng
+    @Query(value = "SELECT sp.Ten, sp.Ma, ctsp.GiaBan, hinhanh.HinhAnh1, ctsp.SoLuongTon " +
+            "FROM ChiTietSanPham ctsp " +
+            "JOIN SanPham sp ON ctsp.IdSanPham = sp.ID " +
+            "JOIN HinhAnh hinhanh ON ctsp.ID = hinhanh.IdCTSP " +
+            "WHERE ctsp.SoLuongTon <= 10 " +
+            "ORDER BY ctsp.SoLuongTon ASC",
+            countQuery = "SELECT COUNT(*) " +
+                    "FROM ChiTietSanPham ctsp " +
+                    "JOIN SanPham sp ON ctsp.IdSanPham = sp.ID " +
+                    "JOIN HinhAnh hinhanh ON ctsp.ID = hinhanh.IdCTSP " +
+                    "WHERE ctsp.SoLuongTon <= 10",
+            nativeQuery = true)
+    Page<ThongKeDTO> getLowStockProducts(Pageable pageable);
 }

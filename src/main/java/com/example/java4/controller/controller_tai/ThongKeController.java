@@ -6,6 +6,8 @@ import com.example.java4.repositories.NhanVienRepository;
 import com.example.java4.repositories.ThongKeRepository;
 import com.example.java4.response.ThongKeDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +18,8 @@ import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.RequestParam;
+
 @Controller
 @RequestMapping("/admin/thong-ke")
 public class ThongKeController {
@@ -29,7 +33,8 @@ public class ThongKeController {
     NhanVienRepository _nhanVienRepo;
 
     @GetMapping("/view")
-    public String view(Model model) {
+    public String view(Model model,
+                       @RequestParam(value = "page", defaultValue = "0") String pageParam) {
 
         if (UserInfor.idNhanVien != null) {
             NhanVien nhanVien = _nhanVienRepo.findById(UserInfor.idNhanVien).get();
@@ -66,6 +71,12 @@ public class ThongKeController {
         model.addAttribute("week", weeklyStats);
         model.addAttribute("month", monthlyStats);
         model.addAttribute("year", yearlyStats);
+
+
+        // Hiển thị danh sách sản phẩm sắp hết hàng
+//        PageRequest pageRequest = PageRequest.of(Integer.valueOf(pageParam), 5);
+//        Page<Object[]> lowStockProducts = _thongKeRepo.getLowStockProducts(pageRequest);
+//        model.addAttribute("lowStockProducts", lowStockProducts);
 
         return "/view/ThongKe/view.jsp";
     }

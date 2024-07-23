@@ -653,7 +653,7 @@
                             </div>
 
                             <div>
-                                <div class="card-body">
+                                <div class="card-body bg-white">
                                     <!-- Danh sách sản phẩm bán chạy -->
                                     <div class="row">
                                         <div class="col-6">
