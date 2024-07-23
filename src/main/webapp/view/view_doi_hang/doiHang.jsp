@@ -100,12 +100,6 @@
                         <i class="fas fa-fw fa-chart-area"></i>
                         <span>Thống kê doanh thu</span></a>
                 </li>
-                <!-- Nav Item - Dashboard -->
-                <li class="nav-item active">
-                    <a class="nav-link" href="/ban-hang-tai-quay">
-                        <i class="fas fa-fw fa-chart-area"></i>
-                        <span>Bán hàng tại quầy</span></a>
-                </li>
 
                 <!-- Nav Item - Charts -->
                 <li class="nav-item">

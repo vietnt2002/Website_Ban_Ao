@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Getter
@@ -27,4 +28,7 @@ public class HDResponse {
     private LocalDateTime ngayNhan;
     private Integer trangThai;
     private Integer loaiHoaDon;
+    private BigDecimal tongTien;
+    private BigDecimal soTienGiamKM;
+    private BigDecimal tienShip;
 }

@@ -14,10 +14,13 @@ public interface HDRepository extends JpaRepository<HoaDon, String> {
     HoaDon findByMaHD(String maHD);
 
     //Lấy ra thông tin hóa đơn
-    @Query("select new com.example.java4.response.HDResponse (hd.ma, kh.hoTen, kh.sdt, gh.tenNguoiNhan, gh.sdtNguoiNhan, gh.diaChiChiTiet, gh.idPhuongXa, gh.idQuanHuyen, gh.idTinhThanh, gh.ghiChu, hd.ngayThanhToan, gh.ngayShip, gh.ngayNhan, hd.trangThai, hd.loaiHoaDon) " +
+    @Query("select new com.example.java4.response.HDResponse (hd.ma, kh.hoTen, kh.sdt, gh.tenNguoiNhan, gh.sdtNguoiNhan, gh.diaChiChiTiet, gh.idPhuongXa, gh.idQuanHuyen, gh.idTinhThanh, gh.ghiChu, hd.ngayThanhToan, gh.ngayShip, gh.ngayNhan, hd.trangThai, hd.loaiHoaDon, hd.tongTien, km.soTienGiam, gh.phiShip) " +
             "from HoaDon hd " +
+            "left join KhuyenMai km on km.id = hd.idKhuyenMai.id " +
             "left join GiaoHang gh on hd.id = gh.idHoaDon.id " +
             "left join KhachHang kh on kh.id = hd.idKhachHang.id " +
             "where hd.id = ?1 ")
     HDResponse getHoaDonByIdHD(String idHD);
+
+
 }
