@@ -2,6 +2,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="f" uri="jakarta.tags.functions" %>
 <%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -68,6 +70,161 @@
             right: 17px;
             margin: 0;
             min-width: 0;
+        }
+    </style>
+    <style>
+        .range-slider {
+            position: relative;
+            width: 200px;
+            height: 35px;
+            text-align: center;
+        }
+
+        .range-slider input {
+            pointer-events: none;
+            position: absolute;
+            overflow: hidden;
+            left: 0;
+            top: 15px;
+            width: 200px;
+            outline: none;
+            height: 18px;
+            margin: 0;
+            padding: 0;
+        }
+
+        .range-slider input::-webkit-slider-thumb {
+            pointer-events: all;
+            position: relative;
+            z-index: 1;
+            outline: 0;
+        }
+
+        .range-slider input::-moz-range-thumb {
+            pointer-events: all;
+            position: relative;
+            z-index: 10;
+            -moz-appearance: none;
+            width: 9px;
+        }
+
+        .range-slider input::-moz-range-track {
+            position: relative;
+            z-index: -1;
+            background-color: red;
+            border: 0;
+        }
+
+        .range-slider input:last-of-type::-moz-range-track {
+            -moz-appearance: none;
+            background: none transparent;
+            border: 0;
+        }
+
+        .range-slider input[type=range]::-moz-focus-outer {
+            border: 0;
+        }
+
+        .rangeValue {
+            width: 30px;
+        }
+
+        .output {
+            position: absolute;
+            width: 40px;
+            height: 30px;
+            text-align: center;
+            color: #999;
+            border-radius: 4px;
+            display: inline-block;
+            font: bold 15px/30px Helvetica, Arial;
+            bottom: 75%;
+            left: 50%;
+            transform: translate(-50%, 0);
+        }
+
+        .output.outputTwo {
+            left: 100%;
+        }
+
+        input[type=range] {
+            -webkit-appearance: none;
+            background: none;
+        }
+
+        input[type=range]::-webkit-slider-runnable-track {
+            height: 5px;
+            border: none;
+            border-radius: 3px;
+            background: transparent;
+        }
+
+        input[type=range]::-ms-track {
+            height: 5px;
+            background: transparent;
+            border: none;
+            border-radius: 3px;
+        }
+
+        input[type=range]::-moz-range-track {
+            height: 5px;
+            background: transparent;
+            border: none;
+            border-radius: 3px;
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            border: none;
+            height: 16px;
+            width: 16px;
+            border-radius: 50%;
+            background: #555;
+            margin-top: -5px;
+            position: relative;
+            z-index: 10000;
+        }
+
+        input[type=range]::-ms-thumb {
+            -webkit-appearance: none;
+            border: none;
+            height: 16px;
+            width: 16px;
+            border-radius: 50%;
+            background: #555;
+            margin-top: -5px;
+            position: relative;
+            z-index: 10000;
+        }
+
+        input[type=range]::-moz-range-thumb {
+            -webkit-appearance: none;
+            border: none;
+            height: 16px;
+            width: 16px;
+            border-radius: 50%;
+            background: #555;
+            margin-top: -5px;
+            position: relative;
+            z-index: 10000;
+        }
+
+        input[type=range]:focus {
+            outline: none;
+        }
+
+        .full-range,
+        .incl-range {
+            width: 100%;
+            height: 5px;
+            left: 0;
+            top: 21px;
+            position: absolute;
+            background: #DDD;
+        }
+
+        .incl-range {
+            background: #D19C97;
         }
     </style>
 </head>
@@ -148,16 +305,15 @@
                         </c:when>
                         <c:otherwise>
                             <!-- Hiển thị nút đăng xuất khi đã đăng nhập -->
-                            <li><a class="dropdown-item" href="#">Theo dõi đơn hàng</a></li>
-                            <li><a class="dropdown-item" href="#">Lịch sử mua hàng</a></li>
+                            <li><a class="dropdown-item" href="/cua-hang/don-mua">Đơn mua</a></li>
                             <li><a class="dropdown-item" href="#">Quản lý tài khoản</a></li>
-                            <li><a class="dropdown-item" href="/home/logout">Đăng xuất</a></li>
+                            <li><a class="dropdown-item" href="/cua-hang/logout">Đăng xuất</a></li>
                         </c:otherwise>
                     </c:choose>
                 </ul>
             </div>
             <div class="col-lg-3 col-6 text-right" style="position: relative">
-                <a href="/store/gio-hang" class="btn border">
+                <a href="/cua-hang/gio-hang" class="btn border">
                     <i class="fas fa-shopping-cart text-primary"></i>
                     <c:if test="${soLuong > 0}">
                             <span class="totalQuantityCart"
@@ -174,7 +330,8 @@
 </div>
 <!-- Topbar End -->
 
-<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true"
      data-backdrop="true" data-keyboard="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -205,7 +362,8 @@
                             <input type="submit" name="submit" class="btn btn-info btn-md w-100" value="Submit">
                         </div>
                         <div id="register-link" class="text-right">
-                            <a href="#" class="text-info " data-toggle="modal" data-target="#registerModal" data-dismiss="modal">Register here</a>
+                            <a href="#" class="text-info " data-toggle="modal" data-target="#registerModal"
+                               data-dismiss="modal">Register here</a>
                         </div>
                     </form>
                 </div>
@@ -216,7 +374,8 @@
 <!-- Login Modal End -->
 
 <!-- Registration Modal Start (Modal Form đăng ký) -->
-<div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel" aria-hidden="true"
+<div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel"
+     aria-hidden="true"
      data-backdrop="true" data-keyboard="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -228,11 +387,11 @@
             </div>
             <div class="modal-body">
                 <div class="register-form-wrapper">
-                    <form id="register-form" class="form" action="register" method="post"  modelAttribute="khachHangDTO">
+                    <form id="register-form" class="form" action="register" method="post" modelAttribute="khachHangDTO">
                         <div class="form-group">
                             <label for="registerUsername" class="text-info">Username:</label><br>
                             <input placeholder="Username" type="text" id="registerUsername" name="taiKhoan"
-                                   class="form-control"  value="${khachHangDTO.taiKhoan}">
+                                   class="form-control" value="${khachHangDTO.taiKhoan}">
                             <small id="registerUsernameError" class="text-danger"></small>
                         </div>
                         <div class="form-group">
@@ -250,14 +409,15 @@
                         <div class="form-group">
                             <label for="registerPassword" class="text-info">Password:</label><br>
                             <input placeholder="Password" type="password" id="registerPassword" name="matKhau"
-                                   class="form-control"  value="${khachHangDTO.matKhau}">
+                                   class="form-control" value="${khachHangDTO.matKhau}">
                             <small id="registerPasswordError" class="text-danger"></small>
                         </div>
                         <div class="form-group">
                             <input type="submit" name="submit" class="btn btn-info btn-md w-100" value="Register">
                         </div>
                         <div id="login-link" class="text-right">
-                            <a href="#" class="text-info " data-toggle="modal" data-target="#loginModal" data-dismiss="modal">Back to Login</a>
+                            <a href="#" class="text-info " data-toggle="modal" data-target="#loginModal"
+                               data-dismiss="modal">Back to Login</a>
                         </div>
                     </form>
                 </div>
@@ -288,7 +448,7 @@
                 </button>
                 <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                     <div class="navbar-nav mr-auto py-0">
-                        <a href="/store/trang-chu" class="nav-item nav-link active">Trang chủ</a>
+                        <a href="/cua-hang/trang-chu" class="nav-item nav-link active">Trang chủ</a>
                         <a href="detail.html" class="nav-item nav-link">Giới thiệu</a>
                         <a href="contact.html" class="nav-item nav-link">Liên hệ</a>
                     </div>
@@ -343,122 +503,66 @@
     <div class="row px-xl-5">
         <!-- Shop Sidebar Start -->
         <div class="col-lg-3 col-md-12">
-            <!-- Price Start -->
-            <div class="border-bottom mb-4 pb-4">
-                <h5 class="font-weight-semi-bold mb-4">Filter by price</h5>
-                <form>
-                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" checked id="price-all">
-                        <label class="custom-control-label" for="price-all">All Price</label>
-                        <span class="badge border font-weight-normal">1000</span>
-                    </div>
-                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" id="price-1">
-                        <label class="custom-control-label" for="price-1">$0 - $100</label>
-                        <span class="badge border font-weight-normal">150</span>
-                    </div>
-                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" id="price-2">
-                        <label class="custom-control-label" for="price-2">$100 - $200</label>
-                        <span class="badge border font-weight-normal">295</span>
-                    </div>
-                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" id="price-3">
-                        <label class="custom-control-label" for="price-3">$200 - $300</label>
-                        <span class="badge border font-weight-normal">246</span>
-                    </div>
-                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" id="price-4">
-                        <label class="custom-control-label" for="price-4">$300 - $400</label>
-                        <span class="badge border font-weight-normal">145</span>
-                    </div>
-                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
-                        <input type="checkbox" class="custom-control-input" id="price-5">
-                        <label class="custom-control-label" for="price-5">$400 - $500</label>
-                        <span class="badge border font-weight-normal">168</span>
-                    </div>
-                </form>
-            </div>
-            <!-- Price End -->
+            <form id="filter" method="post" action="/store/filter">
+                <!-- Color Start -->
+                <div class="border-bottom mb-4 pb-4">
+                    <h5 class="font-weight-semi-bold mb-4">Màu sắc</h5>
+                    <c:forEach varStatus="i" items="${listMauSac}" var="mauSac">
+                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                            <input type="checkbox" class="custom-control-input" id="color_${mauSac.ten}">
+                            <label class="custom-control-label" for="color_${mauSac.ten}">${mauSac.ten}</label>
+                        </div>
+                    </c:forEach>
+                </div>
+                <!-- Color End -->
 
-            <!-- Color Start -->
-            <div class="border-bottom mb-4 pb-4">
-                <h5 class="font-weight-semi-bold mb-4">Filter by color</h5>
-                <form>
-                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" checked id="color-all">
-                        <label class="custom-control-label" for="price-all">All Color</label>
-                        <span class="badge border font-weight-normal">1000</span>
-                    </div>
-                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" id="color-1">
-                        <label class="custom-control-label" for="color-1">Black</label>
-                        <span class="badge border font-weight-normal">150</span>
-                    </div>
-                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" id="color-2">
-                        <label class="custom-control-label" for="color-2">White</label>
-                        <span class="badge border font-weight-normal">295</span>
-                    </div>
-                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" id="color-3">
-                        <label class="custom-control-label" for="color-3">Red</label>
-                        <span class="badge border font-weight-normal">246</span>
-                    </div>
-                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" id="color-4">
-                        <label class="custom-control-label" for="color-4">Blue</label>
-                        <span class="badge border font-weight-normal">145</span>
-                    </div>
-                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
-                        <input type="checkbox" class="custom-control-input" id="color-5">
-                        <label class="custom-control-label" for="color-5">Green</label>
-                        <span class="badge border font-weight-normal">168</span>
-                    </div>
-                </form>
-            </div>
-            <!-- Color End -->
+                <!-- Size Start -->
+                <div class="mb-5">
+                    <h5 class="font-weight-semi-bold mb-4">Kích thước</h5>
+                    <c:forEach varStatus="i" items="${listKichThuoc}" var="kichThuoc">
+                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                            <input type="checkbox" class="custom-control-input" id="size_${kichThuoc.ten}">
+                            <label class="custom-control-label" for="size_${kichThuoc.ten}">${kichThuoc.ten}</label>
+                        </div>
+                    </c:forEach>
 
-            <!-- Size Start -->
-            <div class="mb-5">
-                <h5 class="font-weight-semi-bold mb-4">Filter by size</h5>
-                <form>
-                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" checked id="size-all">
-                        <label class="custom-control-label" for="size-all">All Size</label>
-                        <span class="badge border font-weight-normal">1000</span>
-                    </div>
-                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" id="size-1">
-                        <label class="custom-control-label" for="size-1">XS</label>
-                        <span class="badge border font-weight-normal">150</span>
-                    </div>
-                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" id="size-2">
-                        <label class="custom-control-label" for="size-2">S</label>
-                        <span class="badge border font-weight-normal">295</span>
-                    </div>
-                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" id="size-3">
-                        <label class="custom-control-label" for="size-3">M</label>
-                        <span class="badge border font-weight-normal">246</span>
-                    </div>
-                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" id="size-4">
-                        <label class="custom-control-label" for="size-4">L</label>
-                        <span class="badge border font-weight-normal">145</span>
-                    </div>
-                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
-                        <input type="checkbox" class="custom-control-input" id="size-5">
-                        <label class="custom-control-label" for="size-5">XL</label>
-                        <span class="badge border font-weight-normal">168</span>
-                    </div>
-                </form>
-            </div>
-            <!-- Size End -->
+                </div>
+                <!-- Size End -->
+
+                <!-- Kiểu tay Start -->
+                <div class="border-bottom mb-4 pb-4">
+                    <h5 class="font-weight-semi-bold mb-4">Kiểu tay</h5>
+                    <c:forEach varStatus="i" items="${listKieuTay}" var="kieuTay">
+                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                            <input type="checkbox" class="custom-control-input" id="style_${kieuTay.ten}">
+                            <label class="custom-control-label" for="style_${kieuTay.ten}">${kieuTay.ten}</label>
+                        </div>
+                    </c:forEach>
+                </div>
+                <!-- Kiểu tay End -->
+
+                <!-- Price Start -->
+                <div class="border-bottom mb-4 pb-4">
+                    <h5 class="font-weight-semi-bold mb-4">Đơn giá</h5>
+                    <section class="range-slider container">
+                        <span class="output outputOne"></span>
+                        <span class="output outputTwo"></span>
+                        <span class="full-range"></span>
+                        <span class="incl-range"></span>
+                        <input id="minGiaBan" name="rangeOne" type="range">
+                        <input id="maxGiaBan" name="rangeTwo" type="range">
+                    </section>
+                </div>
+                <!-- Price End -->
+
+                <div class="text-center">
+                    <button type="submit" class="btn" style="background: #D19C97; color: white; width: 130px;">Tìm
+                        kiếm
+                    </button>
+                </div>
+            </form>
         </div>
         <!-- Shop Sidebar End -->
-
 
         <!-- Shop Product Start -->
         <div class="col-lg-9 col-md-12">
@@ -492,7 +596,7 @@
 
 
                 <c:forEach varStatus="i" items="${pageSP.content}" var="sp">
-                    <a href="/store/detail-san-pham/${sp.idCTSP}" style="text-decoration: none">
+                    <a href="/cua-hang/detail-san-pham/${sp.idCTSP}" style="text-decoration: none">
                         <div class="col-lg-4 col-md-6 col-sm-12 pb-1">
                             <div class="card product-item border-0 mb-2">
                                 <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
@@ -507,12 +611,13 @@
                                 <div class="card-footer d-flex justify-content-between bg-light border float-start"
                                      style="margin-top: -3px; margin-bottom: -3px">
                                     <div class="d-flex justify-content-center mb-0" style="margin-bottom: 3px">
-                                        <h6>${sp.giaBan} <span
-                                                style="font-size: 16px; text-decoration: underline">đ</span></h6>
+                                        <h6><fmt:formatNumber value="${sp.giaBan}" type="currency"
+                                                              currencySymbol="₫"/><span
+                                                style="font-size: 16px; text-decoration: underline"></span></h6>
                                     </div>
-                                    <a href="/store/detail-san-pham/${sp.idCTSP}"
-                                       class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>Chi
-                                        tiết</a>
+                                    <a href="/cua-hang/detail-san-pham/${sp.idCTSP}"
+                                       class="btn btn-sm text-dark p-0"><i
+                                            class="fas fa-eye text-primary mr-1"></i>Chi tiết</a>
                                 </div>
                             </div>
                         </div>
@@ -522,22 +627,30 @@
 
                 <div class="col-12 pb-1">
                     <nav aria-label="Page navigation">
-                        <ul class="pagination justify-content-center mb-3">
-                            <li class="page-item disabled">
-                                <a class="page-link" href="#" aria-label="Previous">
-                                    <span aria-hidden="true">&laquo;</span>
-                                    <span class="sr-only">Previous</span>
-                                </a>
-                            </li>
-                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Next">
-                                    <span aria-hidden="true">&raquo;</span>
-                                    <span class="sr-only">Next</span>
-                                </a>
-                            </li>
+                        <ul class="pagination justify-content-center mb-3" id="pagination">
+                            <c:if test="${pageSP.number > 0}">
+                                <li class="page-item">
+                                    <a class="page-link" href="?page=${pageSP.number - 1}" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                        <span class="sr-only">Previous</span>
+                                    </a>
+                                </li>
+                            </c:if>
+
+                            <c:forEach var="i" begin="0" end="${pageSP.totalPages - 1}">
+                                <li class="page-item ${pageSP.number == i ? 'active' : ''}">
+                                    <a class="page-link" href="?page=${i}">${i + 1}</a>
+                                </li>
+                            </c:forEach>
+
+                            <c:if test="${pageSP.number < pageSP.totalPages - 1}">
+                                <li class="page-item">
+                                    <a class="page-link" href="?page=${pageSP.number + 1}" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                        <span class="sr-only">Next</span>
+                                    </a>
+                                </li>
+                            </c:if>
                         </ul>
                     </nav>
                 </div>
@@ -547,7 +660,6 @@
     </div>
 </div>
 <!-- Shop End -->
-
 
 <!-- Footer Start -->
 <div class="container-fluid bg-secondary text-dark mt-5 pt-5">
@@ -789,8 +901,7 @@
                 $('#registerPasswordError').text('Vui lòng nhập mật khẩu.');
                 $('#registerPassword').addClass('border-danger');
                 hasError = true;
-            }
-            else if (password.length < 6) {
+            } else if (password.length < 6) {
                 $('#registerPasswordError').text('Mật khẩu phải có ít nhất 6 ký tự.');
                 $('#registerPassword').addClass('border-danger');
                 hasError = true;
@@ -812,7 +923,6 @@
         });
 
 
-
         // Ẩn lỗi khi người dùng click vào trường input
         $('input').focus(function () {
             $(this).siblings('.text-danger').text('');
@@ -822,7 +932,7 @@
         // Hiển thị lỗi từ Controller (nếu có)
         var errorUsername = '<%= request.getAttribute("errorUsername") %>';
         var errorPassword = '<%= request.getAttribute("errorPassword") %>';
-        var errorUsernameExit= '<%= request.getAttribute("errorUsernameExit") %>';
+        var errorUsernameExit = '<%= request.getAttribute("errorUsernameExit") %>';
 
         if (errorUsername && errorUsername !== 'null') {
             $('#taiKhoanError').text(errorUsername);
@@ -862,5 +972,152 @@
         var regex = /^(0|\+84)\d{9,10}$/;
         return regex.test(phoneNumber);
     }
+</script>
+<script>
+    // Giả sử sliderConfig được lấy từ controller
+    const sliderConfig = {
+        min: '${minGiaBan}',
+        max: '${maxGiaBan}'
+    };
+
+    var rangeOne = document.querySelector('input[name="rangeOne"]');
+    var rangeTwo = document.querySelector('input[name="rangeTwo"]');
+    var outputOne = document.querySelector('.outputOne');
+    var outputTwo = document.querySelector('.outputTwo');
+    var inclRange = document.querySelector('.incl-range');
+
+    // Gán giá trị min và max cho các slider
+    rangeOne.min = sliderConfig.min;
+    rangeOne.max = sliderConfig.max;
+    rangeTwo.min = sliderConfig.min;
+    rangeTwo.max = sliderConfig.max;
+
+    rangeOne.value = sliderConfig.min;
+    rangeTwo.value = sliderConfig.max;
+
+    function formatCurrency(value) {
+        return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    function updateView() {
+        // Định dạng giá trị hiển thị
+        outputOne.innerHTML = formatCurrency(rangeOne.value);
+        outputTwo.innerHTML = formatCurrency(rangeTwo.value);
+
+        // Cập nhật vị trí của các chỉ số giá trị
+        outputOne.style.left = (rangeOne.value - rangeOne.min) / (rangeOne.max - rangeOne.min) * 100 + '%';
+        outputTwo.style.left = (rangeTwo.value - rangeTwo.min) / (rangeTwo.max - rangeTwo.min) * 100 + '%';
+
+        // Cập nhật chiều rộng và vị trí của phần tử incl-range
+        if (parseInt(rangeOne.value) > parseInt(rangeTwo.value)) {
+            inclRange.style.width = (rangeOne.value - rangeTwo.value) / (rangeTwo.max - rangeTwo.min) * 100 + '%';
+            inclRange.style.left = (rangeTwo.value - rangeOne.min) / (rangeTwo.max - rangeTwo.min) * 100 + '%';
+        } else {
+            inclRange.style.width = (rangeTwo.value - rangeOne.value) / (rangeTwo.max - rangeTwo.min) * 100 + '%';
+            inclRange.style.left = (rangeOne.value - rangeOne.min) / (rangeTwo.max - rangeOne.min) * 100 + '%';
+        }
+    }
+
+    function syncSliders() {
+        let minValue = parseInt(rangeOne.value);
+        let maxValue = parseInt(rangeTwo.value);
+
+        if (minValue > maxValue) {
+            rangeOne.value = maxValue;
+            minValue = maxValue;
+        }
+
+        if (maxValue < minValue) {
+            rangeTwo.value = minValue;
+            maxValue = minValue;
+        }
+
+        // Cập nhật lại giá trị sau khi điều chỉnh
+        updateView();
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        updateView();
+
+        rangeOne.addEventListener('input', function () {
+            syncSliders();
+        });
+
+        rangeTwo.addEventListener('input', function () {
+            syncSliders();
+        });
+    });
+</script>
+<script>
+    <%--document.addEventListener("DOMContentLoaded", function() {--%>
+    <%--    var products = [];--%>
+    <%--    <c:forEach items="${listCTSPRes}" var="ctsp">--%>
+    <%--    var CTSP = {};--%>
+    <%--    CTSP.idCTSP = '${ctsp.idCTSP}';--%>
+    <%--    CTSP.idSP = '${ctsp.idSP}';--%>
+    <%--    CTSP.tenMauSac = '${ctsp.tenMauSac}';--%>
+    <%--    CTSP.tenKichThuoc = '${ctsp.tenKichThuoc}';--%>
+    <%--    CTSP.tenKieuTay = '${ctsp.tenKieuTay}';--%>
+    <%--    CTSP.soLuong = '${ctsp.soLuong}';--%>
+    <%--    CTSP.giaBan = '${ctsp.giaBan}';--%>
+    <%--    CTSP.hinhAnh1 = '${ctsp.hinhAnh1}';--%>
+    <%--    products.push(CTSP);--%>
+    <%--    </c:forEach>--%>
+
+    <%--    const checkboxes = document.querySelectorAll(".custom-control-input");--%>
+    <%--    const productContainer = document.getElementById("product-container");--%>
+
+    <%--    function filterProducts() {--%>
+    <%--        let selectedColors = Array.from(document.querySelectorAll("input[type=checkbox]:checked"))--%>
+    <%--            .filter(input => input.id.startsWith("color_")).map(input => input.id.replace("color_", ""));--%>
+    <%--        let selectedSizes = Array.from(document.querySelectorAll("input[type=checkbox]:checked"))--%>
+    <%--            .filter(input => input.id.startsWith("size_")).map(input => input.id.replace("size_", ""));--%>
+    <%--        let selectedStyles = Array.from(document.querySelectorAll("input[type=checkbox]:checked"))--%>
+    <%--            .filter(input => input.id.startsWith("style_")).map(input => input.id.replace("style_", ""));--%>
+
+    <%--        let filteredProducts = products.filter(sp =>--%>
+    <%--            (selectedColors.length === 0 || selectedColors.includes(sp.tenMauSac)) &&--%>
+    <%--            (selectedSizes.length === 0 || selectedSizes.includes(sp.tenKichThuoc)) &&--%>
+    <%--            (selectedStyles.length === 0 || selectedStyles.includes(sp.tenKieuTay))--%>
+    <%--        );--%>
+
+    <%--        let uniqueProducts = filteredProducts.filter((sp, index, self) =>--%>
+    <%--            index === self.findIndex(p => p.idSP === sp.idSP)--%>
+    <%--        );--%>
+
+    <%--        displayProducts(uniqueProducts);--%>
+    <%--    }--%>
+
+    <%--    function displayProducts(products) {--%>
+    <%--        productContainer.innerHTML = products.map(sp => `--%>
+    <%--        <a href="/cua-hang/detail-san-pham/${sp.idCTSP}" style="text-decoration: none">--%>
+    <%--            <div class="col-lg-4 col-md-6 col-sm-12 pb-1">--%>
+    <%--                <div class="card product-item border-0 mb-2">--%>
+    <%--                    <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">--%>
+    <%--                        <img style="width: 100%; height: 370px;" class="img-fluid w-100" src="/image/${sp.hinhAnh1}" alt="">--%>
+    <%--                    </div>--%>
+    <%--                    <div class="card-body border-left border-right text-center p-0 pt-4 pb-3" style="margin-top: -10px; margin-bottom: -12px">--%>
+    <%--                        <h6 class="text-truncate mb-2">${sp.tenSP}</h6>--%>
+    <%--                        <h6 class="text-truncate mb-2" style="font-family: auto">${sp.maSP}</h6>--%>
+    <%--                    </div>--%>
+    <%--                    <div class="card-footer d-flex justify-content-between bg-light border float-start" style="margin-top: -3px; margin-bottom: -3px">--%>
+    <%--                        <div class="d-flex justify-content-center mb-0" style="margin-bottom: 3px">--%>
+    <%--                            <h6>${sp.giaBan}</h6>--%>
+    <%--                        </div>--%>
+    <%--                        <a href="/cua-hang/detail-san-pham/${sp.idCTSP}" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>Chi tiết</a>--%>
+    <%--                    </div>--%>
+    <%--                </div>--%>
+    <%--            </div>--%>
+    <%--        </a>--%>
+    <%--    `).join("");--%>
+    <%--    }--%>
+
+    <%--    checkboxes.forEach(checkbox => {--%>
+    <%--        checkbox.addEventListener("change", filterProducts);--%>
+    <%--    });--%>
+
+    <%--    // Khởi tạo hiển thị sản phẩm ban đầu--%>
+    <%--    displayProducts(products);--%>
+    <%--});--%>
 </script>
 </html>
