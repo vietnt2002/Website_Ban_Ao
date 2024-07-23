@@ -31,6 +31,7 @@ public interface HoaDonRepository
     public static final int DA_THANH_TOAN = 5;
     public static final int DA_HOAN_THANH = 6;
     public static final int DA_HUY= 7;
+    public static final int TRA_HANG= 8;
     //Phương thức thanh toán
     public static final int TIEN_MAT = 0;
     public static final int CHUYEN_KHOAN = 1;

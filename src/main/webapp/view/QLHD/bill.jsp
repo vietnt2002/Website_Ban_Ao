@@ -30,6 +30,9 @@
     <!-- Custom styles for this template-->
     <link href="/view_admin/css/sb-admin-2.min.css" rel="stylesheet">
 
+    <%--Link Ajax --%>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
     <!-- Latest compiled and minified CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -41,12 +44,15 @@
     <link
             href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
             rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
 
-<%--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">--%>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+
+
 </head>
 
 <body id="page-top">
@@ -87,6 +93,13 @@
             <a class="nav-link" href="/hoa-don/hien-thi">
                 <i class="fas fa-fw fa-chart-area"></i>
                 <span>Quản lý hóa đơn</span></a>
+        </li>
+
+
+        <li class="nav-item">
+            <a class="nav-link" href="/admin/tra-hang-view">
+                <i class="fas fa-fw fa-chart-area"></i>
+                <span>Trả hàng</span></a>
         </li>
 
         <!-- Nav Item - Pages Collapse Menu -->
@@ -249,7 +262,7 @@
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fas fa-envelope fa-fw"></i>
                             <!-- Counter - Messages -->
-                            <span class="badge badge-danger badge-counter">7</span>
+<%--                            <span class="badge badge-danger badge-counter">7</span>--%>
                         </a>
                         <!-- Dropdown - Messages -->
                         <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -326,22 +339,14 @@
                         <!-- Dropdown - User Information -->
                         <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                              aria-labelledby="userDropdown">
-                            <a class="dropdown-item" href="#">
-                                <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                Profile
-                            </a>
-                            <a class="dropdown-item" href="#">
-                                <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                Settings
-                            </a>
-                            <a class="dropdown-item" href="#">
+                            <a class="dropdown-item" href="/qlnv/tai-khoan-cua-toi/${nv.id}">
                                 <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                Activity Log
+                                Tài khoản của tôi
                             </a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                            <a class="dropdown-item" href="/ban-hang-tai-quay/dang-xuat">
                                 <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                Logout
+                                Đăng xuất
                             </a>
                         </div>
                     </li>
@@ -497,7 +502,7 @@
 
                                     <tbody>
                                     <c:forEach var="hoaDon" items="${hoaDonPage}" varStatus="i">
-<%--                                        <c:if test="${hoaDon.loaiHoaDon == 1 || (hoaDon.loaiHoaDon == 0 && hoaDon.trangThai == 6)}">--%>
+                                        <c:if test="${hoaDon.loaiHoaDon == 1 || (hoaDon.loaiHoaDon == 0 && hoaDon.trangThai == 6)}">
                                         <tr>
                                             <td>${i.index + 1}</td>
                                             <td>${hoaDon.ma}</td>
@@ -527,7 +532,7 @@
                                             </td>
 
                                         </tr>
-<%--                                        </c:if>--%>
+                                        </c:if>
                                     </c:forEach>
 
                                     </tbody>
@@ -820,83 +825,7 @@
                                 </div>
                             </div>
 
-<%--                            <div class="tab-pane fade" id="paid" role="tabpanel" aria-labelledby="paid-tab">--%>
-<%--                                &lt;%&ndash; Danh sách hóa đơn đã giao hàng     &ndash;%&gt;--%>
-<%--                                    <table class="table table-bordered " width="100%" cellspacing="0">--%>
-<%--                                        <thead class="">--%>
-<%--                                        <tr>--%>
-<%--                                            <th>STT</th>--%>
-<%--                                            <th>Mã Hóa Đơn</th>--%>
-<%--                                            <th>Tên Nhân Viên</th>--%>
-<%--                                            <th>Tên Khách Hàng</th>--%>
-<%--                                            <th>SDT Khách Hàng</th>--%>
-<%--                                            <th>Loại Hóa Đơn</th>--%>
-<%--                                            <th>Tổng Tiền</th>--%>
-<%--                                            <th>Ngày Tạo</th>--%>
-<%--                                            <th>Trạng Thái</th>--%>
-<%--                                            <th>Thao Tác</th>--%>
-<%--                                        </tr>--%>
-<%--                                        </thead>--%>
 
-<%--                                        <tbody>--%>
-<%--                                        <c:forEach var="hoaDon" items="${hoaDonPage}" varStatus="i">--%>
-<%--                                            <tr>--%>
-<%--                                                <td>${i.index + 1}</td>--%>
-<%--                                                <td>${hoaDon.ma}</td>--%>
-<%--                                                <td>${hoaDon.nhanVien.hoTen}</td>--%>
-<%--                                                <td>${hoaDon.khachHang.hoTen == null ? "Khách lẻ" : hoaDon.khachHang.hoTen }</td>--%>
-<%--                                                <td>${hoaDon.khachHang.sdt}</td>--%>
-<%--                                                <td>--%>
-<%--                                                <span class="badge rounded-pill ${hoaDon.loaiHoaDon == 0 ? 'bg-success' : 'bg-primary'}">--%>
-<%--                                                        ${hoaDon.loaiHoaDon == 0 ? "Bán tại quầy" : "Bán online"}--%>
-<%--                                                </span>--%>
-<%--                                                </td>--%>
-<%--                                                <td>--%>
-<%--                                                    <fmt:formatNumber value="${hoaDon.tongTien}" type="currency"--%>
-<%--                                                                      currencySymbol="₫" groupingUsed="true"/>--%>
-<%--                                                </td>--%>
-<%--                                                <td>${hoaDon.ngayTao}</td>--%>
-<%--                                                <td>--%>
-<%--                                                  <span class="badge rounded-pill ${hoaDon.maMau}">--%>
-<%--                                                          ${hoaDon.trangThaiText}--%>
-<%--                                                  </span>--%>
-<%--                                                </td>--%>
-<%--                                                <td>--%>
-<%--                                                    <!-- Button trigger modal -->--%>
-<%--                                                    <a href="/hoa-don/detail/${hoaDon.id}" class="btn btn-warning">--%>
-<%--                                                        <i class="bi bi-eye-fill"></i>--%>
-<%--                                                    </a>--%>
-<%--                                                </td>--%>
-
-<%--                                            </tr>--%>
-<%--                                        </c:forEach>--%>
-
-<%--                                        </tbody>--%>
-<%--                                    </table>--%>
-<%--                                &lt;%&ndash; Phân trang của hóa đơn đã giao hàng   &ndash;%&gt;--%>
-<%--                                    <div class="float-end">--%>
-<%--                                        <nav aria-label="Page navigation example">--%>
-<%--                                            <ul class="pagination">--%>
-<%--                                                <c:if test="${pageHD.hasPrevious()}">--%>
-<%--                                                    <li class="page-item"><a class="page-link"--%>
-<%--                                                                             href="?page=${pageHD.number - 1}&status=${currentStatus}">&laquo;</a></li>--%>
-<%--                                                </c:if>--%>
-<%--                                                <c:if test="${pageHD.totalPages > 0}">--%>
-<%--                                                    <c:forEach var="i" begin="0" end="${pageHD.totalPages - 1}">--%>
-<%--                                                        <li class="page-item ${pageHD.number == i ? 'active' : ''}">--%>
-<%--                                                            <a class="page-link"--%>
-<%--                                                               href="?page=${i}&status=${currentStatus}">${i + 1}</a>--%>
-<%--                                                        </li>--%>
-<%--                                                    </c:forEach>--%>
-<%--                                                </c:if>--%>
-<%--                                                <c:if test="${pageHD.hasNext()}">--%>
-<%--                                                    <li class="page-item"><a class="page-link"--%>
-<%--                                                                             href="?page=${pageHD.number + 1}&status=${currentStatus}">&raquo;</a></li>--%>
-<%--                                                </c:if>--%>
-<%--                                            </ul>--%>
-<%--                                        </nav>--%>
-<%--                                    </div>--%>
-<%--                            </div>--%>
                             <div class="tab-pane fade" id="accomplished" role="tabpanel"
                                  aria-labelledby="accomplished-tab">
                                 <%-- Danh sách hóa đơn đã hoàn thành     --%>
@@ -989,6 +918,7 @@
                                             <th>Tổng Tiền</th>
                                             <th>Ngày Tạo</th>
                                             <th>Trạng Thái</th>
+                                            <th>Lý do </th>
                                             <th>Thao Tác</th>
                                         </tr>
                                         </thead>
@@ -1015,6 +945,9 @@
                                                   <span class="badge rounded-pill ${hoaDon.maMau}">
                                                           ${hoaDon.trangThaiText}
                                                   </span>
+                                                </td>
+                                                <td>
+                                                        ${hoaDon.ghiChu}
                                                 </td>
                                                 <td>
                                                     <!-- Button trigger modal -->
@@ -1106,18 +1039,21 @@
 </div>
 
 <!-- Bootstrap core JavaScript-->
-<script src="vendor/jquery/jquery.min.js"></script>
-<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/view_admin/vendor/jquery/jquery.min.js"></script>
+<script src="/view_admin/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 <!-- Core plugin JavaScript-->
-<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+<script src="/view_admin/vendor/jquery-easing/jquery.easing.min.js"></script>
 
 <!-- Custom scripts for all pages-->
-<script src="js/sb-admin-2.min.js"></script>
+<script src="/view_admin/js/sb-admin-2.min.js"></script>
 
 <!-- Page level plugins -->
-<script src="vendor/datatables/jquery.dataTables.min.js"></script>
-<script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+<script src="/view_admin/vendor/chart.js/Chart.min.js"></script>
+
+<!-- Page level custom scripts -->
+<script src="/view_admin/js/demo/chart-area-demo.js"></script>
+<script src="/view_admin/js/demo/chart-pie-demo.js"></script>
 
 <!-- Page level custom scripts -->
 <script src="js/demo/datatables-demo.js"></script>
@@ -1144,6 +1080,7 @@
         title: "${cancelSuccess}"
     });
     </c:if>
+
 
 
 

@@ -376,7 +376,7 @@
                         <!-- Dropdown - User Information -->
                         <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                              aria-labelledby="userDropdown">
-                            <a class="dropdown-item" href="/store/tai-khoan-cua-toi">
+                            <a class="dropdown-item" href="/qlnv/tai-khoan-cua-toi/${nv.id}">
                                 <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Tài khoản của tôi
                             </a>

@@ -39,8 +39,6 @@ import java.util.stream.Collectors;
 @RequestMapping("/hoa-don")
 public class QuanLyHoaDonController {
 
-
-
     @Autowired
     KhachHangRepository _khachHangRepo;
 
@@ -108,9 +106,7 @@ public class QuanLyHoaDonController {
     private List<KhuyenMai> listKhuyenMai;
     private List<ChiTietSanPham> listChiTietSanPham;
     private List<HoaDon> listHoaDon;
-
     private String idHoaDon;
-
 
 
 
@@ -179,7 +175,7 @@ public class QuanLyHoaDonController {
             model.addAttribute("nv", nhanVien);
         }
         else {
-            return "redirect:/hoa-don/dang-nhap-view";
+            return "redirect:/admin/dang-nhap-view";
         }
 
         //Lớp Util để xử chuyển đổi trạng thái
@@ -377,6 +373,64 @@ public class QuanLyHoaDonController {
         return "/view/QLHD/detail_bill.jsp";
     }
 
+    // Chức năng xử lý danh sách lịch sử hóa đơn
+    private LichSuHoaDonDTO processLichSuHoaDon(LichSuHoaDon lichSuHD) {
+        LichSuHoaDonDTO lichSuHoaDonDTO = new LichSuHoaDonDTO();
+        HoaDon hoaDon = _hoaDonRepo.findByIdHoaDon(lichSuHD.getIdHoaDon().getId());
+        NhanVien nhanVien = hoaDon.getIdNhanVien();
+        if (nhanVien == null){
+            nhanVien = new NhanVien();
+
+        }
+        // Kiểm tra null cho IdNhanVien trước khi gọi getHoTen()
+        if (lichSuHD.getIdNhanVien() == null || lichSuHD.getIdNhanVien().getHoTen() == null) {
+            lichSuHoaDonDTO.setHoTen("");
+            lichSuHoaDonDTO.setChucVu("");
+        } else {
+            lichSuHoaDonDTO.setHoTen(lichSuHD.getIdNhanVien().getHoTen());
+            lichSuHoaDonDTO.setChucVu(lichSuHD.getIdNhanVien().getIdCV().getTen());
+        }
+
+        lichSuHoaDonDTO.setId(lichSuHD.getId());
+        lichSuHoaDonDTO.setGhiChu(lichSuHD.getGhiChu());
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        if (lichSuHD.getIdHoaDon().getLoaiHoaDon() == 0) {
+            if (lichSuHD.getTrangThai() == 0) {
+                lichSuHoaDonDTO.setTrangThai("Tạo hóa đơn");
+                lichSuHoaDonDTO.setThoiGian(hoaDon.getNgayTao() != null ? dateTimeFormatter.format(hoaDon.getNgayTao()) : null);
+            } else if (lichSuHD.getTrangThai() == 6) {
+                lichSuHoaDonDTO.setTrangThai("Đã hoàn thành");
+                lichSuHoaDonDTO.setThoiGian(hoaDon.getNgayThanhToan() != null ? dateTimeFormatter.format(hoaDon.getNgayThanhToan()) : null);
+            }
+        } else if (lichSuHD.getIdHoaDon().getLoaiHoaDon() == 1) {
+            switch (lichSuHD.getTrangThai()) {
+                case HoaDonRepository.CHO_XAC_NHAN:
+                    lichSuHoaDonDTO.setTrangThai("Chờ xác nhận");
+                    lichSuHoaDonDTO.setThoiGian(hoaDon.getNgayTao() != null ? dateTimeFormatter.format(hoaDon.getNgayTao()) : null);
+                    break;
+                case HoaDonRepository.CHO_GIAO_HANG:
+                    lichSuHoaDonDTO.setTrangThai("Chờ giao hàng");
+                    lichSuHoaDonDTO.setThoiGian( hoaDon.getNgayChoGiaoHang() != null ? dateTimeFormatter.format(hoaDon.getNgayChoGiaoHang()) : null);
+                    break;
+                case HoaDonRepository.DANG_GIAO_HANG:
+                    lichSuHoaDonDTO.setTrangThai("Đang vận chuyển");
+                    lichSuHoaDonDTO.setThoiGian( hoaDon.getNgayDangGiaoHang() != null ? dateTimeFormatter.format(hoaDon.getNgayDangGiaoHang()) : null);
+                    break;
+                case HoaDonRepository.DA_HOAN_THANH:
+                    lichSuHoaDonDTO.setTrangThai("Hoàn Thành");
+                    lichSuHoaDonDTO.setThoiGian( hoaDon.getNgayThanhToan() != null ? dateTimeFormatter.format(hoaDon.getNgayThanhToan()) : null);
+                    break;
+                case HoaDonRepository.DA_HUY:
+                    lichSuHoaDonDTO.setTrangThai("Hủy đơn hàng");
+                    lichSuHoaDonDTO.setThoiGian(hoaDon.getNgayCapNhat() != null ? dateTimeFormatter.format(hoaDon.getNgayCapNhat()) : null);
+                    break;
+            }
+        }
+
+        return lichSuHoaDonDTO;
+    }
+
+
     // Tính tổng tiền trong hóa đơn chi tiết
     private BigDecimal calculateTongTien(List<ChiTietHoaDon> listHDCT) {
         BigDecimal tongTien = BigDecimal.ZERO;
@@ -437,62 +491,7 @@ public class QuanLyHoaDonController {
         return tongTienThanhToan;
     }
 
-    // Chức năng xử lý danh sách lịch sử hóa đơn
-    private LichSuHoaDonDTO processLichSuHoaDon(LichSuHoaDon lichSuHD) {
-        LichSuHoaDonDTO lichSuHoaDonDTO = new LichSuHoaDonDTO();
-        HoaDon hoaDon = _hoaDonRepo.findByIdHoaDon(lichSuHD.getIdHoaDon().getId());
-        NhanVien nhanVien = hoaDon.getIdNhanVien();
-        if (nhanVien == null){
-            nhanVien = new NhanVien();
 
-        }
-        // Kiểm tra null cho IdNhanVien trước khi gọi getHoTen()
-        if (lichSuHD.getIdNhanVien() == null || lichSuHD.getIdNhanVien().getHoTen() == null) {
-            lichSuHoaDonDTO.setHoTen("");
-            lichSuHoaDonDTO.setChucVu("");
-        } else {
-            lichSuHoaDonDTO.setHoTen(lichSuHD.getIdNhanVien().getHoTen());
-            lichSuHoaDonDTO.setChucVu(lichSuHD.getIdNhanVien().getIdCV().getTen());
-        }
-
-        lichSuHoaDonDTO.setId(lichSuHD.getId());
-        lichSuHoaDonDTO.setGhiChu(lichSuHD.getGhiChu());
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-        if (lichSuHD.getIdHoaDon().getLoaiHoaDon() == 0) {
-            if (lichSuHD.getTrangThai() == 0) {
-                lichSuHoaDonDTO.setTrangThai("Tạo hóa đơn");
-                lichSuHoaDonDTO.setThoiGian(hoaDon.getNgayTao() != null ? dateTimeFormatter.format(hoaDon.getNgayTao()) : null);
-            } else if (lichSuHD.getTrangThai() == 6) {
-                lichSuHoaDonDTO.setTrangThai("Đã hoàn thành");
-                lichSuHoaDonDTO.setThoiGian(hoaDon.getNgayThanhToan() != null ? dateTimeFormatter.format(hoaDon.getNgayThanhToan()) : null);
-            }
-        } else if (lichSuHD.getIdHoaDon().getLoaiHoaDon() == 1) {
-            switch (lichSuHD.getTrangThai()) {
-                case HoaDonRepository.CHO_XAC_NHAN:
-                    lichSuHoaDonDTO.setTrangThai("Chờ xác nhận");
-                    lichSuHoaDonDTO.setThoiGian(hoaDon.getNgayTao() != null ? dateTimeFormatter.format(hoaDon.getNgayTao()) : null);
-                    break;
-                case HoaDonRepository.CHO_GIAO_HANG:
-                    lichSuHoaDonDTO.setTrangThai("Chờ giao hàng");
-                    lichSuHoaDonDTO.setThoiGian( hoaDon.getNgayChoGiaoHang() != null ? dateTimeFormatter.format(hoaDon.getNgayChoGiaoHang()) : null);
-                    break;
-                case HoaDonRepository.DANG_GIAO_HANG:
-                    lichSuHoaDonDTO.setTrangThai("Đang vận chuyển");
-                    lichSuHoaDonDTO.setThoiGian( hoaDon.getNgayDangGiaoHang() != null ? dateTimeFormatter.format(hoaDon.getNgayDangGiaoHang()) : null);
-                    break;
-                case HoaDonRepository.DA_HOAN_THANH:
-                    lichSuHoaDonDTO.setTrangThai("Hoàn Thành");
-                    lichSuHoaDonDTO.setThoiGian( hoaDon.getNgayThanhToan() != null ? dateTimeFormatter.format(hoaDon.getNgayThanhToan()) : null);
-                    break;
-                case HoaDonRepository.DA_HUY:
-                    lichSuHoaDonDTO.setTrangThai("Hủy đơn hàng");
-                    lichSuHoaDonDTO.setThoiGian(hoaDon.getNgayCapNhat() != null ? dateTimeFormatter.format(hoaDon.getNgayCapNhat()) : null);
-                    break;
-            }
-        }
-
-        return lichSuHoaDonDTO;
-    }
 
 
     private void addAttributesToModel(Model model, NhanVien nhanVien, HoaDonDTO hoaDonDTO, KhachHang khachHang, DiaChi diaChiKhachHang, GiaoHangDTO giaoHangDTO, List<ChiTietHoaDon> listHDCT, Page<ChiTietSanPham> listCTSP, List<LichSuHoaDon> listLichSuHoaDon, BigDecimal tongTien, BigDecimal phiGiamGia) {
@@ -593,7 +592,7 @@ public class QuanLyHoaDonController {
                 }
             }
 
-            if(hoaDon.getTrangThai() == _hoaDonRepo.CHO_XAC_NHAN){
+            if(hoaDon.getTrangThai() == _hoaDonRepo.CHO_GIAO_HANG){
                 // Validate đơn hàng phải có tối thiểu 1 sản phẩm
                 List<ChiTietHoaDon> chiTietList = _hoaDonChiTietRepo.findAllByHoaDon_Id(idHD);
                 if(chiTietList.size() < 1){
@@ -609,6 +608,7 @@ public class QuanLyHoaDonController {
                         int soLuongConLai = chiTietSanPham.getSoLuong() - chiTietHD.getSoLuong();
                         if (soLuongConLai > 0) {
                             chiTietSanPham.setSoLuong(soLuongConLai);
+                            chiTietSanPham.setTrangThai(1);
                             _chiTietSanPhamRepo.save(chiTietSanPham);
                         } else {
                             redirectAttributes.addFlashAttribute("errorProductDetail", "Không đủ số lượng sản phẩm trong kho");
@@ -739,8 +739,7 @@ public class QuanLyHoaDonController {
 
             switch (hoaDon.getTrangThai()) {
                 case HoaDonRepository.CHO_GIAO_HANG:
-                    hoaDon.setTrangThai(HoaDonRepository.CHO_XAC_NHAN);
-                    hoaDon.setNgayCapNhat(LocalDateTime.now());
+
                     hoaDon.setNgayDaXacNhan(null);
                     List<ChiTietHoaDon> chiTietList = _hoaDonChiTietRepo.findAllByHoaDon_Id(idHD);
                     for (ChiTietHoaDon chiTietHD : chiTietList) {
@@ -758,7 +757,10 @@ public class QuanLyHoaDonController {
                     }
 
                     lichSuHoaDon.setTrangThai(HoaDonRepository.CHO_XAC_NHAN);
-                    lichSuHoaDon.setNgayChoXacNhan(LocalDateTime.now());
+                    lichSuHoaDon.setNgayChoXacNhan(hoaDon.getNgayChoGiaoHang());
+                    hoaDon.setTrangThai(HoaDonRepository.CHO_XAC_NHAN);
+                    hoaDon.setNgayChoGiaoHang(null);
+                    hoaDon.setNgayCapNhat(LocalDateTime.now());
                     _lichSuHoaDonRepo.save(lichSuHoaDon);
                     break;
 
@@ -864,6 +866,7 @@ public class QuanLyHoaDonController {
         hoaDon.setTrangThai(hoaDonRepository.DA_HUY);
         hoaDon.setNgayCapNhat(LocalDateTime.now());
         hoaDon.setIdNhanVien(nhanVien);
+        hoaDon.setGhiChu(lyDo);
         // Lưu lại vào cơ sở dữ liệu
 
          LichSuHoaDon lichSuHoaDon = createLichSuHoaDon(hoaDon,nhanVien,lyDo);
