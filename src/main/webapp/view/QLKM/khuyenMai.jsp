@@ -440,14 +440,14 @@
                                 <thead>
                                 <tr>
                                     <th>STT</th>
-                                    <th>Tên khuyến mại</th>
                                     <th>Mã</th>
+                                    <th>Tên khuyến mại</th>
                                     <th>Ngày bắt đầu</th>
                                     <th>Ngày kết thúc</th>
                                     <th>Số tiền giảm</th>
                                     <th>Số lượng</th>
                                     <th>Trạng thái</th>
-                                    <th>Ngày tạo</th>
+                                    <th>Hành động</th>
                                 </tr>
                                 </thead>
                                 <tbody id="tbl_ds_km">
@@ -487,67 +487,137 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                     </div>
                     <div class="modal-body d-flex gap-5">
-                        <div>
-                            <img src="src/main/webapp/image/${hinhAnhdspAdd}" alt="" width="200" height="200">
+                        <div class="container">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="maKMEdit" class="form-label">Mã KM</label>
+                                    <input type="text" class="form-control" id="maKMAdd" value="">
+                                    <p class="error-message" id="maKMAddErr" style="color: red;"></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="tenKMEdit" class="form-label">Tên khuyến mại</label>
+                                    <input type="text" class="form-control" id="tenKMAdd" value="">
+                                    <p class="error-message" id="tenKMAddErr" style="color: red;"></p>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="ngayBatDauEdit" class="form-label">Ngày bắt đầu</label>
+                                    <input type="date" class="form-control" id="ngayBatDauAdd" value="">
+                                    <p class="error-message" id="ngayBatDauAddErr" style="color: red;"></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="ngayKetThucEdit" class="form-label">Ngày kết thúc</label>
+                                    <input type="date" class="form-control" id="ngayKetThucAdd" value="">
+                                    <p class="error-message" id="ngayKetThucAddErr" style="color: red;"></p>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="soTienGiamEdit" class="form-label">Số tiền giảm</label>
+                                    <input type="text" class="form-control" id="soTienGiamAdd" value="">
+                                    <p class="error-message" id="soTienGiamAddErr" style="color: red;"></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="soLuongEdit" class="form-label">Số lượng</label>
+                                    <input type="text" class="form-control" id="soLuongAdd" value="">
+                                    <p class="error-message" id="soLuongAddErr" style="color: red;"></p>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="apDungEdit" class="form-label">Đơn tối thiểu</label>
+                                    <input type="text" class="form-control" id="apDungAdd" value="">
+                                    <p class="error-message" id="apDungAddErr" style="color: red;"></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-check form-switch mt-4">
+                                        <input class="form-check-input" type="checkbox" role="switch" id="trangThaiAdd" checked>
+                                        <label class="form-check-label" for="trangThaiEdit" id="trangThaiLabeladd">Trạng thái</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <button id="saveAddBtn" type="submit" class="btn btn-primary">Lưu</button>
+                                </div>
+                            </div>
                         </div>
-                        <div>
-                            <form id="uploadFormAdd" method="post" enctype="multipart/form-data" action="/upload">
-                                <div class="mb-3">
-                                    <label for="tenSPAdd" class="form-label">Tên sản phẩm</label>
-                                    <input type="text" class="form-control" id="tenSPAdd">
-                                    <p style="color: red;"id="tenSPAddErr"></p>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="hinhAnhAdd" class="form-label">Hình ảnh</label>
-                                    <input type="file" name="file" class="form-control" id="hinhAnhAdd" value="">
-                                    <p style="color: red;" id="hinhAnhAddErr"></p>
-                                </div>
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" role="switch" id="trangThaiAdd" checked>
-                                    <label class="form-check-label" for="trangThaiAdd" id="trangThaiLabeladd"></label>
-                                </div>
-                                <button type="submit" id="saveAddBtn"  class="btn btn-primary">Lưu</button>
-                            </form>
-                        </div>
+
                     </div>
                 </div>
             </div>
         </div>
         <%--End modal --%>
-        <!-- ModalSPEdit-->
+        <!-- ModalKMEdit-->
         <div class="modal fade" id="ModalEdit" tabindex="-1" aria-labelledby="exampleModalLabel4" aria-hidden="true"
              data-bs-backdrop="static" data-bs-keyboard="false" >
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
                         <div class="row">
-                            <h3 class="modal-title" id="exampleModalLabel4">Chỉnh sửa sản phẩm</h3>
+                            <h3 class="modal-title" id="exampleModalLabel4">Chỉnh sửa khuyến mại</h3>
                         </div>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body d-flex gap-5">
-                        <div class="border">
-                            <img id="hinhAnhEditDisplay" width="200" height="200" alt="">
+                        <div class="container">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="maKMEdit" class="form-label">Mã KM</label>
+                                    <input type="text" class="form-control" id="maKMEdit" value="">
+                                    <p class="error-message" id="maKMEditErr" style="color: red;"></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="tenKMEdit" class="form-label">Tên khuyến mại</label>
+                                    <input type="text" class="form-control" id="tenKMEdit" value="">
+                                    <p class="error-message" id="tenKMEditErr" style="color: red;"></p>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="ngayBatDauEdit" class="form-label">Ngày bắt đầu</label>
+                                    <input type="date" class="form-control" id="ngayBatDauEdit" value="">
+                                    <p class="error-message" id="ngayBatDauEditErr" style="color: red;"></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="ngayKetThucEdit" class="form-label">Ngày kết thúc</label>
+                                    <input type="date" class="form-control" id="ngayKetThucEdit" value="">
+                                    <p class="error-message" id="ngayKetThucEditErr" style="color: red;"></p>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="soTienGiamEdit" class="form-label">Số tiền giảm</label>
+                                    <input type="text" class="form-control" id="soTienGiamEdit" value="">
+                                    <p class="error-message" id="soTienGiamEditErr" style="color: red;"></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="soLuongEdit" class="form-label">Số lượng</label>
+                                    <input type="text" class="form-control" id="soLuongEdit" value="">
+                                    <p class="error-message" id="soLuongEditErr" style="color: red;"></p>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="apDungEdit" class="form-label">Đơn tối thiểu</label>
+                                    <input type="text" class="form-control" id="apDungEdit" value="">
+                                    <p class="error-message" id="apDungEditErr" style="color: red;"></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-check form-switch mt-4">
+                                        <input class="form-check-input" type="checkbox" role="switch" id="trangThaiEdit" checked>
+                                        <label class="form-check-label" for="trangThaiEdit" id="trangThaiLabeledit">Trạng thái</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <button id="saveEditBtn" type="submit" class="btn btn-primary">Lưu</button>
+                                </div>
+                            </div>
                         </div>
-                        <div>
-                            <form id="uploadFormEdit" method="post" enctype="multipart/form-data" action="/upload">
-                                <div class="mb-3">
-                                    <label for="tenSPEdit" class="form-label">Tên sản phẩm</label>
-                                    <input type="text" class="form-control" id="tenSPEdit" aria-describedby="emailHelp" value="">
-                                    <p style="color: red;" id="tenSPEditErr"></p>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="hinhAnhEdit" class="form-label">Hình ảnh</label>
-                                    <input type="file" name="file" class="form-control" id="hinhAnhEdit" value="">
-                                    <p style="color: red;" id="hinhAnhEditErr"></p>
-                                </div>
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" role="switch" id="trangThaiEdit" checked>
-                                    <label class="form-check-label" for="trangThaiEdit" id="trangThaiLabeledit">Trạng thái</label>
-                                </div>
-                                <button id="saveEditBtn" type="submit"  class="btn btn-primary">Lưu</button>
-                            </form>
-                        </div>
+
                     </div>
                 </div>
             </div>
@@ -652,7 +722,7 @@
 </script>
 
 <script>
-    let idSPLocal = "";
+    let idKMLocal = "";
     let currentPage = 1;
     let totalPage = 0;
     const loadDSKM = (pageParams) => {
@@ -685,8 +755,8 @@
                         '<td>' + trangThai + '</td>' +
                         '<td>' +
                         '<div class="d-inline">' +
-                        '<button id="editSPBtn_' + km.id + '" class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#ModalEdit">Chỉnh sửa</button>' +
-                        '<button id="detailSPBtn_' + km.id + '" class="btn btn-danger">Chi tiết</button>' +
+                        '<button id="editKMBtn_' + km.id + '" class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#ModalEdit">Chỉnh sửa</button>' +
+                        '<button id="detailKMBtn_' + km.id + '" class="btn btn-danger">Chi tiết</button>' +
                         '</div>' +
                         '</td>' +
                         '</tr>';
@@ -754,26 +824,33 @@
     }
     loadDSKM(currentPage);
     loadTotalPagination(currentPage);
-    let tenSpEdit = document.getElementById("tenSPEdit");
-    let hinhAnhDisplay = document.getElementById("hinhAnhEditDisplay");
+    let maKMEdit = document.getElementById("maKMEdit");
+    let tenKMEdit = document.getElementById("tenKMEdit");
+    let ngayBatDauEdit = document.getElementById("ngayBatDauEdit");
+    let ngayKetThucEdit = document.getElementById("ngayKetThucEdit");
+    let soTienGiamEdit = document.getElementById("soTienGiamEdit");
+    let soLuongEdit = document.getElementById("soLuongEdit");
     let trangThaiEdit  = document.getElementById("trangThaiEdit");
-    $(document).on('click', "button[id^='editSPBtn_']", e => {
+    $(document).on('click', "button[id^='editKMBtn_']", e => {
         e.preventDefault();
         const queryString = window.location.pathname;
         const pathParts = queryString.split('/');
         const pathVariable = pathParts[pathParts.length - 1];
-        const spid = e.currentTarget.id.replace("editSPBtn_", "");
-        idSPLocal = spid;
-        fetch("/khuyen-mai/detail/"+spid, {
+        const kmid = e.currentTarget.id.replace("editKMBtn_", "");
+        idKMLocal = kmid;
+        fetch("/khuyen-mai/detail/"+kmid, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             }
         }).then(response => response.json())
             .then(resp => {
-                tenSpEdit.value = resp.ten;
-                console.log("test link image: "+resp.hinhAnh);
-                hinhAnhDisplay.src ="/image/"+ resp.hinhAnh;
+                maKMEdit.value = resp.ma;
+                tenKMEdit.value = resp.ten;
+                ngayBatDauEdit.value = resp.ngayBatDau;
+                ngayKetThucEdit.value = resp.ngayKetThuc;
+                soTienGiamEdit.value = resp.soTienGiam;
+                soLuongEdit.value = resp.soLuong;
                 if(resp.trangThai==1){
                     trangThaiEdit.checked = true;
                     labelElementedit.textContent = "Đang hoạt động";
@@ -891,40 +968,38 @@
         button.addEventListener('click', function (e) {
             e.preventDefault();
             console.log("test check btn");
-            var tenSP = document.getElementById('tenSPAdd').value;
-            var hinhAnh = document.getElementById('hinhAnhAdd').value;
-            var trangThairaw = document.getElementById('trangThaiAdd').checked;
-            var tenSperr = document.getElementById("tenSPAddErr");
-            var hinhAnhErr = document.getElementById("hinhAnhAddErr");
+            let maKMEdit = document.getElementById("maKMAdd");
+            let tenKMEdit = document.getElementById("tenKMAdd");
+            let tenKMEditErr = document.getElementById("tenKMAddErr");
+            let ngayBatDauEdit = document.getElementById("ngayBatDauAdd");
+            let ngayBatDauEditErr = document.getElementById("ngayBatDauAddErr");
+            let ngayKetThucEdit = document.getElementById("ngayKetThucAdd");
+            let ngayKetThucEditErr = document.getElementById("ngayKetThucAddErr");
+            let soTienGiamEdit = document.getElementById("soTienGiamAdd");
+            let soTienGiamEditErr = document.getElementById("soTienGiamAddErr");
+            let soLuongEdit = document.getElementById("soLuongAdd");
+            let soLuongEditErr = document.getElementById("soLuongAddErr");
+            let apDungEdit = document.getElementById("apDungAdd");
+            let apDungEditErr = document.getElementById("apDungAddErr");
+            let trangThaiEdit  = document.getElementById("trangThaiAdd");
             let trangThai = 0;
-            let sttCheck  = 0;
-            console.log("====================== ten sp:",tenSP);
-            console.log("====================== hinh anh:",getFileName(hinhAnh));
-            console.log("====================== trang thai:",trangThairaw);
-            if(trangThairaw==true){
-                trangThai =1;
+            let sttCheck = 0;
+            console.log("test combobox: ", trangThaiEdit.value);
+            if(trangThaiEdit.checked==true){
+                trangThai = 1;
             }
             else{
                 trangThai = 0;
             }
-            if(validateNull(tenSP)){
-                tenSperr.textContent = "Vui lòng nhập tên sản phẩm";
+            if(validateNull(tenKMEdit)){
+                tenKMEditErr.textContent = "Vui lòng nhập tên sản phẩm";
                 sttCheck = 0;
             }
             else{
-                tenSperr.textContent = "";
+                tenKMEditErr.textContent = "";
                 sttCheck ++;
             }
-            if(validateNull(hinhAnh)){
-                hinhAnhErr.textContent ="Vui lòng chọn hình ảnh";
-                sttCheck = 0;
-            }
-            else{
-                hinhAnhErr.textContent = "";
-                sttCheck ++;
-            }
-
-            if(sttCheck==2){
+            if(sttCheck>0){
                 Swal.fire({
                     title: 'Xác nhận?',
                     text: "Dữ liệu sẽ được lưu lại!",
@@ -937,56 +1012,32 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         const data = {
-                            ten: tenSP,
-                            trangThai: trangThai,
-                            hinhAnh: getFileName(hinhAnh)
+                            ten: tenKMEdit.value,
+                            ngayBatDau: ngayBatDauEdit.value,
+                            ngayKetThuc: ngayKetThucEdit.value,
+                            soTienGiam: soTienGiamEdit.value,
+                            soLuong: soLuongEdit.value,
+                            apDung: apDungEdit.value,
+                            trangThai: trangThai
                         };
-                        var formData = new FormData($('#uploadFormAdd')[0]); // Use FormData to get all form data
-                        // Handle file upload via AJAX
-
-                        $.ajax({
-                            url: '/upload',
-                            type: 'POST',
-                            data: formData,
-                            processData: false,
-                            contentType: false,
-                            success: function(response) {
-                                console.log("save image success ");
-                            },
-                            error: function(xhr, status, error) {
-                                console.log("save image =error");
-                            }
-                        });
                         fetch(`/khuyen-mai/save`, {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'
                             },
                             body: JSON.stringify(data)
-                        }).then(() => {
+                        }).then(response => {
+                            response.json();
                             Swal.fire(
                                 'Đã thanh toán!',
                                 'Dữ liệu đã được ghi nhận.',
                                 'success'
-                            ).then(() => {
-                                fetch("/khuyen-mai/count", {
-                                    headers: {
-                                        'Accept': 'application/json',
-                                        'Content-Type': 'application/json'
-                                    }
-                                }).then(response => response.json())
-                                    .then(resp => {
-                                        loadDSKM(Math.ceil(resp/20));
-                                        currentPage = Math.ceil(resp/20);
-                                        loadTotalPagination(currentPage);
-                                    }).catch(error => {
-                                    console.error('Error fetching pagination data:', error);
-                                    // Handle fetch error
-                                });
+                            ).then((resp) => {
+                                console.log("test response: ",resp);
+                                console.log("form data: ", data);
+                                loadDSKM(currentPage);
                             });
-                            button.closest('tr').remove();
                         });
-                        button.closest('tr').remove();
                     }
                 });
             }
@@ -1009,39 +1060,38 @@
         button.addEventListener('click', function (e) {
             e.preventDefault();
             console.log("test check btn");
-            var tenSP = document.getElementById('tenSPEdit').value;
-            var hinhAnh = document.getElementById('hinhAnhEdit').value;
-            var trangThaiRaw = document.getElementById('trangThaiEdit').checked;
-            var tenSperr = document.getElementById("tenSPEditErr");
-            var hinhAnhErr = document.getElementById("hinhAnhEditErr");
+            let maKMEdit = document.getElementById("maKMEdit");
+            let tenKMEdit = document.getElementById("tenKMEdit");
+            let tenKMEditErr = document.getElementById("tenKMEditErr");
+            let ngayBatDauEdit = document.getElementById("ngayBatDauEdit");
+            let ngayBatDauEditErr = document.getElementById("ngayBatDauEditErr");
+            let ngayKetThucEdit = document.getElementById("ngayKetThucEdit");
+            let ngayKetThucEditErr = document.getElementById("ngayKetThucEditErr");
+            let soTienGiamEdit = document.getElementById("soTienGiamEdit");
+            let soTienGiamEditErr = document.getElementById("soTienGiamEditErr");
+            let soLuongEdit = document.getElementById("soLuongEdit");
+            let soLuongEditErr = document.getElementById("soLuongEditErr");
+            let apDungEdit = document.getElementById("apDungEdit");
+            let apDungEditErr = document.getElementById("apDungEditErr");
+            let trangThaiEdit  = document.getElementById("trangThaiEdit");
             let trangThai = 0;
             let sttCheck = 0;
-            console.log("====================== ten sp:",tenSP);
-            console.log("====================== hinh anh:",hinhAnh);
-
-            if(trangThaiRaw==true){
+            console.log("test combobox: ", trangThaiEdit.value);
+            if(trangThaiEdit.checked==true){
                 trangThai = 1;
             }
             else{
                 trangThai = 0;
             }
-            if(validateNull(tenSP)){
-                tenSperr.textContent = "Vui lòng nhập tên sản phẩm";
+            if(validateNull(tenKMEdit)){
+                tenKMEditErr.textContent = "Vui lòng nhập tên sản phẩm";
                 sttCheck = 0;
             }
             else{
-                tenSperr.textContent = "";
+                tenKMEditErr.textContent = "";
                 sttCheck ++;
             }
-            if(validateNull(hinhAnh)){
-                hinhAnhErr.textContent ="Vui lòng chọn hình ảnh";
-                sttCheck = 0;
-            }
-            else{
-                hinhAnhErr.textContent = "";
-                sttCheck ++;
-            }
-            if(sttCheck==2){
+            if(sttCheck>0){
                 Swal.fire({
                     title: 'Xác nhận?',
                     text: "Dữ liệu sẽ được lưu lại!",
@@ -1054,38 +1104,29 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         const data = {
-                            ten: tenSP,
-                            hinhAnh: getFileName(hinhAnh),
+                            ten: tenKMEdit.value,
+                            ngayBatDau: ngayBatDauEdit.value,
+                            ngayKetThuc: ngayKetThucEdit.value,
+                            soTienGiam: soTienGiamEdit.value,
+                            soLuong: soLuongEdit.value,
+                            apDung: apDungEdit.value,
                             trangThai: trangThai
                         };
-                        var formData = new FormData($('#uploadFormEdit')[0]); // Use FormData to get all form data
-                        // Handle file upload via AJAX
-                        console.log("form data: ",$('#uploadFormEdit')[0]);
-                        $.ajax({
-                            url: '/upload',
-                            type: 'POST',
-                            data: formData,
-                            processData: false,
-                            contentType: false,
-                            success: function(response) {
-                                console.log("save image success ");
-                            },
-                            error: function(xhr, status, error) {
-                                console.log("save image =error");
-                            }
-                        });
-                        fetch(`/khuyen-mai/update/`+idSPLocal, {
+                        fetch(`/khuyen-mai/update/`+idKMLocal, {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'
                             },
                             body: JSON.stringify(data)
-                        }).then(() => {
+                        }).then(response => {
+                            response.json();
                             Swal.fire(
                                 'Đã thanh toán!',
                                 'Dữ liệu đã được ghi nhận.',
                                 'success'
-                            ).then(() => {
+                            ).then((resp) => {
+                                console.log("test response: ",resp);
+                                console.log("form data: ", data);
                                 loadDSKM(currentPage);
                             });
                         });
@@ -1093,11 +1134,10 @@
                 });
             }
             else{
-                thongBao.textContent =  "Số tiền khách đưa phải lớn hơn hoặc bằng tổng tiền.";
+
             }
         });
     });
-
 </script>
 <script>
     $(document).ready(function() {

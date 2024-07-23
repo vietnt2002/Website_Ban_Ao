@@ -27,7 +27,7 @@ public interface KhuyenMaiRepository extends JpaRepository<KhuyenMai,String> {
     //Nguyenxloc
     @Query(value = "SELECT km FROM KhuyenMai km where km.trangThai=:trangThai ORDER BY km.ngayTao asc")
     Page<KhuyenMai> findByTrangThaiAsc(int trangThai, Pageable pageable);
-    @Query(value = "SELECT km FROM KhuyenMai km where km.trangThai=1 ORDER BY km.ngayTao asc")
+    @Query(value = "SELECT km FROM KhuyenMai km ORDER BY km.ngayTao asc")
     Page<KhuyenMai> findAllByPage(Pageable pageable);
     @Modifying(clearAutomatically = true)
     @Query("UPDATE KhuyenMai km SET km.trangThai = 1 WHERE km.id=:id")

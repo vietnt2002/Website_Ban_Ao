@@ -61,8 +61,8 @@ public class KhuyenMaiController {
     }
     @CrossOrigin
     @GetMapping("/detail/{id}")
-    public ResponseEntity<SanPham> getDetail(@PathVariable(value = "id") SanPham sanPham){
-        return ResponseEntity.ok(sanPham);
+    public ResponseEntity<KhuyenMai> getDetail(@PathVariable(value = "id") KhuyenMai khuyenMai){
+        return ResponseEntity.ok(khuyenMai);
     }
 
     @CrossOrigin
@@ -74,6 +74,7 @@ public class KhuyenMaiController {
             return ResponseEntity.ok(false);
         }
         else{
+            System.out.println("do update -======================");
             km.setTen(newKhuyenMai.getTen());
             km.setNgayBatDau(newKhuyenMai.getNgayBatDau());
             km.setNgayKetThuc(newKhuyenMai.getNgayKetThuc());
@@ -111,7 +112,7 @@ public class KhuyenMaiController {
             LocalDateTime localNow = LocalDateTime.now();
             String ma = "KMMSS"+(kmRepo.getCount()+1);
             KhuyenMai km = new KhuyenMai();
-            km.setMa(newKhuyenMai.getMa());
+            km.setMa(ma);
             km.setTen(newKhuyenMai.getTen());
             km.setNgayBatDau(newKhuyenMai.getNgayBatDau());
             km.setNgayKetThuc(newKhuyenMai.getNgayKetThuc());

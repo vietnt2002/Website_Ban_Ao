@@ -1,5 +1,6 @@
 package com.example.java4.request.QLKM.Store;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,17 +14,17 @@ import java.sql.Date;
 public class KhuyenMaiStore {
     private String id;
     @NotEmpty
-    private String ma;
-    @NotEmpty
     private String ten;
-    @NotEmpty
+    @NotNull
     private Date ngayBatDau;
-    @NotEmpty
+    @NotNull
     private Date ngayKetThuc;
-    @NotEmpty
+    @NotNull
     private BigDecimal soTienGiam;
-    @NotEmpty
+    @NotNull
     private Integer soLuong;
-    @NotEmpty
+    @NotNull
+    private BigDecimal apDung;
+    @NotNull
     private Integer trangThai;
 }
