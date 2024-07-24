@@ -5,8 +5,8 @@ import com.example.java4.config.UserInfor;
 import com.example.java4.entities.*;
 import com.example.java4.repositories.*;
 import com.example.java4.request.dangNhap.NVSignUpRequest;
-import com.example.java4.request.req_khang.PaymentResDTO;
 import com.example.java4.request.req_viet.NhanVienRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +22,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.net.URLEncoder;
@@ -67,12 +68,8 @@ public class BanTaiQuayController {
 
     @Autowired
     KhuyenMaiRepository khuyenMaiRepo;
-
     @Autowired
     Validator validator;
-
-    @Autowired
-    LichSuHoaDonRepository _lichSuHoaDonRepo;
 
     private List<KhuyenMai> listKhuyenMai;
     private List<HoaDon> listHoaDon;
@@ -96,48 +93,48 @@ public class BanTaiQuayController {
         tongSL = 0;
 //        tongTien = BigDecimal.ZERO;
     }
-//    @GetMapping("dang-nhap-view")
-//    public String getDangNhapview(Model model){
-//        NVSignUpRequest nhanVienRequest = new NVSignUpRequest();
-//        model.addAttribute("nhanVien", nhanVienRequest);
-//        return "/view/BanHangTaiQuay/dangNhapAdmin.jsp";
-//    }
-//
-//    @PostMapping("dang-nhap")
-//    public String dangNhap(
-//            Model model,
-//            @Valid @ModelAttribute("nhanVien") NVSignUpRequest nvReq,
-//            BindingResult result,
-//            RedirectAttributes redirectAttributes,
-//            HttpSession session
-//    ){
-//        if (result.hasErrors()){
-//            System.out.println("Có lỗi");
-//            System.out.println("result error:"+result.toString());
-//            return "/view/BanHangTaiQuay/dangNhapAdmin.jsp";
-//        }
-//
-//        //Tìm kiếm nhân viên theo tên tài khoản
-//        boolean checkRole = false;
-//        NhanVien nhanVienByTK = nhanVienRepo.findByTaiKhoan(nvReq.getTaiKhoan());
-//        if (nhanVienByTK == null){
-//            redirectAttributes.addFlashAttribute("error", "Tên tài khoản không tồn tại!");
-//            return "redirect:/admin/dang-nhap-view";
-//        }else {
-//            if (nvReq.getMatKhau().equals(nhanVienByTK.getMatKhau())){
-//                UserInfor.idNhanVien = nhanVienByTK.getId();
-//                //Check admin hay nhân viên
-//                String role = nhanVienByTK.getIdCV().getTen();
-//                session.setAttribute("userRole", role);
-//
-//                redirectAttributes.addFlashAttribute("success", "Đăng nhập thành công");
-//                return "redirect:/ban-hang-tai-quay";
-//            }else {
-//                redirectAttributes.addFlashAttribute("error", "Mật khẩu nhập vào chưa đúng!");
-//                return "redirect:/admin/dang-nhap-view";
-//            }
-//        }
-//    }
+    @GetMapping("dang-nhap-view")
+    public String getDangNhapview(Model model){
+        NVSignUpRequest nhanVienRequest = new NVSignUpRequest();
+        model.addAttribute("nhanVien", nhanVienRequest);
+        return "/view/BanHangTaiQuay/dangNhapAdmin.jsp";
+    }
+
+    @PostMapping("dang-nhap")
+    public String dangNhap(
+            Model model,
+            @Valid @ModelAttribute("nhanVien") NVSignUpRequest nvReq,
+            BindingResult result,
+            RedirectAttributes redirectAttributes,
+            HttpSession session
+    ){
+        if (result.hasErrors()){
+            System.out.println("Có lỗi");
+            System.out.println("result error:"+result.toString());
+            return "/view/BanHangTaiQuay/dangNhapAdmin.jsp";
+        }
+
+        //Tìm kiếm nhân viên theo tên tài khoản
+        boolean checkRole = false;
+        NhanVien nhanVienByTK = nhanVienRepo.findByTaiKhoan(nvReq.getTaiKhoan());
+        if (nhanVienByTK == null){
+            redirectAttributes.addFlashAttribute("error", "Tên tài khoản không tồn tại!");
+            return "redirect:/admin/dang-nhap-view";
+        }else {
+            if (nvReq.getMatKhau().equals(nhanVienByTK.getMatKhau())){
+                UserInfor.idNhanVien = nhanVienByTK.getId();
+                //Check admin hay nhân viên
+                String role = nhanVienByTK.getIdCV().getTen();
+                session.setAttribute("userRole", role);
+
+                redirectAttributes.addFlashAttribute("success", "Đăng nhập thành công");
+                return "redirect:/ban-hang-tai-quay";
+            }else {
+                redirectAttributes.addFlashAttribute("error", "Mật khẩu nhập vào chưa đúng!");
+                return "redirect:/admin/dang-nhap-view";
+            }
+        }
+    }
 
 
 
@@ -275,7 +272,6 @@ public class BanTaiQuayController {
             redirectAttributes.addFlashAttribute("error", "Đã xảy ra lỗi khi tạo hóa đơn.");
         }
         hoaDonRepository.save(hoaDon);
-        createLichSuHoaDon(hoaDon,nv.get(),"Chưa thanh toán");
         return "redirect:/ban-hang-tai-quay";
     }
 
@@ -490,7 +486,6 @@ public class BanTaiQuayController {
         newHoaDon.setLoaiHoaDon(0);
         newHoaDon.setPhuongThucThanhToan(0);
         newHoaDon.setTrangThai(6);
-        createLichSuHoaDon(newHoaDon,newHoaDon.getIdNhanVien(),"Đã hoàn thành");
         hoaDonRepository.save(newHoaDon);
         return "redirect:/ban-hang-tai-quay";
     }
@@ -1091,16 +1086,18 @@ public class BanTaiQuayController {
 
     // Tích hợp VNPay
     @GetMapping("/pay/{tongTien}/{maHoaDon}")
-    public ResponseEntity<?> getPay(
+    public void redirectToPaymentGateway(
+            @RequestParam(value = "bankcode", required = false) String bankCode,
             @PathVariable Long tongTien,
-            @PathVariable String maHoaDon
-    ) throws UnsupportedEncodingException, UnsupportedEncodingException {
+            @PathVariable String maHoaDon,
+            HttpServletResponse response
+    ) throws IOException {
 
         String vnp_Version = "2.1.0";
         String vnp_Command = "pay";
         String orderType = "other";
         long amount = tongTien*100;
-        String bankCode = "NCB";
+//        String bankCode = "NCB";
 
 //        String vnp_TxnRef = ConfigVNpay.getRandomNumber(8);
         String vnp_TxnRef = maHoaDon;
@@ -1115,7 +1112,11 @@ public class BanTaiQuayController {
         vnp_Params.put("vnp_Amount", String.valueOf(amount));
         vnp_Params.put("vnp_CurrCode", "VND");
 
-        vnp_Params.put("vnp_BankCode", bankCode);
+        if (bankCode != null && !bankCode.isEmpty()) {
+            vnp_Params.put("vnp_BankCode", bankCode);
+        }
+
+//        vnp_Params.put("vnp_BankCode", bankCode);
         vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
         vnp_Params.put("vnp_OrderInfo", "Thanh toan don hang:" + vnp_TxnRef);
         vnp_Params.put("vnp_OrderType", orderType);
@@ -1160,26 +1161,29 @@ public class BanTaiQuayController {
         String vnp_SecureHash = ConfigVNpay.hmacSHA512(ConfigVNpay.secretKey, hashData.toString());
         queryUrl += "&vnp_SecureHash=" + vnp_SecureHash;
         String paymentUrl = ConfigVNpay.vnp_PayUrl + "?" + queryUrl;
-        PaymentResDTO paymentResDTO = new PaymentResDTO();
-        paymentResDTO.setStatus("ok");
-        paymentResDTO.setMessage("Successfully");
-        paymentResDTO.setURL(paymentUrl);
 
-        LocalDateTime now =LocalDateTime.now();
-        HoaDon hoaDon = hoaDonRepository.findByIdHoaDon(idHoaDon);
-        if (hoaDon.getId().equals(idHoaDon)){
-            BigDecimal big = new BigDecimal(tongTien);
-            hoaDon.setTongTien(big);
-            hoaDon.setNgayThanhToan(now);
-            hoaDon.setLoaiHoaDon(0);
-            hoaDon.setTrangThai(6);
-            hoaDon.setPhuongThucThanhToan(1);
-            hoaDonRepository.save(hoaDon);
-        }
+////
+        String redirectUrl = String.format(
+                "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html?vnp_Amount=%s&vnp_Command=%s&vnp_CreateDate=%s&vnp_CurrCode=%s&vnp_ExpireDate=%s&vnp_IpAddr=%s&vnp_Locale=%s&vnp_OrderInfo=%s&vnp_OrderType=%s&vnp_ReturnUrl=%s&vnp_TmnCode=%s&vnp_TxnRef=%s&vnp_Version=%s&vnp_SecureHash=%s",
+                String.valueOf(amount), vnp_Command, vnp_CreateDate, "VND", vnp_ExpireDate, vnp_IpAddr, "vn", "Thanh toan don hang:" + vnp_TxnRef, "other", ConfigVNpay.vnp_ReturnUrl, vnp_TmnCode, vnp_TxnRef, vnp_Version, vnp_SecureHash
+        );
+////
 
-        return ResponseEntity.status(HttpStatus.OK).body(paymentResDTO);
+//        LocalDateTime now =LocalDateTime.now();
+//        HoaDon hoaDon = hoaDonRepository.findByIdHoaDon(idHoaDon);
+//        if (hoaDon.getId().equals(idHoaDon)){
+//            BigDecimal big = new BigDecimal(tongTien);
+//            hoaDon.setTongTien(big);
+//            hoaDon.setNgayThanhToan(now);
+//            hoaDon.setLoaiHoaDon(0);
+//            hoaDon.setTrangThai(6);
+//            hoaDon.setPhuongThucThanhToan(1);
+//            hoaDonRepository.save(hoaDon);
+//        }
 
-//        return ResponseEntity.ok(paymentUrl);
+//        return ResponseEntity.status(HttpStatus.OK).body(paymentResDTO);
+
+        response.sendRedirect(redirectUrl);
     }
 
 
@@ -1192,8 +1196,8 @@ public class BanTaiQuayController {
             @RequestParam(value = "vnp_CardType") String cardType, Model model
     ){
 
-//        int tt = Integer.valueOf(amount)/100;
-        System.out.println("----------------------------------"+amount);
+        int tt = Integer.valueOf(amount)/100;
+        System.out.println("----------------------------------"+tt);
         System.out.println("----------------------------------"+bankCode);
         System.out.println("----------------------------------"+responseCode);
         System.out.println("----------------------------------"+orderInfo);
@@ -1206,23 +1210,24 @@ public class BanTaiQuayController {
         }
 
         LocalDateTime now =LocalDateTime.now();
+        HoaDon hoaDon = hoaDonRepository.findByIdHoaDon(idHoaDon);
+        if (hoaDon.getId().equals(idHoaDon)){
+            BigDecimal big = new BigDecimal(tt);
+            hoaDon.setTongTien(big);
+            hoaDon.setNgayThanhToan(now);
+            hoaDon.setLoaiHoaDon(0);
+            hoaDon.setTrangThai(6);
+            hoaDon.setPhuongThucThanhToan(1);
+            hoaDonRepository.save(hoaDon);
+        }
 
         model.addAttribute("amount",amount);
         model.addAttribute("ngayTao",now);
         model.addAttribute("maHD",orderInfo);
 
+
 //        return ResponseEntity.ok("Thanh toán thành công");
         return "/view/BanHangTaiQuay/thongBao.jsp";
     }
-    // Hàm thêm đối tượng lịch sử hóa đơn
-    public void createLichSuHoaDon(HoaDon hoaDon, NhanVien nhanVien,String ghiChu) {
-        LichSuHoaDon lichSuHoaDon = new LichSuHoaDon();
-        lichSuHoaDon.setIdHoaDon(hoaDon);
-        lichSuHoaDon.setIdNhanVien(nhanVien);
-        lichSuHoaDon.setNgayTao(LocalDateTime.now());
-        lichSuHoaDon.setNgayCapNhat(LocalDateTime.now());
-        lichSuHoaDon.setTrangThai(hoaDon.getTrangThai());
-        lichSuHoaDon.setGhiChu(ghiChu);
-        _lichSuHoaDonRepo.save(lichSuHoaDon);
-    }
+
 }
