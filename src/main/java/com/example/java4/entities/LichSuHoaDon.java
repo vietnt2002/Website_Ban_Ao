@@ -36,69 +36,26 @@ public class LichSuHoaDon {
     @Column(name = "NgayCapNhat")
     private LocalDateTime ngayCapNhat;
 
+
+    @Column(name = "NgayChoXacNhan")
+    private LocalDateTime ngayChoXacNhan;
+
+
+    @Column(name = "NgayChoGiaoHang")
+    private LocalDateTime ngayChoGiaoHang;
+
+
+    @Column(name = "NgayDangGiaoHang")
+    private LocalDateTime ngayDangGiaoHang;
+
+    @Column(name = "NgayHoanThanh")
+    private LocalDateTime ngayHoanThanh;
+
     @Column(name = "GhiChu")
     private String ghiChu;
 
     @Column(name = "TrangThai")
     private Integer trangThai;
-
-    // Getters and Setters
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public HoaDon getIdHoaDon() {
-        return idHoaDon;
-    }
-
-    public void setIdHoaDon(HoaDon idHoaDon) {
-        this.idHoaDon = idHoaDon;
-    }
-
-    public NhanVien getIdNhanVien() {
-        return idNhanVien;
-    }
-
-    public void setIdNhanVien(NhanVien idNhanVien) {
-        this.idNhanVien = idNhanVien;
-    }
-
-    public LocalDateTime getNgayTao() {
-        return ngayTao;
-    }
-
-    public void setNgayTao(LocalDateTime ngayTao) {
-        this.ngayTao = ngayTao;
-    }
-
-    public LocalDateTime getNgayCapNhat() {
-        return ngayCapNhat;
-    }
-
-    public void setNgayCapNhat(LocalDateTime ngayCapNhat) {
-        this.ngayCapNhat = ngayCapNhat;
-    }
-
-    public String getGhiChu() {
-        return ghiChu;
-    }
-
-    public void setGhiChu(String ghiChu) {
-        this.ghiChu = ghiChu;
-    }
-
-    public Integer getTrangThai() {
-        return trangThai;
-    }
-
-    public void setTrangThai(Integer trangThai) {
-        this.trangThai = trangThai;
-    }
 
     @Override
     public boolean equals(Object o) {

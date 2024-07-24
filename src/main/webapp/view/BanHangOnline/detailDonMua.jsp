@@ -48,6 +48,86 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
     <style>
+
+        body.modal-open {
+            overflow-y: auto;
+            padding-right: 0 !important;
+        }
+
+        .profile-menu {
+            width: 250px;
+            padding: 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .profile-pic {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .username {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .menu-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .menu-item {
+            margin-bottom: 10px;
+        }
+
+        .menu-item > a {
+            text-decoration: none;
+            color: #333;
+            font-size: 16px;
+            display: block;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .menu-item > a:hover {
+            background-color: #f0f0f0;
+        }
+
+        .submenu-list {
+            list-style: none;
+            padding-left: 20px;
+            display: none;
+        }
+
+        .submenu-list.show {
+            display: block;
+        }
+
+        .submenu-item > a {
+            text-decoration: none;
+            color: #555;
+            font-size: 14px;
+            display: block;
+            padding: 5px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .submenu-item > a:hover {
+            background-color: #f0f0f0;
+        }
+    </style>
+
+    <style>
         .userCart {
             display: flex;
             align-items: center;
@@ -56,6 +136,17 @@
 
         .dropdown ul li:hover {
             text-decoration: underline;
+        }
+
+        .dropdown-menu {
+            display: none;
+        }
+
+        .dropdown:hover .dropdown-menu {
+            display: block;
+            position: absolute;
+            top: 100%;
+            z-index: 1000;
         }
 
         .totalQuantityCart {
@@ -132,12 +223,28 @@
             </form>
         </div>
         <div class="col-lg-3 col-6 text-right userCart">
-            <div class="dropdown">
-                <button class="btn btn-secondary bg-light" style="padding: 4px; font-size: 19px; margin-right: 3px"
+            <div class="dropdown" onmouseover="showDropdown()" onmouseout="hideDropdown()">
+                <button class="btn btn-light bg-light" style="font-size: 19px; margin-right: 3px"
                         type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="bi bi-person-circle" style="color:#D19C97; margin: 5px"></i>
+                    <c:choose>
+                        <c:when test="${not empty sessionScope.user}">
+                            <!-- Hiển thị tên và hình ảnh người dùng nếu đã đăng nhập -->
+                            <span class="info-text" style="font-size: 14px">${sessionScope.user.taiKhoan}</span>
+                            <c:if test="${sessionScope.user.anhDaiDien != null}">
+                                <img src="/image/${sessionScope.user.anhDaiDien}" alt=""
+                                     style="width: 30px; height: 30px; border-radius: 50%; margin-left: 5px;">
+                            </c:if>
+                            <c:if test="${sessionScope.user.anhDaiDien == null}">
+                                <i class="bi bi-person-circle" style="color:#D19C97; margin: 5px"></i>
+                            </c:if>
+                        </c:when>
+                        <c:otherwise>
+                            <!-- Hiển thị biểu tượng mặc định nếu chưa đăng nhập -->
+                            <i class="bi bi-person-circle" style="color:#D19C97; margin: 5px"></i>
+                        </c:otherwise>
+                    </c:choose>
                 </button>
-                <ul class="dropdown-menu btn border" aria-labelledby="dropdownMenuButton1">
+                <ul class="dropdown-menu btn border" aria-labelledby="dropdownMenuButton1" id="dropdownContent">
                     <c:choose>
                         <c:when test="${empty sessionScope.user}">
                             <!-- Hiển thị nút đăng nhập khi chưa đăng nhập -->
@@ -156,7 +263,7 @@
                         <c:otherwise>
                             <!-- Hiển thị nút đăng xuất khi đã đăng nhập -->
                             <li><a class="dropdown-item" href="/cua-hang/don-mua">Đơn mua</a></li>
-                            <li><a class="dropdown-item" href="#">Quản lý tài khoản</a></li>
+                            <li><a class="dropdown-item" href="/cua-hang/quan-ly-tai-khoan">Quản lý tài khoản</a></li>
                             <li><a class="dropdown-item" href="/cua-hang/logout">Đăng xuất</a></li>
                         </c:otherwise>
                     </c:choose>
@@ -165,13 +272,13 @@
             <div class="col-lg-3 col-6 text-right" style="position: relative">
                 <a href="/cua-hang/gio-hang" class="btn border">
                     <i class="fas fa-shopping-cart text-primary"></i>
-                    <c:if test="${soLuong > 0}">
-                        <span class="totalQuantityCart"
-                              style="display: flex; justify-content: center; align-items: center">${soLuong}</span>
+                    <c:if test="${soLuongGioHang > 0}">
+                    <span class="totalQuantityCart"
+                          style="display: flex; justify-content: center; align-items: center">${soLuongGioHang}</span>
                     </c:if>
-                    <c:if test="${soLuong == null}">
-                        <span class="totalQuantityCart"
-                              style="display: flex; justify-content: center; align-items: center">0</span>
+                    <c:if test="${soLuongGioHang == null}">
+                    <span class="totalQuantityCart"
+                          style="display: flex; justify-content: center; align-items: center">0</span>
                     </c:if>
                 </a>
             </div>
@@ -309,161 +416,175 @@
 </div>
 <!-- Navbar End -->
 
-<!-- Page Header Start -->
-<div class="container-fluid bg-secondary mb-5">
-    <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
-        <h1 class="font-weight-semi-bold text-uppercase mb-3">Thông tin đơn hàng</h1>
-        <div class="d-inline-flex">
-            <p class="m-0"><a href="/cua-hang/don-mua">Đơn mua</a></p>
-            <p class="m-0 px-2">-</p>
-            <p class="m-0">Chi tiết</p>
-        </div>
-    </div>
-</div>
-<!-- Page Header End -->
-
 <!-- Boby -->
 
-<div class="container-fluid pt-7" style="padding-left: 100px; padding-right: 100px; padding-bottom: 150px;">
-    <%-- Trạng thái hóa đơn --%>
+<div class="container-fluid">
     <div class="row">
-        <div class="mb-5" style="position: relative; left: 1050px">
-            <c:forEach var="i" items="${listHDCT}" varStatus="index">
-                <c:if test="${index.index == 0}">
-                    <span>Mã hóa đơn: ${i.ma}</span> |
-                    <c:choose>
-                        <c:when test="${i.trangThai == 1}">
-                            <div class="badge badge-warning" style="border-radius: 10px;">
-                                Chờ xác nhận
-                            </div>
-                        </c:when>
-                        <c:when test="${i.trangThai == 3}">
-                            <div class="badge badge-warning" style="border-radius: 10px;">
-                                Chờ giao hàng
-                            </div>
-                        </c:when>
-                        <c:when test="${i.trangThai == 4}">
-                            <div class="badge badge-info" style="border-radius: 10px;">
-                                Chờ giao hàng
-                            </div>
-                        </c:when>
-                        <c:when test="${i.trangThai == 6}">
-                            <div class="badge badge-success" style="border-radius: 10px;">
-                                Hoàn thành
-                            </div>
-                        </c:when>
-                        <c:when test="${i.trangThai == 7}">
-                            <div class="badge badge-danger" style="border-radius: 10px;">
-                                Đơn hủy
-                            </div>
-                        </c:when>
-                    </c:choose>
-                </c:if>
-            </c:forEach>
-        </div>
-    </div>
-
-
-    <div class="row">
-        <%-- Địa chỉ giao hàng --%>
-        <div class="col-6">
-            <div class="row d-flex align-items-stretch mb-5" style="position: relative; left: 18px;">
-                <div class="col-12 mb-3 d-flex align-items-stretch">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5>Địa chỉ nhận hàng</h5>
-                    </div>
+        <div class="col-1"></div>
+        <div class="col-3">
+            <div class="profile-menu" style="position: relative; top: 41px;">
+                <div class="profile-header">
+                    <img src="/image/${sessionScope.user.anhDaiDien}" alt="Profile Picture" class="profile-pic">
+                    <span class="username">${sessionScope.user.taiKhoan}</span>
                 </div>
-
-                <div class="col-12 mb-3 d-flex align-items-stretch">
-                    <c:forEach var="i" items="${giaoHang}">
-                        <div class="card-body">
-                            <p>${i.tenNguoiNhan}</p>
-                            <p>${i.sdtNguoiNhan}</p>
-                            <p>${i.diaChiChiTiet}, ${i.idPhuongXa}, ${i.idQuanHuyen}, ${i.idTinhThanh} </p>
-                        </div>
-                    </c:forEach>
-                </div>
+                <ul class="menu-list">
+                    <li class="menu-item">
+                        <a href="#">Quản Lý Tài Khoản</a>
+                        <ul class="submenu-list">
+                            <li class="submenu-item"><a href="/cua-hang/quan-ly-tai-khoan">Hồ Sơ</a></li>
+                            <li class="submenu-item"><a href="/cua-hang/dia-chi">Địa Chỉ</a></li>
+                        </ul>
+                    </li>
+                    <li class="menu-item"><a href="/cua-hang/don-mua">Đơn Mua</a></li>
+                </ul>
             </div>
         </div>
-    </div>
-
-
-    <%-- Danh sách sản phẩm --%>
-    <div class="row px-xl-5 mb-5">
-        <table class="table table-bordered mb-0">
-            <thead class="bg-secondary text-dark">
-            <tr>
-                <th class="text-center">Tên sản phẩm</th>
-                <th class="text-center">Số lượng</th>
-                <th class="text-center">Màu sắc</th>
-                <th class="text-center">Kích thước</th>
-                <th class="text-center">Giá sản phẩm</th>
-                <th class="text-center">Thành tiền</th>
-            </tr>
-            </thead>
-            <c:forEach var="i" items="${listHDCT}" varStatus="">
-                <tbody class="">
-                <tr>
-                    <td class=""><img src="/image/${i.hinhAnh1}" alt=""
-                                      style="width: 50px;">
-                            ${i.tenSP}
-                    </td>
-                    <td class="text-center">${i.soLuong}</td>
-                    <td class="text-center">${i.mauSac}</td>
-                    <td class="text-center">${i.tenKieuTay}</td>
-                    <td class="text-center">
-                        <fmt:formatNumber value="${i.giaBan}" type="currency" currencySymbol="₫"/>
-                    </td>
-                    <td class="text-center">
-                        <fmt:formatNumber value="${i.giaBan * i.soLuong}" type="currency" currencySymbol="₫"/>
-                    </td>
-                </tr>
-                </tbody>
-            </c:forEach>
-        </table>
-
-    </div>
-    <%-- Thông tin thanh toán --%>
-    <div class="row d-flex align-items-stretch" style="text-align: end; position: relative; right: 75px;">
-        <div class="col-4 mb-3 d-flex align-items-stretch">
-            <c:forEach var="i" items="${hoaDon}">
-                <div class="card-body" style="position: relative; left: 1020px;">
-                    <div class="d-flex justify-content-between mb-3 pt-1">
-                        <h6 class="font-weight-medium">Tổng tiền hàng: </h6>
-                        <h6 class="font-weight-medium" style="font-size: 18px">
-                            <fmt:formatNumber value="${tongTien}" type="currency" currencySymbol="₫"/>
-                        </h6>
-                    </div>
-                    <div class="d-flex justify-content-between mb-3 pt-1">
-                        <h6 class="font-weight-medium">Phí vận chuyển: </h6>
-                        <h6 class="font-weight-medium" style="font-size: 18px">0₫</h6>
-                    </div>
-                    <div class="d-flex justify-content-between mb-3 pt-1">
-                        <h6 class="font-weight-medium">Voucher của cửa hàng: </h6>
-                        <c:if test="${i.idKhuyenMai == null}">
-                            <h6 class="font-weight-medium" style="font-size: 18px">0₫</h6>
+        <div class="col-7">
+            <div class="d-flex flex-column align-items justify-content-center" style="min-height: 150px">
+                <h5 class="font-weight-semi-bold text-uppercase mb-3">Chi tiết hóa đơn</h5>
+            </div>
+            <div style="padding-bottom: 150px;">
+                <%-- Trạng thái hóa đơn --%>
+                <div class="mb-5" style="position: absolute; left: 625px; top: 157px;">
+                    <c:forEach var="i" items="${listHDCT}" varStatus="index">
+                        <c:if test="${index.index == 0}">
+                            <span>Mã hóa đơn: ${i.ma}</span> |
+                            <c:choose>
+                                <c:when test="${i.trangThai == 1}">
+                                    <div class="badge badge-warning" style="border-radius: 10px;">
+                                        Chờ xác nhận
+                                    </div>
+                                </c:when>
+                                <c:when test="${i.trangThai == 3}">
+                                    <div class="badge badge-warning" style="border-radius: 10px;">
+                                        Chờ giao hàng
+                                    </div>
+                                </c:when>
+                                <c:when test="${i.trangThai == 4}">
+                                    <div class="badge badge-info" style="border-radius: 10px;">
+                                        Chờ giao hàng
+                                    </div>
+                                </c:when>
+                                <c:when test="${i.trangThai == 6}">
+                                    <div class="badge badge-success" style="border-radius: 10px;">
+                                        Hoàn thành
+                                    </div>
+                                </c:when>
+                                <c:when test="${i.trangThai == 7}">
+                                    <div class="badge badge-danger" style="border-radius: 10px;">
+                                        Đơn hủy
+                                    </div>
+                                </c:when>
+                            </c:choose>
                         </c:if>
-                        <c:if test="${i.idKhuyenMai != null}">
-                            <h6 class="font-weight-medium" style="font-size: 18px"><fmt:formatNumber
-                                    value="${i.idKhuyenMai.soTienGiam}" type="currency" currencySymbol="₫"/>
-                            </h6>
-                        </c:if>
+                    </c:forEach>
+                </div>
+                <div class="row">
+                    <%-- Địa chỉ giao hàng --%>
+                    <div class="col-6">
+                        <div class="row d-flex align-items-stretch mb-5" style="position: relative; left: 18px;">
+                            <div class="col-12 mb-3 d-flex align-items-stretch">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h5>Địa chỉ nhận hàng</h5>
+                                </div>
+                            </div>
+
+                            <div class="col-12 mb-3 d-flex align-items-stretch">
+                                <c:forEach var="i" items="${giaoHang}">
+                                    <div class="card-body">
+                                        <p>${i.tenNguoiNhan}</p>
+                                        <p>${i.sdtNguoiNhan}</p>
+                                        <p>${i.diaChiChiTiet}, ${i.idPhuongXa}, ${i.idQuanHuyen}, ${i.idTinhThanh} </p>
+                                    </div>
+                                </c:forEach>
+                            </div>
+                        </div>
                     </div>
+                </div>
+
+
+                <%-- Danh sách sản phẩm --%>
+                <div class="row px-xl-5 mb-5">
+                    <table class="table table-bordered mb-0">
+                        <thead class="bg-secondary text-dark">
+                        <tr>
+                            <th class="text-center">Tên sản phẩm</th>
+                            <th class="text-center">Số lượng</th>
+                            <th class="text-center">Màu sắc</th>
+                            <th class="text-center">Kích thước</th>
+                            <th class="text-center">Giá sản phẩm</th>
+                            <th class="text-center">Thành tiền</th>
+                        </tr>
+                        </thead>
+                        <c:forEach var="i" items="${listHDCT}" varStatus="">
+                            <tbody class="">
+                            <tr>
+                                <td class=""><img src="/image/${i.hinhAnh1}" alt="" style="width: 50px;">
+                                        ${i.tenSP}
+                                </td>
+                                <td class="text-center">${i.soLuong}</td>
+                                <td class="text-center">${i.mauSac}</td>
+                                <td class="text-center">${i.tenKieuTay}</td>
+                                <td class="text-center">
+                                    <fmt:formatNumber value="${i.giaBan}" type="currency" currencySymbol="₫"/>
+                                </td>
+                                <td class="text-center">
+                                    <fmt:formatNumber value="${i.giaBan * i.soLuong}" type="currency"
+                                                      currencySymbol="₫"/>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </c:forEach>
+                    </table>
 
                 </div>
-            </c:forEach>
-        </div>
+                <%-- Thông tin thanh toán --%>
+                <div class="row d-flex align-items-stretch" style="text-align: end; position: relative; right: 75px;">
+                    <div class="col-4 mb-3 d-flex align-items-stretch">
+                        <c:forEach var="i" items="${hoaDon}">
+                            <div class="card-body" style="position: relative; left: 688px   ;">
+                                <div class="d-flex justify-content-between mb-3 pt-1">
+                                    <h6 class="font-weight-medium">Tổng tiền hàng: </h6>
+                                    <h6 class="font-weight-medium" style="font-size: 18px">
+                                        <fmt:formatNumber value="${tongTien}" type="currency" currencySymbol="₫"/>
+                                    </h6>
+                                </div>
+                                <div class="d-flex justify-content-between mb-3 pt-1">
+                                    <h6 class="font-weight-medium">Phí vận chuyển: </h6>
+                                    <h6 class="font-weight-medium" style="font-size: 18px">0₫</h6>
+                                </div>
+                                <div class="d-flex justify-content-between mb-3 pt-1">
+                                    <h6 class="font-weight-medium">Voucher: </h6>
+                                    <c:if test="${i.idKhuyenMai == null}">
+                                        <h6 class="font-weight-medium" style="font-size: 18px">0₫</h6>
+                                    </c:if>
+                                    <c:if test="${i.idKhuyenMai != null}">
+                                        <h6 class="font-weight-medium" style="font-size: 18px"><fmt:formatNumber
+                                                value="${i.idKhuyenMai.soTienGiam}" type="currency" currencySymbol="₫"/>
+                                        </h6>
+                                    </c:if>
+                                </div>
 
-        <div class="col-12 mb-3 d-flex align-items-stretch">
-            <c:forEach var="i" items="${hoaDon}">
-                <div class="card-footer" style="color: red; position: relative; font-size: x-large; left: 1269px;">
-                    <p class="fw-bold mb-1 pb-3 small d-flex justify-content-between">
+                            </div>
+                        </c:forEach>
+                    </div>
+
+                    <div class="col-12 mb-3 d-flex align-items-stretch">
+                        <c:forEach var="i" items="${hoaDon}">
+                            <div class="card-footer"
+                                 style="color: red; position: relative; font-size: x-large; left: 788px;">
+                                <p class="fw-bold mb-1 pb-3 small d-flex justify-content-between">
                         <span>Thành tiền:
                             <fmt:formatNumber value="${i.tongTien}" type="currency" currencySymbol="₫"/>
                         </span>
-                    </p>
+                                </p>
+                            </div>
+                        </c:forEach>
+                    </div>
                 </div>
-            </c:forEach>
+            </div>
+        </div>
+        <div class="col-1">
         </div>
     </div>
 </div>
@@ -479,7 +600,8 @@
                 <h1 class="mb-4 display-5 font-weight-semi-bold"><span
                         class="text-primary font-weight-bold border border-white px-3 mr-1">MS</span>Store</h1>
             </a>
-            <p>Dolore erat dolor sit lorem vero amet. Sed sit lorem magna, ipsum no sit erat lorem et magna ipsum dolore
+            <p>Dolore erat dolor sit lorem vero amet. Sed sit lorem magna, ipsum no sit erat lorem et magna ipsum
+                dolore
                 amet erat.</p>
             <p class="mb-2"><i class="fa fa-map-marker-alt text-primary mr-3"></i>123 Street, New York, USA</p>
             <p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i>info@example.com</p>
@@ -491,28 +613,32 @@
                     <h5 class="font-weight-bold text-dark mb-4">Quick Links</h5>
                     <div class="d-flex flex-column justify-content-start">
                         <a class="text-dark mb-2" href="index.html"><i class="fa fa-angle-right mr-2"></i>Home</a>
-                        <a class="text-dark mb-2" href="shop.html"><i class="fa fa-angle-right mr-2"></i>Our Shop</a>
+                        <a class="text-dark mb-2" href="shop.html"><i class="fa fa-angle-right mr-2"></i>Our
+                            Shop</a>
                         <a class="text-dark mb-2" href="detail.html"><i class="fa fa-angle-right mr-2"></i>Shop
                             Detail</a>
                         <a class="text-dark mb-2" href="cart.html"><i class="fa fa-angle-right mr-2"></i>Shopping
                             Cart</a>
                         <a class="text-dark mb-2" href="checkout.html"><i
                                 class="fa fa-angle-right mr-2"></i>Checkout</a>
-                        <a class="text-dark" href="contact.html"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
+                        <a class="text-dark" href="contact.html"><i class="fa fa-angle-right mr-2"></i>Contact
+                            Us</a>
                     </div>
                 </div>
                 <div class="col-md-4 mb-5">
                     <h5 class="font-weight-bold text-dark mb-4">Quick Links</h5>
                     <div class="d-flex flex-column justify-content-start">
                         <a class="text-dark mb-2" href="index.html"><i class="fa fa-angle-right mr-2"></i>Home</a>
-                        <a class="text-dark mb-2" href="shop.html"><i class="fa fa-angle-right mr-2"></i>Our Shop</a>
+                        <a class="text-dark mb-2" href="shop.html"><i class="fa fa-angle-right mr-2"></i>Our
+                            Shop</a>
                         <a class="text-dark mb-2" href="detail.html"><i class="fa fa-angle-right mr-2"></i>Shop
                             Detail</a>
                         <a class="text-dark mb-2" href="cart.html"><i class="fa fa-angle-right mr-2"></i>Shopping
                             Cart</a>
                         <a class="text-dark mb-2" href="checkout.html"><i
                                 class="fa fa-angle-right mr-2"></i>Checkout</a>
-                        <a class="text-dark" href="contact.html"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
+                        <a class="text-dark" href="contact.html"><i class="fa fa-angle-right mr-2"></i>Contact
+                            Us</a>
                     </div>
                 </div>
                 <div class="col-md-4 mb-5">
@@ -527,7 +653,8 @@
                                    required="required"/>
                         </div>
                         <div>
-                            <button class="btn btn-primary btn-block border-0 py-3" type="submit">Subscribe Now</button>
+                            <button class="btn btn-primary btn-block border-0 py-3" type="submit">Subscribe Now
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -567,6 +694,24 @@
 <!-- Template Javascript -->
 <script src="/view_ban_hang/js/main.js"></script>
 <script>
+    function showDropdown() {
+        document.getElementById('dropdownContent').style.display = 'block';
+    }
+
+    function hideDropdown() {
+        document.getElementById('dropdownContent').style.display = 'none';
+    }
+</script>
+
+<script>
+    document.querySelectorAll('.menu-item > a').forEach(item => {
+        item.addEventListener('click', event => {
+            const submenu = item.nextElementSibling;
+            if (submenu) {
+                submenu.classList.toggle('show');
+            }
+        });
+    });
 </script>
 
 </body>

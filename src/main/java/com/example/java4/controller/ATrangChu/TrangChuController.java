@@ -6,21 +6,25 @@ import com.example.java4.entities.*;
 import com.example.java4.repositories.*;
 import com.example.java4.request.req_sang.DiaChiRequest;
 import com.example.java4.request.req_sang.GiaoHangRequest;
+import com.example.java4.request.req_sang.KhachHangRequest;
 import com.example.java4.request.req_tai.KhachHangDTO;
 import com.example.java4.response.*;
+import com.example.java4.service.StorageService;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.net.URLEncoder;
@@ -56,6 +60,10 @@ public class TrangChuController {
     DiaChiRepository diaChiRepo;
     @Autowired
     KhuyenMaiRepository khuyenMaiRepo;
+    @Autowired
+    LichSuHoaDonRepository _lichSuHoaDonRepo;
+    @Autowired
+    private StorageService storageService;
 
     private List<HoaDon> listHoaDon = new ArrayList<>();
     private List<ChiTietHoaDon> listHDCT = new ArrayList<>();
@@ -88,25 +96,28 @@ public class TrangChuController {
     @GetMapping("/trang-chu")
     public String getTrangChu(
             Model model,
-            @RequestParam("page") Optional<Integer> pageParam
+            @RequestParam("page") Optional<Integer> pageParam,
+            @RequestParam("search") Optional<String> searchParam
     ) {
         if (!model.containsAttribute("khachHangDTO")) {
             System.out.println("crette dto");
             model.addAttribute("khachHangDTO", new KhachHangDTO());
         }
         Pageable pageable = PageRequest.of(pageParam.orElse(0), 12);
-        Page pageSP = spctRepo.getAllSP(pageable);
+        String search = searchParam.orElse(null);
+        Page<SPCTResponse> pageSP = spctRepo.searchSP(search, pageable);
+
         model.addAttribute("pageSP", pageSP);
         model.addAttribute("soLuong", hdctRepo.findByKHnStt(khachHangRepo.findByIdKH(UserInfor.idKhachHang)));
         System.out.println("================================test user info :" + UserInfor.idKhachHang);
         //Tính tổng số lượng sản phẩm có trong giỏ hàng
         listHDCT = hdctRepo.findByIdHoaDonByIDKH(UserInfor.idKhachHang, HoaDonRepository.CHO_THANH_TOAN);
-        listGioHang = hdctRepo.getAll(UserInfor.idKhachHang, HoaDonRepository.CHO_THANH_TOAN);
+        //Tính tổng số lượng sản phẩm có trong giỏ hàng
         Integer totalSoLuong = 0;
         for (ChiTietHoaDon chiTietHoaDon : listHDCT) {
             totalSoLuong += chiTietHoaDon.getSoLuong();
         }
-        model.addAttribute("soLuong", totalSoLuong);
+        model.addAttribute("soLuongGioHang", totalSoLuong);
         return "/view/BanHangOnline/trangChu.jsp";
     }
 
@@ -143,13 +154,14 @@ public class TrangChuController {
         model.addAttribute("soLuong", hdctRepo.findByKHnStt(khachHangRepo.findByIdKH(UserInfor.idKhachHang)));
 
         //Tính tổng số lượng sản phẩm có trong giỏ hàng
-        listHDCT = hdctRepo.findByIdHoaDonByIDKH(UserInfor.idKhachHang, HoaDonRepository.CHO_THANH_TOAN);
         listGioHang = hdctRepo.getAll(UserInfor.idKhachHang, HoaDonRepository.CHO_THANH_TOAN);
+        listHDCT = hdctRepo.findByIdHoaDonByIDKH(UserInfor.idKhachHang, HoaDonRepository.CHO_THANH_TOAN);
+        //Tính tổng số lượng sản phẩm có trong giỏ hàng
         Integer totalSoLuong = 0;
         for (ChiTietHoaDon chiTietHoaDon : listHDCT) {
             totalSoLuong += chiTietHoaDon.getSoLuong();
         }
-        model.addAttribute("soLuong", totalSoLuong);
+        model.addAttribute("soLuongGioHang", totalSoLuong);
         return "/view/BanHangOnline/chiTietSanPham.jsp";
     }
 
@@ -167,7 +179,7 @@ public class TrangChuController {
         //Bắt khách đăng nhập mới thêm sản phẩm giỏ hàng được
         if (UserInfor.idKhachHang == null) {     //Nếu ko đăng nhập thì thông báo khách hàng đăng nhập
             redirectAttributes.addFlashAttribute("error", "Vui lòng đăng nhập trước khi thêm sản phẩm!");
-            return "redirect:/cua_hang/detail-san-pham/" + idCTSP;
+            return "redirect:/cua-hang/detail-san-pham/" + idCTSP;
         }
 
         //Lấy ra màu sắc theo tên màu sắc
@@ -233,6 +245,7 @@ public class TrangChuController {
                     chiTietHoaDon.setSoLuong(soLuong);
                     chiTietHoaDon.setDonGia(chiTietSanPham.getGiaBan());
                     chiTietHoaDon.setTrangThai(HDCTRepository.CHUA_THANH_TOAN);
+                    chiTietHoaDon.setNgayTao(LocalDateTime.now().withNano(0));
                     hdctRepo.save(chiTietHoaDon);
                     //Lấy ra danh sách chi tiết hóa đơn theo hóa đơn của khách hàng
                     redirectAttributes.addFlashAttribute("success", "Thêm sản phẩm vào giỏ hàng thành công.");
@@ -270,6 +283,7 @@ public class TrangChuController {
                         }
 
                         cthd.setSoLuong(cthd.getSoLuong() + soLuong);
+                        cthd.setNgayTao(LocalDateTime.now().withNano(0));
                         cthd.setDonGia(cthd.getDonGia());
                         hdctRepo.save(cthd);
                         redirectAttributes.addFlashAttribute("success", "Thêm sản phẩm vào giỏ hàng thành công.");
@@ -400,7 +414,7 @@ public class TrangChuController {
         for (ChiTietHoaDon chiTietHoaDon : listHDCT) {
             totalSoLuong += chiTietHoaDon.getSoLuong();
         }
-        model.addAttribute("soLuong", totalSoLuong);
+        model.addAttribute("soLuongGioHang", totalSoLuong);
 
         //Tính tổng giá tiền của giỏ hàng
         BigDecimal tongTienBigDecimal = new BigDecimal(0.0);
@@ -411,6 +425,21 @@ public class TrangChuController {
         model.addAttribute("tongTien", tongTienBigDecimal);
 
         return "/view/BanHangOnline/gioHang.jsp";
+    }
+
+    @GetMapping("/dia-chi")
+    public String getlistDiaChi(Model model) {
+        listDiaChi = diaChiRepo.getAllDiaChi(UserInfor.idKhachHang);
+        model.addAttribute("listDiaChi", listDiaChi);
+
+        listHDCT = hdctRepo.findByIdHoaDonByIDKH(UserInfor.idKhachHang, HoaDonRepository.CHO_THANH_TOAN);
+        //Tính tổng số lượng sản phẩm có trong giỏ hàng
+        Integer totalSoLuong = 0;
+        for (ChiTietHoaDon chiTietHoaDon : listHDCT) {
+            totalSoLuong += chiTietHoaDon.getSoLuong();
+        }
+        model.addAttribute("soLuongGioHang", totalSoLuong);
+        return "/view/BanHangOnline/diaChi.jsp";
     }
 
     @PostMapping("/them-dia-chi")
@@ -435,7 +464,7 @@ public class TrangChuController {
         }
         diaChiRepo.save(diaChi);
         redirectAttributes.addFlashAttribute("successMessage", "Thêm địa chỉ thành công");
-        return "redirect:/cua-hang/gio-hang";
+        return "redirect:/cua-hang/dia-chi";
     }
 
     @PostMapping("/cap-nhat-dia-chi/{id}")
@@ -455,7 +484,7 @@ public class TrangChuController {
         diaChi.setIdPhuongXa(idPhuong);
         diaChiRepo.save(diaChi);
         redirectAttributes.addFlashAttribute("successMessage", "Cập nhật địa chỉ thành công");
-        return "redirect:/cua-hang/gio-hang";
+        return "redirect:/cua-hang/dia-chi";
     }
 
     @GetMapping("/xoa-dia-chi/{id}")
@@ -464,7 +493,7 @@ public class TrangChuController {
         diaChiRepo.delete(diaChi);
         redirectAttributes.addFlashAttribute("successMessage", "Xóa địa chỉ thành công");
 
-        return "redirect:/cua-hang/gio-hang";
+        return "redirect:/cua-hang/dia-chi";
     }
 
     //Giảm số lượng sản phẩm có trong giỏ hàng đi 1
@@ -552,7 +581,11 @@ public class TrangChuController {
             BigDecimal soTienGiam = hoaDon.getIdKhuyenMai() != null ? hoaDon.getIdKhuyenMai().getSoTienGiam() : BigDecimal.ZERO;
             BigDecimal tongThanhToan = tongTienBigDecimal.subtract(soTienGiam);
 
-            hoaDon.setTongTien(tongThanhToan);
+            if (tongThanhToan.compareTo(soTienGiam) > 0) {
+                hoaDon.setTongTien(tongThanhToan);
+            } else {
+                hoaDon.setTongTien(BigDecimal.ZERO);
+            }
             hoaDon.setTrangThai(HoaDonRepository.CHO_XAC_NHAN);
             hoaDon.setLoaiHoaDon(HoaDonRepository.HOA_DON_ONL);
             hoaDon.setNgayThanhToan(LocalDateTime.now().withNano(0));
@@ -569,8 +602,14 @@ public class TrangChuController {
             giaoHang.setTrangThai(HoaDonRepository.CHO_XAC_NHAN);
             giaoHang.setGhiChu(request.getGhiChu());
             giaoHangRepo.save(giaoHang);
+
+//            String idKM = hoaDon.getIdKhuyenMai().getId();
+//            KhuyenMai khuyenMai = khuyenMaiRepo.findBySoLuong(idKM);
+//            khuyenMai.setSoLuong(khuyenMai.getSoLuong() - 1);
+//            khuyenMaiRepo.save(khuyenMai);
             redirectAttributes.addFlashAttribute("successMessage", "Đặt hàng thành công");
-            return "redirect:/cua-hang/gio-hang";
+//            createLichSuHoaDon(hoaDon);
+            return "redirect:/cua-hang/don-mua";
         } else {
             BigDecimal tongTienBigDecimal = BigDecimal.ZERO;
             for (ChiTietHoaDon cthd : listHDCT) {
@@ -608,9 +647,6 @@ public class TrangChuController {
 
     @PostMapping("/khuyen-mai/{id}")
     public String findKhuyenMai(@PathVariable String id) {
-
-        System.out.println("==========================================================" + id);
-
         HoaDon hoaDon = hoaDonRepo.findByIdKhachHang(UserInfor.idKhachHang, HoaDonRepository.CHO_THANH_TOAN);
         KhuyenMai khuyenMai = new KhuyenMai();
         khuyenMai.setId(id);
@@ -629,17 +665,9 @@ public class TrangChuController {
     }
 
     @GetMapping("/don-mua")
-    public String hỉenThi(Model model) {
-
-        boolean check = false;
-        //Tính tổng số lượng sản phẩm có trong giỏ hàng
+    public String hỉenThi(Model model, @RequestParam(value = "page", defaultValue = "0") int page) {
         listHDCT = hdctRepo.findByIdHoaDonByIDKH(UserInfor.idKhachHang, HoaDonRepository.CHO_THANH_TOAN);
         listGioHang = hdctRepo.getAll(UserInfor.idKhachHang, HoaDonRepository.CHO_THANH_TOAN);
-        Integer totalSoLuong = 0;
-        for (ChiTietHoaDon chiTietHoaDon : listHDCT) {
-            totalSoLuong += chiTietHoaDon.getSoLuong();
-        }
-        model.addAttribute("soLuong", totalSoLuong);
 
         //Số lượng hóa đơn theo trạng thái
         int countAllHoaDon = hoaDonRepo.countByTrangThai(UserInfor.idKhachHang);
@@ -656,14 +684,27 @@ public class TrangChuController {
         model.addAttribute("countHDByHoanThanh", countHDByHoanThanh);
         model.addAttribute("countHDDaHuy", countHDDaHuy);
 
-        listHoaDon = hoaDonRepo.getHoaDonByIDKHA(UserInfor.idKhachHang);
-        model.addAttribute("listHD", listHoaDon);
-        model.addAttribute("listHDByChoXacNhan", hoaDonRepo.getHoaDonByIDKHAndTrangThai(UserInfor.idKhachHang, HoaDonRepository.CHO_XAC_NHAN));
-        model.addAttribute("listHDByChoGiaoHang", hoaDonRepo.getHoaDonByIDKHAndTrangThai(UserInfor.idKhachHang, HoaDonRepository.CHO_GIAO_HANG));
-        model.addAttribute("listHDByDangGiaoHang", hoaDonRepo.getHoaDonByIDKHAndTrangThai(UserInfor.idKhachHang, HoaDonRepository.DANG_GIAO_HANG));
-        model.addAttribute("listHDByHoanThanh", hoaDonRepo.getHoaDonByIDKHAndTrangThai(UserInfor.idKhachHang, HoaDonRepository.DA_HOAN_THANH));
-        model.addAttribute("listHDDaHuy", hoaDonRepo.getHoaDonByIDKHAndTrangThai(UserInfor.idKhachHang, HoaDonRepository.DA_HUY));
 
+        Pageable pageable = PageRequest.of(page, 5);
+        Page<HoaDon> listHoaDon = hoaDonRepo.getHoaDonByIDKHA(UserInfor.idKhachHang, pageable);
+        model.addAttribute("listHD", listHoaDon);
+        Page<HoaDon> listHDByChoXacNhan = hoaDonRepo.getHoaDonByIDKHAndTrangThai(UserInfor.idKhachHang, HoaDonRepository.CHO_XAC_NHAN, pageable);
+        model.addAttribute("listHDByChoXacNhan", listHDByChoXacNhan);
+        Page<HoaDon> listHDByChoGiaoHang = hoaDonRepo.getHoaDonByIDKHAndTrangThai(UserInfor.idKhachHang, HoaDonRepository.CHO_GIAO_HANG, pageable);
+        model.addAttribute("listHDByChoGiaoHang", listHDByChoGiaoHang);
+        Page<HoaDon> listHDByDangGiaoHang = hoaDonRepo.getHoaDonByIDKHAndTrangThai(UserInfor.idKhachHang, HoaDonRepository.DANG_GIAO_HANG, pageable);
+        model.addAttribute("listHDByDangGiaoHang", listHDByDangGiaoHang);
+        Page<HoaDon> listHDByHoanThanh = hoaDonRepo.getHoaDonByIDKHAndTrangThai(UserInfor.idKhachHang, HoaDonRepository.DA_HOAN_THANH, pageable);
+        model.addAttribute("listHDByHoanThanh", listHDByHoanThanh);
+        Page<HoaDon> listHDDaHuy = hoaDonRepo.getHoaDonByIDKHAndTrangThai(UserInfor.idKhachHang, HoaDonRepository.DA_HUY, pageable);
+        model.addAttribute("listHDDaHuy", listHDDaHuy);
+
+        //Tính tổng số lượng sản phẩm có trong giỏ hàng
+        Integer totalSoLuong = 0;
+        for (ChiTietHoaDon chiTietHoaDon : listHDCT) {
+            totalSoLuong += chiTietHoaDon.getSoLuong();
+        }
+        model.addAttribute("soLuongGioHang", totalSoLuong);
         return "/view/BanHangOnline/donMua.jsp";
     }
 
@@ -671,13 +712,6 @@ public class TrangChuController {
 
     @GetMapping("don-mua/{idHD}")
     public String detailDonMua(Model model, @PathVariable("idHD") String idHD) {
-
-        //Tính tổng số lượng sản phẩm có trong giỏ hàng
-        Integer totalSoLuong = 0;
-        for (ChiTietHoaDon chiTietHoaDon : listHDCT) {
-            totalSoLuong += chiTietHoaDon.getSoLuong();
-        }
-        model.addAttribute("soLuong", totalSoLuong);
 
         //Tổng tiền của đơn hàng
         chiTietHoaDonList = hdctRepo.tongTienHD(UserInfor.idKhachHang, idHD);
@@ -689,22 +723,29 @@ public class TrangChuController {
         model.addAttribute("tongTien", tongTienBigDecimal);
 
         listGioHang = hdctRepo.getAll(UserInfor.idKhachHang, HoaDonRepository.CHO_THANH_TOAN);
-        List<HoaDonChiTietResponse> listHDCT = hdctRepo.getListHDbyIdKH(UserInfor.idKhachHang, idHD);
+        List<HoaDonChiTietResponse> listHoaDonChiTiet = hdctRepo.getListHDbyIdKH(UserInfor.idKhachHang, idHD);
         List<GiaoHang> giaoHang = giaoHangRepo.getListGiaoHangByIdKHAndidHD(UserInfor.idKhachHang, idHD);
         List<HoaDon> hoaDon = hoaDonRepo.getListHDbyIDKHAndIDHD(UserInfor.idKhachHang, idHD);
 
-        model.addAttribute("listHDCT", listHDCT);
+        model.addAttribute("listHDCT", listHoaDonChiTiet);
         model.addAttribute("giaoHang", giaoHang);
         model.addAttribute("hoaDon", hoaDon);
 
-
+        //Tính tổng số lượng sản phẩm có trong giỏ hàng
+        listHDCT = hdctRepo.findByIdHoaDonByIDKH(UserInfor.idKhachHang, HoaDonRepository.CHO_THANH_TOAN);
+        Integer totalSoLuong = 0;
+        for (ChiTietHoaDon chiTietHoaDon : listHDCT) {
+            totalSoLuong += chiTietHoaDon.getSoLuong();
+        }
+        model.addAttribute("soLuongGioHang", totalSoLuong);
         return "/view/BanHangOnline/detailDonMua.jsp";
     }
 
     @GetMapping("/pay/{tongTien}")
-    public ResponseEntity<?> getPay(
-            @PathVariable("tongTien") BigDecimal tongTien
-    ) throws UnsupportedEncodingException, UnsupportedEncodingException {
+    public void getPay(
+            @PathVariable("tongTien") BigDecimal tongTien,
+            HttpServletResponse response
+    ) throws UnsupportedEncodingException, IOException {
 
         String vnp_Version = "2.1.0";
         String vnp_Command = "pay";
@@ -723,12 +764,10 @@ public class TrangChuController {
         vnp_Params.put("vnp_TmnCode", vnp_TmnCode);
         vnp_Params.put("vnp_Amount", String.valueOf(amount));
         vnp_Params.put("vnp_CurrCode", "VND");
-
         vnp_Params.put("vnp_BankCode", bankCode);
         vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
         vnp_Params.put("vnp_OrderInfo", "Thanh toan don hang:" + vnp_TxnRef);
         vnp_Params.put("vnp_OrderType", orderType);
-
         vnp_Params.put("vnp_Locale", "vn");
         vnp_Params.put("vnp_ReturnUrl", Config_Online.vnp_ReturnUrl);
         vnp_Params.put("vnp_IpAddr", vnp_IpAddr);
@@ -742,24 +781,16 @@ public class TrangChuController {
         String vnp_ExpireDate = formatter.format(cld.getTime());
         vnp_Params.put("vnp_ExpireDate", vnp_ExpireDate);
 
-        List fieldNames = new ArrayList(vnp_Params.keySet());
+        List<String> fieldNames = new ArrayList<>(vnp_Params.keySet());
         Collections.sort(fieldNames);
         StringBuilder hashData = new StringBuilder();
         StringBuilder query = new StringBuilder();
-        Iterator itr = fieldNames.iterator();
-        while (itr.hasNext()) {
-            String fieldName = (String) itr.next();
-            String fieldValue = (String) vnp_Params.get(fieldName);
-            if ((fieldValue != null) && (fieldValue.length() > 0)) {
-                //Build hash data
-                hashData.append(fieldName);
-                hashData.append('=');
-                hashData.append(URLEncoder.encode(fieldValue, StandardCharsets.US_ASCII.toString()));
-                //Build query
-                query.append(URLEncoder.encode(fieldName, StandardCharsets.US_ASCII.toString()));
-                query.append('=');
-                query.append(URLEncoder.encode(fieldValue, StandardCharsets.US_ASCII.toString()));
-                if (itr.hasNext()) {
+        for (String fieldName : fieldNames) {
+            String fieldValue = vnp_Params.get(fieldName);
+            if (fieldValue != null && fieldValue.length() > 0) {
+                hashData.append(fieldName).append('=').append(URLEncoder.encode(fieldValue, StandardCharsets.US_ASCII.toString()));
+                query.append(URLEncoder.encode(fieldName, StandardCharsets.US_ASCII.toString())).append('=').append(URLEncoder.encode(fieldValue, StandardCharsets.US_ASCII.toString()));
+                if (!fieldName.equals(fieldNames.get(fieldNames.size() - 1))) {
                     query.append('&');
                     hashData.append('&');
                 }
@@ -770,8 +801,9 @@ public class TrangChuController {
         queryUrl += "&vnp_SecureHash=" + vnp_SecureHash;
         String paymentUrl = Config_Online.vnp_PayUrl + "?" + queryUrl;
 
-        return ResponseEntity.ok(paymentUrl);
+        response.sendRedirect(paymentUrl);
     }
+
 
     @GetMapping("/payment-info")
     public ResponseEntity<?> transaction(
@@ -789,4 +821,83 @@ public class TrangChuController {
 
         return ResponseEntity.ok("Thanh toán thành công");
     }
+
+    //     Thêm lịch sử hoa don
+    public void createLichSuHoaDon(HoaDon hoaDon) {
+        LichSuHoaDon lichSuHoaDon = new LichSuHoaDon();
+        lichSuHoaDon.setIdHoaDon(hoaDon);
+        lichSuHoaDon.setNgayTao(LocalDateTime.now());
+        lichSuHoaDon.setNgayCapNhat(LocalDateTime.now());
+        lichSuHoaDon.setTrangThai(hoaDon.getTrangThai());
+        if (hoaDon.getPhuongThucThanhToan() == HoaDonRepository.TIEN_MAT) {
+            lichSuHoaDon.setGhiChu("Chưa thanh toán");
+        } else {
+            lichSuHoaDon.setGhiChu("Đã thanh toán");
+        }
+
+        _lichSuHoaDonRepo.save(lichSuHoaDon);
+    }
+
+    @GetMapping("/quan-ly-tai-khoan")
+    public String viewAccount(Model model, HttpSession session) {
+        KhachHang user = (KhachHang) session.getAttribute("user");
+        if (user != null) {
+            KhachHang updatedUser = khachHangRepository.findByIdKH(user.getId());
+            if (updatedUser != null) {
+                model.addAttribute("user", updatedUser);
+            }
+        }
+        //Tính tổng số lượng sản phẩm có trong giỏ hàng
+        listHDCT = hdctRepo.findByIdHoaDonByIDKH(UserInfor.idKhachHang, HoaDonRepository.CHO_THANH_TOAN);
+        Integer totalSoLuong = 0;
+        for (ChiTietHoaDon chiTietHoaDon : listHDCT) {
+            totalSoLuong += chiTietHoaDon.getSoLuong();
+        }
+        model.addAttribute("soLuongGioHang", totalSoLuong);
+        return "/view/BanHangOnline/quan_ly_tai_khoan.jsp";
+    }
+
+    @PostMapping("/cap-nhat-thong-tin")
+    public String updateProfile(@ModelAttribute("user") KhachHangRequest request, BindingResult result,
+                                @RequestParam("profileImage") MultipartFile file, RedirectAttributes redirectAttributes,
+                                HttpSession session) {
+        if (result.hasErrors()) {
+            redirectAttributes.addFlashAttribute("updateErrors", result.getAllErrors());
+            return "redirect:/cua-hang/quan-ly-tai-khoan";
+        }
+        KhachHang user = khachHangRepository.findByIdKH(UserInfor.idKhachHang);
+        if (user != null) {
+            user.setHoTen(request.getHoTen());
+            user.setEmail(request.getEmail());
+            user.setSdt(request.getSdt());
+            user.setGioiTinh(request.getGioiTinh());
+            user.setNgaySinh(request.getNgaySinh());
+            user.setNgayTao(LocalDateTime.now());
+            user.setNgaySua(LocalDateTime.now());
+            user.setTrangThai(khachHangRepository.ACTIVE);
+
+            // Lưu hình ảnh
+            if (!file.isEmpty()) {
+                try {
+                    storageService.store(file);
+                    user.setAnhDaiDien(file.getOriginalFilename());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    // Xử lý lỗi khi lưu file
+                    redirectAttributes.addFlashAttribute("errorMessage", "Lỗi khi lưu hình ảnh");
+                    return "redirect:/cua-hang/quan-ly-tai-khoan";
+                }
+            }
+            khachHangRepository.save(user);
+            redirectAttributes.addFlashAttribute("successAccount", "Cập nhật thông tin thành công!");
+            // Cập nhật lại thông tin mới của user
+            redirectAttributes.addFlashAttribute("user", user);
+            session.setAttribute("user", user);
+        } else {
+            redirectAttributes.addFlashAttribute("errorMessage", "Không tìm thấy người dùng!");
+        }
+        return "redirect:/cua-hang/quan-ly-tai-khoan";
+    }
+
 }
+
