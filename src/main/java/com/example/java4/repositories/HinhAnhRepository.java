@@ -26,4 +26,6 @@ public interface HinhAnhRepository extends JpaRepository<HinhAnh, String> {
     Integer getCountStt1();
     @Query(value = "SELECT COUNT(*) FROM hinhanh where trangThai=0",nativeQuery = true)
     Integer getCountStt0();
+    @Query("SELECT MIN(h.hinhAnh1) FROM HinhAnh h WHERE h.idCTSP.id = :idCTSP")
+    String findMinHinhAnhByCTSP(@Param("idCTSP") String idCTSP);
 }

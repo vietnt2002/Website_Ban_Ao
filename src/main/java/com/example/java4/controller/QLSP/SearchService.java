@@ -42,4 +42,36 @@ public class SearchService {
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         });
     }
+    public List<ChiTietSanPham> searchSanPham(Map<String, Object> params) {
+        return spctRepo.findAll((root, query, criteriaBuilder) -> {
+            List<Predicate> predicates = new ArrayList<>();
+            params.forEach((key, value) -> {
+                if (value != null) {
+                    if (value instanceof String) {
+                        predicates.add(criteriaBuilder.like(root.get(key).as(String.class), "%" + value + "%"));
+                    } else if (value instanceof Integer) {
+                        predicates.add(criteriaBuilder.equal(root.get(key), value));
+                    } else if (value instanceof BigDecimal) {
+                        predicates.add(criteriaBuilder.equal(root.get(key), value));
+                    } else if (value instanceof LocalDateTime) {
+                        predicates.add(criteriaBuilder.equal(root.get(key), value));
+                    } else if (value instanceof MauSac) {
+                        predicates.add(criteriaBuilder.equal(root.get("idMauSac").get("id"), ((MauSac) value).getId()));
+                    } else if (value instanceof KichThuoc) {
+                        predicates.add(criteriaBuilder.equal(root.get("idKichThuoc").get("id"), ((KichThuoc) value).getId()));
+                    } else if (value instanceof ChatLieu) {
+                        predicates.add(criteriaBuilder.equal(root.get("idChatLieu").get("id"), ((ChatLieu) value).getId()));
+                    } else if (value instanceof KieuTay) {
+                        predicates.add(criteriaBuilder.equal(root.get("idKieuTay").get("id"), ((KieuTay) value).getId()));
+                    } else if (value instanceof SanPham) {
+                        predicates.add(criteriaBuilder.equal(root.get("idSanPham").get("id"), ((SanPham) value).getId()));
+                    }
+                }
+            });
+            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+        });
+    }
+
+
+
 }
