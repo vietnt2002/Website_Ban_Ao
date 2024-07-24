@@ -528,6 +528,10 @@
                                                data-id-tinh-thanh="${i.idTinhThanh}"
                                                data-id-quan-huyen="${i.idQuanHuyen}"
                                                data-id-phuong-xa="${i.idPhuongXa}"
+                                             <%--  --%>
+<%--                                               data-id-tinh-thanh-test="${i.idT}"--%>
+<%--                                               data-id-quan-huyen-test="${i.idQH}"--%>
+<%--                                               data-id-phuong-xa-test="${i.idPX}"--%>
                                                <c:if test="${i.trangThai == 1}">checked</c:if>>
                                         <label>
                                             <b>${i.tenNguoiNhan}</b> | ${i.sdtNguoiNhan}
@@ -846,7 +850,7 @@
                         </div>
                         <div class="d-flex justify-content-between">
                             <h6 class="font-weight-medium">Phí vận chuyển: </h6>
-                            <h6 class="font-weight-medium" style="font-size: 18px">0₫</h6>
+                            <h6 class="font-weight-medium" id="phiShip" style="font-size: 18px">0₫</h6>
                         </div>
                     </div>
                     <div class="card border-secondary">
@@ -1275,6 +1279,7 @@
 
             $("#tinh").change(function (e) {
                 var idtinh = $(this).val();
+                console.log("id tỉnh: "+idtinh);
 
                 // Lấy quận huyện
                 getJSONWithToken('https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/district?province_id=' + idtinh, function (data_quan) {
@@ -1658,6 +1663,10 @@
             const idQuanHuyen = selectedRadio.getAttribute('data-id-quan-huyen');
             const idPhuongXa = selectedRadio.getAttribute('data-id-phuong-xa');
 
+            // const idTinhThanhTest = selectedRadio.getAttribute('data-id-tinh-thanh-test');
+            // const idQuanHuyenTest = selectedRadio.getAttribute('data-id-quan-huyen-test');
+            // const idPhuongXaTest = selectedRadio.getAttribute('data-id-phuong-xa-test');
+
             // Cập nhật giá trị các trường trong form thông tin giao hàng
             document.getElementById('tenNguoiNhan').value = tenNguoiNhan;
             document.getElementById('sdtNguoiNhan').value = sdtNguoiNhan;
@@ -1693,6 +1702,44 @@
             tinhSelect.value = idTinhThanh;
             quanSelect.value = idQuanHuyen;
             phuongSelect.value = idPhuongXa;
+
+//             console.log("tỉnh thành: ",idTinhThanh);
+//             console.log("tỉnh quận huyện: ",idQuanHuyen);
+//             console.log("tỉnh phường xã: ",idPhuongXa);
+//             console.log("tỉnh thành test: ",idTinhThanhTest);
+//             console.log("tỉnh quận huyện té: ",idQuanHuyenTest);
+//             console.log("tỉnh phường xã: ",idPhuongXaTest);
+//
+//
+//             var token = '108bdaef-8395-11ee-af43-6ead57e9219a';
+//
+// // Function to get JSON with token
+//             function getJSONWithToken(url, callback) {
+//                 $.ajax({
+//                     url: url,
+//                     headers: {
+//                         'Token': token
+//                     },
+//                     success: callback,
+//                     error: function (xhr, status, error) {
+//                         console.error("Request Error: " + error);
+//                         console.error("Status: " + status);
+//                         console.error("Response: " + xhr.responseText);
+//                     }
+//                 });
+//             }
+//
+// // Tính phí ship
+//             getJSONWithToken('https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee?service_id=53321&insurance_value=500000&from_district_id=1442&to_district_id='+idQuanHuyenTest+'&to_ward_code='+idPhuongXaTest+'&height=15&length=15&weight=2000&width=15', function(data_total) {
+//                 console.log("API Response: ", data_total.data.service_fee); // Log the entire response
+//
+//
+//                     var firstFee = data_total.data.service_fee
+//                     // $("#totalAPI").val(firstFee); // Set the value of the input field with id 'totalAPI'
+//                 $("#phiShip").html(firstFee + '₫');
+//
+//             });
+
         }
 
         // Đóng modal

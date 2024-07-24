@@ -501,7 +501,7 @@
                                                 <input type="hidden" name="idHoaDon" value="${hoaDon.id}">
                                                 <input type="hidden" id="tongSL" name="tongSL" value="${hdct.idCTSP.soLuong}">
                                                 <input type="hidden" id="soLuongCu" name="soLuongCu" value="${hdct.soLuong}">
-                                                <input id="soLuong" class="form-control me-2" type="text" name="soLuong" value="${hdct.soLuong}" style="width: 50px">
+                                                <input id="soLuong" class="form-control me-2" type="text" name="soLuong" value="${hdct.soLuong}" style="width: 54px">
                                                 <button class="btn btn-light" type="submit">
                                                     <i class="bi bi-pencil"></i>
                                                 </button>
