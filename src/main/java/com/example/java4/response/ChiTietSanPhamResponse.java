@@ -13,6 +13,8 @@ import java.math.BigDecimal;
 public class ChiTietSanPhamResponse {
     private String idCTSP;
     private String idSP;
+    private String maSP;
+    private String tenSanPham;
     private String tenMauSac;
     private String tenKichThuoc;
     private String tenKieuTay;

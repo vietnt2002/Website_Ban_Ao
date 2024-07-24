@@ -226,6 +226,11 @@
         .incl-range {
             background: #D19C97;
         }
+
+        .custom-col {
+            flex: 0 0 33.333333%;
+            max-width: 33.333333%;
+        }
     </style>
 </head>
 
@@ -509,7 +514,8 @@
                     <h5 class="font-weight-semi-bold mb-4">Màu sắc</h5>
                     <c:forEach varStatus="i" items="${listMauSac}" var="mauSac">
                         <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" id="color_${mauSac.ten}">
+                            <input type="checkbox" class="custom-control-input color-filter" id="color_${mauSac.ten}"
+                                   value="${mauSac.ten}">
                             <label class="custom-control-label" for="color_${mauSac.ten}">${mauSac.ten}</label>
                         </div>
                     </c:forEach>
@@ -521,7 +527,8 @@
                     <h5 class="font-weight-semi-bold mb-4">Kích thước</h5>
                     <c:forEach varStatus="i" items="${listKichThuoc}" var="kichThuoc">
                         <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" id="size_${kichThuoc.ten}">
+                            <input type="checkbox" class="custom-control-input size-filter" id="size_${kichThuoc.ten}"
+                                   value="${kichThuoc.ten}">
                             <label class="custom-control-label" for="size_${kichThuoc.ten}">${kichThuoc.ten}</label>
                         </div>
                     </c:forEach>
@@ -534,7 +541,8 @@
                     <h5 class="font-weight-semi-bold mb-4">Kiểu tay</h5>
                     <c:forEach varStatus="i" items="${listKieuTay}" var="kieuTay">
                         <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" id="style_${kieuTay.ten}">
+                            <input type="checkbox" class="custom-control-input style-filter" id="style_${kieuTay.ten}"
+                                   value="${kieuTay.ten}">
                             <label class="custom-control-label" for="style_${kieuTay.ten}">${kieuTay.ten}</label>
                         </div>
                     </c:forEach>
@@ -594,35 +602,41 @@
                     </div>
                 </div>
 
-
-                <c:forEach varStatus="i" items="${pageSP.content}" var="sp">
-                    <a href="/cua-hang/detail-san-pham/${sp.idCTSP}" style="text-decoration: none">
-                        <div class="col-lg-4 col-md-6 col-sm-12 pb-1">
-                            <div class="card product-item border-0 mb-2">
-                                <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                                    <img style="width: 100%; height: 370px;" class="img-fluid w-100"
-                                         src="/image/${sp.hinhAnh1}" alt="">
-                                </div>
-                                <div class="card-body border-left border-right text-center p-0 pt-4 pb-3"
-                                     style="margin-top: -10px; margin-bottom: -12px">
-                                    <h6 class="text-truncate mb-2">${sp.tenSP}</h6>
-                                    <h6 class="text-truncate mb-2" style="font-family: auto">${sp.maSP}</h6>
-                                </div>
-                                <div class="card-footer d-flex justify-content-between bg-light border float-start"
-                                     style="margin-top: -3px; margin-bottom: -3px">
-                                    <div class="d-flex justify-content-center mb-0" style="margin-bottom: 3px">
-                                        <h6><fmt:formatNumber value="${sp.giaBan}" type="currency"
-                                                              currencySymbol="₫"/><span
-                                                style="font-size: 16px; text-decoration: underline"></span></h6>
+                <div class="container">
+                    <div class="row" id="product-container">
+                        <c:forEach varStatus="i" items="${pageSP.content}" var="sp">
+                            <a href="/cua-hang/detail-san-pham/${sp.idCTSP}" style="text-decoration: none">
+                                <div class="col-lg-4 col-md-6 col-sm-12 pb-1">
+                                    <div class="card product-item border-0 mb-2">
+                                        <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
+                                            <img style="width: 100%; height: 370px;" class="img-fluid w-100"
+                                                 src="/image/${sp.hinhAnh1}" alt="">
+                                        </div>
+                                        <div class="card-body border-left border-right text-center p-0 pt-4 pb-3"
+                                             style="margin-top: -10px; margin-bottom: -12px">
+                                            <h6 class="text-truncate mb-2">${sp.tenSP}</h6>
+                                            <h6 class="text-truncate mb-2" style="font-family: auto">${sp.maSP}</h6>
+                                        </div>
+                                        <div class="card-footer d-flex justify-content-between bg-light border float-start"
+                                             style="margin-top: -3px; margin-bottom: -3px">
+                                            <div class="d-flex justify-content-center mb-0" style="margin-bottom: 3px">
+                                                <h6>
+                                                    <fmt:formatNumber value="${sp.giaBan}" type="currency"
+                                                                      currencySymbol="₫"/>
+                                                    <span style="font-size: 16px; text-decoration: underline"></span>
+                                                </h6>
+                                            </div>
+                                            <a href="/cua-hang/detail-san-pham/${sp.idCTSP}"
+                                               class="btn btn-sm text-dark p-0">
+                                                <i class="fas fa-eye text-primary mr-1"></i>Chi tiết
+                                            </a>
+                                        </div>
                                     </div>
-                                    <a href="/cua-hang/detail-san-pham/${sp.idCTSP}"
-                                       class="btn btn-sm text-dark p-0"><i
-                                            class="fas fa-eye text-primary mr-1"></i>Chi tiết</a>
                                 </div>
-                            </div>
-                        </div>
-                    </a>
-                </c:forEach>
+                            </a>
+                        </c:forEach>
+                    </div>
+                </div>
 
 
                 <div class="col-12 pb-1">
@@ -660,6 +674,103 @@
     </div>
 </div>
 <!-- Shop End -->
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const products = [];
+        <c:forEach items="${listCTSPRes}" var="ctsp">
+        products.push({
+            idCTSP: '${ctsp.idCTSP}',
+            idSP: '${ctsp.idSP}',
+            maSP: '${ctsp.maSP}',
+            tenSanPham: '${ctsp.tenSanPham}',
+            tenMauSac: '${ctsp.tenMauSac}',
+            tenKichThuoc: '${ctsp.tenKichThuoc}',
+            tenKieuTay: '${ctsp.tenKieuTay}',
+            soLuong: '${ctsp.soLuong}',
+            giaBan: parseFloat('${ctsp.giaBan}'),
+            hinhAnh1: '${ctsp.hinhAnh1}'
+        });
+        </c:forEach>
+
+        const colorFilters = document.querySelectorAll('.color-filter');
+        const sizeFilters = document.querySelectorAll('.size-filter');
+        const styleFilters = document.querySelectorAll('.style-filter');
+        const minPriceInput = document.getElementById('minGiaBan');
+        const maxPriceInput = document.getElementById('maxGiaBan');
+
+        const filterProducts = () => {
+            const selectedColors = Array.from(colorFilters).filter(cb => cb.checked).map(cb => cb.value);
+            const selectedSizes = Array.from(sizeFilters).filter(cb => cb.checked).map(cb => cb.value);
+            const selectedStyles = Array.from(styleFilters).filter(cb => cb.checked).map(cb => cb.value);
+            const minPrice = parseFloat(minPriceInput.value);
+            const maxPrice = parseFloat(maxPriceInput.value);
+
+            const filteredProducts = products.filter(product => {
+                const matchesColor = selectedColors.length === 0 || selectedColors.includes(product.tenMauSac);
+                const matchesSize = selectedSizes.length === 0 || selectedSizes.includes(product.tenKichThuoc);
+                const matchesStyle = selectedStyles.length === 0 || selectedStyles.includes(product.tenKieuTay);
+                const matchesPrice = product.giaBan >= minPrice && product.giaBan <= maxPrice;
+                return matchesColor && matchesSize && matchesStyle && matchesPrice;
+            });
+
+            const uniqueProducts = [];
+            const seenSPIds = new Set();
+            for (const product of filteredProducts) {
+                if (!seenSPIds.has(product.idSP)) {
+                    uniqueProducts.push(product);
+                    seenSPIds.add(product.idSP);
+                }
+            }
+
+            displayProducts(uniqueProducts);
+        };
+
+        const displayProducts = (products) => {
+            const productContainer = document.getElementById('product-container');
+            productContainer.innerHTML = '';
+            products.forEach(sp => {
+                const productHTML =
+                    '<a href="/cua-hang/detail-san-pham/' + sp.idCTSP + '" style="text-decoration: none">' +
+                    '<div class="col-lg-4 col-md-6 col-sm-12 pb-1 custom-col">' +
+                    '<div class="card product-item border-0 mb-2">' +
+                    '<div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">' +
+                    '<img style="width: 100%; height: 370px;" class="img-fluid w-100" src="/image/' + sp.hinhAnh1 + '" alt="">' +
+                    '</div>' +
+                    '<div class="card-body border-left border-right text-center p-0 pt-4 pb-3" style="margin-top: -10px; margin-bottom: -12px">' +
+                    '<h6 class="text-truncate mb-2">' + sp.tenSanPham + '</h6>' +
+                    '<h6 class="text-truncate mb-2" style="font-family: auto">' + sp.maSP + '</h6>' +
+                    '</div>' +
+                    '<div class="card-footer d-flex justify-content-between bg-light border float-start" style="margin-top: -3px; margin-bottom: -3px">' +
+                    '<div class="d-flex justify-content-center mb-0" style="margin-bottom: 3px">' +
+                    '<h6>' +
+                    new Intl.NumberFormat('vi-VN', {style: 'currency', currency: 'VND'}).format(sp.giaBan) +
+                    '<span style="font-size: 16px; text-decoration: underline"></span>' +
+                    '</h6>' +
+                    '</div>' +
+                    '<a href="/cua-hang/detail-san-pham/' + sp.idCTSP + '" class="btn btn-sm text-dark p-0">' +
+                    '<i class="fas fa-eye text-primary mr-1"></i>Chi tiết' +
+                    '</a>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '</a>';
+                productContainer.insertAdjacentHTML('beforeend', productHTML);
+            });
+        };
+
+        colorFilters.forEach(cb => cb.addEventListener('change', filterProducts));
+        sizeFilters.forEach(cb => cb.addEventListener('change', filterProducts));
+        styleFilters.forEach(cb => cb.addEventListener('change', filterProducts));
+        minPriceInput.addEventListener('input', filterProducts);
+        maxPriceInput.addEventListener('input', filterProducts);
+
+        // Initial display
+        filterProducts();
+    });
+</script>
+
 
 <!-- Footer Start -->
 <div class="container-fluid bg-secondary text-dark mt-5 pt-5">
@@ -976,7 +1087,7 @@
 <script>
     // Giả sử sliderConfig được lấy từ controller
     const sliderConfig = {
-        min: '${minGiaBan}',
+        min: 100000,
         max: '${maxGiaBan}'
     };
 
@@ -1047,77 +1158,5 @@
             syncSliders();
         });
     });
-</script>
-<script>
-    <%--document.addEventListener("DOMContentLoaded", function() {--%>
-    <%--    var products = [];--%>
-    <%--    <c:forEach items="${listCTSPRes}" var="ctsp">--%>
-    <%--    var CTSP = {};--%>
-    <%--    CTSP.idCTSP = '${ctsp.idCTSP}';--%>
-    <%--    CTSP.idSP = '${ctsp.idSP}';--%>
-    <%--    CTSP.tenMauSac = '${ctsp.tenMauSac}';--%>
-    <%--    CTSP.tenKichThuoc = '${ctsp.tenKichThuoc}';--%>
-    <%--    CTSP.tenKieuTay = '${ctsp.tenKieuTay}';--%>
-    <%--    CTSP.soLuong = '${ctsp.soLuong}';--%>
-    <%--    CTSP.giaBan = '${ctsp.giaBan}';--%>
-    <%--    CTSP.hinhAnh1 = '${ctsp.hinhAnh1}';--%>
-    <%--    products.push(CTSP);--%>
-    <%--    </c:forEach>--%>
-
-    <%--    const checkboxes = document.querySelectorAll(".custom-control-input");--%>
-    <%--    const productContainer = document.getElementById("product-container");--%>
-
-    <%--    function filterProducts() {--%>
-    <%--        let selectedColors = Array.from(document.querySelectorAll("input[type=checkbox]:checked"))--%>
-    <%--            .filter(input => input.id.startsWith("color_")).map(input => input.id.replace("color_", ""));--%>
-    <%--        let selectedSizes = Array.from(document.querySelectorAll("input[type=checkbox]:checked"))--%>
-    <%--            .filter(input => input.id.startsWith("size_")).map(input => input.id.replace("size_", ""));--%>
-    <%--        let selectedStyles = Array.from(document.querySelectorAll("input[type=checkbox]:checked"))--%>
-    <%--            .filter(input => input.id.startsWith("style_")).map(input => input.id.replace("style_", ""));--%>
-
-    <%--        let filteredProducts = products.filter(sp =>--%>
-    <%--            (selectedColors.length === 0 || selectedColors.includes(sp.tenMauSac)) &&--%>
-    <%--            (selectedSizes.length === 0 || selectedSizes.includes(sp.tenKichThuoc)) &&--%>
-    <%--            (selectedStyles.length === 0 || selectedStyles.includes(sp.tenKieuTay))--%>
-    <%--        );--%>
-
-    <%--        let uniqueProducts = filteredProducts.filter((sp, index, self) =>--%>
-    <%--            index === self.findIndex(p => p.idSP === sp.idSP)--%>
-    <%--        );--%>
-
-    <%--        displayProducts(uniqueProducts);--%>
-    <%--    }--%>
-
-    <%--    function displayProducts(products) {--%>
-    <%--        productContainer.innerHTML = products.map(sp => `--%>
-    <%--        <a href="/cua-hang/detail-san-pham/${sp.idCTSP}" style="text-decoration: none">--%>
-    <%--            <div class="col-lg-4 col-md-6 col-sm-12 pb-1">--%>
-    <%--                <div class="card product-item border-0 mb-2">--%>
-    <%--                    <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">--%>
-    <%--                        <img style="width: 100%; height: 370px;" class="img-fluid w-100" src="/image/${sp.hinhAnh1}" alt="">--%>
-    <%--                    </div>--%>
-    <%--                    <div class="card-body border-left border-right text-center p-0 pt-4 pb-3" style="margin-top: -10px; margin-bottom: -12px">--%>
-    <%--                        <h6 class="text-truncate mb-2">${sp.tenSP}</h6>--%>
-    <%--                        <h6 class="text-truncate mb-2" style="font-family: auto">${sp.maSP}</h6>--%>
-    <%--                    </div>--%>
-    <%--                    <div class="card-footer d-flex justify-content-between bg-light border float-start" style="margin-top: -3px; margin-bottom: -3px">--%>
-    <%--                        <div class="d-flex justify-content-center mb-0" style="margin-bottom: 3px">--%>
-    <%--                            <h6>${sp.giaBan}</h6>--%>
-    <%--                        </div>--%>
-    <%--                        <a href="/cua-hang/detail-san-pham/${sp.idCTSP}" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>Chi tiết</a>--%>
-    <%--                    </div>--%>
-    <%--                </div>--%>
-    <%--            </div>--%>
-    <%--        </a>--%>
-    <%--    `).join("");--%>
-    <%--    }--%>
-
-    <%--    checkboxes.forEach(checkbox => {--%>
-    <%--        checkbox.addEventListener("change", filterProducts);--%>
-    <%--    });--%>
-
-    <%--    // Khởi tạo hiển thị sản phẩm ban đầu--%>
-    <%--    displayProducts(products);--%>
-    <%--});--%>
 </script>
 </html>

@@ -23,7 +23,7 @@ public interface CTSPRepository extends JpaRepository<ChiTietSanPham, String>, J
     @Query("select max(ctsp.giaBan) from ChiTietSanPham ctsp")
     BigDecimal maxGiaBan();
 
-    @Query("select new com.example.java4.response.ChiTietSanPhamResponse(ctsp.id, sp.id, ms.ten, kth.ten, kta.ten, ctsp.soLuong, ctsp.giaBan, ha.hinhAnh1) " +
+    @Query("select new com.example.java4.response.ChiTietSanPhamResponse(ctsp.id, sp.id, sp.ma, sp.ten, ms.ten, kth.ten, kta.ten, ctsp.soLuong, ctsp.giaBan, ha.hinhAnh1) " +
             "from ChiTietSanPham ctsp " +
             "join SanPham sp on sp.id = ctsp.idSanPham.id " +
             "join MauSac ms on ms.id = ctsp.idMauSac.id " +
