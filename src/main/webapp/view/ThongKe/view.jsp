@@ -699,7 +699,59 @@
                                                     </tr>
                                                     </thead>
                                                     <tbody>
+                                                            <c:forEach var="product" varStatus="i" items="${pageSanPhamSapHetHang.content}">
+                                                                <tr>
+                                                                    <td>${i.index+1}</td>
+                                                                    <td>
+                                                                        <c:set var="hinhAnh" value="${hinhAnhMapCTSP[product.id]}"/>
+                                                                        <c:choose>
+                                                                            <c:when test="${not empty hinhAnh}">
+                                                                                <img src="/image/${hinhAnh.hinhAnh1}" alt="Ảnh sản phẩm" width="50">
+                                                                            </c:when>
+                                                                        </c:choose>
+                                                                    </td>
+                                                                    <td>
+                                                                        <p>${product.idSanPham.ten}</p>
+                                                                        <p>${product.idSanPham.ma}</p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <fmt:formatNumber value="${product.giaBan}"
+                                                                                          type="currency"
+                                                                                          currencySymbol="₫"
+                                                                                          groupingUsed="true"
+                                                                                          minFractionDigits="2"
+                                                                                          maxFractionDigits="2"
+                                                                                          pattern="#,##0.00"/>
+                                                                    </td>
+                                                                    <td>   ${product.soLuong}</td>
+                                                                </tr>
+                                                            </c:forEach>
 
+<%--                                                        Phân trang nếu có --%>
+                                                            <div class="float-end" id="pagination">
+                                                                <nav aria-label="Page navigation example">
+                                                                    <ul class="pagination">
+                                                                        <!-- Thêm phân trang nếu cần -->
+                                                                        <c:if test="${pageSanPhamSapHetHang.hasPrevious()}">
+                                                                            <li class="page-item"><a class="page-link"
+                                                                                                     href="?page=${pageSanPhamSapHetHang.number - 1}">&laquo;</a>
+                                                                            </li>
+                                                                        </c:if>
+                                                                        <c:if test="${pageSanPhamSapHetHang.totalPages > 0}">
+                                                                            <c:forEach var="i" begin="0" end="${pageSanPhamSapHetHang.totalPages - 1}">
+                                                                                <li class="page-item ${pageSanPhamSapHetHang.number == i ? 'active' : ''}">
+                                                                                    <a class="page-link" href="?page=${i}">${i + 1}</a>
+                                                                                </li>
+                                                                            </c:forEach>
+                                                                        </c:if>
+                                                                        <c:if test="${pageSanPhamSapHetHang.hasNext()}">
+                                                                            <li class="page-item"><a class="page-link"
+                                                                                                     href="?page=${pageSanPhamSapHetHang.number + 1}">&raquo;</a>
+                                                                            </li>
+                                                                        </c:if>
+                                                                    </ul>
+                                                                </nav>
+                                                            </div>
                                                     </tbody>
                                                 </table>
 

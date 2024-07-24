@@ -1,6 +1,8 @@
 package com.example.java4.repositories;
 
+import com.example.java4.entities.ChiTietSanPham;
 import com.example.java4.entities.HoaDon;
+import com.example.java4.response.SPCTDTO;
 import com.example.java4.response.ThongKeDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -64,17 +66,20 @@ public interface ThongKeRepository extends JpaRepository<HoaDon,String> {
 
 
     // Thống kê danh sách sản phẩm sắp hết hàng
-    @Query(value = "SELECT sp.Ten, sp.Ma, ctsp.GiaBan, hinhanh.HinhAnh1, ctsp.SoLuongTon " +
+    @Query(value = "SELECT ctsp.* " +
             "FROM ChiTietSanPham ctsp " +
-            "JOIN SanPham sp ON ctsp.IdSanPham = sp.ID " +
-            "JOIN HinhAnh hinhanh ON ctsp.ID = hinhanh.IdCTSP " +
-            "WHERE ctsp.SoLuongTon <= 10 " +
-            "ORDER BY ctsp.SoLuongTon ASC",
+            "JOIN SanPham sp ON ctsp.SanPhamID = sp.ID " +
+            "LEFT JOIN HinhAnh ha ON ctsp.ID = ha.ChiTietSanPhamID " +
+            "WHERE ctsp.soLuong <= 10 " +
+            "ORDER BY ctsp.soLuong ASC",
             countQuery = "SELECT COUNT(*) " +
                     "FROM ChiTietSanPham ctsp " +
-                    "JOIN SanPham sp ON ctsp.IdSanPham = sp.ID " +
-                    "JOIN HinhAnh hinhanh ON ctsp.ID = hinhanh.IdCTSP " +
-                    "WHERE ctsp.SoLuongTon <= 10",
+                    "JOIN SanPham sp ON ctsp.SanPhamID = sp.ID " +
+                    "LEFT JOIN HinhAnh ha ON ctsp.ID = ha.ChiTietSanPhamID " +
+                    "WHERE ctsp.soLuong <= 10",
             nativeQuery = true)
-    Page<ThongKeDTO> getLowStockProducts(Pageable pageable);
+    Page<ChiTietSanPham> getLowStockProducts(Pageable pageable);
+
+
+
 }

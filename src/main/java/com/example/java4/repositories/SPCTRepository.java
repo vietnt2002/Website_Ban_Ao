@@ -68,7 +68,7 @@ public interface SPCTRepository extends JpaRepository<ChiTietSanPham, String>, J
     Page<SPCTResponse> getAllSP(Pageable pageable);
 
 
-    @Query(
+    @Query("SELECT new com.example.java4.response.SPCTResponse(ctsp.id, sp.id, sp.ma, sp.ten, kta.ten, ctsp.giaBan, ha.hinhAnh1)" +
             "FROM ChiTietSanPham ctsp " +
             "JOIN SanPham sp ON sp.id = ctsp.idSanPham.id " +
             "JOIN MauSac ms ON ms.id = ctsp.idMauSac.id " +

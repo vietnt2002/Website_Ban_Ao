@@ -1,9 +1,15 @@
 package com.example.java4.controller.controller_tai;
 
 import com.example.java4.config.UserInfor;
+import com.example.java4.entities.ChiTietHoaDon;
+import com.example.java4.entities.ChiTietSanPham;
+import com.example.java4.entities.HinhAnh;
 import com.example.java4.entities.NhanVien;
+import com.example.java4.repositories.HinhAnhRepository;
 import com.example.java4.repositories.NhanVienRepository;
+import com.example.java4.repositories.SPCTRepository;
 import com.example.java4.repositories.ThongKeRepository;
+import com.example.java4.response.SPCTDTO;
 import com.example.java4.response.ThongKeDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,7 +21,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -31,6 +40,13 @@ public class ThongKeController {
 
     @Autowired
     NhanVienRepository _nhanVienRepo;
+
+    @Autowired
+    SPCTRepository _chiTietSanPhamRepo;
+
+    @Autowired
+    HinhAnhRepository _hinhAnhRepo;
+
 
     @GetMapping("/view")
     public String view(Model model,
@@ -74,10 +90,27 @@ public class ThongKeController {
 
 
         // Hiển thị danh sách sản phẩm sắp hết hàng
-//        PageRequest pageRequest = PageRequest.of(Integer.valueOf(pageParam), 5);
-//        Page<Object[]> lowStockProducts = _thongKeRepo.getLowStockProducts(pageRequest);
-//        model.addAttribute("lowStockProducts", lowStockProducts);
+        Map<String, HinhAnh> hinhAnhMapCTSP = getHinhAnhMapCTSP();
+        PageRequest pageRequest = PageRequest.of(Integer.valueOf(pageParam), 5);
+        Page<ChiTietSanPham> lowStockProducts = _thongKeRepo.getLowStockProducts(pageRequest);
+        model.addAttribute("pageSanPhamSapHetHang", lowStockProducts);
+        model.addAttribute("hinhAnhMapCTSP", hinhAnhMapCTSP);
 
         return "/view/ThongKe/view.jsp";
     }
+
+
+    //Lấy ra hình ảnh trong chi tiết sản phẩm
+    private Map<String, HinhAnh> getHinhAnhMapCTSP() {
+        Map<String, HinhAnh> hinhAnhMapCTSP = new HashMap<>();
+        List<ChiTietSanPham> listChiTietSanPham = _chiTietSanPhamRepo.findAll();
+        for (ChiTietSanPham ctsp : listChiTietSanPham) {
+            HinhAnh hinhAnh = _hinhAnhRepo.findByIdCTSP(ctsp.getId());
+            if (hinhAnh != null) {
+                hinhAnhMapCTSP.put(ctsp.getId(), hinhAnh);
+            }
+        }
+        return hinhAnhMapCTSP;
+    }
+
 }

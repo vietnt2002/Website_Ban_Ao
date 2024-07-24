@@ -608,7 +608,7 @@ public class TrangChuController {
 //            khuyenMai.setSoLuong(khuyenMai.getSoLuong() - 1);
 //            khuyenMaiRepo.save(khuyenMai);
             redirectAttributes.addFlashAttribute("successMessage", "Đặt hàng thành công");
-//            createLichSuHoaDon(hoaDon);
+            createLichSuHoaDon(hoaDon);
             return "redirect:/cua-hang/don-mua";
         } else {
             BigDecimal tongTienBigDecimal = BigDecimal.ZERO;
