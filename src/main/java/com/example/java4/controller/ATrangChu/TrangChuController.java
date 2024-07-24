@@ -96,16 +96,21 @@ public class TrangChuController {
     @GetMapping("/trang-chu")
     public String getTrangChu(
             Model model,
-            @RequestParam("page") Optional<Integer> pageParam,
-            @RequestParam("search") Optional<String> searchParam
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "search", required = false) String search
     ) {
         if (!model.containsAttribute("khachHangDTO")) {
             System.out.println("crette dto");
             model.addAttribute("khachHangDTO", new KhachHangDTO());
         }
-        Pageable pageable = PageRequest.of(pageParam.orElse(0), 12);
-        String search = searchParam.orElse(null);
-        Page<SPCTResponse> pageSP = spctRepo.searchSP(search, pageable);
+        Pageable pageable = PageRequest.of(page, 12);
+
+        Page<SPCTResponse> pageSP;
+//        if (search != null) {
+//            pageSP = spctRepo.listPageSP(search, pageable);
+//        } else {
+            pageSP = spctRepo.getAllSP(pageable);
+//        }
 
         model.addAttribute("pageSP", pageSP);
         model.addAttribute("soLuong", hdctRepo.findByKHnStt(khachHangRepo.findByIdKH(UserInfor.idKhachHang)));

@@ -68,17 +68,22 @@ public interface SPCTRepository extends JpaRepository<ChiTietSanPham, String>, J
     Page<SPCTResponse> getAllSP(Pageable pageable);
 
 
-    @Query(
-            "FROM ChiTietSanPham ctsp " +
-            "JOIN SanPham sp ON sp.id = ctsp.idSanPham.id " +
-            "JOIN MauSac ms ON ms.id = ctsp.idMauSac.id " +
-            "JOIN KichThuoc kth ON kth.id = ctsp.idKichThuoc.id " +
-            "JOIN ChatLieu cl ON cl.id = ctsp.idChatLieu.id " +
-            "JOIN KieuTay kta ON kta.id = ctsp.idKieuTay.id " +
-            "JOIN HinhAnh ha ON ctsp.id = ha.idCTSP.id " +
-            "WHERE (?1 IS NULL OR sp.ten LIKE %?1% OR ms.ten LIKE %?1% OR kta.ten LIKE %?1%) " +
-            "AND ctsp.id IN (SELECT MIN(innerCtsp.id) FROM ChiTietSanPham innerCtsp GROUP BY innerCtsp.idSanPham.id)")
-    Page<SPCTResponse> searchSP(@Param("search") String search, Pageable pageable);
+    @Query("SELECT new com.example.java4.response.SPCTResponse( min(ctsp.id), sp.id, sp.ma, sp.ten, min(kta.ten), ctsp.giaBan, ha.hinhAnh1)\n" +
+            "FROM ChiTietSanPham ctsp \n" +
+            "JOIN SanPham sp ON sp.id = ctsp.idSanPham.id\n" +
+            "JOIN MauSac ms ON ms.id = ctsp.idMauSac.id\n" +
+            "JOIN KichThuoc kth ON kth.id = ctsp.idKichThuoc.id \n" +
+            "JOIN ChatLieu cl ON cl.id = ctsp.idChatLieu.id\n" +
+            "JOIN KieuTay kta ON kta.id = ctsp.idKieuTay.id \n" +
+            "JOIN HinhAnh ha ON ctsp.id = ha.idCTSP.id\n" +
+            "WHERE (ctsp.idMauSac.ten like %?1%)\n" +
+            "AND sp.id IN (\n" +
+            "    SELECT DISTINCT ctsp1.idSanPham.id \n" +
+            "    FROM ChiTietSanPham ctsp1 \n" +
+            "    WHERE (ctsp.idMauSac.ten like %?1%)\n" +
+            ")\n" +
+            "GROUP BY  sp.id, sp.ma, sp.ten, kta.ten, ctsp.giaBan, ha.hinhAnh1")
+    Page<SPCTResponse> listPageSP(@Param("search") String search, Pageable pageable);
 
     //Lấy danh sách màu sắc, kích thước, số lượng để sang js lọc
 //    @Query("select new com.example.java4.response.MauSizeSL (kth.ten, ms.ten, ctsp.soLuong) " +
