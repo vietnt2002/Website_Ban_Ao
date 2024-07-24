@@ -13,6 +13,11 @@ public class DiaChi {
     private String idPhuongXa;
     private String idQuanHuyen;
     private String idTinhThanh;
+
+//    private Integer idT;
+//    private Integer idQH;
+//    private String idPX;
+
     private String idNhanVien;
     private KhachHang idKhachHang;
     private Integer trangThai;
@@ -91,6 +96,33 @@ public class DiaChi {
     public void setIdTinhThanh(String idTinhThanh) {
         this.idTinhThanh = idTinhThanh;
     }
+
+    //
+//    @Column(name = "idT")
+//    public Integer getIdT() {
+//        return idT;
+//    }
+//
+//    public void setIdT(Integer idT) {
+//        this.idT = idT;
+//    }
+//
+//    @Column(name = "idQH")
+//    public Integer getIdQH() { return idQH;
+//    }
+//
+//    public void setIdQH(Integer idQH) {
+//        this.idQH = idQH;
+//    }
+//
+//    @Column(name = "idPX")
+//    public String getIdPX() { return idPX;
+//    }
+//
+//    public void setIdPX(String idPX) {
+//        this.idPX = idPX;
+//    }
+    //
 
     @Column(name = "IdNV")
     public String getIdNhanVien() {

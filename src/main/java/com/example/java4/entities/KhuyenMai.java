@@ -15,10 +15,11 @@ public class KhuyenMai {
     private Date ngayBatDau;
     private Date ngayKetThuc;
     private BigDecimal soTienGiam;
+    private BigDecimal apDung;
     private Integer soLuong;
     private Integer trangThai;
     private LocalDateTime ngayTao;
-    private BigDecimal apDung;
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -76,6 +77,15 @@ public class KhuyenMai {
         this.soTienGiam = soTienGiam;
     }
 
+    @Column(name = "ApDung")
+    public BigDecimal getApDung() {
+        return apDung;
+    }
+
+    public void setApDung(BigDecimal apDung) {
+        this.apDung = apDung;
+    }
+
     @Column(name = "SoLuong")
     public Integer getSoLuong() {
         return soLuong;
@@ -103,20 +113,13 @@ public class KhuyenMai {
         this.ngayTao = ngayTao;
     }
 
-    @Column(name = "ApDung")
-    public BigDecimal getApDung() {
-        return apDung;
-    }
-
-    public void setApDung(BigDecimal apDung) {
-        this.apDung = apDung;
-    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         KhuyenMai khuyenMai = (KhuyenMai) o;
+
         return Objects.equals(id, khuyenMai.id) &&
                 Objects.equals(ma, khuyenMai.ma) &&
                 Objects.equals(ten, khuyenMai.ten) &&
@@ -127,10 +130,13 @@ public class KhuyenMai {
                 Objects.equals(trangThai, khuyenMai.trangThai) &&
                 Objects.equals(ngayTao, khuyenMai.ngayTao) &&
                 Objects.equals(apDung, khuyenMai.apDung);
+
     }
 
     @Override
     public int hashCode() {
+
         return Objects.hash(id, ma, ten, ngayBatDau, ngayKetThuc, soTienGiam, soLuong, trangThai, ngayTao, apDung);
+
     }
 }

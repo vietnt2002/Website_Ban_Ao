@@ -56,6 +56,11 @@
             overflow: scroll;
         }
 
+        .table-scroll3{
+            height: 370px;
+            overflow: scroll;
+        }
+
         ::-webkit-scrollbar {
             width: 10px;
             background-color: lightgray;
@@ -76,6 +81,10 @@
         }
         th,td{
             text-align: center;
+        }
+
+        .hidden {
+            display: none;
         }
 
     </style>
@@ -376,7 +385,7 @@
                         <!-- Dropdown - User Information -->
                         <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                              aria-labelledby="userDropdown">
-                            <a class="dropdown-item" href="/qlnv/tai-khoan-cua-toi/${nv.id}">
+                            <a class="dropdown-item" href="/store/tai-khoan-cua-toi">
                                 <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Tài khoản của tôi
                             </a>
@@ -488,11 +497,11 @@
                                         <td>${hdct.idCTSP.idMauSac.ten}</td>
                                         <td>${hdct.idCTSP.idKichThuoc.ten}</td>
                                         <td style="display: flex; align-items: center;">
-                                            <form class="d-flex" method="post" action="/ban-hang-tai-quay/update-sl/${hdct.idCTSP.id}" onsubmit="return checkValidateAfterUpdate();">
+                                            <form class="d-flex" method="post" action="/ban-hang-tai-quay/update-sl/${hdct.idCTSP.id}" >
                                                 <input type="hidden" name="idHoaDon" value="${hoaDon.id}">
-                                                <input type="hidden" id="tongSL" value="${hdct.idCTSP.soLuong}">
-                                                <input type="hidden" id="soLuongCu" value="${hdct.soLuong}">
-                                                <input id="soLuong" class="form-control me-2" type="text" name="soLuong" value="${hdct.soLuong}" style="width: 45px">
+                                                <input type="hidden" id="tongSL" name="tongSL" value="${hdct.idCTSP.soLuong}">
+                                                <input type="hidden" id="soLuongCu" name="soLuongCu" value="${hdct.soLuong}">
+                                                <input id="soLuong" class="form-control me-2" type="text" name="soLuong" value="${hdct.soLuong}" style="width: 50px">
                                                 <button class="btn btn-light" type="submit">
                                                     <i class="bi bi-pencil"></i>
                                                 </button>
@@ -577,124 +586,159 @@
                                             <input id="tongTienKhiTruKM" type="text" class="form-control" name="tongTien"
                                                    value="${total-hoaDon.idKhuyenMai.soTienGiam}" readonly/>
                                             <input type="hidden" class="form-control"
-                                                    id="tongTien" value="${total-hoaDon.idKhuyenMai.soTienGiam}" readonly/>
+                                                   id="tongTien" value="${total-hoaDon.idKhuyenMai.soTienGiam}" readonly/>
                                         </c:if>
                                         <c:if test="${total==null}">
                                             <input type="number" class="form-control" value="0"
                                                    readonly/>
                                         </c:if>
                                     </div>
-                                    <div class="mb-3">
-                                        <label class="form-label">Tiền Khách Đưa</label>
-                                        <div class="row align-items-center">
-                                            <div class="col-sm-10 d-flex align-items-center">
-                                                <input id="tienKhachDua" class="form-control" type="text" required>
 
-                                            </div>
-                                            <div class="col-sm-2 d-flex">
-                                                <i id="calculateChangeButton" class="bi bi-chevron-double-down" style="font-size: 20px; cursor: pointer;" onclick="calculateChange()"></i>
-                                            </div>
-                                            <span id="errTraLai" style="color: red; margin-left: 10px;"></span>
+                                    <%--    chọn phương thức thanh toán   --%>
+                                    <div class="mb-3">
+                                        <label class="form-label">Phương Thức Thanh Toán:</label>
+                                        <div class="form-check" style="margin-left: 14px;">
+                                            <input type="radio" class="form-check-input" id="radio1" name="optradio" value="1" checked>
+                                            <label class="form-check-label" for="radio1">Tiền mặt</label>
+                                        </div>
+                                        <div class="form-check" style="margin-left: 14px;">
+                                            <input type="radio" class="form-check-input" id="radio2" name="optradio" value="2">
+                                            <label class="form-check-label" for="radio2">Thanh toán qua VNPay</label>
                                         </div>
                                     </div>
-                                    <div class="mb-3">
-                                        <label class="form-label">Trả Lại</label>
-                                        <input id="tienTraLai" type="text" class="form-control" required readonly>
-                                    </div>
-                                    <div class="row mb-3 mt-4 justify-content-end text-end">
-                                        <div class="col-sm-10">
-                                            <button id="checkBtn" idhd =${hoaDon.id} type="submit" class="btn btn-success ">THANH TOÁN</button>
+                                    <%--   Hiển thị khi chọn radio    --%>
+                                    <div id="cash-div" class="content-div">
+                                        <div class="mb-3">
+                                            <label class="form-label">Tiền Khách Đưa</label>
+                                            <div class="row align-items-center">
+                                                <div class="col-sm-10 d-flex align-items-center">
+                                                    <input id="tienKhachDua" class="form-control" type="text" required>
+
+                                                </div>
+                                                <div class="col-sm-2 d-flex">
+                                                    <i id="calculateChangeButton" class="bi bi-chevron-double-down" style="font-size: 20px; cursor: pointer;" onclick="calculateChange()"></i>
+                                                </div>
+                                                <span id="errTraLai" style="color: red; margin-left: 10px;"></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Trả Lại</label>
+                                            <input id="tienTraLai" type="text" class="form-control" required readonly>
+                                        </div>
+                                        <div class="row mb-3 mt-4 justify-content-end text-end">
+                                            <div class="col-sm-10">
+                                                <button id="checkBtn" idhd =${hoaDon.id} type="submit" class="btn btn-success ">THANH TOÁN</button>
+                                            </div>
                                         </div>
                                     </div>
 
-                                       <%-- Cũ --%>
-<%--                                        <div class="row mb-3">--%>
-<%--                                            <label class="col-sm-4 col-form-label">Mã hóa đơn</label>--%>
-<%--                                            <div class="col-sm-8">--%>
-<%--                                                <input type="text" class="form-control" value="${hoaDon.ma}"/>--%>
-<%--                                                <input type="hidden" class="form-control" name="idHD"  value="${hoaDon.id}" readonly>--%>
-<%--                                            </div>--%>
-<%--                                        </div>--%>
-<%--                                        <div class="row mb-3">--%>
-<%--                                            <label class="col-sm-4 col-form-label">Ngày tạo</label>--%>
-<%--                                            <div class="col-sm-8">--%>
-<%--                                                <input type="text" class="form-control" name="ngayTao" value="${hoaDon.ngayTao}">--%>
-<%--                                            </div>--%>
-<%--                                        </div>--%>
-<%--                                        <div class="row mb-3">--%>
-<%--                                            <label class="col-sm-4 col-form-label">Tên khách hàng</label>--%>
-<%--                                            <div class="col-sm-5">--%>
-<%--                                                    <input type="text" class="form-control"  value="${hoaDon.idKhachHang.hoTen}" readonly>--%>
-<%--                                                    <input type="hidden" class="form-control" name="idKH"  value="${hoaDon.idKhachHang.id}" readonly>--%>
-<%--                                            </div>--%>
-<%--                                            &lt;%&ndash;   Modal thêm nhanh khách hàng&ndash;%&gt;--%>
-<%--                                            <a class="col-sm-1 " data-bs-toggle="modal" data-bs-target="#exampleModal2"--%>
-<%--                                               style="padding-right: 0px;margin-top: 7px">--%>
-<%--                                                <i class="bi bi-person-plus" style="font-size: 25px;padding: 0px"></i>--%>
-<%--                                            </a>--%>
-<%--                                            <a class="col-sm-1" data-bs-toggle="modal" data-bs-target="#exampleModal"--%>
-<%--                                               href="#" style="padding-right: 0px;margin-top: 7px">--%>
-<%--                                                <i class=" bi bi-folder-plus col-3" style="font-size: 25px;padding: 0px"></i>--%>
-<%--                                            </a>--%>
-<%--                                        </div>--%>
-<%--                                        <div class="row mb-3">--%>
-<%--                                            <label class="col-sm-4 col-form-label">Mã giảm giá</label>--%>
-<%--                                            <div class="col-sm-5">--%>
-<%--                                                <input type="hidden" class="form-control" name="idKhuyenMai"--%>
-<%--                                                       value="${hoaDon.idKhuyenMai.id}" readonly>--%>
-<%--                                                <input type="text" class="form-control"--%>
-<%--                                                       value="${hoaDon.idKhuyenMai.ma}" readonly>--%>
-<%--                                            </div>--%>
-<%--                                            &lt;%&ndash;  Modal chọn mã giảm giá  &ndash;%&gt;--%>
-<%--                                            <a class="col-sm-3 btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal3"--%>
-<%--                                               style="height: 38px;width: 79px;">--%>
-<%--                                                + Chọn--%>
-<%--                                            </a>--%>
-<%--                                        </div>--%>
-<%--                                        <div class="row mb-3">--%>
-<%--                                            <label class="col-sm-4 col-form-label">Số tiền giảm</label>--%>
-<%--                                            <div class="col-sm-5">--%>
-<%--                                                <p>${hoaDon.idKhuyenMai.soTienGiam}</p>--%>
-<%--                                            </div>--%>
-<%--                                        </div>--%>
-<%--                                    <div class="row mb-3">--%>
-<%--                                        <label class="col-sm-4 col-form-label">Tổng tiền</label>--%>
-<%--                                        <div class="col-sm-8">--%>
-<%--                                            <c:if test="${total>0}">--%>
-<%--                                                <input id="tongTienKhiTruKM" type="number" class="form-control"--%>
-<%--                                                       name="tongTien"  value="${total-hoaDon.idKhuyenMai.soTienGiam}"--%>
-<%--                                                       readonly/>--%>
-<%--                                            </c:if>--%>
-<%--                                            <c:if test="${total==null}">--%>
-<%--                                                <input type="number" class="form-control" value="0"--%>
-<%--                                                       readonly/>--%>
-<%--                                            </c:if>--%>
-<%--                                        </div>--%>
-<%--                                    </div>--%>
-<%--                                        <div class="row mb-3">--%>
-<%--                                            <label class="col-sm-4 col-form-label">Tiền khách đưa</label>--%>
-<%--                                            <div class="col-sm-6">--%>
-<%--                                                <input id="tienKhachDua" class="form-control" type="number" required>--%>
-<%--                                                <span id="errTraLai" style="color: red"></span>--%>
-<%--                                            </div>--%>
+                                    <div id="vnpay-div" class="content-div hidden">
+                                        <div class="row mb-3 mt-4 justify-content-end text-end">
+                                            <div class="col-sm-10">
+                                                <%--                                                <div class="col-sm-10">--%>
+                                                <%--                                                    <button id="checkBtn2" idhd =${hoaDon.id} type="submit" class="btn btn-success ">THANH TOÁN</button>--%>
+                                                <%--                                                </div>--%>
 
-<%--                                            <i id="calculateChangeButton" class=" col-sm-2 bi bi-chevron-double-down"--%>
-<%--                                               style="font-size: 20px" onclick="calculateChange()"></i>--%>
-<%--                                        </div>--%>
-<%--                                        <div class="row mb-3">--%>
-<%--                                            <label class="col-sm-4 col-form-label">Trả lại</label>--%>
-<%--                                            <div class="col-sm-8">--%>
-<%--                                                <input id="tienTraLai" type="number" class="form-control" required--%>
-<%--                                                       readonly>--%>
+                                                <form class="thanhToan-form" action="/ban-hang-tai-quay/pay/${total-hoaDon.idKhuyenMai.soTienGiam}/${hoaDon.ma}" method="get">
+                                                    <button class="thanhToan-button2 btn btn-success" type="button" >THANH TOÁN</button>
+                                                </form>
 
-<%--                                            </div>--%>
-<%--                                        </div>--%>
-<%--                                    --%>
-<%--                                        <div class="row mb-3 mt-4 justify-content-end text-end">--%>
-<%--                                            <div class="col-sm-10">--%>
-<%--                                                <button id="checkBtn" idhd =${hoaDon.id} type="submit" class="btn btn-success ">THANH TOÁN</button>--%>
-<%--                                            </div>--%>
-<%--                                        </div>--%>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+
+                                    <%-- Cũ --%>
+                                    <%--                                        <div class="row mb-3">--%>
+                                    <%--                                            <label class="col-sm-4 col-form-label">Mã hóa đơn</label>--%>
+                                    <%--                                            <div class="col-sm-8">--%>
+                                    <%--                                                <input type="text" class="form-control" value="${hoaDon.ma}"/>--%>
+                                    <%--                                                <input type="hidden" class="form-control" name="idHD"  value="${hoaDon.id}" readonly>--%>
+                                    <%--                                            </div>--%>
+                                    <%--                                        </div>--%>
+                                    <%--                                        <div class="row mb-3">--%>
+                                    <%--                                            <label class="col-sm-4 col-form-label">Ngày tạo</label>--%>
+                                    <%--                                            <div class="col-sm-8">--%>
+                                    <%--                                                <input type="text" class="form-control" name="ngayTao" value="${hoaDon.ngayTao}">--%>
+                                    <%--                                            </div>--%>
+                                    <%--                                        </div>--%>
+                                    <%--                                        <div class="row mb-3">--%>
+                                    <%--                                            <label class="col-sm-4 col-form-label">Tên khách hàng</label>--%>
+                                    <%--                                            <div class="col-sm-5">--%>
+                                    <%--                                                    <input type="text" class="form-control"  value="${hoaDon.idKhachHang.hoTen}" readonly>--%>
+                                    <%--                                                    <input type="hidden" class="form-control" name="idKH"  value="${hoaDon.idKhachHang.id}" readonly>--%>
+                                    <%--                                            </div>--%>
+                                    <%--                                            &lt;%&ndash;   Modal thêm nhanh khách hàng&ndash;%&gt;--%>
+                                    <%--                                            <a class="col-sm-1 " data-bs-toggle="modal" data-bs-target="#exampleModal2"--%>
+                                    <%--                                               style="padding-right: 0px;margin-top: 7px">--%>
+                                    <%--                                                <i class="bi bi-person-plus" style="font-size: 25px;padding: 0px"></i>--%>
+                                    <%--                                            </a>--%>
+                                    <%--                                            <a class="col-sm-1" data-bs-toggle="modal" data-bs-target="#exampleModal"--%>
+                                    <%--                                               href="#" style="padding-right: 0px;margin-top: 7px">--%>
+                                    <%--                                                <i class=" bi bi-folder-plus col-3" style="font-size: 25px;padding: 0px"></i>--%>
+                                    <%--                                            </a>--%>
+                                    <%--                                        </div>--%>
+                                    <%--                                        <div class="row mb-3">--%>
+                                    <%--                                            <label class="col-sm-4 col-form-label">Mã giảm giá</label>--%>
+                                    <%--                                            <div class="col-sm-5">--%>
+                                    <%--                                                <input type="hidden" class="form-control" name="idKhuyenMai"--%>
+                                    <%--                                                       value="${hoaDon.idKhuyenMai.id}" readonly>--%>
+                                    <%--                                                <input type="text" class="form-control"--%>
+                                    <%--                                                       value="${hoaDon.idKhuyenMai.ma}" readonly>--%>
+                                    <%--                                            </div>--%>
+                                    <%--                                            &lt;%&ndash;  Modal chọn mã giảm giá  &ndash;%&gt;--%>
+                                    <%--                                            <a class="col-sm-3 btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal3"--%>
+                                    <%--                                               style="height: 38px;width: 79px;">--%>
+                                    <%--                                                + Chọn--%>
+                                    <%--                                            </a>--%>
+                                    <%--                                        </div>--%>
+                                    <%--                                        <div class="row mb-3">--%>
+                                    <%--                                            <label class="col-sm-4 col-form-label">Số tiền giảm</label>--%>
+                                    <%--                                            <div class="col-sm-5">--%>
+                                    <%--                                                <p>${hoaDon.idKhuyenMai.soTienGiam}</p>--%>
+                                    <%--                                            </div>--%>
+                                    <%--                                        </div>--%>
+                                    <%--                                    <div class="row mb-3">--%>
+                                    <%--                                        <label class="col-sm-4 col-form-label">Tổng tiền</label>--%>
+                                    <%--                                        <div class="col-sm-8">--%>
+                                    <%--                                            <c:if test="${total>0}">--%>
+                                    <%--                                                <input id="tongTienKhiTruKM" type="number" class="form-control"--%>
+                                    <%--                                                       name="tongTien"  value="${total-hoaDon.idKhuyenMai.soTienGiam}"--%>
+                                    <%--                                                       readonly/>--%>
+                                    <%--                                            </c:if>--%>
+                                    <%--                                            <c:if test="${total==null}">--%>
+                                    <%--                                                <input type="number" class="form-control" value="0"--%>
+                                    <%--                                                       readonly/>--%>
+                                    <%--                                            </c:if>--%>
+                                    <%--                                        </div>--%>
+                                    <%--                                    </div>--%>
+                                    <%--                                        <div class="row mb-3">--%>
+                                    <%--                                            <label class="col-sm-4 col-form-label">Tiền khách đưa</label>--%>
+                                    <%--                                            <div class="col-sm-6">--%>
+                                    <%--                                                <input id="tienKhachDua" class="form-control" type="number" required>--%>
+                                    <%--                                                <span id="errTraLai" style="color: red"></span>--%>
+                                    <%--                                            </div>--%>
+
+                                    <%--                                            <i id="calculateChangeButton" class=" col-sm-2 bi bi-chevron-double-down"--%>
+                                    <%--                                               style="font-size: 20px" onclick="calculateChange()"></i>--%>
+                                    <%--                                        </div>--%>
+                                    <%--                                        <div class="row mb-3">--%>
+                                    <%--                                            <label class="col-sm-4 col-form-label">Trả lại</label>--%>
+                                    <%--                                            <div class="col-sm-8">--%>
+                                    <%--                                                <input id="tienTraLai" type="number" class="form-control" required--%>
+                                    <%--                                                       readonly>--%>
+
+                                    <%--                                            </div>--%>
+                                    <%--                                        </div>--%>
+                                    <%--                                    --%>
+                                    <%--                                        <div class="row mb-3 mt-4 justify-content-end text-end">--%>
+                                    <%--                                            <div class="col-sm-10">--%>
+                                    <%--                                                <button id="checkBtn" idhd =${hoaDon.id} type="submit" class="btn btn-success ">THANH TOÁN</button>--%>
+                                    <%--                                            </div>--%>
+                                    <%--                                        </div>--%>
                                     <!-- End General Form Elements -->
                                 </div>
                             </div><!-- End Recent Activity -->
@@ -724,37 +768,42 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-
-                        <table class="table table-hover">
-                            <thead>
-                            <tr>
-                                <th>Mã</th>
-                                <th>Tên</th>
-                                <th>Giảm tối đa</th>
-                                <%--                                <th>Áp dụng</th>--%>
-                                <th>Chọn</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <c:forEach items="${listKM}" var="km">
+                        <div class="">
+                            <table class="table table-hover">
+                                <thead>
                                 <tr>
-                                    <td>${km.ma}</td>
-                                    <td>${km.ten}</td>
-                                    <td>${km.soTienGiam}</td>
-                                    <td>
-                                        <form action="/ban-hang-tai-quay/find-khuyen-mai/${km.id}" method="post" onsubmit="return validateAddToMaGiamGia();">
-                                            <input id="selectedMaGiamGia" type="hidden" name="idHoaDon" value="${hoaDon.id}">
-                                            <input  type="hidden" name="idKMBanDau" value="${hoaDon.idKhuyenMai.id}">
-                                            <button class="btn btn-primary" type="submit">
-                                                <i class="bi bi-plus-square"></i>
-                                            </button>
-                                        </form>
-                                    </td>
+                                    <th>Tên</th>
+                                    <th>Giảm tối đa</th>
+                                    <th>Áp dụng</th>
+                                    <th>Số lượng</th>
+                                    <th>Chọn</th>
                                 </tr>
-                            </c:forEach>
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
 
+                                <c:forEach items="${listKM}" var="km">
+                                    <c:if test="${km.apDung<=total}">
+                                        <tr>
+                                            <td>${km.ten}</td>
+                                            <td class="price">${km.soTienGiam}</td>
+                                            <td class="price">${km.apDung}</td>
+                                            <td>${km.soLuong}</td>
+                                            <td>
+                                                <form action="/ban-hang-tai-quay/find-khuyen-mai/${km.id}" method="post" onsubmit="return validateAddToMaGiamGia();">
+                                                    <input id="selectedMaGiamGia" type="hidden" name="idHoaDon" value="${hoaDon.id}">
+                                                    <input  type="hidden" name="idKMBanDau" value="${hoaDon.idKhuyenMai.id}">
+                                                    <button class="btn btn-primary" type="submit">
+                                                        <i class="bi bi-plus-square"></i>
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    </c:if>
+                                </c:forEach>
+
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -863,10 +912,12 @@
 
                     </div>
                     <div class="modal-body">
+
                         <%--          --%>
                         <div class="row">
                             <div class="col col-12">
                                 <!-- Sản phẩm -->
+
                                 <div class="row">
                                     <div class="col col-5">
                                         <input oninput="searchBySPCT(this)" type="text" name="search" class="form-control" placeholder="Tìm kiếm theo mã sản phẩm, màu sắc,..."
@@ -972,10 +1023,11 @@
                                                 <td class="price">${spct.giaBan}</td>
                                                 <td>${spct.trangThai==1?"Còn hàng":"Hết hàng"}</td>
                                                 <td>
-                                                    <form action="/ban-hang-tai-quay/add-san-pham/${spct.id}" method="post"
+                                                    <form action="/ban-hang-tai-quay/add-san-pham/${spct.id}/${spct.giaBan}" method="post"
                                                           onsubmit="return validateBeforeAddToCart();">
                                                         <input type="hidden" name="idHoaDon" value="${hoaDon.id}"
                                                                id="selectedInvoiceId">
+                                                            <%--                                                        <input type="hidden" name="donGia" value="${spct.giaBan}">--%>
                                                         <button class="btn btn-success" type="submit">+</button>
                                                     </form>
                                                 </td>
@@ -1057,6 +1109,25 @@
 </body>
 
 <script>
+
+    //chọn phương thức hiển thị khi chọn radio
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const radioButtons = document.querySelectorAll('input[name="optradio"]');
+        const cashDiv = document.getElementById('cash-div');
+        const vnpayDiv = document.getElementById('vnpay-div');
+
+        radioButtons.forEach(radio => {
+            radio.addEventListener('change', () => {
+                if (radio.value === '1') {
+                    cashDiv.classList.remove('hidden');
+                    vnpayDiv.classList.add('hidden');
+                } else if (radio.value === '2') {
+                    cashDiv.classList.add('hidden');
+                    vnpayDiv.classList.remove('hidden');
+                }
+            });
+        });
+    });
 
     // Fomat sang VNĐ bảng hóa đơn chi tiết
     function formatCurrencyVND(amount) {
@@ -1235,7 +1306,6 @@
     });
 
 
-
     function searchByName(param){
         var txtSearch = param.value;
         console.log(txtSearch);
@@ -1259,46 +1329,52 @@
         });
     }
 
-<%--    &lt;%&ndash;    &ndash;%&gt;--%>
-<%--    function calculateChange() {--%>
-<%--        var tongTien = parseInt(document.getElementById('tongTien').value);--%>
-<%--        var tienKhachDua = parseInt(document.getElementById('tienKhachDua').value)*1000;--%>
-<%--        console.log("Tổng tiền: ",tongTien);--%>
-<%--        console.log("Tiền khách đưa: ",tienKhachDua);--%>
+    <%--    &lt;%&ndash;    &ndash;%&gt;--%>
+    <%--    function calculateChange() {--%>
+    <%--        var tongTien = parseInt(document.getElementById('tongTien').value);--%>
+    <%--        var tienKhachDua = parseInt(document.getElementById('tienKhachDua').value)*1000;--%>
+    <%--        console.log("Tổng tiền: ",tongTien);--%>
+    <%--        console.log("Tiền khách đưa: ",tienKhachDua);--%>
 
-<%--        var tienTraLai = (tienKhachDua - tongTien);--%>
-<%--        console.log("Tiền trả lại: ",tienTraLai);--%>
-<%--        var thongBao = document.getElementById("errTraLai");--%>
-<%--        if (isNaN(tienKhachDua)) {--%>
-<%--            thongBao.textContent = "Vui lòng nhập số tiền hợp lệ.";--%>
-<%--            return false;--%>
-<%--        }--%>
+    <%--        var tienTraLai = (tienKhachDua - tongTien);--%>
+    <%--        console.log("Tiền trả lại: ",tienTraLai);--%>
+    <%--        var thongBao = document.getElementById("errTraLai");--%>
+    <%--        if (isNaN(tienKhachDua)) {--%>
+    <%--            thongBao.textContent = "Vui lòng nhập số tiền hợp lệ.";--%>
+    <%--            return false;--%>
+    <%--        }--%>
 
-<%--        if (tienKhachDua == "" || tienKhachDua < tongTien) {--%>
-<%--            thongBao.textContent = "Số tiền khách đưa phải lớn hơn hoặc bằng tổng tiền.";--%>
-<%--            // alert('Số tiền khách đưa phải lớn hơn hoặc bằng tổng tiền.');--%>
-<%--            document.getElementById('tienTraLai').value = "";--%>
-<%--            return false;--%>
-<%--        }--%>
+    <%--        if (tienKhachDua == "" || tienKhachDua < tongTien) {--%>
+    <%--            thongBao.textContent = "Số tiền khách đưa phải lớn hơn hoặc bằng tổng tiền.";--%>
+    <%--            // alert('Số tiền khách đưa phải lớn hơn hoặc bằng tổng tiền.');--%>
+    <%--            document.getElementById('tienTraLai').value = "";--%>
+    <%--            return false;--%>
+    <%--        }--%>
 
-<%--        // Hiển thị số tiền trả lại trong trường "Trả lại"--%>
-<%--        var formattedValue = new Intl.NumberFormat('vi-VN', {--%>
-<%--            style: 'currency',--%>
-<%--            currency: 'VND'--%>
-<%--        }).format(tienTraLai);--%>
+    <%--        // Hiển thị số tiền trả lại trong trường "Trả lại"--%>
+    <%--        var formattedValue = new Intl.NumberFormat('vi-VN', {--%>
+    <%--            style: 'currency',--%>
+    <%--            currency: 'VND'--%>
+    <%--        }).format(tienTraLai);--%>
 
-<%--        document.getElementById('tienTraLai').value = formattedValue;--%>
-<%--        thongBao.textContent="";--%>
-<%--        return true;--%>
-<%--    }--%>
+    <%--        document.getElementById('tienTraLai').value = formattedValue;--%>
+    <%--        thongBao.textContent="";--%>
+    <%--        return true;--%>
+    <%--    }--%>
 
 
 
     function checkValidateAfterUpdate(){
-        var soLuongNhap = parseInt(document.getElementById("soLuong").value);
-        var soLuongCu = parseInt(document.getElementById("soLuongCu").value);
-        var tongSL22 = parseInt(document.getElementById("tongSL").value);
+
+        var soLuongNhap = parseInt(document.querySelectorAll("#soLuong").value);
+        var soLuongCu = parseInt(document.querySelectorAll("#soLuongCu").value);
+        var tongSL22 = parseInt(document.querySelectorAll("#tongSL").value);
         var tt = soLuongCu+tongSL22
+
+        console.log(soLuongNhap)
+        console.log(soLuongCu)
+        console.log(tongSL22)
+
         if (soLuongNhap<=0){
             Swal.fire({
                 title: 'Lỗi!',
@@ -1447,7 +1523,7 @@
                 // thongBao.textContent =  "Vui lòng kiểm tra lại thanh toán";
                 Swal.fire({
                     title: 'Lỗi!',
-                    text: 'Vui lòng kiểm tra lại thanh toán.',
+                    text: 'Vui lòng nhập tiền khách đưa trước khi thanh toán.',
                     icon: 'error',
                     confirmButtonText: 'OK'
                 });
@@ -1456,12 +1532,89 @@
     });
 
 
+    //Test button VNPay
+    // const checkBtn2 = document.querySelectorAll('#checkBtn2');
+    // checkBtn2.forEach(button => {
+    //     button.addEventListener('click', function () {
+    //         console.log("test check btn");
+    //         var idHD = document.getElementsByName("idHD")[0].value;
+    //         var idKH  = document.getElementsByName("idKH")[0].value;
+    //         var idKhuyenMai = document.getElementsByName("idKhuyenMai")[0].value;
+    //
+    //         var tongTienInput = document.getElementById('tongTien');
+    //         function getRawValue(input) {
+    //             var value = input.value.replace(/\D/g, ''); // Loại bỏ tất cả các ký tự không phải số
+    //             return parseInt(value, 10);
+    //         }
+    //         var tongTien = getRawValue(tongTienInput);
+    //
+    //         console.log("====================== id hd:",idHD);
+    //         console.log("====================== id kh:",idKH);
+    //         console.log("====================== id khuyen mai:",idKhuyenMai);
+    //         console.log("====================== tong tien:",tongTien);
+    //         if(!isNaN(tongTien)){
+    //             Swal.fire({
+    //                 title: 'Xác nhận thanh toán?',
+    //                 text: "Dữ liệu sẽ được lưu lại!",
+    //                 icon: 'warning',
+    //                 showCancelButton: true,
+    //                 confirmButtonColor: '#3085d6',
+    //                 cancelButtonColor: '#d33',
+    //                 confirmButtonText: 'Vâng,Thanh toán!',
+    //                 cancelButtonText: 'Hủy'
+    //             }).then((result) => {
+    //                 if (result.isConfirmed) {
+    //                     fetch(`/ban-hang-tai-quay/pay/`+idHD+'?idKhuyenMai='+idKhuyenMai+'&idKH='+idKH+'&tongTien='+tongTien,
+    //                         { method: 'POST' }).then(() => {
+    //                         Swal.fire(
+    //                             'Đã thanh toán!',
+    //                             'Dữ liệu đã được ghi nhận.',
+    //                             'success'
+    //                         )
+    //                             .then(() => {
+    //                             window.location.href = '/ban-hang-tai-quay';
+    //                         });
+    //                         button.closest('tr').remove();
+    //                     });
+    //                     button.closest('tr').remove();
+    //                     thongBao.textContent =  "";
+    //                 }
+    //             });
+    //         }
+    //         else{
+    //             // thongBao.textContent =  "Vui lòng kiểm tra lại thanh toán";
+    //             Swal.fire({
+    //                 title: 'Lỗi!',
+    //                 text: 'Vui lòng nhập tiền khách đưa trước khi thanh toán.',
+    //                 icon: 'error',
+    //                 confirmButtonText: 'OK'
+    //             });
+    //         }
+    //     });
+    // });
 
-    //Test
 
+    //C2
+    document.querySelectorAll('.thanhToan-button2').forEach(button => {
+        button.addEventListener('click', function() {
+            const form = this.closest('.thanhToan-form');
+            Swal.fire({
+                title: 'Bạn có muốn thanh toán không??',
+                text: "Dữ liệu này sẽ được lưu lại!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Đồng ý'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        });
+    });
 
-
-
+    // Kết thúc test VNPay
 
 </script>
 <script>
