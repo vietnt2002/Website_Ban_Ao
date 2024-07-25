@@ -511,6 +511,10 @@
                 </button>
             </div>
             <div class="d-flex flex-row-reverse">
+                <button id="btnMultipleAdd" class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#ModalMultipleAdd">Thêm nhiều
+                </button>
+            </div>
+            <div class="d-flex flex-row-reverse">
                 <button onclick="testDataMaping(event)" class="btn btn-success me-2">test</button>
             </div>
             <div class="col-12 pb-1">
@@ -867,7 +871,6 @@
             </div>
         </div>
         <%--End modal --%>
-
         <!-- ModalHotAddMS -->
         <div class="modal fade" id="modalHotAddMS" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
              data-bs-backdrop="static" data-bs-keyboard="false">

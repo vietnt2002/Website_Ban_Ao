@@ -16,5 +16,9 @@ public class QLSPController {
     public String detailSP(Model model, @PathVariable String idSP) {
         return "/view/QLSP/detailSP.jsp";
     }
+    @GetMapping("add-sp")
+    public String addSPView() {
+        return "/view/QLSP/addSP.jsp";
+    }
 }
 
