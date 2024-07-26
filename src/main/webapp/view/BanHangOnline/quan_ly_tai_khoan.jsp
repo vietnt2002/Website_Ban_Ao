@@ -150,13 +150,6 @@
             display: none;
         }
 
-        .dropdown:hover .dropdown-menu {
-            display: block;
-            position: absolute;
-            top: 100%;
-            z-index: 1000;
-        }
-
         .totalQuantityCart {
             width: 15px;
             height: 15px;
@@ -806,14 +799,6 @@
     }
 
     document.addEventListener('DOMContentLoaded', previewImage);
-
-    function showDropdown() {
-        document.getElementById('dropdownContent').style.display = 'block';
-    }
-
-    function hideDropdown() {
-        document.getElementById('dropdownContent').style.display = 'none';
-    }
 </script>
 
 <script>

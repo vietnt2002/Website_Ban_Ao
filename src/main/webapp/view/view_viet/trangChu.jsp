@@ -282,13 +282,13 @@
             </a>
         </div>
         <div class="col-lg-6 col-6 text-left">
-            <form action="">
+            <form id="searchForm" action="">
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search for products">
+                    <input type="text" class="form-control" placeholder="Search for products" id="searchInput">
                     <div class="input-group-append">
-                            <span class="input-group-text bg-transparent text-primary">
-                                <i class="fa fa-search"></i>
-                            </span>
+                <span class="input-group-text bg-transparent text-primary">
+                    <i class="fa fa-search"></i>
+                </span>
                     </div>
                 </div>
             </form>
@@ -660,147 +660,162 @@
 </div>
 <!-- Shop End -->
 <script>
-    const products = [];
-    <c:forEach items="${listCTSPRes}" var="ctsp">
-    products.push({
-        idCTSP: '${ctsp.idCTSP}',
-        idSP: '${ctsp.idSP}',
-        maSP: '${ctsp.maSP}',
-        tenSanPham: '${ctsp.tenSanPham}',
-        tenMauSac: '${ctsp.tenMauSac}',
-        tenKichThuoc: '${ctsp.tenKichThuoc}',
-        tenKieuTay: '${ctsp.tenKieuTay}',
-        soLuong: '${ctsp.soLuong}',
-        giaBan: parseFloat('${ctsp.giaBan}'),
-        hinhAnh1: '${ctsp.hinhAnh1}'
-    });
-    </c:forEach>
-    console.log('Initial Products:', products);
-    // Số sản phẩm trên mỗi trang
-    const itemsPerPage = 12;
+    <%--const products = [];--%>
+    <%--<c:forEach items="${listCTSPRes}" var="ctsp">--%>
+    <%--products.push({--%>
+    <%--    idCTSP: '${ctsp.idCTSP}',--%>
+    <%--    idSP: '${ctsp.idSP}',--%>
+    <%--    maSP: '${ctsp.maSP}',--%>
+    <%--    tenSanPham: '${ctsp.tenSanPham}',--%>
+    <%--    tenMauSac: '${ctsp.tenMauSac}',--%>
+    <%--    tenKichThuoc: '${ctsp.tenKichThuoc}',--%>
+    <%--    tenKieuTay: '${ctsp.tenKieuTay}',--%>
+    <%--    soLuong: '${ctsp.soLuong}',--%>
+    <%--    giaBan: parseFloat('${ctsp.giaBan}'),--%>
+    <%--    hinhAnh1: '${ctsp.hinhAnh1}'--%>
+    <%--});--%>
+    <%--</c:forEach>--%>
+    <%--console.log('Initial Products:', products);--%>
+    <%--// Số sản phẩm trên mỗi trang--%>
+    <%--const itemsPerPage = 2;--%>
 
-    // Hàm loại bỏ sản phẩm trùng lặp dựa trên idSP
-    function removeDuplicates(products) {
-        const uniqueProducts = {};
-        products.forEach(product => {
-            if (!uniqueProducts[product.idSP]) {
-                uniqueProducts[product.idSP] = product;
-            }
-        });
-        return Object.values(uniqueProducts);
-    }
+    <%--// Hàm loại bỏ sản phẩm trùng lặp dựa trên idSP--%>
+    <%--function removeDuplicates(products) {--%>
+    <%--    const uniqueProducts = {};--%>
+    <%--    products.forEach(product => {--%>
+    <%--        if (!uniqueProducts[product.idSP]) {--%>
+    <%--            uniqueProducts[product.idSP] = product;--%>
+    <%--        }--%>
+    <%--    });--%>
+    <%--    return Object.values(uniqueProducts);--%>
+    <%--}--%>
 
-    // Hàm để phân trang và cập nhật giao diện
-    function paginateProducts(pageNumber) {
+    <%--// Hàm để phân trang và cập nhật giao diện--%>
+    <%--function paginateProducts(pageNumber) {--%>
 
-        const uniqueProducts = removeDuplicates(products);
+    <%--    const uniqueProducts = removeDuplicates(products);--%>
 
-        const totalPages = Math.ceil(uniqueProducts.length / itemsPerPage);
+    <%--    const totalPages = Math.ceil(uniqueProducts.length / itemsPerPage);--%>
 
-        const startIndex = (pageNumber - 1) * itemsPerPage;
-        const endIndex = Math.min(startIndex + itemsPerPage, uniqueProducts.length);
+    <%--    const startIndex = (pageNumber - 1) * itemsPerPage;--%>
+    <%--    const endIndex = Math.min(startIndex + itemsPerPage, uniqueProducts.length);--%>
 
-        const pageProducts = uniqueProducts.slice(startIndex, endIndex);
+    <%--    const pageProducts = uniqueProducts.slice(startIndex, endIndex);--%>
 
-        let productHtml = '';
-        pageProducts.forEach(product => {
-            productHtml +=
-                '<div class="col-lg-4 col-md-6 col-sm-12 pb-1">' +
-                '<div class="card product-item border-0 mb-2">' +
-                '<div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">' +
-                '<img style="width: 100%; height: 370px;" class="img-fluid w-100" src="/image/' + product.hinhAnh1 + '" alt="">' +
-                '</div>' +
-                '<div class="card-body border-left border-right text-center p-0 pt-4 pb-3" style="margin-top: -10px; margin-bottom: -12px">' +
-                '<h6 class="text-truncate mb-2">' + product.tenSanPham + '</h6>' +
-                '<h6 class="text-truncate mb-2" style="font-family: auto">' + product.maSP + '</h6>' +
-                '</div>' +
-                '<div class="card-footer d-flex justify-content-between bg-light border float-start" style="margin-top: -3px; margin-bottom: -3px">' +
-                '<div class="d-flex justify-content-center mb-0" style="margin-bottom: 3px">' +
-                '<h6>' +
-                '<span>' + formatCurrency(product.giaBan) + '</span>' +
-                '</h6>' +
-                '</div>' +
-                '<a href="/cua-hang/detail-san-pham/' + product.idCTSP + '" class="btn btn-sm text-dark p-0">' +
-                '<i class="fas fa-eye text-primary mr-1"></i>Chi tiết' +
-                '</a>' +
-                '</div>' +
-                '</div>' +
-                '</div>';
-        });
+    <%--    let productHtml = '';--%>
+    <%--    pageProducts.forEach(product => {--%>
+    <%--        productHtml +=--%>
+    <%--            '<div class="col-lg-4 col-md-6 col-sm-12 pb-1">' +--%>
+    <%--            '<div class="card product-item border-0 mb-2">' +--%>
+    <%--            '<div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">' +--%>
+    <%--            '<img style="width: 100%; height: 370px;" class="img-fluid w-100" src="/image/' + product.hinhAnh1 + '" alt="">' +--%>
+    <%--            '</div>' +--%>
+    <%--            '<div class="card-body border-left border-right text-center p-0 pt-4 pb-3" style="margin-top: -10px; margin-bottom: -12px">' +--%>
+    <%--            '<h6 class="text-truncate mb-2">' + product.tenSanPham + '</h6>' +--%>
+    <%--            '<h6 class="text-truncate mb-2" style="font-family: auto">' + product.maSP + '</h6>' +--%>
+    <%--            '</div>' +--%>
+    <%--            '<div class="card-footer d-flex justify-content-between bg-light border float-start" style="margin-top: -3px; margin-bottom: -3px">' +--%>
+    <%--            '<div class="d-flex justify-content-center mb-0" style="margin-bottom: 3px">' +--%>
+    <%--            '<h6>' +--%>
+    <%--            '<span>' + formatCurrency(product.giaBan) + '</span>' +--%>
+    <%--            '</h6>' +--%>
+    <%--            '</div>' +--%>
+    <%--            '<a href="/cua-hang/detail-san-pham/' + product.idCTSP + '" class="btn btn-sm text-dark p-0">' +--%>
+    <%--            '<i class="fas fa-eye text-primary mr-1"></i>Chi tiết' +--%>
+    <%--            '</a>' +--%>
+    <%--            '</div>' +--%>
+    <%--            '</div>' +--%>
+    <%--            '</div>';--%>
+    <%--    });--%>
 
-        document.getElementById('product-container').innerHTML = productHtml;
+    <%--    document.getElementById('product-container').innerHTML = productHtml;--%>
 
-        // Cập nhật phân trang
-        let paginationHtml = '';
-        if (pageNumber > 1) {
-            paginationHtml +=
-                '<li class="page-item">' +
-                '<a class="page-link" href="#" onclick="paginate(' + (pageNumber - 1) + '); return false;" aria-label="Previous">' +
-                '<span aria-hidden="true">&laquo;</span>' +
-                '<span class="sr-only">Previous</span>' +
-                '</a>' +
-                '</li>';
-        } else {
-            paginationHtml +=
-                '<li class="page-item disabled">' +
-                '<a class="page-link" href="#" aria-label="Previous">' +
-                '<span aria-hidden="true">&laquo;</span>' +
-                '<span class="sr-only">Previous</span>' +
-                '</a>' +
-                '</li>';
-        }
+    <%--    // Cập nhật phân trang--%>
+    <%--    let paginationHtml = '';--%>
+    <%--    if (pageNumber > 1) {--%>
+    <%--        paginationHtml +=--%>
+    <%--            '<li class="page-item">' +--%>
+    <%--            '<a class="page-link" href="#" onclick="paginate(' + (pageNumber - 1) + '); return false;" aria-label="Previous">' +--%>
+    <%--            '<span aria-hidden="true">&laquo;</span>' +--%>
+    <%--            '<span class="sr-only">Previous</span>' +--%>
+    <%--            '</a>' +--%>
+    <%--            '</li>';--%>
+    <%--    } else {--%>
+    <%--        paginationHtml +=--%>
+    <%--            '<li class="page-item disabled">' +--%>
+    <%--            '<a class="page-link" href="#" aria-label="Previous">' +--%>
+    <%--            '<span aria-hidden="true">&laquo;</span>' +--%>
+    <%--            '<span class="sr-only">Previous</span>' +--%>
+    <%--            '</a>' +--%>
+    <%--            '</li>';--%>
+    <%--    }--%>
 
-        for (let i = 1; i <= totalPages; i++) {
-            paginationHtml +=
-                '<li class="page-item ' + (i === pageNumber ? 'active' : '') + '">' +
-                '<a class="page-link" href="#" onclick="paginate(' + i + '); return false;">' + i + '</a>' +
-                '</li>';
-        }
+    <%--    for (let i = 1; i <= totalPages; i++) {--%>
+    <%--        paginationHtml +=--%>
+    <%--            '<li class="page-item ' + (i === pageNumber ? 'active' : '') + '">' +--%>
+    <%--            '<a class="page-link" href="#" onclick="paginate(' + i + '); return false;">' + i + '</a>' +--%>
+    <%--            '</li>';--%>
+    <%--    }--%>
 
-        if (pageNumber < totalPages) {
-            paginationHtml +=
-                '<li class="page-item">' +
-                '<a class="page-link" href="#" onclick="paginate(' + (pageNumber + 1) + '); return false;" aria-label="Next">' +
-                '<span aria-hidden="true">&raquo;</span>' +
-                '<span class="sr-only">Next</span>' +
-                '</a>' +
-                '</li>';
-        } else {
-            paginationHtml +=
-                '<li class="page-item disabled">' +
-                '<a class="page-link" href="#" aria-label="Next">' +
-                '<span aria-hidden="true">&raquo;</span>' +
-                '<span class="sr-only">Next</span>' +
-                '</a>' +
-                '</li>';
-        }
+    <%--    if (pageNumber < totalPages) {--%>
+    <%--        paginationHtml +=--%>
+    <%--            '<li class="page-item">' +--%>
+    <%--            '<a class="page-link" href="#" onclick="paginate(' + (pageNumber + 1) + '); return false;" aria-label="Next">' +--%>
+    <%--            '<span aria-hidden="true">&raquo;</span>' +--%>
+    <%--            '<span class="sr-only">Next</span>' +--%>
+    <%--            '</a>' +--%>
+    <%--            '</li>';--%>
+    <%--    } else {--%>
+    <%--        paginationHtml +=--%>
+    <%--            '<li class="page-item disabled">' +--%>
+    <%--            '<a class="page-link" href="#" aria-label="Next">' +--%>
+    <%--            '<span aria-hidden="true">&raquo;</span>' +--%>
+    <%--            '<span class="sr-only">Next</span>' +--%>
+    <%--            '</a>' +--%>
+    <%--            '</li>';--%>
+    <%--    }--%>
 
-        document.getElementById('pagination').innerHTML = paginationHtml;
-    }
+    <%--    document.getElementById('pagination').innerHTML = paginationHtml;--%>
+    <%--}--%>
 
-    // Hàm định dạng giá
-    function formatCurrency(value) {
-        return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value);
-    }
+    <%--// Hàm định dạng giá--%>
+    <%--function formatCurrency(value) {--%>
+    <%--    return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value);--%>
+    <%--}--%>
 
-    // Hàm phân trang
-    function paginate(pageNumber) {
-        paginateProducts(pageNumber);
-    }
+    <%--// Hàm phân trang--%>
+    <%--function paginate(pageNumber) {--%>
+    <%--    paginateProducts(pageNumber);--%>
+    <%--}--%>
 
-    // Khởi đầu với trang 1
-    document.addEventListener('DOMContentLoaded', () => {
-        requestAnimationFrame(() => {
-            paginateProducts(1);
-            paginate(1);
-        });
-    });
+    <%--// Khởi đầu với trang 1--%>
+    <%--document.addEventListener('DOMContentLoaded', () => {--%>
+    <%--    requestAnimationFrame(() => {--%>
+    <%--        paginateProducts(1);--%>
+    <%--        paginate(1);--%>
+    <%--    });--%>
+    <%--});--%>
 </script>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
+        const searchForm = document.getElementById('searchForm');
+        const searchInput = document.getElementById('searchInput');
+
+        searchForm.addEventListener('submit', (event) => {
+            event.preventDefault(); // Ngăn chặn việc gửi form mặc định
+
+            const searchTerm = searchInput.value.trim();
+
+            if (searchTerm) {
+                // Thực hiện tìm kiếm sản phẩm nếu giá trị tìm kiếm không rỗng
+                paginate(1);
+            }
+        });
+
+        // Các mã khác của bạn...
+
         const products = [];
         <c:forEach items="${listCTSPRes}" var="ctsp">
         products.push({
@@ -827,7 +842,6 @@
         });
         </c:forEach>
 
-        // Tính tổng số lượng cho từng idSP
         const totalQuantities = {};
         listCTHD.forEach(cthd => {
             if (!totalQuantities[cthd.idSP]) {
@@ -836,12 +850,10 @@
             totalQuantities[cthd.idSP] += cthd.soLuong;
         });
 
-        // Chuyển đổi totalQuantities sang mảng và sắp xếp theo số lượng từ cao xuống thấp
         const sortedTotalQuantities = Object.entries(totalQuantities)
             .map(([idSP, soLuong]) => ({ idSP, soLuong }))
             .sort((a, b) => b.soLuong - a.soLuong);
 
-        // Lấy top 5 sản phẩm có số lượng từ cao xuống thấp
         const top5Products = sortedTotalQuantities.slice(0, 5).map(item => item.idSP);
 
         const colorFilters = document.querySelectorAll('.color-filter');
@@ -849,6 +861,7 @@
         const styleFilters = document.querySelectorAll('.style-filter');
         const minPriceInput = document.getElementById('minGiaBan');
         const maxPriceInput = document.getElementById('maxGiaBan');
+        const itemsPerPage = 2;
 
         const filterProducts = () => {
             const selectedColors = Array.from(colorFilters).filter(cb => cb.checked).map(cb => cb.value);
@@ -856,16 +869,19 @@
             const selectedStyles = Array.from(styleFilters).filter(cb => cb.checked).map(cb => cb.value);
             const minPrice = parseFloat(minPriceInput.value) || 0;
             const maxPrice = parseFloat(maxPriceInput.value) || Infinity;
+            const searchTerm = searchInput.value.toLowerCase();
 
             const filteredProducts = products.filter(product => {
                 const matchesColor = selectedColors.length === 0 || selectedColors.includes(product.tenMauSac);
                 const matchesSize = selectedSizes.length === 0 || selectedSizes.includes(product.tenKichThuoc);
                 const matchesStyle = selectedStyles.length === 0 || selectedStyles.includes(product.tenKieuTay);
                 const matchesPrice = product.giaBan >= minPrice && product.giaBan <= maxPrice;
-                return matchesColor && matchesSize && matchesStyle && matchesPrice;
+                const matchesSearch = product.tenSanPham.toLowerCase().includes(searchTerm) ||
+                    product.tenMauSac.toLowerCase().includes(searchTerm) ||
+                    product.tenKieuTay.toLowerCase().includes(searchTerm);
+                return matchesColor && matchesSize && matchesStyle && matchesPrice && matchesSearch;
             });
 
-            // Loại bỏ các sản phẩm có idSP trùng lặp
             const uniqueProducts = [];
             const seenSPIds = new Set();
             for (const product of filteredProducts) {
@@ -878,10 +894,15 @@
             return uniqueProducts;
         };
 
-        const displayProducts = (products) => {
+        const displayProducts = (products, pageNumber = 1) => {
             const productContainer = document.getElementById('product-container');
             productContainer.innerHTML = '';
-            products.forEach(sp => {
+
+            const startIndex = (pageNumber - 1) * itemsPerPage;
+            const endIndex = Math.min(startIndex + itemsPerPage, products.length);
+            const pageProducts = products.slice(startIndex, endIndex);
+
+            pageProducts.forEach(sp => {
                 const soldQuantity = totalQuantities[sp.idSP] || 0;
                 const productHTML =
                     '<a href="/cua-hang/detail-san-pham/' + sp.idCTSP + '" style="text-decoration: none">' +
@@ -911,7 +932,67 @@
                     '</a>';
                 productContainer.insertAdjacentHTML('beforeend', productHTML);
             });
+
+            const paginationHtml = generatePagination(products.length, pageNumber);
+            document.getElementById('pagination').innerHTML = paginationHtml;
         };
+
+        const generatePagination = (totalItems, currentPage) => {
+            const totalPages = Math.ceil(totalItems / itemsPerPage);
+            let paginationHtml = '';
+
+            if (currentPage > 1) {
+                paginationHtml +=
+                    '<li class="page-item">' +
+                    '<a class="page-link" href="#" onclick="paginate(' + (currentPage - 1) + '); return false;" aria-label="Previous">' +
+                    '<span aria-hidden="true">&laquo;</span>' +
+                    '<span class="sr-only">Previous</span>' +
+                    '</a>' +
+                    '</li>';
+            } else {
+                paginationHtml +=
+                    '<li class="page-item disabled">' +
+                    '<a class="page-link" href="#" aria-label="Previous">' +
+                    '<span aria-hidden="true">&laquo;</span>' +
+                    '<span class="sr-only">Previous</span>' +
+                    '</a>' +
+                    '</li>';
+            }
+
+            for (let i = 1; i <= totalPages; i++) {
+                paginationHtml +=
+                    '<li class="page-item ' + (i === currentPage ? 'active' : '') + '">' +
+                    '<a class="page-link" href="#" onclick="paginate(' + i + '); return false;">' + i + '</a>' +
+                    '</li>';
+            }
+
+            if (currentPage < totalPages) {
+                paginationHtml +=
+                    '<li class="page-item">' +
+                    '<a class="page-link" href="#" onclick="paginate(' + (currentPage + 1) + '); return false;" aria-label="Next">' +
+                    '<span aria-hidden="true">&raquo;</span>' +
+                    '<span class="sr-only">Next</span>' +
+                    '</a>' +
+                    '</li>';
+            } else {
+                paginationHtml +=
+                    '<li class="page-item disabled">' +
+                    '<a class="page-link" href="#" aria-label="Next">' +
+                    '<span aria-hidden="true">&raquo;</span>' +
+                    '<span class="sr-only">Next</span>' +
+                    '</a>' +
+                    '</li>';
+            }
+
+            return paginationHtml;
+        };
+
+        const paginate = (pageNumber) => {
+            const filteredProducts = filterProducts();
+            displayProducts(filteredProducts, pageNumber);
+        };
+
+        window.paginate = paginate;
 
         const sortProductsByPriceAscending = () => {
             const sortedProducts = filterProducts().sort((a, b) => a.giaBan - b.giaBan);
@@ -935,16 +1016,19 @@
         document.getElementById('shortDonGiaGiam').addEventListener('click', sortProductsByPriceDescending);
         document.getElementById('shortTop5').addEventListener('click', displayTop5Products);
 
-        colorFilters.forEach(cb => cb.addEventListener('change', () => displayProducts(filterProducts())));
-        sizeFilters.forEach(cb => cb.addEventListener('change', () => displayProducts(filterProducts())));
-        styleFilters.forEach(cb => cb.addEventListener('change', () => displayProducts(filterProducts())));
-        minPriceInput.addEventListener('input', () => displayProducts(filterProducts()));
-        maxPriceInput.addEventListener('input', () => displayProducts(filterProducts()));
+        colorFilters.forEach(cb => cb.addEventListener('change', () => paginate(1)));
+        sizeFilters.forEach(cb => cb.addEventListener('change', () => paginate(1)));
+        styleFilters.forEach(cb => cb.addEventListener('change', () => paginate(1)));
+        minPriceInput.addEventListener('input', () => paginate(1));
+        maxPriceInput.addEventListener('input', () => paginate(1));
+        searchInput.addEventListener('input', () => paginate(1));
 
-        // Initial display
-        displayProducts(filterProducts());
+        // Hiển thị ban đầu
+        paginate(1);
     });
 </script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
 
 
 <!-- Footer Start -->

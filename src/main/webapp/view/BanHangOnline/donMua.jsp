@@ -150,13 +150,6 @@
             display: none;
         }
 
-        .dropdown:hover .dropdown-menu {
-            display: block;
-            position: absolute;
-            top: 100%;
-            z-index: 1000;
-        }
-
         .totalQuantityCart {
             width: 15px;
             height: 15px;
@@ -560,23 +553,14 @@
                             <c:if test="${not empty listHD.content}">
                                 <c:forEach var="i" items="${listHD.content}">
                                     <c:if test="${i.trangThai >= 1}">
-                                        <div class="row mb-4 rounded p-5" style="border: 1px solid #D19C97">
-                                            <div class="col-3">
+                                        <div class="row mb-4 rounded p-2" style="border: 1px solid #D19C97">
+                                            <div class="col-6">
                                                 <div><strong>Mã hóa đơn:</strong> ${i.ma}</div>
                                             </div>
-                                            <div class="col-5">
-                                                <div><strong>Ngày đặt hàng:</strong> ${i.ngayThanhToan}</div>
-                                            </div>
-                                            <div class="col-3">
-                                                <div><strong>Tổng:</strong>
-                                                    <fmt:formatNumber value="${i.tongTien}" type="currency"
-                                                                      currencySymbol="₫"/>
-                                                </div>
-                                            </div>
-                                            <div class="col-1 d-flex align-items-center justify-content-center">
+                                            <div class="col-6 d-flex align-items-end justify-content-end">
                                                 <c:choose>
                                                     <c:when test="${i.trangThai == 1}">
-                                                        <div class="badge badge-warning"
+                                                        <div class="badge badge-primary"
                                                              style="border-radius: 10px;">
                                                             Chờ xác nhận
                                                         </div>
@@ -589,7 +573,7 @@
                                                     </c:when>
                                                     <c:when test="${i.trangThai == 4}">
                                                         <div class="badge badge-info" style="border-radius: 10px;">
-                                                            Chờ giao hàng
+                                                            Đang giao hàng
                                                         </div>
                                                     </c:when>
                                                     <c:when test="${i.trangThai == 6}">
@@ -606,7 +590,18 @@
                                                     </c:when>
                                                 </c:choose>
                                             </div>
-                                            <div class="col-12 mt-3 text-center">
+                                            <div class="col-6" style="bottom: -45px;">
+                                                <div><strong>Ngày đặt hàng:</strong> ${i.ngayThanhToan}</div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div><strong>Tổng:</strong>
+                                                    <label style="color: red"><fmt:formatNumber value="${i.tongTien}"
+                                                                                                type="currency"
+                                                                                                currencySymbol="₫"/></label>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-12 mt-3" style="text-align: end">
                                                 <a href="/cua-hang/don-mua/${i.id}">
                                                     <button class="btn btn-primary" style="border-radius: 10px;">Chi
                                                         tiết
@@ -659,27 +654,28 @@
                         <div class="container mt-5">
                             <c:if test="${not empty listHDByChoXacNhan.content}">
                                 <c:forEach var="i" items="${listHDByChoXacNhan.content}">
-                                    <div class="row mb-4 rounded p-5" style="border: 1px solid #D19C97">
-                                        <div class="col-3">
+                                    <div class="row mb-4 rounded p-2" style="border: 1px solid #D19C97">
+                                        <div class="col-6">
                                             <div><strong>Mã hóa đơn:</strong> ${i.ma}</div>
                                         </div>
-                                        <div class="col-5">
-                                            <div><strong>Ngày đặt hàng:</strong> ${i.ngayThanhToan}</div>
-                                        </div>
-                                        <div class="col-3">
-                                            <div><strong>Tổng:</strong>
-                                                <fmt:formatNumber value="${i.tongTien}" type="currency"
-                                                                  currencySymbol="₫"/>
-                                            </div>
-                                        </div>
-                                        <div class="col-1 d-flex align-items-center justify-content-center">
+                                        <div class="col-6 d-flex align-items-end justify-content-end">
                                             <c:if test="${i.trangThai == 1}">
-                                                <div class="badge badge-warning" style="border-radius: 10px;">
+                                                <div class="badge badge-primary" style="border-radius: 10px;">
                                                     Chờ xác nhận
                                                 </div>
                                             </c:if>
                                         </div>
-                                        <div class="col-12 mt-3 text-center">
+                                        <div class="col-6" style="bottom: -45px;">
+                                            <div><strong>Ngày đặt hàng:</strong> ${i.ngayThanhToan}</div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div><strong>Tổng:</strong>
+                                                <label style="color: red"><fmt:formatNumber value="${i.tongTien}"
+                                                                                            type="currency"
+                                                                                            currencySymbol="₫"/></label>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 mt-3" style="text-align: end">
                                             <a href="/cua-hang/don-mua/${i.id}">
                                                 <button class="btn btn-primary" style="border-radius: 10px;">Chi
                                                     tiết
@@ -731,27 +727,28 @@
                         <div class="container mt-5">
                             <c:if test="${not empty listHDByChoGiaoHang.content}">
                                 <c:forEach var="i" items="${listHDByChoGiaoHang.content}">
-                                    <div class="row mb-4 rounded p-5" style="border: 1px solid #D19C97">
-                                        <div class="col-3">
+                                    <div class="row mb-4 rounded p-2" style="border: 1px solid #D19C97">
+                                        <div class="col-6">
                                             <div><strong>Mã hóa đơn:</strong> ${i.ma}</div>
                                         </div>
-                                        <div class="col-5">
-                                            <div><strong>Ngày đặt hàng:</strong> ${i.ngayThanhToan}</div>
-                                        </div>
-                                        <div class="col-3">
-                                            <div><strong>Tổng:</strong>
-                                                <fmt:formatNumber value="${i.tongTien}" type="currency"
-                                                                  currencySymbol="₫"/>
-                                            </div>
-                                        </div>
-                                        <div class="col-1 d-flex align-items-center justify-content-center">
+                                        <div class="col-6 d-flex align-items-end justify-content-end">
                                             <c:if test="${i.trangThai == 3}">
                                                 <div class="badge badge-warning" style="border-radius: 10px;">
                                                     Chờ giao hàng
                                                 </div>
                                             </c:if>
                                         </div>
-                                        <div class="col-12 mt-3 text-center">
+                                        <div class="col-6" style="bottom: -45px;">
+                                            <div><strong>Ngày đặt hàng:</strong> ${i.ngayThanhToan}</div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div><strong>Tổng:</strong>
+                                                <label style="color: red"><fmt:formatNumber value="${i.tongTien}"
+                                                                                            type="currency"
+                                                                                            currencySymbol="₫"/></label>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 mt-3" style="text-align: end">
                                             <a href="/cua-hang/don-mua/${i.id}">
                                                 <button class="btn btn-primary" style="border-radius: 10px;">Chi
                                                     tiết
@@ -803,27 +800,28 @@
                         <div class="container mt-5">
                             <c:if test="${not empty listHDByDangGiaoHang.content}">
                                 <c:forEach var="i" items="${listHDByDangGiaoHang.content}">
-                                    <div class="row mb-4 rounded p-5" style="border: 1px solid #D19C97">
-                                        <div class="col-3">
+                                    <div class="row mb-4 rounded p-2" style="border: 1px solid #D19C97">
+                                        <div class="col-6">
                                             <div><strong>Mã hóa đơn:</strong> ${i.ma}</div>
                                         </div>
-                                        <div class="col-5">
-                                            <div><strong>Ngày đặt hàng:</strong> ${i.ngayThanhToan}</div>
-                                        </div>
-                                        <div class="col-3">
-                                            <div><strong>Tổng:</strong>
-                                                <fmt:formatNumber value="${i.tongTien}" type="currency"
-                                                                  currencySymbol="₫"/>
-                                            </div>
-                                        </div>
-                                        <div class="col-1 d-flex align-items-center justify-content-center">
+                                        <div class="col-6 d-flex align-items-end justify-content-end">
                                             <c:if test="${i.trangThai == 4}">
                                                 <div class="badge badge-info" style="border-radius: 10px;">
-                                                    Chờ xác nhận
+                                                    Đang giao hàng
                                                 </div>
                                             </c:if>
                                         </div>
-                                        <div class="col-12 mt-3 text-center">
+                                        <div class="col-6" style="bottom: -45px;">
+                                            <div><strong>Ngày đặt hàng:</strong> ${i.ngayThanhToan}</div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div><strong>Tổng:</strong>
+                                                <label style="color: red"><fmt:formatNumber value="${i.tongTien}"
+                                                                                            type="currency"
+                                                                                            currencySymbol="₫"/></label>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 mt-3" style="text-align: end">
                                             <a href="/cua-hang/don-mua/${i.id}">
                                                 <button class="btn btn-primary" style="border-radius: 10px;">Chi
                                                     tiết
@@ -873,27 +871,28 @@
                         <div class="container mt-5">
                             <c:if test="${not empty listHDByHoanThanh.content}">
                                 <c:forEach var="i" items="${listHDByHoanThanh.content}">
-                                    <div class="row mb-4 p-5" style="border: 1px solid #D19C97">
-                                        <div class="col-3">
+                                    <div class="row mb-4 rounded p-2" style="border: 1px solid #D19C97">
+                                        <div class="col-6">
                                             <div><strong>Mã hóa đơn:</strong> ${i.ma}</div>
                                         </div>
-                                        <div class="col-5">
-                                            <div><strong>Ngày đặt hàng:</strong> ${i.ngayThanhToan}</div>
-                                        </div>
-                                        <div class="col-3">
-                                            <div><strong>Tổng:</strong>
-                                                <fmt:formatNumber value="${i.tongTien}" type="currency"
-                                                                  currencySymbol="₫"/>
-                                            </div>
-                                        </div>
-                                        <div class="col-1 d-flex align-items-center justify-content-center">
+                                        <div class="col-6 d-flex align-items-end justify-content-end">
                                             <c:if test="${i.trangThai == 6}">
                                                 <div class="badge badge-success" style="border-radius: 10px;">
                                                     Hoàn thành
                                                 </div>
                                             </c:if>
                                         </div>
-                                        <div class="col-12 mt-3 text-center">
+                                        <div class="col-6" style="bottom: -45px;">
+                                            <div><strong>Ngày đặt hàng:</strong> ${i.ngayThanhToan}</div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div><strong>Tổng:</strong>
+                                                <label style="color: red"><fmt:formatNumber value="${i.tongTien}"
+                                                                                            type="currency"
+                                                                                            currencySymbol="₫"/></label>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 mt-3" style="text-align: end">
                                             <a href="/cua-hang/don-mua/${i.id}">
                                                 <button class="btn btn-primary" style="border-radius: 10px;">Chi
                                                     tiết
@@ -944,27 +943,28 @@
                         <div class="container mt-5">
                             <c:if test="${not empty listHDDaHuy.content}">
                                 <c:forEach var="i" items="${listHDDaHuy.content}">
-                                    <div class="row mb-4 p-5" style="border: 1px solid #D19C97">
-                                        <div class="col-3">
+                                    <div class="row mb-4 rounded p-2" style="border: 1px solid #D19C97">
+                                        <div class="col-6">
                                             <div><strong>Mã hóa đơn:</strong> ${i.ma}</div>
                                         </div>
-                                        <div class="col-5">
-                                            <div><strong>Ngày đặt hàng:</strong> ${i.ngayThanhToan}</div>
-                                        </div>
-                                        <div class="col-3">
-                                            <div><strong>Tổng:</strong>
-                                                <fmt:formatNumber value="${i.tongTien}" type="currency"
-                                                                  currencySymbol="₫"/>
-                                            </div>
-                                        </div>
-                                        <div class="col-1 d-flex align-items-center justify-content-center">
+                                        <div class="col-6 d-flex align-items-end justify-content-end">
                                             <c:if test="${i.trangThai == 7}">
                                                 <div class="badge badge-danger" style="border-radius: 10px;">
                                                     Đơn hủy
                                                 </div>
                                             </c:if>
                                         </div>
-                                        <div class="col-12 mt-3 text-center">
+                                        <div class="col-6" style="bottom: -45px;">
+                                            <div><strong>Ngày đặt hàng:</strong> ${i.ngayThanhToan}</div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div><strong>Tổng:</strong>
+                                                <label style="color: red"><fmt:formatNumber value="${i.tongTien}"
+                                                                                            type="currency"
+                                                                                            currencySymbol="₫"/></label>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 mt-3" style="text-align: end">
                                             <a href="/cua-hang/don-mua/${i.id}">
                                                 <button class="btn btn-primary" style="border-radius: 10px;">Chi
                                                     tiết
@@ -1133,14 +1133,6 @@
             });
         });
     });
-
-    function showDropdown() {
-        document.getElementById('dropdownContent').style.display = 'block';
-    }
-
-    function hideDropdown() {
-        document.getElementById('dropdownContent').style.display = 'none';
-    }
 </script>
 
 <script>

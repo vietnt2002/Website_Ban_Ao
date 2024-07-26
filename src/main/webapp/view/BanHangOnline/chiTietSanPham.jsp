@@ -14,9 +14,6 @@
     <meta content="Free HTML Templates" name="keywords">
     <meta content="Free HTML Templates" name="description">
 
-    <!-- Favicon -->
-    <link href="/view_ban_hang/img/favicon.ico" rel="icon">
-
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
@@ -36,9 +33,11 @@
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
             crossorigin="anonymous"></script>
 
-    <%--    Thêm thư viện SweetAlert2 để thiển thị thông báo--%>
     <!-- SweetAlert2 CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- SweetAlert2 JS -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -56,13 +55,6 @@
 
         .dropdown-menu {
             display: none;
-        }
-
-        .dropdown:hover .dropdown-menu {
-            display: block;
-            position: absolute;
-            top: 100%;
-            z-index: 1000;
         }
 
         .totalQuantityCart {
@@ -1023,6 +1015,207 @@
                                 $('#matKhauError').text(response.errorPassword);
                                 $('#matKhau').addClass('border-danger');
                             }
+                        }
+                    },
+                    error: function () {
+                        console.error('Đã xảy ra lỗi khi gửi yêu cầu đăng nhập.');
+                    }
+                });
+            }
+        });
+
+        // Xử lý lỗi và hiển thị modal khi submit form đăng ký
+        $('#register-form').submit(function (event) {
+            var form = $(this);
+            var hasError = false;
+
+            var username = $('#registerUsername').val().trim();
+            var email = $('#registerEmail').val().trim();
+            var phone = $('#registerPhone').val().trim();
+            var password = $('#registerPassword').val().trim();
+
+            // Clear previous errors
+            $('.text-danger').text('');
+            $('.form-control').removeClass('border-danger');
+
+            // Validate fields
+            if (!username) {
+                $('#registerUsernameError').text('Vui lòng nhập username.');
+                $('#registerUsername').addClass('border-danger');
+                hasError = true;
+            }
+            if (!email) {
+                $('#registerEmailError').text('Vui lòng nhập email.');
+                $('#registerEmail').addClass('border-danger');
+                hasError = true;
+            } else if (!isValidEmail(email)) {
+                $('#registerEmailError').text('Email không hợp lệ.');
+                $('#registerEmail').addClass('border-danger');
+                hasError = true;
+            }
+            if (!phone) {
+                $('#registerPhoneError').text('Vui lòng nhập số điện thoại.');
+                $('#registerPhone').addClass('border-danger');
+                hasError = true;
+            } else if (!isValidVietnamesePhoneNumber(phone)) {
+                $('#registerPhoneError').text('Số điện thoại không hợp lệ');
+                $('#registerPhone').addClass('border-danger');
+                hasError = true;
+            }
+            if (!password) {
+                $('#registerPasswordError').text('Vui lòng nhập mật khẩu.');
+                $('#registerPassword').addClass('border-danger');
+                hasError = true;
+            } else if (password.length < 6) {
+                $('#registerPasswordError').text('Mật khẩu phải có ít nhất 6 ký tự.');
+                $('#registerPassword').addClass('border-danger');
+                hasError = true;
+            }
+
+            // If any validation errors exist, prevent form submission
+            if (hasError) {
+                event.preventDefault();
+            }
+        });
+
+
+        // Ẩn lỗi khi người dùng click vào trường input
+        $('input').focus(function () {
+            $(this).siblings('.text-danger').text('');
+            $(this).removeClass('border-danger');
+        });
+
+        // Hiển thị lỗi từ Controller (nếu có)
+        var errorUsername = '<%= request.getAttribute("errorUsername") %>';
+        var errorPassword = '<%= request.getAttribute("errorPassword") %>';
+        var errorUsernameExit = '<%= request.getAttribute("errorUsernameExit") %>';
+
+        if (errorUsername && errorUsername !== 'null') {
+            $('#taiKhoanError').text(errorUsername);
+            $('#taiKhoan').addClass('border-danger');
+        }
+        if (errorPassword && errorPassword !== 'null') {
+            $('#matKhauError').text(errorPassword);
+            $('#matKhau').addClass('border-danger');
+        }
+
+        if (errorUsernameExit !== 'null') {
+            $('#registerUsername').text(errorUsernameExit);
+            $('#taiKhoan').addClass('border-danger');
+        }
+
+        // Khi modal được mở, thêm class "modal-open" vào body
+        $('#loginModal').on('shown.bs.modal', function () {
+            $('body').addClass('modal-open');
+        });
+
+        // Khi modal được đóng, loại bỏ class "modal-open" khỏi body
+        $('#loginModal').on('hidden.bs.modal', function () {
+            $('body').removeClass('modal-open');
+        });
+    });
+
+    // Hàm kiểm tra định dạng email
+    function isValidEmail(email) {
+        // Biểu thức chính quy để kiểm tra định dạng email
+        var regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return regex.test(email);
+    }
+
+    // Hàm kiểm tra định dạng số điện thoại
+    function isValidVietnamesePhoneNumber(phoneNumber) {
+        // Biểu thức chính quy để kiểm tra định dạng số điện thoại (theo quy định của Việt Nam)
+        var regex = /^(0|\+84)\d{9,10}$/;
+        return regex.test(phoneNumber);
+    }Fform
+</script>
+
+<script>
+    // Hiển thị thông báo thất bại nếu đăng nhập thất bại
+    const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+        }
+    });
+
+    <%--    Hiển thị thông báo thành công khi đăng nhập thất bại--%>
+    <c:if test="${not empty error}">
+    Toast.fire({
+        icon: "error",
+        title: "${error}"
+    });
+    </c:if>
+
+    <%--    Hiển thị thông báo thành công khi đăng nhập thành công--%>
+    <c:if test="${not empty successMessage}">
+    Toast.fire({
+        icon: "success",
+        title: "${successMessage}"
+    });
+    </c:if>
+    <%--Validate Form đăng nhặp--%>
+    $(document).ready(function () {
+        // Bắt lỗi khi submit form
+        $('#login-form').submit(function (event) {
+            event.preventDefault(); // Ngăn form submit mặc định
+
+            var form = $(this);
+            var username = $('#taiKhoan').val().trim();
+            var password = $('#matKhau').val().trim();
+
+            var hasError = false;
+
+            if (!username) {
+                $('#taiKhoanError').text('Vui lòng nhập username.');
+                $('#taiKhoan').addClass('border-danger');
+                hasError = true;
+            } else {
+                $('#taiKhoanError').text('');
+                $('#taiKhoan').removeClass('border-danger');
+            }
+
+            if (!password) {
+                $('#matKhauError').text('Vui lòng nhập password.');
+                $('#matKhau').addClass('border-danger');
+                hasError = true;
+            } else {
+                $('#matKhauError').text('');
+                $('#matKhau').removeClass('border-danger');
+            }
+
+            if (!hasError) {
+                // Gửi yêu cầu đăng nhập bằng AJAX
+                $.ajax({
+                    type: 'POST',
+                    url: form.attr('action'),
+                    data: form.serialize(),
+                    success: function (response) {
+                        if (response.success) {
+                            // Đăng nhập thành công, điều hướng sang trang home
+                            Toast.fire({
+                                icon: "success",
+                                title: response.successMessage
+                            });
+
+                            setTimeout(function () {
+                                window.location.href = response.redirectUrl;
+                            }, 2000);
+                        } else {
+                            // Đăng nhập không thành công, hiển thị lỗi
+                            if (response.errorUsername) {
+                                $('#taiKhoanError').text(response.errorUsername);
+                                $('#taiKhoan').addClass('border-danger');
+                            }
+                            if (response.errorPassword) {
+                                $('#matKhauError').text(response.errorPassword);
+                                $('#matKhau').addClass('border-danger');
+                            }
 
                         }
                     },
@@ -1138,13 +1331,17 @@
         return regex.test(phoneNumber);
     }
 
-    function showDropdown() {
-        document.getElementById('dropdownContent').style.display = 'block';
-    }
-
-    function hideDropdown() {
-        document.getElementById('dropdownContent').style.display = 'none';
-    }
+    $.ajax({
+        type: 'POST',
+        url: form.attr('action'), // Đảm bảo rằng URL đúng
+        data: form.serialize(),
+        success: function (response) {
+            // Xử lý phản hồi
+        },
+        error: function () {
+            console.error('Đã xảy ra lỗi khi gửi yêu cầu đăng nhập.');
+        }
+    });
 </script>
 
 </html>
