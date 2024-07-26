@@ -488,7 +488,7 @@
                                                data-bs-target="#ModalHotAddMS" id="iconHotAddMauSac"
                                                style="font-size: 25px"></i>
                                         </div>
-                                        <div class="d-flex" id="mauSacBox">
+                                        <div class="d-flex gap-2" id="mauSacBox">
                                                 <div class="dropdown">
                                                     <button class="btn btn-outline-secondary dropdown-toggle"
                                                             type="button"
@@ -520,7 +520,7 @@
                                                id="iconHotAddKichThuoc"
                                                style="font-size: 25px"></i>
                                         </div>
-                                        <div class="kichThuocBox">
+                                        <div class="d-flex gap-2" id="kichThuocBox">
                                             <div class="dropdown">
                                                 <button class="btn btn-outline-secondary dropdown-toggle"
                                                         type="button"
@@ -773,11 +773,12 @@
         lblKieuTayAdd.textContent = "Chọn kiểu tay";
         loadDSSPCT(currentPage);
     }
-    function setMauSacAdd(msString) {
+    function setMauSacAdd(msString,indx) {
         const ms = JSON.parse(msString.replace(/&quot;/g, '"'));
         idMauSacAdd = ms.id;
         lblMauSacAdd.textContent = ms.ten;
-        console.log('Selected mau sac ID:', idMauSac);
+        console.log('Selected mau sac ID:', idMauSacAdd);
+        console.log('data set index: ', indx);
         // You can add more logic here to handle the selected value
     }
 
@@ -869,10 +870,10 @@
                     const msString = JSON.stringify(ms).replace(/"/g, '&quot;');
                     // htmlSearch += '<li><a class="dropdown-item"  onclick="setMauSac(\'' + msString + '\')">' + ms.ten + '</a></li>';
                     // htmlCboModalEdit += '<li><a class="dropdown-item"  onclick="setMauSacModalEdit(\'' + msString + '\')">' + ms.ten + '</a></li>'
-                    htmCboAdd += '<li><a class="dropdown-item"  onclick="setMauSacAdd(\'' + msString + '\')">' + ms.ten + '</a></li>'
+                    htmCboAdd += '<li><a class="dropdown-item"  onclick="setMauSacAdd(\'' + msString + '\',1)">' + ms.ten + '</a></li>'
                 });
                 // $("#cboMauSac").html(htmlSearch);
-                $("#cboMauSacAdd").html(htmCboAdd);
+                $("#cboMauSacAdd0").html(htmCboAdd);
                 // $("#cboMauSacModalEdit").html(htmlCboModalEdit);
             });
     }
@@ -905,13 +906,44 @@
     const loadTotalCboMauSac = ()=>{
         htmlDropdown="";
         for (let i = 0; i < howManyCboMauSac; i++) {
-             htmlDropdown+=
+             htmlDropdown+='<div class="dropdown">' +
+                 '<button class="btn btn-outline-secondary dropdown-toggle" ' +
+                 'type="button" ' +
+                 'id="lblMauSacAdd' + i + '" style="width: 150px;" ' +
+                 'data-bs-toggle="dropdown" ' +
+                 'aria-expanded="false">' +
+                 'Chọn màu sắc' +
+                 '</button>' +
+                 '<ul class="dropdown-menu" id="cboMauSacAdd' + i + '" ' +
+                 'aria-labelledby="dropdownMenuButton2">' +
+                 '</ul>' +
+                 '<p style="color: red;" id="cboMauSacAddErr' + i + '"></p>' +
+                 '</div>';
         }
+        $("#mauSacBox").html(htmlDropdown);
     }
+    loadTotalCboMauSac();
 
     const loadTotalCboKichThuoc = ()=>{
-
+        htmlDropdown = "";
+        for (let i = 0; i < howManyCboKichThuoc; i++) {
+            htmlDropdown+='<div class="dropdown">' +
+                '<button class="btn btn-outline-secondary dropdown-toggle" ' +
+                'type="button" ' +
+                'id="lblKichThuocAdd' + i + '" style="width: 150px;" ' +
+                'data-bs-toggle="dropdown" ' +
+                'aria-expanded="false">' +
+                'Chọn màu sắc' +
+                '</button>' +
+                '<ul class="dropdown-menu" id="cboKichThuocAdd' + i + '" ' +
+                'aria-labelledby="dropdownMenuButton2">' +
+                '</ul>' +
+                '<p style="color: red;" id="cboKichThuocAddErr' + i + '"></p>' +
+                '</div>';
+        }
+        $("#kichThuocBox").html(htmlDropdown);
     }
+    loadTotalCboKichThuoc();
 
 </script>
 <%--end loadingcbo--%>
