@@ -489,19 +489,19 @@
                                                style="font-size: 25px"></i>
                                         </div>
                                         <div class="d-flex" id="mauSacBox">
-                                            <div class="dropdown">
-                                                <button class="btn btn-outline-secondary dropdown-toggle"
-                                                        type="button"
-                                                        id="lblMauSacAdd" style="width: 150px;"
-                                                        data-bs-toggle="dropdown"
-                                                        aria-expanded="false">
-                                                    Chọn màu sắc
-                                                </button>
-                                                <ul class="dropdown-menu" id="cboMauSacAdd"
-                                                    aria-labelledby="dropdownMenuButton2">
-                                                </ul>
-                                                <p style="color: red;" id="cboMauSacAddErr"></p>
-                                            </div>
+                                                <div class="dropdown">
+                                                    <button class="btn btn-outline-secondary dropdown-toggle"
+                                                            type="button"
+                                                            id="lblMauSacAdd" style="width: 150px;"
+                                                            data-bs-toggle="dropdown"
+                                                            aria-expanded="false">
+                                                        Chọn màu sắc
+                                                    </button>
+                                                    <ul class="dropdown-menu" id="cboMauSacAdd"
+                                                        aria-labelledby="dropdownMenuButton2">
+                                                    </ul>
+                                                    <p style="color: red;" id="cboMauSacAddErr"></p>
+                                                </div>
                                         </div>
                                         <div class="icon-container">
                                             <i class=" bi bi-plus col-3" data-bs-toggle="modal"
@@ -542,6 +542,7 @@
                                         </div>
                                     </div>
                                 </div>
+
                             </div>
                             <div class="form-check form-switch">
                                 <input class="form-check-input" type="checkbox" role="switch"
@@ -752,6 +753,8 @@
     const lblKichThuocAdd = document.getElementById("lblKichThuocAdd");
     const lblChatLieuAdd  = document.getElementById("lblChatLieuAdd");
     const lblKieuTayAdd = document.getElementById("lblKieuTayAdd");
+    const iconAddMoreCboMauSac = document.getElementById("iconAddMoreCboMauSac");
+    const iconAddMoreCboKichThuoc = document.getElementById("iconAddMoreCboKichThuoc");
     let idMauSacAdd = "";
     let idKichThuocAdd = "";
     let idChatLieuAdd = "";
@@ -898,6 +901,17 @@
             });
     }
     loadCboKichThuoc();
+
+    const loadTotalCboMauSac = ()=>{
+        htmlDropdown="";
+        for (let i = 0; i < howManyCboMauSac; i++) {
+             htmlDropdown+=
+        }
+    }
+
+    const loadTotalCboKichThuoc = ()=>{
+
+    }
 
 </script>
 <%--end loadingcbo--%>
