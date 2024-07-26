@@ -1,24 +1,21 @@
-package com.example.java4.response;
+package com.example.java4.controller.ATrangChu;
 
+import com.example.java4.entities.SanPham;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-public class ChiTietSanPhamResponse {
+@AllArgsConstructor
+public class SanPhamCard {
     private String idCTSP;
-    private String idSP;
-    private String maSP;
-    private String tenSanPham;
-    private String tenMauSac;
-    private String tenKichThuoc;
+    private SanPham sp;
     private String tenKieuTay;
-    private Integer soLuong;
     private BigDecimal giaBan;
     private String hinhAnh1;
 }
