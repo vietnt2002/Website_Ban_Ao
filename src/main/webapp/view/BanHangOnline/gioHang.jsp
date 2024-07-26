@@ -1780,7 +1780,7 @@
             var tongTien = parseFloat('${tongTien - hoaDon.idKhuyenMai.soTienGiam}');
 
 // Function to get JSON with token
-            function getJSONWithToken(url, callback) {
+            function getJSONWithToken1(url, callback) {
                 $.ajax({
                     url: url,
                     headers: {
@@ -1795,26 +1795,47 @@
                 });
             }
 
+            function getJSONWithToken(url, callback) {
+                $.ajax({
+                    url: url,
+                    headers: {
+                        'Token': token
+                    },
+                    success: callback,
+                    error: function (xhr, status, error) {
+                        console.error("Request Error: " + error);
+                        console.error("Status: " + status);
+                        console.error("Response: " + xhr.responseText);
+                    }
+                });
+            }
 // Tính phí ship
-            getJSONWithToken('https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee?service_id=53321&insurance_value=500000&from_district_id=1442&to_district_id='+idQuanHuyenTest+'&to_ward_code='+idPhuongXaTest+'&height=15&length=15&weight=2000&width=15', function(data_total) {
-                console.log("API Response: ", data_total.data.service_fee); // Log the entire response
+            getJSONWithToken1('https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/available-services?shop_id=1244&to_district='+idQuanHuyenTest+'&from_district=3440', function(data_maDV) {
+                //console.log("API maDV: ", data_maDV.data[0].service_id); // Log the entire response
+                var service_id = data_maDV.data[0].service_id;
+                console.log("API maDV: ", service_id);
+
+                console.log("Tổng tiền: ", tongTien);
+                getJSONWithToken('https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee?service_id='+service_id+'&insurance_value='+tongTien+'&from_district_id=3440&to_district_id='+idQuanHuyenTest+'&to_ward_code='+idPhuongXaTest+'&height=15&length=15&weight=1000&width=15', function(data_total) {
+                    console.log("API Response: ", data_total.data.service_fee); // Log the entire response
 
 
-                function formatVND(number) {
-                    return number.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
-                }
+                    function formatVND(number) {
+                        return number.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                    }
 
                     var firstFee = data_total.data.service_fee
 
-                // Calculate the new total
-                var newTotal = tongTien + firstFee;
+                    // Calculate the new total
+                    var newTotal = tongTien + firstFee;
 
-                // Update the total amount in the DOM
-                $('#total-amount').text(newTotal.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }));
+                    // Update the total amount in the DOM
+                    $('#total-amount').text(newTotal.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }));
 
                     // $("#totalAPI").val(firstFee); // Set the value of the input field with id 'totalAPI'
-                $("#phiShip").html(formatVND(firstFee));
+                    $("#phiShip").html(formatVND(firstFee));
 
+                });
             });
 
         }
@@ -1822,6 +1843,7 @@
         // Đóng modal
         $('#addAddressModal').modal('hide');
     }
+    chonDiaChi();
 
     function showModal() {
         document.getElementById('couponModal').classList.add('show');
