@@ -422,7 +422,9 @@
                                 <div class="col col-md-12">
                                     <div class="d-flex" style="gap: 10px;">
                                         <p style="width: 80px;">Tên SP:</p>
-                                        <input style="height: 30px;" type="text" id="tensp">
+                                        <input type="text" id="tensp"
+                                               class="w-full p-2  rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                               placeholder="Nhập tên sản phẩm">
                                     </div>
                                 </div>
 
@@ -488,24 +490,27 @@
                                                data-bs-target="#ModalHotAddMS" id="iconHotAddMauSac"
                                                style="font-size: 25px"></i>
                                         </div>
-                                        <div class="d-flex gap-2" id="mauSacBox">
-                                                <div class="dropdown">
-                                                    <button class="btn btn-outline-secondary dropdown-toggle"
-                                                            type="button"
-                                                            id="lblMauSacAdd" style="width: 150px;"
-                                                            data-bs-toggle="dropdown"
-                                                            aria-expanded="false">
-                                                        Chọn màu sắc
-                                                    </button>
-                                                    <ul class="dropdown-menu" id="cboMauSacAdd"
-                                                        aria-labelledby="dropdownMenuButton2">
-                                                    </ul>
-                                                    <p style="color: red;" id="cboMauSacAddErr"></p>
-                                                </div>
+                                        <div class="d-flex flex-wrap gap-2" id="mauSacBox">
+                                            <div class="dropdown">
+                                                <button class="btn btn-outline-secondary dropdown-toggle"
+                                                        type="button"
+                                                        id="lblMauSacAdd" style="width: 150px;"
+                                                        data-bs-toggle="dropdown"
+                                                        aria-expanded="false">
+                                                    Chọn màu sắc
+                                                </button>
+                                                <ul class="dropdown-menu" id="cboMauSacAdd"
+                                                    aria-labelledby="dropdownMenuButton2">
+                                                </ul>
+                                                <p style="color: red;" id="cboMauSacAddErr"></p>
+                                            </div>
                                         </div>
                                         <div class="icon-container">
-                                            <i class=" bi bi-plus col-3" data-bs-toggle="modal"
-                                               data-bs-target="#ModalHotAddMS" id="iconAddMoreCboMauSac"
+                                            <i class=" bi bi-plus col-3" id="iconAddMoreCboMauSac"
+                                               style="font-size: 25px"></i>
+                                        </div>
+                                        <div class="icon-container">
+                                            <i class=" bi bi-dash col-3" id="iconRemoveMoreCboMauSac"
                                                style="font-size: 25px"></i>
                                         </div>
                                     </div>
@@ -520,7 +525,7 @@
                                                id="iconHotAddKichThuoc"
                                                style="font-size: 25px"></i>
                                         </div>
-                                        <div class="d-flex gap-2" id="kichThuocBox">
+                                        <div class="d-flex flex-wrap gap-2" id="kichThuocBox">
                                             <div class="dropdown">
                                                 <button class="btn btn-outline-secondary dropdown-toggle"
                                                         type="button"
@@ -536,8 +541,11 @@
                                             </div>
                                         </div>
                                         <div class="icon-container">
-                                            <i class=" bi bi-plus col-3" data-bs-toggle="modal"
-                                               data-bs-target="#ModalHotAddKT" id="iconAddMoreCboKichThuoc"
+                                            <i class=" bi bi-plus col-3" id="iconAddMoreCboKichThuoc"
+                                               style="font-size: 25px"></i>
+                                        </div>
+                                        <div class="icon-container">
+                                            <i class=" bi bi-dash col-3" id="iconRemoveMoreCboKichThuoc"
                                                style="font-size: 25px"></i>
                                         </div>
                                     </div>
@@ -698,7 +706,7 @@
 
 <script>
 
-    // change sttlbl add
+    // change sttlbl addl
     const inputElementadd = document.getElementById("trangThaiAdd");
     const labelElementadd = document.getElementById("trangThaiLabeladd");
 
@@ -751,16 +759,19 @@
 <script>
     const lblMauSacAdd = document.getElementById("lblMauSacAdd");
     const lblKichThuocAdd = document.getElementById("lblKichThuocAdd");
-    const lblChatLieuAdd  = document.getElementById("lblChatLieuAdd");
+    const lblChatLieuAdd = document.getElementById("lblChatLieuAdd");
     const lblKieuTayAdd = document.getElementById("lblKieuTayAdd");
     const iconAddMoreCboMauSac = document.getElementById("iconAddMoreCboMauSac");
     const iconAddMoreCboKichThuoc = document.getElementById("iconAddMoreCboKichThuoc");
+    const iconRemoveMoreCboMauSac = document.getElementById("iconRemoveMoreCboMauSac");
+    const iconRemoveMoreCboKichThuoc = document.getElementById("iconRemoveMoreCboKichThuoc");
     let idMauSacAdd = "";
     let idKichThuocAdd = "";
     let idChatLieuAdd = "";
     let idKieuTayAdd = "";
-    let howManyCboMauSac = 5;
+    let howManyCboMauSac = 1;
     let howManyCboKichThuoc = 1;
+
     function refresh(e) {
         e.preventDefault();
         idMauSacAdd = "";
@@ -773,20 +784,22 @@
         lblKieuTayAdd.textContent = "Chọn kiểu tay";
         loadDSSPCT(currentPage);
     }
-    function setMauSacAdd(msString,indx) {
+
+    function setMauSacAdd(msString, indx) {
         const ms = JSON.parse(msString.replace(/&quot;/g, '"'));
         idMauSacAdd = ms.id;
         lblMauSacAdd.textContent = ms.ten;
-        console.log('Selected mau sac ID:', idMauSac);
+        console.log('Selected mau sac ID:', idMauSacAdd);
         console.log('data set index: ', indx);
         // You can add more logic here to handle the selected value
     }
 
-    function setKichThuocAdd(ktString) {
+    function setKichThuocAdd(ktString, indx) {
         const kt = JSON.parse(ktString.replace(/&quot;/g, '"'));
         idKichThuocAdd = kt.id;
         lblKichThuocAdd.textContent = kt.ten;
-        console.log('Selected kich thuoc ID:', idKichThuoc);
+        console.log('Selected kich thuoc ID:', idKichThuocAdd);
+        console.log("test data set:", indx);
         // You can add more logic here to handle the selected value
     }
 
@@ -867,32 +880,35 @@
             .then(resp => {
                 let htmlSearch = '';
                 let htmlCboModalEdit = '';
-                let htmlSet={indx:0,html:""};
-                let htmlCboAdd =[];
+                let htmlSet = {indx: 0, html: ""};
+                let htmlCboAdd = [];
                 resp.map((ms, i) => {
                     const msString = JSON.stringify(ms).replace(/"/g, '&quot;');
                     // htmlSearch += '<li><a class="dropdown-item"  onclick="setMauSac(\'' + msString + '\')">' + ms.ten + '</a></li>';
                     // htmlCboModalEdit += '<li><a class="dropdown-item"  onclick="setMauSacModalEdit(\'' + msString + '\')">' + ms.ten + '</a></li>'
-                    if(i==0){
+                    if (i == 0) {
                         console.log("just one time")
-                        for (let a = 0;a < howManyCboMauSac; a++) {
-                            htmlSet.html = '<li><a class="dropdown-item"  onclick="setMauSacAdd(\'' + msString + '\', a)">' + ms.ten + '</a></li>';
+                        for (let a = 0; a < howManyCboMauSac; a++) {
+                            console.log("test index: ", a);
+                            htmlSet = {indx: 0, html: ""};
+                            htmlSet.html = '<li><a class="dropdown-item"  onclick="setMauSacAdd(\'' + msString + '\', ' + a + ')">' + ms.ten + '</a></li>';
                             htmlSet.indx = a;
                             htmlCboAdd.push(htmlSet);
+                            console.log("test array :", htmlCboAdd)
                         }
-                    }
-                    else{
-                        for (let i = 0; i < htmlCboAdd.length; i++) {
-                             console.log("count loop: ",i);
-                             htmlCboAdd.at(i).html += '<li><a class="dropdown-item"  onclick="setMauSacAdd(\'' + msString + '\',i)">' + ms.ten + '</a></li>';
+                    } else {
+                        for (let b = 0; b < htmlCboAdd.length; b++) {
+                            console.log("count loop: ", b);
+                            htmlCboAdd[b].html += '<li><a class="dropdown-item" onclick="setMauSacAdd(\'' + msString + '\', ' + htmlCboAdd[b].indx + ')">' + ms.ten + '</a></li>';
                         }
                     }
                 });
                 // $("#cboMauSac").html(htmlSearch);
                 for (let i = 0; i < htmlCboAdd.length; i++) {
+                    console.log("test render mausac cbo");
                     $("#cboMauSacAdd" + i).html(htmlCboAdd.at(i).html);
                 }
-    });
+            }).catch(error => console.error('Error loading data:', error));
     }
     loadCboMauSac();
 
@@ -907,44 +923,62 @@
             .then(resp => {
                 let htmlSearch = '';
                 let htmlCboModalEdit = '';
-                let htmlCboAdd = '';
+                let htmlSet = {indx: 0, html: ""};
+                let htmlCboAdd = [];
                 resp.map((kt, i) => {
                     const ktString = JSON.stringify(kt).replace(/"/g, '&quot;');
                     // htmlSearch += '<li><a class="dropdown-item" onclick="setKichThuoc(\'' + ktString + '\')">' + kt.ten + '</a></li>';
                     // htmlCboModalEdit += '<li><a class="dropdown-item" onclick="setKichThuocModalEdit(\'' + ktString + '\')">' + kt.ten + '</a></li>';
-                    htmlCboAdd += '<li><a class="dropdown-item" onclick="setKichThuocAdd(\'' + ktString + '\')">' + kt.ten + '</a></li>';
+                    if (i == 0) {
+                        console.log("just one time")
+                        for (let a = 0; a < howManyCboKichThuoc; a++) {
+                            console.log("test index: ", a);
+                            htmlSet = {indx: 0, html: ""};
+                            htmlSet.html = '<li><a class="dropdown-item"  onclick="setkichThuocAdd(\'' + ktString + '\', ' + a + ')">' + kt.ten + '</a></li>';
+                            htmlSet.indx = a;
+                            htmlCboAdd.push(htmlSet);
+                            console.log("test array :", htmlCboAdd)
+                        }
+                    } else {
+                        for (let b = 0; b < htmlCboAdd.length; b++) {
+                            console.log("count loop: ", b);
+                            htmlCboAdd[b].html += '<li><a class="dropdown-item" onclick="setKichThuocAdd(\'' + ktString + '\', ' + htmlCboAdd[b].indx + ')">' + kt.ten + '</a></li>';
+                        }
+                    }
                 });
-                $("#cboKichThuocAdd").html(htmlCboAdd);
                 // $("#cboKichThuocModalEdit").html(htmlCboModalEdit);
+                for (let i = 0; i < htmlCboAdd.length; i++) {
+                    $("#cboKichThuocAdd" + i).html(htmlCboAdd.at(i).html);
+                }
             });
     }
     loadCboKichThuoc();
 
-    const loadTotalCboMauSac = ()=>{
-        htmlDropdown="";
+    const loadTotalCboMauSac = () => {
+        htmlDropdown = "";
         for (let i = 0; i < howManyCboMauSac; i++) {
-             htmlDropdown+='<div class="dropdown">' +
-                 '<button class="btn btn-outline-secondary dropdown-toggle" ' +
-                 'type="button" ' +
-                 'id="lblMauSacAdd' + i + '" style="width: 150px;" ' +
-                 'data-bs-toggle="dropdown" ' +
-                 'aria-expanded="false">' +
-                 'Chọn màu sắc' +
-                 '</button>' +
-                 '<ul class="dropdown-menu" id="cboMauSacAdd' + i + '" ' +
-                 'aria-labelledby="dropdownMenuButton2">' +
-                 '</ul>' +
-                 '<p style="color: red;" id="cboMauSacAddErr' + i + '"></p>' +
-                 '</div>';
+            htmlDropdown += '<div class="dropdown">' +
+                '<button class="btn btn-outline-secondary dropdown-toggle" ' +
+                'type="button" ' +
+                'id="lblMauSacAdd' + i + '" style="width: 150px;" ' +
+                'data-bs-toggle="dropdown" ' +
+                'aria-expanded="false">' +
+                'Chọn màu sắc' +
+                '</button>' +
+                '<ul class="dropdown-menu" id="cboMauSacAdd' + i + '" ' +
+                'aria-labelledby="dropdownMenuButton2">' +
+                '</ul>' +
+                '<p style="color: red;" id="cboMauSacAddErr' + i + '"></p>' +
+                '</div>';
         }
         $("#mauSacBox").html(htmlDropdown);
     }
     loadTotalCboMauSac();
 
-    const loadTotalCboKichThuoc = ()=>{
+    const loadTotalCboKichThuoc = () => {
         htmlDropdown = "";
         for (let i = 0; i < howManyCboKichThuoc; i++) {
-            htmlDropdown+='<div class="dropdown">' +
+            htmlDropdown += '<div class="dropdown">' +
                 '<button class="btn btn-outline-secondary dropdown-toggle" ' +
                 'type="button" ' +
                 'id="lblKichThuocAdd' + i + '" style="width: 150px;" ' +
@@ -961,6 +995,37 @@
         $("#kichThuocBox").html(htmlDropdown);
     }
     loadTotalCboKichThuoc();
+
+    // iconAdd
+    iconAddMoreCboMauSac.addEventListener('click', function (e) {
+        e.preventDefault();
+        console.log("icon add more");
+        howManyCboMauSac++;
+        loadTotalCboMauSac();
+        loadCboMauSac();
+    });
+    iconAddMoreCboKichThuoc.addEventListener('click', function (e) {
+        e.preventDefault();
+        console.log("icon add more");
+        howManyCboKichThuoc++;
+        loadTotalCboKichThuoc();
+        loadCboKichThuoc();
+    });
+    // iconRemove
+    iconRemoveMoreCboMauSac.addEventListener('click', function (e) {
+        e.preventDefault();
+        console.log("icon add more");
+        howManyCboMauSac--;
+        loadTotalCboMauSac();
+        loadCboMauSac();
+    });
+    iconRemoveMoreCboKichThuoc.addEventListener('click', function (e) {
+        e.preventDefault();
+        console.log("icon add more");
+        howManyCboKichThuoc--;
+        loadTotalCboKichThuoc();
+        loadCboKichThuoc();
+    });
 
 </script>
 <%--end loadingcbo--%>
