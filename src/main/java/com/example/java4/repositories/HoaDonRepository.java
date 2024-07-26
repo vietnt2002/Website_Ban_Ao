@@ -91,6 +91,9 @@ public interface HoaDonRepository
 
     //Sáng  làm
 
+    @Query("select hd.ma from HoaDon hd where hd.idKhachHang.id = ?1 and hd.trangThai = ?2  ")
+    String getMaHoaDon(String idkh, Integer trangThai);
+
     //Tìm kiếm theo mã và sdt
     @Query("SELECT hd FROM HoaDon hd " +
             "LEFT JOIN hd.idKhachHang kh " +

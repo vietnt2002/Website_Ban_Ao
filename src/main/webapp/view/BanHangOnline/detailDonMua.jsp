@@ -142,13 +142,6 @@
             display: none;
         }
 
-        .dropdown:hover .dropdown-menu {
-            display: block;
-            position: absolute;
-            top: 100%;
-            z-index: 1000;
-        }
-
         .totalQuantityCart {
             width: 15px;
             height: 15px;
@@ -445,7 +438,7 @@
             </div>
             <div style="padding-bottom: 150px;">
                 <%-- Trạng thái hóa đơn --%>
-                <div class="mb-5" style="position: absolute; left: 625px; top: 157px;">
+                <div class="mb-5" style="position: absolute; left: 591px; top: 157px;">
                     <c:forEach var="i" items="${listHDCT}" varStatus="index">
                         <c:if test="${index.index == 0}">
                             <span>Mã hóa đơn: ${i.ma}</span> |
@@ -482,10 +475,10 @@
                 <div class="row">
                     <%-- Địa chỉ giao hàng --%>
                     <div class="col-6">
-                        <div class="row d-flex align-items-stretch mb-5" style="position: relative; left: 18px;">
+                        <div class="row d-flex align-items-stretch mb-5 ">
                             <div class="col-12 mb-3 d-flex align-items-stretch">
                                 <div class="card-header d-flex justify-content-between align-items-center">
-                                    <h5>Địa chỉ nhận hàng</h5>
+                                    <h6>Địa chỉ nhận hàng</h6>
                                 </div>
                             </div>
 
@@ -508,6 +501,7 @@
                     <table class="table table-bordered mb-0">
                         <thead class="bg-secondary text-dark">
                         <tr>
+                            <th class="text-center">Ảnh</th>
                             <th class="text-center">Tên sản phẩm</th>
                             <th class="text-center">Số lượng</th>
                             <th class="text-center">Màu sắc</th>
@@ -519,7 +513,8 @@
                         <c:forEach var="i" items="${listHDCT}" varStatus="">
                             <tbody class="">
                             <tr>
-                                <td class=""><img src="/image/${i.hinhAnh1}" alt="" style="width: 50px;">
+                                <td class=""><img src="/image/${i.hinhAnh1}" alt="" style="width: 50px;"></td>
+                                <td class="text-center">
                                         ${i.tenSP}
                                 </td>
                                 <td class="text-center">${i.soLuong}</td>
@@ -542,7 +537,7 @@
                 <div class="row d-flex align-items-stretch" style="text-align: end; position: relative; right: 75px;">
                     <div class="col-4 mb-3 d-flex align-items-stretch">
                         <c:forEach var="i" items="${hoaDon}">
-                            <div class="card-body" style="position: relative; left: 688px   ;">
+                            <div class="card-body" style="position: relative; left: 629px;">
                                 <div class="d-flex justify-content-between mb-3 pt-1">
                                     <h6 class="font-weight-medium">Tổng tiền hàng: </h6>
                                     <h6 class="font-weight-medium" style="font-size: 18px">
@@ -572,7 +567,7 @@
                     <div class="col-12 mb-3 d-flex align-items-stretch">
                         <c:forEach var="i" items="${hoaDon}">
                             <div class="card-footer"
-                                 style="color: red; position: relative; font-size: x-large; left: 788px;">
+                                 style="color: red; position: relative; font-size: x-large; left: 638px;">
                                 <p class="fw-bold mb-1 pb-3 small d-flex justify-content-between">
                         <span>Thành tiền:
                             <fmt:formatNumber value="${i.tongTien}" type="currency" currencySymbol="₫"/>
@@ -693,15 +688,6 @@
 
 <!-- Template Javascript -->
 <script src="/view_ban_hang/js/main.js"></script>
-<script>
-    function showDropdown() {
-        document.getElementById('dropdownContent').style.display = 'block';
-    }
-
-    function hideDropdown() {
-        document.getElementById('dropdownContent').style.display = 'none';
-    }
-</script>
 
 <script>
     document.querySelectorAll('.menu-item > a').forEach(item => {
