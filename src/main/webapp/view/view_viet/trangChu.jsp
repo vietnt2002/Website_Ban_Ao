@@ -231,6 +231,13 @@
             flex: 0 0 33.333333%;
             max-width: 33.333333%;
         }
+        .pagination li.active a {
+            background-color: #007bff;
+            color: white;
+        }
+        .pagination li a {
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -591,12 +598,12 @@
                             <button class="btn border dropdown-toggle" type="button" id="triggerId"
                                     data-toggle="dropdown" aria-haspopup="true"
                                     aria-expanded="false">
-                                Sort by
+                                Sắp sếp theo
                             </button>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="triggerId">
-                                <a class="dropdown-item" href="#">Latest</a>
-                                <a class="dropdown-item" href="#">Popularity</a>
-                                <a class="dropdown-item" href="#">Best Rating</a>
+                                <a class="dropdown-item" id="shortDonGiaTang">Đơn giá tăng dần</a>
+                                <a class="dropdown-item" id="shortDonGiaGiam">Đơn giá giảm dần</a>
+                                <a class="dropdown-item" id="shortTop5">Top 5 sản phẩm bán chạy</a>
                             </div>
                         </div>
                     </div>
@@ -604,7 +611,7 @@
 
                 <div class="container">
                     <div class="row" id="product-container">
-                        <c:forEach varStatus="i" items="${pageSP.content}" var="sp">
+                        <c:forEach varStatus="i" items="${listSanPhamRes}" var="sp">
                             <a href="/cua-hang/detail-san-pham/${sp.idCTSP}" style="text-decoration: none">
                                 <div class="col-lg-4 col-md-6 col-sm-12 pb-1">
                                     <div class="card product-item border-0 mb-2">
@@ -636,45 +643,161 @@
                             </a>
                         </c:forEach>
                     </div>
-                </div>
 
+                </div>
 
                 <div class="col-12 pb-1">
                     <nav aria-label="Page navigation">
-                        <ul class="pagination justify-content-center mb-3" id="pagination">
-                            <c:if test="${pageSP.number > 0}">
-                                <li class="page-item">
-                                    <a class="page-link" href="?page=${pageSP.number - 1}" aria-label="Previous">
-                                        <span aria-hidden="true">&laquo;</span>
-                                        <span class="sr-only">Previous</span>
-                                    </a>
-                                </li>
-                            </c:if>
-
-                            <c:forEach var="i" begin="0" end="${pageSP.totalPages - 1}">
-                                <li class="page-item ${pageSP.number == i ? 'active' : ''}">
-                                    <a class="page-link" href="?page=${i}">${i + 1}</a>
-                                </li>
-                            </c:forEach>
-
-                            <c:if test="${pageSP.number < pageSP.totalPages - 1}">
-                                <li class="page-item">
-                                    <a class="page-link" href="?page=${pageSP.number + 1}" aria-label="Next">
-                                        <span aria-hidden="true">&raquo;</span>
-                                        <span class="sr-only">Next</span>
-                                    </a>
-                                </li>
-                            </c:if>
-                        </ul>
+                        <ul class="pagination justify-content-center mb-3" id="pagination"></ul>
                     </nav>
                 </div>
+
+
             </div>
         </div>
         <!-- Shop Product End -->
     </div>
 </div>
 <!-- Shop End -->
+<script>
+    const products = [];
+    <c:forEach items="${listCTSPRes}" var="ctsp">
+    products.push({
+        idCTSP: '${ctsp.idCTSP}',
+        idSP: '${ctsp.idSP}',
+        maSP: '${ctsp.maSP}',
+        tenSanPham: '${ctsp.tenSanPham}',
+        tenMauSac: '${ctsp.tenMauSac}',
+        tenKichThuoc: '${ctsp.tenKichThuoc}',
+        tenKieuTay: '${ctsp.tenKieuTay}',
+        soLuong: '${ctsp.soLuong}',
+        giaBan: parseFloat('${ctsp.giaBan}'),
+        hinhAnh1: '${ctsp.hinhAnh1}'
+    });
+    </c:forEach>
+    console.log('Initial Products:', products);
+    // Số sản phẩm trên mỗi trang
+    const itemsPerPage = 12;
 
+    // Hàm loại bỏ sản phẩm trùng lặp dựa trên idSP
+    function removeDuplicates(products) {
+        const uniqueProducts = {};
+        products.forEach(product => {
+            if (!uniqueProducts[product.idSP]) {
+                uniqueProducts[product.idSP] = product;
+            }
+        });
+        return Object.values(uniqueProducts);
+    }
+
+    // Hàm để phân trang và cập nhật giao diện
+    function paginateProducts(pageNumber) {
+
+        const uniqueProducts = removeDuplicates(products);
+
+        const totalPages = Math.ceil(uniqueProducts.length / itemsPerPage);
+
+        const startIndex = (pageNumber - 1) * itemsPerPage;
+        const endIndex = Math.min(startIndex + itemsPerPage, uniqueProducts.length);
+
+        const pageProducts = uniqueProducts.slice(startIndex, endIndex);
+
+        let productHtml = '';
+        pageProducts.forEach(product => {
+            productHtml +=
+                '<div class="col-lg-4 col-md-6 col-sm-12 pb-1">' +
+                '<div class="card product-item border-0 mb-2">' +
+                '<div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">' +
+                '<img style="width: 100%; height: 370px;" class="img-fluid w-100" src="/image/' + product.hinhAnh1 + '" alt="">' +
+                '</div>' +
+                '<div class="card-body border-left border-right text-center p-0 pt-4 pb-3" style="margin-top: -10px; margin-bottom: -12px">' +
+                '<h6 class="text-truncate mb-2">' + product.tenSanPham + '</h6>' +
+                '<h6 class="text-truncate mb-2" style="font-family: auto">' + product.maSP + '</h6>' +
+                '</div>' +
+                '<div class="card-footer d-flex justify-content-between bg-light border float-start" style="margin-top: -3px; margin-bottom: -3px">' +
+                '<div class="d-flex justify-content-center mb-0" style="margin-bottom: 3px">' +
+                '<h6>' +
+                '<span>' + formatCurrency(product.giaBan) + '</span>' +
+                '</h6>' +
+                '</div>' +
+                '<a href="/cua-hang/detail-san-pham/' + product.idCTSP + '" class="btn btn-sm text-dark p-0">' +
+                '<i class="fas fa-eye text-primary mr-1"></i>Chi tiết' +
+                '</a>' +
+                '</div>' +
+                '</div>' +
+                '</div>';
+        });
+
+        document.getElementById('product-container').innerHTML = productHtml;
+
+        // Cập nhật phân trang
+        let paginationHtml = '';
+        if (pageNumber > 1) {
+            paginationHtml +=
+                '<li class="page-item">' +
+                '<a class="page-link" href="#" onclick="paginate(' + (pageNumber - 1) + '); return false;" aria-label="Previous">' +
+                '<span aria-hidden="true">&laquo;</span>' +
+                '<span class="sr-only">Previous</span>' +
+                '</a>' +
+                '</li>';
+        } else {
+            paginationHtml +=
+                '<li class="page-item disabled">' +
+                '<a class="page-link" href="#" aria-label="Previous">' +
+                '<span aria-hidden="true">&laquo;</span>' +
+                '<span class="sr-only">Previous</span>' +
+                '</a>' +
+                '</li>';
+        }
+
+        for (let i = 1; i <= totalPages; i++) {
+            paginationHtml +=
+                '<li class="page-item ' + (i === pageNumber ? 'active' : '') + '">' +
+                '<a class="page-link" href="#" onclick="paginate(' + i + '); return false;">' + i + '</a>' +
+                '</li>';
+        }
+
+        if (pageNumber < totalPages) {
+            paginationHtml +=
+                '<li class="page-item">' +
+                '<a class="page-link" href="#" onclick="paginate(' + (pageNumber + 1) + '); return false;" aria-label="Next">' +
+                '<span aria-hidden="true">&raquo;</span>' +
+                '<span class="sr-only">Next</span>' +
+                '</a>' +
+                '</li>';
+        } else {
+            paginationHtml +=
+                '<li class="page-item disabled">' +
+                '<a class="page-link" href="#" aria-label="Next">' +
+                '<span aria-hidden="true">&raquo;</span>' +
+                '<span class="sr-only">Next</span>' +
+                '</a>' +
+                '</li>';
+        }
+
+        document.getElementById('pagination').innerHTML = paginationHtml;
+    }
+
+    // Hàm định dạng giá
+    function formatCurrency(value) {
+        return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value);
+    }
+
+    // Hàm phân trang
+    function paginate(pageNumber) {
+        paginateProducts(pageNumber);
+    }
+
+    // Khởi đầu với trang 1
+    document.addEventListener('DOMContentLoaded', () => {
+        requestAnimationFrame(() => {
+            paginateProducts(1);
+            paginate(1);
+        });
+    });
+</script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
@@ -694,6 +817,33 @@
         });
         </c:forEach>
 
+        const listCTHD = [];
+        <c:forEach items="${listCTHDByTT}" var="cthd">
+        listCTHD.push({
+            id: '${cthd.id}',
+            idCTSP: '${cthd.idCTSP.id}',
+            idSP: '${cthd.idCTSP.idSanPham.id}',
+            soLuong: parseInt('${cthd.soLuong}', 10)
+        });
+        </c:forEach>
+
+        // Tính tổng số lượng cho từng idSP
+        const totalQuantities = {};
+        listCTHD.forEach(cthd => {
+            if (!totalQuantities[cthd.idSP]) {
+                totalQuantities[cthd.idSP] = 0;
+            }
+            totalQuantities[cthd.idSP] += cthd.soLuong;
+        });
+
+        // Chuyển đổi totalQuantities sang mảng và sắp xếp theo số lượng từ cao xuống thấp
+        const sortedTotalQuantities = Object.entries(totalQuantities)
+            .map(([idSP, soLuong]) => ({ idSP, soLuong }))
+            .sort((a, b) => b.soLuong - a.soLuong);
+
+        // Lấy top 5 sản phẩm có số lượng từ cao xuống thấp
+        const top5Products = sortedTotalQuantities.slice(0, 5).map(item => item.idSP);
+
         const colorFilters = document.querySelectorAll('.color-filter');
         const sizeFilters = document.querySelectorAll('.size-filter');
         const styleFilters = document.querySelectorAll('.style-filter');
@@ -704,8 +854,8 @@
             const selectedColors = Array.from(colorFilters).filter(cb => cb.checked).map(cb => cb.value);
             const selectedSizes = Array.from(sizeFilters).filter(cb => cb.checked).map(cb => cb.value);
             const selectedStyles = Array.from(styleFilters).filter(cb => cb.checked).map(cb => cb.value);
-            const minPrice = parseFloat(minPriceInput.value);
-            const maxPrice = parseFloat(maxPriceInput.value);
+            const minPrice = parseFloat(minPriceInput.value) || 0;
+            const maxPrice = parseFloat(maxPriceInput.value) || Infinity;
 
             const filteredProducts = products.filter(product => {
                 const matchesColor = selectedColors.length === 0 || selectedColors.includes(product.tenMauSac);
@@ -715,6 +865,7 @@
                 return matchesColor && matchesSize && matchesStyle && matchesPrice;
             });
 
+            // Loại bỏ các sản phẩm có idSP trùng lặp
             const uniqueProducts = [];
             const seenSPIds = new Set();
             for (const product of filteredProducts) {
@@ -724,13 +875,14 @@
                 }
             }
 
-            displayProducts(uniqueProducts);
+            return uniqueProducts;
         };
 
         const displayProducts = (products) => {
             const productContainer = document.getElementById('product-container');
             productContainer.innerHTML = '';
             products.forEach(sp => {
+                const soldQuantity = totalQuantities[sp.idSP] || 0;
                 const productHTML =
                     '<a href="/cua-hang/detail-san-pham/' + sp.idCTSP + '" style="text-decoration: none">' +
                     '<div class="col-lg-4 col-md-6 col-sm-12 pb-1 custom-col">' +
@@ -741,11 +893,12 @@
                     '<div class="card-body border-left border-right text-center p-0 pt-4 pb-3" style="margin-top: -10px; margin-bottom: -12px">' +
                     '<h6 class="text-truncate mb-2">' + sp.tenSanPham + '</h6>' +
                     '<h6 class="text-truncate mb-2" style="font-family: auto">' + sp.maSP + '</h6>' +
+                    '<p class="text-truncate mb-2">Đã bán: ' + soldQuantity + '</p>' +
                     '</div>' +
                     '<div class="card-footer d-flex justify-content-between bg-light border float-start" style="margin-top: -3px; margin-bottom: -3px">' +
                     '<div class="d-flex justify-content-center mb-0" style="margin-bottom: 3px">' +
                     '<h6>' +
-                    new Intl.NumberFormat('vi-VN', {style: 'currency', currency: 'VND'}).format(sp.giaBan) +
+                    new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(sp.giaBan) +
                     '<span style="font-size: 16px; text-decoration: underline"></span>' +
                     '</h6>' +
                     '</div>' +
@@ -760,14 +913,36 @@
             });
         };
 
-        colorFilters.forEach(cb => cb.addEventListener('change', filterProducts));
-        sizeFilters.forEach(cb => cb.addEventListener('change', filterProducts));
-        styleFilters.forEach(cb => cb.addEventListener('change', filterProducts));
-        minPriceInput.addEventListener('input', filterProducts);
-        maxPriceInput.addEventListener('input', filterProducts);
+        const sortProductsByPriceAscending = () => {
+            const sortedProducts = filterProducts().sort((a, b) => a.giaBan - b.giaBan);
+            displayProducts(sortedProducts);
+        };
+
+        const sortProductsByPriceDescending = () => {
+            const sortedProducts = filterProducts().sort((a, b) => b.giaBan - a.giaBan);
+            displayProducts(sortedProducts);
+        };
+
+        const displayTop5Products = () => {
+            const filteredProducts = filterProducts();
+            const top5FilteredProducts = filteredProducts
+                .filter(product => top5Products.includes(product.idSP))
+                .sort((a, b) => totalQuantities[b.idSP] - totalQuantities[a.idSP]);
+            displayProducts(top5FilteredProducts);
+        };
+
+        document.getElementById('shortDonGiaTang').addEventListener('click', sortProductsByPriceAscending);
+        document.getElementById('shortDonGiaGiam').addEventListener('click', sortProductsByPriceDescending);
+        document.getElementById('shortTop5').addEventListener('click', displayTop5Products);
+
+        colorFilters.forEach(cb => cb.addEventListener('change', () => displayProducts(filterProducts())));
+        sizeFilters.forEach(cb => cb.addEventListener('change', () => displayProducts(filterProducts())));
+        styleFilters.forEach(cb => cb.addEventListener('change', () => displayProducts(filterProducts())));
+        minPriceInput.addEventListener('input', () => displayProducts(filterProducts()));
+        maxPriceInput.addEventListener('input', () => displayProducts(filterProducts()));
 
         // Initial display
-        filterProducts();
+        displayProducts(filterProducts());
     });
 </script>
 
