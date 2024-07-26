@@ -759,7 +759,7 @@
     let idKichThuocAdd = "";
     let idChatLieuAdd = "";
     let idKieuTayAdd = "";
-    let howManyCboMauSac = 1;
+    let howManyCboMauSac = 5;
     let howManyCboKichThuoc = 1;
     function refresh(e) {
         e.preventDefault();
@@ -777,7 +777,7 @@
         const ms = JSON.parse(msString.replace(/&quot;/g, '"'));
         idMauSacAdd = ms.id;
         lblMauSacAdd.textContent = ms.ten;
-        console.log('Selected mau sac ID:', idMauSacAdd);
+        console.log('Selected mau sac ID:', idMauSac);
         console.log('data set index: ', indx);
         // You can add more logic here to handle the selected value
     }
@@ -856,6 +856,8 @@
 
     const loadCboMauSac = () => {
         let datatest = "data testing";
+
+        let data = [];
         fetch("/mau-sac/index", {
             headers: {
                 'Accept': 'application/json',
@@ -865,17 +867,32 @@
             .then(resp => {
                 let htmlSearch = '';
                 let htmlCboModalEdit = '';
-                let htmCboAdd = '';
+                let htmlSet={indx:0,html:""};
+                let htmlCboAdd =[];
                 resp.map((ms, i) => {
                     const msString = JSON.stringify(ms).replace(/"/g, '&quot;');
                     // htmlSearch += '<li><a class="dropdown-item"  onclick="setMauSac(\'' + msString + '\')">' + ms.ten + '</a></li>';
                     // htmlCboModalEdit += '<li><a class="dropdown-item"  onclick="setMauSacModalEdit(\'' + msString + '\')">' + ms.ten + '</a></li>'
-                    htmCboAdd += '<li><a class="dropdown-item"  onclick="setMauSacAdd(\'' + msString + '\',1)">' + ms.ten + '</a></li>'
+                    if(i==0){
+                        console.log("just one time")
+                        for (let a = 0;a < howManyCboMauSac; a++) {
+                            htmlSet.html = '<li><a class="dropdown-item"  onclick="setMauSacAdd(\'' + msString + '\', a)">' + ms.ten + '</a></li>';
+                            htmlSet.indx = a;
+                            htmlCboAdd.push(htmlSet);
+                        }
+                    }
+                    else{
+                        for (let i = 0; i < htmlCboAdd.length; i++) {
+                             console.log("count loop: ",i);
+                             htmlCboAdd.at(i).html += '<li><a class="dropdown-item"  onclick="setMauSacAdd(\'' + msString + '\',i)">' + ms.ten + '</a></li>';
+                        }
+                    }
                 });
                 // $("#cboMauSac").html(htmlSearch);
-                $("#cboMauSacAdd0").html(htmCboAdd);
-                // $("#cboMauSacModalEdit").html(htmlCboModalEdit);
-            });
+                for (let i = 0; i < htmlCboAdd.length; i++) {
+                    $("#cboMauSacAdd" + i).html(htmlCboAdd.at(i).html);
+                }
+    });
     }
     loadCboMauSac();
 
