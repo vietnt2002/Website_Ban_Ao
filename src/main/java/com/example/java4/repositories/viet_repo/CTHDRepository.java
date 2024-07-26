@@ -29,4 +29,7 @@ public interface CTHDRepository extends JpaRepository<ChiTietHoaDon, String> {
             "where hd.id = ?1 and cthd.trangThai = ?2 ")
     List<CTHDResponse> getAllCTHDByIdHDAndTrangThai(String idHD, Integer trangThai);
 
+    @Query("select cthd from ChiTietHoaDon cthd where cthd.trangThai = ?1")
+    List<ChiTietHoaDon> getAllCTHDByTrangThai(Integer trangThai);
+
 }

@@ -1,11 +1,13 @@
 package com.example.java4.controller.QLSP;
 
+import com.example.java4.controller.ATrangChu.SanPhamCard;
 import com.example.java4.entities.ChiTietSanPham;
 import com.example.java4.entities.noMap.ChiTietSanPhamNoMap;
 import com.example.java4.repositories.*;
 import com.example.java4.repositories.NoMap.SPCTRepoNoMap;
 import com.example.java4.request.QLSP.Store.SPCTStore;
 import com.example.java4.request.QLSP.Update.SPCTUpdate;
+import com.example.java4.response.SPCTResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -17,9 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 @RequestMapping("chi-tiet-sp")
@@ -39,7 +39,8 @@ public class SPCTController {
     SPCTRepoNoMap spctRepoNoMap;
     @Autowired
     private SearchService search;
-
+    @Autowired
+    HinhAnhRepository hinhAnhRepo;
     public SPCTController() {
     }
 
@@ -196,5 +197,28 @@ public class SPCTController {
     public ResponseEntity<List<ChiTietSanPham>> searchChiTietSanPham(@RequestParam Map<String, Object> params) {
         List<ChiTietSanPham> chiTietSanPhams = search.searchChiTietSanPham(params);
         return ResponseEntity.ok(chiTietSanPhams);
+    }
+    @GetMapping("/search1")
+    public ResponseEntity<List<SPCTResponse>> searchIdSP(@RequestParam Map<String, Object> params) {
+        List<ChiTietSanPham> chiTietSanPhams = search.searchChiTietSPCT(params);
+        Set<String> processedIds = new HashSet<>();
+        List<SPCTResponse> lstSpct = new ArrayList<>();
+        for (ChiTietSanPham chiTietSanPham : chiTietSanPhams) {
+            String sanPhamId = chiTietSanPham.getIdSanPham().getId();
+            if (chiTietSanPham.getSoLuong() > 0 && !processedIds.contains(sanPhamId)) {
+                 SPCTResponse  spctResponse = new SPCTResponse();
+                 spctResponse.setIdCTSP(chiTietSanPham.getId());
+                 spctResponse.setIdSP(chiTietSanPham.getIdSanPham().getId());
+                 spctResponse.setMaSP(chiTietSanPham.getIdSanPham().getMa());
+                 spctResponse.setTenSP(chiTietSanPham.getIdSanPham().getTen());
+                 spctResponse.setTenKieuTay(chiTietSanPham.getIdKieuTay().getTen());
+                 spctResponse.setGiaBan(chiTietSanPham.getGiaBan());
+                 spctResponse.setHinhAnh1(hinhAnhRepo.findMinHinhAnhByCTSP(chiTietSanPham.getId()));
+                 lstSpct.add(spctResponse);
+                 processedIds.add(sanPhamId);
+                 System.out.println("spctresponse: "+spctResponse);
+            }
+        }
+        return ResponseEntity.ok(lstSpct);
     }
 }
