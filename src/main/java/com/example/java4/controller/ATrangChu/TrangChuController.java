@@ -103,6 +103,7 @@ public class TrangChuController {
             System.out.println("crette dto");
             model.addAttribute("khachHangDTO", new KhachHangDTO());
         }
+
         Pageable pageable = PageRequest.of(page, 12);
 
         Page<SPCTResponse> pageSP;
@@ -111,6 +112,7 @@ public class TrangChuController {
 //        } else {
             pageSP = spctRepo.getAllSP(pageable);
 //        }
+
 
         model.addAttribute("pageSP", pageSP);
         model.addAttribute("soLuong", hdctRepo.findByKHnStt(khachHangRepo.findByIdKH(UserInfor.idKhachHang)));
@@ -450,7 +452,11 @@ public class TrangChuController {
     @PostMapping("/them-dia-chi")
     public String themDiaChiByidKH(DiaChiRequest request, @RequestParam("tenTinhThanh") String idTinh,
                                    @RequestParam("tenQuanHuyen") String idQuan,
-                                   @RequestParam("tenPhuongXa") String idPhuong, RedirectAttributes redirectAttributes) {
+                                   @RequestParam("tenPhuongXa") String idPhuong,
+                                   @RequestParam("idTinhThanh") Integer idTinhThanh,
+                                   @RequestParam("idQuanHuyen") Integer idQuanHuyen,
+                                   @RequestParam("idPX") String idPX,
+                                   RedirectAttributes redirectAttributes) {
         KhachHang khachHang = khachHangRepo.findByIdKH(UserInfor.idKhachHang);
         listDiaChi = diaChiRepo.getAllDiaChi(UserInfor.idKhachHang);
 
@@ -462,6 +468,11 @@ public class TrangChuController {
         diaChi.setIdQuanHuyen(idQuan);
         diaChi.setIdPhuongXa(idPhuong);
         diaChi.setIdKhachHang(khachHang);
+        //
+        diaChi.setIdT(idTinhThanh);
+        diaChi.setIdQH(idQuanHuyen);
+        diaChi.setIdPX(idPX);
+        //
         if (listDiaChi != null && !listDiaChi.isEmpty()) {
             diaChi.setTrangThai(DiaChiRepository.TUY_CHON);
         } else {
@@ -475,7 +486,11 @@ public class TrangChuController {
     @PostMapping("/cap-nhat-dia-chi/{id}")
     public String suaDiaChiByidKH(DiaChiRequest request, @PathVariable("id") String id, @RequestParam("tenTinh") String idTinh,
                                   @RequestParam("tenQuan") String idQuan,
-                                  @RequestParam("tenPhuong") String idPhuong, RedirectAttributes redirectAttributes) {
+                                  @RequestParam("tenPhuong") String idPhuong,
+                                  @RequestParam("idTinh") Integer idT,
+                                  @RequestParam("idQuan") Integer idQH,
+                                  @RequestParam("idPhuong") String idPX,
+                                  RedirectAttributes redirectAttributes) {
         DiaChi diaChi = diaChiRepo.findById(id).get();
         System.out.println(id);
         System.out.println(idTinh);
@@ -487,6 +502,11 @@ public class TrangChuController {
         diaChi.setIdTinhThanh(idTinh);
         diaChi.setIdQuanHuyen(idQuan);
         diaChi.setIdPhuongXa(idPhuong);
+
+        diaChi.setIdT(idT);
+        diaChi.setIdQH(idQH);
+        diaChi.setIdPX(idPX);
+
         diaChiRepo.save(diaChi);
         redirectAttributes.addFlashAttribute("successMessage", "Cập nhật địa chỉ thành công");
         return "redirect:/cua-hang/dia-chi";
