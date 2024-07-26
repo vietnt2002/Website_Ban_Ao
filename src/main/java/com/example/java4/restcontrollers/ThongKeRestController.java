@@ -75,6 +75,21 @@ public class ThongKeRestController {
     }
 
 
+    @GetMapping("/tu-ngay-den-ngay")
+    public ResponseEntity<List<Map<String, Object>>> getCustomDateRangeStatistics(
+            @RequestParam String startDateStr, @RequestParam String endDateStr) {
+        try {
+            LocalDateTime startDate = LocalDate.parse(startDateStr).atStartOfDay();
+            LocalDateTime endDate = LocalDate.parse(endDateStr).atTime(23, 59, 59);
+            List<Object[]> results = thongKeRepository.getCustomDateRangeStatistics(startDate, endDate);
+            List<Map<String, Object>> statistics = mapResultsToStatistics(results);
+            return ResponseEntity.ok(statistics);
+        } catch (DateTimeParseException e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
+
+
     @GetMapping("/tuy-chinh")
     public ResponseEntity<Map<String, Object>> getCustomStatistics(
             @RequestParam("startDate") String startDateStr,

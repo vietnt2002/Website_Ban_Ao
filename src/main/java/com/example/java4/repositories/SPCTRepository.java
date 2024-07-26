@@ -110,16 +110,6 @@ public interface SPCTRepository extends JpaRepository<ChiTietSanPham, String>, J
             "GROUP BY  sp.id, sp.ma, sp.ten, kta.ten, ctsp.giaBan, ha.hinhAnh1")
     Page<SPCTResponse> listPageSP(@Param("search") String search, Pageable pageable);
 
-
-    //Lấy danh sách màu sắc, kích thước, số lượng để sang js lọc
-//    @Query("select new com.example.java4.response.MauSizeSL (kth.ten, ms.ten, ctsp.soLuong) " +
-//            "from ChiTietSanPham ctsp " +
-//            "join KichThuoc kth on kth.id = ctsp.idKichThuoc.id " +
-//            "join SanPham sp on sp.id = ctsp.idSanPham.id " +
-//            "join MauSac ms on ms.id = ctsp.idMauSac.id " +
-//            "where sp.id = ?1")
-//    List<MauSizeSL> getListMauSizeSL(String idSP);
-
     //Lấy danh sách màu sắc, kích thước, số lượng để sang js lọc
     @Query("select new com.example.java4.response.MauSizeSL (ha.hinhAnh1, ha.hinhAnh2, ha.hinhAnh3, kth.ten, ms.ten, ctsp.soLuong) " +
             "from ChiTietSanPham ctsp " +

@@ -155,13 +155,6 @@
             display: none;
         }
 
-        .dropdown:hover .dropdown-menu {
-            display: block;
-            position: absolute;
-            top: 100%;
-            z-index: 1000;
-        }
-
         .totalQuantityCart {
             width: 15px;
             height: 15px;
@@ -838,6 +831,8 @@
 
 
 
+
+
     <%--Validate Form hồ sơ cá nhân--%>
     $(document).ready(function () {
         $('#updateProfileForm').submit(function (event) {
@@ -951,159 +946,6 @@
 
     document.addEventListener('DOMContentLoaded', previewImage);
 
-    function showDropdown() {
-        document.getElementById('dropdownContent').style.display = 'block';
-    }
-
-    function hideDropdown() {
-        document.getElementById('dropdownContent').style.display = 'none';
-    }
-
-    //Sửa địa chỉ
-    $(document).ready(function () {
-        var token = '4787bafa-2157-11ef-a90d-aaf29aa34580';
-
-        function getJSONWithToken(url, callback) {
-            $.ajax({
-                url: url,
-                headers: {
-                    'Token': token
-                },
-                success: callback,
-                error: function (xhr, status, error) {
-                    console.error("Lỗi: " + error);
-                }
-            });
-        }
-
-        $('body').on('show.bs.modal', '.modal', function () {
-
-            var modalId = $(this).attr('id');
-            var provinceSelect = $("#" + modalId + " select[name='tenTT']");
-            var districtSelect = $("#" + modalId + " select[name='tenQH']");
-            var wardSelect = $("#" + modalId + " select[name='tenPX']");
-
-            // Gọi API để lấy danh sách tỉnh/thành phố
-            getJSONWithToken('https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/province', function (data_tinh) {
-                // Đổ danh sách tỉnh/thành phố vào dropdown
-                data_tinh.data.sort(function (a, b) {
-                    return a.ProvinceID - b.ProvinceID;
-                });
-                $.each(data_tinh.data, function (key_tinh, val_tinh) {
-                    provinceSelect.append('<option value="' + val_tinh.ProvinceID + '" name="' + val_tinh.ProvinceName + '">' + val_tinh.ProvinceName + '</option>');
-                });
-
-                provinceSelect.change(function (e) {
-                    var idtinh = $(this).val();
-
-                    // Lấy quận huyện
-                    getJSONWithToken('https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/district?province_id=' + idtinh, function (data_quan) {
-                        districtSelect.html('<option value="0">Quận Huyện</option>');
-                        wardSelect.html('<option value="0">Phường Xã</option>');
-                        $.each(data_quan.data, function (key_quan, val_quan) {
-                            districtSelect.append('<option value="' + val_quan.DistrictID + '">' + val_quan.DistrictName + '</option>');
-                        });
-
-                        // Lấy phường xã
-                        districtSelect.change(function (e) {
-                            var idquan = $(this).val();
-                            getJSONWithToken('https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id=' + idquan, function (data_phuong) {
-                                wardSelect.html('<option value="0">Phường Xã</option>');
-                                $.each(data_phuong.data, function (key_phuong, val_phuong) {
-                                    wardSelect.append('<option value="' + val_phuong.WardCode + '">' + val_phuong.WardName + '</option>');
-                                });
-                            });
-                        });
-                    });
-                });
-            });
-        });
-        $('form[id^="suaDiaChi"]').submit(function (e) {
-            var modalId = $(this).closest('.modal').attr('id');
-            var tenTinh = $("#" + modalId + " select[name='tenTT'] option:selected").text();
-            var tenQuan = $("#" + modalId + " select[name='tenQH'] option:selected").text();
-            var tenPhuong = $("#" + modalId + " select[name='tenPX'] option:selected").text();
-
-            $("<input>").attr({
-                type: "hidden",
-                name: "tenTinh",
-                value: tenTinh
-            }).appendTo(this);
-
-            $("<input>").attr({
-                type: "hidden",
-                name: "tenQuan",
-                value: tenQuan
-            }).appendTo(this);
-
-            $("<input>").attr({
-                type: "hidden",
-                name: "tenPhuong",
-                value: tenPhuong
-            }).appendTo(this);
-
-            return true;
-        });
-    });
-
-    //Check validate cập nhật địa chỉ
-    $(document).ready(function () {
-        // Lắng nghe sự kiện submit form
-        $('form[id^="suaDiaChi"]').submit(function (e) {
-            var modalId = $(this).closest('.modal').attr('id');
-            var isValid = true;
-
-            // Reset thông báo lỗi
-            $("#" + modalId + " .error-message").text('');
-
-            // Validate Họ tên
-            var tenNguoiNhan = $("#" + modalId + " input[name='tenNguoiNhan']").val().trim();
-            if (tenNguoiNhan === '') {
-                $("#" + modalId + " input[name='tenNguoiNhan']").next('.error-message').text('Vui lòng nhập họ tên');
-                isValid = false;
-            }
-
-            // Validate Số điện thoại
-            var sdtNguoiNhan = $("#" + modalId + " input[name='sdtNguoiNhan']").val().trim();
-            if (sdtNguoiNhan === '') {
-                $("#" + modalId + " input[name='sdtNguoiNhan']").next('.error-message').text('Vui lòng nhập số điện thoại');
-                isValid = false;
-            }
-
-            // Validate địa chỉ chi tiết
-            var diaChiChiTiet = $("#" + modalId + " input[name='diaChiChiTiet']").val().trim();
-            if (diaChiChiTiet === '') {
-                $("#" + modalId + " input[name='diaChiChiTiet']").next('.error-message').text('Vui lòng nhập địa chỉ chi tiết');
-                isValid = false;
-            }
-
-            // Validate Tỉnh/Thành phố
-            var tenTT = $("#" + modalId + " select[name='tenTT']").val();
-            if (!tenTT || tenTT === '0') {
-                $("#" + modalId + " select[name='tenTT']").next('.error-message').text('Vui lòng chọn Tỉnh/Thành phố');
-                isValid = false;
-            }
-
-            // Validate Quận/Huyện
-            var tenQH = $("#" + modalId + " select[name='tenQH']").val();
-            if (!tenQH || tenQH === '0') {
-                $("#" + modalId + " select[name='tenQH']").next('.error-message').text('Vui lòng chọn Quận/Huyện');
-                isValid = false;
-            }
-
-            // Validate Phường/Xã
-            var tenPX = $("#" + modalId + " select[name='tenPX']").val();
-            if (!tenPX || tenPX === '0') {
-                $("#" + modalId + " select[name='tenPX']").next('.error-message').text('Vui lòng chọn Phường/Xã');
-                isValid = false;
-            }
-
-            // Nếu các trường đều hợp lệ, tiến hành submit form
-            return isValid;
-        });
-    });
-
-
     //Thêm địa chỉ
     $(document).ready(function () {
         var token = '4787bafa-2157-11ef-a90d-aaf29aa34580';
@@ -1205,6 +1047,38 @@
                 var tenQuanHuyen = $("#quanHuyen option:selected").text();
                 var tenPhuongXa = $("#phuongXa option:selected").text();
 
+                var idTinhThanh = $("#tinhThanh").val();
+                var idQuanHuyen = $("#quanHuyen").val();
+                var idPX = $("#phuongXa").val();
+
+                console.log("ten tỉnh: " + tenTinhThanh);
+                console.log("ten quận huyện: " + tenQuanHuyen);
+                console.log("ten phường xã: " + tenPhuongXa);
+
+                console.log("id tỉnh: " + idTinhThanh);
+                console.log("id qh: " + idQuanHuyen);
+                console.log("id px: " + idPX);
+
+                //test thêm mới
+                $("<input>").attr({
+                    type: "hidden",
+                    name: "idTinhThanh",
+                    value: idTinhThanh
+                }).appendTo("#themDiaChi");
+
+                $("<input>").attr({
+                    type: "hidden",
+                    name: "idQuanHuyen",
+                    value: idQuanHuyen
+                }).appendTo("#themDiaChi");
+
+                $("<input>").attr({
+                    type: "hidden",
+                    name: "idPX",
+                    value: idPX
+                }).appendTo("#themDiaChi");
+                //
+
                 $("<input>").attr({
                     type: "hidden",
                     name: "tenTinhThanh",
@@ -1225,6 +1099,181 @@
 
                 $("#themDiaChi").submit();
             }
+        });
+    });
+
+    //Sửa địa chỉ
+    $(document).ready(function () {
+        var token = '4787bafa-2157-11ef-a90d-aaf29aa34580';
+
+        function getJSONWithToken(url, callback) {
+            $.ajax({
+                url: url,
+                headers: {
+                    'Token': token
+                },
+                success: callback,
+                error: function (xhr, status, error) {
+                    console.error("Lỗi: " + error);
+                }
+            });
+        }
+
+        $('body').on('show.bs.modal', '.modal', function () {
+
+            var modalId = $(this).attr('id');
+            var provinceSelect = $("#" + modalId + " select[name='tenTT']");
+            var districtSelect = $("#" + modalId + " select[name='tenQH']");
+            var wardSelect = $("#" + modalId + " select[name='tenPX']");
+
+            // Gọi API để lấy danh sách tỉnh/thành phố
+            getJSONWithToken('https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/province', function (data_tinh) {
+                // Đổ danh sách tỉnh/thành phố vào dropdown
+                data_tinh.data.sort(function (a, b) {
+                    return a.ProvinceID - b.ProvinceID;
+                });
+                $.each(data_tinh.data, function (key_tinh, val_tinh) {
+                    provinceSelect.append('<option value="' + val_tinh.ProvinceID + '" name="' + val_tinh.ProvinceName + '">' + val_tinh.ProvinceName + '</option>');
+                });
+
+                provinceSelect.change(function (e) {
+                    var idtinh = $(this).val();
+
+                    // Lấy quận huyện
+                    getJSONWithToken('https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/district?province_id=' + idtinh, function (data_quan) {
+                        districtSelect.html('<option value="0">Quận Huyện</option>');
+                        wardSelect.html('<option value="0">Phường Xã</option>');
+                        $.each(data_quan.data, function (key_quan, val_quan) {
+                            districtSelect.append('<option value="' + val_quan.DistrictID + '">' + val_quan.DistrictName + '</option>');
+                        });
+
+                        // Lấy phường xã
+                        districtSelect.change(function (e) {
+                            var idquan = $(this).val();
+                            getJSONWithToken('https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id=' + idquan, function (data_phuong) {
+                                wardSelect.html('<option value="0">Phường Xã</option>');
+                                $.each(data_phuong.data, function (key_phuong, val_phuong) {
+                                    wardSelect.append('<option value="' + val_phuong.WardCode + '">' + val_phuong.WardName + '</option>');
+                                });
+                            });
+                        });
+                    });
+                });
+            });
+        });
+        $('form[id^="suaDiaChi"]').submit(function (e) {
+            var modalId = $(this).closest('.modal').attr('id');
+            var tenTinh = $("#" + modalId + " select[name='tenTT'] option:selected").text();
+            var tenQuan = $("#" + modalId + " select[name='tenQH'] option:selected").text();
+            var tenPhuong = $("#" + modalId + " select[name='tenPX'] option:selected").text();
+
+            var idTinh = $("#" + modalId + " select[name='tenTT']").val();
+            var idQuan = $("#" + modalId + " select[name='tenQH']").val();
+            var idPhuong = $("#" + modalId + " select[name='tenPX']").val();
+
+            console.log("tên tỉnh:" + tenTinh);
+            console.log("tên quận:" + tenQuan);
+            console.log("tên phường:" + tenPhuong);
+            console.log("id tỉnh:" + idTinh);
+            console.log("id quận:" + idQuan);
+            console.log("id phường:" + idPhuong);
+
+            //Lấy id
+            $("<input>").attr({
+                type: "hidden",
+                name: "idTinh",
+                value: idTinh
+            }).appendTo(this);
+
+            $("<input>").attr({
+                type: "hidden",
+                name: "idQuan",
+                value: idQuan
+            }).appendTo(this);
+
+            $("<input>").attr({
+                type: "hidden",
+                name: "idPhuong",
+                value: idPhuong
+            }).appendTo(this);
+            //
+
+            $("<input>").attr({
+                type: "hidden",
+                name: "tenTinh",
+                value: tenTinh
+            }).appendTo(this);
+
+            $("<input>").attr({
+                type: "hidden",
+                name: "tenQuan",
+                value: tenQuan
+            }).appendTo(this);
+
+            $("<input>").attr({
+                type: "hidden",
+                name: "tenPhuong",
+                value: tenPhuong
+            }).appendTo(this);
+
+            return true;
+        });
+    });
+
+    //Check validate cập nhật địa chỉ
+    $(document).ready(function () {
+        // Lắng nghe sự kiện submit form
+        $('form[id^="suaDiaChi"]').submit(function (e) {
+            var modalId = $(this).closest('.modal').attr('id');
+            var isValid = true;
+
+            // Reset thông báo lỗi
+            $("#" + modalId + " .error-message").text('');
+
+            // Validate Họ tên
+            var tenNguoiNhan = $("#" + modalId + " input[name='tenNguoiNhan']").val().trim();
+            if (tenNguoiNhan === '') {
+                $("#" + modalId + " input[name='tenNguoiNhan']").next('.error-message').text('Vui lòng nhập họ tên');
+                isValid = false;
+            }
+
+            // Validate Số điện thoại
+            var sdtNguoiNhan = $("#" + modalId + " input[name='sdtNguoiNhan']").val().trim();
+            if (sdtNguoiNhan === '') {
+                $("#" + modalId + " input[name='sdtNguoiNhan']").next('.error-message').text('Vui lòng nhập số điện thoại');
+                isValid = false;
+            }
+
+            // Validate địa chỉ chi tiết
+            var diaChiChiTiet = $("#" + modalId + " input[name='diaChiChiTiet']").val().trim();
+            if (diaChiChiTiet === '') {
+                $("#" + modalId + " input[name='diaChiChiTiet']").next('.error-message').text('Vui lòng nhập địa chỉ chi tiết');
+                isValid = false;
+            }
+
+            // Validate Tỉnh/Thành phố
+            var tenTT = $("#" + modalId + " select[name='tenTT']").val();
+            if (!tenTT || tenTT === '0') {
+                $("#" + modalId + " select[name='tenTT']").next('.error-message').text('Vui lòng chọn Tỉnh/Thành phố');
+                isValid = false;
+            }
+
+            // Validate Quận/Huyện
+            var tenQH = $("#" + modalId + " select[name='tenQH']").val();
+            if (!tenQH || tenQH === '0') {
+                $("#" + modalId + " select[name='tenQH']").next('.error-message').text('Vui lòng chọn Quận/Huyện');
+                isValid = false;
+            }
+
+            // Validate Phường/Xã
+            var tenPX = $("#" + modalId + " select[name='tenPX']").val();
+            if (!tenPX || tenPX === '0') {
+                $("#" + modalId + " select[name='tenPX']").next('.error-message').text('Vui lòng chọn Phường/Xã');
+                isValid = false;
+            }
+
+            // Nếu các trường đều hợp lệ, tiến hành submit form
+            return isValid;
         });
     });
 
@@ -1251,7 +1300,6 @@
             }
         });
     });
-</script>
 </script>
 
 </body>

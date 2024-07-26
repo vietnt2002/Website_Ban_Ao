@@ -204,15 +204,29 @@ public interface ThongKeRepository extends JpaRepository<HoaDon,String> {
     List<Object[]> getCurrentYearlyStatistics(@Param("date") LocalDateTime date);
 
     // Thống kê từ ngày bắt đầu đến ngày kết thúc
+//    @Query(value = "SELECT " +
+//            "CAST(hd.NgayTao AS DATE) AS day, " +
+//            "COUNT(DISTINCT hd.ID) AS soLuongHoaDon, " +
+//            "COALESCE(SUM(cthd.SoLuong), 0) AS soLuongSanPham " +
+//            "FROM HoaDon hd " +
+//            "LEFT JOIN ChiTietHoaDon cthd ON cthd.IdHoaDon = hd.ID " +
+//            "WHERE hd.NgayTao BETWEEN :startDate AND :endDate " +
+//            "GROUP BY CAST(hd.NgayTao AS DATE) " +
+//            "ORDER BY day",
+//            nativeQuery = true)
+//    List<Object[]> getCustomDateRangeStatistics(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
+//
+
     @Query(value = "SELECT " +
-            "CAST(hd.NgayTao AS DATE) AS day, " +
-            "COUNT(DISTINCT hd.ID) AS soLuongHoaDon, " +
-            "COALESCE(SUM(cthd.SoLuong), 0) AS soLuongSanPham " +
+            "DATE_FORMAT(hd.ngayTao, '%Y-%m-%d') AS day, " +
+            "COUNT(hd.id) AS totalOrders, " +
+            "SUM(cthd.soLuong) AS totalQuantity " +
             "FROM HoaDon hd " +
-            "LEFT JOIN ChiTietHoaDon cthd ON cthd.IdHoaDon = hd.ID " +
-            "WHERE hd.NgayTao BETWEEN :startDate AND :endDate " +
-            "GROUP BY CAST(hd.NgayTao AS DATE) " +
-            "ORDER BY day",
+            "LEFT JOIN ChiTietHoaDon cthd ON cthd.IdHoaDon = hd.id " +
+            "WHERE hd.ngayTao BETWEEN :startDate AND :endDate " +
+            "GROUP BY DATE_FORMAT(hd.ngayTao, '%Y-%m-%d')",
             nativeQuery = true)
-    List<Object[]> getCustomDateRangeStatistics(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
+    List<Object[]> getCustomDateRangeStatistics(@Param("startDate") LocalDateTime startDate,
+                                                @Param("endDate") LocalDateTime endDate);
+
 }

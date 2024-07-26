@@ -665,6 +665,8 @@
                                                 <button id="btn-filter"
                                                         type="button"
                                                         class="btn btn-outline-dark btn-block btn-sm font-weight-bold active"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#filterModal"
                                                 >
                                                     Bộ lọc
                                                 </button>
@@ -757,7 +759,45 @@
 
 
 
-<%--                            Biểu đồ thống kê--%>
+
+                            <%--                            Modal Bộ Lọc--%>
+                            <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="filterModalTitle">Tùy chỉnh ngày</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="d-flex align-items-end">
+                                                <div class="flex-fill me-2">
+                                                    <div class="form-group mb-0">
+                                                        <label for="start-date" class="form-label">Từ ngày</label>
+                                                        <input name="startDate" type="date" class="form-control" id="start_date"/>
+                                                        <div id="start_date_error" class="text-danger" style="display: none;">Vui lòng nhập ngày bắt đầu.</div>
+                                                    </div>
+                                                </div>
+                                                <div class="flex-fill me-2">
+                                                    <div class="form-group mb-0">
+                                                        <label for="end-date" class="form-label">Đến ngày</label>
+                                                        <input name="endDate" type="date" class="form-control" id="end_date"/>
+                                                        <div id="end_date_error" class="text-danger" style="display: none;">Vui lòng nhập ngày kết thúc.</div>
+                                                        <div id="date_error" class="text-danger" style="display: none;">Ngày kết thúc phải sau ngày bắt đầu.</div>
+                                                    </div>
+                                                </div>
+                                                <div class="flex-shrink-1">
+                                                    <button type="button" class="btn btn-primary btn-sm font-weight-bold" id="btn_search">
+                                                        Tìm kiếm
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        <%--                            Biểu đồ thống kê--%>
                             <div>
                                 <div class="card chart-card">
                                     <div class="card-body chart-container">
@@ -995,12 +1035,22 @@
 
 <script>
 
-    // Mở giao diện tùy chỉnh
-    document.getElementById('btn-custom').addEventListener('click', function() {
-        document.getElementById('customLayout').style.display = 'block';
+    // Mở giao diện bộ lọc
+    document.addEventListener('DOMContentLoaded', function() {
+        const filterButtons = document.querySelectorAll('#btn-today, #btn-week, #btn-month, #btn-year, #btn-custom');
+        const filterButton = document.getElementById('btn-filter');
+        const customLayout = document.getElementById('customLayout');
+
+        filterButton.addEventListener('click', function() {
+            customLayout.style.display = 'block';
+        });
+
+        filterButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                customLayout.style.display = 'none';
+            });
+        });
     });
-
-
 
 
     // Biểu đồ cột thống ke hóa đơn và sản phẩm
@@ -1116,6 +1166,42 @@
             fetchData('/api/thong-ke/nam-hien-tai', 'Biểu Đồ Thống Kê Hóa Đơn Và Sản Phẩm Năm Nay');
         });
 
+        // Thêm sự kiện click cho nút tìm kiếm trong modal
+        document.getElementById('btn-search').addEventListener('click', () => {
+            const startDate = document.getElementById('start-date').value;
+            const endDate = document.getElementById('end-date').value;
+
+            console.log(startDate);
+            console.log(endDate);
+            alert(startDate);
+            alert(endDate);
+
+            if (!startDate) {
+                document.getElementById('start-date-error').style.display = 'block';
+                return;
+            } else {
+                document.getElementById('start-date-error').style.display = 'none';
+            }
+
+            if (!endDate) {
+                document.getElementById('end-date-error').style.display = 'block';
+                return;
+            } else {
+                document.getElementById('end-date-error').style.display = 'none';
+            }
+
+            if (new Date(startDate) > new Date(endDate)) {
+                document.getElementById('date-error').style.display = 'block';
+                return;
+            } else {
+                document.getElementById('date-error').style.display = 'none';
+            }
+
+            $('#customModal').modal('hide');
+            const url = `/api/thong-ke/tu-ngay-den-ngay?startDate=${startDate}&endDate=${endDate}`;
+            fetchData(url, `Biểu Đồ Thống Kê Hóa Đơn Và Sản Phẩm Tùy Chỉnh`);
+        });
+
         // Hiển thị dữ liệu tháng khi chương trình bắt đầu
         fetchData('/api/thong-ke/thang-hien-tai', 'Biểu Đồ Thống Kê Hóa Đơn Và Sản Phẩm Tháng Này');
         setActiveButton('btn-month'); // Đánh dấu nút tháng là active
@@ -1228,68 +1314,68 @@
     <%--    }--%>
     <%--});--%>
 
-    document.addEventListener("DOMContentLoaded", function () {
-        const searchButton = document.getElementById('btn-search');
-        const startDateInput = document.getElementById('start-date');
-        const endDateInput = document.getElementById('end-date');
+    <%--document.addEventListener("DOMContentLoaded", function () {--%>
+    <%--    const searchButton = document.getElementById('btn-search');--%>
+    <%--    const startDateInput = document.getElementById('start-date');--%>
+    <%--    const endDateInput = document.getElementById('end-date');--%>
 
-        searchButton.addEventListener('click', function () {
-            const startDate = startDateInput.value.trim();
-            const endDate = endDateInput.value.trim();
+    <%--    searchButton.addEventListener('click', function () {--%>
+    <%--        const startDate = startDateInput.value.trim();--%>
+    <%--        const endDate = endDateInput.value.trim();--%>
 
-            // In ra giá trị ngày bắt đầu và ngày kết thúc để kiểm tra
-            console.log('Start Date:', startDate);
-            console.log('End Date:', endDate);
+    <%--        // In ra giá trị ngày bắt đầu và ngày kết thúc để kiểm tra--%>
+    <%--        console.log('Start Date:', startDate);--%>
+    <%--        console.log('End Date:', endDate);--%>
 
-            // Hoặc dùng alert để hiển thị
-            alert('Start Date: ' + startDate + '\nEnd Date: ' + endDate);
+    <%--        // Hoặc dùng alert để hiển thị--%>
+    <%--        alert('Start Date: ' + startDate + '\nEnd Date: ' + endDate);--%>
 
-            // Xây dựng URL với các giá trị ngày và gọi API
-            if (startDate && endDate) {
-                const encodedStartDate = encodeURIComponent(startDate + 'T00:00:00'); // Append time to date
-                const encodedEndDate = encodeURIComponent(endDate + 'T23:59:59'); // Append time to date
-                const url = `/api/thong-ke/tuy-chinh?startDate=${encodedStartDate}&endDate=${encodedEndDate}`;
+    <%--        // Xây dựng URL với các giá trị ngày và gọi API--%>
+    <%--        if (startDate && endDate) {--%>
+    <%--            const encodedStartDate = encodeURIComponent(startDate + 'T00:00:00'); // Append time to date--%>
+    <%--            const encodedEndDate = encodeURIComponent(endDate + 'T23:59:59'); // Append time to date--%>
+    <%--            const url = `/api/thong-ke/tuy-chinh?startDate=${encodedStartDate}&endDate=${encodedEndDate}`;--%>
 
-                fetchData(url);
+    <%--            fetchData(url);--%>
 
-                // Ẩn modal
-                $('#customModal').modal('hide');
-                document.querySelector('.modal-backdrop').style.display = 'none'; // Remove modal backdrop
-            } else {
-                alert('Please enter both start date and end date.');
-            }
-        });
+    <%--            // Ẩn modal--%>
+    <%--            $('#customModal').modal('hide');--%>
+    <%--            document.querySelector('.modal-backdrop').style.display = 'none'; // Remove modal backdrop--%>
+    <%--        } else {--%>
+    <%--            alert('Please enter both start date and end date.');--%>
+    <%--        }--%>
+    <%--    });--%>
 
-        function fetchData(url) {
-            fetch(url)
-                .then(response => {
-                    if (!response.ok) {
-                        return response.text().then(text => {
-                            throw new Error(`Network response was not ok. Status: ${response.status}, Message: ${text}`);
-                        });
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data && data.data) {
-                        updateStatistics(data.data[0]);
-                    } else {
-                        console.error('No data available');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error fetching data:', error);
-                    alert('An error occurred while fetching data: ' + error.message);
-                });
-        }
+    <%--    function fetchData(url) {--%>
+    <%--        fetch(url)--%>
+    <%--            .then(response => {--%>
+    <%--                if (!response.ok) {--%>
+    <%--                    return response.text().then(text => {--%>
+    <%--                        throw new Error(`Network response was not ok. Status: ${response.status}, Message: ${text}`);--%>
+    <%--                    });--%>
+    <%--                }--%>
+    <%--                return response.json();--%>
+    <%--            })--%>
+    <%--            .then(data => {--%>
+    <%--                if (data && data.data) {--%>
+    <%--                    updateStatistics(data.data[0]);--%>
+    <%--                } else {--%>
+    <%--                    console.error('No data available');--%>
+    <%--                }--%>
+    <%--            })--%>
+    <%--            .catch(error => {--%>
+    <%--                console.error('Error fetching data:', error);--%>
+    <%--                alert('An error occurred while fetching data: ' + error.message);--%>
+    <%--            });--%>
+    <%--    }--%>
 
-        function updateStatistics(data) {
-            document.getElementById('custom-revenue').textContent = data.doanhThu || 'N/A';
-            document.getElementById('custom-products').textContent = data.soLuongSanPhamDaBan || 'N/A';
-            document.getElementById('custom-success').textContent = data.donHangThanhCong || 'N/A';
-            document.getElementById('custom-cancel').textContent = data.donHangDaHuy || 'N/A';
-        }
-    });
+    <%--    function updateStatistics(data) {--%>
+    <%--        document.getElementById('custom-revenue').textContent = data.doanhThu || 'N/A';--%>
+    <%--        document.getElementById('custom-products').textContent = data.soLuongSanPhamDaBan || 'N/A';--%>
+    <%--        document.getElementById('custom-success').textContent = data.donHangThanhCong || 'N/A';--%>
+    <%--        document.getElementById('custom-cancel').textContent = data.donHangDaHuy || 'N/A';--%>
+    <%--    }--%>
+    <%--});--%>
 
 
 
