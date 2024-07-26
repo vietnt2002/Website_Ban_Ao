@@ -3,6 +3,7 @@ package com.example.java4.controller.controller_viet;
 import com.example.java4.config.UserInfor;
 import com.example.java4.entities.*;
 import com.example.java4.repositories.*;
+import com.example.java4.repositories.viet_repo.CTHDRepository;
 import com.example.java4.repositories.viet_repo.CTSPRepository;
 import com.example.java4.request.req_tai.KhachHangDTO;
 import com.example.java4.response.*;
@@ -52,6 +53,9 @@ public class FilterTrangChuController {
     @Autowired
     CTSPRepository ctspRepo;
 
+    @Autowired
+    CTHDRepository cthdRepo;
+
     private List<HoaDon> listHoaDon = new ArrayList<>();
     private List<ChiTietHoaDon> listHDCT = new ArrayList<>();
     private List<ChiTietSanPham> listCTSP = new ArrayList<>();
@@ -71,9 +75,9 @@ public class FilterTrangChuController {
             System.out.println("crette dto");
             model.addAttribute("khachHangDTO", new KhachHangDTO());
         }
-        Pageable pageable = PageRequest.of(pageParam.orElse(0), 12);
-        Page pageSP = spctRepo.getAllSP(pageable);
-        model.addAttribute("pageSP", pageSP);
+        Pageable pageable = PageRequest.of(pageParam.orElse(0), 2);
+        List<SPCTResponse> listSanPhamRes = ctspRepo.getAllSP(pageable);
+        model.addAttribute("listSanPhamRes", listSanPhamRes);
         model.addAttribute("soLuong", hdctRepo.findByKHnStt(khachHangRepo.findByIdKH(UserInfor.idKhachHang)));
         //Tính tổng số lượng sản phẩm có trong giỏ hàng
         listHDCT = hdctRepo.findByIdHoaDonByIDKH(UserInfor.idKhachHang, HoaDonRepository.CHO_THANH_TOAN);
@@ -95,6 +99,9 @@ public class FilterTrangChuController {
 
         //Lấy ra danh sách chi tiết sản phẩm response
         model.addAttribute("listCTSPRes", ctspRepo.getCTSPRes());
+
+        //Lấy ra danh sách chi tiết hóa đơn
+        model.addAttribute("listCTHDByTT", cthdRepo.getAllCTHDByTrangThai(HDCTRepository.ACTIVE));
         return "/view/view_viet/trangChu.jsp";
     }
 
