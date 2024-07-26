@@ -529,9 +529,9 @@
                                                data-id-quan-huyen="${i.idQuanHuyen}"
                                                data-id-phuong-xa="${i.idPhuongXa}"
                                             <%--  --%>
-                                                                                           data-id-tinh-thanh-test="${i.idT}"
-                                                                                           data-id-quan-huyen-test="${i.idQH}"
-                                                                                           data-id-phuong-xa-test="${i.idPX}"
+                                               data-id-tinh-thanh-test="${i.idT}"
+                                               data-id-quan-huyen-test="${i.idQH}"
+                                               data-id-phuong-xa-test="${i.idPX}"
                                                <c:if test="${i.trangThai == 1}">checked</c:if>>
                                         <label>
                                             <b>${i.tenNguoiNhan}</b> | ${i.sdtNguoiNhan}
