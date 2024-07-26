@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.TemporalAdjusters;
 import java.util.HashMap;
 import java.util.List;
@@ -52,12 +53,12 @@ public class ThongKeController {
     public String view(Model model,
                        @RequestParam(value = "page", defaultValue = "0") String pageParam) {
 
-        if (UserInfor.idNhanVien != null) {
-            NhanVien nhanVien = _nhanVienRepo.findById(UserInfor.idNhanVien).get();
-            model.addAttribute("nv", nhanVien);
-        } else {
-            return "redirect:/admin/dang-nhap-view";
-        }
+//        if (UserInfor.idNhanVien != null) {
+//            NhanVien nhanVien = _nhanVienRepo.findById(UserInfor.idNhanVien).get();
+//            model.addAttribute("nv", nhanVien);
+//        } else {
+//            return "redirect:/admin/dang-nhap-view";
+//        }
 
         LocalDate today = LocalDate.now();
         LocalDate startOfWeek = today.with(TemporalAdjusters.previousOrSame(java.time.DayOfWeek.MONDAY));
@@ -90,27 +91,21 @@ public class ThongKeController {
 
 
         // Hiển thị danh sách sản phẩm sắp hết hàng
-        Map<String, HinhAnh> hinhAnhMapCTSP = getHinhAnhMapCTSP();
         PageRequest pageRequest = PageRequest.of(Integer.valueOf(pageParam), 5);
-        Page<ChiTietSanPham> lowStockProducts = _thongKeRepo.getLowStockProducts(pageRequest);
-        model.addAttribute("pageSanPhamSapHetHang", lowStockProducts);
-        model.addAttribute("hinhAnhMapCTSP", hinhAnhMapCTSP);
+        Page<ChiTietSanPham> listSanPhamSapHetHang = _thongKeRepo.findProductsLowOnStock(pageRequest);
+
+
+        // Top selling products
+        LocalDateTime currentMonth = LocalDateTime.now();
+        Page<SPCTDTO> topSellingProducts = _thongKeRepo.getTopSellingProductsByMonth(currentMonth,20,pageRequest);
+
+        model.addAttribute("topSellingProducts",topSellingProducts);
+        model.addAttribute("pageSPSapHetHang", listSanPhamSapHetHang);
 
         return "/view/ThongKe/view.jsp";
     }
 
 
-    //Lấy ra hình ảnh trong chi tiết sản phẩm
-    private Map<String, HinhAnh> getHinhAnhMapCTSP() {
-        Map<String, HinhAnh> hinhAnhMapCTSP = new HashMap<>();
-        List<ChiTietSanPham> listChiTietSanPham = _chiTietSanPhamRepo.findAll();
-        for (ChiTietSanPham ctsp : listChiTietSanPham) {
-            HinhAnh hinhAnh = _hinhAnhRepo.findByIdCTSP(ctsp.getId());
-            if (hinhAnh != null) {
-                hinhAnhMapCTSP.put(ctsp.getId(), hinhAnh);
-            }
-        }
-        return hinhAnhMapCTSP;
-    }
+
 
 }

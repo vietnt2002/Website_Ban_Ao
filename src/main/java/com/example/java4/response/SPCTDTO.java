@@ -15,7 +15,17 @@ public class SPCTDTO {
 
     private String tenSanPham;
     private String maSanPham;
+    private String tenKichThuoc;
+    private String tenMauSac;
     private BigDecimal giaBan;
-    private String hinhAnh;
-    private Integer soLuong;
+//    private String hinhAnh;
+    private Long soLuong;
+
+
+    public SPCTDTO(String tenSanPham, String maSanPham, BigDecimal giaBan, Long soLuong) {
+        this.tenSanPham = tenSanPham;
+        this.maSanPham = maSanPham;
+        this.giaBan = giaBan;
+        this.soLuong = soLuong;
+    }
 }

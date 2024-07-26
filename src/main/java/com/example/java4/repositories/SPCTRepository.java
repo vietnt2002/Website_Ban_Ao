@@ -2,6 +2,7 @@ package com.example.java4.repositories;
 
 import com.example.java4.entities.ChiTietSanPham;
 import com.example.java4.response.MauSizeSL;
+import com.example.java4.response.SPCTDTO;
 import com.example.java4.response.SPCTResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -152,6 +153,19 @@ public interface SPCTRepository extends JpaRepository<ChiTietSanPham, String>, J
             "JOIN ChiTietHoaDon hdct ON ctsp.id = hdct.idCTSP " +
             "WHERE hdct.id = :idHoaDonChiTiet", nativeQuery = true)
     Optional<ChiTietSanPham> findByHoaDonChiTietId(@Param("idHoaDonChiTiet") String idHoaDonChiTiet);
+
+
+    // Thống kê danh sách sản phẩm sắp hết hàng
+//    @Query("SELECT new com.example.java4.response.SPCTDTO(" +
+//            "sp.ten, sp.ma, ctsp.giaBan, ha.hinhAnh1, ctsp.soLuong) " +
+//            "FROM ChiTietSanPham ctsp " +
+//            "JOIN ctsp.sanPham sp " +
+//            "LEFT JOIN ctsp.hinhAnh ha " +
+//            "WHERE ctsp.soLuong < :minStock " +
+//            "ORDER BY ctsp.soLuong ASC")
+//    Page<SPCTDTO> getLowStockProducts(@Param("minStock") int minStock, Pageable pageable);
+
+
 
 };
 
