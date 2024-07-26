@@ -426,51 +426,51 @@
                                     </div>
                                 </div>
 
-                                <div class="d-flex" style="gap:10px">
+                                <div class="d-flex gap-5">
                                     <div class="d-flex" style="width: fit-content">
                                         <p class="mt-2" style="width: 80px;">Chất liệu: </p>
                                         <div class="icon-container">
                                             <i class=" bi bi-folder-plus col-3" data-bs-toggle="modal"
-                                               data-bs-target="#ModalHotAddCL" id="iconHotAddCLModalMultipleAdd"
+                                               data-bs-target="#ModalHotAddCL" id="iconHotAddChatLieu"
                                                style="font-size: 25px"></i>
                                         </div>
                                         <div class="d-flex" id="chatLieuBox">
                                             <div class="dropdown">
                                                 <button class="btn btn-outline-secondary dropdown-toggle"
                                                         type="button"
-                                                        id="lblChatLieuModalMultipleAdd" style="width: 150px;"
+                                                        id="lblChatLieuAdd" style="width: 150px;"
                                                         data-bs-toggle="dropdown"
                                                         aria-expanded="false">
                                                     Chọn chất liệu
                                                 </button>
-                                                <ul class="dropdown-menu" id="cboChatLieuModalMultipleAdd"
+                                                <ul class="dropdown-menu" id="cboChatLieuAdd"
                                                     aria-labelledby="dropdownMenuButton4">
                                                 </ul>
-                                                <p style="color: red;" id="cboChatLieuModalMultipleAddErr"></p>
+                                                <p style="color: red;" id="cboChatLieuAddErr"></p>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="d-flex " style="width: fit-content">
                                         <p class="mt-2" style="width: 80px;">Kiểu tay: </p>
-                                        <div class="d-flex" id="kieuTayBox">
+                                        <div class="d-flex gap-2" id="kieuTayBox">
                                             <div class="icon-container">
                                                 <i class=" bi bi-folder-plus col-3" data-bs-toggle="modal"
                                                    data-bs-target="#ModalHotAddKTA"
-                                                   id="iconHotAddKTAModalMultipleAdd"
+                                                   id="iconHotAddKieuTay"
                                                    style="font-size: 25px"></i>
                                             </div>
                                             <div class="dropdown">
                                                 <button class="btn btn-outline-secondary dropdown-toggle"
                                                         type="button"
-                                                        id="lblKieuTayMultipleModalAdd" style="width: 150px;"
+                                                        id="lblKieuTayAdd" style="width: 150px;"
                                                         data-bs-toggle="dropdown"
                                                         aria-expanded="false">
                                                     Chọn kiểu tay
                                                 </button>
-                                                <ul class="dropdown-menu" id="cboKieuTayModalMultipleAdd"
+                                                <ul class="dropdown-menu" id="cboKieuTayAdd"
                                                     aria-labelledby="dropdownMenuButton5">
                                                 </ul>
-                                                <p style="color: red;" id="cboKieuTayModalMultipleAddErr"></p>
+                                                <p style="color: red;" id="cboKieuTayAddErr"></p>
                                             </div>
                                         </div>
                                     </div>
@@ -485,27 +485,27 @@
                                         <p class="mt-2" style="width: 80px;">Màu sắc: </p>
                                         <div class="icon-container">
                                             <i class=" bi bi-folder-plus col-3" data-bs-toggle="modal"
-                                               data-bs-target="#ModalHotAddMS" id="iconHotAddMSModalMultipleAdd"
+                                               data-bs-target="#ModalHotAddMS" id="iconHotAddMauSac"
                                                style="font-size: 25px"></i>
                                         </div>
                                         <div class="d-flex" id="mauSacBox">
                                             <div class="dropdown">
                                                 <button class="btn btn-outline-secondary dropdown-toggle"
                                                         type="button"
-                                                        id="lblMauSacModalMultipleAdd" style="width: 150px;"
+                                                        id="lblMauSacAdd" style="width: 150px;"
                                                         data-bs-toggle="dropdown"
                                                         aria-expanded="false">
                                                     Chọn màu sắc
                                                 </button>
-                                                <ul class="dropdown-menu" id="cboMauSacModalMultipleAdd"
+                                                <ul class="dropdown-menu" id="cboMauSacAdd"
                                                     aria-labelledby="dropdownMenuButton2">
                                                 </ul>
-                                                <p style="color: red;" id="cboMauSacModalMultipleAddErr"></p>
+                                                <p style="color: red;" id="cboMauSacAddErr"></p>
                                             </div>
                                         </div>
                                         <div class="icon-container">
                                             <i class=" bi bi-plus col-3" data-bs-toggle="modal"
-                                               data-bs-target="#ModalHotAddMS" id="iconAddMauSacModalMultipleAdd"
+                                               data-bs-target="#ModalHotAddMS" id="iconAddMoreCboMauSac"
                                                style="font-size: 25px"></i>
                                         </div>
                                     </div>
@@ -517,27 +517,27 @@
                                         <div class="icon-container">
                                             <i class=" bi bi-folder-plus col-3" data-bs-toggle="modal"
                                                data-bs-target="#ModalHotAddKT"
-                                               id="iconHotKTMultipleModalMultipleAdd"
+                                               id="iconHotAddKichThuoc"
                                                style="font-size: 25px"></i>
                                         </div>
                                         <div class="kichThuocBox">
                                             <div class="dropdown">
                                                 <button class="btn btn-outline-secondary dropdown-toggle"
                                                         type="button"
-                                                        id="lblKichThuocModalMultipleAdd" style="width: 150px;"
+                                                        id="lblKichThuocAdd" style="width: 150px;"
                                                         data-bs-toggle="dropdown"
                                                         aria-expanded="false">
                                                     Chọn kích thước
                                                 </button>
-                                                <ul class="dropdown-menu" id="cboKichThuocModalMultipleAdd"
+                                                <ul class="dropdown-menu" id="cboKichThuocAdd"
                                                     aria-labelledby="dropdownMenuButton3">
                                                 </ul>
-                                                <p style="color: red;" id="cboKichThuocModalMultipleAddErr"></p>
+                                                <p style="color: red;" id="cboKichThuocAddErr"></p>
                                             </div>
                                         </div>
                                         <div class="icon-container">
                                             <i class=" bi bi-plus col-3" data-bs-toggle="modal"
-                                               data-bs-target="#ModalHotAddKT" id="iconAddKichThuocModalMultipleAdd"
+                                               data-bs-target="#ModalHotAddKT" id="iconAddMoreCboKichThuoc"
                                                style="font-size: 25px"></i>
                                         </div>
                                     </div>
@@ -545,10 +545,10 @@
                             </div>
                             <div class="form-check form-switch">
                                 <input class="form-check-input" type="checkbox" role="switch"
-                                       id="trangThaiModalMultipleAdd"
+                                       id="trangThaiAdd"
                                        checked>
-                                <label class="form-check-label" for="trangThaiLabelModalMultipleAdd"
-                                       id="trangThaiLabelModalMultipleAdd">Trạng
+                                <label class="form-check-label" for="trangThaiLabelAdd"
+                                       id="trangThaiLabelAdd">Trạng
                                     thái</label>
                             </div>
                             <div>
@@ -566,12 +566,12 @@
                                         <th style="font-size: 12px;">Thao tác</th>
                                     </tr>
                                     </thead>
-                                    <tbody id="tbl_ds_spctModalMutipleAdd">
+                                    <tbody id="tbl_ds_spctAdd">
 
                                     </tbody>
                                 </table>
                             </div>
-                            <button id="saveMultipleAddBtn" class="btn btn-primary me-5">Lưu</button>
+                            <button id="saveAddBtn" class="btn btn-primary me-5">Lưu</button>
                         </div>
                     </div>
                 </div>
@@ -746,6 +746,162 @@
     });
     <%--    --%>
 </script>
+<%--loadingcbo--%>
+<script>
+    const lblMauSacAdd = document.getElementById("lblMauSacAdd");
+    const lblKichThuocAdd = document.getElementById("lblKichThuocAdd");
+    const lblChatLieuAdd  = document.getElementById("lblChatLieuAdd");
+    const lblKieuTayAdd = document.getElementById("lblKieuTayAdd");
+    let idMauSacAdd = "";
+    let idKichThuocAdd = "";
+    let idChatLieuAdd = "";
+    let idKieuTayAdd = "";
+    let howManyCboMauSac = 1;
+    let howManyCboKichThuoc = 1;
+    function refresh(e) {
+        e.preventDefault();
+        idMauSacAdd = "";
+        idKichThuocAdd = "";
+        idChatLieuAdd = "";
+        idKieuTayAdd = "";
+        lblMauSacAdd.textContent = "Chọn màu sắc"
+        lblKichThuocAdd.textContent = "Chọn kích thước";
+        lblChatLieuAdd.textContent = "Chọn chất liệu";
+        lblKieuTayAdd.textContent = "Chọn kiểu tay";
+        loadDSSPCT(currentPage);
+    }
+    function setMauSacAdd(msString) {
+        const ms = JSON.parse(msString.replace(/&quot;/g, '"'));
+        idMauSacAdd = ms.id;
+        lblMauSacAdd.textContent = ms.ten;
+        console.log('Selected mau sac ID:', idMauSac);
+        // You can add more logic here to handle the selected value
+    }
+
+    function setKichThuocAdd(ktString) {
+        const kt = JSON.parse(ktString.replace(/&quot;/g, '"'));
+        idKichThuocAdd = kt.id;
+        lblKichThuocAdd.textContent = kt.ten;
+        console.log('Selected kich thuoc ID:', idKichThuoc);
+        // You can add more logic here to handle the selected value
+    }
+
+    function setChatLieuAdd(clString) {
+        const cl = JSON.parse(clString.replace(/&quot;/g, '"'));
+        idChatLieuAdd = cl.id;
+        lblChatLieuAdd.textContent = cl.ten;
+        console.log('Selected chat lieu ID:', idChatLieu);
+        // You can add more logic here to handle the selected value
+    }
+
+    function setKieuTayAdd(ktString) {
+        const kt = JSON.parse(ktString.replace(/&quot;/g, '"'));
+        idKieuTayAdd = kt.id;
+        lblKieuTayAdd.textContent = kt.ten;
+        console.log('Selected kieu tay ID modal:', idKieuTay);
+        // You can add more logic here to handle the selected value
+    }
+
+    const loadCboChatLieu = () => {
+        let datatest = "data testing";
+        fetch("/chat-lieu/index", {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        }).then(response => response.json())
+            .then(resp => {
+                let htmlSearch = '';
+                let htmlCboModalEdit = '';
+                let htmlCboAdd = '';
+                resp.map((cl, i) => {
+                    const clString = JSON.stringify(cl).replace(/"/g, '&quot;');
+                    // htmlSearch += '<li><a class="dropdown-item" onclick="setChatLieu(\'' + clString + '\')">' + cl.ten + '</a></li>';
+                    htmlCboAdd += '<li><a class="dropdown-item" onclick="setChatLieuAdd(\'' + clString + '\')">' + cl.ten + '</a></li>';
+                    // htmlCboModalEdit += '<li><a class="dropdown-item" onclick="setChatLieuModalEdit(\'' + clString + '\')">' + cl.ten + '</a></li>';
+                });
+                $("#cboChatLieuAdd").html(htmlCboAdd);
+                // $("#cboChatLieuModalEdit").html(htmlCboModalEdit);
+            });
+    }
+    loadCboChatLieu();
+
+    const loadCboKieuTay = () => {
+        let datatest = "data testing";
+        fetch("/kieu-tay/index", {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        }).then(response => response.json())
+            .then(resp => {
+                let htmlSearch = '';
+                let htmlCboModalEdit = '';
+                let htmlCboAdd = '';
+                resp.map((kt, i) => {
+                    const kieuTayString = JSON.stringify(kt).replace(/"/g, '&quot;');
+                    // htmlSearch += '<li><a class="dropdown-item"  onclick="setKieuTay(\'' + kieuTayString + '\')">' + kt.ten + '</a></li>';
+                    // htmlCboEdit += '<li><a class="dropdown-item"  onclick="setKieuTayModalEdit(\'' + kieuTayString + '\')">' + kt.ten + '</a></li>';
+                    htmlCboAdd += '<li><a class="dropdown-item"  onclick="setKieuTayAdd(\'' + kieuTayString + '\')">' + kt.ten + '</a></li>';
+                });
+                $("#cboKieuTayAdd").html(htmlCboAdd);
+                // $("#cboKieuTayModalEdit").html(htmlCboModalEdit);
+            });
+    }
+    loadCboKieuTay();
+
+    const loadCboMauSac = () => {
+        let datatest = "data testing";
+        fetch("/mau-sac/index", {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        }).then(response => response.json())
+            .then(resp => {
+                let htmlSearch = '';
+                let htmlCboModalEdit = '';
+                let htmCboAdd = '';
+                resp.map((ms, i) => {
+                    const msString = JSON.stringify(ms).replace(/"/g, '&quot;');
+                    // htmlSearch += '<li><a class="dropdown-item"  onclick="setMauSac(\'' + msString + '\')">' + ms.ten + '</a></li>';
+                    // htmlCboModalEdit += '<li><a class="dropdown-item"  onclick="setMauSacModalEdit(\'' + msString + '\')">' + ms.ten + '</a></li>'
+                    htmCboAdd += '<li><a class="dropdown-item"  onclick="setMauSacAdd(\'' + msString + '\')">' + ms.ten + '</a></li>'
+                });
+                // $("#cboMauSac").html(htmlSearch);
+                $("#cboMauSacAdd").html(htmCboAdd);
+                // $("#cboMauSacModalEdit").html(htmlCboModalEdit);
+            });
+    }
+    loadCboMauSac();
+
+    const loadCboKichThuoc = () => {
+        let datatest = "data testing";
+        fetch("/kich-thuoc/index", {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        }).then(response => response.json())
+            .then(resp => {
+                let htmlSearch = '';
+                let htmlCboModalEdit = '';
+                let htmlCboAdd = '';
+                resp.map((kt, i) => {
+                    const ktString = JSON.stringify(kt).replace(/"/g, '&quot;');
+                    // htmlSearch += '<li><a class="dropdown-item" onclick="setKichThuoc(\'' + ktString + '\')">' + kt.ten + '</a></li>';
+                    // htmlCboModalEdit += '<li><a class="dropdown-item" onclick="setKichThuocModalEdit(\'' + ktString + '\')">' + kt.ten + '</a></li>';
+                    htmlCboAdd += '<li><a class="dropdown-item" onclick="setKichThuocAdd(\'' + ktString + '\')">' + kt.ten + '</a></li>';
+                });
+                $("#cboKichThuocAdd").html(htmlCboAdd);
+                // $("#cboKichThuocModalEdit").html(htmlCboModalEdit);
+            });
+    }
+    loadCboKichThuoc();
+
+</script>
+<%--end loadingcbo--%>
+
 
 <script>
     let idSPLocal = "";
