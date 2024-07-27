@@ -47,8 +47,16 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
-    <%--    Voucher    --%>
     <style>
+        .disabled-voucher {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .disabled-voucher .voucher-button button {
+            cursor: not-allowed;
+        }
+
         .voucher-container {
             display: flex;
             flex-wrap: wrap;
@@ -237,12 +245,28 @@
             </form>
         </div>
         <div class="col-lg-3 col-6 text-right userCart">
-            <div class="dropdown">
-                <button class="btn btn-secondary bg-light" style="padding: 4px; font-size: 19px; margin-right: 3px"
+            <div class="dropdown" onmouseover="showDropdown()" onmouseout="hideDropdown()">
+                <button class="btn btn-light bg-light" style="font-size: 19px; margin-right: 3px"
                         type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="bi bi-person-circle" style="color:#D19C97; margin: 5px"></i>
+                    <c:choose>
+                        <c:when test="${not empty sessionScope.user}">
+                            <!-- Hiển thị tên và hình ảnh người dùng nếu đã đăng nhập -->
+                            <span class="info-text" style="font-size: 14px">${sessionScope.user.taiKhoan}</span>
+                            <c:if test="${sessionScope.user.anhDaiDien != null}">
+                                <img src="/image/${sessionScope.user.anhDaiDien}" alt=""
+                                     style="width: 30px; height: 30px; border-radius: 50%; margin-left: 5px;">
+                            </c:if>
+                            <c:if test="${sessionScope.user.anhDaiDien == null}">
+                                <i class="bi bi-person-circle" style="color:#D19C97; margin: 5px"></i>
+                            </c:if>
+                        </c:when>
+                        <c:otherwise>
+                            <!-- Hiển thị biểu tượng mặc định nếu chưa đăng nhập -->
+                            <i class="bi bi-person-circle" style="color:#D19C97; margin: 5px"></i>
+                        </c:otherwise>
+                    </c:choose>
                 </button>
-                <ul class="dropdown-menu btn border" aria-labelledby="dropdownMenuButton1">
+                <ul class="dropdown-menu btn border" aria-labelledby="dropdownMenuButton1" id="dropdownContent">
                     <c:choose>
                         <c:when test="${empty sessionScope.user}">
                             <!-- Hiển thị nút đăng nhập khi chưa đăng nhập -->
@@ -261,22 +285,22 @@
                         <c:otherwise>
                             <!-- Hiển thị nút đăng xuất khi đã đăng nhập -->
                             <li><a class="dropdown-item" href="/cua-hang/don-mua">Đơn mua</a></li>
-                            <li><a class="dropdown-item" href="#">Quản lý tài khoản</a></li>
+                            <li><a class="dropdown-item" href="/cua-hang/quan-ly-tai-khoan">Quản lý tài khoản</a></li>
                             <li><a class="dropdown-item" href="/cua-hang/logout">Đăng xuất</a></li>
                         </c:otherwise>
                     </c:choose>
                 </ul>
             </div>
             <div class="col-lg-3 col-6 text-right" style="position: relative">
-                <a href="gio-hang" class="btn border">
+                <a href="/cua-hang/gio-hang" class="btn border">
                     <i class="fas fa-shopping-cart text-primary"></i>
-                    <c:if test="${soLuong > 0}">
-                        <span class="totalQuantityCart"
-                              style="display: flex; justify-content: center; align-items: center">${soLuong}</span>
+                    <c:if test="${soLuongGioHang > 0}">
+                            <span class="totalQuantityCart"
+                                  style="display: flex; justify-content: center; align-items: center">${soLuongGioHang}</span>
                     </c:if>
-                    <c:if test="${soLuong == null}">
-                        <span class="totalQuantityCart"
-                              style="display: flex; justify-content: center; align-items: center">0</span>
+                    <c:if test="${soLuongGioHang == null}">
+                            <span class="totalQuantityCart"
+                                  style="display: flex; justify-content: center; align-items: center">0</span>
                     </c:if>
                 </a>
             </div>
@@ -441,6 +465,7 @@
                 <table class="table table-bordered text-center mb-0">
                     <thead class="bg-secondary text-dark">
                     <tr>
+                        <th>Ảnh</th>
                         <th>Sản phẩm</th>
                         <th>Số lượng</th>
                         <th>Màu sắc</th>
@@ -454,9 +479,8 @@
                         <tbody class="align-middle">
                         <tr>
                             <td class="align-middle align-center"><img src="/image/${i.hinhAnh1}" alt=""
-                                                                       style="width: 50px;">
-                                    ${i.tenSanPham}
-                            </td>
+                                                                       style="width: 50px;"></td>
+                            <td class="align-middle">${i.tenSanPham}</td>
                             <td class="align-middle">
                                 <div class="input-group quantity mx-auto" style="width: 100px;">
                                     <div class="input-group-btn">
@@ -501,7 +525,7 @@
         <!--Test modal-->
         <!--Danh sách địa chỉ-->
         <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#addAddressModal"
-                style="position: relative; left: 907px; bottom: -186px;">
+                style="position: relative; left: 729px; bottom: -186px;">
             Chọn địa chỉ
         </button>
 
@@ -657,7 +681,7 @@
 
     <%--Thêm địa chỉ--%>
     <button type="button" class="btn btn-primary mb-3" data-toggle="modal"
-            data-target="#addAddressModal1" style="position: relative; left: 1036px; bottom: -132px;">
+            data-target="#addAddressModal1" style="position: relative; left: 850px; bottom: -132px;">
         <i class="bi bi-plus-circle"></i>
     </button>
     <div class="modal fade" id="addAddressModal1" tabindex="-1" role="dialog"
@@ -813,8 +837,8 @@
                            style="background-color: #f1f1f1; border: 1px solid #e4e4e4;" placeholder="Mã giảm giá"
                            value="${hoaDon.idKhuyenMai.ma}"
                            readonly>
-                    <a href="/cua-hang/xoa-khuyen-mai/${hoaDon.id}"
-                       style="position: absolute;right: 144px;bottom: 5px;">
+                    <a id="removeDiscountLink" href="/cua-hang/xoa-khuyen-mai/${hoaDon.idKhuyenMai.id}"
+                       style="position: absolute;right: 144px;bottom: 5px; display: none;">
                         <button style="color: black" class="btn btn-outline-secondary" type="button">
                             <i class="fas fa-times"></i>
                         </button>
@@ -841,16 +865,29 @@
                                 <fmt:formatNumber value="${tongTien}" type="currency" currencySymbol="₫"/>
                             </h6>
                         </div>
-                        <div class="d-flex justify-content-between mb-3 pt-1">
-                            <h6 class="font-weight-medium">Số tiền giảm: </h6>
-                            <h6 class="font-weight-medium" style="font-size: 18px">
-                                <fmt:formatNumber value="${hoaDon.idKhuyenMai.soTienGiam}" type="currency"
-                                                  currencySymbol="₫"/>
-                            </h6>
-                        </div>
+                        <c:if test="${hoaDon.idKhuyenMai.soTienGiam != null}">
+                            <div class="d-flex justify-content-between mb-3 pt-1">
+                                <h6 class="font-weight-medium">Số tiền giảm: </h6>
+                                <h6 class="font-weight-medium" style="font-size: 18px">
+                                    <fmt:formatNumber value="${hoaDon.idKhuyenMai.soTienGiam}" type="currency"
+                                                      currencySymbol="₫"/>
+                                </h6>
+                            </div>
+                        </c:if>
+                        <c:if test="${hoaDon.idKhuyenMai.soTienGiam == null}">
+                            <div class="d-flex justify-content-between mb-3 pt-1">
+                                <h6 class="font-weight-medium">Số tiền giảm: </h6>
+                                <h6 class="font-weight-medium" style="font-size: 18px">
+                                    <fmt:formatNumber value="0" type="currency"
+                                                      currencySymbol="₫"/>
+                                </h6>
+                            </div>
+                        </c:if>
                         <div class="d-flex justify-content-between">
                             <h6 class="font-weight-medium">Phí vận chuyển: </h6>
-                            <h6 class="price font-weight-medium" id="phiShip" style="font-size: 18px">0 đ</h6>
+                            <h6 class="price font-weight-medium" id="phiShip" style="font-size: 18px"><fmt:formatNumber
+                                    value="0" type="currency"
+                                    currencySymbol="₫"/></h6>
                         </div>
                     </div>
                     <div class="card border-secondary">
@@ -889,15 +926,6 @@
                                     class="btn btn-block btn-primary my-3 py-3">
                                 <b>Đặt hàng ngay</b></button>
                         </div>
-                            <%--                        <c:if test="${hoaDon.phuongThucThanhToan == 0}">--%>
-                            <%--                            <div class="card-footer border-secondary bg-transparent">--%>
-                            <%--                                <a href="/cua-hang/pay/${tongTien - hoaDon.idKhuyenMai.soTienGiam}">--%>
-                            <%--                                    <button type="button" style="font-size: 26px"--%>
-                            <%--                                            class="btn btn-block btn-primary my-3 py-3">--%>
-                            <%--                                        <b>Đặt hàng ngay</b></button>--%>
-                            <%--                                </a>--%>
-                            <%--                            </div>--%>
-                            <%--                        </c:if>--%>
                     </div>
                 </div>
             </div>
@@ -914,15 +942,17 @@
                 <div class="modal-body">
                     <div class="voucher-container">
                         <c:forEach var="i" items="${listKhuyenMai}">
-                            <div class="voucher-card">
+                            <div class="voucher-card ${i.apDung > tongTien ? 'disabled-voucher' : ''}">
                                 <div class="voucher-header">
-                                    <div class="voucher-discount">Giảm <fmt:formatNumber value="${i.soTienGiam}" type="currency" currencySymbol="₫"/></div>
+                                    <div class="voucher-discount">Giảm <fmt:formatNumber
+                                            value="${i.soTienGiam}" type="currency"
+                                            currencySymbol="₫"/></div>
                                     <div class="voucher-expiry">Hết hạn ${i.ngayKetThuc}</div>
                                 </div>
                                 <div class="voucher-code">Mã: ${i.ma}</div>
                                 <div class="voucher-button">
                                     <form action="/cua-hang/khuyen-mai/${i.id}" method="post">
-                                        <button type="submit">Xác nhận</button>
+                                        <button type="submit" ${i.apDung > tongTien ? 'disabled' : ''}>Xác nhận</button>
                                     </form>
                                 </div>
                             </div>
@@ -1279,7 +1309,7 @@
 
             $("#tinh").change(function (e) {
                 var idtinh = $(this).val();
-                console.log("id tỉnh: "+idtinh);
+                console.log("id tỉnh: " + idtinh);
 
                 // Lấy quận huyện
                 getJSONWithToken('https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/district?province_id=' + idtinh, function (data_quan) {
@@ -1474,13 +1504,13 @@
                 var idQuanHuyen = $("#quanHuyen").val();
                 var idPX = $("#phuongXa").val();
 
-                console.log("ten tỉnh: "+tenTinhThanh);
-                console.log("ten quận huyện: "+tenQuanHuyen);
-                console.log("ten phường xã: "+tenPhuongXa);
+                console.log("ten tỉnh: " + tenTinhThanh);
+                console.log("ten quận huyện: " + tenQuanHuyen);
+                console.log("ten phường xã: " + tenPhuongXa);
 
-                console.log("id tỉnh: "+idTinhThanh);
-                console.log("id qh: "+idQuanHuyen);
-                console.log("id px: "+idPX);
+                console.log("id tỉnh: " + idTinhThanh);
+                console.log("id qh: " + idQuanHuyen);
+                console.log("id px: " + idPX);
 
                 //test thêm mới
                 $("<input>").attr({
@@ -1594,12 +1624,12 @@
             var idQuan = $("#" + modalId + " select[name='tenQH']").val();
             var idPhuong = $("#" + modalId + " select[name='tenPX']").val();
 
-            console.log("tên tỉnh:"+tenTinh);
-            console.log("tên quận:"+tenQuan);
-            console.log("tên phường:"+tenPhuong);
-            console.log("id tỉnh:"+idTinh);
-            console.log("id quận:"+idQuan);
-            console.log("id phường:"+idPhuong);
+            console.log("tên tỉnh:" + tenTinh);
+            console.log("tên quận:" + tenQuan);
+            console.log("tên phường:" + tenPhuong);
+            console.log("id tỉnh:" + idTinh);
+            console.log("id quận:" + idQuan);
+            console.log("id phường:" + idPhuong);
 
             //Lấy id
             $("<input>").attr({
@@ -1768,12 +1798,12 @@
             quanSelect.value = idQuanHuyen;
             phuongSelect.value = idPhuongXa;
 
-            console.log("tỉnh thành: ",idTinhThanh);
-            console.log("tỉnh quận huyện: ",idQuanHuyen);
-            console.log("tỉnh phường xã: ",idPhuongXa);
-            console.log("tỉnh thành test: ",idTinhThanhTest);
-            console.log("tỉnh quận huyện té: ",idQuanHuyenTest);
-            console.log("tỉnh phường xã: ",idPhuongXaTest);
+            console.log("tỉnh thành: ", idTinhThanh);
+            console.log("tỉnh quận huyện: ", idQuanHuyen);
+            console.log("tỉnh phường xã: ", idPhuongXa);
+            console.log("tỉnh thành test: ", idTinhThanhTest);
+            console.log("tỉnh quận huyện té: ", idQuanHuyenTest);
+            console.log("tỉnh phường xã: ", idPhuongXaTest);
 
 
             var token = '108bdaef-8395-11ee-af43-6ead57e9219a';
@@ -1809,19 +1839,20 @@
                     }
                 });
             }
+
 // Tính phí ship
-            getJSONWithToken1('https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/available-services?shop_id=1244&to_district='+idQuanHuyenTest+'&from_district=3440', function(data_maDV) {
+            getJSONWithToken1('https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/available-services?shop_id=1244&to_district=' + idQuanHuyenTest + '&from_district=3440', function (data_maDV) {
                 //console.log("API maDV: ", data_maDV.data[0].service_id); // Log the entire response
                 var service_id = data_maDV.data[0].service_id;
                 console.log("API maDV: ", service_id);
 
                 console.log("Tổng tiền: ", tongTien);
-                getJSONWithToken('https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee?service_id='+service_id+'&insurance_value='+tongTien+'&from_district_id=3440&to_district_id='+idQuanHuyenTest+'&to_ward_code='+idPhuongXaTest+'&height=15&length=15&weight=1000&width=15', function(data_total) {
+                getJSONWithToken('https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee?service_id=' + service_id + '&insurance_value=' + tongTien + '&from_district_id=3440&to_district_id=' + idQuanHuyenTest + '&to_ward_code=' + idPhuongXaTest + '&height=15&length=15&weight=1000&width=15', function (data_total) {
                     console.log("API Response: ", data_total.data.service_fee); // Log the entire response
 
 
                     function formatVND(number) {
-                        return number.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                        return number.toLocaleString('vi-VN', {style: 'currency', currency: 'VND'});
                     }
 
                     var firstFee = data_total.data.service_fee
@@ -1830,7 +1861,7 @@
                     var newTotal = tongTien + firstFee;
 
                     // Update the total amount in the DOM
-                    $('#total-amount').text(newTotal.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }));
+                    $('#total-amount').text(newTotal.toLocaleString('vi-VN', {style: 'currency', currency: 'VND'}));
 
                     // $("#totalAPI").val(firstFee); // Set the value of the input field with id 'totalAPI'
                     $("#phiShip").html(formatVND(firstFee));
@@ -1843,6 +1874,7 @@
         // Đóng modal
         $('#addAddressModal').modal('hide');
     }
+
     chonDiaChi();
 
     function showModal() {
@@ -1860,12 +1892,25 @@
     //fomat tiền
 
     function formatVND(number) {
-        return number.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+        return number.toLocaleString('vi-VN', {style: 'currency', currency: 'VND'});
     }
 
 
+</script>
 
+<script>
+    function checkDiscountCode() {
+        const discountCodeInput = document.getElementById('discountCode');
+        const removeDiscountLink = document.getElementById('removeDiscountLink');
 
+        if (discountCodeInput.value.trim() !== '') {
+            removeDiscountLink.style.display = 'block';
+        } else {
+            removeDiscountLink.style.display = 'none';
+        }
+    }
+
+    window.onload = checkDiscountCode;
 </script>
 
 <%--<script>--%>
