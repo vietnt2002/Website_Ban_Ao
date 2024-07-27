@@ -429,23 +429,26 @@
                                 </thead>
                                 <tbody>
                                 <c:forEach varStatus="i" items="${listHoaDon}" var="hoaDon">
-                                    <tr>
-                                        <td>${i.index+1}</td>
-                                        <td>${hoaDon.ma}</td>
-                                        <td>${hoaDon.idNhanVien.hoTen}</td>
-                                        <td>
-                                            <c:if test="${hoaDon.idKhachHang.id==null}">Khách lẻ</c:if>
-                                            <c:if test="${hoaDon.idKhachHang.id!=null}">${hoaDon.idKhachHang.hoTen}</c:if>
-                                        </td>
-                                        <td>${hoaDon.ngayTao}</td>
-                                        <td>${hoaDon.trangThai==0?"Chua thanh toan":"Da thanh toan"}</td>
-                                        <td>
-                                            <a href="/ban-hang-tai-quay/detail-hoa-don/${hoaDon.id}"
-                                               class="btn btn-primary">
-                                                <i class="bi bi-eye-fill"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
+                                   <c:if test="${hoaDon.loaiHoaDon==0}">
+                                       <tr>
+                                           <td>${i.index+1}</td>
+                                           <td>${hoaDon.ma}</td>
+                                           <td>${hoaDon.idNhanVien.hoTen}</td>
+                                           <td>
+                                               <c:if test="${hoaDon.idKhachHang.id==null}">Khách lẻ</c:if>
+                                               <c:if test="${hoaDon.idKhachHang.id!=null}">${hoaDon.idKhachHang.hoTen}</c:if>
+                                           </td>
+                                           <td>${hoaDon.ngayTao}</td>
+                                           <td>${hoaDon.trangThai==0?"Chua thanh toan":"Da thanh toan"}</td>
+                                           <td>
+                                               <a href="/ban-hang-tai-quay/detail-hoa-don/${hoaDon.id}"
+                                                  class="btn btn-primary">
+                                                   <i class="bi bi-eye-fill"></i>
+                                               </a>
+                                           </td>
+                                       </tr>
+                                   </c:if>
+
                                 </c:forEach>
                                 </tbody>
                             </table>
