@@ -528,14 +528,6 @@
                                 </div>
 
                             </div>
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" role="switch"
-                                       id="trangThaiAdd"
-                                       checked>
-                                <label class="form-check-label" for="trangThaiLabelAdd"
-                                       id="trangThaiLabelAdd">Trạng
-                                    thái</label>
-                            </div>
                             <div>
                                 <table class="table table-hover mt-3">
                                     <thead>
@@ -994,16 +986,18 @@
     // iconRemove
     iconRemoveMoreCboMauSac.addEventListener('click', function (e) {
         e.preventDefault();
-        console.log("icon add more");
+        const htmlDropdown = document.getElementById("mauSacBox");
+        htmlDropdown.removeChild(htmlDropdown.lastChild);
+        howManyCboMauSacMemo--;
         howManyCboMauSac--;
-        loadTotalCboMauSac();
         loadCboMauSac();
     });
     iconRemoveMoreCboKichThuoc.addEventListener('click', function (e) {
         e.preventDefault();
-        console.log("icon add more");
+        const htmlDropdown = document.getElementById("kichThuocBox");
+        htmlDropdown.removeChild(htmlDropdown.lastChild);
+        howManyCboKichThuocMemo--;
         howManyCboKichThuoc--;
-        loadTotalCboKichThuoc();
         loadCboKichThuoc();
     });
 
