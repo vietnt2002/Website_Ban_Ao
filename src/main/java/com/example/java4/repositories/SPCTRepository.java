@@ -2,6 +2,7 @@ package com.example.java4.repositories;
 
 import com.example.java4.entities.ChiTietSanPham;
 import com.example.java4.response.MauSizeSL;
+import com.example.java4.response.SPCTDTO;
 import com.example.java4.response.SPCTResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -66,6 +67,31 @@ public interface SPCTRepository extends JpaRepository<ChiTietSanPham, String>, J
             "join HinhAnh ha on ctsp.id = ha.idCTSP.id " +
             "where ctsp.id in (select min (innerCtsp.id) from ChiTietSanPham innerCtsp group by innerCtsp.idSanPham.id)")
     Page<SPCTResponse> getAllSP(Pageable pageable);
+
+
+    @Query("SELECT new com.example.java4.response.SPCTResponse(ctsp.id, sp.id, sp.ma, sp.ten, kta.ten, ctsp.giaBan, ha.hinhAnh1)" +
+            "FROM ChiTietSanPham ctsp " +
+            "JOIN SanPham sp ON sp.id = ctsp.idSanPham.id " +
+            "JOIN MauSac ms ON ms.id = ctsp.idMauSac.id " +
+            "JOIN KichThuoc kth ON kth.id = ctsp.idKichThuoc.id " +
+            "JOIN ChatLieu cl ON cl.id = ctsp.idChatLieu.id " +
+            "JOIN KieuTay kta ON kta.id = ctsp.idKieuTay.id " +
+            "JOIN HinhAnh ha ON ctsp.id = ha.idCTSP.id " +
+            "WHERE (?1 IS NULL OR sp.ten LIKE %?1% OR ms.ten LIKE %?1% OR kta.ten LIKE %?1%) " +
+            "AND ctsp.id IN (SELECT MIN(innerCtsp.id) FROM ChiTietSanPham innerCtsp GROUP BY innerCtsp.idSanPham.id)")
+    Page<SPCTResponse> searchSP(@Param("search") String search, Pageable pageable);
+
+//    @Query(
+//            "FROM ChiTietSanPham ctsp " +
+//            "JOIN SanPham sp ON sp.id = ctsp.idSanPham.id " +
+//            "JOIN MauSac ms ON ms.id = ctsp.idMauSac.id " +
+//            "JOIN KichThuoc kth ON kth.id = ctsp.idKichThuoc.id " +
+//            "JOIN ChatLieu cl ON cl.id = ctsp.idChatLieu.id " +
+//            "JOIN KieuTay kta ON kta.id = ctsp.idKieuTay.id " +
+//            "JOIN HinhAnh ha ON ctsp.id = ha.idCTSP.id " +
+//            "WHERE (?1 IS NULL OR sp.ten LIKE %?1% OR ms.ten LIKE %?1% OR kta.ten LIKE %?1%) " +
+//            "AND ctsp.id IN (SELECT MIN(innerCtsp.id) FROM ChiTietSanPham innerCtsp GROUP BY innerCtsp.idSanPham.id)")
+//    Page<SPCTResponse> searchSP(@Param("search") String search, Pageable pageable);
 
     @Query("SELECT new com.example.java4.response.SPCTResponse( min(ctsp.id), sp.id, sp.ma, sp.ten, min(kta.ten), ctsp.giaBan, ha.hinhAnh1)\n" +
             "FROM ChiTietSanPham ctsp \n" +
@@ -147,6 +173,19 @@ public interface SPCTRepository extends JpaRepository<ChiTietSanPham, String>, J
             "JOIN ChiTietHoaDon hdct ON ctsp.id = hdct.idCTSP " +
             "WHERE hdct.id = :idHoaDonChiTiet", nativeQuery = true)
     Optional<ChiTietSanPham> findByHoaDonChiTietId(@Param("idHoaDonChiTiet") String idHoaDonChiTiet);
+
+
+    // Thống kê danh sách sản phẩm sắp hết hàng
+//    @Query("SELECT new com.example.java4.response.SPCTDTO(" +
+//            "sp.ten, sp.ma, ctsp.giaBan, ha.hinhAnh1, ctsp.soLuong) " +
+//            "FROM ChiTietSanPham ctsp " +
+//            "JOIN ctsp.sanPham sp " +
+//            "LEFT JOIN ctsp.hinhAnh ha " +
+//            "WHERE ctsp.soLuong < :minStock " +
+//            "ORDER BY ctsp.soLuong ASC")
+//    Page<SPCTDTO> getLowStockProducts(@Param("minStock") int minStock, Pageable pageable);
+
+
 
 };
 

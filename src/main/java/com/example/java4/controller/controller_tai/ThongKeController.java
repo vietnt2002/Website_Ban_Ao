@@ -1,9 +1,15 @@
 package com.example.java4.controller.controller_tai;
 
 import com.example.java4.config.UserInfor;
+import com.example.java4.entities.ChiTietHoaDon;
+import com.example.java4.entities.ChiTietSanPham;
+import com.example.java4.entities.HinhAnh;
 import com.example.java4.entities.NhanVien;
+import com.example.java4.repositories.HinhAnhRepository;
 import com.example.java4.repositories.NhanVienRepository;
+import com.example.java4.repositories.SPCTRepository;
 import com.example.java4.repositories.ThongKeRepository;
+import com.example.java4.response.SPCTDTO;
 import com.example.java4.response.ThongKeDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,8 +20,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.TemporalAdjusters;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,16 +42,23 @@ public class ThongKeController {
     @Autowired
     NhanVienRepository _nhanVienRepo;
 
+    @Autowired
+    SPCTRepository _chiTietSanPhamRepo;
+
+    @Autowired
+    HinhAnhRepository _hinhAnhRepo;
+
+
     @GetMapping("/view")
     public String view(Model model,
                        @RequestParam(value = "page", defaultValue = "0") String pageParam) {
 
-        if (UserInfor.idNhanVien != null) {
-            NhanVien nhanVien = _nhanVienRepo.findById(UserInfor.idNhanVien).get();
-            model.addAttribute("nv", nhanVien);
-        } else {
-            return "redirect:/admin/dang-nhap-view";
-        }
+//        if (UserInfor.idNhanVien != null) {
+//            NhanVien nhanVien = _nhanVienRepo.findById(UserInfor.idNhanVien).get();
+//            model.addAttribute("nv", nhanVien);
+//        } else {
+//            return "redirect:/admin/dang-nhap-view";
+//        }
 
         LocalDate today = LocalDate.now();
         LocalDate startOfWeek = today.with(TemporalAdjusters.previousOrSame(java.time.DayOfWeek.MONDAY));
@@ -74,10 +91,21 @@ public class ThongKeController {
 
 
         // Hiển thị danh sách sản phẩm sắp hết hàng
-//        PageRequest pageRequest = PageRequest.of(Integer.valueOf(pageParam), 5);
-//        Page<Object[]> lowStockProducts = _thongKeRepo.getLowStockProducts(pageRequest);
-//        model.addAttribute("lowStockProducts", lowStockProducts);
+        PageRequest pageRequest = PageRequest.of(Integer.valueOf(pageParam), 5);
+        Page<ChiTietSanPham> listSanPhamSapHetHang = _thongKeRepo.findProductsLowOnStock(pageRequest);
+
+
+        // Top selling products
+        LocalDateTime currentMonth = LocalDateTime.now();
+        Page<SPCTDTO> topSellingProducts = _thongKeRepo.getTopSellingProductsByMonth(currentMonth,20,pageRequest);
+
+        model.addAttribute("topSellingProducts",topSellingProducts);
+        model.addAttribute("pageSPSapHetHang", listSanPhamSapHetHang);
 
         return "/view/ThongKe/view.jsp";
     }
+
+
+
+
 }

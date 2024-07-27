@@ -643,6 +643,11 @@ public class TrangChuController {
             giaoHang.setGhiChu(request.getGhiChu());
             giaoHangRepo.save(giaoHang);
 
+//            String idKM = hoaDon.getIdKhuyenMai().getId();
+//            KhuyenMai khuyenMai = khuyenMaiRepo.findBySoLuong(idKM);
+//            khuyenMai.setSoLuong(khuyenMai.getSoLuong() - 1);
+//            khuyenMaiRepo.save(khuyenMai);
+            redirectAttributes.addFlashAttribute("successMessage", "Đặt hàng thành công");
 //            redirectAttributes.addFlashAttribute("successMessage", "Đặt hàng thành công");
             createLichSuHoaDon(hoaDon);
             return "redirect:/cua-hang/don-mua";

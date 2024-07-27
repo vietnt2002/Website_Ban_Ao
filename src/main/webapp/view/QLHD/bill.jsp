@@ -96,11 +96,11 @@
         </li>
 
 
-        <li class="nav-item">
-            <a class="nav-link" href="/admin/tra-hang-view">
-                <i class="fas fa-fw fa-chart-area"></i>
-                <span>Trả hàng</span></a>
-        </li>
+<%--        <li class="nav-item">--%>
+<%--            <a class="nav-link" href="/admin/tra-hang-view">--%>
+<%--                <i class="fas fa-fw fa-chart-area"></i>--%>
+<%--                <span>Trả hàng</span></a>--%>
+<%--        </li>--%>
 
         <!-- Nav Item - Pages Collapse Menu -->
         <li class="nav-item">

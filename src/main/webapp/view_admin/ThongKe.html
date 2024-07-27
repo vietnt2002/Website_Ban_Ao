@@ -9,7 +9,7 @@
       rel="stylesheet"
     />
     <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css"
       rel="stylesheet"
     />
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.3.3/dist/echarts.min.js"></script>
@@ -32,6 +32,9 @@
       }
       .stat-section.this-year {
         background-color: #ffb703;
+      }
+      .stat-section.custom {
+        background-color: #0981b9; /* Light blue for the custom section */
       }
       .stat-section h3 {
         font-size: 1.25em;
@@ -233,254 +236,125 @@
             </div>
           </div>
 
-          <!-- Phần giữa -->
-          <div class="">
-            <div class="card-header">Thống kê</div>
-            <div class="card-body bg-white mb-5">
-              <div class="mb-5">
-                <h5 class="ml-3">Bộ lọc</h5>
-                <div class="d-flex align-items-center">
-                  <div class="col-md-1">
-                    <button
-                      type="button"
-                      class="btn btn-outline-primary btn-block btn-sm font-weight-bold"
-                    >
-                      Ngày
-                    </button>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="stat-section custom">
+                <h3 class="text-center">
+                  <i class="bi bi-calendar2-week"></i>Tùy chỉnh
+                </h3>
+                <p class="stat-value text-center" id="custom-revenue">0</p>
+                <div class="stat-details">
+                  <div>
+                    <p>Sản phẩm</p>
+                    <p class="stat-value" id="custom-products">0</p>
                   </div>
-                  <div class="col-md-1">
-                    <button
-                      type="button"
-                      class="btn btn-outline-info btn-block btn-sm font-weight-bold"
-                    >
-                      Tuần
-                    </button>
+                  <div>
+                    <p>Thành công</p>
+                    <p class="stat-value" id="custom-success">0</p>
                   </div>
-                  <div class="col-md-1">
-                    <button
-                      type="button"
-                      class="btn btn-outline-success btn-block btn-sm font-weight-bold"
-                    >
-                      Tháng
-                    </button>
-                  </div>
-                  <div class="col-md-1">
-                    <button
-                      type="button"
-                      class="btn btn-outline-warning btn-block btn-sm font-weight-bold"
-                    >
-                      Năm
-                    </button>
-                  </div>
-                  <div class="col-md-3">
-                    <div class="form-group mb-0">
-                      <input
-                        type="date"
-                        class="form-control with-title"
-                        id="start-date"
-                      />
-                      <span class="input-title">Từ ngày</span>
-                    </div>
-                  </div>
-                  <div class="col-md-3">
-                    <div class="form-group mb-0">
-                      <input
-                        type="date"
-                        class="form-control with-title"
-                        id="end-date"
-                      />
-                      <span class="input-title">Đến ngày</span>
-                    </div>
-                  </div>
-                  <div class="col-md-2">
-                    <button
-                      type="button"
-                      class="btn btn-primary btn-block btn-sm text-dark font-weight-bold"
-                    >
-                      <span class="text-white p-3">Tìm kiếm</span>
-                    </button>
+                  <div>
+                    <p>Đơn hủy</p>
+                    <p class="stat-value" id="custom-cancel">0</p>
                   </div>
                 </div>
-              </div>
-
-              <!-- Danh sách sản phẩm bán chạy -->
-              <div class="row">
-                <div class="col-8">
-                  <div class="mt-4">
-                    <h5 class="ml-3 text-center">
-                      Danh sách sản phẩm sắp hết hàng
-                    </h5>
-                    <table class="table table-striped bg-warning text-white">
-                      <thead>
-                        <tr>
-                          <th>#</th>
-                          <th>Tên sản phẩm</th>
-                          <th>Doanh thu</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <!-- Populate with data dynamically -->
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-
-                <!-- Biểu đồ Top 5 sản phẩm bán chạy -->
-                    <div class="col-4">
-                        <h5 class="ml-3 text-center">Biểu đồ top 5 sản phẩm bán chạy</h5>
-                        <div class="mt-4 border-card">
-                            <div class="row">
-                                <div class="col-md-12 text-center">
-                                    <div id="pie-chart" style="height: 300px"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
               </div>
             </div>
           </div>
 
-          <div class="mb-5">
-            <div class="card-header">Biểu đồ doanh thu </div>
-            <div class="card-body bg-white">
-                <div id="revenue-chart" style="height: 400px;"></div>
+          <!-- Thống kê sản phẩm bán chạy -->
+          <div class="card border-card mt-4">
+            <div class="card-body">
+              <h4 class="card-title">Sản phẩm bán chạy</h4>
+              <div class="card-table">
+                <!-- Table content will be dynamically inserted here -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Biểu đồ tròn -->
+          <div class="card border-card mt-4">
+            <div class="card-body">
+              <h4 class="card-title">Tổng quan tình trạng</h4>
+              <div id="pie-chart" class="chart"></div>
+            </div>
+          </div>
+
+          <!-- Lọc dữ liệu -->
+          <div class="card border-card mt-4">
+            <div class="card-body card-filter">
+              <h4 class="card-body-title">Lọc dữ liệu</h4>
+              <form class="form-inline">
+                <div class="form-group mx-sm-3 mb-2">
+                  <label for="start-date" class="sr-only">Từ ngày</label>
+                  <input
+                    type="date"
+                    class="form-control with-title"
+                    id="start-date"
+                    placeholder="Từ ngày"
+                  />
+                  <span class="input-title">Từ ngày</span>
+                </div>
+                <div class="form-group mx-sm-3 mb-2">
+                  <label for="end-date" class="sr-only">Đến ngày</label>
+                  <input
+                    type="date"
+                    class="form-control with-title"
+                    id="end-date"
+                    placeholder="Đến ngày"
+                  />
+                  <span class="input-title">Đến ngày</span>
+                </div>
+                <button type="submit" class="btn btn-outline-primary mb-2">
+                  Lọc
+                </button>
+              </form>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
     <script>
-        // Đoạn mã tích hợp biểu đồ vào đây
-        var chartDom = document.getElementById('pie-chart');
-        var myChart = echarts.init(chartDom);
-        var option;
-    
-        option = {
-            tooltip: {
-                trigger: 'item'
-            },
-            legend: {
-                top: '0%',
-                left: 'left'
-            },
-            series: [
-                {
-                    name: 'Access From',
-                    type: 'pie',
-                    radius: ['40%', '70%'],
-                    avoidLabelOverlap: false,
-                    label: {
-                        show: false,
-                        position: 'center'
-                    },
-                    emphasis: {
-                        label: {
-                            show: true,
-                            fontSize: 40,
-                            fontWeight: 'bold'
-                        }
-                    },
-                    labelLine: {
-                        show: false
-                    },
-                    data: [
-                        { value: 1048, name: 'Search Engine' },
-                        { value: 735, name: 'Direct' },
-                        { value: 580, name: 'Email' },
-                        { value: 484, name: 'Union Ads' },
-                        { value: 300, name: 'Video Ads' }
-                    ]
+      document.addEventListener('DOMContentLoaded', function () {
+        var pieChart = echarts.init(document.getElementById('pie-chart'));
+        var option = {
+          title: {
+            text: 'Tổng quan tình trạng',
+            left: 'center'
+          },
+          tooltip: {
+            trigger: 'item'
+          },
+          legend: {
+            orient: 'vertical',
+            left: 'left'
+          },
+          series: [
+            {
+              name: 'Tình trạng',
+              type: 'pie',
+              radius: '50%',
+              data: [
+                { value: 335, name: 'Đơn hàng thành công' },
+                { value: 310, name: 'Đơn hàng hủy' },
+                { value: 234, name: 'Đơn hàng khác' }
+              ],
+              emphasis: {
+                itemStyle: {
+                  shadowBlur: 10,
+                  shadowOffsetX: 0,
+                  shadowColor: 'rgba(0, 0, 0, 0.5)'
                 }
-            ]
+              }
+            }
+          ]
         };
-    
-        option && myChart.setOption(option);
-
-
-
-
-
-
-
-
-        // Biểu đò cột doanh thu
-        // Đoạn mã tích hợp biểu đồ vào đây
-    var revenueChartDom = document.getElementById('revenue-chart');
-    var revenueChart = echarts.init(revenueChartDom);
-    var option;
-
-    option = {
-        title: {
-            text: 'Rainfall vs Evaporation',
-            subtext: 'Fake Data'
-        },
-        tooltip: {
-            trigger: 'axis'
-        },
-        legend: {
-            data: ['Rainfall', 'Evaporation']
-        },
-        toolbox: {
-            show: true,
-            feature: {
-                dataView: { show: true, readOnly: false },
-                magicType: { show: true, type: ['line', 'bar'] },
-                restore: { show: true },
-                saveAsImage: { show: true }
-            }
-        },
-        calculable: true,
-        xAxis: [
-            {
-                type: 'category',
-                // prettier-ignore
-                data: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-            }
-        ],
-        yAxis: [
-            {
-                type: 'value'
-            }
-        ],
-        series: [
-            {
-                name: 'Rainfall',
-                type: 'bar',
-                data: [
-                    2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3
-                ],
-                markPoint: {
-                    data: [
-                        { type: 'max', name: 'Max' },
-                        { type: 'min', name: 'Min' }
-                    ]
-                },
-                markLine: {
-                    data: [{ type: 'average', name: 'Avg' }]
-                }
-            },
-            {
-                name: 'Evaporation',
-                type: 'bar',
-                data: [
-                    2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3
-                ],
-                markPoint: {
-                    data: [
-                        { name: 'Max', value: 182.2, xAxis: 7, yAxis: 183 },
-                        { name: 'Min', value: 2.3, xAxis: 11, yAxis: 3 }
-                    ]
-                },
-                markLine: {
-                    data: [{ type: 'average', name: 'Avg' }]
-                }
-            }
-        ]
-    };
-
-    option && revenueChart.setOption(option);
+        pieChart.setOption(option);
+      });
     </script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   </body>
 </html>

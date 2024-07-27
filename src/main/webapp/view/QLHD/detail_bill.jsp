@@ -1506,7 +1506,12 @@
                                     <td>${product.idMauSac.ten}</td>
                                     <td>${product.idKichThuoc.ten}</td>
                                     <td>${product.soLuong}</td>
-                                    <td>${product.giaBan}</td>
+                                    <td> <fmt:formatNumber value="${product.giaBan}"
+                                                           type="currency"
+                                                           currencySymbol="₫"
+                                                           groupingUsed="true"
+                                                          />
+                                    </td>
                                     <td><span
                                             class=" fw-normal badge rounded-pill ${product.trangThai == 0 ? 'bg-danger' : 'bg-success'}">
                                             ${product.trangThai == 0 ? "Hết hàng" : "Còn hàng"}
