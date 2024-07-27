@@ -35,7 +35,7 @@ public interface HoaDonRepository
     //Phương thức thanh toán
     public static final int TIEN_MAT = 0;
     public static final int CHUYEN_KHOAN = 1;
-    @Query(value = "SELECT TOP 5 * FROM HoaDon where trangThai = 0 ORDER BY ngayTao DESC",
+    @Query(value = "SELECT TOP 5 * FROM HoaDon where LoaiHoaDon = 0 and trangThai=0 ORDER BY ngayTao DESC",
             nativeQuery = true)
     List<HoaDon>  selectTop5();
     Optional<HoaDon> findById(String id);
