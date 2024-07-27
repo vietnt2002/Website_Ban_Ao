@@ -519,14 +519,14 @@
                                     <p class="error-message" id="soTienGiamAddErr" style="color: red;"></p>
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="soLuongEdit" class="form-label">Số lượng</label>
+                                    <label for="soLuongAdd" class="form-label">Số lượng</label>
                                     <input type="text" class="form-control" id="soLuongAdd" value="">
                                     <p class="error-message" id="soLuongAddErr" style="color: red;"></p>
                                 </div>
                             </div>
                             <div class="row mb-3">
                                 <div class="col-md-6">
-                                    <label for="apDungEdit" class="form-label">Đơn tối thiểu</label>
+                                    <label for="apDungAdd" class="form-label">Đơn tối thiểu</label>
                                     <input type="text" class="form-control" id="apDungAdd" value="">
                                     <p class="error-message" id="apDungAddErr" style="color: red;"></p>
                                 </div>
@@ -831,6 +831,7 @@
     let soTienGiamEdit = document.getElementById("soTienGiamEdit");
     let soLuongEdit = document.getElementById("soLuongEdit");
     let trangThaiEdit  = document.getElementById("trangThaiEdit");
+    let apDungEdit = document.getElementById("apDungEdit");
     $(document).on('click', "button[id^='editKMBtn_']", e => {
         e.preventDefault();
         const queryString = window.location.pathname;
@@ -851,6 +852,7 @@
                 ngayKetThucEdit.value = resp.ngayKetThuc;
                 soTienGiamEdit.value = resp.soTienGiam;
                 soLuongEdit.value = resp.soLuong;
+                apDungEdit.value = resp.apDung;
                 if(resp.trangThai==1){
                     trangThaiEdit.checked = true;
                     labelElementedit.textContent = "Đang hoạt động";
