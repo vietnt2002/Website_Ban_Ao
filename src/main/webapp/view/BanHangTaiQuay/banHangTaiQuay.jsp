@@ -429,7 +429,7 @@
                                 </thead>
                                 <tbody>
                                 <c:forEach varStatus="i" items="${listHoaDon}" var="hoaDon">
-                                   <c:if test="${hoaDon.loaiHoaDon==0}">
+<%--                                   <c:if test="${hoaDon.trangThai==0}">--%>
                                        <tr>
                                            <td>${i.index+1}</td>
                                            <td>${hoaDon.ma}</td>
@@ -447,7 +447,7 @@
                                                </a>
                                            </td>
                                        </tr>
-                                   </c:if>
+<%--                                   </c:if>--%>
 
                                 </c:forEach>
                                 </tbody>
