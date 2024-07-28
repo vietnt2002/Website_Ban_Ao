@@ -526,7 +526,6 @@
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                             <div>
                                 <table class="table table-hover mt-3">
@@ -723,6 +722,27 @@
     });
     <%--    --%>
 </script>
+
+
+<%--pooldata--%>
+<script>
+     let spct ={
+         idSp:"",
+         idMauSac:"",
+         idKichThuoc:"",
+         idChatLieu:"",
+         idKieuTay:"",
+         moTa:"",
+         soLuong:"",
+         giaNhap:"",
+         giaBan:"",
+         trangThai:""
+     };
+     let dataPending = [];
+
+</script>
+<%--endPool--%>
+
 <%--loadingcbo--%>
 <script>
     const lblMauSacAdd = document.getElementById("lblMauSacAdd");
@@ -747,7 +767,7 @@
         idKichThuocAdd = "";
         idChatLieuAdd = "";
         idKieuTayAdd = "";
-        document.getElementById("lblMauSacAdd").textContent = "Chọn màu sắc"
+        document.getElementById("lblMauSacAdd").textContent = "Chọn màu sắc";
         document.getElementById("lblKichThuocAdd").textContent = "Chọn kích thước";
         lblChatLieuAdd.textContent = "Chọn chất liệu";
         lblKieuTayAdd.textContent = "Chọn kiểu tay";
@@ -777,6 +797,7 @@
         idChatLieuAdd = cl.id;
         lblChatLieuAdd.textContent = cl.ten;
         console.log('Selected chat lieu ID:', idChatLieu);
+        //loadpool
         // You can add more logic here to handle the selected value
     }
 
@@ -785,6 +806,7 @@
         idKieuTayAdd = kt.id;
         lblKieuTayAdd.textContent = kt.ten;
         console.log('Selected kieu tay ID modal:', idKieuTay);
+        //concathtml here
         // You can add more logic here to handle the selected value
     }
 
