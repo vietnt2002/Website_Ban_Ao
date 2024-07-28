@@ -1430,13 +1430,14 @@
             .then(resp => {
                 let html = '';
                 resp.map((spct, i) => {
-                    const trangThai = spct.trangThai == 1 ? "Hoạt động" : "Dừng hđ";
+                    const trangThai = spct.trangThai == 1 ? true : false;
                     const mauSac = spct.idMauSac.ten || 'N/A';
                     const kichThuoc = spct.idKichThuoc.ten || 'N/A';
                     const chatLieu = spct.idChatLieu.ten || 'N/A';
                     const kieuTay = spct.idKieuTay.ten || 'N/A';
                     const soLuong = spct.soLuong || 'N/A';
                     const giaBan = spct.giaBan || 'N/A';
+
                     if (spct.idMauSac.ten != mauSacMemo) {
                         let labelms = spct.idMauSac.ten;
                         console.log("Mau sac memo: ", spct.idMauSac.ten);
@@ -1450,19 +1451,25 @@
                         '<td>' + kieuTay + '</td>' +
                         '<td>' + soLuong + '</td>' +
                         '<td>' + giaBan + '</td>' +
-                        '<td>' + trangThai + '</td>' +
+                        "<td>" +
+                        "<div class='form-check form-switch'>" +
+                        "<input class='form-check-input' type='checkbox' role='switch' id='trangThaiAtTbl_" + spct.id + "'" +
+                        (trangThai ? " checked" : "") +
+                        ">" +
+                        "</div>" +
+                        "</td>" +
                         '<td>' +
                         '<div class="d-inline">' +
                         '<button id="editSPCTBtn_' + spct.id + '" class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#ModalEdit">Chỉnh sửa</button>' +
                         '</div>' +
                         '</td>' +
+                        "<td style=\"border: none; pointer-events: none;\">" + "button here" + "</td>"+
                         '</tr>';
                     mauSacMemo = spct.idMauSac.ten;
                 });
                 $("#tbl_ds_spct").html(html)
             });
     }
-
     function search(e) {
         e.preventDefault();
         console.log('data mau sac ID:', idMauSac);
@@ -1976,6 +1983,16 @@
         }
     });
 
+    $(document).on('click', "input[id^='trangThaiAtTbl_']", e => {
+        e.preventDefault();
+        const queryString = window.location.pathname;
+        const pathParts = queryString.split('/');
+        const pathVariable = pathParts[pathParts.length - 1];
+        const spctid = e.currentTarget.id.replace("trangThaiAtTbl_", "");
+        console.log("test spctid:" + spctid);
+    });
+
+
     function validateNull(param) {
         if (param === "" || param === undefined) {
             return true;
@@ -2247,7 +2264,6 @@
             }
         });
     });
-
 </script>
 <script>
     $(document).ready(function () {
