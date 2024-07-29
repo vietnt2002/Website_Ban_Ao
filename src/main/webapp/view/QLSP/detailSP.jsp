@@ -1984,14 +1984,11 @@
     });
 
     $(document).on('click', "input[id^='trangThaiAtTbl_']", e => {
-        e.preventDefault();
-        const queryString = window.location.pathname;
-        const pathParts = queryString.split('/');
-        const pathVariable = pathParts[pathParts.length - 1];
+        e.preventDefault;
         const spctid = e.currentTarget.id.replace("trangThaiAtTbl_", "");
         console.log("test spctid:" + spctid);
+        console.log("test button id: " + document.getElementById(e.currentTarget.id).checked);
     });
-
 
     function validateNull(param) {
         if (param === "" || param === undefined) {
