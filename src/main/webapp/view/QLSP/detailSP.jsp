@@ -414,12 +414,13 @@
                         <div class="mt-3">
                             <h4 class="border-bottom">Quản lý sản phẩm chi tiết</h4>
                             <div class="d-flex gap-3 mt-3">
-                                <img id="hinhAnhSP" width="200" height="200" alt="">
+                                <img id="hinhAnhSP" src="path_to_your_image.jpg" class="rounded border"
+                                     width="200" height="200" alt="Product Image">
                                 <div id="product-details">
-                                    <h5 class="border-bottom">Tên sản phẩm:&nbsp&nbsp<span id="tenSP"></span></h5>
-                                    <h5 class="border-bottom">Mã sản phẩm:&nbsp&nbsp<span id="maSP"></span></h5>
-                                    <h5 class="border-bottom">Ngày tạo:&nbsp&nbsp<span id="ngayTaoSP"></span></h5>
-                                    <h5 class="border-bottom">Trạng thái:&nbsp&nbsp<span id="trangThaiSP"></span></h5>
+                                    <h5 class="">Tên sản phẩm:&nbsp&nbsp<span id="tenSP"></span></h5>
+                                    <h5 class="">Mã sản phẩm:&nbsp&nbsp<span id="maSP"></span></h5>
+                                    <h5 class="">Ngày tạo:&nbsp&nbsp<span id="ngayTaoSP"></span></h5>
+                                    <h5 class="">Trạng thái:&nbsp&nbsp<span id="trangThaiSP"></span></h5>
                                 </div>
                             </div>
                             <h5 class="mt-3 border-bottom">Danh sách sản phẩm chi tiết: </h5>
@@ -495,6 +496,7 @@
                                     <th>Giá bán</th>
                                     <th>Trạng thái</th>
                                     <th>Thao tác</th>
+                                    <th>Sửa hình ảnh</th>
                                 </tr>
                                 </thead>
                                 <tbody id="tbl_ds_spct">
@@ -511,7 +513,8 @@
                 </button>
             </div>
             <div class="d-flex flex-row-reverse">
-                <button id="btnMultipleAdd" class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#ModalMultipleAdd">Thêm nhiều
+                <button id="btnMultipleAdd" class="btn btn-success me-2" data-bs-toggle="modal"
+                        data-bs-target="#ModalMultipleAdd">Thêm nhiều
                 </button>
             </div>
             <div class="d-flex flex-row-reverse">
@@ -546,157 +549,163 @@
                     <div class="modal-body" style="overflow-y: auto; height: 80vh;">
                         <div class="mb-3">
                             <form id="uploadFormAdd" method="post" enctype="multipart/form-data" action="/uploads">
-                            <div class="row">
-                                <div class="d-flex" style="gap: 500px;">
-                                    <h5 class="border-bottom">Tên sản phẩm:&nbsp&nbsp<span id="tenSPModalAdd"></span>
-                                    </h5>
-                                    <h5 class="border-bottom">Ngày tạo:&nbsp&nbsp<span id="ngayTaoModalAdd"></span></h5>
-                                </div>
-                                <div class="col col-md-3">
-                                    <div class="d-flex">
-                                        <div class="dropdown">
-                                            <button class="btn btn-outline-secondary dropdown-toggle" type="button"
-                                                    id="lblMauSacModalAdd" style="width: 150px;"
-                                                    data-bs-toggle="dropdown"
-                                                    aria-expanded="false">
-                                                Chọn màu sắc
-                                            </button>
-                                            <ul class="dropdown-menu" id="cboMauSacModalAdd"
-                                                aria-labelledby="dropdownMenuButton2">
-                                            </ul>
-                                            <p style="color: red;" id="cboMauSacModalAddErr"></p>
+                                <div class="row">
+                                    <div class="d-flex" style="gap: 500px;">
+                                        <h5 class="border-bottom">Tên sản phẩm:&nbsp&nbsp<span
+                                                id="tenSPModalAdd"></span>
+                                        </h5>
+                                        <h5 class="border-bottom">Ngày tạo:&nbsp&nbsp<span id="ngayTaoModalAdd"></span>
+                                        </h5>
+                                    </div>
+                                    <div class="col col-md-3">
+                                        <div class="d-flex">
+                                            <div class="dropdown">
+                                                <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                                        id="lblMauSacModalAdd" style="width: 150px;"
+                                                        data-bs-toggle="dropdown"
+                                                        aria-expanded="false">
+                                                    Chọn màu sắc
+                                                </button>
+                                                <ul class="dropdown-menu" id="cboMauSacModalAdd"
+                                                    aria-labelledby="dropdownMenuButton2">
+                                                </ul>
+                                                <p style="color: red;" id="cboMauSacModalAddErr"></p>
+                                            </div>
+                                            <div class="icon-container">
+                                                <i class=" bi bi-folder-plus col-3" data-bs-toggle="modal"
+                                                   data-bs-target="#ModalHotAddMS" id="iconHotAddMSModalAdd"
+                                                   style="font-size: 25px"></i>
+                                            </div>
                                         </div>
-                                        <div class="icon-container">
-                                            <i class=" bi bi-folder-plus col-3" data-bs-toggle="modal"
-                                               data-bs-target="#ModalHotAddMS" id="iconHotAddMSModalAdd"
-                                               style="font-size: 25px"></i>
+                                    </div>
+                                    <div class="col col-md-3">
+                                        <div class="d-flex">
+                                            <div class="dropdown">
+                                                <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                                        id="lblKichThuocModalAdd" style="width: 150px;"
+                                                        data-bs-toggle="dropdown"
+                                                        aria-expanded="false">
+                                                    Chọn kích thước
+                                                </button>
+                                                <ul class="dropdown-menu" id="cboKichThuocModalAdd"
+                                                    aria-labelledby="dropdownMenuButton3">
+                                                </ul>
+                                                <p style="color: red;" id="cboKichThuocModalAddErr"></p>
+                                            </div>
+                                            <div class="icon-container">
+                                                <i class=" bi bi-folder-plus col-3" data-bs-toggle="modal"
+                                                   data-bs-target="#ModalHotAddKT" id="iconHotAddKTModalAdd"
+                                                   style="font-size: 25px"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col col-md-3">
+                                        <div class="d-flex">
+                                            <div class="dropdown">
+                                                <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                                        id="lblChatLieuModalAdd" style="width: 150px;"
+                                                        data-bs-toggle="dropdown"
+                                                        aria-expanded="false">
+                                                    Chọn chất liệu
+                                                </button>
+                                                <ul class="dropdown-menu" id="cboChatLieuModalAdd"
+                                                    aria-labelledby="dropdownMenuButton4">
+                                                </ul>
+                                                <p style="color: red;" id="cboChatLieuModalAddErr"></p>
+                                            </div>
+                                            <div class="icon-container">
+                                                <i class=" bi bi-folder-plus col-3" data-bs-toggle="modal"
+                                                   data-bs-target="#ModalHotAddCL" id="iconHotAddCLModalAdd"
+                                                   style="font-size: 25px"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col col-md-3">
+                                        <div class="d-flex">
+                                            <div class="dropdown">
+                                                <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                                        id="lblKieuTayModalAdd" style="width: 150px;"
+                                                        data-bs-toggle="dropdown"
+                                                        aria-expanded="false">
+                                                    Chọn kiểu tay
+                                                </button>
+                                                <ul class="dropdown-menu" id="cboKieuTayModalAdd"
+                                                    aria-labelledby="dropdownMenuButton5">
+                                                </ul>
+                                                <p style="color: red;" id="cboKieuTayModalAddErr"></p>
+                                            </div>
+                                            <div class="icon-container">
+                                                <i class=" bi bi-folder-plus col-3" data-bs-toggle="modal"
+                                                   data-bs-target="#ModalHotAddKTA" id="iconHotAddKTAModalAdd"
+                                                   style="font-size: 25px"></i>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col col-md-3">
-                                    <div class="d-flex">
-                                        <div class="dropdown">
-                                            <button class="btn btn-outline-secondary dropdown-toggle" type="button"
-                                                    id="lblKichThuocModalAdd" style="width: 150px;"
-                                                    data-bs-toggle="dropdown"
-                                                    aria-expanded="false">
-                                                Chọn kích thước
-                                            </button>
-                                            <ul class="dropdown-menu" id="cboKichThuocModalAdd"
-                                                aria-labelledby="dropdownMenuButton3">
-                                            </ul>
-                                            <p style="color: red;" id="cboKichThuocModalAddErr"></p>
-                                        </div>
-                                        <div class="icon-container">
-                                            <i class=" bi bi-folder-plus col-3" data-bs-toggle="modal"
-                                               data-bs-target="#ModalHotAddKT" id="iconHotAddKTModalAdd"
-                                               style="font-size: 25px"></i>
-                                        </div>
+                                <div class="row">
+                                    <div class="col col-md-4">
+                                        <label for="soLuongModalAdd" class="form-label">Số lượng</label>
+                                        <input type="number" name="file" class="form-control" id="soLuongModalAdd"
+                                               value="">
+                                        <p style="color: red;" id="soLuongModalAddErr"></p>
+                                    </div>
+                                    <div class="col col-md-4">
+                                        <label for="giaNhapModalAdd" class="form-label">Giá nhập</label>
+                                        <input type="number" name="file" class="form-control" id="giaNhapModalAdd"
+                                               value="">
+                                        <p style="color: red;" id="giaNhapModalAddErr"></p>
+                                    </div>
+                                    <div class="col col-md-4">
+                                        <label for="giaBanModalAdd" class="form-label">Giá bán</label>
+                                        <input type="number" name="file" class="form-control" id="giaBanModalAdd"
+                                               value="">
+                                        <p style="color: red;" id="giaBanModalAddErr"></p>
                                     </div>
                                 </div>
-                                <div class="col col-md-3">
-                                    <div class="d-flex">
-                                        <div class="dropdown">
-                                            <button class="btn btn-outline-secondary dropdown-toggle" type="button"
-                                                    id="lblChatLieuModalAdd" style="width: 150px;"
-                                                    data-bs-toggle="dropdown"
-                                                    aria-expanded="false">
-                                                Chọn chất liệu
-                                            </button>
-                                            <ul class="dropdown-menu" id="cboChatLieuModalAdd"
-                                                aria-labelledby="dropdownMenuButton4">
-                                            </ul>
-                                            <p style="color: red;" id="cboChatLieuModalAddErr"></p>
-                                        </div>
-                                        <div class="icon-container">
-                                            <i class=" bi bi-folder-plus col-3" data-bs-toggle="modal"
-                                               data-bs-target="#ModalHotAddCL" id="iconHotAddCLModalAdd"
-                                               style="font-size: 25px"></i>
-                                        </div>
+                                <div class="row">
+                                    <div class="col col-md-3">
+                                        <label for="moTaModalAdd" class="form-label">Ghi chú</label>
+                                        <textarea class="form-control custom-textarea" style="width: 550px;"
+                                                  id="moTaModalAdd" name="moTa"></textarea>
+                                        <p style="color: red;" id="moTaModalAddErr"></p>
                                     </div>
                                 </div>
-                                <div class="col col-md-3">
-                                    <div class="d-flex">
-                                        <div class="dropdown">
-                                            <button class="btn btn-outline-secondary dropdown-toggle" type="button"
-                                                    id="lblKieuTayModalAdd" style="width: 150px;"
-                                                    data-bs-toggle="dropdown"
-                                                    aria-expanded="false">
-                                                Chọn kiểu tay
-                                            </button>
-                                            <ul class="dropdown-menu" id="cboKieuTayModalAdd"
-                                                aria-labelledby="dropdownMenuButton5">
-                                            </ul>
-                                            <p style="color: red;" id="cboKieuTayModalAddErr"></p>
-                                        </div>
-                                        <div class="icon-container">
-                                            <i class=" bi bi-folder-plus col-3" data-bs-toggle="modal"
-                                               data-bs-target="#ModalHotAddKTA" id="iconHotAddKTAModalAdd"
-                                               style="font-size: 25px"></i>
-                                        </div>
+                                <div class="row">
+                                    <div class="col col-md-3 hover-effect click-effect image-container">
+                                        <img width="200" height="200"
+                                             src="/image-icon/pendingIMG.png"
+                                             alt="" class="fit-img" id="hinhAnh1DisplayModalAdd">
+                                        <p class="text-center">Hình ảnh 1</p>
+                                        <input type="file" id="fileHinhAnh1ModalAdd" class="file-input-overlay"
+                                               accept="image/*"/>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col col-md-4">
-                                    <label for="soLuongModalAdd" class="form-label">Số lượng</label>
-                                    <input type="number" name="file" class="form-control" id="soLuongModalAdd"
-                                           value="">
-                                    <p style="color: red;" id="soLuongModalAddErr"></p>
-                                </div>
-                                <div class="col col-md-4">
-                                    <label for="giaNhapModalAdd" class="form-label">Giá nhập</label>
-                                    <input type="number" name="file" class="form-control" id="giaNhapModalAdd"
-                                           value="">
-                                    <p style="color: red;" id="giaNhapModalAddErr"></p>
-                                </div>
-                                <div class="col col-md-4">
-                                    <label for="giaBanModalAdd" class="form-label">Giá bán</label>
-                                    <input type="number" name="file" class="form-control" id="giaBanModalAdd" value="">
-                                    <p style="color: red;" id="giaBanModalAddErr"></p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col col-md-3">
-                                    <label for="moTaModalAdd" class="form-label">Ghi chú</label>
-                                    <textarea class="form-control custom-textarea" style="width: 550px;"
-                                              id="moTaModalAdd" name="moTa"></textarea>
-                                    <p style="color: red;" id="moTaModalAddErr"></p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col col-md-3 hover-effect click-effect image-container">
-                                    <img width="200" height="200"
-                                         src="/image-icon/pendingIMG.png"
-                                         alt="" class="fit-img" id="hinhAnh1DisplayModalAdd">
-                                    <p class="text-center">Hình ảnh 1</p>
-                                    <input type="file" id="fileHinhAnh1ModalAdd" class="file-input-overlay" accept="image/*"/>
-                                </div>
 
-                                <div class="col col-md-3 hover-effect click-effect image-container">
-                                    <img width="200" height="200"
-                                         src="/image-icon/pendingIMG.png"
-                                         alt="" class="fit-img" id="hinhAnh2DisplayModalAdd">
-                                    <p class="text-center">Hình ảnh 2</p>
-                                    <input type="file" id="fileHinhAnh2ModalAdd" class="file-input-overlay" accept="image/*"/>
-                                </div>
+                                    <div class="col col-md-3 hover-effect click-effect image-container">
+                                        <img width="200" height="200"
+                                             src="/image-icon/pendingIMG.png"
+                                             alt="" class="fit-img" id="hinhAnh2DisplayModalAdd">
+                                        <p class="text-center">Hình ảnh 2</p>
+                                        <input type="file" id="fileHinhAnh2ModalAdd" class="file-input-overlay"
+                                               accept="image/*"/>
+                                    </div>
 
-                                <div class="col col-md-3 hover-effect click-effect image-container">
-                                    <img width="200" height="200"
-                                         src="/image-icon/pendingIMG.png"
-                                         alt="" class="fit-img" id="hinhAnh3DisplayModalAdd">
-                                    <p class="text-center">Hình ảnh 3</p>
-                                    <input type="file" id="fileHinhAnh3ModalAdd" class="file-input-overlay" accept="image/*"/>
+                                    <div class="col col-md-3 hover-effect click-effect image-container">
+                                        <img width="200" height="200"
+                                             src="/image-icon/pendingIMG.png"
+                                             alt="" class="fit-img" id="hinhAnh3DisplayModalAdd">
+                                        <p class="text-center">Hình ảnh 3</p>
+                                        <input type="file" id="fileHinhAnh3ModalAdd" class="file-input-overlay"
+                                               accept="image/*"/>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" role="switch" id="trangThaiModalAdd"
-                                       checked>
-                                <label class="form-check-label" for="trangThaiLabelModalAdd"
-                                       id="trangThaiLabelModalAdd">Trạng
-                                    thái</label>
-                            </div>
-                            <button id="saveAddBtn" class="btn btn-primary me-5">Lưu</button>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="trangThaiModalAdd"
+                                           checked>
+                                    <label class="form-check-label" for="trangThaiLabelModalAdd"
+                                           id="trangThaiLabelModalAdd">Trạng
+                                        thái</label>
+                                </div>
+                                <button id="saveAddBtn" class="btn btn-primary me-5">Lưu</button>
                             </form>
                         </div>
                     </div>
@@ -717,153 +726,160 @@
                     </div>
                     <div class="modal-body" style="overflow-y: auto; height: 80vh;">
                         <div class="mb-3">
-                            <form id="uploadFormEdit" method="post" enctype="multipart/form-data" action="/hinh-anh/upload">
-                            <div class="row">
-                                <div class="d-flex" style="gap: 500px;">
-                                    <h5 class="border-bottom">Tên sản phẩm:&nbsp&nbsp<span id="tenSPModalEdit"></span>
-                                    </h5>
-                                    <h5 class="border-bottom">Ngày tạo:&nbsp&nbsp<span id="ngayTaoModalEdit"></span>
-                                    </h5>
-                                </div>
-                                <div class="col col-md-3">
-                                    <div class="d-flex">
-                                        <div class="dropdown">
-                                            <button class="btn btn-outline-secondary dropdown-toggle" type="button"
-                                                    id="lblMauSacModalEdit" style="width: 150px;"
-                                                    data-bs-toggle="dropdown"
-                                                    aria-expanded="false">
-                                                Chọn màu sắc
-                                            </button>
-                                            <ul class="dropdown-menu" id="cboMauSacModalEdit"
-                                                aria-labelledby="dropdownMenuButton2">
-                                            </ul>
-                                            <p style="color: red;" id="cboMauSacModalEditErr"></p>
+                            <form id="uploadFormEdit" method="post" enctype="multipart/form-data"
+                                  action="/hinh-anh/upload">
+                                <div class="row">
+                                    <div class="d-flex" style="gap: 500px;">
+                                        <h5 class="border-bottom">Tên sản phẩm:&nbsp&nbsp<span
+                                                id="tenSPModalEdit"></span>
+                                        </h5>
+                                        <h5 class="border-bottom">Ngày tạo:&nbsp&nbsp<span id="ngayTaoModalEdit"></span>
+                                        </h5>
+                                    </div>
+                                    <div class="col col-md-3">
+                                        <div class="d-flex">
+                                            <div class="dropdown">
+                                                <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                                        id="lblMauSacModalEdit" style="width: 150px;"
+                                                        data-bs-toggle="dropdown"
+                                                        aria-expanded="false">
+                                                    Chọn màu sắc
+                                                </button>
+                                                <ul class="dropdown-menu" id="cboMauSacModalEdit"
+                                                    aria-labelledby="dropdownMenuButton2">
+                                                </ul>
+                                                <p style="color: red;" id="cboMauSacModalEditErr"></p>
+                                            </div>
+                                            <div class="icon-container">
+                                                <i class=" bi bi-folder-plus col-3" data-bs-toggle="modal"
+                                                   data-bs-target="#ModalHotAddMS" style="font-size: 25px"></i>
+                                            </div>
                                         </div>
-                                        <div class="icon-container">
-                                            <i class=" bi bi-folder-plus col-3" data-bs-toggle="modal"
-                                               data-bs-target="#ModalHotAddMS" style="font-size: 25px"></i>
+                                    </div>
+                                    <div class="col col-md-3">
+                                        <div class="d-flex">
+                                            <div class="dropdown">
+                                                <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                                        id="lblKichThuocModalEdit" style="width: 150px;"
+                                                        data-bs-toggle="dropdown"
+                                                        aria-expanded="false">
+                                                    Chọn kích thước
+                                                </button>
+                                                <ul class="dropdown-menu" id="cboKichThuocModalEdit"
+                                                    aria-labelledby="dropdownMenuButton3">
+                                                </ul>
+                                                <p style="color: red;" id="cboKichThuocModalEditErr"></p>
+                                            </div>
+                                            <div class="icon-container">
+                                                <i class=" bi bi-folder-plus col-3" data-bs-toggle="modal"
+                                                   data-bs-target="#ModalHotAddKT" style="font-size: 25px"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col col-md-3">
+                                        <div class="d-flex">
+                                            <div class="dropdown">
+                                                <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                                        id="lblChatLieuModalEdit" style="width: 150px;"
+                                                        data-bs-toggle="dropdown"
+                                                        aria-expanded="false">
+                                                    Chọn chất liệu
+                                                </button>
+                                                <ul class="dropdown-menu" id="cboChatLieuModalEdit"
+                                                    aria-labelledby="dropdownMenuButton4">
+                                                </ul>
+                                                <p style="color: red;" id="cboChatLieuModalEditErr"></p>
+                                            </div>
+                                            <div class="icon-container">
+                                                <i class=" bi bi-folder-plus col-3" data-bs-toggle="modal"
+                                                   data-bs-target="#ModalHotAddCL" style="font-size: 25px"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col col-md-3">
+                                        <div class="d-flex">
+                                            <div class="dropdown">
+                                                <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                                        id="lblKieuTayModalEdit" style="width: 150px;"
+                                                        data-bs-toggle="dropdown"
+                                                        aria-expanded="false">
+                                                    Chọn kiểu tay
+                                                </button>
+                                                <ul class="dropdown-menu" id="cboKieuTayModalEdit"
+                                                    aria-labelledby="dropdownMenuButton5">
+                                                </ul>
+                                                <p style="color: red;" id="cboKieuTayModalEditErr"></p>
+                                            </div>
+                                            <div class="icon-container">
+                                                <i class=" bi bi-folder-plus col-3" data-bs-toggle="modal"
+                                                   data-bs-target="#ModalHotAddKTA" style="font-size: 25px"></i>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col col-md-3">
-                                    <div class="d-flex">
-                                        <div class="dropdown">
-                                            <button class="btn btn-outline-secondary dropdown-toggle" type="button"
-                                                    id="lblKichThuocModalEdit" style="width: 150px;"
-                                                    data-bs-toggle="dropdown"
-                                                    aria-expanded="false">
-                                                Chọn kích thước
-                                            </button>
-                                            <ul class="dropdown-menu" id="cboKichThuocModalEdit"
-                                                aria-labelledby="dropdownMenuButton3">
-                                            </ul>
-                                            <p style="color: red;" id="cboKichThuocModalEditErr"></p>
-                                        </div>
-                                        <div class="icon-container">
-                                            <i class=" bi bi-folder-plus col-3" data-bs-toggle="modal"
-                                               data-bs-target="#ModalHotAddKT" style="font-size: 25px"></i>
-                                        </div>
+                                <div class="row">
+                                    <div class="col col-md-4">
+                                        <label for="soLuongModalEdit" class="form-label">Số lượng</label>
+                                        <input type="number" name="file" class="form-control" id="soLuongModalEdit"
+                                               value="">
+                                        <p style="color: red;" id="soLuongModalEditErr"></p>
+                                    </div>
+                                    <div class="col col-md-4">
+                                        <label for="giaNhapModalEdit" class="form-label">Giá nhập</label>
+                                        <input type="number" name="file" class="form-control" id="giaNhapModalEdit"
+                                               value="">
+                                        <p style="color: red;" id="giaNhapModalEditErr"></p>
+                                    </div>
+                                    <div class="col col-md-4">
+                                        <label for="giaBanModalEdit" class="form-label">Giá bán</label>
+                                        <input type="number" name="file" class="form-control" id="giaBanModalEdit"
+                                               value="">
+                                        <p style="color: red;" id="giaBanModalEditErr"></p>
                                     </div>
                                 </div>
-                                <div class="col col-md-3">
-                                    <div class="d-flex">
-                                        <div class="dropdown">
-                                            <button class="btn btn-outline-secondary dropdown-toggle" type="button"
-                                                    id="lblChatLieuModalEdit" style="width: 150px;"
-                                                    data-bs-toggle="dropdown"
-                                                    aria-expanded="false">
-                                                Chọn chất liệu
-                                            </button>
-                                            <ul class="dropdown-menu" id="cboChatLieuModalEdit"
-                                                aria-labelledby="dropdownMenuButton4">
-                                            </ul>
-                                            <p style="color: red;" id="cboChatLieuModalEditErr"></p>
-                                        </div>
-                                        <div class="icon-container">
-                                            <i class=" bi bi-folder-plus col-3" data-bs-toggle="modal"
-                                               data-bs-target="#ModalHotAddCL" style="font-size: 25px"></i>
-                                        </div>
+                                <div class="row">
+                                    <div class="col col-md-3">
+                                        <label for="moTaModalEdit" class="form-label">Ghi chú</label>
+                                        <textarea class="form-control custom-textarea" style="width: 550px;"
+                                                  id="moTaModalEdit" name="moTa"></textarea>
+                                        <p style="color: red;" id="moTaModalEditErr"></p>
                                     </div>
                                 </div>
-                                <div class="col col-md-3">
-                                    <div class="d-flex">
-                                        <div class="dropdown">
-                                            <button class="btn btn-outline-secondary dropdown-toggle" type="button"
-                                                    id="lblKieuTayModalEdit" style="width: 150px;"
-                                                    data-bs-toggle="dropdown"
-                                                    aria-expanded="false">
-                                                Chọn kiểu tay
-                                            </button>
-                                            <ul class="dropdown-menu" id="cboKieuTayModalEdit"
-                                                aria-labelledby="dropdownMenuButton5">
-                                            </ul>
-                                            <p style="color: red;" id="cboKieuTayModalEditErr"></p>
-                                        </div>
-                                        <div class="icon-container">
-                                            <i class=" bi bi-folder-plus col-3" data-bs-toggle="modal"
-                                               data-bs-target="#ModalHotAddKTA" style="font-size: 25px"></i>
-                                        </div>
+                                <div class="row">
+                                    <div class="col col-md-3 hover-effect click-effect image-container">
+                                        <img width="200" height="200"
+                                             src="/image-icon/pendingIMG.png"
+                                             alt="" class="fit-img" id="hinhAnh1DisplayModalEdit">
+                                        <p class="text-center">Hình ảnh 1</p>
+                                        <input type="file" name="hinhAnh1File" id="fileHinhAnh1ModalEdit"
+                                               class="file-input-overlay"/>
+                                    </div>
+                                    <div class="col col-md-3 hover-effect click-effect image-container">
+                                        <img width="200" height="200"
+                                             src="/image-icon/pendingIMG.png"
+                                             alt="" class="fit-img" id="hinhAnh2DisplayModalEdit">
+                                        <p class="text-center">Hình ảnh 2</p>
+                                        <input type="file" name="hinhAnh2File" id="fileHinhAnh2ModalEdit"
+                                               class="file-input-overlay"/>
+                                    </div>
+                                    <div class="col col-md-3 hover-effect click-effect image-container">
+                                        <img width="200" height="200"
+                                             src="/image-icon/pendingIMG.png"
+                                             alt="" class="fit-img" id="hinhAnh3DisplayModalEdit">
+                                        <p class="text-center">Hình ảnh 3</p>
+                                        <input type="file" name="hinhAnh3File" id="fileHinhAnh3ModalEdit"
+                                               class="file-input-overlay"/>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col col-md-4">
-                                    <label for="soLuongModalEdit" class="form-label">Số lượng</label>
-                                    <input type="number" name="file" class="form-control" id="soLuongModalEdit"
-                                           value="">
-                                    <p style="color: red;" id="soLuongModalEditErr"></p>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" role="switch"
+                                           id="trangThaiModalEdit"
+                                           checked>
+                                    <label class="form-check-label" for="trangThaiLabelModalEdit"
+                                           id="trangThaiLabelModalEdit">Trạng
+                                        thái</label>
                                 </div>
-                                <div class="col col-md-4">
-                                    <label for="giaNhapModalEdit" class="form-label">Giá nhập</label>
-                                    <input type="number" name="file" class="form-control" id="giaNhapModalEdit"
-                                           value="">
-                                    <p style="color: red;" id="giaNhapModalEditErr"></p>
-                                </div>
-                                <div class="col col-md-4">
-                                    <label for="giaBanModalEdit" class="form-label">Giá bán</label>
-                                    <input type="number" name="file" class="form-control" id="giaBanModalEdit" value="">
-                                    <p style="color: red;" id="giaBanModalEditErr"></p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col col-md-3">
-                                    <label for="moTaModalEdit" class="form-label">Ghi chú</label>
-                                    <textarea class="form-control custom-textarea" style="width: 550px;"
-                                              id="moTaModalEdit" name="moTa"></textarea>
-                                    <p style="color: red;" id="moTaModalEditErr"></p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col col-md-3 hover-effect click-effect image-container">
-                                    <img width="200" height="200"
-                                         src="/image-icon/pendingIMG.png"
-                                         alt="" class="fit-img" id="hinhAnh1DisplayModalEdit">
-                                    <p class="text-center">Hình ảnh 1</p>
-                                    <input type="file" name="hinhAnh1File" id="fileHinhAnh1ModalEdit" class="file-input-overlay"/>
-                                </div>
-                                <div class="col col-md-3 hover-effect click-effect image-container">
-                                    <img width="200" height="200"
-                                         src="/image-icon/pendingIMG.png"
-                                         alt="" class="fit-img" id="hinhAnh2DisplayModalEdit">
-                                    <p class="text-center">Hình ảnh 2</p>
-                                    <input type="file" name="hinhAnh2File" id="fileHinhAnh2ModalEdit" class="file-input-overlay"/>
-                                </div>
-                                <div class="col col-md-3 hover-effect click-effect image-container">
-                                    <img width="200" height="200"
-                                         src="/image-icon/pendingIMG.png"
-                                         alt="" class="fit-img" id="hinhAnh3DisplayModalEdit">
-                                    <p class="text-center">Hình ảnh 3</p>
-                                    <input type="file" name="hinhAnh3File" id="fileHinhAnh3ModalEdit" class="file-input-overlay"/>
-                                </div>
-                            </div>
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" role="switch" id="trangThaiModalEdit"
-                                       checked>
-                                <label class="form-check-label" for="trangThaiLabelModalEdit"
-                                       id="trangThaiLabelModalEdit">Trạng
-                                    thái</label>
-                            </div>
-                            <button id="saveEditBtn" class="btn btn-primary">Lưu</button>
+                                <button id="saveEditBtn" class="btn btn-primary">Lưu</button>
                             </form>
                         </div>
                     </div>
@@ -1404,6 +1420,7 @@
     const loadDSSPCT = (pageParams) => {
         // get api + scpt.id
         let datatest = "data testing";
+        let mauSacMemo = "";
         fetch("/chi-tiet-sp/detail-byidsp-all/" + pathVariable + "?page=" + pageParams, {
             headers: {
                 'Accept': 'application/json',
@@ -1413,13 +1430,19 @@
             .then(resp => {
                 let html = '';
                 resp.map((spct, i) => {
-                    const trangThai = spct.trangThai == 1 ? "Hoạt động" : "Dừng hđ";
+                    const trangThai = spct.trangThai == 1 ? true : false;
                     const mauSac = spct.idMauSac.ten || 'N/A';
                     const kichThuoc = spct.idKichThuoc.ten || 'N/A';
                     const chatLieu = spct.idChatLieu.ten || 'N/A';
                     const kieuTay = spct.idKieuTay.ten || 'N/A';
                     const soLuong = spct.soLuong || 'N/A';
                     const giaBan = spct.giaBan || 'N/A';
+
+                    if (spct.idMauSac.ten != mauSacMemo) {
+                        let labelms = spct.idMauSac.ten;
+                        console.log("Mau sac memo: ", spct.idMauSac.ten);
+                        html += '<h5>' + spct.idMauSac.ten + '<h5>';
+                    }
                     html += '<tr>' +
                         '<td>' + (i + 1) + '</td>' +
                         '<td>' + mauSac + '</td>' +
@@ -1428,18 +1451,25 @@
                         '<td>' + kieuTay + '</td>' +
                         '<td>' + soLuong + '</td>' +
                         '<td>' + giaBan + '</td>' +
-                        '<td>' + trangThai + '</td>' +
+                        "<td>" +
+                        "<div class='form-check form-switch'>" +
+                        "<input class='form-check-input' type='checkbox' role='switch' id='trangThaiAtTbl_" + spct.id + "'" +
+                        (trangThai ? " checked" : "") +
+                        ">" +
+                        "</div>" +
+                        "</td>" +
                         '<td>' +
                         '<div class="d-inline">' +
                         '<button id="editSPCTBtn_' + spct.id + '" class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#ModalEdit">Chỉnh sửa</button>' +
                         '</div>' +
                         '</td>' +
+                        "<td style=\"border: none; pointer-events: none;\">" + "button here" + "</td>"+
                         '</tr>';
+                    mauSacMemo = spct.idMauSac.ten;
                 });
                 $("#tbl_ds_spct").html(html)
             });
     }
-
     function search(e) {
         e.preventDefault();
         console.log('data mau sac ID:', idMauSac);
@@ -1598,12 +1628,12 @@
             }
         }).then(response => response.json())
             .then(resp => {
-                console.log("hinhanh1 : ",resp.hinhAnh1);
-                console.log("hinhanh2 : ",resp.hinhAnh2);
-                console.log("hinhanh3 : ",resp.hinhAnh3);
-                hinhAnh1DisplayModalEdit.src= resp.hinhAnh1?"/image/"+resp.hinhAnh1:"/image-icon/pendingIMG.png";
-                hinhAnh2DisplayModalEdit.src= resp.hinhAnh2?"/image/"+resp.hinhAnh2:"/image-icon/pendingIMG.png";
-                hinhAnh3DisplayModalEdit.src= resp.hinhAnh3?"/image/"+resp.hinhAnh3:"/image-icon/pendingIMG.png";
+                console.log("hinhanh1 : ", resp.hinhAnh1);
+                console.log("hinhanh2 : ", resp.hinhAnh2);
+                console.log("hinhanh3 : ", resp.hinhAnh3);
+                hinhAnh1DisplayModalEdit.src = resp.hinhAnh1 ? "/image/" + resp.hinhAnh1 : "/image-icon/pendingIMG.png";
+                hinhAnh2DisplayModalEdit.src = resp.hinhAnh2 ? "/image/" + resp.hinhAnh2 : "/image-icon/pendingIMG.png";
+                hinhAnh3DisplayModalEdit.src = resp.hinhAnh3 ? "/image/" + resp.hinhAnh3 : "/image-icon/pendingIMG.png";
             });
     });
     $(document).on('click', "button[id^='detailSPBtn_']", e => {
@@ -1640,9 +1670,9 @@
     addBtn.forEach(button => {
         button.addEventListener('click', function (e) {
             e.preventDefault();
-            hinhAnh1DisplayModalAdd.src= "/image-icon/pendingIMG.png";
-            hinhAnh2DisplayModalAdd.src= "/image-icon/pendingIMG.png";
-            hinhAnh3DisplayModalAdd.src= "/image-icon/pendingIMG.png";
+            hinhAnh1DisplayModalAdd.src = "/image-icon/pendingIMG.png";
+            hinhAnh2DisplayModalAdd.src = "/image-icon/pendingIMG.png";
+            hinhAnh3DisplayModalAdd.src = "/image-icon/pendingIMG.png";
         });
     });
 
@@ -1698,13 +1728,13 @@
                                 'Content-Type': 'application/json'
                             },
                             body: JSON.stringify(data)
-                        }).then(response=>response.json()).then(resp => {
-                            console.log("test resp: "+resp);
-                            const dataHinhAnh={
-                                idSPCT:resp.id,
-                                hinhAnh1 :!(fileHinhAnh1ModalAdd.value=="")?getFileName(fileHinhAnh1ModalAdd.value):"pendingIMG.png",
-                                hinhAnh2 :!(fileHinhAnh2ModalAdd.value=="")?getFileName(fileHinhAnh2ModalAdd.value):"pendingIMG.png",
-                                hinhAnh3 :!(fileHinhAnh3ModalAdd.value=="")?getFileName(fileHinhAnh3ModalAdd.value):"pendingIMG.png",
+                        }).then(response => response.json()).then(resp => {
+                            console.log("test resp: " + resp);
+                            const dataHinhAnh = {
+                                idSPCT: resp.id,
+                                hinhAnh1: !(fileHinhAnh1ModalAdd.value == "") ? getFileName(fileHinhAnh1ModalAdd.value) : "pendingIMG.png",
+                                hinhAnh2: !(fileHinhAnh2ModalAdd.value == "") ? getFileName(fileHinhAnh2ModalAdd.value) : "pendingIMG.png",
+                                hinhAnh3: !(fileHinhAnh3ModalAdd.value == "") ? getFileName(fileHinhAnh3ModalAdd.value) : "pendingIMG.png",
                                 trangThai: "1"
                             }
                             fetch(`/hinh-anh/save`, {
@@ -1736,10 +1766,10 @@
                             data: formData,
                             processData: false,
                             contentType: false,
-                            success: function(response) {
+                            success: function (response) {
                                 console.log("save image success ");
                             },
-                            error: function(xhr, status, error) {
+                            error: function (xhr, status, error) {
                                 console.log("save image =error");
                             }
                         });
@@ -1953,6 +1983,16 @@
         }
     });
 
+    $(document).on('click', "input[id^='trangThaiAtTbl_']", e => {
+        e.preventDefault();
+        const queryString = window.location.pathname;
+        const pathParts = queryString.split('/');
+        const pathVariable = pathParts[pathParts.length - 1];
+        const spctid = e.currentTarget.id.replace("trangThaiAtTbl_", "");
+        console.log("test spctid:" + spctid);
+    });
+
+
     function validateNull(param) {
         if (param === "" || param === undefined) {
             return true;
@@ -2122,6 +2162,7 @@
         console.log("check count: ", checkCount);
         return checkCount;
     }
+
     function getFileName(fullPath) {
         // Check for the last occurrence of the backslash or forward slash
         var startIndex = Math.max(fullPath.lastIndexOf('\\'), fullPath.lastIndexOf('/'));
@@ -2164,10 +2205,10 @@
                             giaBan: giaBanModalEdit.value,
                             trangThai: trangThaiModalEdit
                         };
-                        const dataHinhAnh={
-                            hinhAnh1: !(fileHinhAnh1ModalEdit.value=="")?getFileName(fileHinhAnh1ModalEdit.value):getFileName(fileHinhAnh1ModalEdit.src),
-                            hinhAnh2 :!(fileHinhAnh2ModalEdit.value=="")?getFileName(fileHinhAnh2ModalEdit.value):getFileName(fileHinhAnh1ModalEdit.src),
-                            hinhAnh3 :!(fileHinhAnh3ModalEdit.value=="")?getFileName(fileHinhAnh3ModalEdit.value):getFileName(fileHinhAnh3ModalEdit.src),
+                        const dataHinhAnh = {
+                            hinhAnh1: !(fileHinhAnh1ModalEdit.value == "") ? getFileName(fileHinhAnh1ModalEdit.value) : getFileName(fileHinhAnh1ModalEdit.src),
+                            hinhAnh2: !(fileHinhAnh2ModalEdit.value == "") ? getFileName(fileHinhAnh2ModalEdit.value) : getFileName(fileHinhAnh1ModalEdit.src),
+                            hinhAnh3: !(fileHinhAnh3ModalEdit.value == "") ? getFileName(fileHinhAnh3ModalEdit.value) : getFileName(fileHinhAnh3ModalEdit.src),
                             trangThai: "1"
                         }
                         console.log("data hinh anh: ", dataHinhAnh);
@@ -2209,10 +2250,10 @@
                             data: formData,
                             processData: false,
                             contentType: false,
-                            success: function(response) {
+                            success: function (response) {
                                 console.log("save image success ");
                             },
-                            error: function(xhr, status, error) {
+                            error: function (xhr, status, error) {
                                 console.log("save image =error");
                             }
                         });
@@ -2223,7 +2264,6 @@
             }
         });
     });
-
 </script>
 <script>
     $(document).ready(function () {

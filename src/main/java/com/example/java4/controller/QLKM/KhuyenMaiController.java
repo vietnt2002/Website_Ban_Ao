@@ -81,6 +81,7 @@ public class KhuyenMaiController {
             km.setSoTienGiam(newKhuyenMai.getSoTienGiam());
             km.setSoLuong(newKhuyenMai.getSoLuong());
             km.setTrangThai(newKhuyenMai.getTrangThai());
+            km.setApDung(newKhuyenMai.getApDung());
             kmRepo.save(km);
             return ResponseEntity.ok(true);
         }
@@ -119,6 +120,7 @@ public class KhuyenMaiController {
             km.setSoTienGiam(newKhuyenMai.getSoTienGiam());
             km.setSoLuong(newKhuyenMai.getSoLuong());
             km.setTrangThai(newKhuyenMai.getTrangThai());
+            km.setApDung(newKhuyenMai.getApDung());
             kmRepo.save(km);
             return ResponseEntity.ok(true);
         }

@@ -442,6 +442,7 @@ public class BanTaiQuayController {
                 hdct.setIdHoaDon(hoaDon);
                 hdct.setSoLuong(1);
                 hdct.setDonGia(big);
+                hdct.setTrangThai(0);
                 hoaDonChiTietRepository.save(hdct);
                 //Số lượng của sản phẩm chi tiết bị giảm 1 khi ấn vào button thêm trong giỏ hàng
                 if (chiTietSanPham.getId().equals(idCTSP)) {
@@ -484,7 +485,7 @@ public class BanTaiQuayController {
         newHoaDon.setTongTien(tongTien);
         newHoaDon.setLoaiHoaDon(0);
         newHoaDon.setPhuongThucThanhToan(0);
-        newHoaDon.setTrangThai(6);
+        newHoaDon.setTrangThai(1);
         hoaDonRepository.save(newHoaDon);
         return "redirect:/ban-hang-tai-quay";
     }

@@ -19,4 +19,8 @@ public interface GiaoHangRepo extends JpaRepository<GiaoHang, String> {
             "join HoaDon hd on hd.id = gh.idHoaDon.id " +
             "where hd.idKhachHang.id = ?1 and hd.id = ?2")
     List<GiaoHang> getListGiaoHangByIdKHAndidHD(String idKH, String idHD);
+
+    //Sáng
+    @Query("SELECT count(gh.id) FROM GiaoHang gh WHERE gh.idHoaDon.id = ?1")
+    Integer findByIdHoaDon( String idHoaDon);
 }
