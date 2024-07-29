@@ -161,7 +161,8 @@ public interface HoaDonRepository
     @Query("select count(hd) from HoaDon hd where hd.trangThai >= 1 and hd.idKhachHang.id = ?1")
     int countByTrangThai(String idKH);
 
-    @Query("SELECT hd FROM HoaDon hd WHERE NOT (hd.loaiHoaDon = 0 AND hd.trangThai = 0)")
+    @Query("SELECT hd FROM HoaDon hd " +
+            "ORDER BY hd.ngayTao DESC ")
     Page<HoaDon> findAllExcludingSpecificTypeAndStatus(Pageable pageable);
 
     @Query("select hd from HoaDon hd " +

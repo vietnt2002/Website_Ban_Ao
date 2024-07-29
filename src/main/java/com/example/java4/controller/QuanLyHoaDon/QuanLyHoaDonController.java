@@ -169,7 +169,10 @@ public class QuanLyHoaDonController {
                        @RequestParam(value = "keyword", required = false) String keyword,
                        @RequestParam(value = "startDate", required = false) String startDateStr,
                        @RequestParam(value = "endDate", required = false) String endDateStr) {
-        Pageable pageable = PageRequest.of(page, 5, Sort.by(Sort.Direction.DESC, "ngayTao"));
+//        Pageable pageable = PageRequest.of(page, 5, Sort.by(Sort.Direction.DESC, "ngayTao"));
+        Pageable pageable = PageRequest.of(page, 5);
+
+
         if (UserInfor.idNhanVien != null) {
             NhanVien nhanVien = nhanVienRepo.findById(UserInfor.idNhanVien).get();
             model.addAttribute("nv", nhanVien);

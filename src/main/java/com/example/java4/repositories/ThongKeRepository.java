@@ -13,7 +13,7 @@ import org.springframework.data.repository.query.Param;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public interface ThongKeRepository extends JpaRepository<HoaDon,String> {
+public interface ThongKeRepository extends JpaRepository<HoaDon, String> {
 
     // Doanh thu ngày hôm nay
     @Query(value = "SELECT " +
@@ -30,6 +30,7 @@ public interface ThongKeRepository extends JpaRepository<HoaDon,String> {
             "    FROM HoaDon hd " +
             "    LEFT JOIN ChiTietHoaDon cthd ON cthd.IdHoaDon = hd.ID " +
             "    WHERE CAST(hd.NgayTao AS DATE) = CAST(:date AS DATE) " +
+            "     AND hd.TrangThai = 6" +
             "    GROUP BY hd.ID, hd.TongTien, hd.TrangThai " +
             ") sub",
             nativeQuery = true)
@@ -50,6 +51,7 @@ public interface ThongKeRepository extends JpaRepository<HoaDon,String> {
             "    FROM HoaDon hd " +
             "    LEFT JOIN ChiTietHoaDon cthd ON cthd.IdHoaDon = hd.ID " +
             "    WHERE hd.NgayTao BETWEEN :startDate AND :endDate " +
+            "    AND hd.TrangThai = 6" +
             "    GROUP BY hd.ID, hd.TongTien, hd.TrangThai " +
             ") sub",
             nativeQuery = true)
@@ -71,6 +73,7 @@ public interface ThongKeRepository extends JpaRepository<HoaDon,String> {
             "    LEFT JOIN ChiTietHoaDon cthd ON cthd.IdHoaDon = hd.ID " +
             "    WHERE DATEPART(MONTH, hd.NgayTao) = DATEPART(MONTH, :date) " +
             "    AND DATEPART(YEAR, hd.NgayTao) = DATEPART(YEAR, :date) " +
+            "    AND hd.TrangThai = 6" +
             "    GROUP BY hd.ID, hd.TongTien, hd.TrangThai " +
             ") sub",
             nativeQuery = true)
@@ -93,13 +96,11 @@ public interface ThongKeRepository extends JpaRepository<HoaDon,String> {
             "    FROM HoaDon hd " +
             "    LEFT JOIN ChiTietHoaDon cthd ON cthd.IdHoaDon = hd.ID " +
             "    WHERE DATEPART(YEAR, hd.NgayTao) = DATEPART(YEAR, :date) " +
+            "    AND hd.TrangThai = 6" +
             "    GROUP BY hd.ID, hd.TongTien, hd.TrangThai " +
             ") sub",
             nativeQuery = true)
     List<Object[]> getYearlyStatistics(@Param("date") LocalDateTime date);
-
-
-
 
 
     // Thống kê doanh thu theo khoảng ngày tùy chỉnh từ ngày bắt đầu  đến ngày kết thúc
@@ -116,7 +117,8 @@ public interface ThongKeRepository extends JpaRepository<HoaDon,String> {
             "        hd.TrangThai " +
             "    FROM HoaDon hd " +
             "    LEFT JOIN ChiTietHoaDon cthd ON cthd.IdHoaDon = hd.ID " +
-            "    WHERE hd.NgayTao BETWEEN :startDate AND :endDate " +
+            "    WHERE hd.NgayTao BETWEEN :startDate AND :endDate" +
+            "    AND hd.TrangThai = 6 " +
             "    GROUP BY hd.ID, hd.TongTien, hd.TrangThai " +
             ") sub",
             nativeQuery = true)
@@ -129,7 +131,7 @@ public interface ThongKeRepository extends JpaRepository<HoaDon,String> {
     Page<ChiTietSanPham> findProductsLowOnStock(Pageable pageable);
 
 
-
+    // Thống kê sản phẩm bán chạy
     @Query("SELECT new com.example.java4.response.SPCTDTO(" +
             "sp.ten, " +
             "sp.ma, " +
@@ -145,9 +147,7 @@ public interface ThongKeRepository extends JpaRepository<HoaDon,String> {
             "HAVING COALESCE(SUM(cthd.soLuong), 0) > :minQuantity " +
             "ORDER BY COALESCE(SUM(cthd.soLuong), 0) DESC")
     Page<SPCTDTO> getTopSellingProductsByMonth(@Param("date") LocalDateTime date,
-                                                            @Param("minQuantity") int minQuantity,Pageable pageable);
-
-
+                                               @Param("minQuantity") int minQuantity, Pageable pageable);
 
 
     // Thống kê theo ngày
@@ -158,6 +158,7 @@ public interface ThongKeRepository extends JpaRepository<HoaDon,String> {
             "FROM HoaDon hd " +
             "LEFT JOIN ChiTietHoaDon cthd ON cthd.IdHoaDon = hd.ID " +
             "WHERE CAST(hd.NgayTao AS DATE) = CAST(:date AS DATE) " +
+            "AND hd.TrangThai = 6" +
             "GROUP BY CAST(hd.NgayTao AS DATE) " +
             "ORDER BY day",
             nativeQuery = true)
@@ -171,6 +172,7 @@ public interface ThongKeRepository extends JpaRepository<HoaDon,String> {
             "FROM HoaDon hd " +
             "LEFT JOIN ChiTietHoaDon cthd ON cthd.IdHoaDon = hd.ID " +
             "WHERE hd.NgayTao BETWEEN :startDate AND :endDate " +
+            "AND hd.TrangThai = 6" +
             "GROUP BY CAST(hd.NgayTao AS DATE) " +
             "ORDER BY day",
             nativeQuery = true)
@@ -185,6 +187,7 @@ public interface ThongKeRepository extends JpaRepository<HoaDon,String> {
             "LEFT JOIN ChiTietHoaDon cthd ON cthd.IdHoaDon = hd.ID " +
             "WHERE DATEPART(MONTH, hd.NgayTao) = DATEPART(MONTH, :date) " +
             "AND DATEPART(YEAR, hd.NgayTao) = DATEPART(YEAR, :date) " +
+            "AND hd.TrangThai = 6" +
             "GROUP BY CAST(hd.NgayTao AS DATE) " +
             "ORDER BY day",
             nativeQuery = true)
@@ -198,6 +201,7 @@ public interface ThongKeRepository extends JpaRepository<HoaDon,String> {
             "FROM HoaDon hd " +
             "LEFT JOIN ChiTietHoaDon cthd ON cthd.IdHoaDon = hd.ID " +
             "WHERE DATEPART(YEAR, hd.NgayTao) = DATEPART(YEAR, :date) " +
+            "AND hd.TrangThai = 6" +
             "GROUP BY CAST(hd.NgayTao AS DATE) " +
             "ORDER BY day",
             nativeQuery = true)
@@ -228,5 +232,6 @@ public interface ThongKeRepository extends JpaRepository<HoaDon,String> {
             nativeQuery = true)
     List<Object[]> getCustomDateRangeStatistics(@Param("startDate") LocalDateTime startDate,
                                                 @Param("endDate") LocalDateTime endDate);
+
 
 }
