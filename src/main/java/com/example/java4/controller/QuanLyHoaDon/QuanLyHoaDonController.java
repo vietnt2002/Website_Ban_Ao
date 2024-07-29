@@ -94,6 +94,9 @@ public class QuanLyHoaDonController {
     LichSuHoaDonRepository _lichSuHoaDonRepo;
 
     @Autowired
+    KhuyenMaiRepository _khuyenMaiRepo;
+
+    @Autowired
     Validator validator;
 
     private final RestTemplate restTemplate = new RestTemplate();
@@ -169,8 +172,8 @@ public class QuanLyHoaDonController {
                        @RequestParam(value = "keyword", required = false) String keyword,
                        @RequestParam(value = "startDate", required = false) String startDateStr,
                        @RequestParam(value = "endDate", required = false) String endDateStr) {
-//        Pageable pageable = PageRequest.of(page, 5, Sort.by(Sort.Direction.DESC, "ngayTao"));
-        Pageable pageable = PageRequest.of(page, 5);
+        Pageable pageable = PageRequest.of(page, 5, Sort.by(Sort.Direction.DESC, "ngayTao"));
+//        Pageable pageable = PageRequest.of(page, 5);
 
 
         if (UserInfor.idNhanVien != null) {
@@ -249,6 +252,7 @@ public class QuanLyHoaDonController {
     // Hàm lấy ra Page<HoaDon> theo trạng thái
     private Page<HoaDon> getPageByStatus(String status, Pageable pageable) {
         switch (status) {
+
             case "all":
                 return hoaDonRepository.findAllExcludingSpecificTypeAndStatus(pageable);
             case "confirmation":
@@ -872,7 +876,14 @@ public class QuanLyHoaDonController {
         hoaDon.setGhiChu(lyDo);
         // Lưu lại vào cơ sở dữ liệu
 
-         LichSuHoaDon lichSuHoaDon = createLichSuHoaDon(hoaDon,nhanVien,lyDo);
+//        Trả lại khuyến mãi được áp dụng trong hóa đơn khi hủy đơn hàng
+        KhuyenMai khuyenMaiApDung = _hoaDonRepo.findKhuyenMaiByHoaDonId(hoaDon.getId());
+        if (khuyenMaiApDung != null) {
+            khuyenMaiApDung.setSoLuong(khuyenMaiApDung.getSoLuong() + 1);
+            _khuyenMaiRepo.save(khuyenMaiApDung);
+        }
+
+        LichSuHoaDon lichSuHoaDon = createLichSuHoaDon(hoaDon,nhanVien,lyDo);
         lichSuHoaDon.setNgayCapNhat(LocalDateTime.now());
         _lichSuHoaDonRepo.save(lichSuHoaDon);
         _hoaDonRepo.save(hoaDon);

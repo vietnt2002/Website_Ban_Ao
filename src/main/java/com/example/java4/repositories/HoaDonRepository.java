@@ -50,6 +50,8 @@ public interface HoaDonRepository
     HoaDon findByIdKhachHang(String idKH, Integer trangThai);
 //    @Query(value = "SELECT TOP 5 * FROM HoaDon where trangThai = 1 ORDER BY ngayTao DESC",
 //            nativeQuery = true)
+
+
     Page<HoaDon>  findByTrangThai(int trangThai,Pageable pageable);
 
 
@@ -161,11 +163,17 @@ public interface HoaDonRepository
     @Query("select count(hd) from HoaDon hd where hd.trangThai >= 1 and hd.idKhachHang.id = ?1")
     int countByTrangThai(String idKH);
 
-    @Query("SELECT hd FROM HoaDon hd " +
-            "ORDER BY hd.ngayTao DESC ")
+    @Query("SELECT hd FROM HoaDon hd ")
     Page<HoaDon> findAllExcludingSpecificTypeAndStatus(Pageable pageable);
 
     @Query("select hd from HoaDon hd " +
             "where hd.idKhachHang.id = ?1 and hd.id = ?2")
     List<HoaDon> getListHDbyIDKHAndIDHD(String idKH, String idHD);
+
+
+    //    Tìm kiếm khuyến mãi theo hóa đơn
+    @Query("SELECT km FROM KhuyenMai  km JOIN HoaDon hd ON km.id = hd.idKhuyenMai.id " +
+            "WHERE hd.id = :idHoaDon")
+    KhuyenMai getKhuyenMaiApDung(@Param("idHoaDon") String idHoaDon);
+
 };
