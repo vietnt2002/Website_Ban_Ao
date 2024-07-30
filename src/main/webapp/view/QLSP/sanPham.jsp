@@ -922,8 +922,8 @@
                     const hinhAnh = sp.hinhAnh || 'N/A';
                     const ngayTao = sp.ngayTao || 'N/A';
                     const trangThai = spct.trangThai == 1
-                        ? '<p style="color: blue">Hoạt động</p>'
-                        : '<p style="color: red">Dừng HĐ</p>';
+                        ? '<p style="font-weight: bold; color: blue">Hoạt động</p>'
+                        : '<p style="font-weight: bold; color: red">Dừng HĐ</p>';
                     html += '<tr>' +
                         '<td>' + (i + 1) + '</td>' +
                         '<td><img src="' + hinhAnh + '" alt="Image" class="img-fluid" /></td>' +

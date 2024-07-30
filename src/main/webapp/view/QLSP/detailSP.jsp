@@ -496,7 +496,6 @@
                                     <th>Giá bán</th>
                                     <th>Trạng thái</th>
                                     <th>Thao tác</th>
-                                    <th>Sửa hình ảnh</th>
                                 </tr>
                                 </thead>
                                 <tbody id="tbl_ds_spct">
@@ -1431,8 +1430,8 @@
                 let html = '';
                 resp.map((spct, i) => {
                     const trangThai = spct.trangThai == 1
-                        ? '<p style="color: blue">Hoạt động</p>'
-                        : '<p style="color: red">Dừng HĐ</p>';
+                        ? '<p style="font-weight: bold; color: blue">Hoạt động</p>'
+                        : '<p style="font-weight: bold; color: red">Dừng HĐ</p>';
                     const mauSac = spct.idMauSac.ten || 'N/A';
                     const kichThuoc = spct.idKichThuoc.ten || 'N/A';
                     const chatLieu = spct.idChatLieu.ten || 'N/A';
@@ -1443,7 +1442,22 @@
                     if (spct.idMauSac.ten != mauSacMemo) {
                         let labelms = spct.idMauSac.ten;
                         console.log("Mau sac memo: ", spct.idMauSac.ten);
-                        html += '<h5>' + spct.idMauSac.ten + '<h5>';
+                        html +=
+                            '<tr>' +
+                            '<td>'+
+                            '<h5 class="">' + spct.idMauSac.ten + '<h5>'+
+                            '</td>'+
+                            '<td>' +'</td>' +
+                            '<td>' +'</td>' +
+                            '<td>' +'</td>' +
+                            '<td>' +'</td>' +
+                            '<td>' +'</td>' +
+                            '<td>' +'</td>' +
+                            '<td>' +'</td>' +
+                            '<td>'+
+                            '<button id="editSPCTBtn_' + spct.id + '" class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#ModalEdit">Chỉnh sửa</button>' +
+                            '</td>'+
+                             '</tr>';
                     }
                     html += '<tr>' +
                         '<td>' + (i + 1) + '</td>' +
@@ -1459,13 +1473,13 @@
                         '<button id="editSPCTBtn_' + spct.id + '" class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#ModalEdit">Chỉnh sửa</button>' +
                         '</div>' +
                         '</td>' +
-                        "<td style=\"border: none; pointer-events: none;\">" + "button here" + "</td>"+
                         '</tr>';
                     mauSacMemo = spct.idMauSac.ten;
                 });
                 $("#tbl_ds_spct").html(html)
             });
     }
+
     function search(e) {
         e.preventDefault();
         console.log('data mau sac ID:', idMauSac);
