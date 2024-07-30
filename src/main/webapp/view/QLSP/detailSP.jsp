@@ -1438,7 +1438,6 @@
                     const kieuTay = spct.idKieuTay.ten || 'N/A';
                     const soLuong = spct.soLuong || 'N/A';
                     const giaBan = spct.giaBan || 'N/A';
-
                     if (spct.idMauSac.ten != mauSacMemo) {
                         let labelms = spct.idMauSac.ten;
                         console.log("Mau sac memo: ", spct.idMauSac.ten);
@@ -1455,7 +1454,7 @@
                             '<td>' +'</td>' +
                             '<td>' +'</td>' +
                             '<td>'+
-                            '<button id="editSPCTBtn_' + spct.id + '" class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#ModalEdit">Chỉnh sửa</button>' +
+                            '<button id="editSPCTBtn_' + spct.id + '" class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#ModalEdit">Sửa toàn bộ</button>' +
                             '</td>'+
                              '</tr>';
                     }
@@ -1470,7 +1469,7 @@
                         '<td>' + trangThai + '</td>' +
                         '<td>' +
                         '<div class="d-inline">' +
-                        '<button id="editSPCTBtn_' + spct.id + '" class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#ModalEdit">Chỉnh sửa</button>' +
+                        '<button id="editSPCTBtn_' + spct.id + '" class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#ModalEdit">Sửa</button>' +
                         '</div>' +
                         '</td>' +
                         '</tr>';
