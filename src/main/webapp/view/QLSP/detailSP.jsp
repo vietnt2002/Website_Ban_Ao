@@ -1430,7 +1430,9 @@
             .then(resp => {
                 let html = '';
                 resp.map((spct, i) => {
-                    const trangThai = spct.trangThai == 1 ? true : false;
+                    const trangThai = spct.trangThai == 1
+                        ? '<p style="color: blue">Hoạt động</p>'
+                        : '<p style="color: red">Dừng HĐ</p>';
                     const mauSac = spct.idMauSac.ten || 'N/A';
                     const kichThuoc = spct.idKichThuoc.ten || 'N/A';
                     const chatLieu = spct.idChatLieu.ten || 'N/A';
@@ -1451,13 +1453,7 @@
                         '<td>' + kieuTay + '</td>' +
                         '<td>' + soLuong + '</td>' +
                         '<td>' + giaBan + '</td>' +
-                        "<td>" +
-                        "<div class='form-check form-switch'>" +
-                        "<input class='form-check-input' type='checkbox' role='switch' id='trangThaiAtTbl_" + spct.id + "'" +
-                        (trangThai ? " checked" : "") +
-                        ">" +
-                        "</div>" +
-                        "</td>" +
+                        '<td>' + trangThai + '</td>' +
                         '<td>' +
                         '<div class="d-inline">' +
                         '<button id="editSPCTBtn_' + spct.id + '" class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#ModalEdit">Chỉnh sửa</button>' +
