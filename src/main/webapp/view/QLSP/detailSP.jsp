@@ -1454,7 +1454,7 @@
                             '<td>' +'</td>' +
                             '<td>' +'</td>' +
                             '<td>'+
-                            '<button id="editSPCTBtn_' + spct.id + '" class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#ModalEdit">Sửa toàn bộ</button>' +
+                            '<button id="editAllSPCTBtn_' + spct.idMauSac + '" class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#ModalEdit">Sửa toàn bộ</button>' +
                             '</td>'+
                              '</tr>';
                     }
