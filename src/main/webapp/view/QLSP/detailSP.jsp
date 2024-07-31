@@ -450,30 +450,7 @@
                                             </ul>
                                         </div>
                                     </div>
-                                    <div class="col col-md-2">
-                                        <div class="dropdown" style="width: 200px;">
-                                            <button class="btn btn-outline-secondary dropdown-toggle" type="button"
-                                                    id="lblChatLieu" style="width: 150px;" data-bs-toggle="dropdown"
-                                                    aria-expanded="false">
-                                                Chọn chất liệu
-                                            </button>
-                                            <ul class="dropdown-menu" id="cboChatLieu"
-                                                aria-labelledby="dropdownMenuButton4">
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="col col-md-2">
-                                        <div class="dropdown" style="width: 200px;">
-                                            <button class="btn btn-outline-secondary dropdown-toggle" type="button"
-                                                    id="lblKieuTay" style="width: 150px;" data-bs-toggle="dropdown"
-                                                    aria-expanded="false">
-                                                Chọn kiểu tay
-                                            </button>
-                                            <ul class="dropdown-menu" id="cboKieuTay"
-                                                aria-labelledby="dropdownMenuButton5">
-                                            </ul>
-                                        </div>
-                                    </div>
+
                                     <div class="col col-md-3 d-flex gap-3">
                                         <button id="btnSearch" class="btn btn-success me-2" onclick="search(event)">
                                             Tìm kiếm
@@ -886,6 +863,103 @@
             </div>
         </div>
         <%--End modal --%>
+
+        <!-- EditAllModal-->
+        <div class="modal fade" id="ModalEditAll" tabindex="-1" aria-labelledby="exampleModalLabel4" aria-hidden="true"
+             data-bs-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="row">
+                            <h3 class="modal-title" id="exampleModalLabel5">Chỉnh sửa sản phẩm chi tiết</h3>
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" style="overflow-y: auto; height: 80vh;">
+                        <div class="mb-3">
+                            <form id="uploadFormEditAll" method="post" enctype="multipart/form-data"
+                                  action="/hinh-anh/upload">
+                                <div class="row">
+                                    <div class="d-flex" style="gap: 500px;">
+                                        <h5 class="border-bottom">Tên sản phẩm:&nbsp&nbsp<span
+                                                id="tenSPModalEditAll"></span>
+                                        </h5>
+                                        <h5 class="border-bottom">Ngày tạo:&nbsp&nbsp<span id="ngayTaoModalEditAll"></span>
+                                        </h5>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col col-md-4">
+                                        <label for="soLuongModalEdit" class="form-label">Số lượng</label>
+                                        <input type="number" name="file" class="form-control" id="soLuongModalEditAll"
+                                               value="">
+                                        <p style="color: red;" id="soLuongModalEditErrAll"></p>
+                                    </div>
+                                    <div class="col col-md-4">
+                                        <label for="giaNhapModalEdit" class="form-label">Giá nhập</label>
+                                        <input type="number" name="file" class="form-control" id="giaNhapModalEditAll"
+                                               value="">
+                                        <p style="color: red;" id="giaNhapModalEditErrAll"></p>
+                                    </div>
+                                    <div class="col col-md-4">
+                                        <label for="giaBanModalEdit" class="form-label">Giá bán</label>
+                                        <input type="number" name="file" class="form-control" id="giaBanModalEditAll"
+                                               value="">
+                                        <p style="color: red;" id="giaBanModalEditErrAll"></p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col col-md-3">
+                                        <label for="moTaModalEdit" class="form-label">Ghi chú</label>
+                                        <textarea class="form-control custom-textarea" style="width: 550px;"
+                                                  id="moTaModalEditAll" name="moTa"></textarea>
+                                        <p style="color: red;" id="moTaModalEditErrAll"></p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col col-md-3 hover-effect click-effect image-container">
+                                        <img width="200" height="200"
+                                             src="/image-icon/pendingIMG.png"
+                                             alt="" class="fit-img" id="hinhAnh1DisplayModalEditAll">
+                                        <p class="text-center">Hình ảnh 1</p>
+                                        <input type="file" name="hinhAnh1File" id="fileHinhAnh1ModalEditAll"
+                                               class="file-input-overlay"/>
+                                    </div>
+                                    <div class="col col-md-3 hover-effect click-effect image-container">
+                                        <img width="200" height="200"
+                                             src="/image-icon/pendingIMG.png"
+                                             alt="" class="fit-img" id="hinhAnh2DisplayModalEditAll">
+                                        <p class="text-center">Hình ảnh 2</p>
+                                        <input type="file" name="hinhAnh2File" id="fileHinhAnh2ModalEditAll"
+                                               class="file-input-overlay"/>
+                                    </div>
+                                    <div class="col col-md-3 hover-effect click-effect image-container">
+                                        <img width="200" height="200"
+                                             src="/image-icon/pendingIMG.png"
+                                             alt="" class="fit-img" id="hinhAnh3DisplayModalEditAll">
+                                        <p class="text-center">Hình ảnh 3</p>
+                                        <input type="file" name="hinhAnh3File" id="fileHinhAnh3ModalEditAll"
+                                               class="file-input-overlay"/>
+                                    </div>
+                                </div>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" role="switch"
+                                           id="trangThaiModalEditAll"
+                                           checked>
+                                    <label class="form-check-label" for="trangThaiLabelModalEdit"
+                                           id="trangThaiLabelModalEditAll">Trạng
+                                        thái</label>
+                                </div>
+                                <button id="saveEditAllBtn" class="btn btn-primary">Lưu</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <%--End modal --%>
+
+
         <!-- ModalHotAddMS -->
         <div class="modal fade" id="modalHotAddMS" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
              data-bs-backdrop="static" data-bs-keyboard="false">
@@ -1454,7 +1528,7 @@
                             '<td>' +'</td>' +
                             '<td>' +'</td>' +
                             '<td>'+
-                            '<button id="editAllSPCTBtn_' + spct.idMauSac + '" class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#ModalEdit">Sửa toàn bộ</button>' +
+                            '<button id="editAllSPCTBtn_' + spct.idMauSac + '" class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#ModalEditAll">Sửa toàn bộ</button>' +
                             '</td>'+
                              '</tr>';
                     }

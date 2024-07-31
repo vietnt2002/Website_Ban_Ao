@@ -921,7 +921,7 @@
                     const tenSanPham = sp.ten || 'N/A';
                     const hinhAnh = sp.hinhAnh || 'N/A';
                     const ngayTao = sp.ngayTao || 'N/A';
-                    const trangThai = spct.trangThai == 1
+                    const trangThai = sp.trangThai == 1
                         ? '<p style="font-weight: bold; color: blue">Hoạt động</p>'
                         : '<p style="font-weight: bold; color: red">Dừng HĐ</p>';
                     html += '<tr>' +
