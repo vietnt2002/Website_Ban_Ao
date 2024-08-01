@@ -833,7 +833,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between mb-3 pt-1">
                             <h6 class="font-weight-medium">Tổng sản phẩm: </h6>
-                            <h6 class="font-weight-medium" style="font-size: 18px">${soLuong}</h6>
+                            <h6 class="font-weight-medium" style="font-size: 18px">${soLuongGioHang}</h6>
                         </div>
                         <div class="d-flex justify-content-between mb-3 pt-1">
                             <h6 class="font-weight-medium">Tổng tiền hàng: </h6>
@@ -1778,6 +1778,8 @@
 
             var token = '108bdaef-8395-11ee-af43-6ead57e9219a';
             var tongTien = parseFloat('${tongTien - hoaDon.idKhuyenMai.soTienGiam}');
+            var soLuongGioHang = ${soLuongGioHang}
+
 
 // Function to get JSON with token
             function getJSONWithToken1(url, callback) {
@@ -1816,7 +1818,12 @@
                 console.log("API maDV: ", service_id);
 
                 console.log("Tổng tiền: ", tongTien);
-                getJSONWithToken('https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee?service_id='+service_id+'&insurance_value='+tongTien+'&from_district_id=3440&to_district_id='+idQuanHuyenTest+'&to_ward_code='+idPhuongXaTest+'&height=15&length=15&weight=1000&width=15', function(data_total) {
+                console.log("Tổng sl: ",soLuongGioHang);
+
+                var khoiLuong = soLuongGioHang*1000;
+                console.log("Tổng kl: ",khoiLuong);
+
+                getJSONWithToken('https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee?service_id='+service_id+'&insurance_value='+tongTien+'&from_district_id=3440&to_district_id='+idQuanHuyenTest+'&to_ward_code='+idPhuongXaTest+'&height=15&length=15&weight='+khoiLuong+'&width=15', function(data_total) {
                     console.log("API Response: ", data_total.data.service_fee); // Log the entire response
 
 

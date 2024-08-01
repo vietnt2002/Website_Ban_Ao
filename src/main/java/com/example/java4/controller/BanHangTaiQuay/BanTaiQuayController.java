@@ -159,7 +159,7 @@ public class BanTaiQuayController {
             listKieuTay = kieuTayRepo.findAll();
             listSanPham = sanPhamRepo.findAll();
             listChatLieu = chatLieuRepo.findAll();
-            listKhuyenMai = khuyenMaiRepo.findAll();
+            listKhuyenMai = khuyenMaiRepo.findAllKMTrangThai(KhuyenMaiRepository.ACTIVE);
             model.addAttribute("listMauSac", listMauSac);
             model.addAttribute("listKichThuoc", listKichThuoc);
             model.addAttribute("listChatLieu", listChatLieu);
@@ -194,7 +194,7 @@ public class BanTaiQuayController {
         listKieuTay = kieuTayRepo.findAll();
         listSanPham = sanPhamRepo.findAll();
         listChatLieu = chatLieuRepo.findAll();
-        listKhuyenMai = khuyenMaiRepo.findAll();
+        listKhuyenMai = khuyenMaiRepo.findAllKMTrangThai(KhuyenMaiRepository.ACTIVE);
         int page = pageParam2.orElse(0);
         Pageable p = PageRequest.of(page,100);
         Page<KhachHang> pageData = khachHangRepository.findByTrangThai(khachHangRepository.ACTIVE,p);
@@ -485,7 +485,7 @@ public class BanTaiQuayController {
         newHoaDon.setTongTien(tongTien);
         newHoaDon.setLoaiHoaDon(0);
         newHoaDon.setPhuongThucThanhToan(0);
-        newHoaDon.setTrangThai(1);
+        newHoaDon.setTrangThai(6);
         hoaDonRepository.save(newHoaDon);
         return "redirect:/ban-hang-tai-quay";
     }
