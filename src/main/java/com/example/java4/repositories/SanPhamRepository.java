@@ -30,4 +30,7 @@ public interface SanPhamRepository
     Integer getCountStt1();
     @Query(value = "SELECT COUNT(*) FROM sanpham where trangThai=0",nativeQuery = true)
     Integer getCountStt0();
+    @Query(value = "SELECT MIN(ha.hinhAnh1) FROM HinhAnh ha WHERE ha.idCTSP.id = " +
+            "(SELECT MIN(ctsp.id) FROM ChiTietSanPham ctsp WHERE ctsp.idSanPham.id = :idSP)")
+    String getHinhAnhOfSP(@Param("idSP") String idSP);
 };

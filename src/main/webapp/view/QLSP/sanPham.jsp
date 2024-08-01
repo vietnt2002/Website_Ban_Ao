@@ -926,7 +926,7 @@
                         : '<p style="font-weight: bold; color: red">Dừng HĐ</p>';
                     html += '<tr>' +
                         '<td>' + (i + 1) + '</td>' +
-                        '<td><img src="' + hinhAnh + '" alt="Image" class="img-fluid" /></td>' +
+                        '<td><img src="' + "/image/" + hinhAnh + '" alt="Image" style="width: 70px ; height: 60px" class="img-fluid rounded border" /></td>' +
                         '<td>' + maSanPham + '</td>' +
                         '<td>' + tenSanPham + '</td>' +
                         '<td>' + ngayTao + '</td>' +
@@ -937,7 +937,7 @@
                         '<button id="detailSPBtn_' + sp.id + '" class="btn btn-danger">Chi tiết</button>' +
                         '</div>' +
                         '</td>' +
-                        '</tr>';
+                         '</tr>';
                 });
                 $("#tbl_ds_sp").html(html)
             });
