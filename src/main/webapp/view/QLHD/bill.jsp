@@ -502,7 +502,7 @@
 
                                     <tbody>
                                     <c:forEach var="hoaDon" items="${hoaDonPage}" varStatus="i">
-                                        <c:if test="${hoaDon.loaiHoaDon == 1 || (hoaDon.loaiHoaDon == 0 && hoaDon.trangThai == 6)}">
+                                        <c:if test="${(hoaDon.loaiHoaDon == 0 && hoaDon.trangThai == 6) || (hoaDon.loaiHoaDon == 1 && hoaDon.trangThai != 0)}">
                                         <tr>
                                             <td>${i.index + 1}</td>
                                             <td>${hoaDon.ma}</td>
@@ -1101,10 +1101,25 @@
 
             // Update the URL without reloading the page
             let status = $(this).data('status');
-            history.pushState(null, '', '?status=' + status);
+            let url = new URL(window.location.href);
+            url.searchParams.set('status', status);
+            url.searchParams.set('page', '0'); // Reset the page to 0 when switching tabs
+            history.pushState(null, '', url.toString());
 
             // Save the current status to localStorage
             localStorage.setItem('currentTabStatus', status);
+        });
+
+        // Handle data loading when tabs are clicked
+        document.querySelectorAll('.nav-link').forEach(button => {
+            button.addEventListener('click', function () {
+                let status = this.getAttribute('data-status');
+                let url = new URL(window.location.href);
+                url.searchParams.set('status', status);
+                url.searchParams.set('page', '0'); // Reset the page to 0 when switching tabs
+                window.history.pushState({}, '', url.toString());
+                window.location.href = url.toString(); // Load the new URL
+            });
         });
 
         // When clicking on any a tag

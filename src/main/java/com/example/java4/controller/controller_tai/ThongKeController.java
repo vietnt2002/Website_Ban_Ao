@@ -16,20 +16,19 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -49,6 +48,8 @@ public class ThongKeController {
 
     @Autowired
     HinhAnhRepository _hinhAnhRepo;
+    @Autowired
+    private ThongKeRepository thongKeRepository;
 
 
     @GetMapping("/view")
@@ -107,7 +108,7 @@ public class ThongKeController {
         return "/view/ThongKe/view.jsp";
     }
 
-//    Thống kê doanh thu theo tùy chỉnh
+//    Thống kê doanh thu theo Bộ Lọc
     @PostMapping("/tuy-chinh")
     public String thongKeTheoTuyChinh(@RequestParam("startDate") String startDate,
                                       @RequestParam("endDate") String endDate,
@@ -120,6 +121,26 @@ public class ThongKeController {
         redirectAttributes.addFlashAttribute("customStats", customStats);
         redirectAttributes.addFlashAttribute("formSuccess", true);
         return "redirect:/admin/thong-ke/view";
+    }
+
+
+    //    Thống kê số lượng hóa đơn và sản phẩm theo tùy chỉnh
+    @GetMapping("/tu-ngay-den-ngay")
+    @ResponseBody
+    public List<Map<String, Object>> thongKeTheoTuyChinh(@RequestParam("startDate") String startDate,
+                                                         @RequestParam("endDate") String endDate) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDateTime startDateTime = LocalDate.parse(startDate, formatter).atStartOfDay();
+        LocalDateTime endDateTime = LocalDate.parse(endDate, formatter).atStartOfDay();
+        List<Object[]> customResults = thongKeRepository.getCustomDateRangeStatistics(startDateTime, endDateTime);
+
+        return customResults.stream()
+                .map(result -> Map.of(
+                        "day", result[0],
+                        "soLuongHoaDon", result[1],
+                        "soLuongSanPham", result[2]
+                ))
+                .collect(Collectors.toList());
     }
 
 

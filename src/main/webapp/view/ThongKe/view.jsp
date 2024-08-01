@@ -66,6 +66,17 @@
 
 
     <style>
+
+        body {
+            overflow-y: scroll; /* Luôn luôn hiển thị thanh cuộn dọc */
+        }
+
+
+        .modal-dialog {
+            max-height: 80vh; /* Ensures modal does not overflow the viewport height */
+            overflow-y: auto; /* Allows scrolling inside the modal if necessary */
+        }
+
         .stat-section {
             padding: 20px;
             border-radius: 10px;
@@ -228,7 +239,9 @@
 
 
 
-
+        #customLayout{
+            display: block;
+        }
 
     </style>
 </head>
@@ -736,53 +749,6 @@
                                 </div>
                             </div>
 
-                            <%--                            Modal tùy chỉnh--%>
-                            <div class="modal fade" id="customModal" tabindex="-1" aria-labelledby="customModalLabel"
-                                 aria-hidden="true">
-                                <div class="modal-dialog modal-lg">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="customModalLabel">Tùy chỉnh ngày</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                    aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <div class="d-flex align-items-end">
-                                                <div class="flex-fill me-2">
-                                                    <div class="form-group mb-0">
-                                                        <label for="start-date" class="form-label">Từ ngày</label>
-                                                        <input type="date" class="form-control" id="start-date"/>
-                                                        <div id="start-date-error" class="text-danger"
-                                                             style="display: none;">Vui lòng nhập ngày bắt đầu.
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="flex-fill me-2">
-                                                    <div class="form-group mb-0">
-                                                        <label for="end-date" class="form-label">Đến ngày</label>
-                                                        <input type="date" class="form-control" id="end-date"/>
-                                                        <div id="end-date-error" class="text-danger"
-                                                             style="display: none;">Vui lòng nhập ngày kết thúc.
-                                                        </div>
-                                                        <div id="date-error" class="text-danger" style="display: none;">
-                                                            Ngày kết thúc phải sau ngày bắt đầu.
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="flex-shrink-1">
-                                                    <button type="button"
-                                                            class="btn btn-primary btn-sm font-weight-bold"
-                                                            id="btn-search">
-                                                        Tìm kiếm
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-
                             <%-- Modal Bộ Lọc--%>
                             <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-lg">
@@ -796,7 +762,7 @@
                                                 <div class="d-flex align-items-end">
                                                     <div class="flex-fill me-2">
                                                         <div class="form-group mb-0 position-relative">
-                                                            <label for="start-date" class="form-label">Từ ngày</label>
+                                                            <label for="start_date" class="form-label">Từ ngày</label>
                                                             <input name="startDate" type="date" class="form-control" id="start_date" />
                                                             <div id="start_date_error" class="text-danger position-absolute" style="top: 100%; left: 0; display: none;">
                                                                 Vui lòng nhập ngày bắt đầu.
@@ -805,7 +771,7 @@
                                                     </div>
                                                     <div class="flex-fill me-2">
                                                         <div class="form-group mb-0 position-relative">
-                                                            <label for="end-date" class="form-label">Đến ngày</label>
+                                                            <label for="end_date" class="form-label">Đến ngày</label>
                                                             <input name="endDate" type="date" class="form-control" id="end_date" />
                                                             <div id="end_date_error" class="text-danger position-absolute" style="top: 100%; left: 0; display: none;">
 
@@ -825,8 +791,43 @@
                             </div>
 
 
+                        <%--- Modal tùy chỉnh--%>
+                            <div class="modal fade" id="customModal" tabindex="-1" aria-labelledby="customModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="customModalLabel">Tùy chỉnh ngày</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form id="date-range-form">
+                                                <div class="d-flex align-items-end">
+                                                    <div class="flex-fill me-2">
+                                                        <div class="form-group mb-0 position-relative">
+                                                            <label for="start-date" class="form-label">Từ ngày</label>
+                                                            <input type="date" class="form-control" id="start-date" name="startDate" />
+                                                            <div id="start-date-error" class="text-danger position-absolute" style="top: 100%; left: 0; display: none;"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex-fill me-2">
+                                                        <div class="form-group mb-0 position-relative">
+                                                            <label for="end-date" class="form-label">Đến ngày</label>
+                                                            <input type="date" class="form-control" id="end-date" name="endDate" />
+                                                            <div id="end-date-error" class="text-danger position-absolute" style="top: 100%; left: 0; display: none;"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex-shrink-1">
+                                                        <button type="submit" class="btn btn-primary btn-sm font-weight-bold">Tìm kiếm</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-                        <%--                            Biểu đồ thống kê--%>
+
+                        <%-- Biểu đồ thống kê--%>
                             <div>
                                 <div class="card chart-card">
                                     <div class="card-body chart-container">
@@ -1071,25 +1072,283 @@
 
 <script>
 
+
+
+
+    // Validate Form Bộ Lọc
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const filterForm = document.getElementById('filterForm');
+        const startDateInput = document.getElementById('start_date');
+        const endDateInput = document.getElementById('end_date');
+        const startDateError = document.getElementById('start_date_error');
+        const endDateError = document.getElementById('end_date_error');
+
+        function clearError(input, errorElement) {
+            input.classList.remove('border-danger');
+            errorElement.style.display = 'none';
+        }
+
+        startDateInput.addEventListener('click', () => clearError(startDateInput, startDateError));
+        endDateInput.addEventListener('click', () => clearError(endDateInput, endDateError));
+
+        filterForm.addEventListener('submit', (event) => {
+            let valid = true;
+
+            // Clear previous error messages
+            clearError(startDateInput, startDateError);
+            clearError(endDateInput, endDateError);
+
+            // Validate start date
+            if (!startDateInput.value) {
+                startDateError.textContent = 'Vui lòng nhập ngày bắt đầu.';
+                startDateError.style.display = 'block';
+                startDateInput.classList.add('border-danger');
+                valid = false;
+            }
+
+            // Validate end date
+            if (!endDateInput.value) {
+                endDateError.textContent = 'Vui lòng nhập ngày kết thúc.';
+                endDateError.style.display = 'block';
+                endDateInput.classList.add('border-danger');
+                valid = false;
+            } else if (startDateInput.value && endDateInput.value < startDateInput.value) {
+                endDateError.textContent = 'Ngày kết thúc phải sau ngày bắt đầu.';
+                endDateError.style.display = 'block';
+                endDateInput.classList.add('border-danger');
+                valid = false;
+            }
+
+            // If not valid, prevent form submission
+            if (!valid) {
+                event.preventDefault();
+            }
+        });
+    });
+
     // Mở giao diện bộ lọc
     document.addEventListener('DOMContentLoaded', function () {
         const filterButtons = document.querySelectorAll('#btn-today, #btn-week, #btn-month, #btn-year, #btn-custom');
         const filterButton = document.getElementById('btn-filter');
         const customLayout = document.getElementById('customLayout');
 
-        filterButton.addEventListener('click', function () {
-            customLayout.style.display = 'block';
-        });
-
-        filterButtons.forEach(button => {
-            button.addEventListener('click', function () {
-                customLayout.style.display = 'none';
+        if (filterButton && customLayout) {
+            filterButton.addEventListener('click', function () {
+                customLayout.style.display = 'block';
             });
-        });
+        }
+        // Thêm sự kiện click cho các nút bộ lọc nếu chúng tồn tại
+        if (filterButtons.length > 0) {
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    if (customLayout) {
+                        customLayout.style.display = 'none';
+                    }
+                });
+            });
+        } else {
+            console.error('No filter buttons found');
+        }
     });
 
 
     // Biểu đồ cột thống ke hóa đơn và sản phẩm
+    <%--document.addEventListener("DOMContentLoaded", function () {--%>
+    <%--    const ctx = document.getElementById('myChart').getContext('2d');--%>
+    <%--    const myChart = new Chart(ctx, {--%>
+    <%--        type: 'bar',--%>
+    <%--        data: {--%>
+    <%--            labels: [], // Placeholder for initial labels--%>
+    <%--            datasets: [--%>
+    <%--                {--%>
+    <%--                    label: 'Hóa đơn',--%>
+    <%--                    data: [],--%>
+    <%--                    backgroundColor: 'rgba(54, 162, 235, 0.7)',--%>
+    <%--                    borderColor: 'rgba(54, 162, 235, 1)',--%>
+    <%--                    borderWidth: 1--%>
+    <%--                },--%>
+    <%--                {--%>
+    <%--                    label: 'Sản phẩm',--%>
+    <%--                    data: [],--%>
+    <%--                    backgroundColor: 'rgba(255, 206, 86, 0.7)',--%>
+    <%--                    borderColor: 'rgba(255, 206, 86, 1)',--%>
+    <%--                    borderWidth: 1--%>
+    <%--                }--%>
+    <%--            ]--%>
+    <%--        },--%>
+    <%--        options: {--%>
+    <%--            scales: {--%>
+    <%--                x: {--%>
+    <%--                    ticks: {--%>
+    <%--                        maxRotation: 45,--%>
+    <%--                        minRotation: 45--%>
+    <%--                    }--%>
+    <%--                },--%>
+    <%--                y: {--%>
+    <%--                    beginAtZero: true,--%>
+    <%--                    title: {--%>
+    <%--                        display: true,--%>
+    <%--                        text: 'Số lượng',--%>
+    <%--                        color: '#000',--%>
+    <%--                        font: {--%>
+    <%--                            size: 13--%>
+    <%--                        }--%>
+    <%--                    }--%>
+    <%--                }--%>
+    <%--            }--%>
+    <%--        }--%>
+    <%--    });--%>
+
+    <%--    function fetchData(url, title) {--%>
+    <%--        return fetch(url)--%>
+    <%--            .then(response => response.json())--%>
+    <%--            .then(data => {--%>
+    <%--                if (Array.isArray(data) && data.length > 0) {--%>
+    <%--                    updateChart(data);--%>
+    <%--                } else {--%>
+    <%--                    updateChart([{ day: new Date().toLocaleDateString('en-GB'), soLuongHoaDon: 0, soLuongSanPham: 0 }]);--%>
+    <%--                }--%>
+    <%--                updateTitle(title);--%>
+    <%--            })--%>
+    <%--            .catch(error => {--%>
+    <%--                console.error('Error fetching data:', error);--%>
+    <%--                updateChart([{ day: new Date().toLocaleDateString('en-GB'), soLuongHoaDon: 0, soLuongSanPham: 0 }]);--%>
+    <%--                updateTitle(title);--%>
+    <%--            });--%>
+    <%--    }--%>
+
+    <%--    function updateChart(data) {--%>
+    <%--        const days = data.map(item => new Date(item.day).toLocaleDateString('en-GB'));--%>
+    <%--        const soLuongHoaDon = data.map(item => item.soLuongHoaDon);--%>
+    <%--        const soLuongSanPham = data.map(item => item.soLuongSanPham);--%>
+
+    <%--        myChart.data.labels = days;--%>
+    <%--        myChart.data.datasets[0].data = soLuongHoaDon;--%>
+    <%--        myChart.data.datasets[1].data = soLuongSanPham;--%>
+    <%--        myChart.update();--%>
+    <%--    }--%>
+
+    <%--    function updateTitle(title) {--%>
+    <%--        document.getElementById('chart-title').textContent = title;--%>
+    <%--    }--%>
+
+    <%--    function setActiveButton(id) {--%>
+    <%--        const buttons = document.querySelectorAll('.btn');--%>
+    <%--        buttons.forEach(btn => btn.classList.remove('active'));--%>
+    <%--        document.getElementById(id).classList.add('active');--%>
+    <%--    }--%>
+
+    <%--    // Event listeners for buttons--%>
+    <%--    document.getElementById('btn-filter').addEventListener('click', () => {--%>
+    <%--        setActiveButton('btn-filter');--%>
+    <%--    });--%>
+
+    <%--    document.getElementById('btn-today').addEventListener('click', () => {--%>
+    <%--        setActiveButton('btn-today');--%>
+    <%--        fetchData('/api/thong-ke/ngay-hien-tai', 'Biểu Đồ Thống Kê Hóa Đơn Và Sản Phẩm Ngày Hôm Nay');--%>
+    <%--    });--%>
+
+    <%--    document.getElementById('btn-week').addEventListener('click', () => {--%>
+    <%--        setActiveButton('btn-week');--%>
+    <%--        const startDate = new Date();--%>
+    <%--        const endDate = new Date();--%>
+    <%--        startDate.setDate(startDate.getDate() - 7);--%>
+    <%--        fetchData(`/api/thong-ke/tuan-hien-tai?startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()}`, 'Biểu Đồ Thống Kê Hóa Đơn Và Sản Phẩm Tuần Này');--%>
+    <%--    });--%>
+
+    <%--    document.getElementById('btn-month').addEventListener('click', () => {--%>
+    <%--        setActiveButton('btn-month');--%>
+    <%--        fetchData('/api/thong-ke/thang-hien-tai', 'Biểu Đồ Thống Kê Hóa Đơn Và Sản Phẩm Tháng Này');--%>
+    <%--    });--%>
+
+    <%--    document.getElementById('btn-year').addEventListener('click', () => {--%>
+    <%--        setActiveButton('btn-year');--%>
+    <%--        fetchData('/api/thong-ke/nam-hien-tai', 'Biểu Đồ Thống Kê Hóa Đơn Và Sản Phẩm Năm Nay');--%>
+    <%--    });--%>
+
+    <%--    document.getElementById('btn-custom').addEventListener('click', () => {--%>
+    <%--        setActiveButton('btn-custom');--%>
+    <%--    });--%>
+
+    <%--    // Event listener for form submission--%>
+    <%--    // Hiển thị dữ liệu lên biểu đồ tùy chỉnh--%>
+    <%--    $(document).ready(function () {--%>
+    <%--        function clearError(input, errorElement) {--%>
+    <%--            input.removeClass('border-danger');--%>
+    <%--            errorElement.hide();--%>
+    <%--        }--%>
+
+    <%--        $('#start-date').on('click', function () {--%>
+    <%--            clearError($(this), $('#start-date-error'));--%>
+    <%--        });--%>
+
+    <%--        $('#end-date').on('click', function () {--%>
+    <%--            clearError($(this), $('#end-date-error'));--%>
+    <%--        });--%>
+
+    <%--        $('#date-range-form').on('submit', function (event) {--%>
+    <%--            event.preventDefault();--%>
+    <%--            const formData = new FormData(this);--%>
+    <%--            const startDate = formData.get('startDate');--%>
+    <%--            const endDate = formData.get('endDate');--%>
+    <%--            let valid = true;--%>
+
+    <%--            // Clear previous error messages--%>
+    <%--            clearError($('#start-date'), $('#start-date-error'));--%>
+    <%--            clearError($('#end-date'), $('#end-date-error'));--%>
+
+    <%--            // Validate start date--%>
+    <%--            if (!startDate) {--%>
+    <%--                $('#start-date-error').text('Vui lòng nhập ngày bắt đầu.').show();--%>
+    <%--                $('#start-date').addClass('border-danger');--%>
+    <%--                valid = false;--%>
+    <%--            }--%>
+
+    <%--            // Validate end date--%>
+    <%--            if (!endDate) {--%>
+    <%--                $('#end-date-error').text('Vui lòng nhập ngày kết thúc.').show();--%>
+    <%--                $('#end-date').addClass('border-danger');--%>
+    <%--                valid = false;--%>
+    <%--            } else if (startDate && endDate < startDate) {--%>
+    <%--                $('#end-date-error').text('Ngày kết thúc phải sau ngày bắt đầu.').show();--%>
+    <%--                $('#end-date').addClass('border-danger');--%>
+    <%--                valid = false;--%>
+    <%--            }--%>
+
+    <%--            // If not valid, prevent form submission--%>
+    <%--            if (!valid) {--%>
+    <%--                return;--%>
+    <%--            }--%>
+
+    <%--            // If valid, proceed with AJAX request--%>
+    <%--            $.ajax({--%>
+    <%--                url: `/admin/thong-ke/tu-ngay-den-ngay`,--%>
+    <%--                type: 'GET',--%>
+    <%--                data: {--%>
+    <%--                    startDate: startDate,--%>
+    <%--                    endDate: endDate--%>
+    <%--                },--%>
+    <%--                success: function (data) {--%>
+    <%--                    updateChart(data);--%>
+    <%--                    document.querySelector('.modal-backdrop.show').classList.add('hide-backdrop');--%>
+    <%--                    $('#customModal').modal('hide');--%>
+    <%--                    $('#chart-title').text('Biểu Đồ Thống Kê Hóa Đơn Và Sản Phẩm Tùy Chỉnh');--%>
+    <%--                },--%>
+    <%--                error: function (xhr, status, error) {--%>
+    <%--                    console.error('Error fetching data:', error);--%>
+    <%--                }--%>
+    <%--            });--%>
+    <%--        });--%>
+    <%--    });--%>
+
+    <%--    // Load initial data for the current month--%>
+    <%--    fetchData('/api/thong-ke/thang-hien-tai', 'Biểu Đồ Thống Kê Hóa Đơn Và Sản Phẩm Tháng Này');--%>
+    <%--    setActiveButton('btn-month');--%>
+    <%--});--%>
+
+
+
+
     document.addEventListener("DOMContentLoaded", function () {
         const ctx = document.getElementById('myChart').getContext('2d');
         const myChart = new Chart(ctx, {
@@ -1142,13 +1401,15 @@
                 .then(data => {
                     if (Array.isArray(data) && data.length > 0) {
                         updateChart(data);
-                        updateTitle(title); // Cập nhật tiêu đề
                     } else {
-                        console.error('No data available');
+                        updateChart([{ day: new Date().toLocaleDateString('en-GB'), soLuongHoaDon: 0, soLuongSanPham: 0 }]);
                     }
+                    updateTitle(title);
                 })
                 .catch(error => {
                     console.error('Error fetching data:', error);
+                    updateChart([{ day: new Date().toLocaleDateString('en-GB'), soLuongHoaDon: 0, soLuongSanPham: 0 }]);
+                    updateTitle(title);
                 });
         }
 
@@ -1173,10 +1434,9 @@
             document.getElementById(id).classList.add('active');
         }
 
-        // Gán sự kiện click cho các nút
+        // Event listeners for buttons
         document.getElementById('btn-filter').addEventListener('click', () => {
             setActiveButton('btn-filter');
-            // Xử lý bộ lọc ở đây nếu cần
         });
 
         document.getElementById('btn-today').addEventListener('click', () => {
@@ -1202,300 +1462,102 @@
             fetchData('/api/thong-ke/nam-hien-tai', 'Biểu Đồ Thống Kê Hóa Đơn Và Sản Phẩm Năm Nay');
         });
 
-        // Thêm sự kiện click cho nút tìm kiếm trong modal
-        document.getElementById('btn-search').addEventListener('click', () => {
-            const startDate = document.getElementById('start-date').value;
-            const endDate = document.getElementById('end-date').value;
-
-            console.log(startDate);
-            console.log(endDate);
-            alert(startDate);
-            alert(endDate);
-
-            if (!startDate) {
-                document.getElementById('start-date-error').style.display = 'block';
-                return;
-            } else {
-                document.getElementById('start-date-error').style.display = 'none';
-            }
-
-            if (!endDate) {
-                document.getElementById('end-date-error').style.display = 'block';
-                return;
-            } else {
-                document.getElementById('end-date-error').style.display = 'none';
-            }
-
-            if (new Date(startDate) > new Date(endDate)) {
-                document.getElementById('date-error').style.display = 'block';
-                return;
-            } else {
-                document.getElementById('date-error').style.display = 'none';
-            }
-
-            $('#customModal').modal('hide');
-            const url = `/api/thong-ke/tu-ngay-den-ngay?startDate=${startDate}&endDate=${endDate}`;
-            fetchData(url, `Biểu Đồ Thống Kê Hóa Đơn Và Sản Phẩm Tùy Chỉnh`);
+        document.getElementById('btn-custom').addEventListener('click', () => {
+            setActiveButton('btn-custom');
         });
 
-        // Hiển thị dữ liệu tháng khi chương trình bắt đầu
-        fetchData('/api/thong-ke/thang-hien-tai', 'Biểu Đồ Thống Kê Hóa Đơn Và Sản Phẩm Tháng Này');
-        setActiveButton('btn-month'); // Đánh dấu nút tháng là active
-    });
-
-    // Hiển thị thống kê doanh thu tùy chỉnh
-    <%--document.addEventListener("DOMContentLoaded", function () {--%>
-    <%--    const searchButton = document.getElementById('btn-search');--%>
-    <%--    const startDateInput = document.getElementById('start-date');--%>
-    <%--    const endDateInput = document.getElementById('end-date');--%>
-    <%--    const startDateError = document.getElementById('start-date-error');--%>
-    <%--    const endDateError = document.getElementById('end-date-error');--%>
-    <%--    const dateError = document.getElementById('date-error');--%>
-
-    <%--    // Clears all error messages and removes error styles--%>
-    <%--    function clearErrors() {--%>
-    <%--        startDateError.style.display = 'none';--%>
-    <%--        endDateError.style.display = 'none';--%>
-    <%--        dateError.style.display = 'none';--%>
-    <%--        startDateInput.classList.remove('border-danger');--%>
-    <%--        endDateInput.classList.remove('border-danger');--%>
-    <%--    }--%>
-
-    <%--    // Event listener to clear errors when input fields are focused--%>
-    <%--    startDateInput.addEventListener('focus', clearErrors);--%>
-    <%--    endDateInput.addEventListener('focus', clearErrors);--%>
-
-    <%--    // Validates date inputs and performs the search operation--%>
-    <%--    searchButton.addEventListener('click', function () {--%>
-    <%--        const startDate = startDateInput.value.trim();--%>
-    <%--        const endDate = endDateInput.value.trim();--%>
-
-    <%--        clearErrors();--%>
-
-    <%--        let hasError = false;--%>
-
-    <%--        // Validate if start date is provided--%>
-    <%--        if (!startDate) {--%>
-    <%--            startDateError.style.display = 'block';--%>
-    <%--            startDateInput.classList.add('border-danger');--%>
-    <%--            hasError = true;--%>
-    <%--        }--%>
-
-    <%--        // Validate if end date is provided--%>
-    <%--        if (!endDate) {--%>
-    <%--            endDateError.style.display = 'block';--%>
-    <%--            endDateInput.classList.add('border-danger');--%>
-    <%--            hasError = true;--%>
-    <%--        }--%>
-
-    <%--        // Validate if dates are in correct format and start date is not after end date--%>
-    <%--        if (startDate && endDate) {--%>
-    <%--            const parsedStartDate = new Date(startDate);--%>
-    <%--            const parsedEndDate = new Date(endDate);--%>
-
-    <%--            if (isNaN(parsedStartDate.getTime()) || isNaN(parsedEndDate.getTime())) {--%>
-    <%--                dateError.textContent = 'Invalid date format. Please use YYYY-MM-DD format.';--%>
-    <%--                dateError.style.display = 'block';--%>
-    <%--                startDateInput.classList.add('border-danger');--%>
-    <%--                endDateInput.classList.add('border-danger');--%>
-    <%--                hasError = true;--%>
-    <%--            } else if (parsedStartDate > parsedEndDate) {--%>
-    <%--                dateError.textContent = 'Start date cannot be after end date.';--%>
-    <%--                dateError.style.display = 'block';--%>
-    <%--                startDateInput.classList.add('border-danger');--%>
-    <%--                endDateInput.classList.add('border-danger');--%>
-    <%--                hasError = true;--%>
-    <%--            }--%>
-    <%--        }--%>
-
-    <%--        // If no errors, fetch data--%>
-    <%--        if (!hasError) {--%>
-    <%--            const encodedStartDate = encodeURIComponent(startDate + 'T00:00:00'); // Append time to date--%>
-    <%--            const encodedEndDate = encodeURIComponent(endDate + 'T23:59:59'); // Append time to date--%>
-    <%--            const url = `/api/thong-ke/tuy-chinh?startDate=${encodedStartDate}&endDate=${encodedEndDate}`;--%>
-    <%--            fetchData(url);--%>
-    <%--            // Hide the modal and remove background--%>
-    <%--            $('#customModal').modal('hide');--%>
-    <%--            document.querySelector('.modal-backdrop').style.display = 'none'; // Remove modal backdrop--%>
-    <%--        }--%>
-    <%--    });--%>
-
-    <%--    // Fetches data from the API and updates the statistics section--%>
-    <%--    function fetchData(url) {--%>
-    <%--        fetch(url)--%>
-    <%--            .then(response => {--%>
-    <%--                if (!response.ok) {--%>
-    <%--                    throw new Error('Network response was not ok.');--%>
-    <%--                }--%>
-    <%--                return response.json();--%>
-    <%--            })--%>
-    <%--            .then(data => {--%>
-    <%--                if (data && data.data) {--%>
-    <%--                    updateStatistics(data.data[0]);--%>
-    <%--                } else {--%>
-    <%--                    console.error('No data available');--%>
-    <%--                }--%>
-    <%--            })--%>
-    <%--            .catch(error => {--%>
-    <%--                console.error('Error fetching data:', error);--%>
-    <%--            });--%>
-    <%--    }--%>
-
-    <%--    // Updates the statistics section with data--%>
-    <%--    function updateStatistics(data) {--%>
-    <%--        document.getElementById('custom-revenue').textContent = data.doanhThu || 'N/A';--%>
-    <%--        document.getElementById('custom-products').textContent = data.soLuongSanPhamDaBan || 'N/A';--%>
-    <%--        document.getElementById('custom-success').textContent = data.donHangThanhCong || 'N/A';--%>
-    <%--        document.getElementById('custom-cancel').textContent = data.donHangDaHuy || 'N/A';--%>
-    <%--    }--%>
-    <%--});--%>
-
-    <%--document.addEventListener("DOMContentLoaded", function () {--%>
-    <%--    const searchButton = document.getElementById('btn-search');--%>
-    <%--    const startDateInput = document.getElementById('start-date');--%>
-    <%--    const endDateInput = document.getElementById('end-date');--%>
-
-    <%--    searchButton.addEventListener('click', function () {--%>
-    <%--        const startDate = startDateInput.value.trim();--%>
-    <%--        const endDate = endDateInput.value.trim();--%>
-
-    <%--        // In ra giá trị ngày bắt đầu và ngày kết thúc để kiểm tra--%>
-    <%--        console.log('Start Date:', startDate);--%>
-    <%--        console.log('End Date:', endDate);--%>
-
-    <%--        // Hoặc dùng alert để hiển thị--%>
-    <%--        alert('Start Date: ' + startDate + '\nEnd Date: ' + endDate);--%>
-
-    <%--        // Xây dựng URL với các giá trị ngày và gọi API--%>
-    <%--        if (startDate && endDate) {--%>
-    <%--            const encodedStartDate = encodeURIComponent(startDate + 'T00:00:00'); // Append time to date--%>
-    <%--            const encodedEndDate = encodeURIComponent(endDate + 'T23:59:59'); // Append time to date--%>
-    <%--            const url = `/api/thong-ke/tuy-chinh?startDate=${encodedStartDate}&endDate=${encodedEndDate}`;--%>
-
-    <%--            fetchData(url);--%>
-
-    <%--            // Ẩn modal--%>
-    <%--            $('#customModal').modal('hide');--%>
-    <%--            document.querySelector('.modal-backdrop').style.display = 'none'; // Remove modal backdrop--%>
-    <%--        } else {--%>
-    <%--            alert('Please enter both start date and end date.');--%>
-    <%--        }--%>
-    <%--    });--%>
-
-    <%--    function fetchData(url) {--%>
-    <%--        fetch(url)--%>
-    <%--            .then(response => {--%>
-    <%--                if (!response.ok) {--%>
-    <%--                    return response.text().then(text => {--%>
-    <%--                        throw new Error(`Network response was not ok. Status: ${response.status}, Message: ${text}`);--%>
-    <%--                    });--%>
-    <%--                }--%>
-    <%--                return response.json();--%>
-    <%--            })--%>
-    <%--            .then(data => {--%>
-    <%--                if (data && data.data) {--%>
-    <%--                    updateStatistics(data.data[0]);--%>
-    <%--                } else {--%>
-    <%--                    console.error('No data available');--%>
-    <%--                }--%>
-    <%--            })--%>
-    <%--            .catch(error => {--%>
-    <%--                console.error('Error fetching data:', error);--%>
-    <%--                alert('An error occurred while fetching data: ' + error.message);--%>
-    <%--            });--%>
-    <%--    }--%>
-
-    <%--    function updateStatistics(data) {--%>
-    <%--        document.getElementById('custom-revenue').textContent = data.doanhThu || 'N/A';--%>
-    <%--        document.getElementById('custom-products').textContent = data.soLuongSanPhamDaBan || 'N/A';--%>
-    <%--        document.getElementById('custom-success').textContent = data.donHangThanhCong || 'N/A';--%>
-    <%--        document.getElementById('custom-cancel').textContent = data.donHangDaHuy || 'N/A';--%>
-    <%--    }--%>
-    <%--});--%>
-
-
-</script>
-<script type="text/javascript">
-<%--    Hiển thị giao diện tùy chỉnh khi submit thành công--%>
-    document.addEventListener("DOMContentLoaded", function () {
-        const formSuccess = "${formSuccess}";
-        if (formSuccess === 'true') {
-            document.getElementById("customLayout").style.display = "block";
-        }
-    });
-
-        // Validate form tùy chỉnh
-        document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('filterForm');
-    const startDateInput = document.getElementById('start_date');
-    const endDateInput = document.getElementById('end_date');
-    const startDateError = document.getElementById('start_date_error');
-    const endDateError = document.getElementById('end_date_error');
-
-    function validateDates() {
-        let valid = true;
-        let errorMessage = '';
-
-        // Clear previous error states
-        startDateInput.classList.remove('border-danger');
-        endDateInput.classList.remove('border-danger');
-        startDateError.style.display = 'none';
-        endDateError.style.display = 'none';
-
-        // Validate start date
-        if (!startDateInput.value) {
-            startDateInput.classList.add('border-danger');
-            startDateError.textContent = 'Vui lòng nhập ngày bắt đầu.';
-            startDateError.style.display = 'block';
-            valid = false;
-        }
-
-        // Validate end date
-        if (!endDateInput.value) {
-            endDateInput.classList.add('border-danger');
-            errorMessage = 'Vui lòng nhập ngày kết thúc.';
-            valid = false;
-        } else if (startDateInput.value) {
-            // Validate date range
-            const startDate = new Date(startDateInput.value);
-            const endDate = new Date(endDateInput.value);
-            if (endDate <= startDate) {
-                endDateInput.classList.add('border-danger');
-                errorMessage = 'Ngày kết thúc phải sau ngày bắt đầu.';
-                valid = false;
+        // Event listener for form submission
+        // Hiển thị dữ liệu lên biểu đồ tùy chỉnh
+        $(document).ready(function () {
+            function clearError(input, errorElement) {
+                input.removeClass('border-danger');
+                errorElement.hide();
             }
-        }
 
-        // Set the error message
-        if (!valid) {
-            endDateError.textContent = errorMessage;
-            endDateError.style.display = 'block';
-        }
+            $('#start-date').on('click', function () {
+                clearError($(this), $('#start-date-error'));
+            });
 
-        return valid;
-    }
+            $('#end-date').on('click', function () {
+                clearError($(this), $('#end-date-error'));
+            });
 
-    form.addEventListener('submit', function(event) {
-        if (!validateDates()) {
-            event.preventDefault();
-        }
+            $('#date-range-form').on('submit', function (event) {
+                event.preventDefault();
+                const formData = new FormData(this);
+                const startDate = formData.get('startDate');
+                const endDate = formData.get('endDate');
+                let valid = true;
+
+                // Clear previous error messages
+                clearError($('#start-date'), $('#start-date-error'));
+                clearError($('#end-date'), $('#end-date-error'));
+
+                // Validate start date
+                if (!startDate) {
+                    $('#start-date-error').text('Vui lòng nhập ngày bắt đầu.').show();
+                    $('#start-date').addClass('border-danger');
+                    valid = false;
+                }
+
+                // Validate end date
+                if (!endDate) {
+                    $('#end-date-error').text('Vui lòng nhập ngày kết thúc.').show();
+                    $('#end-date').addClass('border-danger');
+                    valid = false;
+                } else if (startDate && endDate < startDate) {
+                    $('#end-date-error').text('Ngày kết thúc phải sau ngày bắt đầu.').show();
+                    $('#end-date').addClass('border-danger');
+                    valid = false;
+                }
+
+                // If not valid, prevent form submission
+                if (!valid) {
+                    return;
+                }
+
+                // Save custom date range to localStorage
+                localStorage.setItem('customStartDate', startDate);
+                localStorage.setItem('customEndDate', endDate);
+
+                // If valid, proceed with AJAX request
+                $.ajax({
+                    url: `/admin/thong-ke/tu-ngay-den-ngay`,
+                    type: 'GET',
+                    data: {
+                        startDate: startDate,
+                        endDate: endDate
+                    },
+
+                    success: function (data) {
+                        updateChart(data);
+                        document.querySelector('.modal-backdrop').style.display = 'none';
+                        $('#customModal').modal('hide');
+                        $('#chart-title').text('Biểu Đồ Thống Kê Hóa Đơn Và Sản Phẩm Tùy Chỉnh');
+
+                        // Reload page to show custom data
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error fetching data:', error);
+                    }
+                });
+            });
+        });
+
+        // Load initial data based on custom date range if available
+            fetchData('/api/thong-ke/thang-hien-tai', 'Biểu Đồ Thống Kê Hóa Đơn Và Sản Phẩm Tháng Này');
+            setActiveButton('btn-month');
     });
 
-    // Hide error messages and border on input focus
-    startDateInput.addEventListener('focus', function() {
-        startDateInput.classList.remove('border-danger');
-        startDateError.style.display = 'none';
-    });
 
-    endDateInput.addEventListener('focus', function() {
-        endDateInput.classList.remove('border-danger');
-        endDateError.style.display = 'none';
-    });
-});
+
 
 
 
 </script>
+
+
+
 
 </body>
 
