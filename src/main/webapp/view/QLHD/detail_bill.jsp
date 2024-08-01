@@ -740,37 +740,32 @@
 
 
 
-                <!-- Modal  hủy hóa đơn -->
-                <div class="modal fade" id="cancelModal" tabindex="-1" aria-labelledby="cancelModalLabel"
-                     aria-hidden="true">
+                <!-- Modal hủy hóa đơn -->
+                <div class="modal fade" id="cancelModal" tabindex="-1" aria-labelledby="cancelModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <form id="cancelForm" method="post" action="/hoa-don/huy/${hoaDonDTO.id}">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="cancelModalLabel">Hủy đơn hàng</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
                                     <input type="hidden" name="trangThai" value="${hoaDonDTO.trangThai + 1}">
                                     <div class="mb-3">
                                         <label for="moTa" class="form-label">Lý do hủy đơn hàng</label>
-                                        <textarea class="form-control" id="reason" name="lyDo" rows="3"></textarea>
-                                        <div id="reasonError" class="text-danger" style="display: none;">Vui lòng điền
-                                            lý do hủy đơn hàng
-                                        </div>
+                                        <textarea class="form-control" id="moTaHuyDon" name="lyDo" rows="3"></textarea>
+                                        <div id="reasonError" class="text-danger" style="display: none;">Vui lòng điền lý do hủy đơn hàng</div>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng
-                                    </button>
-                                    <button type="submit" class="btn btn-primary" id="confirmCancelBtn">Xác nhận
-                                    </button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                    <button type="button" class="btn btn-primary" id="confirmCancelBtn">Xác nhận</button>
                                 </div>
                             </form>
                         </div>
                     </div>
                 </div>
+
 
 
                 <!-- Modal lịch sử hóa đơn-->
@@ -1506,7 +1501,12 @@
                                     <td>${product.idMauSac.ten}</td>
                                     <td>${product.idKichThuoc.ten}</td>
                                     <td>${product.soLuong}</td>
-                                    <td>${product.giaBan}</td>
+                                    <td> <fmt:formatNumber value="${product.giaBan}"
+                                                           type="currency"
+                                                           currencySymbol="₫"
+                                                           groupingUsed="true"
+                                                          />
+                                    </td>
                                     <td><span
                                             class=" fw-normal badge rounded-pill ${product.trangThai == 0 ? 'bg-danger' : 'bg-success'}">
                                             ${product.trangThai == 0 ? "Hết hàng" : "Còn hàng"}
@@ -1554,12 +1554,6 @@
                 </div>
             </div>
         </div>
-
-
-
-
-
-
 
 
         <!-- Footer -->
@@ -1710,6 +1704,13 @@
         // Submit form
         this.submit();
     });
+
+
+    // document.getElementById('cancelForm').addEventListener('submit', function(event) {
+    //     event.preventDefault(); // Ngăn form submit mặc định để xử lý logic riêng
+    //     // Submit form
+    //     this.submit();
+    // });
 
 
     // Nút in hóa đơn để giao hàng
@@ -1947,33 +1948,7 @@
     });
 
 
-    // Validate form hủy đơn hàng
-    $(document).ready(function () {
-        $('#cancelForm').submit(function (event) {
-            event.preventDefault();
 
-            var reason = $('#reason').val().trim();
-
-            var hasError = false;
-            if (reason === '' || reason == null) {
-                $('#reasonError').text('Vui lòng điền lý do hủy đơn hàng.').show();
-                $('#reason').addClass('border-danger');
-                hasError = true;
-            } else {
-                $('#reasonError').hide();
-                $('#reason').removeClass('border-danger');
-            }
-
-            if (!hasError) {
-                this.submit();
-            }
-        });
-
-        $('#reason').focus(function () {
-            $('#reasonError').hide();
-            $(this).removeClass('border-danger');
-        });
-    });
 
 
     // Nút hoàn tác
@@ -2002,9 +1977,9 @@
                 $('#moTaError').show();
             } else {
                 $('#moTaError').hide();
-                $('#confirmModal').fadeOut('normal', function() {
-                    $(this).modal('hide');
-                });
+                // $('#confirmModal').fadeOut('normal', function() {
+                //     $(this).modal('hide');
+                // });
 
                 Swal.fire({
                     title: 'Xác Nhận',
@@ -2017,17 +1992,46 @@
                     cancelButtonText: 'Hủy'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        $('#confirmModal').modal('hide'); // Đóng modal
+                        // $('#confirmModal').modal('hide'); // Đóng modal
                         // Sau khi đóng modal, gửi form
                         $('#confirmForm').off('submit').submit();
-                    } else {
-                        // Đóng modal hoặc thực hiện hành động khác khi không xác nhận
-                        $('#confirmModal').modal('hide');
                     }
                 });
             }
         });
     });
+
+
+
+    // Thêm Confirm trước khi  hủy đơn hàng ở Modal hủy đơn hàng
+    $(document).ready(function () {
+        $('#confirmCancelBtn').click(function (e) {
+            e.preventDefault(); // Ngăn chặn hành vi mặc định của nút Xác nhận
+
+            var moTa = $('#moTaHuyDon').val().trim();
+            if (moTa === "") {
+                $('#reasonError').show();
+            } else {
+                $('#reasonError').hide();
+
+                Swal.fire({
+                    title: 'Xác nhận',
+                    text: 'Bạn có chắc chắn muốn hủy đơn hàng?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Xác nhận',
+                    cancelButtonText: 'Hủy'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $('#cancelForm').submit();// Gửi form sau khi xác nhận hủy đơn
+                    }
+                });
+            }
+        });
+    });
+
 
 
 

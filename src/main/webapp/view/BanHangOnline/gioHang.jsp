@@ -47,8 +47,16 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
-    <%--    Voucher    --%>
     <style>
+        .disabled-voucher {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .disabled-voucher .voucher-button button {
+            cursor: not-allowed;
+        }
+
         .voucher-container {
             display: flex;
             flex-wrap: wrap;
@@ -187,36 +195,6 @@
 <body>
 <!-- Topbar Start -->
 <div class="container-fluid">
-    <div class="row bg-secondary py-2 px-xl-5">
-        <div class="col-lg-6 d-none d-lg-block">
-            <div class="d-inline-flex align-items-center">
-                <a class="text-dark" href="">FAQs</a>
-                <span class="text-muted px-2">|</span>
-                <a class="text-dark" href="">Help</a>
-                <span class="text-muted px-2">|</span>
-                <a class="text-dark" href="">Support</a>
-            </div>
-        </div>
-        <div class="col-lg-6 text-center text-lg-right">
-            <div class="d-inline-flex align-items-center">
-                <a class="text-dark px-2" href="">
-                    <i class="fab fa-facebook-f"></i>
-                </a>
-                <a class="text-dark px-2" href="">
-                    <i class="fab fa-twitter"></i>
-                </a>
-                <a class="text-dark px-2" href="">
-                    <i class="fab fa-linkedin-in"></i>
-                </a>
-                <a class="text-dark px-2" href="">
-                    <i class="fab fa-instagram"></i>
-                </a>
-                <a class="text-dark pl-2" href="">
-                    <i class="fab fa-youtube"></i>
-                </a>
-            </div>
-        </div>
-    </div>
     <div class="row align-items-center py-3 px-xl-5">
         <div class="col-lg-3 d-none d-lg-block">
             <a href="" class="text-decoration-none">
@@ -225,24 +203,31 @@
             </a>
         </div>
         <div class="col-lg-6 col-6 text-left">
-            <form action="">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search for products">
-                    <div class="input-group-append">
-                            <span class="input-group-text bg-transparent text-primary">
-                                <i class="fa fa-search"></i>
-                            </span>
-                    </div>
-                </div>
-            </form>
+
         </div>
         <div class="col-lg-3 col-6 text-right userCart">
-            <div class="dropdown">
-                <button class="btn btn-secondary bg-light" style="padding: 4px; font-size: 19px; margin-right: 3px"
+            <div class="dropdown" onmouseover="showDropdown()" onmouseout="hideDropdown()">
+                <button class="btn btn-light bg-light" style="font-size: 19px; margin-right: 3px"
                         type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="bi bi-person-circle" style="color:#D19C97; margin: 5px"></i>
+                    <c:choose>
+                        <c:when test="${not empty sessionScope.user}">
+                            <!-- Hiển thị tên và hình ảnh người dùng nếu đã đăng nhập -->
+                            <span class="info-text" style="font-size: 14px">${sessionScope.user.taiKhoan}</span>
+                            <c:if test="${sessionScope.user.anhDaiDien != null}">
+                                <img src="/image/${sessionScope.user.anhDaiDien}" alt=""
+                                     style="width: 30px; height: 30px; border-radius: 50%; margin-left: 5px;">
+                            </c:if>
+                            <c:if test="${sessionScope.user.anhDaiDien == null}">
+                                <i class="bi bi-person-circle" style="color:#D19C97; margin: 5px"></i>
+                            </c:if>
+                        </c:when>
+                        <c:otherwise>
+                            <!-- Hiển thị biểu tượng mặc định nếu chưa đăng nhập -->
+                            <i class="bi bi-person-circle" style="color:#D19C97; margin: 5px"></i>
+                        </c:otherwise>
+                    </c:choose>
                 </button>
-                <ul class="dropdown-menu btn border" aria-labelledby="dropdownMenuButton1">
+                <ul class="dropdown-menu btn border" aria-labelledby="dropdownMenuButton1" id="dropdownContent">
                     <c:choose>
                         <c:when test="${empty sessionScope.user}">
                             <!-- Hiển thị nút đăng nhập khi chưa đăng nhập -->
@@ -261,22 +246,22 @@
                         <c:otherwise>
                             <!-- Hiển thị nút đăng xuất khi đã đăng nhập -->
                             <li><a class="dropdown-item" href="/cua-hang/don-mua">Đơn mua</a></li>
-                            <li><a class="dropdown-item" href="#">Quản lý tài khoản</a></li>
+                            <li><a class="dropdown-item" href="/cua-hang/quan-ly-tai-khoan">Quản lý tài khoản</a></li>
                             <li><a class="dropdown-item" href="/cua-hang/logout">Đăng xuất</a></li>
                         </c:otherwise>
                     </c:choose>
                 </ul>
             </div>
             <div class="col-lg-3 col-6 text-right" style="position: relative">
-                <a href="gio-hang" class="btn border">
+                <a href="/cua-hang/gio-hang" class="btn border">
                     <i class="fas fa-shopping-cart text-primary"></i>
-                    <c:if test="${soLuong > 0}">
-                        <span class="totalQuantityCart"
-                              style="display: flex; justify-content: center; align-items: center">${soLuong}</span>
+                    <c:if test="${soLuongGioHang > 0}">
+                            <span class="totalQuantityCart"
+                                  style="display: flex; justify-content: center; align-items: center">${soLuongGioHang}</span>
                     </c:if>
-                    <c:if test="${soLuong == null}">
-                        <span class="totalQuantityCart"
-                              style="display: flex; justify-content: center; align-items: center">0</span>
+                    <c:if test="${soLuongGioHang == null}">
+                            <span class="totalQuantityCart"
+                                  style="display: flex; justify-content: center; align-items: center">0</span>
                     </c:if>
                 </a>
             </div>
@@ -285,7 +270,6 @@
 </div>
 <!-- Topbar End -->
 
-<!-- Login Modal Start  (Modal Form đăng nhập)-->
 <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
      aria-hidden="true"
      data-backdrop="true" data-keyboard="true">
@@ -299,7 +283,7 @@
             </div>
             <div class="modal-body">
                 <div class="login-form-wrapper">
-                    <form id="login-form" class="form" action="login" method="post" modelAttribute="khachHangDTO">
+                    <form id="login-form" class="form" action="/cua-hang/login" method="post" modelAttribute="khachHangDTO">
                         <div class="form-group">
                             <label for="taiKhoan" class="text-info">Username:</label><br>
                             <input placeholder="Username" type="text" id="taiKhoan" name="taiKhoan"
@@ -343,7 +327,7 @@
             </div>
             <div class="modal-body">
                 <div class="register-form-wrapper">
-                    <form id="register-form" class="form" action="register" method="post" modelAttribute="khachHangDTO">
+                    <form id="register-form" class="form" action="/cua-hang/register" method="post" modelAttribute="khachHangDTO">
                         <div class="form-group">
                             <label for="registerUsername" class="text-info">Username:</label><br>
                             <input placeholder="Username" type="text" id="registerUsername" name="taiKhoan"
@@ -352,7 +336,7 @@
                         </div>
                         <div class="form-group">
                             <label for="registerEmail" class="text-info">Email:</label><br>
-                            <input placeholder="Email" type="email" id="registerEmail" name="email"
+                            <input placeholder="Email" type="text" id="registerEmail" name="email"
                                    class="form-control" value="${khachHangDTO.email}">
                             <small id="registerEmailError" class="text-danger"></small>
                         </div>
@@ -367,6 +351,12 @@
                             <input placeholder="Password" type="password" id="registerPassword" name="matKhau"
                                    class="form-control" value="${khachHangDTO.matKhau}">
                             <small id="registerPasswordError" class="text-danger"></small>
+                        </div>
+                        <div class="form-group">
+                            <label for="registerPassword" class="text-info">Confirm Password:</label><br>
+                            <input placeholder="Confirm password" type="password" id="nhapLaiMatKhau" name="nhapLaiMatKhau"
+                                   class="form-control" value="">
+                            <small id="nhapLaiMatKhauError" class="text-danger"></small>
                         </div>
                         <div class="form-group">
                             <input type="submit" name="submit" class="btn btn-info btn-md w-100" value="Register">
@@ -404,7 +394,6 @@
                 <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                     <div class="navbar-nav mr-auto py-0">
                         <a href="/cua-hang/trang-chu" class="nav-item nav-link active">Trang chủ</a>
-                        <a href="detail.html" class="nav-item nav-link">Giới thiệu</a>
                         <a href="contact.html" class="nav-item nav-link">Liên hệ</a>
                     </div>
                 </div>
@@ -441,6 +430,7 @@
                 <table class="table table-bordered text-center mb-0">
                     <thead class="bg-secondary text-dark">
                     <tr>
+                        <th>Ảnh</th>
                         <th>Sản phẩm</th>
                         <th>Số lượng</th>
                         <th>Màu sắc</th>
@@ -454,9 +444,8 @@
                         <tbody class="align-middle">
                         <tr>
                             <td class="align-middle align-center"><img src="/image/${i.hinhAnh1}" alt=""
-                                                                       style="width: 50px;">
-                                    ${i.tenSanPham}
-                            </td>
+                                                                       style="width: 50px;"></td>
+                            <td class="align-middle">${i.tenSanPham}</td>
                             <td class="align-middle">
                                 <div class="input-group quantity mx-auto" style="width: 100px;">
                                     <div class="input-group-btn">
@@ -501,7 +490,7 @@
         <!--Test modal-->
         <!--Danh sách địa chỉ-->
         <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#addAddressModal"
-                style="position: relative; left: 907px; bottom: -186px;">
+                style="position: relative; left: 729px; bottom: -186px;">
             Chọn địa chỉ
         </button>
 
@@ -519,7 +508,7 @@
                         <c:forEach var="i" items="${listDiaChi}">
                             <div class="container">
                                 <div class="row">
-                                    <div class="col-9 form-check">
+                                    <div class="col-12 form-check">
                                         <input class="form-check-input" type="radio" name="flexRadioDefault"
                                                id="flexRadioDefault${i.id}"
                                                data-ten-nguoi-nhan="${i.tenNguoiNhan}"
@@ -537,110 +526,10 @@
                                             <b>${i.tenNguoiNhan}</b> | ${i.sdtNguoiNhan}
                                         </label>
                                         <label>${i.diaChiChiTiet}, ${i.idPhuongXa}, ${i.idQuanHuyen}, ${i.idTinhThanh}</label>
+                                        <br>
                                         <c:if test="${i.trangThai == 1}">
                                             <label style="color: red">Mặc định</label>
                                         </c:if>
-                                    </div>
-                                    <div class="col-3">
-                                        <a href="" class="update-address-link" style="color: #1571ff;"
-                                           data-toggle="modal"
-                                           data-target="#updateAddressModal${i.id}" data-address-id="1">
-                                            Cập nhật
-                                        </a>
-                                        <div class="modal fade" id="updateAddressModal${i.id}" tabindex="-1"
-                                             role="dialog"
-                                             aria-labelledby="updateAddressModalLabel${i.id}" aria-hidden="true">
-                                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="updateAddressModalLabel${i.id}">Cập
-                                                            nhật địa chỉ</h5>
-                                                        <button type="button" class="close" data-dismiss="modal"
-                                                                aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <form action="/cua-hang/cap-nhat-dia-chi/${i.id}" method="post"
-                                                              id="suaDiaChi${i.id}">
-                                                            <div class="row px-xl-5">
-                                                                <div class="col-md-6 form-group">
-                                                                    <label><b>Họ tên</b></label>
-                                                                    <input class="form-control" type="text"
-                                                                           name="tenNguoiNhan" value="${i.tenNguoiNhan}"
-                                                                           style="background-color: #f1f1f1; border: 2px solid #e4e4e4;"
-                                                                           placeholder="Họ tên">
-                                                                    <span class="error-message"
-                                                                          style="color: red"></span>
-                                                                </div>
-                                                                <div class="col-md-6 form-group">
-                                                                    <label><b>Số điện thoại</b></label>
-                                                                    <input class="form-control" type="number"
-                                                                           name="sdtNguoiNhan" value="${i.sdtNguoiNhan}"
-                                                                           style="background-color: #f1f1f1; border: 2px solid #e4e4e4;"
-                                                                           placeholder="Số điện thoại">
-                                                                    <span class="error-message"
-                                                                          style="color: red"></span>
-                                                                </div>
-                                                                <div class="col-md-12 form-group">
-                                                                    <label><b>Địa chỉ</b></label>
-                                                                    <input class="form-control" type="text"
-                                                                           name="diaChiChiTiet"
-                                                                           value="${i.diaChiChiTiet}"
-                                                                           style="background-color: #f1f1f1; border: 2px solid #e4e4e4;"
-                                                                           placeholder="Địa chỉ">
-                                                                    <span class="error-message"
-                                                                          style="color: red"></span>
-                                                                </div>
-                                                                <div class="col-md-4 form-group">
-                                                                    <label><b>Tỉnh/Thành phố</b></label>
-                                                                    <select class="custom-select"
-                                                                            id="tenTT${i.id}" name="tenTT"
-                                                                            title="Chọn Tỉnh Thành"
-                                                                            style="background-color: #f1f1f1; border: 1px solid #e4e4e4;">
-                                                                        <option value="${i.idTinhThanh}">${i.idTinhThanh}</option>
-                                                                    </select>
-                                                                    <span class="error-message"
-                                                                          style="color: red"></span>
-                                                                </div>
-                                                                <div class="col-md-4 form-group">
-                                                                    <label><b>Quận/Huyện</b></label>
-                                                                    <select class="custom-select"
-                                                                            id="tenQH${i.id}" name="tenQH"
-                                                                            title="Chọn Quận Huyện"
-                                                                            style="background-color: #f1f1f1; border: 1px solid #e4e4e4;">
-                                                                        <option value="${i.idQuanHuyen}">${i.idQuanHuyen}</option>
-                                                                    </select>
-                                                                    <span class="error-message"
-                                                                          style="color: red"></span>
-                                                                </div>
-                                                                <div class="col-md-4 form-group">
-                                                                    <label><b>Phường/Xã</b></label>
-                                                                    <select class="custom-select"
-                                                                            id="tenPX${i.id}" name="tenPX"
-                                                                            title="Chọn Phường Xã"
-                                                                            style="background-color: #f1f1f1; border: 1px solid #e4e4e4;">
-                                                                        <option value="${i.idPhuongXa}">${i.idPhuongXa}</option>
-                                                                    </select>
-                                                                    <span class="error-message"
-                                                                          style="color: red"></span>
-                                                                </div>
-                                                            </div>
-                                                            <button type="submit" id="" class=" btn btn-primary">
-                                                                Cập nhật
-                                                            </button>
-                                                        </form>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary"
-                                                                data-dismiss="modal">Quay lại
-                                                        </button>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <a style="color: #ff3818" href="/cua-hang/xoa-dia-chi/${i.id}">Xóa</a>
                                     </div>
                                 </div>
                             </div>
@@ -657,7 +546,7 @@
 
     <%--Thêm địa chỉ--%>
     <button type="button" class="btn btn-primary mb-3" data-toggle="modal"
-            data-target="#addAddressModal1" style="position: relative; left: 1036px; bottom: -132px;">
+            data-target="#addAddressModal1" style="position: relative; left: 855px; bottom: -132px;">
         <i class="bi bi-plus-circle"></i>
     </button>
     <div class="modal fade" id="addAddressModal1" tabindex="-1" role="dialog"
@@ -672,7 +561,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="/cua-hang/them-dia-chi" method="post" id="themDiaChi">
+                    <form action="/cua-hang/them-dia-chi-gio-hang" method="post" id="themDiaChi">
                         <div class="row px-xl-5">
                             <div class="col-md-6 form-group">
                                 <label><b>Họ tên</b></label>
@@ -813,8 +702,8 @@
                            style="background-color: #f1f1f1; border: 1px solid #e4e4e4;" placeholder="Mã giảm giá"
                            value="${hoaDon.idKhuyenMai.ma}"
                            readonly>
-                    <a href="/cua-hang/xoa-khuyen-mai/${hoaDon.id}"
-                       style="position: absolute;right: 144px;bottom: 5px;">
+                    <a id="removeDiscountLink" href="/cua-hang/xoa-khuyen-mai/${hoaDon.idKhuyenMai.id}"
+                       style="position: absolute;right: 144px;bottom: 5px; display: none;">
                         <button style="color: black" class="btn btn-outline-secondary" type="button">
                             <i class="fas fa-times"></i>
                         </button>
@@ -841,16 +730,28 @@
                                 <fmt:formatNumber value="${tongTien}" type="currency" currencySymbol="₫"/>
                             </h6>
                         </div>
-                        <div class="d-flex justify-content-between mb-3 pt-1">
-                            <h6 class="font-weight-medium">Số tiền giảm: </h6>
-                            <h6 class="font-weight-medium" style="font-size: 18px">
-                                <fmt:formatNumber value="${hoaDon.idKhuyenMai.soTienGiam}" type="currency"
-                                                  currencySymbol="₫"/>
-                            </h6>
-                        </div>
+                        <c:if test="${hoaDon.idKhuyenMai.soTienGiam != null}">
+                            <div class="d-flex justify-content-between mb-3 pt-1">
+                                <h6 class="font-weight-medium">Số tiền giảm: </h6>
+                                <h6 class="font-weight-medium" style="font-size: 18px">-
+                                    <fmt:formatNumber value="${hoaDon.idKhuyenMai.soTienGiam}" type="currency"
+                                                      currencySymbol="₫"/>
+                                </h6>
+                            </div>
+                        </c:if>
+                        <c:if test="${hoaDon.idKhuyenMai.soTienGiam == null}">
+                            <div class="d-flex justify-content-between mb-3 pt-1">
+                                <h6 class="font-weight-medium">Số tiền giảm: </h6>
+                                <h6 class="font-weight-medium" style="font-size: 18px">
+                                    <fmt:formatNumber value="0" type="currency"
+                                                      currencySymbol="₫"/>
+                                </h6>
+                            </div>
+                        </c:if>
                         <div class="d-flex justify-content-between">
                             <h6 class="font-weight-medium">Phí vận chuyển: </h6>
-                            <h6 class="price font-weight-medium" id="phiShip" style="font-size: 18px">0 đ</h6>
+                            <h6 class="price font-weight-medium" id="phiShip" style="font-size: 18px"></h6>
+                            <input type="hidden" name="phiVanChuyen" value="" id="phiVanChuyen"/>
                         </div>
                     </div>
                     <div class="card border-secondary">
@@ -878,10 +779,8 @@
                         <div class="d-flex justify-content-between mt-2">
                             <h5 class="font-weight-bold" style="margin-left: 18px">Tổng thanh toán:</h5>
                             <h5 id="total-amount" class="font-weight-bold"
-                                style="margin-right: 18px; font-size: 22px">
-                                <fmt:formatNumber value="${tongTien - hoaDon.idKhuyenMai.soTienGiam}" type="currency"
-                                                  currencySymbol="₫"/>
-                            </h5>
+                                style="margin-right: 18px; font-size: 22px"></h5>
+                            <input type="hidden" name="tongTienThanhToan" value="" id="tongTienThanhToan"/>
                         </div>
 
                         <div class="card-footer border-secondary bg-transparent">
@@ -889,15 +788,6 @@
                                     class="btn btn-block btn-primary my-3 py-3">
                                 <b>Đặt hàng ngay</b></button>
                         </div>
-                            <%--                        <c:if test="${hoaDon.phuongThucThanhToan == 0}">--%>
-                            <%--                            <div class="card-footer border-secondary bg-transparent">--%>
-                            <%--                                <a href="/cua-hang/pay/${tongTien - hoaDon.idKhuyenMai.soTienGiam}">--%>
-                            <%--                                    <button type="button" style="font-size: 26px"--%>
-                            <%--                                            class="btn btn-block btn-primary my-3 py-3">--%>
-                            <%--                                        <b>Đặt hàng ngay</b></button>--%>
-                            <%--                                </a>--%>
-                            <%--                            </div>--%>
-                            <%--                        </c:if>--%>
                     </div>
                 </div>
             </div>
@@ -914,15 +804,31 @@
                 <div class="modal-body">
                     <div class="voucher-container">
                         <c:forEach var="i" items="${listKhuyenMai}">
-                            <div class="voucher-card">
+                            <div class="voucher-card ${i.apDung > tongTien ? 'disabled-voucher' : ''}">
                                 <div class="voucher-header">
-                                    <div class="voucher-discount">Giảm <fmt:formatNumber value="${i.soTienGiam}" type="currency" currencySymbol="₫"/></div>
-                                    <div class="voucher-expiry">Hết hạn ${i.ngayKetThuc}</div>
+                                    <div class="voucher-discount">Giảm <fmt:formatNumber
+                                            value="${i.soTienGiam}" type="currency"
+                                            currencySymbol="₫"/></div>
+                                    <div class="voucher-expiry">Hết hạn:  ${i.ngayKetThuc}</div>
                                 </div>
-                                <div class="voucher-code">Mã: ${i.ma}</div>
+                                <div class="row">
+                                    <div class="col-6 voucher-code">Mã: ${i.ma}</div>
+                                    <c:if test="${i.apDung != null}">
+                                        <div class="col-6 voucher-expiry"
+                                             style="position: relative; text-align: end; top: 14px;">
+                                            <strong>Áp dụng:  <fmt:formatNumber value="${i.apDung}" type="currency"
+                                                                                  currencySymbol="₫"/></strong></div>
+                                    </c:if>
+                                    <c:if test="${i.apDung == null}">
+                                        <div class="col-6 voucher-expiry"
+                                             style="position: relative; text-align: end; top: 14px;">
+                                            <strong>Áp dụng:  <fmt:formatNumber value="0" type="currency"
+                                                                                  currencySymbol="₫"/></strong></div>
+                                    </c:if>
+                                </div>
                                 <div class="voucher-button">
                                     <form action="/cua-hang/khuyen-mai/${i.id}" method="post">
-                                        <button type="submit">Xác nhận</button>
+                                        <button type="submit" ${i.apDung > tongTien ? 'disabled' : ''}>Xác nhận</button>
                                     </form>
                                 </div>
                             </div>
@@ -1067,12 +973,22 @@
         title: "${successMessage}"
     });
     </c:if>
+
+    //Lấy ra danh sách khách hàng
+    const listKhachHang = [];
+    <c:forEach items="${listKhachHang}" var="kh">
+    listKhachHang.push({
+        taiKhoan: '${kh.taiKhoan}',
+        email: '${kh.email}',
+        sdt: '${kh.sdt}',
+    });
+    </c:forEach>
     <%--Validate Form đăng nhặp--%>
     $(document).ready(function () {
         // Bắt lỗi khi submit form
         $('#login-form').submit(function (event) {
             event.preventDefault(); // Ngăn form submit mặc định
-
+            debugger
             var form = $(this);
             var username = $('#taiKhoan').val().trim();
             var password = $('#matKhau').val().trim();
@@ -1143,6 +1059,7 @@
             var email = $('#registerEmail').val().trim();
             var phone = $('#registerPhone').val().trim();
             var password = $('#registerPassword').val().trim();
+            var confirmPassword = $('#nhapLaiMatKhau').val().trim();
 
             // Clear previous errors
             $('.text-danger').text('');
@@ -1151,6 +1068,10 @@
             // Validate fields
             if (!username) {
                 $('#registerUsernameError').text('Vui lòng nhập username.');
+                $('#registerUsername').addClass('border-danger');
+                hasError = true;
+            } else if (listKhachHang.some(kh => kh.taiKhoan == username)){
+                $('#registerUsernameError').text('Tên tài khoản đã tồn tại');
                 $('#registerUsername').addClass('border-danger');
                 hasError = true;
             }
@@ -1162,6 +1083,10 @@
                 $('#registerEmailError').text('Email không hợp lệ.');
                 $('#registerEmail').addClass('border-danger');
                 hasError = true;
+            } else if (listKhachHang.some(kh => kh.email == email)){
+                $('#registerEmailError').text('Email đã tồn tại.');
+                $('#registerEmail').addClass('border-danger');
+                hasError = true;
             }
             if (!phone) {
                 $('#registerPhoneError').text('Vui lòng nhập số điện thoại.');
@@ -1169,6 +1094,10 @@
                 hasError = true;
             } else if (!isValidVietnamesePhoneNumber(phone)) {
                 $('#registerPhoneError').text('Số điện thoại không hợp lệ');
+                $('#registerPhone').addClass('border-danger');
+                hasError = true;
+            } else if (listKhachHang.some(kh => kh.sdt == phone)){
+                $('#registerPhoneError').text('Số điện thoại đã tồn tại');
                 $('#registerPhone').addClass('border-danger');
                 hasError = true;
             }
@@ -1181,15 +1110,16 @@
                 $('#registerPassword').addClass('border-danger');
                 hasError = true;
             }
+            if (!confirmPassword) {
+                $('#nhapLaiMatKhauError').text('Vui lòng nhập lại mật khẩu.');
+                $('#nhapLaiMatKhau').addClass('border-danger');
+                hasError = true;
+            } else if (password != confirmPassword) {
+                $('#nhapLaiMatKhauError').text('Mật khẩu nhập lại chưa đúng!');
+                $('#nhapLaiMatKhau').addClass('border-danger');
+                hasError = true;
+            }
 
-
-            // Check if username already exists
-            <%--var registerErrors = '<%= request.getAttribute("registerErrors") %>';--%>
-            <%--if (registerErrors !== 'null') {--%>
-            <%--    $('#registerUsernameError').text(registerErrors);--%>
-            <%--    $('#registerUsername').addClass('border-danger');--%>
-            <%--    hasError = true;--%>
-            <%--}--%>
 
             // If any validation errors exist, prevent form submission
             if (hasError) {
@@ -1247,7 +1177,8 @@
         var regex = /^(0|\+84)\d{9,10}$/;
         return regex.test(phoneNumber);
     }
-
+</script>
+<script>
     //Thông tin giao hàng
     $(document).ready(function () {
         var token = '4787bafa-2157-11ef-a90d-aaf29aa34580';
@@ -1279,7 +1210,7 @@
 
             $("#tinh").change(function (e) {
                 var idtinh = $(this).val();
-                console.log("id tỉnh: "+idtinh);
+                console.log("id tỉnh: " + idtinh);
 
                 // Lấy quận huyện
                 getJSONWithToken('https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/district?province_id=' + idtinh, function (data_quan) {
@@ -1304,8 +1235,6 @@
         });
 
         $("#diaChiForm").submit(function (e) {
-            // Ngăn chặn gửi biểu mẫu ngay lập tức
-            e.preventDefault();
 
             // Xóa các thông báo lỗi trước đó
             $(".text-danger").text("");
@@ -1313,6 +1242,9 @@
             var tenTinh = $("#tinh option:selected").text();
             var tenQuan = $("#quan option:selected").text();
             var tenPhuong = $("#phuong option:selected").text();
+            var idTinhThanh = $("#tinh").val();
+            var idQuanHuyen = $("#quan").val();
+            var idPX = $("#phuong").val();
 
             $("<input>").attr({
                 type: "hidden",
@@ -1474,13 +1406,13 @@
                 var idQuanHuyen = $("#quanHuyen").val();
                 var idPX = $("#phuongXa").val();
 
-                console.log("ten tỉnh: "+tenTinhThanh);
-                console.log("ten quận huyện: "+tenQuanHuyen);
-                console.log("ten phường xã: "+tenPhuongXa);
+                console.log("ten tỉnh: " + tenTinhThanh);
+                console.log("ten quận huyện: " + tenQuanHuyen);
+                console.log("ten phường xã: " + tenPhuongXa);
 
-                console.log("id tỉnh: "+idTinhThanh);
-                console.log("id qh: "+idQuanHuyen);
-                console.log("id px: "+idPX);
+                console.log("id tỉnh: " + idTinhThanh);
+                console.log("id qh: " + idQuanHuyen);
+                console.log("id px: " + idPX);
 
                 //test thêm mới
                 $("<input>").attr({
@@ -1594,12 +1526,12 @@
             var idQuan = $("#" + modalId + " select[name='tenQH']").val();
             var idPhuong = $("#" + modalId + " select[name='tenPX']").val();
 
-            console.log("tên tỉnh:"+tenTinh);
-            console.log("tên quận:"+tenQuan);
-            console.log("tên phường:"+tenPhuong);
-            console.log("id tỉnh:"+idTinh);
-            console.log("id quận:"+idQuan);
-            console.log("id phường:"+idPhuong);
+            console.log("tên tỉnh:" + tenTinh);
+            console.log("tên quận:" + tenQuan);
+            console.log("tên phường:" + tenPhuong);
+            console.log("id tỉnh:" + idTinh);
+            console.log("id quận:" + idQuan);
+            console.log("id phường:" + idPhuong);
 
             //Lấy id
             $("<input>").attr({
@@ -1768,12 +1700,12 @@
             quanSelect.value = idQuanHuyen;
             phuongSelect.value = idPhuongXa;
 
-            console.log("tỉnh thành: ",idTinhThanh);
-            console.log("tỉnh quận huyện: ",idQuanHuyen);
-            console.log("tỉnh phường xã: ",idPhuongXa);
-            console.log("tỉnh thành test: ",idTinhThanhTest);
-            console.log("tỉnh quận huyện té: ",idQuanHuyenTest);
-            console.log("tỉnh phường xã: ",idPhuongXaTest);
+            console.log("tỉnh thành: ", idTinhThanh);
+            console.log("tỉnh quận huyện: ", idQuanHuyen);
+            console.log("tỉnh phường xã: ", idPhuongXa);
+            console.log("tỉnh thành test: ", idTinhThanhTest);
+            console.log("tỉnh quận huyện té: ", idQuanHuyenTest);
+            console.log("tỉnh phường xã: ", idPhuongXaTest);
 
 
             var token = '108bdaef-8395-11ee-af43-6ead57e9219a';
@@ -1811,24 +1743,27 @@
                     }
                 });
             }
+
 // Tính phí ship
-            getJSONWithToken1('https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/available-services?shop_id=1244&to_district='+idQuanHuyenTest+'&from_district=3440', function(data_maDV) {
+            getJSONWithToken1('https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/available-services?shop_id=1244&to_district=' + idQuanHuyenTest + '&from_district=3440', function (data_maDV) {
                 //console.log("API maDV: ", data_maDV.data[0].service_id); // Log the entire response
                 var service_id = data_maDV.data[0].service_id;
                 console.log("API maDV: ", service_id);
 
                 console.log("Tổng tiền: ", tongTien);
+
                 console.log("Tổng sl: ",soLuongGioHang);
 
                 var khoiLuong = soLuongGioHang*1000;
                 console.log("Tổng kl: ",khoiLuong);
 
                 getJSONWithToken('https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee?service_id='+service_id+'&insurance_value='+tongTien+'&from_district_id=3440&to_district_id='+idQuanHuyenTest+'&to_ward_code='+idPhuongXaTest+'&height=15&length=15&weight='+khoiLuong+'&width=15', function(data_total) {
+
                     console.log("API Response: ", data_total.data.service_fee); // Log the entire response
 
 
                     function formatVND(number) {
-                        return number.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                        return number.toLocaleString('vi-VN', {style: 'currency', currency: 'VND'});
                     }
 
                     var firstFee = data_total.data.service_fee
@@ -1837,19 +1772,25 @@
                     var newTotal = tongTien + firstFee;
 
                     // Update the total amount in the DOM
-                    $('#total-amount').text(newTotal.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }));
+                    $('#total-amount').text(newTotal.toLocaleString('vi-VN', {style: 'currency', currency: 'VND'}));
 
                     // $("#totalAPI").val(firstFee); // Set the value of the input field with id 'totalAPI'
                     $("#phiShip").html(formatVND(firstFee));
 
+                    var totalAmountNumber = newTotal;
+                    $('#tongTienThanhToan').val(totalAmountNumber);
+
+                    var phiVanChuyen = firstFee;
+                    $('#phiVanChuyen').val(phiVanChuyen);
+
                 });
             });
-
         }
 
         // Đóng modal
         $('#addAddressModal').modal('hide');
     }
+
     chonDiaChi();
 
     function showModal() {
@@ -1867,40 +1808,26 @@
     //fomat tiền
 
     function formatVND(number) {
-        return number.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+        return number.toLocaleString('vi-VN', {style: 'currency', currency: 'VND'});
     }
-
-
 
 
 </script>
 
-<%--<script>--%>
-<%--    document.getElementById('diaChiForm').addEventListener('submit', function (event) {--%>
-<%--        event.preventDefault(); // Ngăn chặn hành vi mặc định của thẻ <a>--%>
-<%--        Swal.fire({--%>
-<%--            title: "Bạn chắc chắn muốn mua hàng chứ",--%>
-<%--            text: "Bạn sẽ không thể hoàn tác hành động này!",--%>
-<%--            icon: "warning",--%>
-<%--            showCancelButton: true,--%>
-<%--            confirmButtonColor: "#3085d6",--%>
-<%--            cancelButtonColor: "#d33",--%>
-<%--            cancelButtonText: "Hủy",--%>
-<%--            confirmButtonText: "Đặt hàng"--%>
-<%--        }).then((result) => {--%>
-<%--            if (result.isConfirmed) {--%>
-<%--                Swal.fire({--%>
-<%--                    title: "Đã đặt hàng",--%>
-<%--                    text: "Bạn đã đặt hàng thành công.",--%>
-<%--                    icon: "success"--%>
-<%--                }).then(() => {--%>
-<%--                    // Điều hướng tới URL đăng xuất sau khi người dùng xác nhận--%>
-<%--                    document.getElementById('diaChiForm').submit();--%>
-<%--                });--%>
-<%--            }--%>
-<%--        });--%>
-<%--    });--%>
-<%--</script>--%>
+<script>
+    function checkDiscountCode() {
+        const discountCodeInput = document.getElementById('discountCode');
+        const removeDiscountLink = document.getElementById('removeDiscountLink');
+
+        if (discountCodeInput.value.trim() !== '') {
+            removeDiscountLink.style.display = 'block';
+        } else {
+            removeDiscountLink.style.display = 'none';
+        }
+    }
+
+    window.onload = checkDiscountCode;
+</script>
 </body>
 
 </html>

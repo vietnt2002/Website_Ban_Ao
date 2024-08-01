@@ -48,6 +48,22 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <!-- Custom CSS -->
+
+    <%--    Thư viện Char Js để làm biểu đồ--%>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.min.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 
     <style>
         .stat-section {
@@ -57,18 +73,28 @@
             color: #fff;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
+
         .stat-section.today {
             background-color: #8ecae6;
         }
+
         .stat-section.this-week {
             background-color: #219ebc;
         }
+
         .stat-section.this-month {
             background-color: #28a745;
         }
+
         .stat-section.this-year {
             background-color: #ffb703;
         }
+
+        .stat-section.custom {
+            background-color: #0981b9;
+            display: none;
+        }
+
         .stat-section h3 {
             font-size: 1.25em;
             margin-bottom: 10px;
@@ -76,21 +102,26 @@
             align-items: center;
             justify-content: center;
         }
+
         .stat-section h3 i {
             margin-right: 8px;
         }
+
         .stat-details {
             display: flex;
             justify-content: space-around;
             text-align: center;
         }
+
         .stat-details div {
             flex: 1;
             margin: 0 10px;
         }
+
         .stat-details p {
             margin: 5px 0;
         }
+
         .stat-value {
             font-size: 1em;
             font-weight: bold;
@@ -104,44 +135,6 @@
             font-weight: bold;
         }
 
-        .card-filter {
-            margin-bottom: 20px;
-        }
-        .card-body-title {
-            font-size: 1.25rem;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-        .card-title {
-            font-weight: bold;
-            font-size: 1.25rem;
-        }
-        .card-table {
-            margin-top: 20px;
-        }
-        .chart {
-            height: 300px;
-            margin-top: 20px;
-        }
-
-        .form-control.with-title {
-            width: calc(
-                    100% - 8px
-            ); /* Độ rộng ô input trừ đi khoảng cách của tiêu đề */
-            padding-left: 8px; /* Padding bên trái của ô input để tạo khoảng cách cho tiêu đề */
-        }
-
-        /* CSS cho tiêu đề bên trong input */
-        .input-title {
-            position: absolute;
-            top: -10px;
-            left: 8px;
-            padding: 0 4px;
-            background-color: #fff;
-            color: #6c757d;
-            font-size: 12px;
-            pointer-events: none;
-        }
 
         .form-control.with-title:focus + .input-title {
             color: #adb5bd;
@@ -166,6 +159,77 @@
         .border-card {
             border: 1px solid #ddd;
         }
+
+
+        .bg-light-gray {
+            background-color: #f5f5f5; /* Màu xám nhạt */
+        }
+
+        .table tbody tr:nth-child(even) {
+            background-color: #f9f9f9; /* Màu nền nhạt cho các hàng chẵn */
+        }
+
+        .table tbody tr:nth-child(odd) {
+            background-color: #ffffff; /* Màu nền trắng cho các hàng lẻ */
+        }
+
+        .table th {
+            background-color: orange; /* Màu nền cho tiêu đề bảng */
+            color: white; /* Màu chữ trắng cho tiêu đề bảng */
+        }
+
+        .table td {
+            /*border: 1px solid #ddd;*/
+            font-size: 15px
+        }
+
+
+        .chart-card {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /*height: 100vh; */
+            padding-bottom: 50px;
+        }
+
+        .chart-container {
+            width: 100%;
+            max-width: 1100px; /* Adjust max-width as needed */
+            text-align: center; /* Center the title */
+        }
+
+        #myChart {
+            width: 100%;
+            height: 800px; /* Adjust height as needed */
+        }
+
+        .btn.active {
+            background-color: #007bff; /* Hoặc màu bạn muốn */
+            color: white;
+        }
+
+
+        /*    Csss Modal*/
+        /* Hide modal backdrop */
+        /*.modal-backdrop {*/
+        /*    display: none !important;*/
+        /*}*/
+
+        .position-relative {
+            position: relative;
+        }
+
+        .position-absolute {
+            position: absolute;
+            color: red;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+
+
+
+
+
     </style>
 </head>
 
@@ -317,7 +381,7 @@
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fas fa-bell fa-fw"></i>
                             <!-- Counter - Alerts -->
-<%--                            <span class="badge badge-danger badge-counter">3+</span>--%>
+                            <%--                            <span class="badge badge-danger badge-counter">3+</span>--%>
                         </a>
                         <!-- Dropdown - Alerts -->
                         <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -467,7 +531,7 @@
                 <!-- Page Heading -->
                 <div class="mt-4" id="">
                     <div class="row">
-                        <div class="col-12" >
+                        <div class="col-12">
 
                             <!-- Phần đầu thống kê -->
                             <!-- Phần đầu -->
@@ -478,7 +542,8 @@
                                             <i class="bi bi-calendar-day"></i>Hôm nay
                                         </h3>
                                         <p class="stat-value text-center">
-                                            <fmt:formatNumber value="${today.doanhThu}" type="currency" currencySymbol="₫" />
+                                            <fmt:formatNumber value="${today.doanhThu}" type="currency"
+                                                              currencySymbol="₫"/>
                                         </p>
                                         <div class="stat-details">
                                             <div>
@@ -502,7 +567,8 @@
                                             <i class="bi bi-calendar-week"></i>Tuần này
                                         </h3>
                                         <p class="stat-value text-center">
-                                            <fmt:formatNumber value="${week.doanhThu}" type="currency" currencySymbol="₫" />
+                                            <fmt:formatNumber value="${week.doanhThu}" type="currency"
+                                                              currencySymbol="₫"/>
                                         </p>
                                         <div class="stat-details">
                                             <div>
@@ -528,7 +594,8 @@
                                             <i class="bi bi-calendar3"></i>Tháng này
                                         </h3>
                                         <p class="stat-value text-center">
-                                            <fmt:formatNumber value="${month.doanhThu}" type="currency" currencySymbol="₫" />
+                                            <fmt:formatNumber value="${month.doanhThu}" type="currency"
+                                                              currencySymbol="₫"/>
                                         </p>
                                         <div class="stat-details">
                                             <div>
@@ -552,7 +619,8 @@
                                             <i class="bi bi-calendar4"></i>Năm này
                                         </h3>
                                         <p class="stat-value text-center">
-                                            <fmt:formatNumber value="${year.doanhThu}" type="currency" currencySymbol="₫" />
+                                            <fmt:formatNumber value="${year.doanhThu}" type="currency"
+                                                              currencySymbol="₫"/>
                                         </p>
                                         <div class="stat-details">
                                             <div>
@@ -571,15 +639,56 @@
                                     </div>
                                 </div>
                             </div>
-
+                            <c:if test="${formSuccess}">
+                                <div class="row ">
+                                    <div class="col-md-12">
+                                        <div class="stat-section custom" id="customLayout">
+                                            <h3 class="text-center">
+                                                <i class="bi bi-calendar2-week"></i> Bộ Lọc
+                                            </h3>
+                                            <p class="stat-value text-center" id="custom-revenue">
+                                                <fmt:formatNumber value="${customStats.doanhThu}" type="currency"
+                                                                  currencySymbol="₫"/>
+                                            </p>
+                                            <div class="stat-details">
+                                                <div>
+                                                    <p>Sản phẩm</p>
+                                                    <p class="stat-value"
+                                                       id="custom-products">${customStats.soLuongSanPhamDaBan}</p>
+                                                </div>
+                                                <div>
+                                                    <p>Thành công</p>
+                                                    <p class="stat-value"
+                                                       id="custom-success">${customStats.donHangThanhCong}</p>
+                                                </div>
+                                                <div>
+                                                    <p>Đơn hủy</p>
+                                                    <p class="stat-value" id="custom-cancel">${customStats.donHangDaHuy}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </c:if>
                             <!-- Phần giữa -->
                             <div class="">
-                                <div class="card-body bg-white mb-5">
+                                <div class=" mb-5">
                                     <div class="mb-5">
-                                        <h5 class="ml-3 pt-2">Bộ lọc</h5>
-                                        <div class="d-flex align-items-center">
+                                        <%--                                        <h5 class="ml-3 pt-2">Bộ lọc</h5>--%>
+                                        <div class="d-flex align-items-center justify-content-end ">
                                             <div class="col-md-1">
-                                                <button
+                                                <button id="btn-filter"
+                                                        type="button"
+                                                        class="btn btn-outline-dark btn-block btn-sm font-weight-bold active"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#filterModal"
+                                                >
+                                                    Bộ lọc
+                                                </button>
+                                            </div>
+
+                                            <div class="col-md-1">
+                                                <button id="btn-today"
                                                         type="button"
                                                         class="btn btn-outline-primary btn-block btn-sm font-weight-bold"
                                                 >
@@ -587,7 +696,7 @@
                                                 </button>
                                             </div>
                                             <div class="col-md-1">
-                                                <button
+                                                <button id="btn-week"
                                                         type="button"
                                                         class="btn btn-outline-info btn-block btn-sm font-weight-bold"
                                                 >
@@ -595,7 +704,7 @@
                                                 </button>
                                             </div>
                                             <div class="col-md-1">
-                                                <button
+                                                <button id="btn-month"
                                                         type="button"
                                                         class="btn btn-outline-success btn-block btn-sm font-weight-bold"
                                                 >
@@ -603,116 +712,286 @@
                                                 </button>
                                             </div>
                                             <div class="col-md-1">
-                                                <button
+                                                <button id="btn-year"
                                                         type="button"
                                                         class="btn btn-outline-warning btn-block btn-sm font-weight-bold"
                                                 >
                                                     Năm
                                                 </button>
                                             </div>
-                                            <div class="col-md-3">
-                                                <div class="form-group mb-0">
-                                                    <input
-                                                            type="date"
-                                                            class="form-control with-title"
-                                                            id="start-date"
-                                                    />
-                                                    <span class="input-title">Từ ngày</span>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <div class="form-group mb-0">
-                                                    <input
-                                                            type="date"
-                                                            class="form-control with-title"
-                                                            id="end-date"
-                                                    />
-                                                    <span class="input-title">Đến ngày</span>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <button
+
+                                            <!-- Nút để mở modal -->
+                                            <div class="col-md-1">
+                                                <button id="btn-custom"
                                                         type="button"
-                                                        class="btn btn-primary btn-block btn-sm text-dark font-weight-bold"
+                                                        class="btn btn-outline-secondary btn-block btn-sm font-weight-bold"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#customModal"
                                                 >
-                                                    <span class="text-white p-3">Tìm kiếm</span>
+                                                    Tùy chỉnh
                                                 </button>
                                             </div>
                                         </div>
                                     </div>
-
-                                    <div class="mb-5">
-                                        <div class="card-header">Biểu đồ doanh thu </div>
-                                        <div class="card-body bg-white">
-                                            <div id="revenue-chart" style="height: 400px;"></div>
-                                        </div>
-                                    </div>
-
-
                                 </div>
                             </div>
 
+                            <%--                            Modal tùy chỉnh--%>
+                            <div class="modal fade" id="customModal" tabindex="-1" aria-labelledby="customModalLabel"
+                                 aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="customModalLabel">Tùy chỉnh ngày</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="d-flex align-items-end">
+                                                <div class="flex-fill me-2">
+                                                    <div class="form-group mb-0">
+                                                        <label for="start-date" class="form-label">Từ ngày</label>
+                                                        <input type="date" class="form-control" id="start-date"/>
+                                                        <div id="start-date-error" class="text-danger"
+                                                             style="display: none;">Vui lòng nhập ngày bắt đầu.
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="flex-fill me-2">
+                                                    <div class="form-group mb-0">
+                                                        <label for="end-date" class="form-label">Đến ngày</label>
+                                                        <input type="date" class="form-control" id="end-date"/>
+                                                        <div id="end-date-error" class="text-danger"
+                                                             style="display: none;">Vui lòng nhập ngày kết thúc.
+                                                        </div>
+                                                        <div id="date-error" class="text-danger" style="display: none;">
+                                                            Ngày kết thúc phải sau ngày bắt đầu.
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="flex-shrink-1">
+                                                    <button type="button"
+                                                            class="btn btn-primary btn-sm font-weight-bold"
+                                                            id="btn-search">
+                                                        Tìm kiếm
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <%-- Modal Bộ Lọc--%>
+                            <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <form action="/admin/thong-ke/tuy-chinh" method="post" id="filterForm">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="filterModalTitle">Tùy chỉnh ngày</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="d-flex align-items-end">
+                                                    <div class="flex-fill me-2">
+                                                        <div class="form-group mb-0 position-relative">
+                                                            <label for="start-date" class="form-label">Từ ngày</label>
+                                                            <input name="startDate" type="date" class="form-control" id="start_date" />
+                                                            <div id="start_date_error" class="text-danger position-absolute" style="top: 100%; left: 0; display: none;">
+                                                                Vui lòng nhập ngày bắt đầu.
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex-fill me-2">
+                                                        <div class="form-group mb-0 position-relative">
+                                                            <label for="end-date" class="form-label">Đến ngày</label>
+                                                            <input name="endDate" type="date" class="form-control" id="end_date" />
+                                                            <div id="end_date_error" class="text-danger position-absolute" style="top: 100%; left: 0; display: none;">
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex-shrink-1">
+                                                        <button type="submit" class="btn btn-primary btn-sm font-weight-bold" id="btn_search">
+                                                            Tìm kiếm
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                        <%--                            Biểu đồ thống kê--%>
                             <div>
-                                <div class="card-body bg-white">
-                                    <!-- Danh sách sản phẩm bán chạy -->
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <div class="mt-4">
-                                                <h5 class="ml-3 text-center">
+                                <div class="card chart-card">
+                                    <div class="card-body chart-container">
+                                        <h3 id="chart-title" class="text-center mt-3">Biểu Đồ Thống Kê Hóa Đơn Và Sản
+                                            Phẩm Tháng Này </h3>
+                                        <canvas id="myChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <%--                 Table--%>
+                            <div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="card-body bg-white">
+                                            <div class="mt-4 py-5 px-2 bg-light-gray">
+                                                <h5 class="ml-3 text-center mb-4">
                                                     Top Sản Phẩm Bán Chạy Theo Tháng
                                                 </h5>
-                                                <table class="table">
+                                                <table class="table ">
                                                     <thead>
                                                     <tr>
-                                                        <th scope="col"
-                                                            style="background: orange; color: white; border-radius: 10px 0px 0px 0px">
+                                                        <th scope="col" style="background: orange; color: white">
                                                             STT
                                                         </th>
-                                                        <th scope="col" style="background: orange; color: white">Ảnh</th>
-                                                        <th scope="col" style="background: orange; color: white">Thông tin sản phẩm</th>
-                                                        <th scope="col" style="background: orange; color: white">Giá bán</th>
-                                                        <th scope="col" style="background: orange; color: white ;border-radius: 0px 10px 0px 0px" >Số lượng đã bán</th>
+                                                        <th scope="col" style="background: orange; color: white">Mã sản
+                                                            phẩm
+                                                        </th>
+                                                        <th scope="col" style="background: orange; color: white">Thông
+                                                            tin sản phẩm
+                                                        </th>
+                                                        <th scope="col" style="background: orange; color: white">Giá
+                                                            bán
+                                                        </th>
+                                                        <th scope="col" style="background: orange; color: white">Số
+                                                            lượng đã bán
+                                                        </th>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
-
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-
-                                        <!-- Biểu đồ Top 5 sản phẩm bán chạy -->
-                                        <div class="col-6">
-                                            <div class="mt-4">
-                                                <h5 class="ml-3 text-center">Sản Phẩm Sắp Hết Hàng</h5>
-                                                <table class="table">
-                                                    <thead>
-                                                    <tr>
-                                                        <th scope="col"
-                                                            style="background: orange; color: white; border-radius: 10px 0px 0px 0px">
-                                                            STT
-                                                        </th>
-                                                        <th scope="col" style="background: orange; color: white">Ảnh</th>
-                                                        <th scope="col" style="background: orange; color: white">Thông tin sản phẩm</th>
-                                                        <th scope="col" style="background: orange; color: white">Giá bán</th>
-                                                        <th scope="col" style="background: orange; color: white ;border-radius: 0px 10px 0px 0px" >Số lượng còn lại</th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
-
+                                                    <c:forEach var="product" items="${topSellingProducts.content}"
+                                                               varStatus="i">
+                                                        <tr>
+                                                            <td class="text-center">${i.index + 1}</td>
+                                                            <td>${product.maSanPham}</td>
+                                                            <td>${product.tenSanPham}</td>
+                                                            <td><fmt:formatNumber value="${product.giaBan}"
+                                                                                  type="currency" currencySymbol="₫"
+                                                                                  groupingUsed="true"/></td>
+                                                            <td class="text-center">${product.soLuong}</td>
+                                                        </tr>
+                                                    </c:forEach>
                                                     </tbody>
                                                 </table>
 
+
+                                                <%--                                            Phân trang--%>
+                                                <div class="float-end ">
+                                                    <nav aria-label="Page navigation example">
+                                                        <ul class="pagination">
+                                                            <li class="page-item ${topSellingProducts.hasPrevious() ? '' : 'disabled'}">
+                                                                <a class="page-link"
+                                                                   href="?page=${topSellingProducts.hasPrevious() ? topSellingProducts.number - 1 : '#'}&status=${currentStatus}">&laquo;</a>
+                                                            </li>
+                                                            <c:if test="${topSellingProducts.totalPages > 0}">
+                                                                <c:forEach var="i" begin="0"
+                                                                           end="${topSellingProducts.totalPages - 1}">
+                                                                    <li class="page-item ${topSellingProducts.number == i ? 'active' : ''}">
+                                                                        <a class="page-link"
+                                                                           href="?page=${i}&status=${currentStatus}">${i + 1}</a>
+                                                                    </li>
+                                                                </c:forEach>
+                                                            </c:if>
+                                                            <li class="page-item ${topSellingProducts.hasNext() ? '' : 'disabled'}">
+                                                                <a class="page-link"
+                                                                   href="?page=${topSellingProducts.hasNext() ? topSellingProducts.number + 1 : '#'}&status=${currentStatus}">&raquo;</a>
+                                                            </li>
+                                                        </ul>
+                                                    </nav>
+                                                </div>
                                             </div>
+
 
                                         </div>
                                     </div>
 
+                                    <%--                                    Table sản phẩm sắp hết hàng--%>
+                                    <div class="col-6">
+                                        <div class="card-body bg-white">
+                                            <div class="mt-4 py-5 px-2 bg-light-gray">
+                                                <h5 class="ml-3 text-center mb-4">Sản Phẩm Sắp Hết Hàng</h5>
+                                                <table id="productsTable" class="table ">
+                                                    <thead>
+                                                    <tr>
+                                                        <th scope="col" style="background: orange; color: white">STT
+                                                        </th>
+                                                        <th scope="col" style="background: orange; color: white">Mã sản
+                                                            pẩm
+                                                        </th>
+                                                        <th scope="col" style="background: orange; color: white">Thông
+                                                            tin sản phẩm
+                                                        </th>
+                                                        <th scope="col" style="background: orange; color: white">Giá
+                                                            bán
+                                                        </th>
+                                                        <th scope="col" style="background: orange; color: white">Số
+                                                            lượng
+                                                        </th>
+                                                        <th scope="col" style="background: orange; color: white">Kích
+                                                            thước
+                                                        </th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody class="tbody">
+                                                    <c:forEach var="product" varStatus="i"
+                                                               items="${pageSPSapHetHang.content}">
+                                                        <tr>
+                                                            <td class="text-center">${i.index + 1}</td>
+                                                            <td>
+                                                                    ${product.idSanPham.ma}
+                                                            </td>
+                                                            <td>
+                                                                <span class="">${product.idSanPham.ten} - ${product.idMauSac.ten}
+                                                                </span>
+
+                                                            </td>
+                                                            <td>
+                                                                <fmt:formatNumber value="${product.giaBan}"
+                                                                                  type="currency" currencySymbol="₫"
+                                                                                  groupingUsed="true"/>
+                                                            </td>
+                                                            <td class="text-center">${product.soLuong}</td>
+                                                            <td class="text-center">${product.idKichThuoc.ten}</td>
+                                                        </tr>
+                                                    </c:forEach>
+                                                    </tbody>
+                                                </table>
+                                                <%--                                                Phân trang&ndash;%&gt;--%>
+                                                <div class="float-end ">
+                                                    <nav aria-label="Page navigation example">
+                                                        <ul class="pagination">
+                                                            <li class="page-item ${pageSPSapHetHang.hasPrevious() ? '' : 'disabled'}">
+                                                                <a class="page-link"
+                                                                   href="?page=${pageSPSapHetHang.hasPrevious() ? pageSPSapHetHang.number - 1 : '#'}&status=${currentStatus}">&laquo;</a>
+                                                            </li>
+                                                            <c:if test="${pageSPSapHetHang.totalPages > 0}">
+                                                                <c:forEach var="i" begin="0"
+                                                                           end="${pageSPSapHetHang.totalPages - 1}">
+                                                                    <li class="page-item ${pageSPSapHetHang.number == i ? 'active' : ''}">
+                                                                        <a class="page-link"
+                                                                           href="?page=${i}&status=${currentStatus}">${i + 1}</a>
+                                                                    </li>
+                                                                </c:forEach>
+                                                            </c:if>
+                                                            <li class="page-item ${pageSPSapHetHang.hasNext() ? '' : 'disabled'}">
+                                                                <a class="page-link"
+                                                                   href="?page=${pageSPSapHetHang.hasNext() ? pageSPSapHetHang.number + 1 : '#'}&status=${currentStatus}">&raquo;</a>
+                                                            </li>
+                                                        </ul>
+                                                    </nav>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-
-
-
                         </div>
                     </div>
                 </div>
@@ -765,6 +1044,10 @@
     </div>
 </div>
 
+
+<%--CDN DataTable--%>
+
+
 <!-- Bootstrap core JavaScript-->
 <script src="vendor/jquery/jquery.min.js"></script>
 <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -782,277 +1065,437 @@
 <!-- Page level custom scripts -->
 <script src="js/demo/datatables-demo.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+
+
 <script>
 
-    // Hiển thị thông báo thành công nếu xác nhận đơn hàng thành công
-    const Toast = Swal.mixin({
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-            toast.onmouseenter = Swal.stopTimer;
-            toast.onmouseleave = Swal.resumeTimer;
-        }
-    });
+    // Mở giao diện bộ lọc
+    document.addEventListener('DOMContentLoaded', function () {
+        const filterButtons = document.querySelectorAll('#btn-today, #btn-week, #btn-month, #btn-year, #btn-custom');
+        const filterButton = document.getElementById('btn-filter');
+        const customLayout = document.getElementById('customLayout');
 
-    <%--    Thông báo cập nhật trạng thi hóa đơn thành công--%>
-    <c:if test="${not empty cancelSuccess}">
-    Toast.fire({
-        icon: "success",
-        title: "${cancelSuccess}"
-    });
-    </c:if>
+        filterButton.addEventListener('click', function () {
+            customLayout.style.display = 'block';
+        });
 
-
-    $(document).ready(function() {
-        $('#userDropdown .fas').on('click', function(e) {
-            e.stopPropagation();
-            $(this).closest('.nav-link').dropdown('toggle');
+        filterButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                customLayout.style.display = 'none';
+            });
         });
     });
 
 
-    // Reset lại form tìm kiếm và lọc
-    function resetForm() {
-        document.getElementById("searchKeyword").value = "";
-        document.getElementById("inputLoaiHoaDon").selectedIndex = 0;
-        document.getElementById("startDate").value = "";
-        document.getElementById("endDate").value = "";
+    // Biểu đồ cột thống ke hóa đơn và sản phẩm
+    document.addEventListener("DOMContentLoaded", function () {
+        const ctx = document.getElementById('myChart').getContext('2d');
+        const myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: [], // Placeholder for initial labels
+                datasets: [
+                    {
+                        label: 'Hóa đơn',
+                        data: [],
+                        backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Sản phẩm',
+                        data: [],
+                        backgroundColor: 'rgba(255, 206, 86, 0.7)',
+                        borderColor: 'rgba(255, 206, 86, 1)',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    x: {
+                        ticks: {
+                            maxRotation: 45,
+                            minRotation: 45
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Số lượng',
+                            color: '#000',
+                            font: {
+                                size: 13
+                            }
+                        }
+                    }
+                }
+            }
+        });
 
-        // Lấy trang hiện tại
-        var currentUrl = window.location.href;
-        var cleanUrl = currentUrl.split('?')[0]; // Lấy phần URL trước dấu '?'
-
-        // Lấy tham số page nếu có
-        var params = new URLSearchParams(window.location.search);
-        var pageParam = params.get('page');
-
-        // Nếu có tham số page, thêm lại vào URL
-        if (pageParam) {
-            cleanUrl += '?page=' + pageParam;
+        function fetchData(url, title) {
+            return fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (Array.isArray(data) && data.length > 0) {
+                        updateChart(data);
+                        updateTitle(title); // Cập nhật tiêu đề
+                    } else {
+                        console.error('No data available');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                });
         }
 
-        // Đặt lại URL
-        window.location.href = cleanUrl;
-    }
+        function updateChart(data) {
+            const days = data.map(item => new Date(item.day).toLocaleDateString('en-GB'));
+            const soLuongHoaDon = data.map(item => item.soLuongHoaDon);
+            const soLuongSanPham = data.map(item => item.soLuongSanPham);
+
+            myChart.data.labels = days;
+            myChart.data.datasets[0].data = soLuongHoaDon;
+            myChart.data.datasets[1].data = soLuongSanPham;
+            myChart.update();
+        }
+
+        function updateTitle(title) {
+            document.getElementById('chart-title').textContent = title;
+        }
+
+        function setActiveButton(id) {
+            const buttons = document.querySelectorAll('.btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
+
+        // Gán sự kiện click cho các nút
+        document.getElementById('btn-filter').addEventListener('click', () => {
+            setActiveButton('btn-filter');
+            // Xử lý bộ lọc ở đây nếu cần
+        });
+
+        document.getElementById('btn-today').addEventListener('click', () => {
+            setActiveButton('btn-today');
+            fetchData('/api/thong-ke/ngay-hien-tai', 'Biểu Đồ Thống Kê Hóa Đơn Và Sản Phẩm Ngày Hôm Nay');
+        });
+
+        document.getElementById('btn-week').addEventListener('click', () => {
+            setActiveButton('btn-week');
+            const startDate = new Date();
+            const endDate = new Date();
+            startDate.setDate(startDate.getDate() - 7);
+            fetchData(`/api/thong-ke/tuan-hien-tai?startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()}`, 'Biểu Đồ Thống Kê Hóa Đơn Và Sản Phẩm Tuần Này');
+        });
+
+        document.getElementById('btn-month').addEventListener('click', () => {
+            setActiveButton('btn-month');
+            fetchData('/api/thong-ke/thang-hien-tai', 'Biểu Đồ Thống Kê Hóa Đơn Và Sản Phẩm Tháng Này');
+        });
+
+        document.getElementById('btn-year').addEventListener('click', () => {
+            setActiveButton('btn-year');
+            fetchData('/api/thong-ke/nam-hien-tai', 'Biểu Đồ Thống Kê Hóa Đơn Và Sản Phẩm Năm Nay');
+        });
+
+        // Thêm sự kiện click cho nút tìm kiếm trong modal
+        document.getElementById('btn-search').addEventListener('click', () => {
+            const startDate = document.getElementById('start-date').value;
+            const endDate = document.getElementById('end-date').value;
+
+            console.log(startDate);
+            console.log(endDate);
+            alert(startDate);
+            alert(endDate);
+
+            if (!startDate) {
+                document.getElementById('start-date-error').style.display = 'block';
+                return;
+            } else {
+                document.getElementById('start-date-error').style.display = 'none';
+            }
+
+            if (!endDate) {
+                document.getElementById('end-date-error').style.display = 'block';
+                return;
+            } else {
+                document.getElementById('end-date-error').style.display = 'none';
+            }
+
+            if (new Date(startDate) > new Date(endDate)) {
+                document.getElementById('date-error').style.display = 'block';
+                return;
+            } else {
+                document.getElementById('date-error').style.display = 'none';
+            }
+
+            $('#customModal').modal('hide');
+            const url = `/api/thong-ke/tu-ngay-den-ngay?startDate=${startDate}&endDate=${endDate}`;
+            fetchData(url, `Biểu Đồ Thống Kê Hóa Đơn Và Sản Phẩm Tùy Chỉnh`);
+        });
+
+        // Hiển thị dữ liệu tháng khi chương trình bắt đầu
+        fetchData('/api/thong-ke/thang-hien-tai', 'Biểu Đồ Thống Kê Hóa Đơn Và Sản Phẩm Tháng Này');
+        setActiveButton('btn-month'); // Đánh dấu nút tháng là active
+    });
+
+    // Hiển thị thống kê doanh thu tùy chỉnh
+    <%--document.addEventListener("DOMContentLoaded", function () {--%>
+    <%--    const searchButton = document.getElementById('btn-search');--%>
+    <%--    const startDateInput = document.getElementById('start-date');--%>
+    <%--    const endDateInput = document.getElementById('end-date');--%>
+    <%--    const startDateError = document.getElementById('start-date-error');--%>
+    <%--    const endDateError = document.getElementById('end-date-error');--%>
+    <%--    const dateError = document.getElementById('date-error');--%>
+
+    <%--    // Clears all error messages and removes error styles--%>
+    <%--    function clearErrors() {--%>
+    <%--        startDateError.style.display = 'none';--%>
+    <%--        endDateError.style.display = 'none';--%>
+    <%--        dateError.style.display = 'none';--%>
+    <%--        startDateInput.classList.remove('border-danger');--%>
+    <%--        endDateInput.classList.remove('border-danger');--%>
+    <%--    }--%>
+
+    <%--    // Event listener to clear errors when input fields are focused--%>
+    <%--    startDateInput.addEventListener('focus', clearErrors);--%>
+    <%--    endDateInput.addEventListener('focus', clearErrors);--%>
+
+    <%--    // Validates date inputs and performs the search operation--%>
+    <%--    searchButton.addEventListener('click', function () {--%>
+    <%--        const startDate = startDateInput.value.trim();--%>
+    <%--        const endDate = endDateInput.value.trim();--%>
+
+    <%--        clearErrors();--%>
+
+    <%--        let hasError = false;--%>
+
+    <%--        // Validate if start date is provided--%>
+    <%--        if (!startDate) {--%>
+    <%--            startDateError.style.display = 'block';--%>
+    <%--            startDateInput.classList.add('border-danger');--%>
+    <%--            hasError = true;--%>
+    <%--        }--%>
+
+    <%--        // Validate if end date is provided--%>
+    <%--        if (!endDate) {--%>
+    <%--            endDateError.style.display = 'block';--%>
+    <%--            endDateInput.classList.add('border-danger');--%>
+    <%--            hasError = true;--%>
+    <%--        }--%>
+
+    <%--        // Validate if dates are in correct format and start date is not after end date--%>
+    <%--        if (startDate && endDate) {--%>
+    <%--            const parsedStartDate = new Date(startDate);--%>
+    <%--            const parsedEndDate = new Date(endDate);--%>
+
+    <%--            if (isNaN(parsedStartDate.getTime()) || isNaN(parsedEndDate.getTime())) {--%>
+    <%--                dateError.textContent = 'Invalid date format. Please use YYYY-MM-DD format.';--%>
+    <%--                dateError.style.display = 'block';--%>
+    <%--                startDateInput.classList.add('border-danger');--%>
+    <%--                endDateInput.classList.add('border-danger');--%>
+    <%--                hasError = true;--%>
+    <%--            } else if (parsedStartDate > parsedEndDate) {--%>
+    <%--                dateError.textContent = 'Start date cannot be after end date.';--%>
+    <%--                dateError.style.display = 'block';--%>
+    <%--                startDateInput.classList.add('border-danger');--%>
+    <%--                endDateInput.classList.add('border-danger');--%>
+    <%--                hasError = true;--%>
+    <%--            }--%>
+    <%--        }--%>
+
+    <%--        // If no errors, fetch data--%>
+    <%--        if (!hasError) {--%>
+    <%--            const encodedStartDate = encodeURIComponent(startDate + 'T00:00:00'); // Append time to date--%>
+    <%--            const encodedEndDate = encodeURIComponent(endDate + 'T23:59:59'); // Append time to date--%>
+    <%--            const url = `/api/thong-ke/tuy-chinh?startDate=${encodedStartDate}&endDate=${encodedEndDate}`;--%>
+    <%--            fetchData(url);--%>
+    <%--            // Hide the modal and remove background--%>
+    <%--            $('#customModal').modal('hide');--%>
+    <%--            document.querySelector('.modal-backdrop').style.display = 'none'; // Remove modal backdrop--%>
+    <%--        }--%>
+    <%--    });--%>
+
+    <%--    // Fetches data from the API and updates the statistics section--%>
+    <%--    function fetchData(url) {--%>
+    <%--        fetch(url)--%>
+    <%--            .then(response => {--%>
+    <%--                if (!response.ok) {--%>
+    <%--                    throw new Error('Network response was not ok.');--%>
+    <%--                }--%>
+    <%--                return response.json();--%>
+    <%--            })--%>
+    <%--            .then(data => {--%>
+    <%--                if (data && data.data) {--%>
+    <%--                    updateStatistics(data.data[0]);--%>
+    <%--                } else {--%>
+    <%--                    console.error('No data available');--%>
+    <%--                }--%>
+    <%--            })--%>
+    <%--            .catch(error => {--%>
+    <%--                console.error('Error fetching data:', error);--%>
+    <%--            });--%>
+    <%--    }--%>
+
+    <%--    // Updates the statistics section with data--%>
+    <%--    function updateStatistics(data) {--%>
+    <%--        document.getElementById('custom-revenue').textContent = data.doanhThu || 'N/A';--%>
+    <%--        document.getElementById('custom-products').textContent = data.soLuongSanPhamDaBan || 'N/A';--%>
+    <%--        document.getElementById('custom-success').textContent = data.donHangThanhCong || 'N/A';--%>
+    <%--        document.getElementById('custom-cancel').textContent = data.donHangDaHuy || 'N/A';--%>
+    <%--    }--%>
+    <%--});--%>
+
+    <%--document.addEventListener("DOMContentLoaded", function () {--%>
+    <%--    const searchButton = document.getElementById('btn-search');--%>
+    <%--    const startDateInput = document.getElementById('start-date');--%>
+    <%--    const endDateInput = document.getElementById('end-date');--%>
+
+    <%--    searchButton.addEventListener('click', function () {--%>
+    <%--        const startDate = startDateInput.value.trim();--%>
+    <%--        const endDate = endDateInput.value.trim();--%>
+
+    <%--        // In ra giá trị ngày bắt đầu và ngày kết thúc để kiểm tra--%>
+    <%--        console.log('Start Date:', startDate);--%>
+    <%--        console.log('End Date:', endDate);--%>
+
+    <%--        // Hoặc dùng alert để hiển thị--%>
+    <%--        alert('Start Date: ' + startDate + '\nEnd Date: ' + endDate);--%>
+
+    <%--        // Xây dựng URL với các giá trị ngày và gọi API--%>
+    <%--        if (startDate && endDate) {--%>
+    <%--            const encodedStartDate = encodeURIComponent(startDate + 'T00:00:00'); // Append time to date--%>
+    <%--            const encodedEndDate = encodeURIComponent(endDate + 'T23:59:59'); // Append time to date--%>
+    <%--            const url = `/api/thong-ke/tuy-chinh?startDate=${encodedStartDate}&endDate=${encodedEndDate}`;--%>
+
+    <%--            fetchData(url);--%>
+
+    <%--            // Ẩn modal--%>
+    <%--            $('#customModal').modal('hide');--%>
+    <%--            document.querySelector('.modal-backdrop').style.display = 'none'; // Remove modal backdrop--%>
+    <%--        } else {--%>
+    <%--            alert('Please enter both start date and end date.');--%>
+    <%--        }--%>
+    <%--    });--%>
+
+    <%--    function fetchData(url) {--%>
+    <%--        fetch(url)--%>
+    <%--            .then(response => {--%>
+    <%--                if (!response.ok) {--%>
+    <%--                    return response.text().then(text => {--%>
+    <%--                        throw new Error(`Network response was not ok. Status: ${response.status}, Message: ${text}`);--%>
+    <%--                    });--%>
+    <%--                }--%>
+    <%--                return response.json();--%>
+    <%--            })--%>
+    <%--            .then(data => {--%>
+    <%--                if (data && data.data) {--%>
+    <%--                    updateStatistics(data.data[0]);--%>
+    <%--                } else {--%>
+    <%--                    console.error('No data available');--%>
+    <%--                }--%>
+    <%--            })--%>
+    <%--            .catch(error => {--%>
+    <%--                console.error('Error fetching data:', error);--%>
+    <%--                alert('An error occurred while fetching data: ' + error.message);--%>
+    <%--            });--%>
+    <%--    }--%>
+
+    <%--    function updateStatistics(data) {--%>
+    <%--        document.getElementById('custom-revenue').textContent = data.doanhThu || 'N/A';--%>
+    <%--        document.getElementById('custom-products').textContent = data.soLuongSanPhamDaBan || 'N/A';--%>
+    <%--        document.getElementById('custom-success').textContent = data.donHangThanhCong || 'N/A';--%>
+    <%--        document.getElementById('custom-cancel').textContent = data.donHangDaHuy || 'N/A';--%>
+    <%--    }--%>
+    <%--});--%>
 
 
-    // Validate Bộ lọc và tìm kiếm
+</script>
+<script type="text/javascript">
+<%--    Hiển thị giao diện tùy chỉnh khi submit thành công--%>
+    document.addEventListener("DOMContentLoaded", function () {
+        const formSuccess = "${formSuccess}";
+        if (formSuccess === 'true') {
+            document.getElementById("customLayout").style.display = "block";
+        }
+    });
+
+        // Validate form tùy chỉnh
+        document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('filterForm');
+    const startDateInput = document.getElementById('start_date');
+    const endDateInput = document.getElementById('end_date');
+    const startDateError = document.getElementById('start_date_error');
+    const endDateError = document.getElementById('end_date_error');
+
     function validateDates() {
-        const startDateInput = document.getElementById('startDate');
-        const endDateInput = document.getElementById('endDate');
-        const startDateError = document.getElementById('startDateError');
-        const endDateError = document.getElementById('endDateError');
-        const startDate = new Date(startDateInput.value);
-        const endDate = new Date(endDateInput.value);
-        const currentYear = new Date().getFullYear();
+        let valid = true;
+        let errorMessage = '';
 
-        let isValid = true;
-
-        // Clear previous errors
+        // Clear previous error states
         startDateInput.classList.remove('border-danger');
         endDateInput.classList.remove('border-danger');
-        startDateError.textContent = '';
-        endDateError.textContent = '';
+        startDateError.style.display = 'none';
+        endDateError.style.display = 'none';
 
-        if (!startDateInput.value && !endDateInput.value) {
-            return true; // No need to validate if both dates are not selected
+        // Validate start date
+        if (!startDateInput.value) {
+            startDateInput.classList.add('border-danger');
+            startDateError.textContent = 'Vui lòng nhập ngày bắt đầu.';
+            startDateError.style.display = 'block';
+            valid = false;
         }
 
-        if (startDateInput.value && endDateInput.value) {
-            if (startDate.getFullYear() !== currentYear) {
-                startDateInput.classList.add('border-danger');
-                startDateError.textContent = 'Ngày bắt đầu chỉ được chọn trong năm nay.';
-                isValid = false;
-            }
-            if (endDate.getFullYear() !== currentYear) {
-                endDateInput.classList.add('border-danger');
-                endDateError.textContent = 'Ngày kết thúc chỉ được chọn trong năm nay.';
-                isValid = false;
-            }
-            if (endDate < startDate) {
-                endDateInput.classList.add('border-danger');
-                endDateError.textContent = 'Ngày kết thúc phải bằng hoặc sau ngày bắt đầu.';
-                isValid = false;
-            }
+        // Validate end date
+        if (!endDateInput.value) {
+            endDateInput.classList.add('border-danger');
+            errorMessage = 'Vui lòng nhập ngày kết thúc.';
+            valid = false;
         } else if (startDateInput.value) {
-            if (startDate.getFullYear() !== currentYear) {
-                startDateInput.classList.add('border-danger');
-                startDateError.textContent = 'Ngày bắt đầu chỉ được chọn trong năm nay.';
-                isValid = false;
-            }
-            if (!endDateInput.value) {
+            // Validate date range
+            const startDate = new Date(startDateInput.value);
+            const endDate = new Date(endDateInput.value);
+            if (endDate <= startDate) {
                 endDateInput.classList.add('border-danger');
-                endDateError.textContent = 'Vui lòng chọn ngày kết thúc.';
-                isValid = false;
-            }
-        } else if (endDateInput.value) {
-            if (endDate.getFullYear() !== currentYear) {
-                endDateInput.classList.add('border-danger');
-                endDateError.textContent = 'Ngày kết thúc chỉ được chọn trong năm nay.';
-                isValid = false;
-            }
-            if (!startDateInput.value) {
-                startDateInput.classList.add('border-danger');
-                startDateError.textContent = 'Vui lòng chọn ngày bắt đầu.';
-                isValid = false;
+                errorMessage = 'Ngày kết thúc phải sau ngày bắt đầu.';
+                valid = false;
             }
         }
 
-        return isValid;
+        // Set the error message
+        if (!valid) {
+            endDateError.textContent = errorMessage;
+            endDateError.style.display = 'block';
+        }
+
+        return valid;
     }
 
-    document.getElementById('startDate').addEventListener('focus', function() {
-        this.classList.remove('border-danger');
-        document.getElementById('startDateError').textContent = '';
+    form.addEventListener('submit', function(event) {
+        if (!validateDates()) {
+            event.preventDefault();
+        }
     });
 
-    document.getElementById('endDate').addEventListener('focus', function() {
-        this.classList.remove('border-danger');
-        document.getElementById('endDateError').textContent = '';
+    // Hide error messages and border on input focus
+    startDateInput.addEventListener('focus', function() {
+        startDateInput.classList.remove('border-danger');
+        startDateError.style.display = 'none';
     });
 
+    endDateInput.addEventListener('focus', function() {
+        endDateInput.classList.remove('border-danger');
+        endDateError.style.display = 'none';
+    });
+});
 
 
 
 </script>
-
-
-<script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
-<script>
-    // Đoạn mã tích hợp biểu đồ vào đây
-    var chartDom = document.getElementById('pie-chart');
-    var myChart = echarts.init(chartDom);
-    var option;
-
-    option = {
-        tooltip: {
-            trigger: 'item'
-        },
-        legend: {
-            top: '0%',
-            left: 'left'
-        },
-        series: [
-            {
-                name: 'Access From',
-                type: 'pie',
-                radius: ['40%', '70%'],
-                avoidLabelOverlap: false,
-                label: {
-                    show: false,
-                    position: 'center'
-                },
-                emphasis: {
-                    label: {
-                        show: true,
-                        fontSize: 40,
-                        fontWeight: 'bold'
-                    }
-                },
-                labelLine: {
-                    show: false
-                },
-                data: [
-                    { value: 1048, name: 'Search Engine' },
-                    { value: 735, name: 'Direct' },
-                    { value: 580, name: 'Email' },
-                    { value: 484, name: 'Union Ads' },
-                    { value: 300, name: 'Video Ads' }
-                ]
-            }
-        ]
-    };
-
-    option && myChart.setOption(option);
-
-
-
-
-
-
-
-
-    // Biểu đò cột doanh thu
-    // Đoạn mã tích hợp biểu đồ vào đây
-    var revenueChartDom = document.getElementById('revenue-chart');
-    var revenueChart = echarts.init(revenueChartDom);
-    var option;
-
-    option = {
-        title: {
-            text: 'Rainfall vs Evaporation',
-            subtext: 'Fake Data'
-        },
-        tooltip: {
-            trigger: 'axis'
-        },
-        legend: {
-            data: ['Rainfall', 'Evaporation']
-        },
-        // toolbox: {
-        //     show: false,
-        //     feature: {
-        //         // dataView: { show: true, readOnly: false },
-        //         magicType: { show: true, type: ['line', 'bar'] },
-        //         restore: { show: true },
-        //         saveAsImage: { show: true }
-        //     }
-        // },
-        // calculable: true,
-        xAxis: [
-            {
-                type: 'category',
-                // prettier-ignore
-                data: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-            }
-        ],
-        yAxis: [
-            {
-                type: 'value'
-            }
-        ],
-        series: [
-            {
-                name: 'Rainfall',
-                type: 'bar',
-                data: [
-                    2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3
-                ],
-                markPoint: {
-                    data: [
-                        { type: 'max', name: 'Max' },
-                        { type: 'min', name: 'Min' }
-                    ]
-                },
-                markLine: {
-                    data: [{ type: 'average', name: 'Avg' }]
-                }
-            },
-            {
-                name: 'Evaporation',
-                type: 'bar',
-                data: [
-                    2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3
-                ],
-                markPoint: {
-                    data: [
-                        { name: 'Max', value: 182.2, xAxis: 7, yAxis: 183 },
-                        { name: 'Min', value: 2.3, xAxis: 11, yAxis: 3 }
-                    ]
-                },
-                markLine: {
-                    data: [{ type: 'average', name: 'Avg' }]
-                }
-            }
-        ]
-    };
-
-    option && revenueChart.setOption(option);
-</script>
-
 
 </body>
 

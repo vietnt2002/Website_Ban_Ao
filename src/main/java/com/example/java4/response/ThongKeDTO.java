@@ -18,7 +18,26 @@ public class ThongKeDTO {
     private Integer donHangThanhCong;
     private Integer donHangDaHuy;
 
+    private String tenSanPham;
+    private String maSanPham;
+    private BigDecimal giaBan;
+    private String hinhAnh;
+    private Integer soLuong;
 
+    public ThongKeDTO(BigDecimal doanhThu, Integer soLuongSanPhamDaBan, Integer donHangThanhCong, Integer donHangDaHuy) {
+        this.doanhThu = doanhThu;
+        this.soLuongSanPhamDaBan = soLuongSanPhamDaBan;
+        this.donHangThanhCong = donHangThanhCong;
+        this.donHangDaHuy = donHangDaHuy;
+    }
+
+    public ThongKeDTO(String tenSanPham, String maSanPham, BigDecimal giaBan, String hinhAnh, Integer soLuong) {
+        this.tenSanPham = tenSanPham;
+        this.maSanPham = maSanPham;
+        this.giaBan = giaBan;
+        this.hinhAnh = hinhAnh;
+        this.soLuong = soLuong;
+    }
 
     public static ThongKeDTO mapToThongKeDTO(Object[] result) {
         if (result == null || result.length < 4) {

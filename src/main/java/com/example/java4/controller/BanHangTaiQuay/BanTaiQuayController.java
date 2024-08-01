@@ -92,48 +92,48 @@ public class BanTaiQuayController {
         tongSL = 0;
 //        tongTien = BigDecimal.ZERO;
     }
-//    @GetMapping("dang-nhap-view")
-//    public String getDangNhapview(Model model){
-//        NVSignUpRequest nhanVienRequest = new NVSignUpRequest();
-//        model.addAttribute("nhanVien", nhanVienRequest);
-//        return "/view/BanHangTaiQuay/dangNhapAdmin.jsp";
-//    }
-//
-//    @PostMapping("dang-nhap")
-//    public String dangNhap(
-//            Model model,
-//            @Valid @ModelAttribute("nhanVien") NVSignUpRequest nvReq,
-//            BindingResult result,
-//            RedirectAttributes redirectAttributes,
-//            HttpSession session
-//    ){
-//        if (result.hasErrors()){
-//            System.out.println("Có lỗi");
-//            System.out.println("result error:"+result.toString());
-//            return "/view/BanHangTaiQuay/dangNhapAdmin.jsp";
-//        }
-//
-//        //Tìm kiếm nhân viên theo tên tài khoản
-//        boolean checkRole = false;
-//        NhanVien nhanVienByTK = nhanVienRepo.findByTaiKhoan(nvReq.getTaiKhoan());
-//        if (nhanVienByTK == null){
-//            redirectAttributes.addFlashAttribute("error", "Tên tài khoản không tồn tại!");
-//            return "redirect:/admin/dang-nhap-view";
-//        }else {
-//            if (nvReq.getMatKhau().equals(nhanVienByTK.getMatKhau())){
-//                UserInfor.idNhanVien = nhanVienByTK.getId();
-//                //Check admin hay nhân viên
-//                String role = nhanVienByTK.getIdCV().getTen();
-//                session.setAttribute("userRole", role);
-//
-//                redirectAttributes.addFlashAttribute("success", "Đăng nhập thành công");
-//                return "redirect:/ban-hang-tai-quay";
-//            }else {
-//                redirectAttributes.addFlashAttribute("error", "Mật khẩu nhập vào chưa đúng!");
-//                return "redirect:/admin/dang-nhap-view";
-//            }
-//        }
-//    }
+    @GetMapping("dang-nhap-view")
+    public String getDangNhapview(Model model){
+        NVSignUpRequest nhanVienRequest = new NVSignUpRequest();
+        model.addAttribute("nhanVien", nhanVienRequest);
+        return "/view/BanHangTaiQuay/dangNhapAdmin.jsp";
+    }
+
+    @PostMapping("dang-nhap")
+    public String dangNhap(
+            Model model,
+            @Valid @ModelAttribute("nhanVien") NVSignUpRequest nvReq,
+            BindingResult result,
+            RedirectAttributes redirectAttributes,
+            HttpSession session
+    ){
+        if (result.hasErrors()){
+            System.out.println("Có lỗi");
+            System.out.println("result error:"+result.toString());
+            return "/view/BanHangTaiQuay/dangNhapAdmin.jsp";
+        }
+
+        //Tìm kiếm nhân viên theo tên tài khoản
+        boolean checkRole = false;
+        NhanVien nhanVienByTK = nhanVienRepo.findByTaiKhoan(nvReq.getTaiKhoan());
+        if (nhanVienByTK == null){
+            redirectAttributes.addFlashAttribute("error", "Tên tài khoản không tồn tại!");
+            return "redirect:/admin/dang-nhap-view";
+        }else {
+            if (nvReq.getMatKhau().equals(nhanVienByTK.getMatKhau())){
+                UserInfor.idNhanVien = nhanVienByTK.getId();
+                //Check admin hay nhân viên
+                String role = nhanVienByTK.getIdCV().getTen();
+                session.setAttribute("userRole", role);
+
+                redirectAttributes.addFlashAttribute("success", "Đăng nhập thành công");
+                return "redirect:/ban-hang-tai-quay";
+            }else {
+                redirectAttributes.addFlashAttribute("error", "Mật khẩu nhập vào chưa đúng!");
+                return "redirect:/admin/dang-nhap-view";
+            }
+        }
+    }
 
 
 
