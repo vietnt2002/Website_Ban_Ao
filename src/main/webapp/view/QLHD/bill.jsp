@@ -541,49 +541,21 @@
                                     <div class="float-end">
                                         <nav aria-label="Page navigation example">
                                             <ul class="pagination">
-                                                <!-- Kiểm tra nếu có trang trước đó -->
                                                 <c:if test="${pageHD.hasPrevious()}">
-                                                    <c:url var="prevPageUrl" value="">
-                                                        <c:param name="page" value="${pageHD.number - 1}"/>
-                                                        <c:param name="keyword" value="${param.keyword}"/>
-                                                        <c:param name="loaiHoaDon" value="${param.loaiHoaDon}"/>
-                                                        <c:param name="startDate" value="${param.startDate}"/>
-                                                        <c:param name="endDate" value="${param.endDate}"/>
-                                                    </c:url>
-                                                    <li class="page-item">
-                                                        <a class="page-link" href="${prevPageUrl}">&laquo;</a>
-                                                    </li>
+                                                    <li class="page-item"><a class="page-link"
+                                                                             href="?page=${pageHD.number - 1}&status=${currentStatus}">&laquo;</a></li>
                                                 </c:if>
-
-                                                <!-- Kiểm tra nếu có tổng số trang lớn hơn 0 -->
                                                 <c:if test="${pageHD.totalPages > 0}">
-                                                    <!-- Duyệt qua các trang -->
                                                     <c:forEach var="i" begin="0" end="${pageHD.totalPages - 1}">
-                                                        <c:url var="pageUrl" value="">
-                                                            <c:param name="page" value="${i}"/>
-                                                            <c:param name="keyword" value="${param.keyword}"/>
-                                                            <c:param name="loaiHoaDon" value="${param.loaiHoaDon}"/>
-                                                            <c:param name="startDate" value="${param.startDate}"/>
-                                                            <c:param name="endDate" value="${param.endDate}"/>
-                                                        </c:url>
                                                         <li class="page-item ${pageHD.number == i ? 'active' : ''}">
-                                                            <a class="page-link" href="${pageUrl}">${i + 1}</a>
+                                                            <a class="page-link"
+                                                               href="?page=${i}&status=${currentStatus}">${i + 1}</a>
                                                         </li>
                                                     </c:forEach>
                                                 </c:if>
-
-                                                <!-- Kiểm tra nếu có trang tiếp theo -->
                                                 <c:if test="${pageHD.hasNext()}">
-                                                    <c:url var="nextPageUrl" value="">
-                                                        <c:param name="page" value="${pageHD.number + 1}"/>
-                                                        <c:param name="keyword" value="${param.keyword}"/>
-                                                        <c:param name="loaiHoaDon" value="${param.loaiHoaDon}"/>
-                                                        <c:param name="startDate" value="${param.startDate}"/>
-                                                        <c:param name="endDate" value="${param.endDate}"/>
-                                                    </c:url>
-                                                    <li class="page-item">
-                                                        <a class="page-link" href="${nextPageUrl}">&raquo;</a>
-                                                    </li>
+                                                    <li class="page-item"><a class="page-link"
+                                                                             href="?page=${pageHD.number + 1}&status=${currentStatus}">&raquo;</a></li>
                                                 </c:if>
                                             </ul>
                                         </nav>

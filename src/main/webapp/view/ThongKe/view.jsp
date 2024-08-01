@@ -56,15 +56,13 @@
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
     <!-- Custom CSS -->
 
-<%--    Thư viện Char Js để làm biểu đồ--%>
+    <%--    Thư viện Char Js để làm biểu đồ--%>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.min.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <!-- Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-
 
 
     <style>
@@ -211,13 +209,25 @@
         }
 
 
-
-
-    /*    Csss Modal*/
+        /*    Csss Modal*/
         /* Hide modal backdrop */
         /*.modal-backdrop {*/
         /*    display: none !important;*/
         /*}*/
+
+        .position-relative {
+            position: relative;
+        }
+
+        .position-absolute {
+            position: absolute;
+            color: red;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+
+
+
 
 
     </style>
@@ -629,37 +639,42 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="row ">
-                                <div class="col-md-12">
-                                    <div class="stat-section custom" id="customLayout">
-                                        <h3 class="text-center">
-                                            <i class="bi bi-calendar2-week"></i> Tùy chỉnh
-                                        </h3>
-                                        <p class="stat-value text-center" id="custom-revenue">0</p>
-                                        <div class="stat-details">
-                                            <div>
-                                                <p>Sản phẩm</p>
-                                                <p class="stat-value" id="custom-products">0</p>
-                                            </div>
-                                            <div>
-                                                <p>Thành công</p>
-                                                <p class="stat-value" id="custom-success">0</p>
-                                            </div>
-                                            <div>
-                                                <p>Đơn hủy</p>
-                                                <p class="stat-value" id="custom-cancel">0</p>
+                            <c:if test="${formSuccess}">
+                                <div class="row ">
+                                    <div class="col-md-12">
+                                        <div class="stat-section custom" id="customLayout">
+                                            <h3 class="text-center">
+                                                <i class="bi bi-calendar2-week"></i> Bộ Lọc
+                                            </h3>
+                                            <p class="stat-value text-center" id="custom-revenue">
+                                                <fmt:formatNumber value="${customStats.doanhThu}" type="currency"
+                                                                  currencySymbol="₫"/>
+                                            </p>
+                                            <div class="stat-details">
+                                                <div>
+                                                    <p>Sản phẩm</p>
+                                                    <p class="stat-value"
+                                                       id="custom-products">${customStats.soLuongSanPhamDaBan}</p>
+                                                </div>
+                                                <div>
+                                                    <p>Thành công</p>
+                                                    <p class="stat-value"
+                                                       id="custom-success">${customStats.donHangThanhCong}</p>
+                                                </div>
+                                                <div>
+                                                    <p>Đơn hủy</p>
+                                                    <p class="stat-value" id="custom-cancel">${customStats.donHangDaHuy}</p>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-
+                            </c:if>
                             <!-- Phần giữa -->
                             <div class="">
                                 <div class=" mb-5">
                                     <div class="mb-5">
-<%--                                        <h5 class="ml-3 pt-2">Bộ lọc</h5>--%>
+                                        <%--                                        <h5 class="ml-3 pt-2">Bộ lọc</h5>--%>
                                         <div class="d-flex align-items-center justify-content-end ">
                                             <div class="col-md-1">
                                                 <button id="btn-filter"
@@ -722,12 +737,14 @@
                             </div>
 
                             <%--                            Modal tùy chỉnh--%>
-                            <div class="modal fade" id="customModal" tabindex="-1" aria-labelledby="customModalLabel" aria-hidden="true">
+                            <div class="modal fade" id="customModal" tabindex="-1" aria-labelledby="customModalLabel"
+                                 aria-hidden="true">
                                 <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="customModalLabel">Tùy chỉnh ngày</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
                                             <div class="d-flex align-items-end">
@@ -735,19 +752,27 @@
                                                     <div class="form-group mb-0">
                                                         <label for="start-date" class="form-label">Từ ngày</label>
                                                         <input type="date" class="form-control" id="start-date"/>
-                                                        <div id="start-date-error" class="text-danger" style="display: none;">Vui lòng nhập ngày bắt đầu.</div>
+                                                        <div id="start-date-error" class="text-danger"
+                                                             style="display: none;">Vui lòng nhập ngày bắt đầu.
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div class="flex-fill me-2">
                                                     <div class="form-group mb-0">
                                                         <label for="end-date" class="form-label">Đến ngày</label>
                                                         <input type="date" class="form-control" id="end-date"/>
-                                                        <div id="end-date-error" class="text-danger" style="display: none;">Vui lòng nhập ngày kết thúc.</div>
-                                                        <div id="date-error" class="text-danger" style="display: none;">Ngày kết thúc phải sau ngày bắt đầu.</div>
+                                                        <div id="end-date-error" class="text-danger"
+                                                             style="display: none;">Vui lòng nhập ngày kết thúc.
+                                                        </div>
+                                                        <div id="date-error" class="text-danger" style="display: none;">
+                                                            Ngày kết thúc phải sau ngày bắt đầu.
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div class="flex-shrink-1">
-                                                    <button type="button" class="btn btn-primary btn-sm font-weight-bold" id="btn-search">
+                                                    <button type="button"
+                                                            class="btn btn-primary btn-sm font-weight-bold"
+                                                            id="btn-search">
                                                         Tìm kiếm
                                                     </button>
                                                 </div>
@@ -758,56 +783,59 @@
                             </div>
 
 
-
-
-                            <%--                            Modal Bộ Lọc--%>
+                            <%-- Modal Bộ Lọc--%>
                             <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="filterModalTitle">Tùy chỉnh ngày</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <div class="d-flex align-items-end">
-                                                <div class="flex-fill me-2">
-                                                    <div class="form-group mb-0">
-                                                        <label for="start-date" class="form-label">Từ ngày</label>
-                                                        <input name="startDate" type="date" class="form-control" id="start_date"/>
-                                                        <div id="start_date_error" class="text-danger" style="display: none;">Vui lòng nhập ngày bắt đầu.</div>
+                                        <form action="/admin/thong-ke/tuy-chinh" method="post" id="filterForm">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="filterModalTitle">Tùy chỉnh ngày</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="d-flex align-items-end">
+                                                    <div class="flex-fill me-2">
+                                                        <div class="form-group mb-0 position-relative">
+                                                            <label for="start-date" class="form-label">Từ ngày</label>
+                                                            <input name="startDate" type="date" class="form-control" id="start_date" />
+                                                            <div id="start_date_error" class="text-danger position-absolute" style="top: 100%; left: 0; display: none;">
+                                                                Vui lòng nhập ngày bắt đầu.
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="flex-fill me-2">
-                                                    <div class="form-group mb-0">
-                                                        <label for="end-date" class="form-label">Đến ngày</label>
-                                                        <input name="endDate" type="date" class="form-control" id="end_date"/>
-                                                        <div id="end_date_error" class="text-danger" style="display: none;">Vui lòng nhập ngày kết thúc.</div>
-                                                        <div id="date_error" class="text-danger" style="display: none;">Ngày kết thúc phải sau ngày bắt đầu.</div>
+                                                    <div class="flex-fill me-2">
+                                                        <div class="form-group mb-0 position-relative">
+                                                            <label for="end-date" class="form-label">Đến ngày</label>
+                                                            <input name="endDate" type="date" class="form-control" id="end_date" />
+                                                            <div id="end_date_error" class="text-danger position-absolute" style="top: 100%; left: 0; display: none;">
+
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="flex-shrink-1">
-                                                    <button type="button" class="btn btn-primary btn-sm font-weight-bold" id="btn_search">
-                                                        Tìm kiếm
-                                                    </button>
+                                                    <div class="flex-shrink-1">
+                                                        <button type="submit" class="btn btn-primary btn-sm font-weight-bold" id="btn_search">
+                                                            Tìm kiếm
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
+
 
 
                         <%--                            Biểu đồ thống kê--%>
                             <div>
                                 <div class="card chart-card">
                                     <div class="card-body chart-container">
-                                        <h3 id="chart-title" class="text-center mt-3">Biểu Đồ Thống Kê Hóa Đơn Và Sản Phẩm Tháng Này </h3>
-                                        <canvas id="myChart" ></canvas>
+                                        <h3 id="chart-title" class="text-center mt-3">Biểu Đồ Thống Kê Hóa Đơn Và Sản
+                                            Phẩm Tháng Này </h3>
+                                        <canvas id="myChart"></canvas>
                                     </div>
                                 </div>
                             </div>
-
-
                             <%--                 Table--%>
                             <div>
                                 <div class="row">
@@ -859,17 +887,21 @@
                                                     <nav aria-label="Page navigation example">
                                                         <ul class="pagination">
                                                             <li class="page-item ${topSellingProducts.hasPrevious() ? '' : 'disabled'}">
-                                                                <a class="page-link" href="?page=${topSellingProducts.hasPrevious() ? topSellingProducts.number - 1 : '#'}&status=${currentStatus}">&laquo;</a>
+                                                                <a class="page-link"
+                                                                   href="?page=${topSellingProducts.hasPrevious() ? topSellingProducts.number - 1 : '#'}&status=${currentStatus}">&laquo;</a>
                                                             </li>
                                                             <c:if test="${topSellingProducts.totalPages > 0}">
-                                                                <c:forEach var="i" begin="0" end="${topSellingProducts.totalPages - 1}">
+                                                                <c:forEach var="i" begin="0"
+                                                                           end="${topSellingProducts.totalPages - 1}">
                                                                     <li class="page-item ${topSellingProducts.number == i ? 'active' : ''}">
-                                                                        <a class="page-link" href="?page=${i}&status=${currentStatus}">${i + 1}</a>
+                                                                        <a class="page-link"
+                                                                           href="?page=${i}&status=${currentStatus}">${i + 1}</a>
                                                                     </li>
                                                                 </c:forEach>
                                                             </c:if>
                                                             <li class="page-item ${topSellingProducts.hasNext() ? '' : 'disabled'}">
-                                                                <a class="page-link" href="?page=${topSellingProducts.hasNext() ? topSellingProducts.number + 1 : '#'}&status=${currentStatus}">&raquo;</a>
+                                                                <a class="page-link"
+                                                                   href="?page=${topSellingProducts.hasNext() ? topSellingProducts.number + 1 : '#'}&status=${currentStatus}">&raquo;</a>
                                                             </li>
                                                         </ul>
                                                     </nav>
@@ -931,22 +963,26 @@
                                                     </c:forEach>
                                                     </tbody>
                                                 </table>
-<%--                                                Phân trang&ndash;%&gt;--%>
+                                                <%--                                                Phân trang&ndash;%&gt;--%>
                                                 <div class="float-end ">
                                                     <nav aria-label="Page navigation example">
                                                         <ul class="pagination">
                                                             <li class="page-item ${pageSPSapHetHang.hasPrevious() ? '' : 'disabled'}">
-                                                                <a class="page-link" href="?page=${pageSPSapHetHang.hasPrevious() ? pageSPSapHetHang.number - 1 : '#'}&status=${currentStatus}">&laquo;</a>
+                                                                <a class="page-link"
+                                                                   href="?page=${pageSPSapHetHang.hasPrevious() ? pageSPSapHetHang.number - 1 : '#'}&status=${currentStatus}">&laquo;</a>
                                                             </li>
                                                             <c:if test="${pageSPSapHetHang.totalPages > 0}">
-                                                                <c:forEach var="i" begin="0" end="${pageSPSapHetHang.totalPages - 1}">
+                                                                <c:forEach var="i" begin="0"
+                                                                           end="${pageSPSapHetHang.totalPages - 1}">
                                                                     <li class="page-item ${pageSPSapHetHang.number == i ? 'active' : ''}">
-                                                                        <a class="page-link" href="?page=${i}&status=${currentStatus}">${i + 1}</a>
+                                                                        <a class="page-link"
+                                                                           href="?page=${i}&status=${currentStatus}">${i + 1}</a>
                                                                     </li>
                                                                 </c:forEach>
                                                             </c:if>
                                                             <li class="page-item ${pageSPSapHetHang.hasNext() ? '' : 'disabled'}">
-                                                                <a class="page-link" href="?page=${pageSPSapHetHang.hasNext() ? pageSPSapHetHang.number + 1 : '#'}&status=${currentStatus}">&raquo;</a>
+                                                                <a class="page-link"
+                                                                   href="?page=${pageSPSapHetHang.hasNext() ? pageSPSapHetHang.number + 1 : '#'}&status=${currentStatus}">&raquo;</a>
                                                             </li>
                                                         </ul>
                                                     </nav>
@@ -1036,17 +1072,17 @@
 <script>
 
     // Mở giao diện bộ lọc
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         const filterButtons = document.querySelectorAll('#btn-today, #btn-week, #btn-month, #btn-year, #btn-custom');
         const filterButton = document.getElementById('btn-filter');
         const customLayout = document.getElementById('customLayout');
 
-        filterButton.addEventListener('click', function() {
+        filterButton.addEventListener('click', function () {
             customLayout.style.display = 'block';
         });
 
         filterButtons.forEach(button => {
-            button.addEventListener('click', function() {
+            button.addEventListener('click', function () {
                 customLayout.style.display = 'none';
             });
         });
@@ -1378,23 +1414,88 @@
     <%--});--%>
 
 
+</script>
+<script type="text/javascript">
+<%--    Hiển thị giao diện tùy chỉnh khi submit thành công--%>
+    document.addEventListener("DOMContentLoaded", function () {
+        const formSuccess = "${formSuccess}";
+        if (formSuccess === 'true') {
+            document.getElementById("customLayout").style.display = "block";
+        }
+    });
 
+        // Validate form tùy chỉnh
+        document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('filterForm');
+    const startDateInput = document.getElementById('start_date');
+    const endDateInput = document.getElementById('end_date');
+    const startDateError = document.getElementById('start_date_error');
+    const endDateError = document.getElementById('end_date_error');
 
+    function validateDates() {
+        let valid = true;
+        let errorMessage = '';
 
+        // Clear previous error states
+        startDateInput.classList.remove('border-danger');
+        endDateInput.classList.remove('border-danger');
+        startDateError.style.display = 'none';
+        endDateError.style.display = 'none';
 
+        // Validate start date
+        if (!startDateInput.value) {
+            startDateInput.classList.add('border-danger');
+            startDateError.textContent = 'Vui lòng nhập ngày bắt đầu.';
+            startDateError.style.display = 'block';
+            valid = false;
+        }
 
+        // Validate end date
+        if (!endDateInput.value) {
+            endDateInput.classList.add('border-danger');
+            errorMessage = 'Vui lòng nhập ngày kết thúc.';
+            valid = false;
+        } else if (startDateInput.value) {
+            // Validate date range
+            const startDate = new Date(startDateInput.value);
+            const endDate = new Date(endDateInput.value);
+            if (endDate <= startDate) {
+                endDateInput.classList.add('border-danger');
+                errorMessage = 'Ngày kết thúc phải sau ngày bắt đầu.';
+                valid = false;
+            }
+        }
 
+        // Set the error message
+        if (!valid) {
+            endDateError.textContent = errorMessage;
+            endDateError.style.display = 'block';
+        }
 
+        return valid;
+    }
+
+    form.addEventListener('submit', function(event) {
+        if (!validateDates()) {
+            event.preventDefault();
+        }
+    });
+
+    // Hide error messages and border on input focus
+    startDateInput.addEventListener('focus', function() {
+        startDateInput.classList.remove('border-danger');
+        startDateError.style.display = 'none';
+    });
+
+    endDateInput.addEventListener('focus', function() {
+        endDateInput.classList.remove('border-danger');
+        endDateError.style.display = 'none';
+    });
+});
 
 
 
 </script>
-
-
-
-
-
-
 
 </body>
 

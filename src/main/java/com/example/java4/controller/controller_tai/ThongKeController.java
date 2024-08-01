@@ -17,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.time.LocalDate;
@@ -29,6 +30,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/admin/thong-ke")
@@ -103,6 +105,21 @@ public class ThongKeController {
         model.addAttribute("pageSPSapHetHang", listSanPhamSapHetHang);
 
         return "/view/ThongKe/view.jsp";
+    }
+
+//    Thống kê doanh thu theo tùy chỉnh
+    @PostMapping("/tuy-chinh")
+    public String thongKeTheoTuyChinh(@RequestParam("startDate") String startDate,
+                                      @RequestParam("endDate") String endDate,
+                                      RedirectAttributes redirectAttributes) {
+        LocalDateTime startDateTime = LocalDate.parse(startDate).atStartOfDay();
+        LocalDateTime endDateTime = LocalDate.parse(endDate).atStartOfDay();
+        List<Object[]> customResults = _thongKeRepo.getCustomStatistics(startDateTime, endDateTime);
+        logger.info("Custom date range results: {}", customResults);
+        ThongKeDTO customStats = ThongKeDTO.mapToThongKeDTO(customResults.get(0));
+        redirectAttributes.addFlashAttribute("customStats", customStats);
+        redirectAttributes.addFlashAttribute("formSuccess", true);
+        return "redirect:/admin/thong-ke/view";
     }
 
 
