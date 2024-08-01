@@ -3,6 +3,7 @@ import com.example.java4.entities.SanPham;
 import com.example.java4.repositories.SanPhamRepository;
 import com.example.java4.request.QLSP.Store.SanPhamStore;
 import com.example.java4.request.QLSP.Update.SanPhamUpdate;
+import com.example.java4.response.SanPhamView;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 @Controller
@@ -25,10 +27,22 @@ public class SanPhamController {
 
     @CrossOrigin
     @GetMapping("/index")
-    public ResponseEntity<List<SanPham>> index(@RequestParam("page") Optional<Integer> pageParam){
+    public ResponseEntity<List<SanPhamView>> index(@RequestParam("page") Optional<Integer> pageParam){
         int page = pageParam.orElse(1);
         Pageable pageale = PageRequest.of(page-1, 20);
-        return ResponseEntity.ok(spRepo.findByTrangThai(1,pageale).getContent());
+        List<SanPham> lstSP = spRepo.findByTrangThai(1,pageale).getContent();
+        List<SanPhamView> lstSPView = new ArrayList<>();
+        for (SanPham sanPham : lstSP) {
+             SanPhamView spView  = new SanPhamView();
+             spView.setId(sanPham.getId());
+             spView.setMa(sanPham.getMa());
+             spView.setTen(sanPham.getTen());
+             spView.setNgayTao(sanPham.getNgayTao());
+             spView.setHinhAnh(spRepo.getHinhAnhOfSP(sanPham.getId()));
+             spView.setTrangThai(sanPham.getTrangThai());
+             lstSPView.add(spView);
+        }
+        return ResponseEntity.ok(lstSPView);
     }
 
     @CrossOrigin

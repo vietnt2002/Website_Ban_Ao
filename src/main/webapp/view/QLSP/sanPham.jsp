@@ -921,27 +921,23 @@
                     const tenSanPham = sp.ten || 'N/A';
                     const hinhAnh = sp.hinhAnh || 'N/A';
                     const ngayTao = sp.ngayTao || 'N/A';
-                    const trangThai = sp.trangThai == 1 ? true : false;
+                    const trangThai = sp.trangThai == 1
+                        ? '<p style="font-weight: bold; color: blue">Hoạt động</p>'
+                        : '<p style="font-weight: bold; color: red">Dừng HĐ</p>';
                     html += '<tr>' +
                         '<td>' + (i + 1) + '</td>' +
-                        '<td><img src="' + hinhAnh + '" alt="Image" class="img-fluid" /></td>' +
+                        '<td><img src="' + "/image/" + hinhAnh + '" alt="Image" style="width: 70px ; height: 60px" class="img-fluid rounded border" /></td>' +
                         '<td>' + maSanPham + '</td>' +
                         '<td>' + tenSanPham + '</td>' +
                         '<td>' + ngayTao + '</td>' +
-                        "<td>" +
-                        "<div class='form-check form-switch'>" +
-                        "<input class='form-check-input' type='checkbox' role='switch' id='trangThaiAtTbl_" + spct.id + "'" +
-                        (trangThai ? " checked" : "") +
-                        ">" +
-                        "</div>" +
-                        "</td>" +
+                        '<td>' + trangThai + '</td>' +
                         '<td>' +
                         '<div class="d-inline">' +
                         '<button id="editSPBtn_' + sp.id + '" class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#ModalEdit">Chỉnh sửa</button>' +
                         '<button id="detailSPBtn_' + sp.id + '" class="btn btn-danger">Chi tiết</button>' +
                         '</div>' +
                         '</td>' +
-                        '</tr>';
+                         '</tr>';
                 });
                 $("#tbl_ds_sp").html(html)
             });
@@ -1281,14 +1277,6 @@
 
             }
         });
-    });
-    $(document).on('click', "input[id^='trangThaiAtTbl_']", e => {
-        e.preventDefault();
-        const queryString = window.location.pathname;
-        const pathParts = queryString.split('/');
-        const pathVariable = pathParts[pathParts.length - 1];
-        const spctid = e.currentTarget.id.replace("trangThaiAtTbl_", "");
-        console.log("test spctid:" + spctid);
     });
     function validateNull(param) {
         if (param === "" || param === undefined) {
