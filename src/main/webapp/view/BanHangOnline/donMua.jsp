@@ -4,6 +4,8 @@
 <%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -207,36 +209,6 @@
 <body>
 <!-- Topbar Start -->
 <div class="container-fluid">
-    <div class="row bg-secondary py-2 px-xl-5">
-        <div class="col-lg-6 d-none d-lg-block">
-            <div class="d-inline-flex align-items-center">
-                <a class="text-dark" href="">FAQs</a>
-                <span class="text-muted px-2">|</span>
-                <a class="text-dark" href="">Help</a>
-                <span class="text-muted px-2">|</span>
-                <a class="text-dark" href="">Support</a>
-            </div>
-        </div>
-        <div class="col-lg-6 text-center text-lg-right">
-            <div class="d-inline-flex align-items-center">
-                <a class="text-dark px-2" href="">
-                    <i class="fab fa-facebook-f"></i>
-                </a>
-                <a class="text-dark px-2" href="">
-                    <i class="fab fa-twitter"></i>
-                </a>
-                <a class="text-dark px-2" href="">
-                    <i class="fab fa-linkedin-in"></i>
-                </a>
-                <a class="text-dark px-2" href="">
-                    <i class="fab fa-instagram"></i>
-                </a>
-                <a class="text-dark pl-2" href="">
-                    <i class="fab fa-youtube"></i>
-                </a>
-            </div>
-        </div>
-    </div>
     <div class="row align-items-center py-3 px-xl-5">
         <div class="col-lg-3 d-none d-lg-block">
             <a href="" class="text-decoration-none">
@@ -245,16 +217,7 @@
             </a>
         </div>
         <div class="col-lg-6 col-6 text-left">
-            <form action="">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search for products">
-                    <div class="input-group-append">
-                            <span class="input-group-text bg-transparent text-primary">
-                                <i class="fa fa-search"></i>
-                            </span>
-                    </div>
-                </div>
-            </form>
+
         </div>
         <div class="col-lg-3 col-6 text-right userCart">
             <div class="dropdown" onmouseover="showDropdown()" onmouseout="hideDropdown()">
@@ -440,7 +403,6 @@
                 <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                     <div class="navbar-nav mr-auto py-0">
                         <a href="/cua-hang/trang-chu" class="nav-item nav-link active">Trang chủ</a>
-                        <a href="detail.html" class="nav-item nav-link">Giới thiệu</a>
                         <a href="contact.html" class="nav-item nav-link">Liên hệ</a>
                     </div>
                 </div>
@@ -590,8 +552,11 @@
                                                     </c:when>
                                                 </c:choose>
                                             </div>
+                                            <c:set var="ngayThanhToanFormatted" value="${fn:replace(i.ngayThanhToan, 'T', ' ')}" />
                                             <div class="col-6" style="bottom: -45px;">
-                                                <div><strong>Ngày đặt hàng:</strong> ${i.ngayThanhToan}</div>
+                                                <div>
+                                                    <strong>Ngày đặt hàng:</strong> ${ngayThanhToanFormatted}
+                                                </div>
                                             </div>
                                             <div class="col-6">
                                                 <div><strong>Tổng:</strong>
@@ -665,8 +630,11 @@
                                                 </div>
                                             </c:if>
                                         </div>
+                                        <c:set var="ngayThanhToanFormatted" value="${fn:replace(i.ngayThanhToan, 'T', ' ')}" />
                                         <div class="col-6" style="bottom: -45px;">
-                                            <div><strong>Ngày đặt hàng:</strong> ${i.ngayThanhToan}</div>
+                                            <div>
+                                                <strong>Ngày đặt hàng:</strong> ${ngayThanhToanFormatted}
+                                            </div>
                                         </div>
                                         <div class="col-6">
                                             <div><strong>Tổng:</strong>
@@ -738,8 +706,11 @@
                                                 </div>
                                             </c:if>
                                         </div>
+                                        <c:set var="ngayThanhToanFormatted" value="${fn:replace(i.ngayThanhToan, 'T', ' ')}" />
                                         <div class="col-6" style="bottom: -45px;">
-                                            <div><strong>Ngày đặt hàng:</strong> ${i.ngayThanhToan}</div>
+                                            <div>
+                                                <strong>Ngày đặt hàng:</strong> ${ngayThanhToanFormatted}
+                                            </div>
                                         </div>
                                         <div class="col-6">
                                             <div><strong>Tổng:</strong>
@@ -811,8 +782,11 @@
                                                 </div>
                                             </c:if>
                                         </div>
+                                        <c:set var="ngayThanhToanFormatted" value="${fn:replace(i.ngayThanhToan, 'T', ' ')}" />
                                         <div class="col-6" style="bottom: -45px;">
-                                            <div><strong>Ngày đặt hàng:</strong> ${i.ngayThanhToan}</div>
+                                            <div>
+                                                <strong>Ngày đặt hàng:</strong> ${ngayThanhToanFormatted}
+                                            </div>
                                         </div>
                                         <div class="col-6">
                                             <div><strong>Tổng:</strong>
@@ -882,8 +856,11 @@
                                                 </div>
                                             </c:if>
                                         </div>
+                                        <c:set var="ngayThanhToanFormatted" value="${fn:replace(i.ngayThanhToan, 'T', ' ')}" />
                                         <div class="col-6" style="bottom: -45px;">
-                                            <div><strong>Ngày đặt hàng:</strong> ${i.ngayThanhToan}</div>
+                                            <div>
+                                                <strong>Ngày đặt hàng:</strong> ${ngayThanhToanFormatted}
+                                            </div>
                                         </div>
                                         <div class="col-6">
                                             <div><strong>Tổng:</strong>
@@ -954,8 +931,11 @@
                                                 </div>
                                             </c:if>
                                         </div>
+                                        <c:set var="ngayThanhToanFormatted" value="${fn:replace(i.ngayThanhToan, 'T', ' ')}" />
                                         <div class="col-6" style="bottom: -45px;">
-                                            <div><strong>Ngày đặt hàng:</strong> ${i.ngayThanhToan}</div>
+                                            <div>
+                                                <strong>Ngày đặt hàng:</strong> ${ngayThanhToanFormatted}
+                                            </div>
                                         </div>
                                         <div class="col-6">
                                             <div><strong>Tổng:</strong>
