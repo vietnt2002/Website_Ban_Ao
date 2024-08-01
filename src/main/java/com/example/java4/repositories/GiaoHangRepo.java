@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Repository
@@ -23,4 +24,9 @@ public interface GiaoHangRepo extends JpaRepository<GiaoHang, String> {
     //Sáng
     @Query("SELECT count(gh.id) FROM GiaoHang gh WHERE gh.idHoaDon.id = ?1")
     Integer findByIdHoaDon( String idHoaDon);
+
+    @Query("select gh.phiShip from GiaoHang gh \n" +
+            "join HoaDon hd on hd.id = gh.idHoaDon.id\n" +
+            "where hd.idKhachHang.id = ?1 and gh.idHoaDon.id = ?2")
+    BigDecimal findByPhiShip(String idKH, String idHD);
 }

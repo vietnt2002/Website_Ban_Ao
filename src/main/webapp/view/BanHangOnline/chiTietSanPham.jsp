@@ -39,10 +39,37 @@
     <!-- SweetAlert2 JS -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <!-- SweetAlert2 JS -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Owl Carousel CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/owl.carousel/2.3.4/assets/owl.carousel.min.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/owl.carousel/2.3.4/assets/owl.theme.default.min.css">
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Owl Carousel JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/owl.carousel/2.3.4/owl.carousel.min.js"></script>
+
 
     <style>
+        .owl-carousel .item {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Đảm bảo rằng các sản phẩm có kích thước hợp lý */
+        .owl-carousel .product-item {
+            width: 100%;
+            max-width: 250px; /* Điều chỉnh kích thước tối đa của sản phẩm */
+            margin: 0 5px; /* Khoảng cách giữa các sản phẩm */
+        }
+
+        .custom-col {
+            display: flex;
+            justify-content: center;
+        }
+
         .userCart {
             display: flex;
             align-items: center;
@@ -131,7 +158,7 @@
             </form>
         </div>
         <div class="col-lg-3 col-6 text-right userCart">
-            <div class="dropdown" onmouseover="showDropdown()" onmouseout="hideDropdown()">
+            <div class="dropdown">
                 <button class="btn btn-light bg-light" style="font-size: 19px; margin-right: 3px"
                         type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                     <c:choose>
@@ -208,7 +235,8 @@
             </div>
             <div class="modal-body">
                 <div class="login-form-wrapper">
-                    <form id="login-form" class="form" action="login" method="post" modelAttribute="khachHangDTO">
+                    <form id="login-form" class="form" action="/cua-hang/login" method="post"
+                          modelAttribute="khachHangDTO">
                         <div class="form-group">
                             <label for="taiKhoan" class="text-info">Username:</label><br>
                             <input placeholder="Username" type="text" id="taiKhoan" name="taiKhoan"
@@ -252,7 +280,8 @@
             </div>
             <div class="modal-body">
                 <div class="register-form-wrapper">
-                    <form id="register-form" class="form" action="register" method="post" modelAttribute="khachHangDTO">
+                    <form id="register-form" class="form" action="/cua-hang/register" method="post"
+                          modelAttribute="khachHangDTO">
                         <div class="form-group">
                             <label for="registerUsername" class="text-info">Username:</label><br>
                             <input placeholder="Username" type="text" id="registerUsername" name="taiKhoan"
@@ -261,7 +290,7 @@
                         </div>
                         <div class="form-group">
                             <label for="registerEmail" class="text-info">Email:</label><br>
-                            <input placeholder="Email" type="email" id="registerEmail" name="email"
+                            <input placeholder="Email" type="text" id="registerEmail" name="email"
                                    class="form-control" value="${khachHangDTO.email}">
                             <small id="registerEmailError" class="text-danger"></small>
                         </div>
@@ -278,6 +307,13 @@
                             <small id="registerPasswordError" class="text-danger"></small>
                         </div>
                         <div class="form-group">
+                            <label for="registerPassword" class="text-info">Confirm Password:</label><br>
+                            <input placeholder="Confirm password" type="password" id="nhapLaiMatKhau"
+                                   name="nhapLaiMatKhau"
+                                   class="form-control" value="">
+                            <small id="nhapLaiMatKhauError" class="text-danger"></small>
+                        </div>
+                        <div class="form-group">
                             <input type="submit" name="submit" class="btn btn-info btn-md w-100" value="Register">
                         </div>
                         <div id="login-link" class="text-right">
@@ -291,7 +327,6 @@
     </div>
 </div>
 <!-- Registration Modal End -->
-
 
 <!-- Navbar Start -->
 <div class="container-fluid">
@@ -439,151 +474,132 @@
                     </button>
                 </div>
             </form>
-
-            <div class="d-flex pt-2">
-                <p class="text-dark font-weight-medium mb-0 mr-2">Share on:</p>
-                <div class="d-inline-flex">
-                    <a class="text-dark px-2" href="">
-                        <i class="fab fa-facebook-f"></i>
-                    </a>
-                    <a class="text-dark px-2" href="">
-                        <i class="fab fa-twitter"></i>
-                    </a>
-                    <a class="text-dark px-2" href="">
-                        <i class="fab fa-linkedin-in"></i>
-                    </a>
-                    <a class="text-dark px-2" href="">
-                        <i class="fab fa-pinterest"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row px-xl-5">
-        <div class="col">
-            <div class="nav nav-tabs justify-content-center border-secondary mb-4">
-                <a class="nav-item nav-link active" data-toggle="tab" href="#tab-pane-1">Description</a>
-                <a class="nav-item nav-link" data-toggle="tab" href="#tab-pane-2">Information</a>
-                <a class="nav-item nav-link" data-toggle="tab" href="#tab-pane-3">Reviews (0)</a>
-            </div>
-            <div class="tab-content">
-                <div class="tab-pane fade show active" id="tab-pane-1">
-                    <h4 class="mb-3">Product Description</h4>
-                    <p>Eos no lorem eirmod diam diam, eos elitr et gubergren diam sea. Consetetur vero aliquyam invidunt
-                        duo dolores et duo sit. Vero diam ea vero et dolore rebum, dolor rebum eirmod consetetur
-                        invidunt sed sed et, lorem duo et eos elitr, sadipscing kasd ipsum rebum diam. Dolore diam stet
-                        rebum sed tempor kasd eirmod. Takimata kasd ipsum accusam sadipscing, eos dolores sit no ut diam
-                        consetetur duo justo est, sit sanctus diam tempor aliquyam eirmod nonumy rebum dolor accusam,
-                        ipsum kasd eos consetetur at sit rebum, diam kasd invidunt tempor lorem, ipsum lorem elitr
-                        sanctus eirmod takimata dolor ea invidunt.</p>
-                    <p>Dolore magna est eirmod sanctus dolor, amet diam et eirmod et ipsum. Amet dolore tempor
-                        consetetur sed lorem dolor sit lorem tempor. Gubergren amet amet labore sadipscing clita clita
-                        diam clita. Sea amet et sed ipsum lorem elitr et, amet et labore voluptua sit rebum. Ea erat sed
-                        et diam takimata sed justo. Magna takimata justo et amet magna et.</p>
-                </div>
-                <div class="tab-pane fade" id="tab-pane-2">
-                    <h4 class="mb-3">Additional Information</h4>
-                    <p>Eos no lorem eirmod diam diam, eos elitr et gubergren diam sea. Consetetur vero aliquyam invidunt
-                        duo dolores et duo sit. Vero diam ea vero et dolore rebum, dolor rebum eirmod consetetur
-                        invidunt sed sed et, lorem duo et eos elitr, sadipscing kasd ipsum rebum diam. Dolore diam stet
-                        rebum sed tempor kasd eirmod. Takimata kasd ipsum accusam sadipscing, eos dolores sit no ut diam
-                        consetetur duo justo est, sit sanctus diam tempor aliquyam eirmod nonumy rebum dolor accusam,
-                        ipsum kasd eos consetetur at sit rebum, diam kasd invidunt tempor lorem, ipsum lorem elitr
-                        sanctus eirmod takimata dolor ea invidunt.</p>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item px-0">
-                                    Sit erat duo lorem duo ea consetetur, et eirmod takimata.
-                                </li>
-                                <li class="list-group-item px-0">
-                                    Amet kasd gubergren sit sanctus et lorem eos sadipscing at.
-                                </li>
-                                <li class="list-group-item px-0">
-                                    Duo amet accusam eirmod nonumy stet et et stet eirmod.
-                                </li>
-                                <li class="list-group-item px-0">
-                                    Takimata ea clita labore amet ipsum erat justo voluptua. Nonumy.
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="col-md-6">
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item px-0">
-                                    Sit erat duo lorem duo ea consetetur, et eirmod takimata.
-                                </li>
-                                <li class="list-group-item px-0">
-                                    Amet kasd gubergren sit sanctus et lorem eos sadipscing at.
-                                </li>
-                                <li class="list-group-item px-0">
-                                    Duo amet accusam eirmod nonumy stet et et stet eirmod.
-                                </li>
-                                <li class="list-group-item px-0">
-                                    Takimata ea clita labore amet ipsum erat justo voluptua. Nonumy.
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="tab-pane fade" id="tab-pane-3">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h4 class="mb-4">1 review for "Colorful Stylish Shirt"</h4>
-                            <div class="media mb-4">
-                                <img src="/view_ban_hang/img/user.jpg" alt="Image" class="img-fluid mr-3 mt-1"
-                                     style="width: 45px;">
-                                <div class="media-body">
-                                    <h6>John Doe<small> - <i>01 Jan 2045</i></small></h6>
-                                    <div class="text-primary mb-2">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star-half-alt"></i>
-                                        <i class="far fa-star"></i>
-                                    </div>
-                                    <p>Diam amet duo labore stet elitr ea clita ipsum, tempor labore accusam ipsum et no
-                                        at. Kasd diam tempor rebum magna dolores sed sed eirmod ipsum.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <h4 class="mb-4">Leave a review</h4>
-                            <small>Your email address will not be published. Required fields are marked *</small>
-                            <div class="d-flex my-3">
-                                <p class="mb-0 mr-2">Your Rating * :</p>
-                                <div class="text-primary">
-                                    <i class="far fa-star"></i>
-                                    <i class="far fa-star"></i>
-                                    <i class="far fa-star"></i>
-                                    <i class="far fa-star"></i>
-                                    <i class="far fa-star"></i>
-                                </div>
-                            </div>
-                            <form>
-                                <div class="form-group">
-                                    <label for="message">Your Review *</label>
-                                    <textarea id="message" cols="30" rows="5" class="form-control"></textarea>
-                                </div>
-                                <div class="form-group">
-                                    <label for="name">Your Name *</label>
-                                    <input type="text" class="form-control" id="name">
-                                </div>
-                                <div class="form-group">
-                                    <label for="email">Your Email *</label>
-                                    <input type="email" class="form-control" id="email">
-                                </div>
-                                <div class="form-group mb-0">
-                                    <input type="submit" value="Leave Your Review" class="btn btn-primary px-3">
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </div>
 <!-- Shop Detail End -->
+
+<!-- Container for the carousel -->
+<%--<div class="container-fluid py-5">--%>
+<%--    <div class="text-center mb-4">--%>
+<%--        <h2 class="section-title px-5"><span class="px-2">You May Also Like</span></h2>--%>
+<%--    </div>--%>
+<%--    <div class="row px-xl-5">--%>
+<%--        <div class="col">--%>
+<%--            <div class="owl-carousel related-carousel" id="product-container">--%>
+<%--                <!-- Sản phẩm sẽ được thêm vào đây bởi JavaScript -->--%>
+<%--            </div>--%>
+<%--        </div>--%>
+<%--    </div>--%>
+<%--</div>--%>
+
+<%--<script>--%>
+<%--    document.addEventListener('DOMContentLoaded', () => {--%>
+<%--        const products = [];--%>
+<%--        <c:forEach items="${listCTSPRes}" var="ctsp">--%>
+<%--        products.push({--%>
+<%--            idCTSP: '${ctsp.idCTSP}',--%>
+<%--            idSP: '${ctsp.idSP}',--%>
+<%--            maSP: '${ctsp.maSP}',--%>
+<%--            tenSanPham: '${ctsp.tenSanPham}',--%>
+<%--            tenMauSac: '${ctsp.tenMauSac}',--%>
+<%--            tenKichThuoc: '${ctsp.tenKichThuoc}',--%>
+<%--            tenKieuTay: '${ctsp.tenKieuTay}',--%>
+<%--            soLuong: '${ctsp.soLuong}',--%>
+<%--            giaBan: parseFloat('${ctsp.giaBan}'),--%>
+<%--            hinhAnh1: '${ctsp.hinhAnh1}'--%>
+<%--        });--%>
+<%--        </c:forEach>--%>
+
+<%--        const listCTHD = [];--%>
+<%--        <c:forEach items="${listCTHDByTT}" var="cthd">--%>
+<%--        listCTHD.push({--%>
+<%--            id: '${cthd.id}',--%>
+<%--            idCTSP: '${cthd.idCTSP.id}',--%>
+<%--            idSP: '${cthd.idCTSP.idSanPham.id}',--%>
+<%--            soLuong: parseInt('${cthd.soLuong}', 10)--%>
+<%--        });--%>
+<%--        </c:forEach>--%>
+
+<%--        const totalQuantities = {};--%>
+<%--        listCTHD.forEach(cthd => {--%>
+<%--            if (!totalQuantities[cthd.idSP]) {--%>
+<%--                totalQuantities[cthd.idSP] = 0;--%>
+<%--            }--%>
+<%--            totalQuantities[cthd.idSP] += cthd.soLuong;--%>
+<%--        });--%>
+
+<%--        const sortedTotalQuantities = Object.entries(totalQuantities)--%>
+<%--            .map(([idSP, soLuong]) => ({idSP, soLuong}))--%>
+<%--            .sort((a, b) => b.soLuong - a.soLuong);--%>
+
+<%--        const top5Products = sortedTotalQuantities.slice(0, 5).map(item => item.idSP);--%>
+
+<%--        const displayTop5Products = () => {--%>
+<%--            const top5FilteredProducts = products.filter(product => top5Products.includes(product.idSP));--%>
+<%--            const uniqueTop5FilteredProducts = Array.from(new Set(top5FilteredProducts.map(p => p.idSP)))--%>
+<%--                .map(idSP => top5FilteredProducts.find(p => p.idSP === idSP));--%>
+
+<%--            const productContainer = document.getElementById('product-container');--%>
+
+<%--            if (!productContainer) {--%>
+<%--                console.error('Product container not found!');--%>
+<%--                return;--%>
+<%--            }--%>
+
+<%--            productContainer.innerHTML = '';--%>
+
+<%--            uniqueTop5FilteredProducts.forEach(sp => {--%>
+<%--                const soldQuantity = totalQuantities[sp.idSP] || 0;--%>
+<%--                const productHTML =--%>
+<%--                    '<div class="item">' +--%>
+<%--                    '<div class="card product-item border-0">' +--%>
+<%--                    '<div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">' +--%>
+<%--                    '<img class="img-fluid w-100" src="/image/' + sp.hinhAnh1 + '" alt="" style="width: 100%; height: 370px;">' +--%>
+<%--                    '</div>' +--%>
+<%--                    '<div class="card-body border-left border-right text-center p-0 pt-4 pb-3">' +--%>
+<%--                    '<h6 class="text-truncate mb-2">' + sp.tenSanPham + '</h6>' +--%>
+<%--                    '<h6 class="text-truncate mb-2" style="font-family: auto">' + sp.maSP + '</h6>' +--%>
+<%--                    '<p class="text-truncate mb-2">Đã bán: ' + soldQuantity + '</p>' +--%>
+<%--                    '</div>' +--%>
+<%--                    '<div class="card-footer d-flex justify-content-between bg-light border">' +--%>
+<%--                    '<h6>' +--%>
+<%--                    new Intl.NumberFormat('vi-VN', {style: 'currency', currency: 'VND'}).format(sp.giaBan) +--%>
+<%--                    '</h6>' +--%>
+<%--                    '<a href="/cua-hang/detail-san-pham/' + sp.idCTSP + '" class="btn btn-sm text-dark p-0">' +--%>
+<%--                    '<i class="fas fa-eye text-primary mr-1"></i>Chi tiết' +--%>
+<%--                    '</a>' +--%>
+<%--                    '</div>' +--%>
+<%--                    '</div>' +--%>
+<%--                    '</div>';--%>
+<%--                productContainer.insertAdjacentHTML('beforeend', productHTML);--%>
+<%--            });--%>
+
+<%--            $('#product-container').owlCarousel({--%>
+<%--                loop: true,--%>
+<%--                margin: 10,--%>
+<%--                nav: true,--%>
+<%--                responsive: {--%>
+<%--                    0: {--%>
+<%--                        items: 1--%>
+<%--                    },--%>
+<%--                    600: {--%>
+<%--                        items: 2--%>
+<%--                    },--%>
+<%--                    1000: {--%>
+<%--                        items: 4--%>
+<%--                    }--%>
+<%--                },--%>
+<%--                autoplay: true,--%>
+<%--                autoplayTimeout: 3000,--%>
+<%--                autoplayHoverPause: true--%>
+<%--            });--%>
+<%--        };--%>
+
+<%--        displayTop5Products();--%>
+<%--    });--%>
+<%--</script>--%>
+
 
 
 <!-- Products Start -->
@@ -902,235 +918,6 @@
 </script>
 
 <script>
-    const Toast = Swal.mixin({
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 4000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-            toast.onmouseenter = Swal.stopTimer;
-            toast.onmouseleave = Swal.resumeTimer;
-        }
-    });
-
-    <c:if test="${not empty error}">
-    Toast.fire({
-        icon: "error",
-        title: "${error}"
-    });
-    </c:if>
-
-    <c:if test="${not empty success}">
-    Toast.fire({
-        icon: "success",
-        title: "${success}"
-    });
-    </c:if>
-</script>
-
-<script>
-    //  // Hiển thị thông báo thất bại nếu đăng nhập thất bại
-    const Toast = Swal.mixin({
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-            toast.onmouseenter = Swal.stopTimer;
-            toast.onmouseleave = Swal.resumeTimer;
-        }
-    });
-
-    <%--    Hiển thị thông báo thành công khi đăng nhập thất bại--%>
-    <c:if test="${not empty error}">
-    Toast.fire({
-        icon: "error",
-        title: "${error}"
-    });
-    </c:if>
-
-    <%--    Hiển thị thông báo thành công khi đăng nhập thành công--%>
-    <c:if test="${not empty successMessage}">
-    Toast.fire({
-        icon: "success",
-        title: "${successMessage}"
-    });
-    </c:if>
-    <%--Validate Form đăng nhặp--%>
-    $(document).ready(function () {
-        // Bắt lỗi khi submit form
-        $('#login-form').submit(function (event) {
-            event.preventDefault(); // Ngăn form submit mặc định
-
-            var form = $(this);
-            var username = $('#taiKhoan').val().trim();
-            var password = $('#matKhau').val().trim();
-
-            var hasError = false;
-
-            if (!username) {
-                $('#taiKhoanError').text('Vui lòng nhập username.');
-                $('#taiKhoan').addClass('border-danger');
-                hasError = true;
-            } else {
-                $('#taiKhoanError').text('');
-                $('#taiKhoan').removeClass('border-danger');
-            }
-
-            if (!password) {
-                $('#matKhauError').text('Vui lòng nhập password.');
-                $('#matKhau').addClass('border-danger');
-                hasError = true;
-            } else {
-                $('#matKhauError').text('');
-                $('#matKhau').removeClass('border-danger');
-            }
-
-            if (!hasError) {
-                // Gửi yêu cầu đăng nhập bằng AJAX
-                $.ajax({
-                    type: 'POST',
-                    url: form.attr('action'),
-                    data: form.serialize(),
-                    success: function (response) {
-                        if (response.success) {
-                            // Đăng nhập thành công, điều hướng sang trang home
-                            Toast.fire({
-                                icon: "success",
-                                title: response.successMessage
-                            });
-
-                            setTimeout(function () {
-                                window.location.href = response.redirectUrl;
-                            }, 2000);
-                        } else {
-                            // Đăng nhập không thành công, hiển thị lỗi
-                            if (response.errorUsername) {
-                                $('#taiKhoanError').text(response.errorUsername);
-                                $('#taiKhoan').addClass('border-danger');
-                            }
-                            if (response.errorPassword) {
-                                $('#matKhauError').text(response.errorPassword);
-                                $('#matKhau').addClass('border-danger');
-                            }
-                        }
-                    },
-                    error: function () {
-                        console.error('Đã xảy ra lỗi khi gửi yêu cầu đăng nhập.');
-                    }
-                });
-            }
-        });
-
-        // Xử lý lỗi và hiển thị modal khi submit form đăng ký
-        $('#register-form').submit(function (event) {
-            var form = $(this);
-            var hasError = false;
-
-            var username = $('#registerUsername').val().trim();
-            var email = $('#registerEmail').val().trim();
-            var phone = $('#registerPhone').val().trim();
-            var password = $('#registerPassword').val().trim();
-
-            // Clear previous errors
-            $('.text-danger').text('');
-            $('.form-control').removeClass('border-danger');
-
-            // Validate fields
-            if (!username) {
-                $('#registerUsernameError').text('Vui lòng nhập username.');
-                $('#registerUsername').addClass('border-danger');
-                hasError = true;
-            }
-            if (!email) {
-                $('#registerEmailError').text('Vui lòng nhập email.');
-                $('#registerEmail').addClass('border-danger');
-                hasError = true;
-            } else if (!isValidEmail(email)) {
-                $('#registerEmailError').text('Email không hợp lệ.');
-                $('#registerEmail').addClass('border-danger');
-                hasError = true;
-            }
-            if (!phone) {
-                $('#registerPhoneError').text('Vui lòng nhập số điện thoại.');
-                $('#registerPhone').addClass('border-danger');
-                hasError = true;
-            } else if (!isValidVietnamesePhoneNumber(phone)) {
-                $('#registerPhoneError').text('Số điện thoại không hợp lệ');
-                $('#registerPhone').addClass('border-danger');
-                hasError = true;
-            }
-            if (!password) {
-                $('#registerPasswordError').text('Vui lòng nhập mật khẩu.');
-                $('#registerPassword').addClass('border-danger');
-                hasError = true;
-            } else if (password.length < 6) {
-                $('#registerPasswordError').text('Mật khẩu phải có ít nhất 6 ký tự.');
-                $('#registerPassword').addClass('border-danger');
-                hasError = true;
-            }
-
-            // If any validation errors exist, prevent form submission
-            if (hasError) {
-                event.preventDefault();
-            }
-        });
-
-
-        // Ẩn lỗi khi người dùng click vào trường input
-        $('input').focus(function () {
-            $(this).siblings('.text-danger').text('');
-            $(this).removeClass('border-danger');
-        });
-
-        // Hiển thị lỗi từ Controller (nếu có)
-        var errorUsername = '<%= request.getAttribute("errorUsername") %>';
-        var errorPassword = '<%= request.getAttribute("errorPassword") %>';
-        var errorUsernameExit = '<%= request.getAttribute("errorUsernameExit") %>';
-
-        if (errorUsername && errorUsername !== 'null') {
-            $('#taiKhoanError').text(errorUsername);
-            $('#taiKhoan').addClass('border-danger');
-        }
-        if (errorPassword && errorPassword !== 'null') {
-            $('#matKhauError').text(errorPassword);
-            $('#matKhau').addClass('border-danger');
-        }
-
-        if (errorUsernameExit !== 'null') {
-            $('#registerUsername').text(errorUsernameExit);
-            $('#taiKhoan').addClass('border-danger');
-        }
-
-        // Khi modal được mở, thêm class "modal-open" vào body
-        $('#loginModal').on('shown.bs.modal', function () {
-            $('body').addClass('modal-open');
-        });
-
-        // Khi modal được đóng, loại bỏ class "modal-open" khỏi body
-        $('#loginModal').on('hidden.bs.modal', function () {
-            $('body').removeClass('modal-open');
-        });
-    });
-
-    // Hàm kiểm tra định dạng email
-    function isValidEmail(email) {
-        // Biểu thức chính quy để kiểm tra định dạng email
-        var regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return regex.test(email);
-    }
-
-    // Hàm kiểm tra định dạng số điện thoại
-    function isValidVietnamesePhoneNumber(phoneNumber) {
-        // Biểu thức chính quy để kiểm tra định dạng số điện thoại (theo quy định của Việt Nam)
-        var regex = /^(0|\+84)\d{9,10}$/;
-        return regex.test(phoneNumber);
-    }Fform
-</script>
-
-<script>
     // Hiển thị thông báo thất bại nếu đăng nhập thất bại
     const Toast = Swal.mixin({
         toast: true,
@@ -1159,12 +946,22 @@
         title: "${successMessage}"
     });
     </c:if>
+
+    //Lấy ra danh sách khách hàng
+    const listKhachHang = [];
+    <c:forEach items="${listKhachHang}" var="kh">
+    listKhachHang.push({
+        taiKhoan: '${kh.taiKhoan}',
+        email: '${kh.email}',
+        sdt: '${kh.sdt}',
+    });
+    </c:forEach>
     <%--Validate Form đăng nhặp--%>
     $(document).ready(function () {
         // Bắt lỗi khi submit form
         $('#login-form').submit(function (event) {
             event.preventDefault(); // Ngăn form submit mặc định
-
+            debugger
             var form = $(this);
             var username = $('#taiKhoan').val().trim();
             var password = $('#matKhau').val().trim();
@@ -1235,6 +1032,7 @@
             var email = $('#registerEmail').val().trim();
             var phone = $('#registerPhone').val().trim();
             var password = $('#registerPassword').val().trim();
+            var confirmPassword = $('#nhapLaiMatKhau').val().trim();
 
             // Clear previous errors
             $('.text-danger').text('');
@@ -1243,6 +1041,10 @@
             // Validate fields
             if (!username) {
                 $('#registerUsernameError').text('Vui lòng nhập username.');
+                $('#registerUsername').addClass('border-danger');
+                hasError = true;
+            } else if (listKhachHang.some(kh => kh.taiKhoan == username)) {
+                $('#registerUsernameError').text('Tên tài khoản đã tồn tại');
                 $('#registerUsername').addClass('border-danger');
                 hasError = true;
             }
@@ -1254,6 +1056,10 @@
                 $('#registerEmailError').text('Email không hợp lệ.');
                 $('#registerEmail').addClass('border-danger');
                 hasError = true;
+            } else if (listKhachHang.some(kh => kh.email == email)) {
+                $('#registerEmailError').text('Email đã tồn tại.');
+                $('#registerEmail').addClass('border-danger');
+                hasError = true;
             }
             if (!phone) {
                 $('#registerPhoneError').text('Vui lòng nhập số điện thoại.');
@@ -1261,6 +1067,10 @@
                 hasError = true;
             } else if (!isValidVietnamesePhoneNumber(phone)) {
                 $('#registerPhoneError').text('Số điện thoại không hợp lệ');
+                $('#registerPhone').addClass('border-danger');
+                hasError = true;
+            } else if (listKhachHang.some(kh => kh.sdt == phone)) {
+                $('#registerPhoneError').text('Số điện thoại đã tồn tại');
                 $('#registerPhone').addClass('border-danger');
                 hasError = true;
             }
@@ -1273,6 +1083,16 @@
                 $('#registerPassword').addClass('border-danger');
                 hasError = true;
             }
+            if (!confirmPassword) {
+                $('#nhapLaiMatKhauError').text('Vui lòng nhập lại mật khẩu.');
+                $('#nhapLaiMatKhau').addClass('border-danger');
+                hasError = true;
+            } else if (password != confirmPassword) {
+                $('#nhapLaiMatKhauError').text('Mật khẩu nhập lại chưa đúng!');
+                $('#nhapLaiMatKhau').addClass('border-danger');
+                hasError = true;
+            }
+
 
             // If any validation errors exist, prevent form submission
             if (hasError) {
@@ -1330,18 +1150,6 @@
         var regex = /^(0|\+84)\d{9,10}$/;
         return regex.test(phoneNumber);
     }
-
-    $.ajax({
-        type: 'POST',
-        url: form.attr('action'), // Đảm bảo rằng URL đúng
-        data: form.serialize(),
-        success: function (response) {
-            // Xử lý phản hồi
-        },
-        error: function () {
-            console.error('Đã xảy ra lỗi khi gửi yêu cầu đăng nhập.');
-        }
-    });
 </script>
 
 </html>
