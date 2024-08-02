@@ -592,9 +592,9 @@ public class QuanLyHoaDonController {
             if (UserInfor.idNhanVien != null) {
                 nhanVien = _nhanVienRepo.findById(UserInfor.idNhanVien).orElse(null);
                 if (nhanVien == null) {
-                    nhanVien = _nhanVienRepo.findById("BF29DB87-6ED2-46E8-B34C-135B2EA4CCA6").get();
-//                    redirectAttributes.addFlashAttribute("confirmError", "Không tìm thấy nhân viên.");
-//                    return "redirect:/hoa-don/detail/" + idHD;
+                    nhanVien = new NhanVien();
+                    redirectAttributes.addFlashAttribute("confirmError", "Không tìm thấy nhân viên.");
+                    return "redirect:/hoa-don/detail/" + idHD;
                 }
             }
 
@@ -608,6 +608,12 @@ public class QuanLyHoaDonController {
 
                 for (ChiTietHoaDon chiTietHD : chiTietList) {
                     String idChiTietHoaDon = chiTietHD.getId();
+
+                    // Kiểm tra trùng hóa đơn thì set trạng thái bằng 1
+                    if(chiTietHD.getIdHoaDon().equals(idHD)){
+                        chiTietHD.setTrangThai(1);
+                        _hoaDonChiTietRepo.save(chiTietHD);
+                    }
                     Optional<ChiTietSanPham> chiTietSanPhamOptional = _chiTietSanPhamRepo.findByHoaDonChiTietId(idChiTietHoaDon);
                     if (chiTietSanPhamOptional.isPresent()) {
                         ChiTietSanPham chiTietSanPham = chiTietSanPhamOptional.get();
@@ -615,6 +621,7 @@ public class QuanLyHoaDonController {
                         if (soLuongConLai > 0) {
                             chiTietSanPham.setSoLuong(soLuongConLai);
                             chiTietSanPham.setTrangThai(1);
+
                             _chiTietSanPhamRepo.save(chiTietSanPham);
                         } else {
                             redirectAttributes.addFlashAttribute("errorProductDetail", "Không đủ số lượng sản phẩm trong kho");
@@ -628,6 +635,7 @@ public class QuanLyHoaDonController {
             }
 
             GiaoHang giaoHang = new GiaoHang();
+            hoaDon.setGhiChu(hoaDon.getGhiChu());
             updateHoaDonStatus(hoaDon, nhanVien, trangThai,giaoHang,moTa);
             _hoaDonRepo.save(hoaDon);
             HoaDonDTO hoaDonDTO = HoaDonDTO.fromEntity(hoaDon);
@@ -655,21 +663,7 @@ public class QuanLyHoaDonController {
                 _lichSuHoaDonRepo.save(lichSuHoaDon);
 
                 // Gửi Email khi đã xác nhận đơn hàng
-//                EmailUtil emailUtil = new EmailUtil("taintph29115@fpt.edu.vn","ellnixtbfelwynxt",1);
-//                String toEmail = "tuantain2003@gmail.com";
-//                String subject = "Chi tiết đơn hàng";
-//                String htmlContent = "<h1>Đặt hàng thành công</h1>"
-//                        + "<p>Cảm ơn bạn đã đặt hàng. Đây là chi tiết đơn hàng của bạn:</p>"
-//                        + "<table border='1'>"
-//                        + "<tr><th>Sản phẩm</th><th>Số lượng</th><th>Giá</th></tr>"
-//                        + "<tr><td>Sản phẩm A</td><td>2</td><td>200,000₫</td></tr>"
-//                        + "<tr><td>Sản phẩm B</td><td>1</td><td>100,000₫</td></tr>"
-//                        + "</table>"
-//                        + "<p>Tổng cộng: 300,000₫</p>";
-//
-//                emailUtil.sendContentToVer2HTML(toEmail, subject, htmlContent);
-////                emailUtil.sendContentToVer2("tuantain2003@gmail.com","Chi tiết đơn hàng","Đăt hàng thành công");
-//                System.out.println("Thanh cong");
+
 
 //                lichSuHoaDon.setIdHoaDon(hoaDon);
 //                lichSuHoaDon.setIdNhanVien(nhanVien);

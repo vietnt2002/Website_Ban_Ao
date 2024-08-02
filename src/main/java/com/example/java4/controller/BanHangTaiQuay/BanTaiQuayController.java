@@ -780,8 +780,7 @@ public class BanTaiQuayController {
             hoaDonRepository.save(hd);
         }
 
-//<<<<<<< HEAD
-//=======
+
 //        KhachHang khachHang = new KhachHang();
 //        khachHang.setId(idKH);
 //        hoaDon.setIdKhachHang(khachHang);
@@ -792,7 +791,7 @@ public class BanTaiQuayController {
 //        }
 //        Optional<NhanVien> nv = nhanVienRepo.findById(UserInfor.idNhanVien);
 //        hoaDon.setIdNhanVien(nv.get());
-//>>>>>>> 3d603911edf128be08d4c9052535f3224a839408
+
 
 //        HoaDon hoaDon = new HoaDon();
 //        hoaDon.setId(idHoaDon);
