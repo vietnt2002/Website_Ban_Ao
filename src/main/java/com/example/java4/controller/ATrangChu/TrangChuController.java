@@ -715,7 +715,7 @@ public class TrangChuController {
                     khuyenMaiRepo.save(khuyenMai);
                 }
             }
-
+            createLichSuHoaDon(hoaDon);
             return "redirect:/cua-hang/pay/" + tongTien;
         }
     }
@@ -1011,8 +1011,7 @@ public class TrangChuController {
         hoaDon.setLoaiHoaDon(HoaDonRepository.HOA_DON_ONL);
         hoaDon.setNgayThanhToan(LocalDateTime.now().withNano(0));
         hoaDonRepo.save(hoaDon);
-
-
+        createLichSuHoaDon(hoaDon);
         model.addAttribute("amount", amount);
         model.addAttribute("ngayTao", now);
         model.addAttribute("maHD", orderInfo);

@@ -413,9 +413,9 @@
                     <div class="row">
                         <div class="mt-3">
                             <h4 class="border-bottom">Quản lý sản phẩm chi tiết</h4>
-                            <div class="d-flex gap-3 mt-3">
+                            <div class="d-flex gap-5 mt-3">
                                 <img id="hinhAnhSP" src="path_to_your_image.jpg" class="rounded border"
-                                     width="200" height="200" alt="Product Image">
+                                     width="150" height="200" alt="Product Image">
                                 <div id="product-details">
                                     <h5 class="">Tên sản phẩm:&nbsp&nbsp<span id="tenSP"></span></h5>
                                     <h5 class="">Mã sản phẩm:&nbsp&nbsp<span id="maSP"></span></h5>
@@ -1327,6 +1327,38 @@
         const cl = JSON.parse(clString.replace(/&quot;/g, '"'));
         idChatLieuModalEdit = cl.id;
         lblChatLieuModalEdit.textContent = cl.ten;
+        fetch(`/chi-tiet-sp/update-all-ChatLieu?idSanPham=` + pathVariable + `&idChatLieu=` + cl.id, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.json(); // or response.text() if you expect a textual response
+                } else {
+                    throw new Error('Network response was not ok');
+                }
+            })
+            .then(data => {
+                // Successfully processed the request
+                Swal.fire(
+                    'Đã sửa thành công!',
+                    'Dữ liệu đã được ghi nhận.',
+                    'success'
+                ).then(() => {
+                    loadDSSPCT(currentPage);
+                });
+            })
+            .catch(error => {
+                // Handle errors here
+                console.error('There was a problem with the fetch operation:', error);
+                Swal.fire(
+                    'Lỗi!',
+                    'Đã có lỗi xảy ra khi ghi nhận dữ liệu.',
+                    'error'
+                );
+            });
         console.log('Selected chat lieu ID modal Edit:', idChatLieuModalEdit);
         // You can add more logic here to handle the selected value
     }
@@ -1335,6 +1367,39 @@
         const kt = JSON.parse(ktString.replace(/&quot;/g, '"'));
         idKieuTayModalEdit = kt.id;
         lblKieuTayModalEdit.textContent = kt.ten;
+        fetch(`/chi-tiet-sp/update-all-KieuTay?idSanPham=` + pathVariable + `&idKieuTay=` + kt.id, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.json(); // or response.text() if you expect a textual response
+                } else {
+                    throw new Error('Network response was not ok');
+                }
+            })
+            .then(data => {
+                // Successfully processed the request
+                Swal.fire(
+                    'Đã sửa thành công!',
+                    'Dữ liệu đã được ghi nhận.',
+                    'success'
+                ).then(() => {
+                    loadDSSPCT(currentPage);
+                });
+            })
+            .catch(error => {
+                // Handle errors here
+                console.error('There was a problem with the fetch operation:', error);
+                Swal.fire(
+                    'Lỗi!',
+                    'Đã có lỗi xảy ra khi ghi nhận dữ liệu.',
+                    'error'
+                );
+            });
+
         console.log('Selected kieu tay ID modal edit:', idKieuTayModalEdit);
         // You can add more logic here to handle the selected value
     }
@@ -1525,9 +1590,9 @@
                             '</td>'+
                             '<td>' +'</td>' +
                             '<td>' +'</td>' +
-                            '<td>' +'</td>' +
-                            '<td>' +'</td>' +
-                            '<td>' +'</td>' +
+                            '<td><input style="width: 20px;height: 20px" type="checkbox" id="cbSoLuong_'+spct.id+'"></td>' +
+                            '<td><input style="width: 20px;height: 20px" type="checkbox" id="cbGiaBan_'+spct.id+'"></td>' +
+                            '<td><input style="width: 20px;height: 20px" type="checkbox" id="cbTrangThai_'+spct.id+'"></td>' +
                             '<td>'+
                             '<button id="editAllSPCTBtn_' + spct.idMauSac + '" class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#ModalEditAll">Sửa toàn bộ</button>' +
                             '</td>'+
@@ -1601,8 +1666,6 @@
         idKieuTay = "";
         lblMauSac.textContent = "Chọn màu sắc"
         lblKichThuoc.textContent = "Chọn kích thước";
-        lblChatLieu.textContent = "Chọn chất liệu";
-        lblKieuTay.textContent = "Chọn kiểu tay";
         loadDSSPCT(currentPage);
     }
 
@@ -1718,6 +1781,14 @@
                 hinhAnh3DisplayModalEdit.src = resp.hinhAnh3 ? "/image/" + resp.hinhAnh3 : "/image-icon/pendingIMG.png";
             });
     });
+    //continue
+    $(document).on('click', "button[id^='editAllSPCTBtn_']", e => {
+        e.preventDefault();
+        console.log("test");
+        document.getElementById("giaNhapModalEditAll").style.display = "none";
+    });
+
+
     $(document).on('click', "button[id^='detailSPBtn_']", e => {
         e.preventDefault();
         const spid = e.currentTarget.id.replace("detailSPBtn_", "");

@@ -142,11 +142,24 @@ public class SPCTController {
     }
 
     @CrossOrigin
+    @PostMapping("/update-all-ChatLieu")
+    public ResponseEntity<Integer> doUpdateAllChatLieu(@RequestParam(value = "idSanPham") String idSanPham,
+                                                        @RequestParam(value = "idChatLieu") String idChatLieu) {
+            return ResponseEntity.ok(chiTietSPRepository.updateAllChatLieu(idSanPham,idChatLieu));
+    }
+
+    @CrossOrigin
+    @PostMapping("/update-all-KieuTay")
+    public ResponseEntity<Integer> doUpdateAllKieuTay(@RequestParam(value = "idSanPham") String idSanPham,
+                                                       @RequestParam(value = "idKieuTay") String idKieuTay) {
+        return ResponseEntity.ok(chiTietSPRepository.updateAllKieuTay(idSanPham,idKieuTay));
+    }
+
+    @CrossOrigin
     @PostMapping("/enable-status/{id}")
     public ResponseEntity<Integer> enableStatus(@PathVariable(value = "id") String id) {
         return ResponseEntity.ok(chiTietSPRepository.enableStt(id));
     }
-
 
     @CrossOrigin
     @PostMapping("/disable-status/{id}")

@@ -51,7 +51,11 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
-
+    <style>
+        .dropdown-menu.show {
+            display: block;
+        }
+    </style>
 
 </head>
 
@@ -211,7 +215,7 @@
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fas fa-bell fa-fw"></i>
                             <!-- Counter - Alerts -->
-                            <span class="badge badge-danger badge-counter">3+</span>
+                            <span class="badge badge-danger badge-counter"></span>
                         </a>
                         <!-- Dropdown - Alerts -->
                         <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -332,7 +336,7 @@
                     <li class="nav-item dropdown no-arrow">
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">${nv.hoTen}</span>
+                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">${nv.hoTen} | ${nv.idCV.ten}</span>
                             <img class="img-profile rounded-circle"
                                  src="/imageUser/${nv.anhDaiDien}">
                         </a>
@@ -341,15 +345,17 @@
                              aria-labelledby="userDropdown">
                             <a class="dropdown-item" href="/qlnv/tai-khoan-cua-toi/${nv.id}">
                                 <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                Tài khoản của tôi
+                                Thông tin cá nhân
                             </a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="/ban-hang-tai-quay/dang-xuat">
+                            <a class="dropdown-item" href="/qlnv/dang-xuat" id="dang-xuat" data-toggle="modal"
+                               data-target="#logoutModal">
                                 <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Đăng xuất
                             </a>
                         </div>
                     </li>
+
 
                 </ul>
 
@@ -502,7 +508,7 @@
 
                                     <tbody>
                                     <c:forEach var="hoaDon" items="${hoaDonPage}" varStatus="i">
-                                        <c:if test="${hoaDon.loaiHoaDon == 1 || (hoaDon.loaiHoaDon == 0 && hoaDon.trangThai == 6)}">
+                                        <c:if test="${(hoaDon.loaiHoaDon == 0 && hoaDon.trangThai == 6) || (hoaDon.loaiHoaDon == 1 && hoaDon.trangThai != 0)}">
                                         <tr>
                                             <td>${i.index + 1}</td>
                                             <td>${hoaDon.ma}</td>
@@ -1058,6 +1064,12 @@
 
     // Hàm xử lý hiển thị bg-warning các tab
     document.addEventListener('DOMContentLoaded', function () {
+
+        // Hiển thị Drop dow
+        document.getElementById('userDropdown').addEventListener('click', function(event) {
+            event.preventDefault();
+        });
+
         // Function to get status from URL
         function getStatusFromUrl() {
             const urlParams = new URLSearchParams(window.location.search);
@@ -1101,10 +1113,25 @@
 
             // Update the URL without reloading the page
             let status = $(this).data('status');
-            history.pushState(null, '', '?status=' + status);
+            let url = new URL(window.location.href);
+            url.searchParams.set('status', status);
+            url.searchParams.set('page', '0'); // Reset the page to 0 when switching tabs
+            history.pushState(null, '', url.toString());
 
             // Save the current status to localStorage
             localStorage.setItem('currentTabStatus', status);
+        });
+
+        // Handle data loading when tabs are clicked
+        document.querySelectorAll('.nav-link').forEach(button => {
+            button.addEventListener('click', function () {
+                let status = this.getAttribute('data-status');
+                let url = new URL(window.location.href);
+                url.searchParams.set('status', status);
+                url.searchParams.set('page', '0'); // Reset the page to 0 when switching tabs
+                window.history.pushState({}, '', url.toString());
+                window.location.href = url.toString(); // Load the new URL
+            });
         });
 
         // When clicking on any a tag

@@ -49,7 +49,7 @@
 
     <style>
         .disabled-voucher {
-            opacity: 0.5;
+            opacity: 0.4;
             pointer-events: none;
         }
 
@@ -493,7 +493,6 @@
                 style="position: relative; left: 729px; bottom: -186px;">
             Chọn địa chỉ
         </button>
-
         <div class="modal fade" id="addAddressModal" tabindex="-1" role="dialog" aria-labelledby="addAddressModalLabel"
              aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
@@ -553,7 +552,7 @@
          aria-labelledby="addAddressModalLabel"
          aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content" style="width: 880px; left: -173px; top: 80px">
+            <div class="modal-content" style="width: 880px; left: -173px; top: 40px">
                 <div class="modal-header">
                     <h5 class="modal-title" id="addAddressModalLabel">Thêm địa chỉ mới</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -639,7 +638,7 @@
                         <div class="col-md-6 form-group">
                             <label><b>Họ tên</b></label>
                             <input class="form-control" type="text" name="tenNguoiNhan" id="tenNguoiNhan"
-                                   value="${diaChi.tenNguoiNhan}"
+                                   value="${diaChi.tenNguoiNhan}" readonly
                                    style="background-color: #f1f1f1; border: 2px solid #e4e4e4;"
                                    placeholder="Họ tên">
                             <span id="tenNguoiNhanError" class="text-danger"></span>
@@ -647,7 +646,7 @@
                         <div class="col-md-6 form-group">
                             <label><b>Số điện thoại</b></label>
                             <input class="form-control" type="number" name="sdtNguoiNhan" id="sdtNguoiNhan"
-                                   value="${diaChi.sdtNguoiNhan}"
+                                   value="${diaChi.sdtNguoiNhan}" readonly
                                    style="background-color: #f1f1f1; border: 2px solid #e4e4e4;"
                                    placeholder="Số điện thoại">
                             <span id="sdtNguoiNhanError" class="text-danger"></span>
@@ -655,22 +654,22 @@
                         <div class="col-md-12 form-group">
                             <label><b>Địa chỉ</b></label>
                             <input class="form-control" type="text" name="diaChiChiTiet" id="diaChiChiTiet"
-                                   value="${diaChi.diaChiChiTiet}"
+                                   value="${diaChi.diaChiChiTiet}" readonly
                                    style="background-color: #f1f1f1; border: 2px solid #e4e4e4;"
                                    placeholder="Địa chỉ">
                             <span id="diaChiChiTietError" class="text-danger"></span>
                         </div>
                         <div class="col-md-4 form-group">
                             <label><b>Tỉnh/Thành phố</b></label>
-                            <select class="custom-select" id="tinh" name="tinh" title="Chọn Tỉnh Thành"
-                                    style="background-color: #f1f1f1; border: 1px solid #e4e4e4;">
+                            <select class="custom-select" id="tinh" name="tinh" title="Chọn Tỉnh Thành" disabled
+                                    style="background-color: #f1f1f1; border: 1px solid #e4e4e4;" >
                                 <option value="${diaChi.idTinhThanh}">${diaChi.idTinhThanh}</option>
                             </select>
                             <span id="tinhError" class="text-danger"></span>
                         </div>
                         <div class="col-md-4 form-group">
                             <label><b>Quận/Huyện</b></label>
-                            <select class="custom-select" id="quan" name="quan" title="Chọn Quận Huyện"
+                            <select class="custom-select" id="quan" name="quan" title="Chọn Quận Huyện" disabled
                                     style="background-color: #f1f1f1; border: 1px solid #e4e4e4;">
                                 <option value="${diaChi.idQuanHuyen}">${diaChi.idQuanHuyen}</option>
                             </select>
@@ -678,7 +677,7 @@
                         </div>
                         <div class="col-md-4 form-group">
                             <label><b>Phường/Xã</b></label>
-                            <select class="custom-select" id="phuong" name="phuong" title="Chọn Phường Xã"
+                            <select class="custom-select" id="phuong" name="phuong" title="Chọn Phường Xã" disabled
                                     style="background-color: #f1f1f1; border: 1px solid #e4e4e4;">
                                 <option value="${diaChi.idPhuongXa}">${diaChi.idPhuongXa}</option>
                             </select>
@@ -733,7 +732,7 @@
                         <c:if test="${hoaDon.idKhuyenMai.soTienGiam != null}">
                             <div class="d-flex justify-content-between mb-3 pt-1">
                                 <h6 class="font-weight-medium">Số tiền giảm: </h6>
-                                <h6 class="font-weight-medium" style="font-size: 18px">-
+                                <h6 class="font-weight-medium" style="font-size: 18px">
                                     <fmt:formatNumber value="${hoaDon.idKhuyenMai.soTienGiam}" type="currency"
                                                       currencySymbol="₫"/>
                                 </h6>
@@ -771,7 +770,7 @@
                                 <div class="custom-control custom-radio">
                                     <input class="custom-control-input" id="directcheck" type="radio"
                                            name="phuongThucThanhToan" value="1">
-                                    <label class="custom-control-label" for="directcheck">QRCode qua VNPay</label>
+                                    <label class="custom-control-label" for="directcheck">Thanh toán qua VNPay</label>
                                 </div>
                             </div>
                         </div>
@@ -797,7 +796,7 @@
     <!-- Modal phiếu giảm giá -->
     <div id="couponModal" class="modal-fixed">
         <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content" style=" width: 1000px; height: 560px; right: 230px">
+            <div class="modal-content" style=" width: 950px; height: 540px; right: 230px; border-radius: 15px;">
                 <div class="modal-header">
                     <h5 class="modal-title" id="couponModalLabel">Phiếu giảm giá</h5>
                 </div>
@@ -1754,19 +1753,20 @@
 
                 console.log("Tổng sl: ",soLuongGioHang);
 
-                var khoiLuong = soLuongGioHang*1000;
+                var khoiLuong = soLuongGioHang*200;
                 console.log("Tổng kl: ",khoiLuong);
 
                 getJSONWithToken('https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee?service_id='+service_id+'&insurance_value='+tongTien+'&from_district_id=3440&to_district_id='+idQuanHuyenTest+'&to_ward_code='+idPhuongXaTest+'&height=15&length=15&weight='+khoiLuong+'&width=15', function(data_total) {
 
-                    console.log("API Response: ", data_total.data.service_fee); // Log the entire response
+                    console.log("API Response: ", data_total.data.total); // Log the entire response
 
+                    console.log("test data : ",data_total.data);
 
                     function formatVND(number) {
                         return number.toLocaleString('vi-VN', {style: 'currency', currency: 'VND'});
                     }
 
-                    var firstFee = data_total.data.service_fee
+                    var firstFee = data_total.data.total
 
                     // Calculate the new total
                     var newTotal = tongTien + firstFee;

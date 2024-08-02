@@ -43,6 +43,7 @@
             href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
             rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
 
     <style>
@@ -128,32 +129,25 @@
 
         <c:choose>
             <c:when test="${sessionScope.userRole == 'Quản lý'}">
+                <!-- Nav Item - Charts -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/thong-ke/view" style="display: flex; align-items: center">
+                        <i class="bi bi-graph-up" style="margin-left: 2px"></i>
+                        <span style="margin-left: 6px">Thống kê doanh thu</span></a>
+                </li>
+
                 <!-- Nav Item - Dashboard -->
-                <li class="nav-item active">
-                    <a class="nav-link" href="/ban-hang-tai-quay">
-                        <i class="fas fa-fw fa-tachometer-alt"></i>
-                        <span>Bán hàng tại quầy</span></a>
+                <li class="nav-item">
+                    <a class="nav-link" href="/ban-hang-tai-quay" style="display: flex; align-items: center">
+                        <i class="bi bi-shop" style="margin-left: 2px"></i>
+                        <span style="margin-left: 6px">Bán hàng tại quầy</span></a>
                 </li>
 
                 <!-- Nav Item - Charts -->
                 <li class="nav-item">
-                    <a class="nav-link" href="/ban-hang-tai-quay/admin/ban-tai-quay">
-                        <i class="fas fa-fw fa-chart-area"></i>
-                        <span>Thống kê doanh thu</span></a>
-                </li>
-
-                <!-- Nav Item - Charts -->
-                <li class="nav-item">
-                    <a class="nav-link" href="/hoa-don/hien-thi">
-                        <i class="fas fa-fw fa-chart-area"></i>
-                        <span>Quản lý đơn hàng</span></a>
-                </li>
-
-                <!-- Nav Item - Charts -->
-                <li class="nav-item">
-                    <a class="nav-link" href="/hoa-don/hien-thi">
-                        <i class="fas fa-fw fa-chart-area"></i>
-                        <span>Quản lý hóa đơn</span></a>
+                    <a class="nav-link" href="/hoa-don/hien-thi" style="display: flex; align-items: center">
+                        <i class="bi bi-journal-text" style="margin-left: 2px"></i>
+                        <span style="margin-left: 6px">Quản lý hóa đơn</span></a>
                 </li>
 
                 <!-- Nav Item - Pages Collapse Menu -->
@@ -172,17 +166,24 @@
                 </li>
 
                 <!-- Nav Item - Charts -->
-                <li class="nav-item">
-                    <a class="nav-link" href="/qlnv/quan-ly-nhan-vien">
-                        <i class="fas fa-fw fa-chart-area"></i>
-                        <span>Quản lý nhân viên</span></a>
+                <li class="nav-item" style="background: linear-gradient(45deg, black, transparent)">
+                    <a class="nav-link" href="/qlnv/quan-ly-nhan-vien" style="display: flex; align-items: center">
+                        <i class="bi bi-person-bounding-box" style="color: white; margin-left: 2px"></i>
+                        <span style="font-weight: bold; margin-left: 6px">Quản lý nhân viên</span></a>
                 </li>
 
                 <!-- Nav Item - Charts -->
                 <li class="nav-item">
-                    <a class="nav-link" href="/qlnv/quan-ly-khach-hang">
-                        <i class="fas fa-fw fa-chart-area"></i>
-                        <span>Quản lý khách hàng</span></a>
+                    <a class="nav-link" href="/qlkh/quan-ly-khach-hang" style="display: flex; align-items: center">
+                        <i class="bi bi-person-bounding-box" style="margin-left: 2px"></i>
+                        <span style="margin-left: 6px">Quản lý khách hàng</span></a>
+                </li>
+
+                <!-- Nav Item - Charts -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/qlkm/quan-ly-km" style="display: flex; align-items: center">
+                        <i class="bi bi-gift" style="margin-left: 2px"></i>
+                        <span style="margin-left: 6px">Quản lý khuyến mãi</span></a>
                 </li>
 
                 <!-- Divider -->
@@ -195,24 +196,24 @@
             </c:when>
             <c:otherwise>
                 <!-- Nav Item - Dashboard -->
-                <li class="nav-item active">
-                    <a class="nav-link" href="/ban-hang-tai-quay">
-                        <i class="fas fa-fw fa-tachometer-alt"></i>
-                        <span>Bán hàng tại quầy</span></a>
+                <li class="nav-item">
+                    <a class="nav-link" href="/ban-hang-tai-quay" style="display: flex; align-items: center">
+                        <i class="bi bi-shop" style="margin-left: 2px"></i>
+                        <span style="margin-left: 6px">Bán hàng tại quầy</span></a>
                 </li>
 
                 <!-- Nav Item - Charts -->
                 <li class="nav-item">
-                    <a class="nav-link" href="/hoa-don/hien-thi">
-                        <i class="fas fa-fw fa-chart-area"></i>
-                        <span>Quản lý hóa đơn</span></a>
+                    <a class="nav-link" href="/hoa-don/hien-thi" style="display: flex; align-items: center">
+                        <i class="bi bi-journal-text" style="margin-left: 2px"></i>
+                        <span style="margin-left: 6px">Quản lý hóa đơn</span></a>
                 </li>
 
                 <!-- Nav Item - Charts -->
                 <li class="nav-item">
-                    <a class="nav-link" href="charts.html">
-                        <i class="fas fa-fw fa-chart-area"></i>
-                        <span>Quản lý khách hàng</span></a>
+                    <a class="nav-link" href="/qlkh/quan-ly-khach-hang" style="display: flex; align-items: center">
+                        <i class="bi bi-person-bounding-box" style="margin-left: 2px"></i>
+                        <span style="margin-left: 6px">Quản lý khách hàng</span></a>
                 </li>
             </c:otherwise>
         </c:choose>

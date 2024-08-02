@@ -176,4 +176,7 @@ public interface HoaDonRepository
             "WHERE hd.id = :idHoaDon")
     KhuyenMai getKhuyenMaiApDung(@Param("idHoaDon") String idHoaDon);
 
+
+
+
 };
