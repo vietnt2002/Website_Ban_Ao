@@ -174,6 +174,11 @@ public interface SPCTRepository extends JpaRepository<ChiTietSanPham, String>, J
             "WHERE hdct.id = :idHoaDonChiTiet", nativeQuery = true)
     Optional<ChiTietSanPham> findByHoaDonChiTietId(@Param("idHoaDonChiTiet") String idHoaDonChiTiet);
 
+    @Query(value = "UPDATE ChiTietSanPham ctsp SET ctsp.idChatLieu.id = :idChatLieu WHERE ctsp.id = :idCTSP")
+    Boolean updateAllChatLieu(@Param("idCTSP") String idCTSP, @Param("idChatLieu") String idChatLieu);
+
+    @Query(value = "UPDATE ChiTietSanPham ctsp SET ctsp.idKieuTay.id = :idKieuTay WHERE ctsp.id = :idCTSP")
+    Boolean updateAllKieuTay(@Param("idCTSP") String idCTSP, @Param("idKieuTay") String idKieuTay);
 
     // Thống kê danh sách sản phẩm sắp hết hàng
 //    @Query("SELECT new com.example.java4.response.SPCTDTO(" +
@@ -184,9 +189,6 @@ public interface SPCTRepository extends JpaRepository<ChiTietSanPham, String>, J
 //            "WHERE ctsp.soLuong < :minStock " +
 //            "ORDER BY ctsp.soLuong ASC")
 //    Page<SPCTDTO> getLowStockProducts(@Param("minStock") int minStock, Pageable pageable);
-
-
-
 };
 
 

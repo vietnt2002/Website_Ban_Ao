@@ -926,7 +926,7 @@
                         : '<p style="font-weight: bold; color: red">Dừng HĐ</p>';
                     html += '<tr>' +
                         '<td>' + (i + 1) + '</td>' +
-                        '<td><img src="' + "/image/" + hinhAnh + '" alt="Image" style="width: 70px ; height: 60px" class="img-fluid rounded border" /></td>' +
+                        '<td><img src="' + "/image/" + hinhAnh + '" alt="Image" style="width: 50px ; height: 60px" class="img-fluid rounded border" /></td>' +
                         '<td>' + maSanPham + '</td>' +
                         '<td>' + tenSanPham + '</td>' +
                         '<td>' + ngayTao + '</td>' +
