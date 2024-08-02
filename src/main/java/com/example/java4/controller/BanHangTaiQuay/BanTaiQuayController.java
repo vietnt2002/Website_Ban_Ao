@@ -1227,7 +1227,7 @@ public class BanTaiQuayController {
 
 
 //        return ResponseEntity.ok("Thanh toán thành công");
-        return "/view/BanHangTaiQuay/thongBao.jsp";
+        return "redirect:/ban-hang-tai-quay";
     }
 
 }
