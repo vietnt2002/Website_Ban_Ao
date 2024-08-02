@@ -1753,19 +1753,20 @@
 
                 console.log("Tổng sl: ",soLuongGioHang);
 
-                var khoiLuong = soLuongGioHang*1000;
+                var khoiLuong = soLuongGioHang*200;
                 console.log("Tổng kl: ",khoiLuong);
 
                 getJSONWithToken('https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee?service_id='+service_id+'&insurance_value='+tongTien+'&from_district_id=3440&to_district_id='+idQuanHuyenTest+'&to_ward_code='+idPhuongXaTest+'&height=15&length=15&weight='+khoiLuong+'&width=15', function(data_total) {
 
-                    console.log("API Response: ", data_total.data.service_fee); // Log the entire response
+                    console.log("API Response: ", data_total.data.total); // Log the entire response
 
+                    console.log("test data : ",data_total.data);
 
                     function formatVND(number) {
                         return number.toLocaleString('vi-VN', {style: 'currency', currency: 'VND'});
                     }
 
-                    var firstFee = data_total.data.service_fee
+                    var firstFee = data_total.data.total
 
                     // Calculate the new total
                     var newTotal = tongTien + firstFee;
