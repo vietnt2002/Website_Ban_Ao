@@ -67,10 +67,18 @@ public class SanPhamController {
     public ResponseEntity<Integer> getCountstt0() {
         return ResponseEntity.ok(spRepo.getCountStt0());
     }
+
     @CrossOrigin
     @GetMapping("/detail/{id}")
-    public ResponseEntity<SanPham> getDetail(@PathVariable(value = "id") SanPham sanPham){
-        return ResponseEntity.ok(sanPham);
+    public ResponseEntity<SanPhamView> getDetail(@PathVariable(value = "id") SanPham sanPham){
+        SanPhamView sanPhamView = new SanPhamView();
+        sanPhamView.setId(sanPham.getId());
+        sanPhamView.setTen(sanPham.getTen());
+        sanPhamView.setMa(sanPham.getMa());
+        sanPhamView.setNgayTao(sanPham.getNgayTao());
+        sanPhamView.setHinhAnh(spRepo.getHinhAnhOfSP(sanPham.getId()));
+        sanPhamView.setTrangThai(sanPham.getTrangThai());
+        return ResponseEntity.ok(sanPhamView);
     }
 
     @CrossOrigin

@@ -780,11 +780,6 @@
                                            value="">
                                     <p style="color: red;" id="tenSPEditErr"></p>
                                 </div>
-                                <div class="mb-3">
-                                    <label for="hinhAnhEdit" class="form-label">Hình ảnh</label>
-                                    <input type="file" name="file" class="form-control" id="hinhAnhEdit" value="">
-                                    <p style="color: red;" id="hinhAnhEditErr"></p>
-                                </div>
                                 <div class="form-check form-switch">
                                     <input class="form-check-input" type="checkbox" role="switch" id="trangThaiEdit"
                                            checked>

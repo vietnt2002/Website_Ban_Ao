@@ -143,16 +143,16 @@ public class SPCTController {
 
     @CrossOrigin
     @PostMapping("/update-all-ChatLieu")
-    public ResponseEntity<Boolean> doUpdateAllChatLieu(@RequestParam(value = "id") String id,
-                                            @RequestParam(value = "idChatLieu") String idChatLieu) {
-            return ResponseEntity.ok(chiTietSPRepository.updateAllChatLieu(id,idChatLieu));
+    public ResponseEntity<Integer> doUpdateAllChatLieu(@RequestParam(value = "idSanPham") String idSanPham,
+                                                        @RequestParam(value = "idChatLieu") String idChatLieu) {
+            return ResponseEntity.ok(chiTietSPRepository.updateAllChatLieu(idSanPham,idChatLieu));
     }
 
     @CrossOrigin
     @PostMapping("/update-all-KieuTay")
-    public ResponseEntity<Boolean> doUpdateAllKieuTay(@RequestParam(value = "id") String id,
+    public ResponseEntity<Integer> doUpdateAllKieuTay(@RequestParam(value = "idSanPham") String idSanPham,
                                                        @RequestParam(value = "idKieuTay") String idKieuTay) {
-        return ResponseEntity.ok(chiTietSPRepository.updateAllKieuTay(id,idKieuTay));
+        return ResponseEntity.ok(chiTietSPRepository.updateAllKieuTay(idSanPham,idKieuTay));
     }
 
     @CrossOrigin
@@ -160,7 +160,6 @@ public class SPCTController {
     public ResponseEntity<Integer> enableStatus(@PathVariable(value = "id") String id) {
         return ResponseEntity.ok(chiTietSPRepository.enableStt(id));
     }
-
 
     @CrossOrigin
     @PostMapping("/disable-status/{id}")

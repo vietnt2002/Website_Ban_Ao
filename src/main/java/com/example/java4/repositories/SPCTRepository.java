@@ -12,6 +12,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -173,12 +174,14 @@ public interface SPCTRepository extends JpaRepository<ChiTietSanPham, String>, J
             "JOIN ChiTietHoaDon hdct ON ctsp.id = hdct.idCTSP " +
             "WHERE hdct.id = :idHoaDonChiTiet", nativeQuery = true)
     Optional<ChiTietSanPham> findByHoaDonChiTietId(@Param("idHoaDonChiTiet") String idHoaDonChiTiet);
-
-    @Query(value = "UPDATE ChiTietSanPham ctsp SET ctsp.idChatLieu.id = :idChatLieu WHERE ctsp.id = :idCTSP")
-    Boolean updateAllChatLieu(@Param("idCTSP") String idCTSP, @Param("idChatLieu") String idChatLieu);
-
-    @Query(value = "UPDATE ChiTietSanPham ctsp SET ctsp.idKieuTay.id = :idKieuTay WHERE ctsp.id = :idCTSP")
-    Boolean updateAllKieuTay(@Param("idCTSP") String idCTSP, @Param("idKieuTay") String idKieuTay);
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE ChiTietSanPham ctsp SET ctsp.idChatLieu.id = :idChatLieu WHERE ctsp.idSanPham.id = :idSanPham")
+    Integer updateAllChatLieu(@Param("idSanPham") String idSanPham, @Param("idChatLieu") String idChatLieu);
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE ChiTietSanPham ctsp SET ctsp.idKieuTay.id = :idKieuTay WHERE ctsp.idSanPham.id = :idSanPham")
+    Integer updateAllKieuTay(@Param("idSanPham") String idSanPham, @Param("idKieuTay") String idKieuTay);
 
     // Thống kê danh sách sản phẩm sắp hết hàng
 //    @Query("SELECT new com.example.java4.response.SPCTDTO(" +
