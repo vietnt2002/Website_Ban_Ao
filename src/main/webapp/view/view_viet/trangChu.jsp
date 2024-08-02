@@ -317,15 +317,15 @@
                         </c:when>
                         <c:otherwise>
                             <!-- Hiển thị nút đăng xuất khi đã đăng nhập -->
-                            <li><a class="dropdown-item" href="/cua-hang/don-mua">Đơn mua</a></li>
+                            <li><a class="dropdown-item" href="/store/don-mua">Đơn mua</a></li>
                             <li><a class="dropdown-item" href="#">Quản lý tài khoản</a></li>
-                            <li><a class="dropdown-item" href="/cua-hang/logout">Đăng xuất</a></li>
+                            <li><a class="dropdown-item" href="/store/logout">Đăng xuất</a></li>
                         </c:otherwise>
                     </c:choose>
                 </ul>
             </div>
             <div class="col-lg-3 col-6 text-right" style="position: relative">
-                <a href="/cua-hang/gio-hang" class="btn border">
+                <a href="/store/gio-hang" class="btn border">
                     <i class="fas fa-shopping-cart text-primary"></i>
                     <c:if test="${soLuong > 0}">
                             <span class="totalQuantityCart"
@@ -355,7 +355,7 @@
             </div>
             <div class="modal-body">
                 <div class="login-form-wrapper">
-                    <form id="login-form" class="form" action="login" method="post" modelAttribute="khachHangDTO">
+                    <form id="login-form" class="form" action="/store/login" method="post" modelAttribute="khachHangDTO">
                         <div class="form-group">
                             <label for="taiKhoan" class="text-info">Username:</label><br>
                             <input placeholder="Username" type="text" id="taiKhoan" name="taiKhoan"
@@ -460,7 +460,7 @@
                 </button>
                 <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                     <div class="navbar-nav mr-auto py-0">
-                        <a href="/cua-hang/trang-chu" class="nav-item nav-link active">Trang chủ</a>
+                        <a href="/store/trang-chu" class="nav-item nav-link active">Trang chủ</a>
                         <a href="detail.html" class="nav-item nav-link">Giới thiệu</a>
                         <a href="contact.html" class="nav-item nav-link">Liên hệ</a>
                     </div>
@@ -612,7 +612,7 @@
                 <div class="container">
                     <div class="row" id="product-container">
                         <c:forEach varStatus="i" items="${listSanPhamRes}" var="sp">
-                            <a href="/cua-hang/detail-san-pham/${sp.idCTSP}" style="text-decoration: none">
+                            <a href="/store/detail-san-pham/${sp.idCTSP}" style="text-decoration: none">
                                 <div class="col-lg-4 col-md-6 col-sm-12 pb-1">
                                     <div class="card product-item border-0 mb-2">
                                         <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
@@ -633,7 +633,7 @@
                                                     <span style="font-size: 16px; text-decoration: underline"></span>
                                                 </h6>
                                             </div>
-                                            <a href="/cua-hang/detail-san-pham/${sp.idCTSP}"
+                                            <a href="/store/detail-san-pham/${sp.idCTSP}"
                                                class="btn btn-sm text-dark p-0">
                                                 <i class="fas fa-eye text-primary mr-1"></i>Chi tiết
                                             </a>
@@ -905,7 +905,7 @@
             pageProducts.forEach(sp => {
                 const soldQuantity = totalQuantities[sp.idSP] || 0;
                 const productHTML =
-                    '<a href="/cua-hang/detail-san-pham/' + sp.idCTSP + '" style="text-decoration: none">' +
+                    '<a href="/store/detail-san-pham/' + sp.idCTSP + '" style="text-decoration: none">' +
                     '<div class="col-lg-4 col-md-6 col-sm-12 pb-1 custom-col">' +
                     '<div class="card product-item border-0 mb-2">' +
                     '<div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">' +
@@ -923,7 +923,7 @@
                     '<span style="font-size: 16px; text-decoration: underline"></span>' +
                     '</h6>' +
                     '</div>' +
-                    '<a href="/cua-hang/detail-san-pham/' + sp.idCTSP + '" class="btn btn-sm text-dark p-0">' +
+                    '<a href="/store/detail-san-pham/' + sp.idCTSP + '" class="btn btn-sm text-dark p-0">' +
                     '<i class="fas fa-eye text-primary mr-1"></i>Chi tiết' +
                     '</a>' +
                     '</div>' +
@@ -1134,7 +1134,7 @@
 <script src="/view_ban_hang/js/main.js"></script>
 </body>
 <script>
-    //  // Hiển thị thông báo thất bại nếu đăng nhập thất bại
+    // Hiển thị thông báo thất bại nếu đăng nhập thất bại
     const Toast = Swal.mixin({
         toast: true,
         position: "top-end",
