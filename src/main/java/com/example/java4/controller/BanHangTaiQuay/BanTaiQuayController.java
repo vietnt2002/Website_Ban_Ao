@@ -67,6 +67,11 @@ public class BanTaiQuayController {
 
     @Autowired
     KhuyenMaiRepository khuyenMaiRepo;
+
+
+    @Autowired
+    LichSuHoaDonRepository _lichSuHoaDonRepo;
+
     @Autowired
     Validator validator;
 
@@ -271,6 +276,7 @@ public class BanTaiQuayController {
             redirectAttributes.addFlashAttribute("error", "Đã xảy ra lỗi khi tạo hóa đơn.");
         }
         hoaDonRepository.save(hoaDon);
+        createLichSuHoaDon(hoaDon,nv.get(),"chưa thanh toán");
         return "redirect:/ban-hang-tai-quay";
     }
 
@@ -487,6 +493,7 @@ public class BanTaiQuayController {
         newHoaDon.setPhuongThucThanhToan(0);
         newHoaDon.setTrangThai(6);
         hoaDonRepository.save(newHoaDon);
+        createLichSuHoaDon(newHoaDon,nhanVienRepo.findById(UserInfor.idNhanVien).get(),"Đã thanh toán");
         return "redirect:/ban-hang-tai-quay";
     }
 
@@ -1225,9 +1232,21 @@ public class BanTaiQuayController {
         model.addAttribute("ngayTao",now);
         model.addAttribute("maHD",orderInfo);
 
-
+        createLichSuHoaDon(hoaDon,nhanVienRepo.findById(UserInfor.idNhanVien).get(),"Đã thanh toán");
 //        return ResponseEntity.ok("Thanh toán thành công");
-        return "/view/BanHangTaiQuay/thongBao.jsp";
+        return "/view/BanHangTaiQuay/banHangTaiQuay.jsp";
     }
+    // Hàm thêm đối tượng lịch sử hóa đơn
+    // Hàm thêm đối tượng lịch sử hóa đơn
 
+    public void createLichSuHoaDon(HoaDon hoaDon, NhanVien nhanVien, String ghiChu) {
+        LichSuHoaDon lichSuHoaDon = new LichSuHoaDon();
+        lichSuHoaDon.setIdHoaDon(hoaDon);
+        lichSuHoaDon.setIdNhanVien(nhanVien);
+        lichSuHoaDon.setNgayTao(hoaDon.getNgayTao() != null ? hoaDon.getNgayTao() :null);
+        lichSuHoaDon.setNgayHoanThanh(hoaDon.getNgayThanhToan() != null ? hoaDon.getNgayThanhToan() :null);
+        lichSuHoaDon.setTrangThai(hoaDon.getTrangThai());
+        lichSuHoaDon.setGhiChu(ghiChu);
+        _lichSuHoaDonRepo.save(lichSuHoaDon);
+    };
 }
