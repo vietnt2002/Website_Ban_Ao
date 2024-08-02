@@ -1590,9 +1590,9 @@
                             '</td>'+
                             '<td>' +'</td>' +
                             '<td>' +'</td>' +
-                            '<td>' +'</td>' +
-                            '<td>' +'</td>' +
-                            '<td>' +'</td>' +
+                            '<td><input style="width: 20px;height: 20px" type="checkbox" id="cbSoLuong_'+spct.id+'"></td>' +
+                            '<td><input style="width: 20px;height: 20px" type="checkbox" id="cbGiaBan_'+spct.id+'"></td>' +
+                            '<td><input style="width: 20px;height: 20px" type="checkbox" id="cbTrangThai_'+spct.id+'"></td>' +
                             '<td>'+
                             '<button id="editAllSPCTBtn_' + spct.idMauSac + '" class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#ModalEditAll">Sửa toàn bộ</button>' +
                             '</td>'+
@@ -1781,6 +1781,14 @@
                 hinhAnh3DisplayModalEdit.src = resp.hinhAnh3 ? "/image/" + resp.hinhAnh3 : "/image-icon/pendingIMG.png";
             });
     });
+    //continue
+    $(document).on('click', "button[id^='editAllSPCTBtn_']", e => {
+        e.preventDefault();
+        console.log("test");
+        document.getElementById("giaNhapModalEditAll").style.display = "none";
+    });
+
+
     $(document).on('click', "button[id^='detailSPBtn_']", e => {
         e.preventDefault();
         const spid = e.currentTarget.id.replace("detailSPBtn_", "");

@@ -504,7 +504,7 @@
         <!-- ModalSPAdd-->
         <div class="modal fade" id="ModalAdd" tabindex="-1" aria-labelledby="exampleModalLabel4" aria-hidden="true"
              data-bs-backdrop="static" data-bs-keyboard="false">
-            <div class="modal-dialog modal-lg">
+            <div class="modal-dialog modal-md">
                 <div class="modal-content">
                     <div class="modal-header">
                         <div class="row">
@@ -512,21 +512,13 @@
                         </div>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                     </div>
-                    <div class="modal-body d-flex gap-5">
-                        <div>
-                            <img src="src/main/webapp/image/${hinhAnhdspAdd}" alt="" width="200" height="200">
-                        </div>
+                    <div class="modal-body d-flex gap-2">
                         <div>
                             <form id="uploadFormAdd" method="post" enctype="multipart/form-data" action="/upload">
                                 <div class="mb-3">
                                     <label for="tenSPAdd" class="form-label">Tên sản phẩm</label>
-                                    <input type="text" class="form-control" id="tenSPAdd">
+                                    <input style="width: 300px" type="text" class="form-control" id="tenSPAdd">
                                     <p style="color: red;" id="tenSPAddErr"></p>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="hinhAnhAdd" class="form-label">Hình ảnh</label>
-                                    <input type="file" name="file" class="form-control" id="hinhAnhAdd" value="">
-                                    <p style="color: red;" id="hinhAnhAddErr"></p>
                                 </div>
                                 <div class="form-check form-switch">
                                     <input class="form-check-input" type="checkbox" role="switch" id="trangThaiAdd"
@@ -760,7 +752,7 @@
         <!-- ModalSPEdit-->
         <div class="modal fade" id="ModalEdit" tabindex="-1" aria-labelledby="exampleModalLabel4" aria-hidden="true"
              data-bs-backdrop="static" data-bs-keyboard="false">
-            <div class="modal-dialog modal-lg">
+            <div class="modal-dialog modal-md">
                 <div class="modal-content">
                     <div class="modal-header">
                         <div class="row">
@@ -768,16 +760,15 @@
                         </div>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body d-flex gap-5">
+                    <div class="modal-body d-flex gap-2">
                         <div class="border">
-                            <img id="hinhAnhEditDisplay" width="200" height="200" alt="">
+                            <img id="hinhAnhEditDisplay" width="150" height="200" alt="">
                         </div>
                         <div>
                             <form id="uploadFormEdit" method="post" enctype="multipart/form-data" action="/upload">
                                 <div class="mb-3">
                                     <label for="tenSPEdit" class="form-label">Tên sản phẩm</label>
-                                    <input type="text" class="form-control" id="tenSPEdit" aria-describedby="emailHelp"
-                                           value="">
+                                    <input type="text" style="width: 300px;" class="form-control" id="tenSPEdit" value="">
                                     <p style="color: red;" id="tenSPEditErr"></p>
                                 </div>
                                 <div class="form-check form-switch">
