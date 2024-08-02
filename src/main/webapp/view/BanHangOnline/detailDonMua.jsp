@@ -497,7 +497,7 @@
                 <div class="row d-flex align-items-stretch" style="text-align: end; position: relative; right: 75px;">
                     <div class="col-4 mb-3 d-flex align-items-stretch">
                         <c:forEach var="i" items="${hoaDon}">
-                            <div class="card-body" style="position: relative; left: 629px;">
+                            <div class="card-body" style="position: relative; left: 629px; padding: 0px">
                                 <div class="d-flex justify-content-between mb-3 pt-1">
                                     <h6 class="font-weight-medium">Tổng tiền hàng: </h6>
                                     <h6 class="font-weight-medium" style="font-size: 18px">
@@ -510,7 +510,7 @@
                                         <h6 class="font-weight-medium" style="font-size: 18px">0₫</h6>
                                     </c:if>
                                     <c:if test="${i.idKhuyenMai != null}">
-                                        <h6 class="font-weight-medium" style="font-size: 18px">- <fmt:formatNumber
+                                        <h6 class="font-weight-medium" style="font-size: 18px"><fmt:formatNumber
                                                 value="${i.idKhuyenMai.soTienGiam}" type="currency" currencySymbol="₫"/>
                                         </h6>
                                     </c:if>

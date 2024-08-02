@@ -780,11 +780,6 @@
                                            value="">
                                     <p style="color: red;" id="tenSPEditErr"></p>
                                 </div>
-                                <div class="mb-3">
-                                    <label for="hinhAnhEdit" class="form-label">Hình ảnh</label>
-                                    <input type="file" name="file" class="form-control" id="hinhAnhEdit" value="">
-                                    <p style="color: red;" id="hinhAnhEditErr"></p>
-                                </div>
                                 <div class="form-check form-switch">
                                     <input class="form-check-input" type="checkbox" role="switch" id="trangThaiEdit"
                                            checked>
@@ -926,7 +921,7 @@
                         : '<p style="font-weight: bold; color: red">Dừng HĐ</p>';
                     html += '<tr>' +
                         '<td>' + (i + 1) + '</td>' +
-                        '<td><img src="' + "/image/" + hinhAnh + '" alt="Image" style="width: 70px ; height: 60px" class="img-fluid rounded border" /></td>' +
+                        '<td><img src="' + "/image/" + hinhAnh + '" alt="Image" style="width: 50px ; height: 60px" class="img-fluid rounded border" /></td>' +
                         '<td>' + maSanPham + '</td>' +
                         '<td>' + tenSanPham + '</td>' +
                         '<td>' + ngayTao + '</td>' +
