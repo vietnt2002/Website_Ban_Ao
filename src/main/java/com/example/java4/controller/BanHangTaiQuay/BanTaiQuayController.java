@@ -485,7 +485,7 @@ public class BanTaiQuayController {
         newHoaDon.setTongTien(tongTien);
         newHoaDon.setLoaiHoaDon(0);
         newHoaDon.setPhuongThucThanhToan(0);
-        newHoaDon.setTrangThai(1);
+        newHoaDon.setTrangThai(6);
         hoaDonRepository.save(newHoaDon);
         return "redirect:/ban-hang-tai-quay";
     }

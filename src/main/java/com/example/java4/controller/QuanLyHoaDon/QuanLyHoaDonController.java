@@ -252,7 +252,6 @@ public class QuanLyHoaDonController {
     // Hàm lấy ra Page<HoaDon> theo trạng thái
     private Page<HoaDon> getPageByStatus(String status, Pageable pageable) {
         switch (status) {
-
             case "all":
                 return hoaDonRepository.findAllExcludingSpecificTypeAndStatus(pageable);
             case "confirmation":
