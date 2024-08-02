@@ -49,7 +49,22 @@
 
     <!-- Owl Carousel JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/owl.carousel/2.3.4/owl.carousel.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.3/owl.carousel.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.3/owl.carousel.min.js"></script>
 
+    <style>
+        .item {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .product-item {
+            width: 100%;
+            max-width: 300px;
+        }
+    </style>
 
     <style>
         .owl-carousel .item {
@@ -480,241 +495,119 @@
 <!-- Shop Detail End -->
 
 <!-- Container for the carousel -->
-<%--<div class="container-fluid py-5">--%>
-<%--    <div class="text-center mb-4">--%>
-<%--        <h2 class="section-title px-5"><span class="px-2">You May Also Like</span></h2>--%>
-<%--    </div>--%>
-<%--    <div class="row px-xl-5">--%>
-<%--        <div class="col">--%>
-<%--            <div class="owl-carousel related-carousel" id="product-container">--%>
-<%--                <!-- Sản phẩm sẽ được thêm vào đây bởi JavaScript -->--%>
-<%--            </div>--%>
-<%--        </div>--%>
-<%--    </div>--%>
-<%--</div>--%>
-
-<%--<script>--%>
-<%--    document.addEventListener('DOMContentLoaded', () => {--%>
-<%--        const products = [];--%>
-<%--        <c:forEach items="${listCTSPRes}" var="ctsp">--%>
-<%--        products.push({--%>
-<%--            idCTSP: '${ctsp.idCTSP}',--%>
-<%--            idSP: '${ctsp.idSP}',--%>
-<%--            maSP: '${ctsp.maSP}',--%>
-<%--            tenSanPham: '${ctsp.tenSanPham}',--%>
-<%--            tenMauSac: '${ctsp.tenMauSac}',--%>
-<%--            tenKichThuoc: '${ctsp.tenKichThuoc}',--%>
-<%--            tenKieuTay: '${ctsp.tenKieuTay}',--%>
-<%--            soLuong: '${ctsp.soLuong}',--%>
-<%--            giaBan: parseFloat('${ctsp.giaBan}'),--%>
-<%--            hinhAnh1: '${ctsp.hinhAnh1}'--%>
-<%--        });--%>
-<%--        </c:forEach>--%>
-
-<%--        const listCTHD = [];--%>
-<%--        <c:forEach items="${listCTHDByTT}" var="cthd">--%>
-<%--        listCTHD.push({--%>
-<%--            id: '${cthd.id}',--%>
-<%--            idCTSP: '${cthd.idCTSP.id}',--%>
-<%--            idSP: '${cthd.idCTSP.idSanPham.id}',--%>
-<%--            soLuong: parseInt('${cthd.soLuong}', 10)--%>
-<%--        });--%>
-<%--        </c:forEach>--%>
-
-<%--        const totalQuantities = {};--%>
-<%--        listCTHD.forEach(cthd => {--%>
-<%--            if (!totalQuantities[cthd.idSP]) {--%>
-<%--                totalQuantities[cthd.idSP] = 0;--%>
-<%--            }--%>
-<%--            totalQuantities[cthd.idSP] += cthd.soLuong;--%>
-<%--        });--%>
-
-<%--        const sortedTotalQuantities = Object.entries(totalQuantities)--%>
-<%--            .map(([idSP, soLuong]) => ({idSP, soLuong}))--%>
-<%--            .sort((a, b) => b.soLuong - a.soLuong);--%>
-
-<%--        const top5Products = sortedTotalQuantities.slice(0, 5).map(item => item.idSP);--%>
-
-<%--        const displayTop5Products = () => {--%>
-<%--            const top5FilteredProducts = products.filter(product => top5Products.includes(product.idSP));--%>
-<%--            const uniqueTop5FilteredProducts = Array.from(new Set(top5FilteredProducts.map(p => p.idSP)))--%>
-<%--                .map(idSP => top5FilteredProducts.find(p => p.idSP === idSP));--%>
-
-<%--            const productContainer = document.getElementById('product-container');--%>
-
-<%--            if (!productContainer) {--%>
-<%--                console.error('Product container not found!');--%>
-<%--                return;--%>
-<%--            }--%>
-
-<%--            productContainer.innerHTML = '';--%>
-
-<%--            uniqueTop5FilteredProducts.forEach(sp => {--%>
-<%--                const soldQuantity = totalQuantities[sp.idSP] || 0;--%>
-<%--                const productHTML =--%>
-<%--                    '<div class="item">' +--%>
-<%--                    '<div class="card product-item border-0">' +--%>
-<%--                    '<div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">' +--%>
-<%--                    '<img class="img-fluid w-100" src="/image/' + sp.hinhAnh1 + '" alt="" style="width: 100%; height: 370px;">' +--%>
-<%--                    '</div>' +--%>
-<%--                    '<div class="card-body border-left border-right text-center p-0 pt-4 pb-3">' +--%>
-<%--                    '<h6 class="text-truncate mb-2">' + sp.tenSanPham + '</h6>' +--%>
-<%--                    '<h6 class="text-truncate mb-2" style="font-family: auto">' + sp.maSP + '</h6>' +--%>
-<%--                    '<p class="text-truncate mb-2">Đã bán: ' + soldQuantity + '</p>' +--%>
-<%--                    '</div>' +--%>
-<%--                    '<div class="card-footer d-flex justify-content-between bg-light border">' +--%>
-<%--                    '<h6>' +--%>
-<%--                    new Intl.NumberFormat('vi-VN', {style: 'currency', currency: 'VND'}).format(sp.giaBan) +--%>
-<%--                    '</h6>' +--%>
-<%--                    '<a href="/cua-hang/detail-san-pham/' + sp.idCTSP + '" class="btn btn-sm text-dark p-0">' +--%>
-<%--                    '<i class="fas fa-eye text-primary mr-1"></i>Chi tiết' +--%>
-<%--                    '</a>' +--%>
-<%--                    '</div>' +--%>
-<%--                    '</div>' +--%>
-<%--                    '</div>';--%>
-<%--                productContainer.insertAdjacentHTML('beforeend', productHTML);--%>
-<%--            });--%>
-
-<%--            $('#product-container').owlCarousel({--%>
-<%--                loop: true,--%>
-<%--                margin: 10,--%>
-<%--                nav: true,--%>
-<%--                responsive: {--%>
-<%--                    0: {--%>
-<%--                        items: 1--%>
-<%--                    },--%>
-<%--                    600: {--%>
-<%--                        items: 2--%>
-<%--                    },--%>
-<%--                    1000: {--%>
-<%--                        items: 4--%>
-<%--                    }--%>
-<%--                },--%>
-<%--                autoplay: true,--%>
-<%--                autoplayTimeout: 3000,--%>
-<%--                autoplayHoverPause: true--%>
-<%--            });--%>
-<%--        };--%>
-
-<%--        displayTop5Products();--%>
-<%--    });--%>
-<%--</script>--%>
-
-
-
-<!-- Products Start -->
 <div class="container-fluid py-5">
     <div class="text-center mb-4">
-        <h2 class="section-title px-5"><span class="px-2">You May Also Like</span></h2>
+        <h2 class="section-title px-5 mb-4"><span class="px-2">SẢN PHẨM BÁN CHẠY</span></h2>
     </div>
     <div class="row px-xl-5">
         <div class="col">
-            <div class="owl-carousel related-carousel">
-                <div class="card product-item border-0">
-                    <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                        <img class="img-fluid w-100" src="/view_ban_hang/img/product-1.jpg" alt="">
-                    </div>
-                    <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                        <h6 class="text-truncate mb-3">Colorful Stylish Shirt</h6>
-                        <div class="d-flex justify-content-center">
-                            <h6>$123.00</h6>
-                            <h6 class="text-muted ml-2">
-                                <del>$123.00</del>
-                            </h6>
-                        </div>
-                    </div>
-                    <div class="card-footer d-flex justify-content-between bg-light border">
-                        <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View
-                            Detail</a>
-                        <a href="" class="btn btn-sm text-dark p-0"><i
-                                class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
-                    </div>
-                </div>
-                <div class="card product-item border-0">
-                    <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                        <img class="img-fluid w-100" src="/view_ban_hang/img/product-2.jpg" alt="">
-                    </div>
-                    <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                        <h6 class="text-truncate mb-3">Colorful Stylish Shirt</h6>
-                        <div class="d-flex justify-content-center">
-                            <h6>$123.00</h6>
-                            <h6 class="text-muted ml-2">
-                                <del>$123.00</del>
-                            </h6>
-                        </div>
-                    </div>
-                    <div class="card-footer d-flex justify-content-between bg-light border">
-                        <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View
-                            Detail</a>
-                        <a href="" class="btn btn-sm text-dark p-0"><i
-                                class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
-                    </div>
-                </div>
-                <div class="card product-item border-0">
-                    <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                        <img class="img-fluid w-100" src="/view_ban_hang/img/product-3.jpg" alt="">
-                    </div>
-                    <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                        <h6 class="text-truncate mb-3">Colorful Stylish Shirt</h6>
-                        <div class="d-flex justify-content-center">
-                            <h6>$123.00</h6>
-                            <h6 class="text-muted ml-2">
-                                <del>$123.00</del>
-                            </h6>
-                        </div>
-                    </div>
-                    <div class="card-footer d-flex justify-content-between bg-light border">
-                        <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View
-                            Detail</a>
-                        <a href="" class="btn btn-sm text-dark p-0"><i
-                                class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
-                    </div>
-                </div>
-                <div class="card product-item border-0">
-                    <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                        <img class="img-fluid w-100" src="/view_ban_hang/img/product-4.jpg" alt="">
-                    </div>
-                    <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                        <h6 class="text-truncate mb-3">Colorful Stylish Shirt</h6>
-                        <div class="d-flex justify-content-center">
-                            <h6>$123.00</h6>
-                            <h6 class="text-muted ml-2">
-                                <del>$123.00</del>
-                            </h6>
-                        </div>
-                    </div>
-                    <div class="card-footer d-flex justify-content-between bg-light border">
-                        <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View
-                            Detail</a>
-                        <a href="" class="btn btn-sm text-dark p-0"><i
-                                class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
-                    </div>
-                </div>
-                <div class="card product-item border-0">
-                    <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                        <img class="img-fluid w-100" src="/view_ban_hang/img/product-5.jpg" alt="">
-                    </div>
-                    <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                        <h6 class="text-truncate mb-3">Colorful Stylish Shirt</h6>
-                        <div class="d-flex justify-content-center">
-                            <h6>$123.00</h6>
-                            <h6 class="text-muted ml-2">
-                                <del>$123.00</del>
-                            </h6>
-                        </div>
-                    </div>
-                    <div class="card-footer d-flex justify-content-between bg-light border">
-                        <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View
-                            Detail</a>
-                        <a href="" class="btn btn-sm text-dark p-0"><i
-                                class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
-                    </div>
-                </div>
+            <div id="product-container" class="row">
+                <!-- Sản phẩm sẽ được thêm vào đây bởi JavaScript -->
             </div>
         </div>
     </div>
 </div>
-<!-- Products End -->
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const products = [];
+        <c:forEach items="${listCTSPRes}" var="ctsp">
+        products.push({
+            idCTSP: '${ctsp.idCTSP}',
+            idSP: '${ctsp.idSP}',
+            maSP: '${ctsp.maSP}',
+            tenSanPham: '${ctsp.tenSanPham}',
+            tenMauSac: '${ctsp.tenMauSac}',
+            tenKichThuoc: '${ctsp.tenKichThuoc}',
+            tenKieuTay: '${ctsp.tenKieuTay}',
+            soLuong: '${ctsp.soLuong}',
+            giaBan: parseFloat('${ctsp.giaBan}'),
+            hinhAnh1: '${ctsp.hinhAnh1}'
+        });
+        </c:forEach>
+
+        const listCTHD = [];
+        <c:forEach items="${listCTHDByTT}" var="cthd">
+        listCTHD.push({
+            id: '${cthd.id}',
+            idCTSP: '${cthd.idCTSP.id}',
+            idSP: '${cthd.idCTSP.idSanPham.id}',
+            soLuong: parseInt('${cthd.soLuong}', 10)
+        });
+        </c:forEach>
+
+        // Tính tổng số lượng bán cho từng sản phẩm
+        const totalQuantities = {};
+        listCTHD.forEach(cthd => {
+            if (!totalQuantities[cthd.idSP]) {
+                totalQuantities[cthd.idSP] = 0;
+            }
+            totalQuantities[cthd.idSP] += cthd.soLuong;
+        });
+
+        // Sắp xếp sản phẩm theo số lượng bán giảm dần
+        const sortedProducts = products.map(product => {
+            return {
+                ...product,
+                soldQuantity: totalQuantities[product.idSP] || 0
+            };
+        }).sort((a, b) => b.soldQuantity - a.soldQuantity);
+
+        // Loại bỏ sản phẩm bị lặp lại
+        const uniqueSortedProducts = [];
+        const seenProductIds = new Set();
+
+        sortedProducts.forEach(product => {
+            if (!seenProductIds.has(product.idSP)) {
+                uniqueSortedProducts.push(product);
+                seenProductIds.add(product.idSP);
+            }
+        });
+
+        // Lấy 8 sản phẩm hàng đầu
+        const top8Products = uniqueSortedProducts.slice(0, 8);
+
+        // Hiển thị các sản phẩm hàng đầu
+        const displayTop8Products = () => {
+            const productContainer = document.getElementById('product-container');
+            productContainer.innerHTML = '';
+
+            top8Products.forEach(sp => {
+                const productHTML =
+                    '<div class="col-lg-3 col-md-4 col-sm-6 pb-1">' +
+                    '<a href="/cua-hang/detail-san-pham/' + sp.idCTSP + '" style="text-decoration: none">' +
+                    '<div class="card product-item border-0 mb-2">' +
+                    '<div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">' +
+                    '<img style="width: 100%; height: 370px; border-radius: 10px;" class="img-fluid w-100" src="/image/' + sp.hinhAnh1 + '" alt="">' +
+                    '</div>' +
+                    '<div class="card-body border-left border-right text-center p-0 pt-4 pb-3" style="margin-top: -10px; margin-bottom: -12px">' +
+                    '<h6 class="text-truncate mb-2">' + sp.tenSanPham + '</h6>' +
+                    '<h6 class="text-truncate mb-2" style="font-family: auto">' + sp.maSP + '</h6>' +
+                    '<p class="text-truncate mb-2">Đã bán: ' + sp.soldQuantity + '</p>' +
+                    '</div>' +
+                    '<div class="card-footer d-flex justify-content-between bg-light border float-start" style="margin-top: -3px; margin-bottom: -3px">' +
+                    '<div class="d-flex justify-content-center mb-0" style="margin-bottom: 3px">' +
+                    '<h6>' +
+                    new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(sp.giaBan) +
+                    '<span style="font-size: 16px; text-decoration: underline"></span>' +
+                    '</h6>' +
+                    '</div>' +
+                    '<a href="/cua-hang/detail-san-pham/' + sp.idCTSP + '" class="btn btn-sm text-dark p-0">' +
+                    '<i class="fas fa-eye text-primary mr-1"></i>Chi tiết' +
+                    '</a>' +
+                    '</div>' +
+                    '</div>' +
+                    '</a>' +
+                    '</div>';
+                productContainer.insertAdjacentHTML('beforeend', productHTML);
+            });
+        };
+
+        displayTop8Products();
+    });
+</script>
+
+
 
 
 <!-- Footer Start -->
