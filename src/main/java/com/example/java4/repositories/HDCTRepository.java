@@ -100,4 +100,10 @@ public interface HDCTRepository
             "where hd.idKhachHang.id = ?1 and hd.id = ?2")
     List<ChiTietHoaDon> tongTienHD(String idKH, String idHD);
 
+
+    @Query("SELECT cthd  FROM ChiTietHoaDon cthd " +
+            "JOIN HoaDon  hd on hd.id = cthd.idHoaDon.id " +
+            "where hd.id = ?1")
+    ChiTietHoaDon findByIdHoaDon(String idHoaDon);
+
 };
