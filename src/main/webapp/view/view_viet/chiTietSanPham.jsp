@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="f" uri="jakarta.tags.functions" %>
 <%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -12,9 +13,6 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="Free HTML Templates" name="keywords">
     <meta content="Free HTML Templates" name="description">
-
-    <!-- Favicon -->
-    <link href="/view_ban_hang/img/favicon.ico" rel="icon">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -35,7 +33,6 @@
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
             crossorigin="anonymous"></script>
 
-    <%--    Thêm thư viện SweetAlert2 để thiển thị thông báo--%>
     <!-- SweetAlert2 CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 
@@ -52,6 +49,11 @@
         .dropdown ul li:hover {
             text-decoration: underline;
         }
+
+        .dropdown-menu {
+            display: none;
+        }
+
         .totalQuantityCart {
             width: 15px;
             height: 15px;
@@ -125,33 +127,49 @@
                 </div>
             </form>
         </div>
-<%--        usercarthere--%>
         <div class="col-lg-3 col-6 text-right userCart">
             <div class="dropdown">
-                <button class="btn btn-secondary bg-light" style="padding: 4px; font-size: 19px; margin-right: 3px"
+                <button class="btn btn-light bg-light" style="font-size: 19px; margin-right: 3px"
                         type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="bi bi-person-circle" style="color:#D19C97; margin: 5px"></i>
+                    <c:choose>
+                        <c:when test="${not empty sessionScope.user}">
+                            <!-- Hiển thị tên và hình ảnh người dùng nếu đã đăng nhập -->
+                            <span class="info-text" style="font-size: 14px">${sessionScope.user.taiKhoan}</span>
+                            <c:if test="${sessionScope.user.anhDaiDien != null}">
+                                <img src="/image/${sessionScope.user.anhDaiDien}" alt=""
+                                     style="width: 30px; height: 30px; border-radius: 50%; margin-left: 5px;">
+                            </c:if>
+                            <c:if test="${sessionScope.user.anhDaiDien == null}">
+                                <i class="bi bi-person-circle" style="color:#D19C97; margin: 5px"></i>
+                            </c:if>
+                        </c:when>
+                        <c:otherwise>
+                            <!-- Hiển thị biểu tượng mặc định nếu chưa đăng nhập -->
+                            <i class="bi bi-person-circle" style="color:#D19C97; margin: 5px"></i>
+                        </c:otherwise>
+                    </c:choose>
                 </button>
-                <ul class="dropdown-menu btn border" aria-labelledby="dropdownMenuButton1">
+                <ul class="dropdown-menu btn border" aria-labelledby="dropdownMenuButton1" id="dropdownContent">
                     <c:choose>
                         <c:when test="${empty sessionScope.user}">
                             <!-- Hiển thị nút đăng nhập khi chưa đăng nhập -->
                             <li><a class="dropdown-item text-center" href="#">
-                                <button class="btn btn-primary w-100 px-5" data-toggle="modal" data-target="#loginModal">Đăng nhập
+                                <button class="btn btn-primary w-100 px-5" data-toggle="modal"
+                                        data-target="#loginModal">Đăng nhập
                                 </button>
                             </a></li>
 
                             <li><a class="dropdown-item text-center mt-3 " href="#">
-                                <button class="btn btn-primary w-100 px-5" data-toggle="modal" data-target="#registerModal">Đăng ký
+                                <button class="btn btn-primary w-100 px-5" data-toggle="modal"
+                                        data-target="#registerModal">Đăng ký
                                 </button>
                             </a></li>
                         </c:when>
                         <c:otherwise>
                             <!-- Hiển thị nút đăng xuất khi đã đăng nhập -->
-                            <li><a class="dropdown-item" href="#">Theo dõi đơn hàng</a></li>
-                            <li><a class="dropdown-item" href="#">Lịch sử mua hàng</a></li>
-                            <li><a class="dropdown-item" href="#">Quản lý tài khoản</a></li>
-                            <li><a class="dropdown-item" href="/home/logout">Đăng xuất</a></li>
+                            <li><a class="dropdown-item" href="/store/don-mua">Đơn mua</a></li>
+                            <li><a class="dropdown-item" href="/store/quan-ly-tai-khoan">Quản lý tài khoản</a></li>
+                            <li><a class="dropdown-item" href="/store/logout">Đăng xuất</a></li>
                         </c:otherwise>
                     </c:choose>
                 </ul>
@@ -159,11 +177,13 @@
             <div class="col-lg-3 col-6 text-right" style="position: relative">
                 <a href="/store/gio-hang" class="btn border">
                     <i class="fas fa-shopping-cart text-primary"></i>
-                    <c:if test="${soLuong > 0}">
-                        <span class="totalQuantityCart" style="display: flex; justify-content: center; align-items: center">${soLuong}</span>
+                    <c:if test="${soLuongGioHang > 0}">
+                    <span class="totalQuantityCart"
+                          style="display: flex; justify-content: center; align-items: center">${soLuongGioHang}</span>
                     </c:if>
-                    <c:if test="${soLuong == null}">
-                        <span class="totalQuantityCart" style="display: flex; justify-content: center; align-items: center">0</span>
+                    <c:if test="${soLuongGioHang == null}">
+                    <span class="totalQuantityCart"
+                          style="display: flex; justify-content: center; align-items: center">0</span>
                     </c:if>
                 </a>
             </div>
@@ -171,6 +191,109 @@
     </div>
 </div>
 <!-- Topbar End -->
+
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true"
+     data-backdrop="true" data-keyboard="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title text-center text-info w-100">Login</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="login-form-wrapper">
+                    <form id="login-form" class="form" action="/store/login" method="post" modelAttribute="khachHangDTO">
+                        <div class="form-group">
+                            <label for="taiKhoan" class="text-info">Username:</label><br>
+                            <input placeholder="Username" type="text" id="taiKhoan" name="taiKhoan"
+                                   value="${khachHangDTO.taiKhoan}" class="form-control">
+                            <small id="taiKhoanError" class="text-danger"></small>
+                        </div>
+                        <div class="form-group">
+                            <label for="matKhau" class="text-info">Password:</label><br>
+                            <input placeholder="Password" type="password" id="matKhau" name="matKhau"
+                                   value="${khachHangDTO.matKhau}" class="form-control">
+                            <small id="matKhauError" class="text-danger"></small>
+                        </div>
+                        <div class="form-group">
+                            <label for="remember-me" class="text-info"><span>Remember me</span> <span><input
+                                    id="remember-me" name="remember-me" type="checkbox"></span></label><br>
+                            <input type="submit" name="submit" class="btn btn-info btn-md w-100" value="Submit">
+                        </div>
+                        <div id="register-link" class="text-right">
+                            <a href="#" class="text-info " data-toggle="modal" data-target="#registerModal"
+                               data-dismiss="modal">Register here</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Login Modal End -->
+
+<!-- Registration Modal Start (Modal Form đăng ký) -->
+<div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel"
+     aria-hidden="true"
+     data-backdrop="true" data-keyboard="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title text-center text-info w-100">Register</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="register-form-wrapper">
+                    <form id="register-form" class="form" action="/store/register" method="post" modelAttribute="khachHangDTO">
+                        <div class="form-group">
+                            <label for="registerUsername" class="text-info">Username:</label><br>
+                            <input placeholder="Username" type="text" id="registerUsername" name="taiKhoan"
+                                   class="form-control" value="${khachHangDTO.taiKhoan}">
+                            <small id="registerUsernameError" class="text-danger"></small>
+                        </div>
+                        <div class="form-group">
+                            <label for="registerEmail" class="text-info">Email:</label><br>
+                            <input placeholder="Email" type="text" id="registerEmail" name="email"
+                                   class="form-control" value="${khachHangDTO.email}">
+                            <small id="registerEmailError" class="text-danger"></small>
+                        </div>
+                        <div class="form-group">
+                            <label for="registerPhone" class="text-info">Phone:</label><br>
+                            <input placeholder="Phone" type="text" id="registerPhone" name="sdt"
+                                   class="form-control" value="${khachHangDTO.sdt}">
+                            <small id="registerPhoneError" class="text-danger"></small>
+                        </div>
+                        <div class="form-group">
+                            <label for="registerPassword" class="text-info">Password:</label><br>
+                            <input placeholder="Password" type="password" id="registerPassword" name="matKhau"
+                                   class="form-control" value="${khachHangDTO.matKhau}">
+                            <small id="registerPasswordError" class="text-danger"></small>
+                        </div>
+                        <div class="form-group">
+                            <label for="registerPassword" class="text-info">Confirm Password:</label><br>
+                            <input placeholder="Confirm password" type="password" id="nhapLaiMatKhau" name="nhapLaiMatKhau"
+                                   class="form-control" value="">
+                            <small id="nhapLaiMatKhauError" class="text-danger"></small>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" name="submit" class="btn btn-info btn-md w-100" value="Register">
+                        </div>
+                        <div id="login-link" class="text-right">
+                            <a href="#" class="text-info " data-toggle="modal" data-target="#loginModal"
+                               data-dismiss="modal">Back to Login</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Registration Modal End -->
 
 
 <!-- Navbar Start -->
@@ -210,9 +333,9 @@
     <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
         <h1 class="font-weight-semi-bold text-uppercase mb-3">Shop Detail</h1>
         <div class="d-inline-flex">
-            <p class="m-0"><a href="">Home</a></p>
+            <p class="m-0"><a href="/store/trang-chu">Trang chủ</a></p>
             <p class="m-0 px-2">-</p>
-            <p class="m-0">Shop Detail</p>
+            <p class="m-0">Chi tiết sản phẩm</p>
         </div>
     </div>
 </div>
@@ -226,13 +349,13 @@
             <div id="product-carousel" class="carousel slide" data-ride="carousel">
                 <div class="carousel-inner border">
                     <div class="carousel-item active">
-                        <img class="w-100 h-100" src="/image/${hinhAnh.hinhAnh1}" alt="Image">
+                        <img class="w-100 h-100" src="/image/${hinhAnh.hinhAnh1}" alt="Image" id="hinhAnh1">
                     </div>
                     <div class="carousel-item">
-                        <img class="w-100 h-100" src="/image/${hinhAnh.hinhAnh2}" alt="Image">
+                        <img class="w-100 h-100" src="/image/${hinhAnh.hinhAnh2}" alt="Image" id="hinhAnh2">
                     </div>
                     <div class="carousel-item">
-                        <img class="w-100 h-100" src="/image/${hinhAnh.hinhAnh3}" alt="Image">
+                        <img class="w-100 h-100" src="/image/${hinhAnh.hinhAnh3}" alt="Image" id="hinhAnh3">
                     </div>
                 </div>
                 <a class="carousel-control-prev" href="#product-carousel" data-slide="prev">
@@ -255,8 +378,6 @@
                     <small class="far fa-star"></small>
                 </div>
             </div>
-            <h3 class="font-weight-semi-bold mb-4">${ctsp.giaBan} <span
-                    style="font-size: 25px; text-decoration: underline">đ</span></h3>
 
             <h3 class="font-weight-semi-bold mb-4">
                 <fmt:formatNumber value="${ctsp.giaBan}" type="currency" currencySymbol="₫"/>
@@ -271,47 +392,56 @@
                 </div>
             </div>
 
+            <form method="post" action="/store/add-gio-hang">
+                <input type="hidden" name="idCTSP" value="${ctsp.id}">
 
-                <form method="post" action="/store/add-gio-hang">
-                    <input type="hidden" name="idCTSP" value="${ctsp.id}">
-                    <div class="d-flex mb-3">
-                        <p class="text-dark font-weight-medium mb-0 mr-3">Kích thước:</p>
-                        <c:forEach items="${listKichThuoc}" var="kichThuoc" varStatus="i">
-                            <div class="custom-control custom-radio custom-control-inline">
-                                <input onchange="onchangeByKichThuoc('${kichThuoc.tenKth}')" type="radio" class="custom-control-input" id="${kichThuoc.idKth}" <c:if test="${i.index==0}">checked</c:if> value="${kichThuoc.tenKth}" name="kichThuoc">
-                                <label class="custom-control-label" for="${kichThuoc.idKth}">${kichThuoc.tenKth}</label>
-                            </div>
-                        </c:forEach>
-                    </div>
-
-                    <div class="d-flex mb-4">
-                        <p class="text-dark font-weight-medium mb-0 mr-3">Màu sắc:</p>
-                        <c:forEach items="${listMauSac}" var="mauSac" varStatus="i">
-                            <div class="custom-control custom-radio custom-control-inline">
-                                <input onchange="onchangeByMauSac('${mauSac.tenMS}')" type="radio" class="custom-control-input" id="${mauSac.idMS}" <c:if test="${i.index==0}">checked</c:if> value="${mauSac.tenMS}" name="mauSac">
-                                <label class="custom-control-label" for="${mauSac.idMS}">${mauSac.tenMS}</label>
-                            </div>
-                        </c:forEach>
-                    </div>
-
-                    <div class="d-flex align-items-center mb-4 pt-2">
-                        <div class="input-group quantity mr-3" style="width: 130px;">
-                            <div class="input-group-btn">
-                                <button type="button" class="btn btn-primary btn-minus">
-                                    <i class="fa fa-minus"></i>
-                                </button>
-                            </div>
-                            <input type="text" class="form-control bg-secondary text-center" id="soLuong" name="soLuong" value="1">
-                            <div class="input-group-btn">
-                                <button type="button" class="btn btn-primary btn-plus">
-                                    <i class="fa fa-plus"></i>
-                                </button>
-                            </div>
+                <div class="d-flex mb-4">
+                    <p class="text-dark font-weight-medium mb-0 mr-3">Màu sắc:</p>
+                    <c:forEach items="${listMauSac}" var="mauSac" varStatus="i">
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input onchange="onchangeByMauSac('${mauSac.tenMS}')" type="radio"
+                                   class="custom-control-input"
+                                   id="${mauSac.idMS}"
+                                   <c:if test="${i.index==0}">checked</c:if>
+                                   value="${mauSac.tenMS}" name="mauSac">
+                            <label class="custom-control-label" for="${mauSac.idMS}">${mauSac.tenMS}</label>
                         </div>
-                        <button type="submit" class="btn btn-primary px-3"><i class="fa fa-shopping-cart mr-1"></i> Add To Cart</button>
-                    </div>
-                </form>
+                    </c:forEach>
+                </div>
 
+                <div class="d-flex mb-3">
+                    <p class="text-dark font-weight-medium mb-0 mr-3">Kích thước:</p>
+                    <c:forEach items="${listKichThuoc}" var="kichThuoc" varStatus="i">
+                        <div class="custom-control custom-radio custom-control-inline kichThuocOption">
+                            <input onchange="onchangeByKichThuoc('${kichThuoc.tenKth}')" type="radio"
+                                   class="custom-control-input" id="${kichThuoc.idKth}"
+                                   <c:if test="${i.index==0}">checked</c:if> value="${kichThuoc.tenKth}"
+                                   name="kichThuoc">
+                            <label class="custom-control-label" for="${kichThuoc.idKth}">${kichThuoc.tenKth}</label>
+                        </div>
+                    </c:forEach>
+                </div>
+
+                <div class="d-flex align-items-center mb-4 pt-2">
+                    <div class="input-group quantity mr-3" style="width: 130px;">
+                        <div class="input-group-btn">
+                            <button type="button" class="btn btn-primary btn-minus">
+                                <i class="fa fa-minus"></i>
+                            </button>
+                        </div>
+                        <input type="text" class="form-control bg-secondary text-center" id="soLuong" name="soLuong"
+                               value="1">
+                        <div class="input-group-btn">
+                            <button type="button" class="btn btn-primary btn-plus">
+                                <i class="fa fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary px-3"><i class="fa fa-shopping-cart mr-1"></i> Thêm
+                        vào giỏ hàng
+                    </button>
+                </div>
+            </form>
 
             <div class="d-flex pt-2">
                 <p class="text-dark font-weight-medium mb-0 mr-2">Share on:</p>
@@ -673,45 +803,100 @@
 </body>
 
 <script>
-    var list = []
+    var list = [];
     <c:forEach items="${listMauSizeSL}" var="item">
     var MauSizeSL = {};
+    MauSizeSL.hinhAnh1 = "${item.hinhAnh1}";
+    MauSizeSL.hinhAnh2 = "${item.hinhAnh2}";
+    MauSizeSL.hinhAnh3 = "${item.hinhAnh3}";
     MauSizeSL.tenMauSac = "${item.tenMauSac}";
     MauSizeSL.tenKichThuoc = "${item.tenKichThuoc}";
     MauSizeSL.soLuong = "${item.soLuong}";
     list.push(MauSizeSL);
     </c:forEach>
 
-    //Lọc số lượng tồn spct theo kích thước khi chọn màu sắc
-    function onchangeByMauSac (tenMauSac){
-        var listKichThuoc = document.getElementsByName("kichThuoc");
-        var tenKichThuoc = "";
-        for (var i = 0; i<listKichThuoc.length; i++){
-            if (listKichThuoc.item(i).checked){
-                tenKichThuoc = listKichThuoc.item(i).value;
+    // Tìm và set giá trị ban đầu
+    var initialSelectedMauSac = document.querySelector('input[name="mauSac"]:checked').value;
+    var initialSelectedKichThuoc = document.querySelector('input[name="kichThuoc"]:checked').value;
+    setHinhAnhAndSoLuong(initialSelectedMauSac, initialSelectedKichThuoc);
+    filterKichThuocOptions(initialSelectedMauSac);
+
+    // Lọc số lượng tồn spct theo kích thước khi chọn màu sắc
+    function onchangeByMauSac(tenMauSac) {
+        var tenKichThuoc = document.querySelector('input[name="kichThuoc"]:checked').value;
+        var isKichThuocValid = list.some(item => item.tenMauSac === tenMauSac && item.tenKichThuoc === tenKichThuoc);
+
+        if (!isKichThuocValid) {
+            // Chọn kích thước đầu tiên có sẵn cho màu sắc mới
+            var kichThuocOptions = document.querySelectorAll('.kichThuocOption');
+            for (var option of kichThuocOptions) {
+                var input = option.querySelector('input[name="kichThuoc"]');
+                var isMatch = list.some(item => item.tenMauSac === tenMauSac && item.tenKichThuoc === input.value);
+                if (isMatch) {
+                    input.checked = true;
+                    tenKichThuoc = input.value;
+                    break;
+                }
             }
         }
-        var soLuong;
+        setHinhAnhAndSoLuong(tenMauSac, tenKichThuoc);
+        filterKichThuocOptions(tenMauSac);
+    }
+
+
+    // Hàm cập nhật hình ảnh và số lượng
+    function setHinhAnhAndSoLuong(tenMauSac, tenKichThuoc) {
+        var soLuong = 0;
+        var hinhAnh1 = "";
+        var hinhAnh2 = "";
+        var hinhAnh3 = "";
+
         list.forEach(item => {
-            if (item.tenMauSac == tenMauSac  && item.tenKichThuoc == tenKichThuoc){
-                soLuong = item.soLuong
+            if (item.tenMauSac == tenMauSac && item.tenKichThuoc == tenKichThuoc) {
+                soLuong = item.soLuong;
+                hinhAnh1 = item.hinhAnh1;
+                hinhAnh2 = item.hinhAnh2;
+                hinhAnh3 = item.hinhAnh3;
             }
         });
-        document.getElementById("soLuongTon").textContent = soLuong != null ? soLuong : 0;
+
+        if (soLuong < 0 || soLuong == null) {
+            soLuong = 0;
+        }
+
+        document.getElementById("soLuongTon").textContent = soLuong;
+        document.getElementById("hinhAnh1").src = "/image/" + hinhAnh1;
+        document.getElementById("hinhAnh2").src = "/image/" + hinhAnh2;
+        document.getElementById("hinhAnh3").src = "/image/" + hinhAnh3;
+    }
+
+    // Lọc các tùy chọn kích thước dựa trên màu sắc
+    function filterKichThuocOptions(tenMauSac) {
+        var kichThuocOptions = document.querySelectorAll('.kichThuocOption');
+        kichThuocOptions.forEach(option => {
+            var input = option.querySelector('input[name="kichThuoc"]');
+            var isMatch = list.some(item => item.tenMauSac === tenMauSac && item.tenKichThuoc === input.value);
+            option.style.display = isMatch ? 'inline-block' : 'none';
+        });
+        // Chọn kích thước đầu tiên hiển thị
+        var visibleOptions = Array.from(kichThuocOptions).filter(option => option.style.display !== 'none');
+        if (visibleOptions.length > 0) {
+            visibleOptions[0].querySelector('input').checked = true;
+        }
     }
 
     //Lọc số lượng tồn ctsp theo màu sắc khi chọn kích thước
-    function onchangeByKichThuoc (tenKichThuoc){
+    function onchangeByKichThuoc(tenKichThuoc) {
         var listMauSac = document.getElementsByName("mauSac");
         var tenMauSac = "";
-        for (var i = 0; i<listMauSac.length; i++){
-            if (listMauSac.item(i).checked){
+        for (var i = 0; i < listMauSac.length; i++) {
+            if (listMauSac.item(i).checked) {
                 tenMauSac = listMauSac.item(i).value;
             }
         }
         var soLuong;
         list.forEach(item => {
-            if (item.tenKichThuoc == tenKichThuoc && item.tenMauSac == tenMauSac){
+            if (item.tenKichThuoc == tenKichThuoc && item.tenMauSac == tenMauSac) {
                 soLuong = item.soLuong
             }
         });
@@ -720,11 +905,12 @@
 </script>
 
 <script>
+    // Hiển thị thông báo thất bại nếu đăng nhập thất bại
     const Toast = Swal.mixin({
         toast: true,
         position: "top-end",
         showConfirmButton: false,
-        timer: 4000,
+        timer: 3000,
         timerProgressBar: true,
         didOpen: (toast) => {
             toast.onmouseenter = Swal.stopTimer;
@@ -732,6 +918,7 @@
         }
     });
 
+    <%--    Hiển thị thông báo thành công khi đăng nhập thất bại--%>
     <c:if test="${not empty error}">
     Toast.fire({
         icon: "error",
@@ -739,12 +926,217 @@
     });
     </c:if>
 
-    <c:if test="${not empty success}">
+    <%--    Hiển thị thông báo thành công khi đăng nhập thành công--%>
+    <c:if test="${not empty successMessage}">
     Toast.fire({
         icon: "success",
-        title: "${success}"
+        title: "${successMessage}"
     });
     </c:if>
+
+    //Lấy ra danh sách khách hàng
+    const listKhachHang = [];
+    <c:forEach items="${listKhachHang}" var="kh">
+    listKhachHang.push({
+        taiKhoan: '${kh.taiKhoan}',
+        email: '${kh.email}',
+        sdt: '${kh.sdt}',
+    });
+    </c:forEach>
+    <%--Validate Form đăng nhặp--%>
+    $(document).ready(function () {
+        // Bắt lỗi khi submit form
+        $('#login-form').submit(function (event) {
+            event.preventDefault(); // Ngăn form submit mặc định
+            debugger
+            var form = $(this);
+            var username = $('#taiKhoan').val().trim();
+            var password = $('#matKhau').val().trim();
+
+            var hasError = false;
+
+            if (!username) {
+                $('#taiKhoanError').text('Vui lòng nhập username.');
+                $('#taiKhoan').addClass('border-danger');
+                hasError = true;
+            } else {
+                $('#taiKhoanError').text('');
+                $('#taiKhoan').removeClass('border-danger');
+            }
+
+            if (!password) {
+                $('#matKhauError').text('Vui lòng nhập password.');
+                $('#matKhau').addClass('border-danger');
+                hasError = true;
+            } else {
+                $('#matKhauError').text('');
+                $('#matKhau').removeClass('border-danger');
+            }
+
+            if (!hasError) {
+                // Gửi yêu cầu đăng nhập bằng AJAX
+                $.ajax({
+                    type: 'POST',
+                    url: form.attr('action'),
+                    data: form.serialize(),
+                    success: function (response) {
+                        if (response.success) {
+                            // Đăng nhập thành công, điều hướng sang trang home
+                            Toast.fire({
+                                icon: "success",
+                                title: response.successMessage
+                            });
+
+                            setTimeout(function () {
+                                window.location.href = response.redirectUrl;
+                            }, 2000);
+                        } else {
+                            // Đăng nhập không thành công, hiển thị lỗi
+                            if (response.errorUsername) {
+                                $('#taiKhoanError').text(response.errorUsername);
+                                $('#taiKhoan').addClass('border-danger');
+                            }
+                            if (response.errorPassword) {
+                                $('#matKhauError').text(response.errorPassword);
+                                $('#matKhau').addClass('border-danger');
+                            }
+
+                        }
+                    },
+                    error: function () {
+                        console.error('Đã xảy ra lỗi khi gửi yêu cầu đăng nhập.');
+                    }
+                });
+            }
+        });
+
+        // Xử lý lỗi và hiển thị modal khi submit form đăng ký
+        $('#register-form').submit(function (event) {
+            var form = $(this);
+            var hasError = false;
+
+            var username = $('#registerUsername').val().trim();
+            var email = $('#registerEmail').val().trim();
+            var phone = $('#registerPhone').val().trim();
+            var password = $('#registerPassword').val().trim();
+            var confirmPassword = $('#nhapLaiMatKhau').val().trim();
+
+            // Clear previous errors
+            $('.text-danger').text('');
+            $('.form-control').removeClass('border-danger');
+
+            // Validate fields
+            if (!username) {
+                $('#registerUsernameError').text('Vui lòng nhập username.');
+                $('#registerUsername').addClass('border-danger');
+                hasError = true;
+            } else if (listKhachHang.some(kh => kh.taiKhoan == username)){
+                $('#registerUsernameError').text('Tên tài khoản đã tồn tại');
+                $('#registerUsername').addClass('border-danger');
+                hasError = true;
+            }
+            if (!email) {
+                $('#registerEmailError').text('Vui lòng nhập email.');
+                $('#registerEmail').addClass('border-danger');
+                hasError = true;
+            } else if (!isValidEmail(email)) {
+                $('#registerEmailError').text('Email không hợp lệ.');
+                $('#registerEmail').addClass('border-danger');
+                hasError = true;
+            } else if (listKhachHang.some(kh => kh.email == email)){
+                $('#registerEmailError').text('Email đã tồn tại.');
+                $('#registerEmail').addClass('border-danger');
+                hasError = true;
+            }
+            if (!phone) {
+                $('#registerPhoneError').text('Vui lòng nhập số điện thoại.');
+                $('#registerPhone').addClass('border-danger');
+                hasError = true;
+            } else if (!isValidVietnamesePhoneNumber(phone)) {
+                $('#registerPhoneError').text('Số điện thoại không hợp lệ');
+                $('#registerPhone').addClass('border-danger');
+                hasError = true;
+            } else if (listKhachHang.some(kh => kh.sdt == phone)){
+                $('#registerPhoneError').text('Số điện thoại đã tồn tại');
+                $('#registerPhone').addClass('border-danger');
+                hasError = true;
+            }
+            if (!password) {
+                $('#registerPasswordError').text('Vui lòng nhập mật khẩu.');
+                $('#registerPassword').addClass('border-danger');
+                hasError = true;
+            } else if (password.length < 6) {
+                $('#registerPasswordError').text('Mật khẩu phải có ít nhất 6 ký tự.');
+                $('#registerPassword').addClass('border-danger');
+                hasError = true;
+            }
+            if (!confirmPassword) {
+                $('#nhapLaiMatKhauError').text('Vui lòng nhập lại mật khẩu.');
+                $('#nhapLaiMatKhau').addClass('border-danger');
+                hasError = true;
+            } else if (password != confirmPassword) {
+                $('#nhapLaiMatKhauError').text('Mật khẩu nhập lại chưa đúng!');
+                $('#nhapLaiMatKhau').addClass('border-danger');
+                hasError = true;
+            }
+
+
+            // If any validation errors exist, prevent form submission
+            if (hasError) {
+                event.preventDefault();
+            }
+        });
+
+
+        // Ẩn lỗi khi người dùng click vào trường input
+        $('input').focus(function () {
+            $(this).siblings('.text-danger').text('');
+            $(this).removeClass('border-danger');
+        });
+
+        // Hiển thị lỗi từ Controller (nếu có)
+        var errorUsername = '<%= request.getAttribute("errorUsername") %>';
+        var errorPassword = '<%= request.getAttribute("errorPassword") %>';
+        var errorUsernameExit = '<%= request.getAttribute("errorUsernameExit") %>';
+
+        if (errorUsername && errorUsername !== 'null') {
+            $('#taiKhoanError').text(errorUsername);
+            $('#taiKhoan').addClass('border-danger');
+        }
+        if (errorPassword && errorPassword !== 'null') {
+            $('#matKhauError').text(errorPassword);
+            $('#matKhau').addClass('border-danger');
+        }
+
+        if (errorUsernameExit !== 'null') {
+            $('#registerUsername').text(errorUsernameExit);
+            $('#taiKhoan').addClass('border-danger');
+        }
+
+        // Khi modal được mở, thêm class "modal-open" vào body
+        $('#loginModal').on('shown.bs.modal', function () {
+            $('body').addClass('modal-open');
+        });
+
+        // Khi modal được đóng, loại bỏ class "modal-open" khỏi body
+        $('#loginModal').on('hidden.bs.modal', function () {
+            $('body').removeClass('modal-open');
+        });
+    });
+
+    // Hàm kiểm tra định dạng email
+    function isValidEmail(email) {
+        // Biểu thức chính quy để kiểm tra định dạng email
+        var regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return regex.test(email);
+    }
+
+    // Hàm kiểm tra định dạng số điện thoại
+    function isValidVietnamesePhoneNumber(phoneNumber) {
+        // Biểu thức chính quy để kiểm tra định dạng số điện thoại (theo quy định của Việt Nam)
+        var regex = /^(0|\+84)\d{9,10}$/;
+        return regex.test(phoneNumber);
+    }
 </script>
 
 </html>
