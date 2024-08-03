@@ -128,9 +128,38 @@
             opacity: 0;
             cursor: pointer;
         }
-
     </style>
 
+<%--    tooltip style--%>
+    <style>
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 120px;
+            background-color: black;
+            color: #fff;
+            text-align: center;
+            border-radius: 5px;
+            padding: 5px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%; /* Position above the tooltip element */
+            left: 50%;
+            margin-left: -60px; /* Center the tooltip */
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
 </head>
 
 <body id="page-top">
@@ -422,45 +451,47 @@
                                     <h5 class="">Ngày tạo:&nbsp&nbsp<span id="ngayTaoSP"></span></h5>
                                     <h5 class="">Trạng thái:&nbsp&nbsp<span id="trangThaiSP"></span></h5>
 
-                                            <div class="d-flex">
-                                                <h5 class="">Chất liệu:&nbsp&nbsp</h5>
-                                                <div class="dropdown">
-                                                    <button class="btn btn-outline-secondary dropdown-toggle" type="button"
-                                                            id="lblChatLieuModalEdit" style="width: 150px;"
-                                                            data-bs-toggle="dropdown"
-                                                            aria-expanded="false">
-                                                        Chọn chất liệu
-                                                    </button>
-                                                    <ul class="dropdown-menu" id="cboChatLieuModalEdit"
-                                                        aria-labelledby="dropdownMenuButton4">
-                                                    </ul>
-                                                    <p style="color: red;" id="cboChatLieuModalEditErr"></p>
-                                                </div>
-                                                <div class="icon-container">
-                                                    <i class=" bi bi-folder-plus col-3" data-bs-toggle="modal"
-                                                       data-bs-target="#ModalHotAddCL" style="font-size: 25px"></i>
-                                                </div>
-                                            </div>
-
-                                            <div class="d-flex">
-                                                <h5 class="">Kiểu tay:&nbsp&nbsp</h5>
-                                                <div class="dropdown">
-                                                    <button class="btn btn-outline-secondary dropdown-toggle" type="button"
-                                                            id="lblKieuTayModalEdit" style="width: 150px;"
-                                                            data-bs-toggle="dropdown"
-                                                            aria-expanded="false">
-                                                        Chọn kiểu tay
-                                                    </button>
-                                                    <ul class="dropdown-menu" id="cboKieuTayModalEdit"
-                                                        aria-labelledby="dropdownMenuButton5">
-                                                    </ul>
-                                                    <p style="color: red;" id="cboKieuTayModalEditErr"></p>
-                                                </div>
-                                                <div class="icon-container">
-                                                    <i class=" bi bi-folder-plus col-3" data-bs-toggle="modal"
-                                                       data-bs-target="#ModalHotAddKTA" style="font-size: 25px"></i>
-                                                </div>
-                                            </div>
+                                    <div class="d-flex">
+                                        <h5 class="">Chất liệu:&nbsp&nbsp</h5>
+                                        <div class="dropdown">
+                                            <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                                    id="lblChatLieuModalEdit" style="width: 150px;"
+                                                    data-bs-toggle="dropdown"
+                                                    aria-expanded="false">
+                                                Chọn chất liệu
+                                            </button>
+                                            <ul class="dropdown-menu" id="cboChatLieuModalEdit"
+                                                aria-labelledby="dropdownMenuButton4">
+                                            </ul>
+                                            <p style="color: red;" id="cboChatLieuModalEditErr"></p>
+                                        </div>
+                                        <div class="icon-container">
+                                            <i class=" bi bi-folder-plus col-3" data-bs-toggle="modal"
+                                               data-bs-target="#ModalHotAddCL" style="font-size: 25px"></i>
+                                        </div>
+                                    </div>
+                                    <div class="tooltip">Xem
+                                        <span class="tooltiptext">This is a tooltip example</span>
+                                    </div>
+                                    <div class="d-flex">
+                                        <h5 class="">Kiểu tay:&nbsp&nbsp</h5>
+                                        <div class="dropdown">
+                                            <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                                    id="lblKieuTayModalEdit" style="width: 150px;"
+                                                    data-bs-toggle="dropdown"
+                                                    aria-expanded="false">
+                                                Chọn kiểu tay
+                                            </button>
+                                            <ul class="dropdown-menu" id="cboKieuTayModalEdit"
+                                                aria-labelledby="dropdownMenuButton5">
+                                            </ul>
+                                            <p style="color: red;" id="cboKieuTayModalEditErr"></p>
+                                        </div>
+                                        <div class="icon-container">
+                                            <i class=" bi bi-folder-plus col-3" data-bs-toggle="modal"
+                                               data-bs-target="#ModalHotAddKTA" style="font-size: 25px"></i>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <h5 class="mt-3 border-bottom">Danh sách sản phẩm chi tiết: </h5>
@@ -508,7 +539,9 @@
                                     <th>Màu sắc</th>
                                     <th>Kích thước</th>
                                     <th>Số lượng</th>
+                                    <th>Giá nhập</th>
                                     <th>Giá bán</th>
+                                    <th>Mô tả</th>
                                     <th>Trạng thái</th>
                                     <th>Thao tác</th>
                                 </tr>
@@ -879,43 +912,50 @@
                             <form id="uploadFormEditAll" method="post" enctype="multipart/form-data"
                                   action="/hinh-anh/upload">
                                 <div class="d-flex flex-wrap">
-<%--                                    <div class="row">--%>
-<%--                                        <div class="d-flex" style="gap: 500px;">--%>
-<%--                                            <h5 class="border-bottom">Tên sản phẩm:&nbsp&nbsp<span--%>
-<%--                                                    id="tenSPModalEditAll"></span>--%>
-<%--                                            </h5>--%>
-<%--                                            <h5 class="border-bottom">Ngày tạo:&nbsp&nbsp<span id="ngayTaoModalEditAll"></span>--%>
-<%--                                            </h5>--%>
-<%--                                        </div>--%>
-<%--                                    </div>--%>
-<%--                                    <div class="row ">--%>
-<%--                                        <div class="col col-md-4">--%>
-<%--                                            <label id="lblSoLuongModalEditAll" for="soLuongModalEdit" class="form-label">Số lượng</label>--%>
-<%--                                            <input type="number" name="file" class="form-control" id="soLuongModalEditAll"--%>
-<%--                                                   value="">--%>
-<%--                                            <p style="color: red;" id="soLuongModalEditErrAll"></p>--%>
-<%--                                        </div>--%>
-<%--                                        <div class="col col-md-4">--%>
-<%--                                            <label id ="lblGiaNhapModalEditAll" for="giaNhapModalEdit" class="form-label">Giá nhập</label>--%>
-<%--                                            <input type="number" name="file" class="form-control" id="giaNhapModalEditAll"--%>
-<%--                                                   value="">--%>
-<%--                                            <p style="color: red;" id="giaNhapModalEditErrAll"></p>--%>
-<%--                                        </div>--%>
-<%--                                        <div class="col col-md-4">--%>
-<%--                                            <label id="lblGiaBanModalEditAll" for="giaBanModalEdit" class="form-label">Giá bán</label>--%>
-<%--                                            <input type="number" name="file" class="form-control" id="giaBanModalEditAll"--%>
-<%--                                                   value="">--%>
-<%--                                            <p style="color: red;" id="giaBanModalEditErrAll"></p>--%>
-<%--                                        </div>--%>
-<%--                                    </div>--%>
-<%--                                    <div class="row">--%>
-<%--                                        <div class="col col-md-3">--%>
-<%--                                            <label for="moTaModalEdit" class="form-label">Ghi chú</label>--%>
-<%--                                            <textarea class="form-control custom-textarea" style="width: 550px;"--%>
-<%--                                                      id="moTaModalEditAll" name="moTa"></textarea>--%>
-<%--                                            <p style="color: red;" id="moTaModalEditErrAll"></p>--%>
-<%--                                        </div>--%>
-<%--                                    </div>--%>
+                                    <div class="row">
+                                        <div class="d-flex" style="gap: 500px;">
+                                            <h5 class="border-bottom">Tên sản phẩm:&nbsp&nbsp<span
+                                                    id="tenSPModalEditAll"></span>
+                                            </h5>
+                                            <h5 class="border-bottom">Ngày tạo:&nbsp&nbsp<span
+                                                    id="ngayTaoModalEditAll"></span>
+                                            </h5>
+                                        </div>
+                                    </div>
+                                    <div class="row ">
+                                        <div class="col col-md-4">
+                                            <label id="lblSoLuongModalEditAll" for="soLuongModalEdit"
+                                                   class="form-label">Số lượng</label>
+                                            <input type="number" name="file" class="form-control"
+                                                   id="soLuongModalEditAll"
+                                                   value="">
+                                            <p style="color: red;" id="soLuongModalEditErrAll"></p>
+                                        </div>
+                                        <div class="col col-md-4">
+                                            <label id="lblGiaNhapModalEditAll" for="giaNhapModalEdit"
+                                                   class="form-label">Giá nhập</label>
+                                            <input type="number" name="file" class="form-control"
+                                                   id="giaNhapModalEditAll"
+                                                   value="">
+                                            <p style="color: red;" id="giaNhapModalEditErrAll"></p>
+                                        </div>
+                                        <div class="col col-md-4">
+                                            <label id="lblGiaBanModalEditAll" for="giaBanModalEdit" class="form-label">Giá
+                                                bán</label>
+                                            <input type="number" name="file" class="form-control"
+                                                   id="giaBanModalEditAll"
+                                                   value="">
+                                            <p style="color: red;" id="giaBanModalEditErrAll"></p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col col-md-3">
+                                            <label for="moTaModalEdit" class="form-label">Ghi chú</label>
+                                            <textarea class="form-control custom-textarea" style="width: 550px;"
+                                                      id="moTaModalEditAll" name="moTa"></textarea>
+                                            <p style="color: red;" id="moTaModalEditErrAll"></p>
+                                        </div>
+                                    </div>
                                     <div class="row">
                                         <div class="col col-md-3 hover-effect click-effect image-container">
                                             <img width="200" height="200"
@@ -1578,6 +1618,8 @@
                     const kieuTay = spct.idKieuTay.ten || 'N/A';
                     const soLuong = spct.soLuong || 'N/A';
                     const giaBan = spct.giaBan || 'N/A';
+                    const giaNhap = spct.giaNhap || 'N/A';
+                    const moTa = spct.moTa || 'N/A';
                     if (spct.idMauSac.ten != mauSacMemo) {
                         let labelms = spct.idMauSac.ten;
                         console.log("Mau sac memo: ", spct.idMauSac.ten);
@@ -1587,25 +1629,33 @@
                         idKieuTayModalEdit = spct.idKieuTay.id;
                         html +=
                             '<tr>' +
-                            '<td>'+
-                            '<h5 class="">' + spct.idMauSac.ten + '<h5>'+
-                            '</td>'+
-                            '<td>' +'</td>' +
-                            '<td>' +'</td>' +
-                            '<td><input style="width: 20px;height: 20px" type="checkbox" id="cbSoLuong_'+spct.id+'"></td>' +
-                            '<td><input style="width: 20px;height: 20px" type="checkbox" id="cbGiaBan_'+spct.id+'"></td>' +
-                            '<td><input style="width: 20px;height: 20px" type="checkbox" id="cbTrangThai_'+spct.id+'"></td>' +
-                            '<td>'+
+                            '<td>' +
+                            '<h5 class="">' + spct.idMauSac.ten + '<h5>' +
+                            '</td>' +
+                            '<td>' + '</td>' +
+                            '<td>' + '</td>' +
+                            '<td><input class="mt-2" style="width: 20px;height: 20px" type="checkbox" id="cbSoLuong_' + spct.id + '"></td>' +
+                            '<td><input class="mt-2" style="width: 20px;height: 20px" type="checkbox" id="cbGiaNhap_' + spct.id + '"></td>' +
+                            '<td><input class="mt-2" style="width: 20px;height: 20px" type="checkbox" id="cbGiaBan_' + spct.id + '"></td>' +
+                            '<td><input class="mt-2" style="width: 20px;height: 20px" type="checkbox" id="cbMoTa_' + spct.id + '"></td>' +
+                            '<td><input class="mt-2" style="width: 20px;height: 20px" type="checkbox" id="cbTrangThai_' + spct.id + '"></td>' +
+                            '<td>' +
                             '<button id="editAllSPCTBtn_' + spct.idMauSac + '" class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#ModalEditAll">Sửa toàn bộ</button>' +
-                            '</td>'+
-                             '</tr>';
+                            '</td>' +
+                            '</tr>';
                     }
                     html += '<tr>' +
                         '<td>' + (i + 1) + '</td>' +
                         '<td>' + mauSac + '</td>' +
                         '<td>' + kichThuoc + '</td>' +
                         '<td>' + soLuong + '</td>' +
+                        '<td>' + giaNhap + '</td>' +
                         '<td>' + giaBan + '</td>' +
+                        '<td>' +
+                        '<div class="tooltip">Xem' +
+                        '<span class="tooltiptext">' + moTa + '</span>' +
+                        '</div>' +
+                        '</td>' +
                         '<td>' + trangThai + '</td>' +
                         '<td>' +
                         '<div class="d-inline">' +
