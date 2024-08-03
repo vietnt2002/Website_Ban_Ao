@@ -1233,7 +1233,11 @@ public class BanTaiQuayController {
 
         createLichSuHoaDon(hoaDon,nhanVienRepo.findById(UserInfor.idNhanVien).get(),"Đã thanh toán");
 //        return ResponseEntity.ok("Thanh toán thành công");
-        return "/view/BanHangTaiQuay/banHangTaiQuay.jsp";
+
+        return "redirect:/ban-hang-tai-quay";
+//=======
+//        return "/view/BanHangTaiQuay/banHangTaiQuay.jsp";
+//>>>>>>> 388de85a8d9c081edc041f87dfe914498f42ad09
     }
     // Hàm thêm đối tượng lịch sử hóa đơn
     // Hàm thêm đối tượng lịch sử hóa đơn
