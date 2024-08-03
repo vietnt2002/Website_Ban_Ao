@@ -665,11 +665,11 @@
                                         </button>
                                     </c:if>
 
-<%--                                    <c:if test="${hoaDonDTO.trangThai != 1 && hoaDonDTO.trangThai != 6}">--%>
-<%--                                        <button type="button" class="btn btn-warning ml-1" data-bs-toggle="modal" data-bs-target="#undoModal">--%>
-<%--                                            Hoàn tác--%>
-<%--                                        </button>--%>
-<%--                                    </c:if>--%>
+                                    <c:if test="${hoaDonDTO.trangThai != 1 && hoaDonDTO.trangThai != 6}">
+                                        <button type="button" class="btn btn-warning ml-1" data-bs-toggle="modal" data-bs-target="#undoModal">
+                                            Hoàn tác
+                                        </button>
+                                    </c:if>
                                 </div>
                             </c:if>
 
@@ -1679,10 +1679,10 @@
 
 
     // Mở máy in sau khi update thành công
-    // document.getElementById('confirmForm').onsubmit = function() {
-    //     // Lấy giá trị trạng thái từ Controller
-    //     sessionStorage.setItem('printAfterReload', 'true');
-    // };
+    document.getElementById('confirmForm').onsubmit = function() {
+        // Lấy giá trị trạng thái từ Controller
+        sessionStorage.setItem('printAfterReload', 'true');
+    };
 
     $(document).ready(function() {
         $('#userDropdown .fas').on('click', function(e) {

@@ -106,4 +106,8 @@ public interface HDCTRepository
             "where hd.id = ?1")
     ChiTietHoaDon findByIdHoaDon(String idHoaDon);
 
+
+    @Query("SELECT cthd FROM ChiTietHoaDon cthd WHERE cthd.idHoaDon.id = :idHoaDon AND cthd.idCTSP.id = :idCTSP")
+    ChiTietHoaDon findByHoaDon_IdAndIdCTSP_Id(@Param("idHoaDon") String idHoaDon, @Param("idCTSP") String idCTSP);
+
 };
