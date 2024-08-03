@@ -878,67 +878,69 @@
                         <div class="mb-3">
                             <form id="uploadFormEditAll" method="post" enctype="multipart/form-data"
                                   action="/hinh-anh/upload">
-                                <div class="row">
-                                    <div class="d-flex" style="gap: 500px;">
-                                        <h5 class="border-bottom">Tên sản phẩm:&nbsp&nbsp<span
-                                                id="tenSPModalEditAll"></span>
-                                        </h5>
-                                        <h5 class="border-bottom">Ngày tạo:&nbsp&nbsp<span id="ngayTaoModalEditAll"></span>
-                                        </h5>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col col-md-4">
-                                        <label for="soLuongModalEdit" class="form-label">Số lượng</label>
-                                        <input type="number" name="file" class="form-control" id="soLuongModalEditAll"
-                                               value="">
-                                        <p style="color: red;" id="soLuongModalEditErrAll"></p>
-                                    </div>
-                                    <div class="col col-md-4">
-                                        <label for="giaNhapModalEdit" class="form-label">Giá nhập</label>
-                                        <input type="number" name="file" class="form-control" id="giaNhapModalEditAll"
-                                               value="">
-                                        <p style="color: red;" id="giaNhapModalEditErrAll"></p>
-                                    </div>
-                                    <div class="col col-md-4">
-                                        <label for="giaBanModalEdit" class="form-label">Giá bán</label>
-                                        <input type="number" name="file" class="form-control" id="giaBanModalEditAll"
-                                               value="">
-                                        <p style="color: red;" id="giaBanModalEditErrAll"></p>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col col-md-3">
-                                        <label for="moTaModalEdit" class="form-label">Ghi chú</label>
-                                        <textarea class="form-control custom-textarea" style="width: 550px;"
-                                                  id="moTaModalEditAll" name="moTa"></textarea>
-                                        <p style="color: red;" id="moTaModalEditErrAll"></p>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col col-md-3 hover-effect click-effect image-container">
-                                        <img width="200" height="200"
-                                             src="/image-icon/pendingIMG.png"
-                                             alt="" class="fit-img" id="hinhAnh1DisplayModalEditAll">
-                                        <p class="text-center">Hình ảnh 1</p>
-                                        <input type="file" name="hinhAnh1File" id="fileHinhAnh1ModalEditAll"
-                                               class="file-input-overlay"/>
-                                    </div>
-                                    <div class="col col-md-3 hover-effect click-effect image-container">
-                                        <img width="200" height="200"
-                                             src="/image-icon/pendingIMG.png"
-                                             alt="" class="fit-img" id="hinhAnh2DisplayModalEditAll">
-                                        <p class="text-center">Hình ảnh 2</p>
-                                        <input type="file" name="hinhAnh2File" id="fileHinhAnh2ModalEditAll"
-                                               class="file-input-overlay"/>
-                                    </div>
-                                    <div class="col col-md-3 hover-effect click-effect image-container">
-                                        <img width="200" height="200"
-                                             src="/image-icon/pendingIMG.png"
-                                             alt="" class="fit-img" id="hinhAnh3DisplayModalEditAll">
-                                        <p class="text-center">Hình ảnh 3</p>
-                                        <input type="file" name="hinhAnh3File" id="fileHinhAnh3ModalEditAll"
-                                               class="file-input-overlay"/>
+                                <div class="d-flex flex-wrap">
+<%--                                    <div class="row">--%>
+<%--                                        <div class="d-flex" style="gap: 500px;">--%>
+<%--                                            <h5 class="border-bottom">Tên sản phẩm:&nbsp&nbsp<span--%>
+<%--                                                    id="tenSPModalEditAll"></span>--%>
+<%--                                            </h5>--%>
+<%--                                            <h5 class="border-bottom">Ngày tạo:&nbsp&nbsp<span id="ngayTaoModalEditAll"></span>--%>
+<%--                                            </h5>--%>
+<%--                                        </div>--%>
+<%--                                    </div>--%>
+<%--                                    <div class="row ">--%>
+<%--                                        <div class="col col-md-4">--%>
+<%--                                            <label id="lblSoLuongModalEditAll" for="soLuongModalEdit" class="form-label">Số lượng</label>--%>
+<%--                                            <input type="number" name="file" class="form-control" id="soLuongModalEditAll"--%>
+<%--                                                   value="">--%>
+<%--                                            <p style="color: red;" id="soLuongModalEditErrAll"></p>--%>
+<%--                                        </div>--%>
+<%--                                        <div class="col col-md-4">--%>
+<%--                                            <label id ="lblGiaNhapModalEditAll" for="giaNhapModalEdit" class="form-label">Giá nhập</label>--%>
+<%--                                            <input type="number" name="file" class="form-control" id="giaNhapModalEditAll"--%>
+<%--                                                   value="">--%>
+<%--                                            <p style="color: red;" id="giaNhapModalEditErrAll"></p>--%>
+<%--                                        </div>--%>
+<%--                                        <div class="col col-md-4">--%>
+<%--                                            <label id="lblGiaBanModalEditAll" for="giaBanModalEdit" class="form-label">Giá bán</label>--%>
+<%--                                            <input type="number" name="file" class="form-control" id="giaBanModalEditAll"--%>
+<%--                                                   value="">--%>
+<%--                                            <p style="color: red;" id="giaBanModalEditErrAll"></p>--%>
+<%--                                        </div>--%>
+<%--                                    </div>--%>
+<%--                                    <div class="row">--%>
+<%--                                        <div class="col col-md-3">--%>
+<%--                                            <label for="moTaModalEdit" class="form-label">Ghi chú</label>--%>
+<%--                                            <textarea class="form-control custom-textarea" style="width: 550px;"--%>
+<%--                                                      id="moTaModalEditAll" name="moTa"></textarea>--%>
+<%--                                            <p style="color: red;" id="moTaModalEditErrAll"></p>--%>
+<%--                                        </div>--%>
+<%--                                    </div>--%>
+                                    <div class="row">
+                                        <div class="col col-md-3 hover-effect click-effect image-container">
+                                            <img width="200" height="200"
+                                                 src="/image-icon/pendingIMG.png"
+                                                 alt="" class="fit-img" id="hinhAnh1DisplayModalEditAll">
+                                            <p class="text-center">Hình ảnh 1</p>
+                                            <input type="file" name="hinhAnh1File" id="fileHinhAnh1ModalEditAll"
+                                                   class="file-input-overlay"/>
+                                        </div>
+                                        <div class="col col-md-3 hover-effect click-effect image-container">
+                                            <img width="200" height="200"
+                                                 src="/image-icon/pendingIMG.png"
+                                                 alt="" class="fit-img" id="hinhAnh2DisplayModalEditAll">
+                                            <p class="text-center">Hình ảnh 2</p>
+                                            <input type="file" name="hinhAnh2File" id="fileHinhAnh2ModalEditAll"
+                                                   class="file-input-overlay"/>
+                                        </div>
+                                        <div class="col col-md-3 hover-effect click-effect image-container">
+                                            <img width="200" height="200"
+                                                 src="/image-icon/pendingIMG.png"
+                                                 alt="" class="fit-img" id="hinhAnh3DisplayModalEditAll">
+                                            <p class="text-center">Hình ảnh 3</p>
+                                            <input type="file" name="hinhAnh3File" id="fileHinhAnh3ModalEditAll"
+                                                   class="file-input-overlay"/>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-check form-switch">
@@ -1781,11 +1783,11 @@
                 hinhAnh3DisplayModalEdit.src = resp.hinhAnh3 ? "/image/" + resp.hinhAnh3 : "/image-icon/pendingIMG.png";
             });
     });
-    //continue
     $(document).on('click', "button[id^='editAllSPCTBtn_']", e => {
         e.preventDefault();
+        // document.getElementById("lblGiaNhapModalEditAll").remove();
+        // document.getElementById("giaNhapModalEditAll").remove();
         console.log("test");
-        document.getElementById("giaNhapModalEditAll").style.display = "none";
     });
 
 
@@ -1819,6 +1821,7 @@
     const addBtn = document.querySelectorAll('#btnAdd');
     const editSPCTBtn = document.querySelectorAll('#editSPCTBtn');
     const saveEditBtn = document.querySelectorAll('#saveEditBtn');
+    const saveEditAllBtn = document.querySelector('#saveEditAllBtn');
     const saveAddBtn = document.querySelectorAll('#saveAddBtn');
     addBtn.forEach(button => {
         button.addEventListener('click', function (e) {
@@ -2414,6 +2417,102 @@
             }
         });
     });
+
+    //continue
+    saveEditAllBtn.forEach(button => {
+        button.addEventListener('click', function (e) {
+            e.preventDefault();
+            console.log("test check btn");
+            console.log("id spct local: ", idSPCTLocal);
+            let trangThaiModalEdit = 0;
+            if (trangThaiModalEditRaw.checked == true) {
+                trangThaiModalEdit = 1;
+            } else {
+                trangThaiModalEdit = 0;
+            }
+            if (validateModalEdit() == 7) {
+                Swal.fire({
+                    title: 'Xác nhận?',
+                    text: "Dữ liệu sẽ được lưu lại!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ok!',
+                    cancelButtonText: 'Hủy'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        const data = {
+                            idMauSac: idMauSacModalEdit,
+                            idKichThuoc: idKichThuocModalEdit,
+                            idChatLieu: idChatLieuModalEdit,
+                            idKieuTay: idKieuTayModalEdit,
+                            moTa: ghiChuModalEdit ? ghiChuModalEdit.value : null,
+                            soLuong: soLuongModalEdit.value,
+                            giaNhap: giaNhapModalEdit.value,
+                            giaBan: giaBanModalEdit.value,
+                            trangThai: trangThaiModalEdit
+                        };
+                        const dataHinhAnh = {
+                            hinhAnh1: !(fileHinhAnh1ModalEdit.value == "") ? getFileName(fileHinhAnh1ModalEdit.value) : getFileName(fileHinhAnh1ModalEdit.src),
+                            hinhAnh2: !(fileHinhAnh2ModalEdit.value == "") ? getFileName(fileHinhAnh2ModalEdit.value) : getFileName(fileHinhAnh1ModalEdit.src),
+                            hinhAnh3: !(fileHinhAnh3ModalEdit.value == "") ? getFileName(fileHinhAnh3ModalEdit.value) : getFileName(fileHinhAnh3ModalEdit.src),
+                            trangThai: "1"
+                        }
+                        console.log("data hinh anh: ", dataHinhAnh);
+                        console.log("data json: ", data);
+                        console.log("data params file: ", formData);
+                        fetch(`/chi-tiet-sp/update/` + idSPCTLocal, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(data)
+                        }).then(() => {
+                            Swal.fire(
+                                'Đã thanh toán!',
+                                'Dữ liệu đã được ghi nhận.',
+                                'success'
+                            ).then(() => {
+                                loadDSSPCT(currentPage);
+                            });
+                        });
+                        fetch(`/hinh-anh/update-byidctsp/` + idSPCTLocal, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(dataHinhAnh)
+                        }).then(() => {
+                            Swal.fire(
+                                'Đã thanh toán!',
+                                'Dữ liệu đã được ghi nhận.',
+                                'success'
+                            ).then(() => {
+                            });
+                        });
+                        var formData = new FormData($('#uploadFormEdit')[0]);
+                        $.ajax({
+                            url: '/uploads',
+                            type: 'POST',
+                            data: formData,
+                            processData: false,
+                            contentType: false,
+                            success: function (response) {
+                                console.log("save image success ");
+                            },
+                            error: function (xhr, status, error) {
+                                console.log("save image =error");
+                            }
+                        });
+                    }
+                });
+            } else {
+
+            }
+        });
+    });
+
 </script>
 <script>
     $(document).ready(function () {
