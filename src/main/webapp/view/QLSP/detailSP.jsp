@@ -132,13 +132,13 @@
 
 <%--    tooltip style--%>
     <style>
-        .tooltip {
+        #tooltip {
             position: relative;
             display: inline-block;
             cursor: pointer;
         }
 
-        .tooltip .tooltiptext {
+        #tooltip #tooltiptext {
             visibility: hidden;
             width: 120px;
             background-color: black;
@@ -155,7 +155,7 @@
             transition: opacity 0.3s;
         }
 
-        .tooltip:hover .tooltiptext {
+        #tooltip:hover #tooltiptext {
             visibility: visible;
             opacity: 1;
         }
@@ -469,9 +469,6 @@
                                             <i class=" bi bi-folder-plus col-3" data-bs-toggle="modal"
                                                data-bs-target="#ModalHotAddCL" style="font-size: 25px"></i>
                                         </div>
-                                    </div>
-                                    <div class="tooltip">Xem
-                                        <span class="tooltiptext">This is a tooltip example</span>
                                     </div>
                                     <div class="d-flex">
                                         <h5 class="">Kiểu tay:&nbsp&nbsp</h5>
@@ -1652,8 +1649,8 @@
                         '<td>' + giaNhap + '</td>' +
                         '<td>' + giaBan + '</td>' +
                         '<td>' +
-                        '<div class="tooltip">Xem' +
-                        '<span class="tooltiptext">' + moTa + '</span>' +
+                        '<div  id="tooltip">Xem' +
+                        '<span id="tooltiptext">' + moTa + '</span>' +
                         '</div>' +
                         '</td>' +
                         '<td>' + trangThai + '</td>' +
