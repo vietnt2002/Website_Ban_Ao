@@ -56,12 +56,12 @@ public class ThongKeController {
     public String view(Model model,
                        @RequestParam(value = "page", defaultValue = "0") String pageParam) {
 
-//        if (UserInfor.idNhanVien != null) {
-//            NhanVien nhanVien = _nhanVienRepo.findById(UserInfor.idNhanVien).get();
-//            model.addAttribute("nv", nhanVien);
-//        } else {
-//            return "redirect:/admin/dang-nhap-view";
-//        }
+        if (UserInfor.idNhanVien != null) {
+            NhanVien nhanVien = _nhanVienRepo.findById(UserInfor.idNhanVien).get();
+            model.addAttribute("nv", nhanVien);
+        } else {
+            return "redirect:/admin/dang-nhap-view";
+        }
 
         LocalDate today = LocalDate.now();
         LocalDate startOfWeek = today.with(TemporalAdjusters.previousOrSame(java.time.DayOfWeek.MONDAY));
@@ -100,7 +100,7 @@ public class ThongKeController {
 
         // Top selling products
         LocalDateTime currentMonth = LocalDateTime.now();
-        Page<SPCTDTO> topSellingProducts = _thongKeRepo.getTopSellingProductsByMonth(currentMonth,20,pageRequest);
+        Page<SPCTDTO> topSellingProducts = _thongKeRepo.getTopSellingProductsByMonth(currentMonth,10,pageRequest);
 
         model.addAttribute("topSellingProducts",topSellingProducts);
         model.addAttribute("pageSPSapHetHang", listSanPhamSapHetHang);

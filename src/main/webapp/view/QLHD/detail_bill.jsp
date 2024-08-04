@@ -47,6 +47,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+
     <style>
 
 
@@ -221,6 +222,40 @@
         }
 
 
+        .table-scroll {
+            height: 340px;
+            overflow: scroll;
+        }
+
+        ::-webkit-scrollbar {
+            width: 10px;
+            background-color: lightgray;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: rgb(238, 234, 234);
+            border-radius: 5px;
+        }
+
+
+        #printOverlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+        #printFrame {
+            width: 0;
+            height: 0;
+            border: none;
+        }
+
+
 
     </style>
 
@@ -246,69 +281,96 @@
         <hr class="sidebar-divider my-0">
 
         <!-- Nav Item - Dashboard -->
-        <li class="nav-item active">
-            <a class="nav-link" href="/admin/thong-ke/view">
-                <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>Thống kê doanh thu</span></a>
-        </li>
+        <c:choose>
+            <c:when test="${sessionScope.userRole == 'Quản lý'}">
+                <!-- Nav Item - Charts -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/thong-ke/view" style="display: flex; align-items: center">
+                        <i class="bi bi-graph-up" style="margin-left: 2px"></i>
+                        <span style="margin-left: 6px">Thống kê doanh thu</span></a>
+                </li>
 
-        <!-- Nav Item - Charts -->
-        <li class="nav-item">
-            <a class="nav-link" href="/ban-hang-tai-quay">
-                <i class="fas fa-fw fa-chart-area"></i>
-                <span>Bán hàng tại quầy</span></a>
-        </li>
+                <!-- Nav Item - Dashboard -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/ban-hang-tai-quay" style="display: flex; align-items: center">
+                        <i class="bi bi-shop" style="margin-left: 2px"></i>
+                        <span style="margin-left: 6px">Bán hàng tại quầy</span></a>
+                </li>
 
-        <!-- Nav Item - Charts -->
-        <li class="nav-item">
-            <a class="nav-link" href="/hoa-don/hien-thi">
-                <i class="fas fa-fw fa-chart-area"></i>
-                <span>Quản lý hóa đơn</span></a>
-        </li>
+                <!-- Nav Item - Charts -->
+                <li class="nav-item" style="background: linear-gradient(45deg, black, transparent)">
+                    <a class="nav-link" href="/hoa-don/hien-thi" style="display: flex; align-items: center">
+                        <i class="bi bi-journal-text" style="margin-left: 2px"></i>
+                        <span style="margin-left: 6px">Quản lý hóa đơn</span></a>
+                </li>
 
-        <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="/qlsp" data-toggle="collapse" data-target="#collapseTwo"
-               aria-expanded="true" aria-controls="collapseTwo">
-                <i class="fas fa-fw fa-cog"></i>
-                <span>Quản lý sản phẩm</span>
-            </a>
-            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" href="buttons.html">Màu sắc, kích thước các thứ</a>
-                    <a class="collapse-item" href="cards.html">Cards</a>
+                <!-- Nav Item - Pages Collapse Menu -->
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+                       aria-expanded="true" aria-controls="collapseTwo">
+                        <i class="fas fa-fw fa-cog"></i>
+                        <span>Quản lý sản phẩm</span>
+                    </a>
+                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <a class="collapse-item" href="buttons.html">Màu sắc, kích thước các thứ</a>
+                            <a class="collapse-item" href="cards.html">Cards</a>
+                        </div>
+                    </div>
+                </li>
+
+                <!-- Nav Item - Charts -->
+                <li class="nav-item" >
+                    <a class="nav-link" href="/qlnv/quan-ly-nhan-vien" style="display: flex; align-items: center">
+                        <i class="bi bi-person-bounding-box" style="color: white; margin-left: 2px"></i>
+                        <span style="font-weight: bold; margin-left: 6px">Quản lý nhân viên</span></a>
+                </li>
+
+                <!-- Nav Item - Charts -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/qlkh/quan-ly-khach-hang" style="display: flex; align-items: center">
+                        <i class="bi bi-person-bounding-box" style="margin-left: 2px"></i>
+                        <span style="margin-left: 6px">Quản lý khách hàng</span></a>
+                </li>
+
+                <!-- Nav Item - Charts -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/qlkm/quan-ly-km" style="display: flex; align-items: center">
+                        <i class="bi bi-gift" style="margin-left: 2px"></i>
+                        <span style="margin-left: 6px">Quản lý khuyến mãi</span></a>
+                </li>
+
+                <!-- Divider -->
+                <hr class="sidebar-divider d-none d-md-block">
+
+                <!-- Sidebar Toggler (Sidebar) -->
+                <div class="text-center d-none d-md-inline">
+                    <button class="rounded-circle border-0" id="sidebarToggle"></button>
                 </div>
-            </div>
-        </li>
+            </c:when>
+            <c:otherwise>
+                <!-- Nav Item - Dashboard -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/ban-hang-tai-quay" style="display: flex; align-items: center">
+                        <i class="bi bi-shop" style="margin-left: 2px"></i>
+                        <span style="margin-left: 6px">Bán hàng tại quầy</span></a>
+                </li>
 
-        <!-- Nav Item - Charts -->
-        <li class="nav-item">
-            <a class="nav-link" href="/qlnv/quan-ly-nhan-vien">
-                <i class="fas fa-fw fa-chart-area"></i>
-                <span>Quản lý nhân viên</span></a>
-        </li>
+                <!-- Nav Item - Charts -->
+                <li class="nav-item" style="background: linear-gradient(45deg, black, transparent)">
+                    <a class="nav-link" href="/hoa-don/hien-thi" style="display: flex; align-items: center">
+                        <i class="bi bi-journal-text" style="margin-left: 2px"></i>
+                        <span style="margin-left: 6px">Quản lý hóa đơn</span></a>
+                </li>
 
-        <!-- Nav Item - Charts -->
-        <li class="nav-item">
-            <a class="nav-link" href="/qlkh/quan-ly-khach-hang">
-                <i class="fas fa-fw fa-chart-area"></i>
-                <span>Quản lý khách hàng</span></a>
-        </li>
-
-        <li class="nav-item">
-            <a class="nav-link" href="/admin/quan-ly-khuyen-mai">
-                <i class="fas fa-fw fa-chart-area"></i>
-                <span>Quản lý khuyến mãi</span></a>
-        </li>
-
-        <!-- Divider -->
-        <hr class="sidebar-divider d-none d-md-block">
-
-        <!-- Sidebar Toggler (Sidebar) -->
-        <div class="text-center d-none d-md-inline">
-            <button class="rounded-circle border-0" id="sidebarToggle"></button>
-        </div>
-
+                <!-- Nav Item - Charts -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/qlkh/quan-ly-khach-hang" style="display: flex; align-items: center">
+                        <i class="bi bi-person-bounding-box" style="margin-left: 2px"></i>
+                        <span style="margin-left: 6px">Quản lý khách hàng</span></a>
+                </li>
+            </c:otherwise>
+        </c:choose>
     </ul>
     <!-- End of Sidebar -->
 
@@ -496,7 +558,7 @@
                     <li class="nav-item dropdown no-arrow">
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">${nv.hoTen}</span>
+                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">${nv.hoTen} | ${nv.idCV.ten}</span>
                             <img class="img-profile rounded-circle"
                                  src="/imageUser/${nv.anhDaiDien}">
                         </a>
@@ -505,10 +567,11 @@
                              aria-labelledby="userDropdown">
                             <a class="dropdown-item" href="/qlnv/tai-khoan-cua-toi/${nv.id}">
                                 <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                Tài khoản của tôi
+                                Thông tin cá nhân
                             </a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="/ban-hang-tai-quay/dang-xuat">
+                            <a class="dropdown-item" href="/qlnv/dang-xuat" id="dang-xuat" data-toggle="modal"
+                               data-target="#logoutModal">
                                 <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Đăng xuất
                             </a>
@@ -524,13 +587,13 @@
             <div class="container-fluid">
                 <div class="d-flex justify-content-end">
                     <!-- Nút in ra phiếu hóa đơn khi giao hàng theo dạng file PDF -->
-<%--                    <c:if test="${hoaDonDTO.loaiHoaDon == 1 && hoaDonDTO.trangThai != 1 }">--%>
-<%--                        <div class="d-flex ms-auto">--%>
-<%--                            <button id="printDeliveryButton" class="btn btn-primary my-3" onclick="openPrintDeliveryModal()">--%>
-<%--                                <i class="bi bi-printer"></i> In hóa đơn--%>
-<%--                            </button>--%>
-<%--                        </div>--%>
-<%--                    </c:if>--%>
+                    <%--                    <c:if test="${hoaDonDTO.loaiHoaDon == 1 && hoaDonDTO.trangThai != 1 }">--%>
+                    <%--                        <div class="d-flex ms-auto">--%>
+                    <%--                            <button id="printDeliveryButton" class="btn btn-primary my-3" onclick="openPrintDeliveryModal()">--%>
+                    <%--                                <i class="bi bi-printer"></i> In hóa đơn--%>
+                    <%--                            </button>--%>
+                    <%--                        </div>--%>
+                    <%--                    </c:if>--%>
                 </div>
 
                 <%--Bảng theo dõi hóa đơn--%>
@@ -540,35 +603,36 @@
                     </div>
                     <div class="card-body">
                         <c:choose>
-                                <%-- Hiển thị stepper cho bán hàng tại quầy (LoaiHD == 0) --%>
-                                <c:when test="${hoaDonDTO.loaiHoaDon == 0}">
-                                    <div class="stepper-horizontal" id="stepper_offline">
-                                        <div class="step" id="step_offline_1">
-                                            <div class="step-icon-wrapper">
-                                                <i class="bi bi-card-text step-icon"></i>
-                                            </div>
-                                            <div class="step-title">Tạo hóa đơn</div>
-                                            <div class="step-date">${hoaDonDTO.ngayTao}</div>
-                                            <div class="connector"></div>
+                            <%-- Hiển thị stepper cho bán hàng tại quầy (LoaiHD == 0) --%>
+                            <c:when test="${hoaDonDTO.loaiHoaDon == 0}">
+                                <div class="stepper-horizontal" id="stepper_offline">
+                                    <div class="step" id="step_offline_1">
+                                        <div class="step-icon-wrapper">
+                                            <i class="bi bi-card-text step-icon"></i>
                                         </div>
-                                        <div class="step-arrow">
-                                            <i class="bi bi-arrow-right"></i>
-                                        </div>
-                                        <div class="step" id="step_offline_2">
-                                            <div class="step-icon-wrapper">
-                                                <i class="bi bi-check-circle step-icon"></i>
-                                            </div>
-                                            <div class="step-title">Đã hoàn thành</div>
-                                            <div class="step-date">${hoaDonDTO.ngayThanhToan}</div>
-                                        </div>
+                                        <div class="step-title">Tạo hóa đơn</div>
+                                        <div class="step-date">${hoaDonDTO.ngayTao}</div>
+                                        <div class="connector"></div>
                                     </div>
-                                </c:when>
-                                <%-- Hiển thị stepper cho bán hàng online (LoaiHD != 0) --%>
+                                    <div class="step-arrow">
+                                        <i class="bi bi-arrow-right"></i>
+                                    </div>
+                                    <div class="step" id="step_offline_2">
+                                        <div class="step-icon-wrapper">
+                                            <i class="bi bi-check-circle step-icon"></i>
+                                        </div>
+                                        <div class="step-title">Đã hoàn thành</div>
+                                        <div class="step-date">${hoaDonDTO.ngayThanhToan}</div>
+                                    </div>
+                                </div>
+                            </c:when>
+                            <%-- Hiển thị stepper cho bán hàng online (LoaiHD != 0) --%>
                             <c:otherwise>
                                 <div class="stepper-horizontal" id="stepper_online">
                                     <c:forEach var="step" items="${listLichSuHoaDonDTO}" varStatus="status">
                                         <div class="step-wrapper">
-                                            <div class="step ${status.index == 0 ? 'active' : ''}" id="step_online_${step.index}">
+                                            <div class="step ${status.index == 0 ? 'active' : ''}"
+                                                 id="step_online_${step.index}">
                                                 <div class="step-icon-wrapper">
                                                     <c:choose>
                                                         <c:when test="${step.trangThai eq 'Chờ xác nhận'}">
@@ -598,11 +662,11 @@
                                         </div>
 
                                         <div class="">
-                                        <c:if test="${status.index != listLichSuHoaDonDTO.size() - 1}">
-                                            <div class="step-arrow">
-                                                <i class="bi bi-arrow-right"></i>
-                                            </div>
-                                        </c:if>
+                                            <c:if test="${status.index != listLichSuHoaDonDTO.size() - 1}">
+                                                <div class="step-arrow">
+                                                    <i class="bi bi-arrow-right"></i>
+                                                </div>
+                                            </c:if>
                                         </div>
                                     </c:forEach>
                                 </div>
@@ -656,20 +720,21 @@
                                         <button type="button" class="btn btn-danger me-1" id="cancelButton"
                                                 data-bs-toggle="modal"
                                                 data-bs-target="#cancelModal"
-                                        <c:if test="${hoaDonDTO.trangThai != 1 && hoaDonDTO.trangThai != 3 }">
-                                             disabled
-                                        </c:if>
+                                                <c:if test="${hoaDonDTO.trangThai != 1 && hoaDonDTO.trangThai != 3 }">
+                                                    disabled
+                                                </c:if>
 
                                         >
                                             Hủy đơn
                                         </button>
                                     </c:if>
 
-                                    <c:if test="${hoaDonDTO.trangThai != 1 && hoaDonDTO.trangThai != 6}">
-                                        <button type="button" class="btn btn-warning ml-1" data-bs-toggle="modal" data-bs-target="#undoModal">
-                                            Hoàn tác
-                                        </button>
-                                    </c:if>
+<%--                                    <c:if test="${hoaDonDTO.trangThai != 1 && hoaDonDTO.trangThai != 6}">--%>
+<%--                                        <button type="button" class="btn btn-warning ml-1" data-bs-toggle="modal"--%>
+<%--                                                data-bs-target="#undoModal">--%>
+<%--                                            Hoàn tác--%>
+<%--                                        </button>--%>
+<%--                                    </c:if>--%>
                                 </div>
                             </c:if>
 
@@ -684,25 +749,32 @@
                 </div>
 
                 <!-- Modal xác nhận -->
-                <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+                <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel"
+                     aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <form id="confirmForm" method="post" action="/hoa-don/xac-nhan/${hoaDonDTO.id}">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="confirmModalLabel">Xác nhận đơn hàng</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
                                     <input type="hidden" name="trangThai" value="${hoaDonDTO.trangThai + 1}">
                                     <div class="mb-3">
                                         <label for="moTa" class="form-label">Mô tả</label>
-                                        <textarea placeholder="Nhập nội dung mô tả..." class="form-control" id="moTa" name="moTa" rows="3"></textarea>
-                                        <div id="moTaError" class="text-danger" style="display: none;">Vui lòng điền mô tả.</div>
+                                        <textarea placeholder="Nhập nội dung mô tả..." class="form-control" id="moTa"
+                                                  name="moTa" rows="3"></textarea>
+                                        <div id="moTaError" class="text-danger" style="display: none;">Vui lòng điền mô
+                                            tả.
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                                    <button type="submit" class="btn btn-primary"  id="confirmButtonInModal">Xác nhận</button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng
+                                    </button>
+                                    <button type="submit" class="btn btn-primary" id="confirmButtonInModal">Xác nhận
+                                    </button>
                                 </div>
                             </form>
                         </div>
@@ -711,24 +783,30 @@
 
 
                 <!-- Modal hoàn tác -->
-                <div class="modal fade" id="undoModal" tabindex="-1" aria-labelledby="undoModalLabel" aria-hidden="true">
+                <div class="modal fade" id="undoModal" tabindex="-1" aria-labelledby="undoModalLabel"
+                     aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <form id="undoForm" method="post" action="/hoa-don/hoan-tac/${hoaDonDTO.id}">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="undoModalLabel">Hoàn tác đơn hàng</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
                                     <input type="hidden" name="trangThai" value="${hoaDonDTO.trangThai - 1}">
                                     <div class="mb-3">
                                         <label for="moTaUndo" class="form-label">Mô tả</label>
-                                        <textarea placeholder="Nhập nội dung mô tả..." class="form-control" id="moTaUndo" name="moTa" rows="3"></textarea>
-                                        <div id="moTaUndoError" class="text-danger" style="display: none;">Vui lòng điền mô tả.</div>
+                                        <textarea placeholder="Nhập nội dung mô tả..." class="form-control"
+                                                  id="moTaUndo" name="moTa" rows="3"></textarea>
+                                        <div id="moTaUndoError" class="text-danger" style="display: none;">Vui lòng điền
+                                            mô tả.
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng
+                                    </button>
                                     <button type="submit" class="btn btn-warning">Hoàn tác</button>
                                 </div>
                             </form>
@@ -737,35 +815,37 @@
                 </div>
 
 
-
-
-
                 <!-- Modal hủy hóa đơn -->
-                <div class="modal fade" id="cancelModal" tabindex="-1" aria-labelledby="cancelModalLabel" aria-hidden="true">
+                <div class="modal fade" id="cancelModal" tabindex="-1" aria-labelledby="cancelModalLabel"
+                     aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <form id="cancelForm" method="post" action="/hoa-don/huy/${hoaDonDTO.id}">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="cancelModalLabel">Hủy đơn hàng</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
                                     <input type="hidden" name="trangThai" value="${hoaDonDTO.trangThai + 1}">
                                     <div class="mb-3">
                                         <label for="moTa" class="form-label">Lý do hủy đơn hàng</label>
                                         <textarea class="form-control" id="moTaHuyDon" name="lyDo" rows="3"></textarea>
-                                        <div id="reasonError" class="text-danger" style="display: none;">Vui lòng điền lý do hủy đơn hàng</div>
+                                        <div id="reasonError" class="text-danger" style="display: none;">Vui lòng điền
+                                            lý do hủy đơn hàng
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                                    <button type="button" class="btn btn-primary" id="confirmCancelBtn">Xác nhận</button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng
+                                    </button>
+                                    <button type="button" class="btn btn-primary" id="confirmCancelBtn">Xác nhận
+                                    </button>
                                 </div>
                             </form>
                         </div>
                     </div>
                 </div>
-
 
 
                 <!-- Modal lịch sử hóa đơn-->
@@ -1124,25 +1204,21 @@
                             <div class="card-body">
                                 <c:set var="giamGia" value="${phiGiamGia != null ? phiGiamGia : 0}"/>
                                 <c:set var="tongTien" value="${tongTienDonHang != null ? tongTienDonHang : 0}"/>
-                                <c:set var="phiVanChuyen"
-                                       value="${giaoHangDTO.phiShip != null ? giaoHangDTO.phiShip : 0}"/>
+                                <c:set var="phiVanChuyen" value="${giaoHangDTO.phiShip != null ? giaoHangDTO.phiShip : 0}"/>
                                 <div class="row">
                                     <div class="col-12">
                                         <p class="fw-bold mb-1 pb-3 small d-flex justify-content-between">
                                             <span>Tổng tiền đơn hàng:</span>
                                             <span class="text-danger" id="tongTienValue">
-                                    <fmt:formatNumber value="${tongTien}" type="currency" currencySymbol="₫"
-                                                      groupingUsed="true"/>
-                                </span>
+                            <fmt:formatNumber value="${tongTien}" type="currency" currencySymbol="₫" groupingUsed="true"/>
+                        </span>
                                         </p>
 
                                         <p class="fw-bold mb-1 pb-3 small d-flex justify-content-between">
                                             <span>Phí vận chuyển:</span>
                                             <span class="fw-normal" id="phiVanChuyen">
-                                                <fmt:formatNumber value="${phiVanChuyen}" type="currency"
-                                                                  currencySymbol="₫"
-                                                                  groupingUsed="true"/>
-                                            </span>
+                            <fmt:formatNumber value="${phiVanChuyen}" type="currency" currencySymbol="₫" groupingUsed="true"/>
+                        </span>
                                         </p>
 
                                         <p class="fw-bold mb-1 pb-3 small d-flex justify-content-between">
@@ -1155,9 +1231,8 @@
                                         <p class="fw-bold mb-1 pb-3 small d-flex justify-content-between">
                                             <span>Giảm giá:</span>
                                             <span class="fw-normal" id="giamGia">
-                                                <fmt:formatNumber value="${giamGia}" type="currency" currencySymbol="₫"
-                                                                  groupingUsed="true"/>
-                                            </span>
+                            <fmt:formatNumber value="${giamGia}" type="currency" currencySymbol="₫" groupingUsed="true"/>
+                        </span>
                                         </p>
                                     </div>
                                 </div>
@@ -1165,15 +1240,16 @@
                             <div class="card-footer">
                                 <p class="fw-bold mb-1 pb-3 small d-flex justify-content-between">
                                     <span>Tổng tiền thanh toán:</span>
-                                    <span class=" text-danger" id="tongTienThanhToanValue">
-                                    <c:set var="tongTienThanhToan" value="${tongTienThanhToan}"/>
-                                    <fmt:formatNumber value="${tongTienThanhToan}" type="currency" currencySymbol="₫"
-                                                      groupingUsed="true"/>
-                                     </span>
+                                    <span class="text-danger" id="tongTienThanhToanValue">
+                    <c:set var="tongTienThanhToan" value="${tongTienThanhToan}"/>
+                    <fmt:formatNumber value="${tongTienThanhToan}" type="currency" currencySymbol="₫" groupingUsed="true"/>
+                </span>
                                 </p>
                             </div>
                         </div>
                     </div>
+
+
 
                     <!-- End Recent Activity -->
                 </div>
@@ -1372,12 +1448,12 @@
 
                                                 <c:if test="${!(loaiHoaDon == 1 && phuongThucThanhToan == 1)}">
 
-                                                <button type="button"
-                                                        class="btn btn-outline-danger btn-sm delete-product"
-                                                        data-id="${chiTiet.idCTSP.id}" data-hoadon="${hoaDonDTO.id}"
-                                                        id="deleteBtn-${chiTiet.idCTSP.id}">
-                                                    <i class="bi bi-trash-fill" style="font-size: 1.3em;"></i>
-                                                </button>
+                                                    <button type="button"
+                                                            class="btn btn-outline-danger btn-sm delete-product"
+                                                            data-id="${chiTiet.idCTSP.id}" data-hoadon="${hoaDonDTO.id}"
+                                                            id="deleteBtn-${chiTiet.idCTSP.id}">
+                                                        <i class="bi bi-trash-fill" style="font-size: 1.3em;"></i>
+                                                    </button>
 
                                                 </c:if>
 
@@ -1401,7 +1477,8 @@
 
         <%--  Modal thêm sản phẩm vào hóa đơn--%>
         <div class="modal fade" name="addProductModal" id="addProductModal" tabindex="-1"
-             aria-labelledby="addProductModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+             aria-labelledby="addProductModalLabel" aria-hidden="true" data-bs-backdrop="static"
+             data-bs-keyboard="false">
             <div class="modal-dialog modal-xl">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -1417,7 +1494,8 @@
                         <div class="mb-3 p-3" style="background-color: #f0f0f0;">
                             <!-- Phần input tìm kiếm và nút tìm kiếm -->
                             <div class="d-flex align-items-center">
-                                <input type="text" class="form-control" name="search" id="searchInput" placeholder="Nhập từ khóa tìm kiếm..." style="width: 750px;">
+                                <input type="text" class="form-control" name="search" id="searchInput"
+                                       placeholder="Nhập từ khóa tìm kiếm..." style="width: 750px;">
                                 <button class="btn btn-primary mx-3" type="button" id="searchButton">Tìm kiếm</button>
                                 <button class="btn btn-danger mx-2" type="button" id="refreshButton">Làm mới</button>
                             </div>
@@ -1484,7 +1562,7 @@
                             </thead>
                             <tbody id="chiTietSanPhamTableBody">
                             <c:forEach var="product" items="${listCTSP.content}" varStatus="status">
-                                <tr>
+                                <tr data-id="${product.id}">
                                 <c:if test="${product.soLuong > 0 }">
                                     <td>${status.index + 1}</td>
                                     <td>${product.idSanPham.ten} - ${product.idSanPham.ma}
@@ -1500,20 +1578,23 @@
                                     </td>
                                     <td>${product.idMauSac.ten}</td>
                                     <td>${product.idKichThuoc.ten}</td>
-                                    <td>${product.soLuong}</td>
-                                    <td> <fmt:formatNumber value="${product.giaBan}"
-                                                           type="currency"
-                                                           currencySymbol="₫"
-                                                           groupingUsed="true"
-                                                          />
+                                    <td data-quantity="${product.soLuong}">${product.soLuong}</td>
+
+                                    <td>
+                                    <fmt:formatNumber value="${product.giaBan}"
+                                                          type="currency"
+                                                          currencySymbol="₫"
+                                                          groupingUsed="true"
+                                    />
                                     </td>
-                                    <td><span
+                                    <td>
+                                        <span
                                             class=" fw-normal badge rounded-pill ${product.trangThai == 0 ? 'bg-danger' : 'bg-success'}">
                                             ${product.trangThai == 0 ? "Hết hàng" : "Còn hàng"}
-                                    </span></td>
+                                    </span>
+                                    </td>
                                     <td>
                                         <!-- Thao tác, ví dụ như nút sửa, xóa -->
-
                                         <a href="/hoa-don/them-san-pham/${product.id}?idHoaDon=${hoaDonDTO.id}">
                                             <button class="btn btn-primary btn-sm">Chọn</button>
                                         </a>
@@ -1553,6 +1634,11 @@
                     </div>
                 </div>
             </div>
+        </div>
+
+<%--        In phiếu giao hàng--%>
+        <div id="printOverlay">
+            <iframe id="printFrame"></iframe>
         </div>
 
 
@@ -1679,20 +1765,20 @@
 
 
     // Mở máy in sau khi update thành công
-    document.getElementById('confirmForm').onsubmit = function() {
+    document.getElementById('confirmForm').onsubmit = function () {
         // Lấy giá trị trạng thái từ Controller
         sessionStorage.setItem('printAfterReload', 'true');
     };
 
-    $(document).ready(function() {
-        $('#userDropdown .fas').on('click', function(e) {
+    $(document).ready(function () {
+        $('#userDropdown .fas').on('click', function (e) {
             e.stopPropagation();
             $(this).closest('.nav-link').dropdown('toggle');
         });
     });
 
 
-    document.getElementById('confirmForm').addEventListener('submit', function(event) {
+    document.getElementById('confirmForm').addEventListener('submit', function (event) {
         event.preventDefault(); // Ngăn form submit mặc định để xử lý logic riêng
 
         // Lấy giá trị trạng thái từ Controller
@@ -1706,11 +1792,11 @@
     });
 
 
-    // document.getElementById('cancelForm').addEventListener('submit', function(event) {
-    //     event.preventDefault(); // Ngăn form submit mặc định để xử lý logic riêng
-    //     // Submit form
-    //     this.submit();
-    // });
+    document.getElementById('cancelForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Ngăn form submit mặc định để xử lý logic riêng
+        // Submit form
+        this.submit();
+    });
 
 
     // Nút in hóa đơn để giao hàng
@@ -1718,8 +1804,13 @@
         const overlay = document.getElementById('printOverlay');
         const iframe = document.getElementById('printFrame');
 
+        if (!overlay || !iframe) {
+            console.error("Overlay or iframe element not found.");
+            return;
+        }
+
         overlay.style.display = 'flex';
-        iframe.onload = function() {
+        iframe.onload = function () {
             iframe.contentWindow.focus();
             iframe.contentWindow.print();
             overlay.style.display = 'none';
@@ -1732,7 +1823,7 @@
 
 
     // Kiểm tra nếu có sessionStorage để in sau khi reload
-    window.onload = function() {
+    window.onload = function () {
         const printAfterReload = sessionStorage.getItem('printAfterReload');
         if (printAfterReload === 'true') {
             openPrintDeliveryModal();
@@ -1948,9 +2039,6 @@
     });
 
 
-
-
-
     // Nút hoàn tác
     document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('undoForm').addEventListener('submit', function (event) {
@@ -1964,7 +2052,6 @@
             }
         });
     });
-
 
 
     // Thêm Confirm trước khi xác nhận đơn hàng ở Modal xác nhận
@@ -1983,7 +2070,7 @@
 
                 Swal.fire({
                     title: 'Xác Nhận',
-                    text:'Xác nhận đơn hàng?',
+                    text: 'Xác nhận đơn hàng?',
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
@@ -2000,7 +2087,6 @@
             }
         });
     });
-
 
 
     // Thêm Confirm trước khi  hủy đơn hàng ở Modal hủy đơn hàng
@@ -2033,18 +2119,19 @@
     });
 
 
-
-
 </script>
 
 
+
+
 <%--Chức năng xóa sản phẩm chi tiết khỏi chi tiết hóa đơn--%>
+
 <script>
     $(document).ready(function () {
         $('.delete-product').click(function () {
             var idCTSP = $(this).data('id');
             var idHoaDon = $(this).data('hoadon');
-            var productRow = $(this).closest('tr'); // Assuming each product is in a <tr> element
+            var productRow = $(this).closest('tr'); // Get the row of the product being deleted
 
             Swal.fire({
                 title: 'Bạn chắc chắn muốn xóa sản phẩm này?',
@@ -2054,7 +2141,6 @@
                 cancelButtonText: 'Hủy',
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Gửi Ajax request để xóa sản phẩm
                     $.ajax({
                         type: 'GET',
                         url: '/hoa-don/xoa-san-pham/' + idCTSP,
@@ -2068,31 +2154,40 @@
                                     icon: 'error'
                                 });
                             } else {
-                                // Remove the product row from the DOM
+                                // Xóa hàng trong table
                                 productRow.remove();
 
-                                $('.product-row').each(function (index) {
-                                    $(this).find('td:first').text(index + 1);
+                                // Cập nhật lại số lượng trong ChiTiet San Pham
+                                $('#chiTietSanPhamTableBody tr').each(function () {
+                                    var rowProductId = $(this).data('id'); // Get the ID from the row
+                                    if (rowProductId === idCTSP) { // Compare with the deleted product ID
+                                        $(this).find('td[data-quantity]').text(response.newQuantity).attr('data-quantity', response.newQuantity);
+                                    }
                                 });
 
-                                // Update the total price displayed on the page
+                                // Cập nhật lại tổng tiền và tổng tiền thanh toán
+                                var newTotalPrice = response.tongTien;
                                 const formatCurrency = (amount) => new Intl.NumberFormat('vi-VN', {
                                     style: 'currency',
                                     currency: 'VND',
                                     currencyDisplay: 'code'
                                 }).format(amount).replace('VND', '₫');
 
-                                $('#tongTienValue').text(formatCurrency(response.tongTien));
+                                $('#tongTienValue').text(formatCurrency(newTotalPrice));
                                 const giamGia = parseFloat($('#giamGia').text().replace(/[^0-9.-]+/g, ""));
                                 const phiVanChuyen = parseFloat($('#phiVanChuyen').text().replace(/[^0-9.-]+/g, ""));
-                                const tongTienGiam = response.tongTien - giamGia + phiVanChuyen;
+                                const tongTienGiam = response.tongTienThanhToan;
                                 $('#tongTienGiam').text(formatCurrency(tongTienGiam));
                                 $('#tongTienThanhToanValue').text(formatCurrency(tongTienGiam));
 
+                                // Show success message
                                 Toast.fire({
                                     title: 'Xóa sản phẩm khỏi giỏ hàng thành công',
                                     icon: 'success'
                                 });
+
+                                // Optional: reload the page if necessary
+                                // location.reload();
                             }
                         },
                         error: function () {
@@ -2105,30 +2200,179 @@
                 }
             });
         });
+
     });
 </script>
 
+
 <%--Chức năng cập nhat so luong chi tiet san pham trong hoa don chi tiet--%>
 <script>
+    // $(document).ready(function () {
+    //     console.log('Document ready');
+    //
+    //     // Bắt sự kiện khi người dùng click vào nút cập nhật số lượng
+    //     $('.update-sl').click(function () {
+    //         console.log('Update button clicked');
+    //
+    //         var idCTSP = $(this).data('id');
+    //         var idHoaDon = $(this).data('hoadon');
+    //         var newQuantity = parseInt($('#soLuong-' + idCTSP).val().trim(), 10);
+    //
+    //         console.log('idCTSP:', idCTSP, 'idHoaDon:', idHoaDon, 'newQuantity:', newQuantity);
+    //
+    //         // Validate input
+    //         if (isNaN(newQuantity) || newQuantity <= 0) {
+    //             Toast.fire({
+    //                 title: 'Số lượng không hợp lệ',
+    //                 icon: 'error'
+    //             });
+    //             return;
+    //         }
+    //
+    //         // Gửi Ajax request để cập nhật số lượng
+    //         $.ajax({
+    //             type: 'GET',
+    //             url: '/hoa-don/cap-nhat-so-luong-san-pham/' + idCTSP,
+    //             data: {
+    //                 idHoaDon: idHoaDon,
+    //                 soLuong: newQuantity
+    //             },
+    //             success: function (response) {
+    //                 if (response.error) {
+    //                     Toast.fire({
+    //                         title: response.error,
+    //                         icon: 'error'
+    //                     });
+    //
+    //                     // Nếu có newQuantity trong response, cập nhật ô input với số lượng tối đa
+    //                     if (response.newQuantity !== undefined) {
+    //                         $('#soLuong-' + idCTSP).val(response.newQuantity);
+    //                     }
+    //                 } else {
+    //
+    //
+    //                     // Update the quantity and total amount in the UI
+    //                     const formatCurrency = (amount) => new Intl.NumberFormat('vi-VN', {
+    //                         style: 'currency',
+    //                         currency: 'VND',
+    //                         currencyDisplay: 'code'
+    //                     }).format(amount).replace('VND', '₫');
+    //
+    //                     let newTotalPrice = response.tongTien;
+    //
+    //                     $('#tongTienValue').text(formatCurrency(newTotalPrice));
+    //
+    //                     const parseCurrency = (value) => parseFloat(value.replace(/[^\d.-]+/g, ''));
+    //
+    //                     const giamGia = parseCurrency($('#giamGia').text()) || 0;
+    //                     const phiVanChuyen = parseCurrency($('#phiVanChuyen').text()) || 0;
+    //                     const tongTienGiam = response.tongTienThanhToan;
+    //
+    //                     $('#tongTienGiam').text(formatCurrency(tongTienGiam));
+    //                     $('#tongTienThanhToanValue').text(formatCurrency(tongTienGiam));
+    //
+    //                     // Lặp qua danh sách sản phẩm chi tiết hóa đơn để cập nhật lại số lượng và tổng tiền
+    //                     response.listHDCT.forEach(item => {
+    //                         const itemTotal = item.donGia * item.soLuong;
+    //                         $('#soLuong-' + item.idCTSP.id).val(item.soLuong);
+    //                         $('#total-' + item.idCTSP.id).text(formatCurrency(itemTotal));
+    //                         $('#tongTienSanPham-' + item.idCTSP.id).text(formatCurrency(itemTotal));
+    //                     });
+    //
+    //                     // Thêm class 'text-danger' và 'fw-bold' vào các giá trị tổng tiền
+    //                     $('#tongTienValue, #tongTienThanhToanValue').addClass('text-danger fw-bold');
+    //
+    //                     // Hiển thị thông báo cập nhật thành công
+    //                     Toast.fire({
+    //                         title: 'Cập nhật số lượng sản phẩm thành công',
+    //                         icon: 'success'
+    //                     });
+    //
+    //                     // Cập nhật danh sách sản phẩm trong modal
+    //                     $('#chiTietSanPhamTableBody tr').each(function () {
+    //                         var rowProductId = $(this).data('id'); // Get the ID from the row
+    //                         if (rowProductId === idCTSP) { // Compare with the deleted product ID
+    //                             $(this).find('td[data-quantity]').text(response.newQuantity).attr('data-quantity', response.newQuantity);
+    //                         }
+    //                     });
+    //                 }
+    //             },
+    //             error: function (xhr) {
+    //                 let errorMsg = xhr.responseJSON && xhr.responseJSON.error ? xhr.responseJSON.error : 'Đã xảy ra lỗi khi cập nhật số lượng';
+    //                 Toast.fire({
+    //                     title: errorMsg,
+    //                     icon: 'error'
+    //                 });
+    //             }
+    //         });
+    //     });
+    // });
+
+
+
+
     $(document).ready(function () {
         console.log('Document ready');
 
-        // Bắt sự kiện khi người dùng nhập vào input số lượng
-        $('input[type="number"]').on('input', function () {
-            // Ngăn ngừa nhập chữ và số âm
-            if (this.value.match(/[^0-9]/g) || parseInt(this.value, 10) <= 0) {
-                this.value = this.value.replace(/[^0-9]/g, '').replace(/^0+/, '');
-            }
-        });
+        // Hàm tính phí vận chuyển
+        function calculateShippingFee(idCTSP, tongTien) {
+            const idQuanHuyen = '1442'; // Mã quận/huyện cố định ở Hà Nội
+            const idPhuongXa = '9067'; // Mã phường/xã cố định ở Hà Nội
+            const token = '108bdaef-8395-11ee-af43-6ead57e9219a';
 
-        // Bắt sự kiện khi người dùng click vào nút cập nhật số lượng
-        $('.update-sl').click(function () {
-            console.log('Update button clicked');
+            const soLuongGioHang = parseInt($('#soLuong-' + idCTSP).val().trim(), 10) || 0;
+            const khoiLuong = soLuongGioHang * 200;
 
-            var idCTSP = $(this).data('id');
-            var idHoaDon = $(this).data('hoadon');
-            var newQuantity = parseInt($('#soLuong-' + idCTSP).val().trim(), 10);
+            $.ajax({
+                url: `https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/available-services?shop_id=1244&to_district=${idQuanHuyen}&from_district=3440`,
+                headers: {
+                    'Token': token
+                },
+                success: function (data_maDV) {
+                    var service_id = data_maDV.data[0].service_id;
 
+                    $.ajax({
+                        url: 'https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee',
+                        method: 'GET',
+                        headers: {
+                            'Token': token
+                        },
+                        data: {
+                            service_id: service_id,
+                            insurance_value: tongTien,
+                            from_district_id: 3440,
+                            to_district_id: idQuanHuyen,
+                            to_ward_code: idPhuongXa,
+                            height: 15,
+                            length: 15,
+                            weight: khoiLuong,
+                            width: 15
+                        },
+                        success: function (data_total) {
+                            var firstFee = data_total.data.total;
+
+                            // Tính lại tổng tiền sau khi cộng phí vận chuyển
+                            var newTotal = tongTien + firstFee;
+
+                            // Cập nhật tổng tiền và phí vận chuyển trên giao diện
+                            $('#total-amount').text(newTotal.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }));
+                            $('#phiShip').html(formatCurrency(firstFee));
+                            $('#tongTienThanhToan').val(newTotal);
+                            $('#phiVanChuyen').val(firstFee);
+                        },
+                        error: function (xhr) {
+                            console.error("Phí vận chuyển Error: " + xhr.responseText);
+                        }
+                    });
+                },
+                error: function (xhr) {
+                    console.error("Dịch vụ vận chuyển Error: " + xhr.responseText);
+                }
+            });
+        }
+
+        // Hàm cập nhật số lượng sản phẩm
+        function updateQuantity(idCTSP, idHoaDon, newQuantity) {
             console.log('idCTSP:', idCTSP, 'idHoaDon:', idHoaDon, 'newQuantity:', newQuantity);
 
             // Validate input
@@ -2139,14 +2383,6 @@
                 });
                 return;
             }
-
-            // if (newQuantity > 10) {
-            //     Toast.fire({
-            //         title: 'Bạn chỉ có thể cập nhật tối đa 10 sản phẩm',
-            //         icon: 'error'
-            //     });
-            //     return;
-            // }
 
             // Gửi Ajax request để cập nhật số lượng
             $.ajax({
@@ -2162,6 +2398,11 @@
                             title: response.error,
                             icon: 'error'
                         });
+
+                        // Nếu có newQuantity trong response, cập nhật ô input với số lượng tối đa
+                        if (response.newQuantity !== undefined) {
+                            $('#soLuong-' + idCTSP).val(response.newQuantity);
+                        }
                     } else {
                         // Update the quantity and total amount in the UI
                         const formatCurrency = (amount) => new Intl.NumberFormat('vi-VN', {
@@ -2170,7 +2411,18 @@
                             currencyDisplay: 'code'
                         }).format(amount).replace('VND', '₫');
 
-                        let totalAmount = 0;
+                        let newTotalPrice = response.tongTien;
+
+                        $('#tongTienValue').text(formatCurrency(newTotalPrice));
+
+                        const parseCurrency = (value) => parseFloat(value.replace(/[^\d.-]+/g, ''));
+
+                        const giamGia = parseCurrency($('#giamGia').text()) || 0;
+                        const phiVanChuyen = parseCurrency($('#phiVanChuyen').text()) || 0;
+                        const tongTienGiam = response.tongTienThanhToan;
+
+                        $('#tongTienGiam').text(formatCurrency(tongTienGiam));
+                        $('#tongTienThanhToanValue').text(formatCurrency(tongTienGiam));
 
                         // Lặp qua danh sách sản phẩm chi tiết hóa đơn để cập nhật lại số lượng và tổng tiền
                         response.listHDCT.forEach(item => {
@@ -2178,29 +2430,27 @@
                             $('#soLuong-' + item.idCTSP.id).val(item.soLuong);
                             $('#total-' + item.idCTSP.id).text(formatCurrency(itemTotal));
                             $('#tongTienSanPham-' + item.idCTSP.id).text(formatCurrency(itemTotal));
-                            totalAmount += itemTotal; // Tính tổng tiền sản phẩm
                         });
 
-                        // Lấy giá trị giảm giá và phí vận chuyển từ giao diện
-                        const giamGia = parseFloat($('#giamGia').text().replace(/[^0-9.-]+/g, ""));
-                        const phiVanChuyen = parseFloat($('#phiVanChuyen').text().replace(/[^0-9.-]+/g, ""));
-
-                        // Tính lại tổng tiền sau khi đã cập nhật
-                        const tongTienGiam = totalAmount - giamGia + phiVanChuyen;
-
-                        // Cập nhật lại các giá trị tổng tiền trên giao diện
-                        $('#tongTienValue').text(formatCurrency(totalAmount));
-                        $('#tongTienGiam').text(formatCurrency(tongTienGiam));
-                        $('#tongTienThanhToanValue').text(formatCurrency(tongTienGiam));
-
                         // Thêm class 'text-danger' và 'fw-bold' vào các giá trị tổng tiền
-                        $('#tongTienValue, #tongTienGiam, #tongTienThanhToanValue,#tongTienSanPham').addClass('text-danger fw-bold');
+                        $('#tongTienValue, #tongTienThanhToanValue').addClass('text-danger fw-bold');
 
                         // Hiển thị thông báo cập nhật thành công
                         Toast.fire({
                             title: 'Cập nhật số lượng sản phẩm thành công',
                             icon: 'success'
                         });
+
+                        // Cập nhật danh sách sản phẩm trong modal
+                        $('#chiTietSanPhamTableBody tr').each(function () {
+                            var rowProductId = $(this).data('id'); // Get the ID from the row
+                            if (rowProductId === idCTSP) { // Compare with the deleted product ID
+                                $(this).find('td[data-quantity]').text(response.newQuantity).attr('data-quantity', response.newQuantity);
+                            }
+                        });
+
+                        // Tính lại phí vận chuyển sau khi cập nhật số lượng
+                        calculateShippingFee(idCTSP, newTotalPrice);
                     }
                 },
                 error: function (xhr) {
@@ -2211,22 +2461,45 @@
                     });
                 }
             });
+        }
+
+        // Bắt sự kiện khi người dùng click vào nút cập nhật số lượng
+        $('.update-sl').click(function () {
+            console.log('Update button clicked');
+
+            var idCTSP = $(this).data('id');
+            var idHoaDon = $(this).data('hoadon');
+            var newQuantity = parseInt($('#soLuong-' + idCTSP).val().trim(), 10);
+
+            updateQuantity(idCTSP, idHoaDon, newQuantity);
         });
     });
 
+
+
+
+
+
+
+
+
+
 </script>
+
+
+
 
 <%--Chức năng lọc và tìm kiếm và phân trang trong Modal thêm sản phẩm--%>
 <script>
     //Lọc màu sắc
-    $(document).ready(function(){
-        $('#colorSelect').on('change', function() {
+    $(document).ready(function () {
+        $('#colorSelect').on('change', function () {
             var productId = $(this).val();
             $.ajax({
-                url: "/hoa-don/locSPCTByMauSac/"+productId,
+                url: "/hoa-don/locSPCTByMauSac/" + productId,
                 type: 'GET',
                 data: {id: productId},
-                success: function(data) {
+                success: function (data) {
                     $('#contentModalAddProduct').empty()
                     $('#contentModalAddProduct').append(data);
                 }
@@ -2236,15 +2509,15 @@
 
 
     //Lọc kích thước
-    $(document).ready(function(){
-        $('#sizeSelect').on('change', function() {
+    $(document).ready(function () {
+        $('#sizeSelect').on('change', function () {
             var productId = $(this).val();
             alert(productId);
             $.ajax({
-                url: "/hoa-don/locSPCTByKichThuoc/"+productId,
+                url: "/hoa-don/locSPCTByKichThuoc/" + productId,
                 type: 'GET',
                 data: {id: productId},
-                success: function(data) {
+                success: function (data) {
                     $('#contentModalAddProduct').empty()
                     $('#contentModalAddProduct').append(data);
                 }
@@ -2253,14 +2526,14 @@
     });
 
     //Lọc chất liệu
-    $(document).ready(function(){
-        $('#materialSelect').on('change', function() {
+    $(document).ready(function () {
+        $('#materialSelect').on('change', function () {
             var productId = $(this).val();
             $.ajax({
-                url: "/hoa-don/locSPCTByChatLieu/"+productId,
+                url: "/hoa-don/locSPCTByChatLieu/" + productId,
                 type: 'GET',
                 data: {id: productId},
-                success: function(data) {
+                success: function (data) {
                     $('#contentModalAddProduct').empty()
                     $('#contentModalAddProduct').append(data);
                 }
@@ -2269,14 +2542,14 @@
     });
 
     //Lọc theo kiểu tay
-    $(document).ready(function(){
-        $('#sleeveSelect').on('change', function() {
+    $(document).ready(function () {
+        $('#sleeveSelect').on('change', function () {
             var productId = $(this).val();
             $.ajax({
-                url: "/hoa-don/locSPCTByKieuTay/${hoaDon.id}/"+productId,
+                url: "/hoa-don/locSPCTByKieuTay/${hoaDon.id}/" + productId,
                 type: 'GET',
                 data: {id: productId},
-                success: function(data) {
+                success: function (data) {
                     $('#contentModalAddProduct').empty()
                     $('#contentModalAddProduct').append(data);
                 }
@@ -2286,37 +2559,37 @@
 
 
     function bindEvents() {
-        $('#colorSelect').on('change', function() {
+        $('#colorSelect').on('change', function () {
             var colorId = $(this).val();
             updateModalContent("/hoa-don/locSPCTByMauSac/" + colorId);
         });
 
-        $('#sizeSelect').on('change', function() {
+        $('#sizeSelect').on('change', function () {
             var sizeId = $(this).val();
             updateModalContent("/hoa-don/locSPCTByKichThuoc/" + sizeId);
         });
 
-        $('#materialSelect').on('change', function() {
+        $('#materialSelect').on('change', function () {
             var materialId = $(this).val();
             updateModalContent("/hoa-don/locSPCTByChatLieu/" + materialId);
         });
 
-        $('#sleeveSelect').on('change', function() {
+        $('#sleeveSelect').on('change', function () {
             var sleeveId = $(this).val();
             updateModalContent("/hoa-don/locSPCTByKieuTay/" + sleeveId);
         });
 
-        $('#searchButton').on('click', function() {
+        $('#searchButton').on('click', function () {
             var searchQuery = $('#searchInput').val();
             updateModalContent("/hoa-don/searchSPCT/{id}?search=" + searchQuery);
         });
 
-        $('#refreshButton').on('click', function() {
+        $('#refreshButton').on('click', function () {
             updateModalContent("/hoa-don/searchSPCT/{id}?search=");
         });
 
         // Bind events to the add buttons
-        $('.addProductBtn').on('click', function() {
+        $('.addProductBtn').on('click', function () {
             var productId = $(this).data('product-id');
             // Add your logic to handle adding the product
             alert('Product ' + productId + ' added!');
@@ -2329,17 +2602,16 @@
         $.ajax({
             type: "GET",
             url: url,
-            success: function(data) {
+            success: function (data) {
                 $('#modalContent').html(data); // Thay đổi nội dung của modal
                 bindEvents(); // Sau khi cập nhật nội dung, tái kết nối các sự kiện
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 console.error("Error while fetching data:", error);
                 // Xử lý lỗi, ví dụ như hiển thị thông báo lỗi cho người dùng
             }
         });
     }
-
 
 
 </script>

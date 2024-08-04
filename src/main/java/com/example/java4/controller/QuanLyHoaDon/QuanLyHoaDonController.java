@@ -379,6 +379,36 @@ public class QuanLyHoaDonController {
         return "/view/QLHD/detail_bill.jsp";
     }
 
+
+    // Lấy ra danh sách chi tiết sản phẩm
+    private Page<ChiTietSanPham> getListChiTietSanPham(String pageParam) {
+        Pageable pageable = PageRequest.of(Integer.valueOf(pageParam), 10);
+        Page<ChiTietSanPham> listCTSP = _sanPhamChiTietRepo.findByTrangThai(1, pageable);
+        for (ChiTietSanPham ctsp : listCTSP) {
+            if (ctsp.getSoLuong() <= 0) {
+                ctsp.setTrangThai(_sanPhamChiTietRepo.INACTIVE);
+                listCTSP = _sanPhamChiTietRepo.findByTrangThai(_sanPhamChiTietRepo.INACTIVE, pageable);
+                _sanPhamChiTietRepo.save(ctsp);
+            }
+        }
+        return listCTSP;
+    }
+
+    //Lấy ra hình ảnh trong chi tiết sản phẩm
+    private Map<String, HinhAnh> getHinhAnhMapCTSP() {
+        Map<String, HinhAnh> hinhAnhMapCTSP = new HashMap<>();
+        List<ChiTietSanPham> listChiTietSanPham = _chiTietSanPhamRepo.findAll();
+        for (ChiTietSanPham ctsp : listChiTietSanPham) {
+            HinhAnh hinhAnh = _hinhAnhRepo.findByIdCTSP(ctsp.getId());
+            if (hinhAnh != null) {
+                hinhAnhMapCTSP.put(ctsp.getId(), hinhAnh);
+            }
+        }
+        return hinhAnhMapCTSP;
+    }
+
+
+
     // Chức năng xử lý danh sách lịch sử hóa đơn
     private LichSuHoaDonDTO processLichSuHoaDon(LichSuHoaDon lichSuHD) {
         LichSuHoaDonDTO lichSuHoaDonDTO = new LichSuHoaDonDTO();
@@ -460,40 +490,15 @@ public class QuanLyHoaDonController {
         return hinhAnhMap;
     }
 
-    //Lấy ra hình ảnh trong chi tiết sản phẩm
-    private Map<String, HinhAnh> getHinhAnhMapCTSP() {
-        Map<String, HinhAnh> hinhAnhMapCTSP = new HashMap<>();
-        List<ChiTietSanPham> listChiTietSanPham = _chiTietSanPhamRepo.findAll();
-        for (ChiTietSanPham ctsp : listChiTietSanPham) {
-            HinhAnh hinhAnh = _hinhAnhRepo.findByIdCTSP(ctsp.getId());
-            if (hinhAnh != null) {
-                hinhAnhMapCTSP.put(ctsp.getId(), hinhAnh);
-            }
-        }
-        return hinhAnhMapCTSP;
-    }
 
-    // Lấy ra danh sách chi tiết sản phẩm
-    private Page<ChiTietSanPham> getListChiTietSanPham(String pageParam) {
-        Pageable pageable = PageRequest.of(Integer.valueOf(pageParam), 10);
-        Page<ChiTietSanPham> listCTSP = _sanPhamChiTietRepo.findByTrangThai(1, pageable);
-        for (ChiTietSanPham ctsp : listCTSP) {
-            if (ctsp.getSoLuong() <= 0) {
-                ctsp.setTrangThai(_sanPhamChiTietRepo.INACTIVE);
-                listCTSP = _sanPhamChiTietRepo.findByTrangThai(_sanPhamChiTietRepo.INACTIVE, pageable);
-                _sanPhamChiTietRepo.save(ctsp);
-            }
-        }
-        return listCTSP;
-    }
 
     // Tính ra tổng tiền cần phải thanh toán
     private BigDecimal calculateTongTienThanhToan(BigDecimal tongTien, KhuyenMai khuyenMai, GiaoHang giaoHang) {
+        // Mắc định nếu không có là 0đ
         BigDecimal phiGiamGia = khuyenMai != null ? khuyenMai.getSoTienGiam() : BigDecimal.ZERO;
-        BigDecimal tongTienThanhToan = tongTien.subtract(phiGiamGia).max(BigDecimal.ZERO);
-        if (giaoHang != null && giaoHang.getPhiShip() != null) {
-            tongTienThanhToan = tongTienThanhToan.add(giaoHang.getPhiShip());
-        }
+        BigDecimal phiShip = giaoHang != null && giaoHang.getPhiShip() != null ? giaoHang.getPhiShip() : BigDecimal.ZERO;
+        // Tính lại tổng tiền thanh toán
+        BigDecimal tongTienThanhToan = tongTien.add(phiShip).subtract(phiGiamGia).max(BigDecimal.ZERO);
         return tongTienThanhToan;
     }
 
@@ -1017,6 +1022,9 @@ public class QuanLyHoaDonController {
         return "redirect:/hoa-don/detail/" + idHoaDon;
     }
 
+
+
+
     // Chức năng xóa sản phẩm chi tiết khỏi hoa đơn chi tiết
     @GetMapping("/xoa-san-pham/{idCTSP}")
     public ResponseEntity<Map<String, Object>> xoaSanPhamChiTiet(@PathVariable("idCTSP") String idCTSP,
@@ -1035,21 +1043,25 @@ public class QuanLyHoaDonController {
                 return ResponseEntity.badRequest().body(Map.of("error", "Không tìm thấy hóa đơn."));
             }
 
-            // Xóa sản phẩm chi tiết từ hóa đơn
-            int deletedCount = _hoaDonChiTietRepo.deleteByHoaDon_IdAndIdCTSP_Id(idHoaDon, idCTSP);
-            if (deletedCount == 0) {
-                return ResponseEntity.badRequest().body(Map.of("error", "Không tìm thấy sản phẩm trong giỏ hàng."));
-            }
-
             // Nếu trạng thái hóa đơn là "Chờ giao hàng", tăng lại số lượng sản phẩm chi tiết
-            if (hoaDon.getTrangThai() == hoaDonRepository.CHO_GIAO_HANG) {
-                // Tìm chi tiết hóa đơn để lấy số lượng sản phẩm đã xóa
+            if (hoaDon.getTrangThai() == HoaDonRepository.CHO_GIAO_HANG) {
                 ChiTietHoaDon chiTietHoaDon = _hoaDonChiTietRepo.findByHoaDon_IdAndIdCTSP_Id(idHoaDon, idCTSP);
                 if (chiTietHoaDon != null) {
                     chiTietSanPham.setSoLuong(chiTietSanPham.getSoLuong() + chiTietHoaDon.getSoLuong());
                     _sanPhamChiTietRepo.save(chiTietSanPham);
                 }
             }
+
+            // Xóa sản phẩm chi tiết từ hóa đơn
+            int deletedCount = _hoaDonChiTietRepo.deleteByHoaDon_IdAndIdCTSP_Id(idHoaDon, idCTSP);
+            if (deletedCount == 0) {
+                return ResponseEntity.badRequest().body(Map.of("error", "Không tìm thấy sản phẩm trong giỏ hàng."));
+            }
+
+            // Kiểm tra số lượng không vượt quá số lượng tồn kho
+//            if (soLuong > chiTietSanPham.getSoLuong()) {
+//                return ResponseEntity.badRequest().body(Map.of("error", "Số lượng cập nhật vượt quá số lượng tồn kho."));
+//            }
 
             // Tính lại tổng tiền để cập nhật tổng tiền bên view
             BigDecimal tongTien = BigDecimal.ZERO;
@@ -1061,9 +1073,22 @@ public class QuanLyHoaDonController {
             hoaDon.setTongTien(tongTien);
             _hoaDonRepo.save(hoaDon);
 
+            // Tính tổng tiền thanh toán bao gồm giảm giá và phí vận chuyển
+            KhuyenMai khuyenMai = _hoaDonRepo.findKhuyenMaiByHoaDonId(idHoaDon);
+            BigDecimal phiGiamGia = (khuyenMai != null) ? khuyenMai.getSoTienGiam() : BigDecimal.ZERO;
+
+            GiaoHang giaoHang = _giaoHangRepo.findByHoaDonId(idHoaDon);
+            BigDecimal phiShip = (giaoHang != null && giaoHang.getPhiShip() != null) ? giaoHang.getPhiShip() : BigDecimal.ZERO;
+
+            BigDecimal tongTienThanhToan = tongTien.add(phiShip).subtract(phiGiamGia);
+
+            // Cập nhật lại danh sách sản phẩm để hiển thị để cập nhật lại số lượng
+            List<ChiTietSanPham> updatedListCTSP = _sanPhamChiTietRepo.findAll();
             Map<String, Object> response = new HashMap<>();
             response.put("tongTien", tongTien);
-
+            response.put("tongTienThanhToan", tongTienThanhToan);
+            response.put("updatedListCTSP", updatedListCTSP);
+            response.put("newQuantity", chiTietSanPham.getSoLuong());
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "Đã xảy ra lỗi khi xóa sản phẩm."));
@@ -1079,31 +1104,54 @@ public class QuanLyHoaDonController {
     ) {
         try {
             Map<String, Object> response = new HashMap<>();
-            ChiTietSanPham chiTietSanPham = _sanPhamChiTietRepo.findByIdCTSP(idCTSP);
+            ChiTietSanPham chiTietSanPham = _sanPhamChiTietRepo.findById(idCTSP).orElse(null);
+
+            // Kiểm tra sản phẩm chi tiết
+            if (chiTietSanPham == null) {
+                return ResponseEntity.badRequest().body(Map.of("error", "Sản phẩm không tồn tại."));
+            }
 
             // Kiểm tra số lượng nhập vào hợp lệ
             if (soLuong <= 0) {
                 return ResponseEntity.badRequest().body(Map.of("error", "Số lượng phải lớn hơn 0."));
             }
 
-            // Kiểm tra số lượng nhập vào không được vượt quá số lượng trong kho
+            // Kiểm tra số lượng không vượt quá số lượng tồn kho
             if (soLuong > chiTietSanPham.getSoLuong()) {
-                response.put("error", "Số lượng sản phẩm đã được vượt quá số lượng trong kho.");
-                return ResponseEntity.badRequest().body(response);
+                response.put("newQuantity", chiTietSanPham.getSoLuong());
+                return ResponseEntity.badRequest().body(Map.of("error", "Số lượng cập nhật vượt quá số lượng tồn kho."));
             }
 
-            // Lấy danh sách chi tiết hóa đơn và cập nhật số lượng
+            // Lấy danh sách chi tiết hóa đơn
             List<ChiTietHoaDon> listHDCT = _hoaDonChiTietRepo.findAllByHoaDon_Id(idHoaDon);
-
-            if (idHoaDon == null || idHoaDon.isEmpty()) {
-                response.put("error", "Mã hóa đơn không hợp lệ.");
-                return ResponseEntity.badRequest().body(response);
+            if (listHDCT.isEmpty()) {
+                return ResponseEntity.badRequest().body(Map.of("error", "Chi tiết hóa đơn không tồn tại."));
             }
+
+            // Tìm hóa đơn và kiểm tra trạng thái
+            HoaDon hoaDon = _hoaDonRepo.findById(idHoaDon).orElse(null);
+            if (hoaDon == null) {
+                return ResponseEntity.badRequest().body(Map.of("error", "Hóa đơn không tồn tại."));
+            }
+
+            boolean isWaitingForDelivery = (hoaDon.getTrangThai() == HoaDonRepository.CHO_GIAO_HANG);
 
             for (ChiTietHoaDon chiTietHoaDon : listHDCT) {
                 if (chiTietHoaDon.getIdCTSP().getId().equals(idCTSP)) {
+                    // Lấy số lượng cũ và tính sự khác biệt
+                    int soLuongCu = chiTietHoaDon.getSoLuong();
+                    int soLuongThayDoi = soLuong - soLuongCu;
+
+                    // Cập nhật số lượng trong chi tiết hóa đơn
                     chiTietHoaDon.setSoLuong(soLuong);
                     _hoaDonChiTietRepo.save(chiTietHoaDon);
+
+                    // Nếu hóa đơn đang ở trạng thái "Chờ giao hàng", cập nhật số lượng kho
+                    if (isWaitingForDelivery) {
+                        int soLuongCuKho = chiTietSanPham.getSoLuong();
+                        chiTietSanPham.setSoLuong(soLuongCuKho - soLuongThayDoi);
+                        _sanPhamChiTietRepo.save(chiTietSanPham);
+                    }
                     break;
                 }
             }
@@ -1114,14 +1162,26 @@ public class QuanLyHoaDonController {
                 tongTien = tongTien.add(hdct.getDonGia().multiply(BigDecimal.valueOf(hdct.getSoLuong())));
             }
 
-            HoaDon hoaDon = _hoaDonRepo.findById(idHoaDon).orElse(null);
-            if (hoaDon != null) {
-                hoaDon.setTongTien(tongTien);
-                _hoaDonRepo.save(hoaDon);
-            }
+            hoaDon.setTongTien(tongTien);
+            _hoaDonRepo.save(hoaDon);
+
+            // Tính tổng tiền thanh toán bao gồm giảm giá và phí vận chuyển
+            KhuyenMai khuyenMai = _hoaDonRepo.findKhuyenMaiByHoaDonId(idHoaDon);
+            BigDecimal phiGiamGia = (khuyenMai != null) ? khuyenMai.getSoTienGiam() : BigDecimal.ZERO;
+
+            GiaoHang giaoHang = _giaoHangRepo.findByHoaDonId(idHoaDon);
+            BigDecimal phiShip = (giaoHang != null && giaoHang.getPhiShip() != null) ? giaoHang.getPhiShip() : BigDecimal.ZERO;
+
+            BigDecimal tongTienThanhToan = tongTien.add(phiShip).subtract(phiGiamGia);
+
+            List<ChiTietSanPham> updatedListCTSP = _sanPhamChiTietRepo.findAll();
 
             response.put("tongTien", tongTien);
+            response.put("tongTienThanhToan", tongTienThanhToan);
             response.put("listHDCT", listHDCT);
+            response.put("idCTSP", idCTSP);
+            response.put("newQuantity", chiTietSanPham.getSoLuong());
+            response.put("updatedListCTSP", updatedListCTSP);
 
             return ResponseEntity.ok(response);
         } catch (Exception e) {
@@ -1131,7 +1191,9 @@ public class QuanLyHoaDonController {
 
 
 
-//    ===================== LỌC VÀ TÌM KIẾM==================
+
+
+    //    ===================== LỌC VÀ TÌM KIẾM==================
     // Chức năng tìm kiem, loc và phan trang trong Modal them san pham
     @PostMapping("/searchSPCT/{id}")
     public String searchSPCT(

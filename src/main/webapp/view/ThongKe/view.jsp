@@ -243,6 +243,49 @@
             display: block;
         }
 
+        /*Css Top sản phẩm bán chạy*/
+        /* Ensure the card body has a fixed layout */
+        .card-body {
+            display: flex;
+            flex-direction: column;
+            min-height: 300px; /* Adjust this height as needed */
+            position: relative;
+            background-color: #f8f9fa; /* or any background color you prefer */
+        }
+
+        /* Header styling */
+        .card-body .card-header {
+            position: sticky;
+            top: 0;
+            background-color: #f8f9fa; /* Match the card body background */
+            z-index: 1;
+        }
+
+        /* Ensure the table takes up remaining space and handles overflow */
+        .table-container {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding-bottom: 1rem; /* Adjust padding if necessary */
+        }
+
+        /* Pagination fixed to the bottom */
+        .custom-pagination {
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+            background-color: #f8f9fa;
+            padding: 0rem 1rem;
+            box-sizing: border-box;
+        }
+
+        .top-sell{
+            margin: 20px 0px;
+        }
+
+
+
+
     </style>
 </head>
 
@@ -266,69 +309,96 @@
         <hr class="sidebar-divider my-0">
 
         <!-- Nav Item - Dashboard -->
-        <li class="nav-item active">
-            <a class="nav-link" href="/admin/thong-ke/view">
-                <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>Thống kê doanh thu</span></a>
-        </li>
+        <c:choose>
+            <c:when test="${sessionScope.userRole == 'Quản lý'}">
+                <!-- Nav Item - Charts -->
+                <li class="nav-item" style="background: linear-gradient(45deg, black, transparent)">
+                    <a class="nav-link" href="/admin/thong-ke/view" style="display: flex; align-items: center">
+                        <i class="bi bi-graph-up" style="margin-left: 2px"></i>
+                        <span style="margin-left: 6px">Thống kê doanh thu</span></a>
+                </li>
 
-        <!-- Nav Item - Charts -->
-        <li class="nav-item">
-            <a class="nav-link" href="/ban-hang-tai-quay">
-                <i class="fas fa-fw fa-chart-area"></i>
-                <span>Bán hàng tại quầy</span></a>
-        </li>
+                <!-- Nav Item - Dashboard -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/ban-hang-tai-quay" style="display: flex; align-items: center">
+                        <i class="bi bi-shop" style="margin-left: 2px"></i>
+                        <span style="margin-left: 6px">Bán hàng tại quầy</span></a>
+                </li>
 
-        <!-- Nav Item - Charts -->
-        <li class="nav-item">
-            <a class="nav-link" href="/hoa-don/hien-thi">
-                <i class="fas fa-fw fa-chart-area"></i>
-                <span>Quản lý hóa đơn</span></a>
-        </li>
+                <!-- Nav Item - Charts -->
+                <li class="nav-item" >
+                    <a class="nav-link" href="/hoa-don/hien-thi" style="display: flex; align-items: center">
+                        <i class="bi bi-journal-text" style="margin-left: 2px"></i>
+                        <span style="margin-left: 6px">Quản lý hóa đơn</span></a>
+                </li>
 
-        <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="/qlsp" data-toggle="collapse" data-target="#collapseTwo"
-               aria-expanded="true" aria-controls="collapseTwo">
-                <i class="fas fa-fw fa-cog"></i>
-                <span>Quản lý sản phẩm</span>
-            </a>
-            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" href="buttons.html">Màu sắc, kích thước các thứ</a>
-                    <a class="collapse-item" href="cards.html">Cards</a>
+                <!-- Nav Item - Pages Collapse Menu -->
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+                       aria-expanded="true" aria-controls="collapseTwo">
+                        <i class="fas fa-fw fa-cog"></i>
+                        <span>Quản lý sản phẩm</span>
+                    </a>
+                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <a class="collapse-item" href="buttons.html">Màu sắc, kích thước các thứ</a>
+                            <a class="collapse-item" href="cards.html">Cards</a>
+                        </div>
+                    </div>
+                </li>
+
+                <!-- Nav Item - Charts -->
+                <li class="nav-item" >
+                    <a class="nav-link" href="/qlnv/quan-ly-nhan-vien" style="display: flex; align-items: center">
+                        <i class="bi bi-person-bounding-box" style="color: white; margin-left: 2px"></i>
+                        <span style="font-weight: bold; margin-left: 6px">Quản lý nhân viên</span></a>
+                </li>
+
+                <!-- Nav Item - Charts -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/qlkh/quan-ly-khach-hang" style="display: flex; align-items: center">
+                        <i class="bi bi-person-bounding-box" style="margin-left: 2px"></i>
+                        <span style="margin-left: 6px">Quản lý khách hàng</span></a>
+                </li>
+
+                <!-- Nav Item - Charts -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/qlkm/quan-ly-km" style="display: flex; align-items: center">
+                        <i class="bi bi-gift" style="margin-left: 2px"></i>
+                        <span style="margin-left: 6px">Quản lý khuyến mãi</span></a>
+                </li>
+
+                <!-- Divider -->
+                <hr class="sidebar-divider d-none d-md-block">
+
+                <!-- Sidebar Toggler (Sidebar) -->
+                <div class="text-center d-none d-md-inline">
+                    <button class="rounded-circle border-0" id="sidebarToggle"></button>
                 </div>
-            </div>
-        </li>
+            </c:when>
+            <c:otherwise>
+                <!-- Nav Item - Dashboard -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/ban-hang-tai-quay" style="display: flex; align-items: center">
+                        <i class="bi bi-shop" style="margin-left: 2px"></i>
+                        <span style="margin-left: 6px">Bán hàng tại quầy</span></a>
+                </li>
 
-        <!-- Nav Item - Charts -->
-        <li class="nav-item">
-            <a class="nav-link" href="/qlnv/quan-ly-nhan-vien">
-                <i class="fas fa-fw fa-chart-area"></i>
-                <span>Quản lý nhân viên</span></a>
-        </li>
+                <!-- Nav Item - Charts -->
+                <li class="nav-item" >
+                    <a class="nav-link" href="/hoa-don/hien-thi" style="display: flex; align-items: center">
+                        <i class="bi bi-journal-text" style="margin-left: 2px"></i>
+                        <span style="margin-left: 6px">Quản lý hóa đơn</span></a>
+                </li>
 
-        <!-- Nav Item - Charts -->
-        <li class="nav-item">
-            <a class="nav-link" href="/qlkh/quan-ly-khach-hang">
-                <i class="fas fa-fw fa-chart-area"></i>
-                <span>Quản lý khách hàng</span></a>
-        </li>
-
-        <li class="nav-item">
-            <a class="nav-link" href="/admin/quan-ly-khuyen-mai">
-                <i class="fas fa-fw fa-chart-area"></i>
-                <span>Quản lý khuyến mãi</span></a>
-        </li>
-
-        <!-- Divider -->
-        <hr class="sidebar-divider d-none d-md-block">
-
-        <!-- Sidebar Toggler (Sidebar) -->
-        <div class="text-center d-none d-md-inline">
-            <button class="rounded-circle border-0" id="sidebarToggle"></button>
-        </div>
-
+                <!-- Nav Item - Charts -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/qlkh/quan-ly-khach-hang" style="display: flex; align-items: center">
+                        <i class="bi bi-person-bounding-box" style="margin-left: 2px"></i>
+                        <span style="margin-left: 6px">Quản lý khách hàng</span></a>
+                </li>
+            </c:otherwise>
+        </c:choose>
     </ul>
     <!-- End of Sidebar -->
 
@@ -838,152 +908,114 @@
                                 </div>
                             </div>
                             <%--                 Table--%>
-                            <div>
+                            <div class="top-sell">
                                 <div class="row">
-                                    <div class="col-6">
-                                        <div class="card-body bg-white">
-                                            <div class="mt-4 py-5 px-2 bg-light-gray">
-                                                <h5 class="ml-3 text-center mb-4">
-                                                    Top Sản Phẩm Bán Chạy Theo Tháng
-                                                </h5>
-                                                <table class="table ">
-                                                    <thead>
-                                                    <tr>
-                                                        <th scope="col" style="background: orange; color: white">
-                                                            STT
-                                                        </th>
-                                                        <th scope="col" style="background: orange; color: white">Mã sản
-                                                            phẩm
-                                                        </th>
-                                                        <th scope="col" style="background: orange; color: white">Thông
-                                                            tin sản phẩm
-                                                        </th>
-                                                        <th scope="col" style="background: orange; color: white">Giá
-                                                            bán
-                                                        </th>
-                                                        <th scope="col" style="background: orange; color: white">Số
-                                                            lượng đã bán
-                                                        </th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    <c:forEach var="product" items="${topSellingProducts.content}"
-                                                               varStatus="i">
+                                    <!-- Top Selling Products Column -->
+                                    <div id="top-selling-products" class="col-md-6">
+                                        <div class="card custom-card bg-white">
+                                            <div class="card-body py-5 px-2 bg-light-gray flex-fill">
+                                                <div class="card-header">
+                                                    <h5 class="text-center mb-4">Top Sản Phẩm Bán Chạy Theo Tháng</h5>
+                                                </div>
+                                                <div class="table-container">
+                                                    <table class="table custom-table">
+                                                        <thead>
                                                         <tr>
-                                                            <td class="text-center">${i.index + 1}</td>
-                                                            <td>${product.maSanPham}</td>
-                                                            <td>${product.tenSanPham}</td>
-                                                            <td><fmt:formatNumber value="${product.giaBan}"
-                                                                                  type="currency" currencySymbol="₫"
-                                                                                  groupingUsed="true"/></td>
-                                                            <td class="text-center">${product.soLuong}</td>
+                                                            <th scope="col" style="background: orange; color: white">STT</th>
+                                                            <th scope="col" style="background: orange; color: white">Mã sản phẩm</th>
+                                                            <th scope="col" style="background: orange; color: white">Thông tin sản phẩm</th>
+                                                            <th scope="col" style="background: orange; color: white">Giá bán</th>
+                                                            <th scope="col" style="background: orange; color: white">Số lượng đã bán</th>
                                                         </tr>
-                                                    </c:forEach>
-                                                    </tbody>
-                                                </table>
+                                                        </thead>
+                                                        <tbody>
+                                                        <c:forEach var="product" items="${topSellingProducts.content}" varStatus="i">
+                                                            <tr>
+                                                                <td class="text-center">${i.index + 1}</td>
+                                                                <td>${product.maSanPham}</td>
+                                                                <td>${product.tenSanPham}</td>
+                                                                <td><fmt:formatNumber value="${product.giaBan}" type="currency" currencySymbol="₫" groupingUsed="true"/></td>
+                                                                <td class="text-center">${product.soLuong}</td>
+                                                            </tr>
+                                                        </c:forEach>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
 
-
-                                                <%--                                            Phân trang--%>
-                                                <div class="float-end ">
+                                                <!-- Pagination -->
+                                                <div class="custom-pagination">
                                                     <nav aria-label="Page navigation example">
                                                         <ul class="pagination">
                                                             <li class="page-item ${topSellingProducts.hasPrevious() ? '' : 'disabled'}">
-                                                                <a class="page-link"
-                                                                   href="?page=${topSellingProducts.hasPrevious() ? topSellingProducts.number - 1 : '#'}&status=${currentStatus}">&laquo;</a>
+                                                                <a class="page-link" href="?page=${topSellingProducts.hasPrevious() ? topSellingProducts.number - 1 : '#'}&status=${currentStatus}">&laquo;</a>
                                                             </li>
                                                             <c:if test="${topSellingProducts.totalPages > 0}">
-                                                                <c:forEach var="i" begin="0"
-                                                                           end="${topSellingProducts.totalPages - 1}">
+                                                                <c:forEach var="i" begin="0" end="${topSellingProducts.totalPages - 1}">
                                                                     <li class="page-item ${topSellingProducts.number == i ? 'active' : ''}">
-                                                                        <a class="page-link"
-                                                                           href="?page=${i}&status=${currentStatus}">${i + 1}</a>
+                                                                        <a class="page-link" href="?page=${i}&status=${currentStatus}">${i + 1}</a>
                                                                     </li>
                                                                 </c:forEach>
                                                             </c:if>
                                                             <li class="page-item ${topSellingProducts.hasNext() ? '' : 'disabled'}">
-                                                                <a class="page-link"
-                                                                   href="?page=${topSellingProducts.hasNext() ? topSellingProducts.number + 1 : '#'}&status=${currentStatus}">&raquo;</a>
+                                                                <a class="page-link" href="?page=${topSellingProducts.hasNext() ? topSellingProducts.number + 1 : '#'}&status=${currentStatus}">&raquo;</a>
                                                             </li>
                                                         </ul>
                                                     </nav>
                                                 </div>
                                             </div>
-
-
                                         </div>
                                     </div>
 
-                                    <%--                                    Table sản phẩm sắp hết hàng--%>
-                                    <div class="col-6">
-                                        <div class="card-body bg-white">
-                                            <div class="mt-4 py-5 px-2 bg-light-gray">
-                                                <h5 class="ml-3 text-center mb-4">Sản Phẩm Sắp Hết Hàng</h5>
-                                                <table id="productsTable" class="table ">
-                                                    <thead>
-                                                    <tr>
-                                                        <th scope="col" style="background: orange; color: white">STT
-                                                        </th>
-                                                        <th scope="col" style="background: orange; color: white">Mã sản
-                                                            pẩm
-                                                        </th>
-                                                        <th scope="col" style="background: orange; color: white">Thông
-                                                            tin sản phẩm
-                                                        </th>
-                                                        <th scope="col" style="background: orange; color: white">Giá
-                                                            bán
-                                                        </th>
-                                                        <th scope="col" style="background: orange; color: white">Số
-                                                            lượng
-                                                        </th>
-                                                        <th scope="col" style="background: orange; color: white">Kích
-                                                            thước
-                                                        </th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody class="tbody">
-                                                    <c:forEach var="product" varStatus="i"
-                                                               items="${pageSPSapHetHang.content}">
+                                    <!-- Products Running Low Column -->
+                                    <div id="products-running-low" class="col-md-6">
+                                        <div class="card custom-card bg-white">
+                                            <div class="card-body py-5 px-2 bg-light-gray flex-fill">
+                                                <div class="card-header">
+                                                    <h5 class="text-center mb-4">Sản Phẩm Sắp Hết Hàng</h5>
+                                                </div>
+                                                <div class="table-container">
+                                                    <table id="productsTable" class="table custom-table">
+                                                        <thead>
                                                         <tr>
-                                                            <td class="text-center">${i.index + 1}</td>
-                                                            <td>
-                                                                    ${product.idSanPham.ma}
-                                                            </td>
-                                                            <td>
-                                                                <span class="">${product.idSanPham.ten} - ${product.idMauSac.ten}
-                                                                </span>
-
-                                                            </td>
-                                                            <td>
-                                                                <fmt:formatNumber value="${product.giaBan}"
-                                                                                  type="currency" currencySymbol="₫"
-                                                                                  groupingUsed="true"/>
-                                                            </td>
-                                                            <td class="text-center">${product.soLuong}</td>
-                                                            <td class="text-center">${product.idKichThuoc.ten}</td>
+                                                            <th scope="col" style="background: orange; color: white">STT</th>
+                                                            <th scope="col" style="background: orange; color: white">Mã sản phẩm</th>
+                                                            <th scope="col" style="background: orange; color: white">Thông tin sản phẩm</th>
+                                                            <th scope="col" style="background: orange; color: white">Giá bán</th>
+                                                            <th scope="col" style="background: orange; color: white">Số lượng</th>
+                                                            <th scope="col" style="background: orange; color: white">Kích thước</th>
                                                         </tr>
-                                                    </c:forEach>
-                                                    </tbody>
-                                                </table>
-                                                <%--                                                Phân trang&ndash;%&gt;--%>
-                                                <div class="float-end ">
+                                                        </thead>
+                                                        <tbody class="tbody">
+                                                        <c:forEach var="product" varStatus="i" items="${pageSPSapHetHang.content}">
+                                                            <tr>
+                                                                <td class="text-center">${i.index + 1}</td>
+                                                                <td>${product.idSanPham.ma}</td>
+                                                                <td>${product.idSanPham.ten} - ${product.idMauSac.ten}</td>
+                                                                <td><fmt:formatNumber value="${product.giaBan}" type="currency" currencySymbol="₫" groupingUsed="true"/></td>
+                                                                <td class="text-center">${product.soLuong}</td>
+                                                                <td class="text-center">${product.idKichThuoc.ten}</td>
+                                                            </tr>
+                                                        </c:forEach>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+
+                                                <!-- Pagination -->
+                                                <div class="custom-pagination">
                                                     <nav aria-label="Page navigation example">
                                                         <ul class="pagination">
                                                             <li class="page-item ${pageSPSapHetHang.hasPrevious() ? '' : 'disabled'}">
-                                                                <a class="page-link"
-                                                                   href="?page=${pageSPSapHetHang.hasPrevious() ? pageSPSapHetHang.number - 1 : '#'}&status=${currentStatus}">&laquo;</a>
+                                                                <a class="page-link" href="?page=${pageSPSapHetHang.hasPrevious() ? pageSPSapHetHang.number - 1 : '#'}&status=${currentStatus}">&laquo;</a>
                                                             </li>
                                                             <c:if test="${pageSPSapHetHang.totalPages > 0}">
-                                                                <c:forEach var="i" begin="0"
-                                                                           end="${pageSPSapHetHang.totalPages - 1}">
+                                                                <c:forEach var="i" begin="0" end="${pageSPSapHetHang.totalPages - 1}">
                                                                     <li class="page-item ${pageSPSapHetHang.number == i ? 'active' : ''}">
-                                                                        <a class="page-link"
-                                                                           href="?page=${i}&status=${currentStatus}">${i + 1}</a>
+                                                                        <a class="page-link" href="?page=${i}&status=${currentStatus}">${i + 1}</a>
                                                                     </li>
                                                                 </c:forEach>
                                                             </c:if>
                                                             <li class="page-item ${pageSPSapHetHang.hasNext() ? '' : 'disabled'}">
-                                                                <a class="page-link"
-                                                                   href="?page=${pageSPSapHetHang.hasNext() ? pageSPSapHetHang.number + 1 : '#'}&status=${currentStatus}">&raquo;</a>
+                                                                <a class="page-link" href="?page=${pageSPSapHetHang.hasNext() ? pageSPSapHetHang.number + 1 : '#'}&status=${currentStatus}">&raquo;</a>
                                                             </li>
                                                         </ul>
                                                     </nav>
@@ -993,6 +1025,7 @@
                                     </div>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
