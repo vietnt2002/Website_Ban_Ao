@@ -841,13 +841,21 @@
                                                value="">
                                         <p style="color: red;" id="giaBanModalEditErr"></p>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col col-md-3">
+                                    <div class="col col-md-6">
                                         <label for="moTaModalEdit" class="form-label">Ghi chú</label>
                                         <textarea class="form-control custom-textarea" style="width: 550px;"
                                                   id="moTaModalEdit" name="moTa"></textarea>
                                         <p style="color: red;" id="moTaModalEditErr"></p>
+                                    </div>
+                                    <div class="col col-md-3 d-flex justify-content-center align-items-center">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch"
+                                                   id="trangThaiModalEdit"
+                                                   checked>
+                                            <label class="form-check-label" for="trangThaiLabelModalEdit"
+                                                   id="trangThaiLabelModalEdit">Trạng
+                                                thái</label>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -876,14 +884,6 @@
                                                class="file-input-overlay"/>
                                     </div>
                                 </div>
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" role="switch"
-                                           id="trangThaiModalEdit"
-                                           checked>
-                                    <label class="form-check-label" for="trangThaiLabelModalEdit"
-                                           id="trangThaiLabelModalEdit">Trạng
-                                        thái</label>
-                                </div>
                                 <button id="saveEditBtn" class="btn btn-primary">Lưu</button>
                             </form>
                         </div>
@@ -908,7 +908,7 @@
                         <div class="mb-3">
                             <form id="uploadFormEditAll" method="post" enctype="multipart/form-data"
                                   action="/hinh-anh/upload">
-                                <div class="d-flex flex-wrap">
+                                <div class="">
                                     <div class="row">
                                         <div class="d-flex" style="gap: 500px;">
                                             <h5 class="border-bottom">Tên sản phẩm:&nbsp&nbsp<span
@@ -919,8 +919,8 @@
                                             </h5>
                                         </div>
                                     </div>
-                                    <div class="row ">
-                                        <div class="col col-md-4">
+                                    <div class="row">
+                                        <div class="col col-md-4 border" id="soLuongContainer">
                                             <label id="lblSoLuongModalEditAll" for="soLuongModalEdit"
                                                    class="form-label">Số lượng</label>
                                             <input type="number" name="file" class="form-control"
@@ -928,7 +928,7 @@
                                                    value="">
                                             <p style="color: red;" id="soLuongModalEditErrAll"></p>
                                         </div>
-                                        <div class="col col-md-4">
+                                        <div class="col col-md-4 border" id="giaNhapContainer">
                                             <label id="lblGiaNhapModalEditAll" for="giaNhapModalEdit"
                                                    class="form-label">Giá nhập</label>
                                             <input type="number" name="file" class="form-control"
@@ -936,7 +936,7 @@
                                                    value="">
                                             <p style="color: red;" id="giaNhapModalEditErrAll"></p>
                                         </div>
-                                        <div class="col col-md-4">
+                                        <div class="col col-md-4 border" id="giaBanContainer">
                                             <label id="lblGiaBanModalEditAll" for="giaBanModalEdit" class="form-label">Giá
                                                 bán</label>
                                             <input type="number" name="file" class="form-control"
@@ -944,13 +944,21 @@
                                                    value="">
                                             <p style="color: red;" id="giaBanModalEditErrAll"></p>
                                         </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col col-md-3">
+                                        <div class="col col-md-6 border" id="ghiChuContainer">
                                             <label for="moTaModalEdit" class="form-label">Ghi chú</label>
                                             <textarea class="form-control custom-textarea" style="width: 550px;"
                                                       id="moTaModalEditAll" name="moTa"></textarea>
                                             <p style="color: red;" id="moTaModalEditErrAll"></p>
+                                        </div>
+                                        <div class="col col-md-3 d-flex justify-content-center align-items-center">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" role="switch"
+                                                       id="trangThaiModalEditAll"
+                                                       checked>
+                                                <label class="form-check-label" for="trangThaiLabelModalEdit"
+                                                       id="trangThaiLabelModalEditAll">Trạng
+                                                    thái</label>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -979,14 +987,6 @@
                                                    class="file-input-overlay"/>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" role="switch"
-                                           id="trangThaiModalEditAll"
-                                           checked>
-                                    <label class="form-check-label" for="trangThaiLabelModalEdit"
-                                           id="trangThaiLabelModalEditAll">Trạng
-                                        thái</label>
                                 </div>
                                 <button id="saveEditAllBtn" class="btn btn-primary">Lưu</button>
                             </form>
@@ -1830,13 +1830,12 @@
                 hinhAnh3DisplayModalEdit.src = resp.hinhAnh3 ? "/image/" + resp.hinhAnh3 : "/image-icon/pendingIMG.png";
             });
     });
+
     $(document).on('click', "button[id^='editAllSPCTBtn_']", e => {
         e.preventDefault();
-        // document.getElementById("lblGiaNhapModalEditAll").remove();
-        // document.getElementById("giaNhapModalEditAll").remove();
+
         console.log("test");
     });
-
 
     $(document).on('click', "button[id^='detailSPBtn_']", e => {
         e.preventDefault();
