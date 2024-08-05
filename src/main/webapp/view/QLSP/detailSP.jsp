@@ -944,13 +944,13 @@
                                                    value="">
                                             <p style="color: red;" id="giaBanModalEditErrAll"></p>
                                         </div>
-                                        <div class="col col-md-6 border" id="ghiChuContainer">
-                                            <label for="moTaModalEdit" class="form-label">Ghi chú</label>
+                                        <div class="col col-md-6 border" id="moTaContainer">
+                                            <label for="moTaModalEdit" class="form-label">Mô tả</label>
                                             <textarea class="form-control custom-textarea" style="width: 550px;"
                                                       id="moTaModalEditAll" name="moTa"></textarea>
                                             <p style="color: red;" id="moTaModalEditErrAll"></p>
                                         </div>
-                                        <div class="col col-md-3 d-flex justify-content-center align-items-center">
+                                        <div class="col col-md-3 " id="trangThaiContainer">
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" type="checkbox" role="switch"
                                                        id="trangThaiModalEditAll"
@@ -1631,13 +1631,13 @@
                             '</td>' +
                             '<td>' + '</td>' +
                             '<td>' + '</td>' +
-                            '<td><input class="mt-2" style="width: 20px;height: 20px" type="checkbox" id="cbSoLuong_' + spct.id + '"></td>' +
-                            '<td><input class="mt-2" style="width: 20px;height: 20px" type="checkbox" id="cbGiaNhap_' + spct.id + '"></td>' +
-                            '<td><input class="mt-2" style="width: 20px;height: 20px" type="checkbox" id="cbGiaBan_' + spct.id + '"></td>' +
-                            '<td><input class="mt-2" style="width: 20px;height: 20px" type="checkbox" id="cbMoTa_' + spct.id + '"></td>' +
-                            '<td><input class="mt-2" style="width: 20px;height: 20px" type="checkbox" id="cbTrangThai_' + spct.id + '"></td>' +
+                            '<td><input class="mt-2" style="width: 20px;height: 20px" type="checkbox" id="cbSoLuong_' + spct.idMauSac.id + '"></td>' +
+                            '<td><input class="mt-2" style="width: 20px;height: 20px" type="checkbox" id="cbGiaNhap_' + spct.idMauSac.id + '"></td>' +
+                            '<td><input class="mt-2" style="width: 20px;height: 20px" type="checkbox" id="cbGiaBan_' + spct.idMauSac.id + '"></td>' +
+                            '<td><input class="mt-2" style="width: 20px;height: 20px" type="checkbox" id="cbMoTa_' + spct.idMauSac.id + '"></td>' +
+                            '<td><input class="mt-2" style="width: 20px;height: 20px" type="checkbox" id="cbTrangThai_' + spct.idMauSac.id + '"></td>' +
                             '<td>' +
-                            '<button id="editAllSPCTBtn_' + spct.idMauSac + '" class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#ModalEditAll">Sửa toàn bộ</button>' +
+                            '<button id="editAllSPCTBtn_' + spct.idMauSac.id + '" class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#ModalEditAll">Sửa toàn bộ</button>' +
                             '</td>' +
                             '</tr>';
                     }
@@ -1833,8 +1833,44 @@
 
     $(document).on('click', "button[id^='editAllSPCTBtn_']", e => {
         e.preventDefault();
-
-        console.log("test");
+        const idMauSac = e.currentTarget.id.replace("editAllSPCTBtn_", "");
+        console.log("id mau sac:",idMauSac);
+        console.log("checkbox so luong btn: ", document.getElementById("cbSoLuong_"+idMauSac).checked);
+        console.log("checkbox gia nhap btn: ", document.getElementById("cbSoLuong_"+idMauSac).checked);
+        console.log("checkbox gia ban  btn: ", document.getElementById("cbSoLuong_"+idMauSac).checked);
+        console.log("checkbox mo ta btn: ", document.getElementById("cbSoLuong_"+idMauSac).checked);
+        console.log("checkbox trang thai btn: ", document.getElementById("cbTrangThai_"+idMauSac).checked);
+        if(!document.getElementById("cbSoLuong_"+idMauSac).checked){
+            document.getElementById("soLuongContainer").style.display ="none";
+        }
+        else{
+            document.getElementById("soLuongContainer").style.display ="block";
+        }
+        if(!document.getElementById("cbGiaNhap_"+idMauSac).checked){
+            document.getElementById("giaNhapContainer").style.display ="none";
+        }
+        else{
+            document.getElementById("giaNhapContainer").style.display ="block";
+        }
+        if(!document.getElementById("cbGiaBan_"+idMauSac).checked){
+            document.getElementById("giaBanContainer").style.display ="none";
+        }
+        else{
+            document.getElementById("giaBanContainer").style.display ="block";
+        }
+        if(!document.getElementById("cbMoTa_"+idMauSac).checked){
+            document.getElementById("moTaContainer").style.display ="none";
+        }
+        else{
+            document.getElementById("moTaContainer").style.display ="block";
+        }
+        if(!document.getElementById("cbTrangThai_"+idMauSac).checked){
+            console.log("test is true: ");
+            document.getElementById("trangThaiContainer").style.display ="none";
+        }
+        else{
+            document.getElementById("trangThaiContainer").style.display ="block";
+        }
     });
 
     $(document).on('click', "button[id^='detailSPBtn_']", e => {
