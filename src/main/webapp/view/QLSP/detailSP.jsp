@@ -533,6 +533,7 @@
                                 <thead>
                                 <tr>
                                     <th>STT</th>
+                                    <th>Hình ảnh</th>
                                     <th>Màu sắc</th>
                                     <th>Kích thước</th>
                                     <th>Số lượng</th>
@@ -961,31 +962,31 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col col-md-3 hover-effect click-effect image-container">
-                                            <img width="200" height="200"
-                                                 src="/image-icon/pendingIMG.png"
-                                                 alt="" class="fit-img" id="hinhAnh1DisplayModalEditAll">
-                                            <p class="text-center">Hình ảnh 1</p>
-                                            <input type="file" name="hinhAnh1File" id="fileHinhAnh1ModalEditAll"
-                                                   class="file-input-overlay"/>
-                                        </div>
-                                        <div class="col col-md-3 hover-effect click-effect image-container">
-                                            <img width="200" height="200"
-                                                 src="/image-icon/pendingIMG.png"
-                                                 alt="" class="fit-img" id="hinhAnh2DisplayModalEditAll">
-                                            <p class="text-center">Hình ảnh 2</p>
-                                            <input type="file" name="hinhAnh2File" id="fileHinhAnh2ModalEditAll"
-                                                   class="file-input-overlay"/>
-                                        </div>
-                                        <div class="col col-md-3 hover-effect click-effect image-container">
-                                            <img width="200" height="200"
-                                                 src="/image-icon/pendingIMG.png"
-                                                 alt="" class="fit-img" id="hinhAnh3DisplayModalEditAll">
-                                            <p class="text-center">Hình ảnh 3</p>
-                                            <input type="file" name="hinhAnh3File" id="fileHinhAnh3ModalEditAll"
-                                                   class="file-input-overlay"/>
-                                        </div>
+                                    <div class="row" id="hinhAnhContainer">
+                                            <div class="col col-md-3 hover-effect click-effect image-container">
+                                                <img width="200" height="200"
+                                                     src="/image-icon/pendingIMG.png"
+                                                     alt="" class="fit-img" id="hinhAnh1DisplayModalEditAll">
+                                                <p class="text-center">Hình ảnh 1</p>
+                                                <input type="file" name="hinhAnh1File" id="fileHinhAnh1ModalEditAll"
+                                                       class="file-input-overlay"/>
+                                            </div>
+                                            <div class="col col-md-3 hover-effect click-effect image-container">
+                                                <img width="200" height="200"
+                                                     src="/image-icon/pendingIMG.png"
+                                                     alt="" class="fit-img" id="hinhAnh2DisplayModalEditAll">
+                                                <p class="text-center">Hình ảnh 2</p>
+                                                <input type="file" name="hinhAnh2File" id="fileHinhAnh2ModalEditAll"
+                                                       class="file-input-overlay"/>
+                                            </div>
+                                            <div class="col col-md-3 hover-effect click-effect image-container">
+                                                <img width="200" height="200"
+                                                     src="/image-icon/pendingIMG.png"
+                                                     alt="" class="fit-img" id="hinhAnh3DisplayModalEditAll">
+                                                <p class="text-center">Hình ảnh 3</p>
+                                                <input type="file" name="hinhAnh3File" id="fileHinhAnh3ModalEditAll"
+                                                       class="file-input-overlay"/>
+                                            </div>
                                     </div>
                                 </div>
                                 <button id="saveEditAllBtn" class="btn btn-primary">Lưu</button>
@@ -1617,6 +1618,7 @@
                     const giaBan = spct.giaBan || 'N/A';
                     const giaNhap = spct.giaNhap || 'N/A';
                     const moTa = spct.moTa || 'N/A';
+                    const hinhAnh = spct.hinhAnh || 'N/A';
                     if (spct.idMauSac.ten != mauSacMemo) {
                         let labelms = spct.idMauSac.ten;
                         console.log("Mau sac memo: ", spct.idMauSac.ten);
@@ -1629,6 +1631,7 @@
                             '<td>' +
                             '<h5 class="">' + spct.idMauSac.ten + '<h5>' +
                             '</td>' +
+                            '<td><input class="mt-2" style="width: 20px;height: 20px" type="checkbox" id="cbHinhAnh_' + spct.idMauSac.id + '"></td>' +
                             '<td>' + '</td>' +
                             '<td>' + '</td>' +
                             '<td><input class="mt-2" style="width: 20px;height: 20px" type="checkbox" id="cbSoLuong_' + spct.idMauSac.id + '"></td>' +
@@ -1643,6 +1646,7 @@
                     }
                     html += '<tr>' +
                         '<td>' + (i + 1) + '</td>' +
+                        '<td><img src="' + "/image/" + hinhAnh + '" alt="Image" style="width: 50px ; height: 60px" class="img-fluid rounded border" /></td>' +
                         '<td>' + mauSac + '</td>' +
                         '<td>' + kichThuoc + '</td>' +
                         '<td>' + soLuong + '</td>' +
@@ -1840,6 +1844,13 @@
         console.log("checkbox gia ban  btn: ", document.getElementById("cbSoLuong_"+idMauSac).checked);
         console.log("checkbox mo ta btn: ", document.getElementById("cbSoLuong_"+idMauSac).checked);
         console.log("checkbox trang thai btn: ", document.getElementById("cbTrangThai_"+idMauSac).checked);
+
+        if(!document.getElementById("cbHinhAnh_"+idMauSac).checked){
+            document.getElementById("hinhAnhContainer").style.display ="none";
+        }
+        else{
+            document.getElementById("hinhAnhContainer").style.display ="block";
+        }
         if(!document.getElementById("cbSoLuong_"+idMauSac).checked){
             document.getElementById("soLuongContainer").style.display ="none";
         }

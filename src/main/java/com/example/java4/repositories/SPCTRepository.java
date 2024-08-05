@@ -183,6 +183,8 @@ public interface SPCTRepository extends JpaRepository<ChiTietSanPham, String>, J
     @Query(value = "UPDATE ChiTietSanPham ctsp SET ctsp.idKieuTay.id = :idKieuTay WHERE ctsp.idSanPham.id = :idSanPham")
     Integer updateAllKieuTay(@Param("idSanPham") String idSanPham, @Param("idKieuTay") String idKieuTay);
 
+    @Query(value = "SELECT MIN(ha.hinhAnh1) FROM HinhAnh ha WHERE ha.idCTSP.id = :idSPCT")
+    String getHinhAnhOfSPCT(@Param("idSPCT") String idSPCT);
     // Thống kê danh sách sản phẩm sắp hết hàng
 //    @Query("SELECT new com.example.java4.response.SPCTDTO(" +
 //            "sp.ten, sp.ma, ctsp.giaBan, ha.hinhAnh1, ctsp.soLuong) " +
