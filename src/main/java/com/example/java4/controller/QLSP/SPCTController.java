@@ -8,6 +8,7 @@ import com.example.java4.repositories.NoMap.SPCTRepoNoMap;
 import com.example.java4.request.QLSP.Store.SPCTStore;
 import com.example.java4.request.QLSP.Update.SPCTUpdate;
 import com.example.java4.response.SPCTResponse;
+import com.example.java4.response.SPCTView;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -53,19 +54,31 @@ public class SPCTController {
     }
 
     @CrossOrigin
-    @GetMapping("/detail-byidsp-stt1/{idSP}")
-    public ResponseEntity<List<ChiTietSanPham>> GetIndexByIdSP1(@PathVariable(value = "idSP") String idSP, @RequestParam("page") Optional<Integer> pageParam) {
-        int page = pageParam.orElse(1);
-        Pageable pageable = PageRequest.of(page - 1, 20);
-        return ResponseEntity.ok(chiTietSPRepository.findByIdSP(1, idSP, pageable).getContent());
-    }
-
-    @CrossOrigin
     @GetMapping("/detail-byidsp-all/{idSP}")
-    public ResponseEntity<List<ChiTietSanPham>> GetIndexByIdSPAll(@PathVariable(value = "idSP") String idSP, @RequestParam("page") Optional<Integer> pageParam) {
+    public ResponseEntity<List<SPCTView>> GetIndexByIdSPAll(@PathVariable(value = "idSP") String idSP, @RequestParam("page") Optional<Integer> pageParam) {
         int page = pageParam.orElse(1);
         Pageable pageable = PageRequest.of(page - 1, 20);
-        return ResponseEntity.ok(chiTietSPRepository.findByIdSPAll(idSP, pageable).getContent());
+        List<ChiTietSanPham> lstChiTietSP = chiTietSPRepository.findByIdSPAll(idSP, pageable).getContent();
+        List<SPCTView> lstSPCTView =  new ArrayList<>();
+        for (ChiTietSanPham chiTietSanPham : lstChiTietSP) {
+             SPCTView spctView = new SPCTView();
+             spctView.setId(chiTietSanPham.getId());
+             spctView.setSoLuong(chiTietSanPham.getSoLuong());
+             spctView.setMoTa(chiTietSanPham.getMoTa());
+             spctView.setGiaNhap(chiTietSanPham.getGiaNhap());
+             spctView.setGiaBan(chiTietSanPham.getGiaBan());
+             spctView.setNgayTao(chiTietSanPham.getNgayTao());
+             spctView.setTrangThai(chiTietSanPham.getTrangThai());
+             spctView.setIdMauSac(chiTietSanPham.getIdMauSac());
+             spctView.setIdKichThuoc(chiTietSanPham.getIdKichThuoc());
+             spctView.setIdChatLieu(chiTietSanPham.getIdChatLieu());
+             spctView.setIdKieuTay(chiTietSanPham.getIdKieuTay());
+             spctView.setIdSanPham(chiTietSanPham.getIdSanPham());
+             spctView.setHinhAnh(chiTietSPRepository.getHinhAnhOfSPCT(chiTietSanPham.getId()));
+             lstSPCTView.add(spctView);
+            System.out.println("==========================================hinh anh: "+ spctView.getHinhAnh());
+        }
+        return ResponseEntity.ok(lstSPCTView);
     }
 
     @CrossOrigin
