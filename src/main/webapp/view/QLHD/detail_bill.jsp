@@ -437,7 +437,7 @@
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fas fa-bell fa-fw"></i>
                             <!-- Counter - Alerts -->
-                            <span class="badge badge-danger badge-counter">3+</span>
+                            <span class="badge badge-danger badge-counter"></span>
                         </a>
                         <!-- Dropdown - Alerts -->
                         <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -488,7 +488,7 @@
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fas fa-envelope fa-fw"></i>
                             <!-- Counter - Messages -->
-                            <span class="badge badge-danger badge-counter">7</span>
+                            <span class="badge badge-danger badge-counter"></span>
                         </a>
                         <!-- Dropdown - Messages -->
                         <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -556,27 +556,24 @@
 
                     <!-- Nav Item - User Information -->
                     <li class="nav-item dropdown no-arrow">
-                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="mr-2 d-none d-lg-inline text-gray-600 small">${nv.hoTen} | ${nv.idCV.ten}</span>
-                            <img class="img-profile rounded-circle"
-                                 src="/imageUser/${nv.anhDaiDien}">
+                            <img class="img-profile rounded-circle" src="/imageUser/${nv.anhDaiDien}">
                         </a>
                         <!-- Dropdown - User Information -->
-                        <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                             aria-labelledby="userDropdown">
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
                             <a class="dropdown-item" href="/qlnv/tai-khoan-cua-toi/${nv.id}">
                                 <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Thông tin cá nhân
                             </a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="/qlnv/dang-xuat" id="dang-xuat" data-toggle="modal"
-                               data-target="#logoutModal">
+                            <a class="dropdown-item" href="/qlnv/dang-xuat" id="dang-xuat" data-toggle="modal" data-target="#logoutModal">
                                 <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Đăng xuất
                             </a>
                         </div>
                     </li>
+
 
                 </ul>
 
@@ -1202,7 +1199,7 @@
                                 <h5 class="card-title">Chi phí đơn hàng</h5>
                             </div>
                             <div class="card-body">
-                                <c:set var="giamGia" value="${phiGiamGia != null ? phiGiamGia : 0}"/>
+                                <c:set var="giamGia" value="${hoaDonDTO.khuyenMai.soTienGiam != null ? hoaDonDTO.khuyenMai.soTienGiam : 0}"/>
                                 <c:set var="tongTien" value="${tongTienDonHang != null ? tongTienDonHang : 0}"/>
                                 <c:set var="phiVanChuyen" value="${giaoHangDTO.phiShip != null ? giaoHangDTO.phiShip : 0}"/>
                                 <div class="row">
@@ -1390,7 +1387,7 @@
                                         </c:when>
                                     </c:choose>
                                 </td>
-                                <td>${chiTiet.idCTSP.idSanPham.ten}</td>
+                                <td>${chiTiet.idCTSP.idSanPham.ten} - ${chiTiet.idCTSP.idSanPham.ma} </td>
                                 <td class="total-amount" id="total-${chiTiet.idCTSP.id} ">
                                     <span class="text-danger" id="donGiaSanPham">
                                          <fmt:formatNumber value="${chiTiet.donGia}" type="currency"
@@ -1706,7 +1703,7 @@
         toast: true,
         position: "top-end",
         showConfirmButton: false,
-        timer: 2000,
+        timer: 3000,
         timerProgressBar: true,
         didOpen: (toast) => {
             toast.onmouseenter = Swal.stopTimer;
@@ -1763,40 +1760,12 @@
     });
     </c:if>
 
-
-    // Mở máy in sau khi update thành công
-    document.getElementById('confirmForm').onsubmit = function () {
-        // Lấy giá trị trạng thái từ Controller
-        sessionStorage.setItem('printAfterReload', 'true');
-    };
-
-    $(document).ready(function () {
-        $('#userDropdown .fas').on('click', function (e) {
-            e.stopPropagation();
-            $(this).closest('.nav-link').dropdown('toggle');
-        });
-    });
-
-
-    document.getElementById('confirmForm').addEventListener('submit', function (event) {
-        event.preventDefault(); // Ngăn form submit mặc định để xử lý logic riêng
-
-        // Lấy giá trị trạng thái từ Controller
-        const trangThai = ${hoaDonDTO.trangThai + 1};
-
-        // Lưu trạng thái vào sessionStorage để kiểm tra sau khi reload
-        sessionStorage.setItem('printAfterReload', trangThai === 2 ? 'true' : 'false');
-
-        // Submit form
-        this.submit();
-    });
-
-
-    document.getElementById('cancelForm').addEventListener('submit', function(event) {
-        event.preventDefault(); // Ngăn form submit mặc định để xử lý logic riêng
-        // Submit form
-        this.submit();
-    });
+    // $(document).ready(function () {
+    //     $('#userDropdown .fas').on('click', function (e) {
+    //         e.stopPropagation();
+    //         $(this).closest('.nav-link').dropdown('toggle');
+    //     });
+    // });
 
 
     // Nút in hóa đơn để giao hàng
@@ -1825,10 +1794,78 @@
     // Kiểm tra nếu có sessionStorage để in sau khi reload
     window.onload = function () {
         const printAfterReload = sessionStorage.getItem('printAfterReload');
-        if (printAfterReload === 'true') {
+        const firstLoad = sessionStorage.getItem('firstLoad');
+        const hasErrorString = "${not empty errorProductDetail}".trim();
+        const hasError = hasErrorString.toLowerCase() === 'true';
+
+        // Nếu không có lỗi và printAfterReload là true thì mở máy in
+        if (printAfterReload === 'true' && !hasError ) {
             openPrintDeliveryModal();
         }
+
+
+        // Đánh dấu lần tải trang đầu tiên
+        sessionStorage.setItem('firstLoad', 'false');
     };
+
+    document.getElementById('confirmForm').addEventListener('submit', function (event) {
+        event.preventDefault(); // Ngăn form submit mặc định để xử lý logic riêng
+
+        // Lấy giá trị trạng thái từ Controller
+        const trangThai = parseInt('${hoaDonDTO.trangThai}');
+        const trangThaiMoi = trangThai + 2;
+
+        // Đảm bảo trangThai và trangThaiMoi là số nguyên
+        if (isNaN(trangThai) || isNaN(trangThaiMoi)) {
+            console.error("Invalid trạngThai or trạngThaiMoi");
+            sessionStorage.setItem('printAfterReload', 'false');
+            return;
+        }
+
+        // Lưu trạng thái vào sessionStorage để kiểm tra sau khi reload
+        // Kiểm tra lỗi từ Controller
+        const hasErrorString = "${not empty errorProductDetail}".trim();
+        const hasError = hasErrorString.toLowerCase() === 'true';
+
+        // Lưu trạng thái vào sessionStorage để kiểm tra sau khi reload
+        if (trangThai === 1 && trangThaiMoi === 3 && !hasError) {
+            sessionStorage.setItem('printAfterReload', 'true');
+        } else {
+            sessionStorage.setItem('printAfterReload', 'false');
+        }
+        // Submit form
+        this.submit();
+    });
+
+    // Mở máy in sau khi update thành công
+    document.getElementById('confirmForm').onsubmit = function () {
+        // Lấy giá trị trạng thái từ Controller
+        const trangThai = parseInt('${hoaDonDTO.trangThai}');
+        const trangThaiMoi = trangThai + 2;
+
+        if (trangThai === 1 && trangThaiMoi === 3) {
+            sessionStorage.setItem('printAfterReload', 'true');
+        } else {
+            sessionStorage.setItem('printAfterReload', 'false');
+        }
+        // Kiểm tra lỗi từ Controller
+        const hasErrorString = "${not empty errorProductDetail}".trim();
+        const hasError = hasErrorString.toLowerCase() === 'true';
+
+        if (hasError) {
+            sessionStorage.setItem('printAfterReload', 'false');
+        }
+
+    };
+
+    document.getElementById('cancelForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Ngăn form submit mặc định để xử lý logic riêng
+        // Submit form
+        this.submit();
+    });
+
+
+
 
     // Validate ô input mô tả xác nhận
     $(document).ready(function () {
@@ -2174,11 +2211,18 @@
                                 }).format(amount).replace('VND', '₫');
 
                                 $('#tongTienValue').text(formatCurrency(newTotalPrice));
-                                const giamGia = parseFloat($('#giamGia').text().replace(/[^0-9.-]+/g, ""));
+
+                                // const giamGia = parseFloat($('#giamGia').text().replace(/[^0-9.-]+/g, ""));
+                                const giamGia = response.giamGia;
+                                const phieuGiamGia = response.phieuGiamGia;
                                 const phiVanChuyen = parseFloat($('#phiVanChuyen').text().replace(/[^0-9.-]+/g, ""));
-                                const tongTienGiam = response.tongTienThanhToan;
-                                $('#tongTienGiam').text(formatCurrency(tongTienGiam));
-                                $('#tongTienThanhToanValue').text(formatCurrency(tongTienGiam));
+                                const tongTienThanhToan = response.tongTienThanhToan;
+
+
+                                $('#phieuGiamGia').text(phieuGiamGia);
+                                $('#giamGia').text(formatCurrency(giamGia));
+                                // $('#phiVanChuyen').text(formatCurrency(phiVanChuyen));
+                                $('#tongTienThanhToanValue').text(formatCurrency(tongTienThanhToan));
 
                                 // Show success message
                                 Toast.fire({
@@ -2207,172 +2251,17 @@
 
 <%--Chức năng cập nhat so luong chi tiet san pham trong hoa don chi tiet--%>
 <script>
-    // $(document).ready(function () {
-    //     console.log('Document ready');
-    //
-    //     // Bắt sự kiện khi người dùng click vào nút cập nhật số lượng
-    //     $('.update-sl').click(function () {
-    //         console.log('Update button clicked');
-    //
-    //         var idCTSP = $(this).data('id');
-    //         var idHoaDon = $(this).data('hoadon');
-    //         var newQuantity = parseInt($('#soLuong-' + idCTSP).val().trim(), 10);
-    //
-    //         console.log('idCTSP:', idCTSP, 'idHoaDon:', idHoaDon, 'newQuantity:', newQuantity);
-    //
-    //         // Validate input
-    //         if (isNaN(newQuantity) || newQuantity <= 0) {
-    //             Toast.fire({
-    //                 title: 'Số lượng không hợp lệ',
-    //                 icon: 'error'
-    //             });
-    //             return;
-    //         }
-    //
-    //         // Gửi Ajax request để cập nhật số lượng
-    //         $.ajax({
-    //             type: 'GET',
-    //             url: '/hoa-don/cap-nhat-so-luong-san-pham/' + idCTSP,
-    //             data: {
-    //                 idHoaDon: idHoaDon,
-    //                 soLuong: newQuantity
-    //             },
-    //             success: function (response) {
-    //                 if (response.error) {
-    //                     Toast.fire({
-    //                         title: response.error,
-    //                         icon: 'error'
-    //                     });
-    //
-    //                     // Nếu có newQuantity trong response, cập nhật ô input với số lượng tối đa
-    //                     if (response.newQuantity !== undefined) {
-    //                         $('#soLuong-' + idCTSP).val(response.newQuantity);
-    //                     }
-    //                 } else {
-    //
-    //
-    //                     // Update the quantity and total amount in the UI
-    //                     const formatCurrency = (amount) => new Intl.NumberFormat('vi-VN', {
-    //                         style: 'currency',
-    //                         currency: 'VND',
-    //                         currencyDisplay: 'code'
-    //                     }).format(amount).replace('VND', '₫');
-    //
-    //                     let newTotalPrice = response.tongTien;
-    //
-    //                     $('#tongTienValue').text(formatCurrency(newTotalPrice));
-    //
-    //                     const parseCurrency = (value) => parseFloat(value.replace(/[^\d.-]+/g, ''));
-    //
-    //                     const giamGia = parseCurrency($('#giamGia').text()) || 0;
-    //                     const phiVanChuyen = parseCurrency($('#phiVanChuyen').text()) || 0;
-    //                     const tongTienGiam = response.tongTienThanhToan;
-    //
-    //                     $('#tongTienGiam').text(formatCurrency(tongTienGiam));
-    //                     $('#tongTienThanhToanValue').text(formatCurrency(tongTienGiam));
-    //
-    //                     // Lặp qua danh sách sản phẩm chi tiết hóa đơn để cập nhật lại số lượng và tổng tiền
-    //                     response.listHDCT.forEach(item => {
-    //                         const itemTotal = item.donGia * item.soLuong;
-    //                         $('#soLuong-' + item.idCTSP.id).val(item.soLuong);
-    //                         $('#total-' + item.idCTSP.id).text(formatCurrency(itemTotal));
-    //                         $('#tongTienSanPham-' + item.idCTSP.id).text(formatCurrency(itemTotal));
-    //                     });
-    //
-    //                     // Thêm class 'text-danger' và 'fw-bold' vào các giá trị tổng tiền
-    //                     $('#tongTienValue, #tongTienThanhToanValue').addClass('text-danger fw-bold');
-    //
-    //                     // Hiển thị thông báo cập nhật thành công
-    //                     Toast.fire({
-    //                         title: 'Cập nhật số lượng sản phẩm thành công',
-    //                         icon: 'success'
-    //                     });
-    //
-    //                     // Cập nhật danh sách sản phẩm trong modal
-    //                     $('#chiTietSanPhamTableBody tr').each(function () {
-    //                         var rowProductId = $(this).data('id'); // Get the ID from the row
-    //                         if (rowProductId === idCTSP) { // Compare with the deleted product ID
-    //                             $(this).find('td[data-quantity]').text(response.newQuantity).attr('data-quantity', response.newQuantity);
-    //                         }
-    //                     });
-    //                 }
-    //             },
-    //             error: function (xhr) {
-    //                 let errorMsg = xhr.responseJSON && xhr.responseJSON.error ? xhr.responseJSON.error : 'Đã xảy ra lỗi khi cập nhật số lượng';
-    //                 Toast.fire({
-    //                     title: errorMsg,
-    //                     icon: 'error'
-    //                 });
-    //             }
-    //         });
-    //     });
-    // });
-
-
-
-
     $(document).ready(function () {
         console.log('Document ready');
 
-        // Hàm tính phí vận chuyển
-        function calculateShippingFee(idCTSP, tongTien) {
-            const idQuanHuyen = '1442'; // Mã quận/huyện cố định ở Hà Nội
-            const idPhuongXa = '9067'; // Mã phường/xã cố định ở Hà Nội
-            const token = '108bdaef-8395-11ee-af43-6ead57e9219a';
+        // Bắt sự kiện khi người dùng click vào nút cập nhật số lượng
+        $('.update-sl').click(function () {
+            console.log('Update button clicked');
 
-            const soLuongGioHang = parseInt($('#soLuong-' + idCTSP).val().trim(), 10) || 0;
-            const khoiLuong = soLuongGioHang * 200;
+            var idCTSP = $(this).data('id');
+            var idHoaDon = $(this).data('hoadon');
+            var newQuantity = parseInt($('#soLuong-' + idCTSP).val().trim(), 10);
 
-            $.ajax({
-                url: `https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/available-services?shop_id=1244&to_district=${idQuanHuyen}&from_district=3440`,
-                headers: {
-                    'Token': token
-                },
-                success: function (data_maDV) {
-                    var service_id = data_maDV.data[0].service_id;
-
-                    $.ajax({
-                        url: 'https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee',
-                        method: 'GET',
-                        headers: {
-                            'Token': token
-                        },
-                        data: {
-                            service_id: service_id,
-                            insurance_value: tongTien,
-                            from_district_id: 3440,
-                            to_district_id: idQuanHuyen,
-                            to_ward_code: idPhuongXa,
-                            height: 15,
-                            length: 15,
-                            weight: khoiLuong,
-                            width: 15
-                        },
-                        success: function (data_total) {
-                            var firstFee = data_total.data.total;
-
-                            // Tính lại tổng tiền sau khi cộng phí vận chuyển
-                            var newTotal = tongTien + firstFee;
-
-                            // Cập nhật tổng tiền và phí vận chuyển trên giao diện
-                            $('#total-amount').text(newTotal.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }));
-                            $('#phiShip').html(formatCurrency(firstFee));
-                            $('#tongTienThanhToan').val(newTotal);
-                            $('#phiVanChuyen').val(firstFee);
-                        },
-                        error: function (xhr) {
-                            console.error("Phí vận chuyển Error: " + xhr.responseText);
-                        }
-                    });
-                },
-                error: function (xhr) {
-                    console.error("Dịch vụ vận chuyển Error: " + xhr.responseText);
-                }
-            });
-        }
-
-        // Hàm cập nhật số lượng sản phẩm
-        function updateQuantity(idCTSP, idHoaDon, newQuantity) {
             console.log('idCTSP:', idCTSP, 'idHoaDon:', idHoaDon, 'newQuantity:', newQuantity);
 
             // Validate input
@@ -2404,6 +2293,8 @@
                             $('#soLuong-' + idCTSP).val(response.newQuantity);
                         }
                     } else {
+
+
                         // Update the quantity and total amount in the UI
                         const formatCurrency = (amount) => new Intl.NumberFormat('vi-VN', {
                             style: 'currency',
@@ -2417,12 +2308,17 @@
 
                         const parseCurrency = (value) => parseFloat(value.replace(/[^\d.-]+/g, ''));
 
-                        const giamGia = parseCurrency($('#giamGia').text()) || 0;
-                        const phiVanChuyen = parseCurrency($('#phiVanChuyen').text()) || 0;
                         const tongTienGiam = response.tongTienThanhToan;
+                        const giamGia = response.giamGia;
+                        const phieuGiamGia = response.phieuGiamGia;
+                        const phiVanChuyen = parseFloat($('#phiVanChuyen').text().replace(/[^0-9.-]+/g, ""));
+                        const tongTienThanhToan = response.tongTienThanhToan;
 
-                        $('#tongTienGiam').text(formatCurrency(tongTienGiam));
-                        $('#tongTienThanhToanValue').text(formatCurrency(tongTienGiam));
+
+                        $('#phieuGiamGia').text(phieuGiamGia);
+                        $('#giamGia').text(formatCurrency(giamGia));
+                        // $('#phiVanChuyen').text(formatCurrency(phiVanChuyen));
+                        $('#tongTienThanhToanValue').text(formatCurrency(tongTienThanhToan));
 
                         // Lặp qua danh sách sản phẩm chi tiết hóa đơn để cập nhật lại số lượng và tổng tiền
                         response.listHDCT.forEach(item => {
@@ -2448,9 +2344,6 @@
                                 $(this).find('td[data-quantity]').text(response.newQuantity).attr('data-quantity', response.newQuantity);
                             }
                         });
-
-                        // Tính lại phí vận chuyển sau khi cập nhật số lượng
-                        calculateShippingFee(idCTSP, newTotalPrice);
                     }
                 },
                 error: function (xhr) {
@@ -2461,19 +2354,175 @@
                     });
                 }
             });
-        }
-
-        // Bắt sự kiện khi người dùng click vào nút cập nhật số lượng
-        $('.update-sl').click(function () {
-            console.log('Update button clicked');
-
-            var idCTSP = $(this).data('id');
-            var idHoaDon = $(this).data('hoadon');
-            var newQuantity = parseInt($('#soLuong-' + idCTSP).val().trim(), 10);
-
-            updateQuantity(idCTSP, idHoaDon, newQuantity);
         });
     });
+
+
+
+
+    <%--$(document).ready(function () {--%>
+    <%--    console.log('Document ready');--%>
+
+    <%--    // Hàm tính phí vận chuyển--%>
+    <%--    function calculateShippingFee(idCTSP, tongTien) {--%>
+    <%--        const idQuanHuyen = '1442'; // Mã quận/huyện cố định ở Hà Nội--%>
+    <%--        const idPhuongXa = '9067'; // Mã phường/xã cố định ở Hà Nội--%>
+    <%--        const token = '108bdaef-8395-11ee-af43-6ead57e9219a';--%>
+
+    <%--        const soLuongGioHang = parseInt($('#soLuong-' + idCTSP).val().trim(), 10) || 0;--%>
+    <%--        const khoiLuong = soLuongGioHang * 200;--%>
+
+    <%--        $.ajax({--%>
+    <%--            url: `https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/available-services?shop_id=1244&to_district=${idQuanHuyen}&from_district=3440`,--%>
+    <%--            headers: {--%>
+    <%--                'Token': token--%>
+    <%--            },--%>
+    <%--            success: function (data_maDV) {--%>
+    <%--                var service_id = data_maDV.data[0].service_id;--%>
+
+    <%--                $.ajax({--%>
+    <%--                    url: 'https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee',--%>
+    <%--                    method: 'GET',--%>
+    <%--                    headers: {--%>
+    <%--                        'Token': token--%>
+    <%--                    },--%>
+    <%--                    data: {--%>
+    <%--                        service_id: service_id,--%>
+    <%--                        insurance_value: tongTien,--%>
+    <%--                        from_district_id: 3440,--%>
+    <%--                        to_district_id: idQuanHuyen,--%>
+    <%--                        to_ward_code: idPhuongXa,--%>
+    <%--                        height: 15,--%>
+    <%--                        length: 15,--%>
+    <%--                        weight: khoiLuong,--%>
+    <%--                        width: 15--%>
+    <%--                    },--%>
+    <%--                    success: function (data_total) {--%>
+    <%--                        var firstFee = data_total.data.total;--%>
+
+    <%--                        // Tính lại tổng tiền sau khi cộng phí vận chuyển--%>
+    <%--                        var newTotal = tongTien + firstFee;--%>
+
+    <%--                        // Cập nhật tổng tiền và phí vận chuyển trên giao diện--%>
+    <%--                        $('#total-amount').text(newTotal.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }));--%>
+    <%--                        $('#phiShip').html(formatCurrency(firstFee));--%>
+    <%--                        $('#tongTienThanhToan').val(newTotal);--%>
+    <%--                        $('#phiVanChuyen').val(firstFee);--%>
+    <%--                    },--%>
+    <%--                    error: function (xhr) {--%>
+    <%--                        console.error("Phí vận chuyển Error: " + xhr.responseText);--%>
+    <%--                    }--%>
+    <%--                });--%>
+    <%--            },--%>
+    <%--            error: function (xhr) {--%>
+    <%--                console.error("Dịch vụ vận chuyển Error: " + xhr.responseText);--%>
+    <%--            }--%>
+    <%--        });--%>
+    <%--    }--%>
+
+    <%--    // Hàm cập nhật số lượng sản phẩm--%>
+    <%--    function updateQuantity(idCTSP, idHoaDon, newQuantity) {--%>
+    <%--        console.log('idCTSP:', idCTSP, 'idHoaDon:', idHoaDon, 'newQuantity:', newQuantity);--%>
+
+    <%--        // Validate input--%>
+    <%--        if (isNaN(newQuantity) || newQuantity <= 0) {--%>
+    <%--            Toast.fire({--%>
+    <%--                title: 'Số lượng không hợp lệ',--%>
+    <%--                icon: 'error'--%>
+    <%--            });--%>
+    <%--            return;--%>
+    <%--        }--%>
+
+    <%--        // Gửi Ajax request để cập nhật số lượng--%>
+    <%--        $.ajax({--%>
+    <%--            type: 'GET',--%>
+    <%--            url: '/hoa-don/cap-nhat-so-luong-san-pham/' + idCTSP,--%>
+    <%--            data: {--%>
+    <%--                idHoaDon: idHoaDon,--%>
+    <%--                soLuong: newQuantity--%>
+    <%--            },--%>
+    <%--            success: function (response) {--%>
+    <%--                if (response.error) {--%>
+    <%--                    Toast.fire({--%>
+    <%--                        title: response.error,--%>
+    <%--                        icon: 'error'--%>
+    <%--                    });--%>
+
+    <%--                    // Nếu có newQuantity trong response, cập nhật ô input với số lượng tối đa--%>
+    <%--                    if (response.newQuantity !== undefined) {--%>
+    <%--                        $('#soLuong-' + idCTSP).val(response.newQuantity);--%>
+    <%--                    }--%>
+    <%--                } else {--%>
+    <%--                    // Update the quantity and total amount in the UI--%>
+    <%--                    const formatCurrency = (amount) => new Intl.NumberFormat('vi-VN', {--%>
+    <%--                        style: 'currency',--%>
+    <%--                        currency: 'VND',--%>
+    <%--                        currencyDisplay: 'code'--%>
+    <%--                    }).format(amount).replace('VND', '₫');--%>
+
+    <%--                    let newTotalPrice = response.tongTien;--%>
+
+    <%--                    $('#tongTienValue').text(formatCurrency(newTotalPrice));--%>
+
+    <%--                    const parseCurrency = (value) => parseFloat(value.replace(/[^\d.-]+/g, ''));--%>
+
+    <%--                    const giamGia = parseCurrency($('#giamGia').text()) || 0;--%>
+    <%--                    const phiVanChuyen = parseCurrency($('#phiVanChuyen').text()) || 0;--%>
+    <%--                    const tongTienGiam = response.tongTienThanhToan;--%>
+
+    <%--                    $('#tongTienGiam').text(formatCurrency(tongTienGiam));--%>
+    <%--                    $('#tongTienThanhToanValue').text(formatCurrency(tongTienGiam));--%>
+
+    <%--                    // Lặp qua danh sách sản phẩm chi tiết hóa đơn để cập nhật lại số lượng và tổng tiền--%>
+    <%--                    response.listHDCT.forEach(item => {--%>
+    <%--                        const itemTotal = item.donGia * item.soLuong;--%>
+    <%--                        $('#soLuong-' + item.idCTSP.id).val(item.soLuong);--%>
+    <%--                        $('#total-' + item.idCTSP.id).text(formatCurrency(itemTotal));--%>
+    <%--                        $('#tongTienSanPham-' + item.idCTSP.id).text(formatCurrency(itemTotal));--%>
+    <%--                    });--%>
+
+    <%--                    // Thêm class 'text-danger' và 'fw-bold' vào các giá trị tổng tiền--%>
+    <%--                    $('#tongTienValue, #tongTienThanhToanValue').addClass('text-danger fw-bold');--%>
+
+    <%--                    // Hiển thị thông báo cập nhật thành công--%>
+    <%--                    Toast.fire({--%>
+    <%--                        title: 'Cập nhật số lượng sản phẩm thành công',--%>
+    <%--                        icon: 'success'--%>
+    <%--                    });--%>
+
+    <%--                    // Cập nhật danh sách sản phẩm trong modal--%>
+    <%--                    $('#chiTietSanPhamTableBody tr').each(function () {--%>
+    <%--                        var rowProductId = $(this).data('id'); // Get the ID from the row--%>
+    <%--                        if (rowProductId === idCTSP) { // Compare with the deleted product ID--%>
+    <%--                            $(this).find('td[data-quantity]').text(response.newQuantity).attr('data-quantity', response.newQuantity);--%>
+    <%--                        }--%>
+    <%--                    });--%>
+
+    <%--                    // Tính lại phí vận chuyển sau khi cập nhật số lượng--%>
+    <%--                    calculateShippingFee(idCTSP, newTotalPrice);--%>
+    <%--                }--%>
+    <%--            },--%>
+    <%--            error: function (xhr) {--%>
+    <%--                let errorMsg = xhr.responseJSON && xhr.responseJSON.error ? xhr.responseJSON.error : 'Đã xảy ra lỗi khi cập nhật số lượng';--%>
+    <%--                Toast.fire({--%>
+    <%--                    title: errorMsg,--%>
+    <%--                    icon: 'error'--%>
+    <%--                });--%>
+    <%--            }--%>
+    <%--        });--%>
+    <%--    }--%>
+
+    <%--    // Bắt sự kiện khi người dùng click vào nút cập nhật số lượng--%>
+    <%--    $('.update-sl').click(function () {--%>
+    <%--        console.log('Update button clicked');--%>
+
+    <%--        var idCTSP = $(this).data('id');--%>
+    <%--        var idHoaDon = $(this).data('hoadon');--%>
+    <%--        var newQuantity = parseInt($('#soLuong-' + idCTSP).val().trim(), 10);--%>
+
+    <%--        updateQuantity(idCTSP, idHoaDon, newQuantity);--%>
+    <%--    });--%>
+    <%--});--%>
 
 
 
