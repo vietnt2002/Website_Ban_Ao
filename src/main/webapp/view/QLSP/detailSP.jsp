@@ -2565,18 +2565,15 @@
                             soLuong: soLuongModalEdit.value,
                             giaNhap: giaNhapModalEdit.value,
                             giaBan: giaBanModalEdit.value,
-                            trangThai: trangThaiModalEdit
-                        };
-                        const dataHinhAnh = {
+                            trangThai: trangThaiModalEdit,
                             hinhAnh1: !(fileHinhAnh1ModalEdit.value == "") ? getFileName(fileHinhAnh1ModalEdit.value) : getFileName(fileHinhAnh1ModalEdit.src),
                             hinhAnh2: !(fileHinhAnh2ModalEdit.value == "") ? getFileName(fileHinhAnh2ModalEdit.value) : getFileName(fileHinhAnh1ModalEdit.src),
                             hinhAnh3: !(fileHinhAnh3ModalEdit.value == "") ? getFileName(fileHinhAnh3ModalEdit.value) : getFileName(fileHinhAnh3ModalEdit.src),
-                            trangThai: "1"
-                        }
+                        };
                         console.log("data hinh anh: ", dataHinhAnh);
                         console.log("data json: ", data);
                         console.log("data params file: ", formData);
-                        fetch(`/chi-tiet-sp/update/` + idSPCTLocal, {
+                        fetch(`/chi-tiet-sp/update-dynamic`, {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'
@@ -2589,20 +2586,6 @@
                                 'success'
                             ).then(() => {
                                 loadDSSPCT(currentPage);
-                            });
-                        });
-                        fetch(`/hinh-anh/update-byidctsp/` + idSPCTLocal, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify(dataHinhAnh)
-                        }).then(() => {
-                            Swal.fire(
-                                'Đã thanh toán!',
-                                'Dữ liệu đã được ghi nhận.',
-                                'success'
-                            ).then(() => {
                             });
                         });
                         var formData = new FormData($('#uploadFormEdit')[0]);
