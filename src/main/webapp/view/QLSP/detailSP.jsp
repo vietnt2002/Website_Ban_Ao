@@ -962,8 +962,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row" id="hinhAnhContainer">
-                                            <div class="col col-md-3 hover-effect click-effect image-container">
+                                    <div class="row">
+                                            <div class="col col-md-3 border hover-effect click-effect image-container" id="hinhAnh1Container">
                                                 <img width="200" height="200"
                                                      src="/image-icon/pendingIMG.png"
                                                      alt="" class="fit-img" id="hinhAnh1DisplayModalEditAll">
@@ -971,7 +971,7 @@
                                                 <input type="file" name="hinhAnh1File" id="fileHinhAnh1ModalEditAll"
                                                        class="file-input-overlay"/>
                                             </div>
-                                            <div class="col col-md-3 hover-effect click-effect image-container">
+                                            <div class="col col-md-3 hover-effect click-effect image-container" id="hinhAnh2Container">
                                                 <img width="200" height="200"
                                                      src="/image-icon/pendingIMG.png"
                                                      alt="" class="fit-img" id="hinhAnh2DisplayModalEditAll">
@@ -979,7 +979,7 @@
                                                 <input type="file" name="hinhAnh2File" id="fileHinhAnh2ModalEditAll"
                                                        class="file-input-overlay"/>
                                             </div>
-                                            <div class="col col-md-3 hover-effect click-effect image-container">
+                                            <div class="col col-md-3 hover-effect click-effect image-container" id="hinhAnh3Container">
                                                 <img width="200" height="200"
                                                      src="/image-icon/pendingIMG.png"
                                                      alt="" class="fit-img" id="hinhAnh3DisplayModalEditAll">
@@ -1640,7 +1640,7 @@
                             '<td><input class="mt-2" style="width: 20px;height: 20px" type="checkbox" id="cbMoTa_' + spct.idMauSac.id + '"></td>' +
                             '<td><input class="mt-2" style="width: 20px;height: 20px" type="checkbox" id="cbTrangThai_' + spct.idMauSac.id + '"></td>' +
                             '<td>' +
-                            '<button id="editAllSPCTBtn_' + spct.idMauSac.id + '" class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#ModalEditAll">Sửa toàn bộ</button>' +
+                            '<button id="editAllSPCTBtn_' + spct.idMauSac.id + '" class="btn btn-primary me-2">Sửa toàn bộ</button>' +
                             '</td>' +
                             '</tr>';
                     }
@@ -1844,35 +1844,45 @@
         console.log("checkbox gia ban  btn: ", document.getElementById("cbSoLuong_"+idMauSac).checked);
         console.log("checkbox mo ta btn: ", document.getElementById("cbSoLuong_"+idMauSac).checked);
         console.log("checkbox trang thai btn: ", document.getElementById("cbTrangThai_"+idMauSac).checked);
+        let countCheckBox = 0;
 
         if(!document.getElementById("cbHinhAnh_"+idMauSac).checked){
-            document.getElementById("hinhAnhContainer").style.display ="none";
+            document.getElementById("hinhAnh1Container").style.display ="none";
+            document.getElementById("hinhAnh2Container").style.display ="none";
+            document.getElementById("hinhAnh3Container").style.display ="none";
         }
         else{
-            document.getElementById("hinhAnhContainer").style.display ="block";
+            countCheckBox++
+            document.getElementById("hinhAnh1Container").style.display ="block";
+            document.getElementById("hinhAnh2Container").style.display ="block";
+            document.getElementById("hinhAnh3Container").style.display ="block";
         }
         if(!document.getElementById("cbSoLuong_"+idMauSac).checked){
             document.getElementById("soLuongContainer").style.display ="none";
         }
         else{
+            countCheckBox++
             document.getElementById("soLuongContainer").style.display ="block";
         }
         if(!document.getElementById("cbGiaNhap_"+idMauSac).checked){
             document.getElementById("giaNhapContainer").style.display ="none";
         }
         else{
+            countCheckBox++
             document.getElementById("giaNhapContainer").style.display ="block";
         }
         if(!document.getElementById("cbGiaBan_"+idMauSac).checked){
             document.getElementById("giaBanContainer").style.display ="none";
         }
         else{
+            countCheckBox++
             document.getElementById("giaBanContainer").style.display ="block";
         }
         if(!document.getElementById("cbMoTa_"+idMauSac).checked){
             document.getElementById("moTaContainer").style.display ="none";
         }
         else{
+            countCheckBox++
             document.getElementById("moTaContainer").style.display ="block";
         }
         if(!document.getElementById("cbTrangThai_"+idMauSac).checked){
@@ -1880,7 +1890,18 @@
             document.getElementById("trangThaiContainer").style.display ="none";
         }
         else{
+            countCheckBox++
             document.getElementById("trangThaiContainer").style.display ="block";
+        }
+        if(countCheckBox > 0){
+            $('#ModalEditAll').modal('show');
+        }
+        else{
+            Swal.fire({
+                icon: 'error',
+                text: 'Vui lòng chọn trước khi sửa !',
+            })
+            console.log("please fill check box");
         }
     });
 
