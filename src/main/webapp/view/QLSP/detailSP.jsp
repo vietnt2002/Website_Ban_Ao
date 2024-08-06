@@ -130,7 +130,7 @@
         }
     </style>
 
-<%--    tooltip style--%>
+    <%--    tooltip style--%>
     <style>
         #tooltip {
             position: relative;
@@ -907,8 +907,6 @@
                     </div>
                     <div class="modal-body" style="overflow-y: auto; height: 80vh;">
                         <div class="mb-3">
-                            <form id="uploadFormEditAll" method="post" enctype="multipart/form-data"
-                                  action="/hinh-anh/upload">
                                 <div class="">
                                     <div class="row">
                                         <div class="d-flex" style="gap: 500px;">
@@ -963,34 +961,40 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                            <div class="col col-md-3 border hover-effect click-effect image-container" id="hinhAnh1Container">
-                                                <img width="200" height="200"
-                                                     src="/image-icon/pendingIMG.png"
-                                                     alt="" class="fit-img" id="hinhAnh1DisplayModalEditAll">
-                                                <p class="text-center">Hình ảnh 1</p>
-                                                <input type="file" name="hinhAnh1File" id="fileHinhAnh1ModalEditAll"
-                                                       class="file-input-overlay"/>
-                                            </div>
-                                            <div class="col col-md-3 hover-effect click-effect image-container" id="hinhAnh2Container">
-                                                <img width="200" height="200"
-                                                     src="/image-icon/pendingIMG.png"
-                                                     alt="" class="fit-img" id="hinhAnh2DisplayModalEditAll">
-                                                <p class="text-center">Hình ảnh 2</p>
-                                                <input type="file" name="hinhAnh2File" id="fileHinhAnh2ModalEditAll"
-                                                       class="file-input-overlay"/>
-                                            </div>
-                                            <div class="col col-md-3 hover-effect click-effect image-container" id="hinhAnh3Container">
-                                                <img width="200" height="200"
-                                                     src="/image-icon/pendingIMG.png"
-                                                     alt="" class="fit-img" id="hinhAnh3DisplayModalEditAll">
-                                                <p class="text-center">Hình ảnh 3</p>
-                                                <input type="file" name="hinhAnh3File" id="fileHinhAnh3ModalEditAll"
-                                                       class="file-input-overlay"/>
-                                            </div>
+<%--                                        <form id="uploadFormEditAll" method="post" enctype="multipart/form-data" action="/hinh-anh/upload">--%>
+                                        <div class="col col-md-3 border hover-effect click-effect image-container"
+                                             id="hinhAnh1Container">
+                                            <img width="200" height="200"
+                                                 src="/image-icon/pendingIMG.png"
+                                                 alt="" class="fit-img" id="hinhAnh1DisplayModalEditAll">
+                                            <p class="text-center">Hình ảnh 1</p>
+                                            <input type="file" name="hinhAnh1File" id="fileHinhAnh1ModalEditAll"
+                                                   class="file-input-overlay"/>
+                                        </div>
+                                        <div class="col col-md-3 hover-effect click-effect image-container"
+                                             id="hinhAnh2Container">
+                                            <img width="200" height="200"
+                                                 src="/image-icon/pendingIMG.png"
+                                                 alt="" class="fit-img" id="hinhAnh2DisplayModalEditAll">
+                                            <p class="text-center">Hình ảnh 2</p>
+                                            <input type="file" name="hinhAnh2File" id="fileHinhAnh2ModalEditAll"
+                                                   class="file-input-overlay"/>
+                                        </div>
+                                        <div class="col col-md-3 hover-effect click-effect image-container"
+                                             id="hinhAnh3Container">
+                                            <img width="200" height="200"
+                                                 src="/image-icon/pendingIMG.png"
+                                                 alt="" class="fit-img" id="hinhAnh3DisplayModalEditAll">
+                                            <p class="text-center">Hình ảnh 3</p>
+                                            <input type="file" name="hinhAnh3File" id="fileHinhAnh3ModalEditAll"
+                                                   class="file-input-overlay"/>
+                                        </div>
+<%--                                        </form>--%>
                                     </div>
+
                                 </div>
                                 <button id="saveEditAllBtn" class="btn btn-primary">Lưu</button>
-                            </form>
+
                         </div>
                     </div>
                 </div>
@@ -1149,6 +1153,7 @@
 
 <script>
     let idSPCTLocal = "";
+    let idMauSacHolder = "";
     let currentPage = 1;
     let totalPage = 0;
     const queryString = window.location.pathname;
@@ -1172,6 +1177,12 @@
     let ghiChuModalEdit = document.getElementById("moTaModalEdit");
     let trangThaiModalEditRaw = document.getElementById("trangThaiModalEdit");
     const trangThaiLabelModalEdit = document.getElementById("trangThaiLabelModalEdit");
+
+    let soLuongModalEditAll = document.getElementById("soLuongModalEditAll");
+    let giaNhapModalEditAll = document.getElementById("gianNhapModalEditAll");
+    let giaBanModalEditAll = document.getElementById("giaBanModalEdit");
+    let moTaModalEditAll = document.getElementById("moTaModalEdit");
+    let trangThaiModalEditAll = document.getElementById("trangThaiModalEditAll");
 
     const lblMauSacModalEdit = document.getElementById("lblMauSacModalEdit");
     const lblKichThuocModalEdit = document.getElementById("lblKichThuocModalEdit");
@@ -1209,6 +1220,10 @@
     const fileHinhAnh1ModalEdit = document.getElementById('fileHinhAnh1ModalEdit');
     const fileHinhAnh2ModalEdit = document.getElementById('fileHinhAnh2ModalEdit');
     const fileHinhAnh3ModalEdit = document.getElementById('fileHinhAnh3ModalEdit');
+
+    const fileHinhAnh1ModalEditAll = document.getElementById('fileHinhAnh1ModalEditAll');
+    const fileHinhAnh2ModalEditAll = document.getElementById('fileHinhAnh2ModalEditAll');
+    const fileHinhAnh3ModalEditAll = document.getElementById('fileHinhAnh3ModalEditAll');
     let fileHinhAnh1ModalEditObject = null;
 
     const hinhAnh1DisplayModalAdd = document.getElementById('hinhAnh1DisplayModalAdd');
@@ -1837,66 +1852,61 @@
 
     $(document).on('click', "button[id^='editAllSPCTBtn_']", e => {
         e.preventDefault();
+        idMauSacHolder ="";
         const idMauSac = e.currentTarget.id.replace("editAllSPCTBtn_", "");
-        console.log("id mau sac:",idMauSac);
-        console.log("checkbox so luong btn: ", document.getElementById("cbSoLuong_"+idMauSac).checked);
-        console.log("checkbox gia nhap btn: ", document.getElementById("cbSoLuong_"+idMauSac).checked);
-        console.log("checkbox gia ban  btn: ", document.getElementById("cbSoLuong_"+idMauSac).checked);
-        console.log("checkbox mo ta btn: ", document.getElementById("cbSoLuong_"+idMauSac).checked);
-        console.log("checkbox trang thai btn: ", document.getElementById("cbTrangThai_"+idMauSac).checked);
+        idMauSacHolder = idMauSac;
+        console.log("id mau sac:", idMauSac);
+        console.log("checkbox so luong btn: ", document.getElementById("cbSoLuong_" + idMauSac).checked);
+        console.log("checkbox gia nhap btn: ", document.getElementById("cbSoLuong_" + idMauSac).checked);
+        console.log("checkbox gia ban  btn: ", document.getElementById("cbSoLuong_" + idMauSac).checked);
+        console.log("checkbox mo ta btn: ", document.getElementById("cbSoLuong_" + idMauSac).checked);
+        console.log("checkbox trang thai btn: ", document.getElementById("cbTrangThai_" + idMauSac).checked);
         let countCheckBox = 0;
 
-        if(!document.getElementById("cbHinhAnh_"+idMauSac).checked){
-            document.getElementById("hinhAnh1Container").style.display ="none";
-            document.getElementById("hinhAnh2Container").style.display ="none";
-            document.getElementById("hinhAnh3Container").style.display ="none";
-        }
-        else{
+        if (!document.getElementById("cbHinhAnh_" + idMauSac).checked) {
+            document.getElementById("hinhAnh1Container").style.display = "none";
+            document.getElementById("hinhAnh2Container").style.display = "none";
+            document.getElementById("hinhAnh3Container").style.display = "none";
+        } else {
             countCheckBox++
-            document.getElementById("hinhAnh1Container").style.display ="block";
-            document.getElementById("hinhAnh2Container").style.display ="block";
-            document.getElementById("hinhAnh3Container").style.display ="block";
+            document.getElementById("hinhAnh1Container").style.display = "block";
+            document.getElementById("hinhAnh2Container").style.display = "block";
+            document.getElementById("hinhAnh3Container").style.display = "block";
         }
-        if(!document.getElementById("cbSoLuong_"+idMauSac).checked){
-            document.getElementById("soLuongContainer").style.display ="none";
-        }
-        else{
+        if (!document.getElementById("cbSoLuong_" + idMauSac).checked) {
+            document.getElementById("soLuongContainer").style.display = "none";
+        } else {
             countCheckBox++
-            document.getElementById("soLuongContainer").style.display ="block";
+            document.getElementById("soLuongContainer").style.display = "block";
         }
-        if(!document.getElementById("cbGiaNhap_"+idMauSac).checked){
-            document.getElementById("giaNhapContainer").style.display ="none";
-        }
-        else{
+        if (!document.getElementById("cbGiaNhap_" + idMauSac).checked) {
+            document.getElementById("giaNhapContainer").style.display = "none";
+        } else {
             countCheckBox++
-            document.getElementById("giaNhapContainer").style.display ="block";
+            document.getElementById("giaNhapContainer").style.display = "block";
         }
-        if(!document.getElementById("cbGiaBan_"+idMauSac).checked){
-            document.getElementById("giaBanContainer").style.display ="none";
-        }
-        else{
+        if (!document.getElementById("cbGiaBan_" + idMauSac).checked) {
+            document.getElementById("giaBanContainer").style.display = "none";
+        } else {
             countCheckBox++
-            document.getElementById("giaBanContainer").style.display ="block";
+            document.getElementById("giaBanContainer").style.display = "block";
         }
-        if(!document.getElementById("cbMoTa_"+idMauSac).checked){
-            document.getElementById("moTaContainer").style.display ="none";
-        }
-        else{
+        if (!document.getElementById("cbMoTa_" + idMauSac).checked) {
+            document.getElementById("moTaContainer").style.display = "none";
+        } else {
             countCheckBox++
-            document.getElementById("moTaContainer").style.display ="block";
+            document.getElementById("moTaContainer").style.display = "block";
         }
-        if(!document.getElementById("cbTrangThai_"+idMauSac).checked){
+        if (!document.getElementById("cbTrangThai_" + idMauSac).checked) {
             console.log("test is true: ");
-            document.getElementById("trangThaiContainer").style.display ="none";
-        }
-        else{
+            document.getElementById("trangThaiContainer").style.display = "none";
+        } else {
             countCheckBox++
-            document.getElementById("trangThaiContainer").style.display ="block";
+            document.getElementById("trangThaiContainer").style.display = "block";
         }
-        if(countCheckBox > 0){
+        if (countCheckBox > 0) {
             $('#ModalEditAll').modal('show');
-        }
-        else{
+        } else {
             Swal.fire({
                 icon: 'error',
                 text: 'Vui lòng chọn trước khi sửa !',
@@ -2533,8 +2543,7 @@
     });
 
     //continue
-    saveEditAllBtn.forEach(button => {
-        button.addEventListener('click', function (e) {
+        saveEditAllBtn.addEventListener('click', function (e) {
             e.preventDefault();
             console.log("test check btn");
             console.log("id spct local: ", idSPCTLocal);
@@ -2544,7 +2553,7 @@
             } else {
                 trangThaiModalEdit = 0;
             }
-            if (validateModalEdit() == 7) {
+            if (1>0) {
                 Swal.fire({
                     title: 'Xác nhận?',
                     text: "Dữ liệu sẽ được lưu lại!",
@@ -2557,23 +2566,18 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         const data = {
-                            idMauSac: idMauSacModalEdit,
-                            idKichThuoc: idKichThuocModalEdit,
-                            idChatLieu: idChatLieuModalEdit,
-                            idKieuTay: idKieuTayModalEdit,
-                            moTa: ghiChuModalEdit ? ghiChuModalEdit.value : null,
-                            soLuong: soLuongModalEdit.value,
-                            giaNhap: giaNhapModalEdit.value,
-                            giaBan: giaBanModalEdit.value,
-                            trangThai: trangThaiModalEdit,
-                            hinhAnh1: !(fileHinhAnh1ModalEdit.value == "") ? getFileName(fileHinhAnh1ModalEdit.value) : getFileName(fileHinhAnh1ModalEdit.src),
-                            hinhAnh2: !(fileHinhAnh2ModalEdit.value == "") ? getFileName(fileHinhAnh2ModalEdit.value) : getFileName(fileHinhAnh1ModalEdit.src),
-                            hinhAnh3: !(fileHinhAnh3ModalEdit.value == "") ? getFileName(fileHinhAnh3ModalEdit.value) : getFileName(fileHinhAnh3ModalEdit.src),
+                            moTa: moTaModalEditAll ? ghiChuModalEdit.value : null,
+                            soLuong: soLuongModalEditAll.value,
+                            giaNhap: giaNhapModalEditAll.value,
+                            giaBan: giaBanModalEditAll.value,
+                            trangThai: trangThaiModalEditAll,
+                            hinhAnh1: !(fileHinhAnh1ModalEditAll.value == "") ? getFileName(fileHinhAnh1ModalEditAll.value) : getFileName(fileHinhAnh1ModalEditAll.src),
+                            hinhAnh2: !(fileHinhAnh2ModalEditAll.value == "") ? getFileName(fileHinhAnh2ModalEditAll.value) : getFileName(fileHinhAnh1ModalEditAll.src),
+                            hinhAnh3: !(fileHinhAnh3ModalEditAll.value == "") ? getFileName(fileHinhAnh3ModalEditAll.value) : getFileName(fileHinhAnh3ModalEditAll.src),
                         };
-                        console.log("data hinh anh: ", dataHinhAnh);
                         console.log("data json: ", data);
                         console.log("data params file: ", formData);
-                        fetch(`/chi-tiet-sp/update-dynamic`, {
+                        fetch(`/chi-tiet-sp/update-dynamic` +"?idSanPham="+pathVariable+"?idMauSac="+idMauSacHolder+"&moTa=" + data.moTa + "&soLuong=" + data.soLuong + "&giaNhap=" + data.giaNhap + "&giaBan=" + data.giaBan + "&trangThai=" + data.trangThai + "&hinhAnh1=" + data.hinhAnh1 + "&hinhAnh2=" + data.hinhAnh2 + "&hinhAnh3=" + data.hinhAnh3, {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'
@@ -2588,27 +2592,26 @@
                                 loadDSSPCT(currentPage);
                             });
                         });
-                        var formData = new FormData($('#uploadFormEdit')[0]);
-                        $.ajax({
-                            url: '/uploads',
-                            type: 'POST',
-                            data: formData,
-                            processData: false,
-                            contentType: false,
-                            success: function (response) {
-                                console.log("save image success ");
-                            },
-                            error: function (xhr, status, error) {
-                                console.log("save image =error");
-                            }
-                        });
+                        // var formData = new FormData($('#uploadFormEdit')[0]);
+                        // $.ajax({
+                        //     url: '/uploads',
+                        //     type: 'POST',
+                        //     data: formData,
+                        //     processData: false,
+                        //     contentType: false,
+                        //     success: function (response) {
+                        //         console.log("save image success ");
+                        //     },
+                        //     error: function (xhr, status, error) {
+                        //         console.log("save image =error");
+                        //     }
+                        // });
                     }
                 });
             } else {
 
             }
         });
-    });
 
 </script>
 <script>
