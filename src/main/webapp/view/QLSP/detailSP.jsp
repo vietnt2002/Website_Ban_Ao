@@ -961,7 +961,7 @@
                                         </div>
                                     </div>
                                     <div class="row">
-<%--                                        <form id="uploadFormEditAll" method="post" enctype="multipart/form-data" action="/hinh-anh/upload">--%>
+                                        <form id="uploadFormEditAll" method="post" enctype="multipart/form-data" action="/hinh-anh/upload">
                                         <div class="col col-md-3 border hover-effect click-effect image-container"
                                              id="hinhAnh1Container">
                                             <img width="200" height="200"
@@ -989,7 +989,7 @@
                                             <input type="file" name="hinhAnh3File" id="fileHinhAnh3ModalEditAll"
                                                    class="file-input-overlay"/>
                                         </div>
-<%--                                        </form>--%>
+                                        </form>
                                     </div>
 
                                 </div>
@@ -1864,14 +1864,16 @@
         let countCheckBox = 0;
 
         if (!document.getElementById("cbHinhAnh_" + idMauSac).checked) {
-            document.getElementById("hinhAnh1Container").style.display = "none";
-            document.getElementById("hinhAnh2Container").style.display = "none";
-            document.getElementById("hinhAnh3Container").style.display = "none";
+            // document.getElementById("hinhAnh1Container").style.display = "none";
+            // document.getElementById("hinhAnh2Container").style.display = "none";
+            // document.getElementById("hinhAnh3Container").style.display = "none";
+            document.getElementById("uploadFormEditAll").style.display = "none";
         } else {
             countCheckBox++
-            document.getElementById("hinhAnh1Container").style.display = "block";
-            document.getElementById("hinhAnh2Container").style.display = "block";
-            document.getElementById("hinhAnh3Container").style.display = "block";
+            // document.getElementById("hinhAnh1Container").style.display = "block";
+            // document.getElementById("hinhAnh2Container").style.display = "block";
+            // document.getElementById("hinhAnh3Container").style.display = "block";
+            document.getElementById("uploadFormEditAll").style.display = "block";
         }
         if (!document.getElementById("cbSoLuong_" + idMauSac).checked) {
             document.getElementById("soLuongContainer").style.display = "none";
@@ -2548,11 +2550,14 @@
             console.log("test check btn");
             console.log("id spct local: ", idSPCTLocal);
             let trangThaiModalEdit = 0;
-            if (trangThaiModalEditRaw.checked == true) {
-                trangThaiModalEdit = 1;
-            } else {
-                trangThaiModalEdit = 0;
+            if (trangThaiModalEditAll.checked == true) {
+                trangThaiModalEditAll = 1;
+            }else if(trangThaiModalEditAll.checked == false) {
+                trangThaiModalEditAll = 0;
             }
+            else {
+                trangThaiModalEditAll = "";
+            };
             if (1>0) {
                 Swal.fire({
                     title: 'Xác nhận?',
@@ -2566,10 +2571,10 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         const data = {
-                            moTa: moTaModalEditAll ? ghiChuModalEdit.value : null,
-                            soLuong: soLuongModalEditAll.value,
-                            giaNhap: giaNhapModalEditAll.value,
-                            giaBan: giaBanModalEditAll.value,
+                            moTa: moTaModalEditAll ? ghiChuModalEdit.value : "",
+                            soLuong: soLuongModalEditAll ? soLuongModalEditAll.value : "",
+                            giaNhap: giaNhapModalEditAll ? giaNhapModalEditAll.value : "" ,
+                            giaBan:  giaBanModalEditAll  ?  giaBanModalEditAll.value : "",
                             trangThai: trangThaiModalEditAll,
                             hinhAnh1: !(fileHinhAnh1ModalEditAll.value == "") ? getFileName(fileHinhAnh1ModalEditAll.value) : getFileName(fileHinhAnh1ModalEditAll.src),
                             hinhAnh2: !(fileHinhAnh2ModalEditAll.value == "") ? getFileName(fileHinhAnh2ModalEditAll.value) : getFileName(fileHinhAnh1ModalEditAll.src),
@@ -2581,8 +2586,7 @@
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify(data)
+                            }
                         }).then(() => {
                             Swal.fire(
                                 'Đã thanh toán!',
@@ -2592,20 +2596,20 @@
                                 loadDSSPCT(currentPage);
                             });
                         });
-                        // var formData = new FormData($('#uploadFormEdit')[0]);
-                        // $.ajax({
-                        //     url: '/uploads',
-                        //     type: 'POST',
-                        //     data: formData,
-                        //     processData: false,
-                        //     contentType: false,
-                        //     success: function (response) {
-                        //         console.log("save image success ");
-                        //     },
-                        //     error: function (xhr, status, error) {
-                        //         console.log("save image =error");
-                        //     }
-                        // });
+                        var formData = new FormData($('#uploadFormEdit')[0]);
+                        $.ajax({
+                            url: '/uploads',
+                            type: 'POST',
+                            data: formData,
+                            processData: false,
+                            contentType: false,
+                            success: function (response) {
+                                console.log("save image success ");
+                            },
+                            error: function (xhr, status, error) {
+                                console.log("save image =error");
+                            }
+                        });
                     }
                 });
             } else {
