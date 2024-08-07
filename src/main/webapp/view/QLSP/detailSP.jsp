@@ -907,7 +907,9 @@
                     </div>
                     <div class="modal-body" style="overflow-y: auto; height: 80vh;">
                         <div class="mb-3">
-                                <div class="">
+                            <div class="">
+                                <form id="uploadFormEditAll" method="post" enctype="multipart/form-data"
+                                      action="/hinh-anh/upload">
                                     <div class="row">
                                         <div class="d-flex" style="gap: 500px;">
                                             <h5 class="border-bottom">Tên sản phẩm:&nbsp&nbsp<span
@@ -961,7 +963,6 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <form id="uploadFormEditAll" method="post" enctype="multipart/form-data" action="/hinh-anh/upload">
                                         <div class="col col-md-3 border hover-effect click-effect image-container"
                                              id="hinhAnh1Container">
                                             <img width="200" height="200"
@@ -989,12 +990,10 @@
                                             <input type="file" name="hinhAnh3File" id="fileHinhAnh3ModalEditAll"
                                                    class="file-input-overlay"/>
                                         </div>
-                                        </form>
                                     </div>
-
-                                </div>
-                                <button id="saveEditAllBtn" class="btn btn-primary">Lưu</button>
-
+                                </form>
+                            </div>
+                            <button id="saveEditAllBtn" class="btn btn-primary">Lưu</button>
                         </div>
                     </div>
                 </div>
@@ -1179,9 +1178,9 @@
     const trangThaiLabelModalEdit = document.getElementById("trangThaiLabelModalEdit");
 
     let soLuongModalEditAll = document.getElementById("soLuongModalEditAll");
-    let giaNhapModalEditAll = document.getElementById("gianNhapModalEditAll");
-    let giaBanModalEditAll = document.getElementById("giaBanModalEdit");
-    let moTaModalEditAll = document.getElementById("moTaModalEdit");
+    let giaNhapModalEditAll = document.getElementById("giaNhapModalEditAll");
+    let giaBanModalEditAll = document.getElementById("giaBanModalEditAll");
+    let moTaModalEditAll = document.getElementById("moTaModalEditAll");
     let trangThaiModalEditAll = document.getElementById("trangThaiModalEditAll");
 
     const lblMauSacModalEdit = document.getElementById("lblMauSacModalEdit");
@@ -1852,10 +1851,11 @@
 
     $(document).on('click', "button[id^='editAllSPCTBtn_']", e => {
         e.preventDefault();
-        idMauSacHolder ="";
+        idMauSacHolder = "";
         const idMauSac = e.currentTarget.id.replace("editAllSPCTBtn_", "");
         idMauSacHolder = idMauSac;
         console.log("id mau sac:", idMauSac);
+        console.log("test id mau sac holder: ", idMauSacHolder);
         console.log("checkbox so luong btn: ", document.getElementById("cbSoLuong_" + idMauSac).checked);
         console.log("checkbox gia nhap btn: ", document.getElementById("cbSoLuong_" + idMauSac).checked);
         console.log("checkbox gia ban  btn: ", document.getElementById("cbSoLuong_" + idMauSac).checked);
@@ -1864,16 +1864,14 @@
         let countCheckBox = 0;
 
         if (!document.getElementById("cbHinhAnh_" + idMauSac).checked) {
-            // document.getElementById("hinhAnh1Container").style.display = "none";
-            // document.getElementById("hinhAnh2Container").style.display = "none";
-            // document.getElementById("hinhAnh3Container").style.display = "none";
-            document.getElementById("uploadFormEditAll").style.display = "none";
+            document.getElementById("hinhAnh1Container").style.display = "none";
+            document.getElementById("hinhAnh2Container").style.display = "none";
+            document.getElementById("hinhAnh3Container").style.display = "none";
         } else {
             countCheckBox++
-            // document.getElementById("hinhAnh1Container").style.display = "block";
-            // document.getElementById("hinhAnh2Container").style.display = "block";
-            // document.getElementById("hinhAnh3Container").style.display = "block";
-            document.getElementById("uploadFormEditAll").style.display = "block";
+            document.getElementById("hinhAnh1Container").style.display = "block";
+            document.getElementById("hinhAnh2Container").style.display = "block";
+            document.getElementById("hinhAnh3Container").style.display = "block";
         }
         if (!document.getElementById("cbSoLuong_" + idMauSac).checked) {
             document.getElementById("soLuongContainer").style.display = "none";
@@ -2545,57 +2543,58 @@
     });
 
     //continue
-        saveEditAllBtn.addEventListener('click', function (e) {
-            e.preventDefault();
-            console.log("test check btn");
-            console.log("id spct local: ", idSPCTLocal);
-            let trangThaiModalEdit = 0;
-            if (trangThaiModalEditAll.checked == true) {
-                trangThaiModalEditAll = 1;
-            }else if(trangThaiModalEditAll.checked == false) {
-                trangThaiModalEditAll = 0;
-            }
-            else {
-                trangThaiModalEditAll = "";
-            };
-            if (1>0) {
-                Swal.fire({
-                    title: 'Xác nhận?',
-                    text: "Dữ liệu sẽ được lưu lại!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Ok!',
-                    cancelButtonText: 'Hủy'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        const data = {
-                            moTa: moTaModalEditAll ? ghiChuModalEdit.value : "",
-                            soLuong: soLuongModalEditAll ? soLuongModalEditAll.value : "",
-                            giaNhap: giaNhapModalEditAll ? giaNhapModalEditAll.value : "" ,
-                            giaBan:  giaBanModalEditAll  ?  giaBanModalEditAll.value : "",
-                            trangThai: trangThaiModalEditAll,
-                            hinhAnh1: !(fileHinhAnh1ModalEditAll.value == "") ? getFileName(fileHinhAnh1ModalEditAll.value) : getFileName(fileHinhAnh1ModalEditAll.src),
-                            hinhAnh2: !(fileHinhAnh2ModalEditAll.value == "") ? getFileName(fileHinhAnh2ModalEditAll.value) : getFileName(fileHinhAnh1ModalEditAll.src),
-                            hinhAnh3: !(fileHinhAnh3ModalEditAll.value == "") ? getFileName(fileHinhAnh3ModalEditAll.value) : getFileName(fileHinhAnh3ModalEditAll.src),
-                        };
-                        console.log("data json: ", data);
-                        console.log("data params file: ", formData);
-                        fetch(`/chi-tiet-sp/update-dynamic` +"?idSanPham="+pathVariable+"?idMauSac="+idMauSacHolder+"&moTa=" + data.moTa + "&soLuong=" + data.soLuong + "&giaNhap=" + data.giaNhap + "&giaBan=" + data.giaBan + "&trangThai=" + data.trangThai + "&hinhAnh1=" + data.hinhAnh1 + "&hinhAnh2=" + data.hinhAnh2 + "&hinhAnh3=" + data.hinhAnh3, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            }
-                        }).then(() => {
-                            Swal.fire(
-                                'Đã thanh toán!',
-                                'Dữ liệu đã được ghi nhận.',
-                                'success'
-                            ).then(() => {
-                                loadDSSPCT(currentPage);
-                            });
+    saveEditAllBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        console.log("test check btn");
+        console.log("id spct local: ", idSPCTLocal);
+        let trangThaiValue = 0;
+        if (trangThaiModalEditAll.checked) {
+            trangThaiValue = 1;
+        } else if (!trangThaiModalEditAll.checked) {
+            trangThaiValue = 0;
+        } else if (document.getElementById("trangThaiContainer").style.display === "none") {
+            trangThaiValue = "";
+        }
+        if (1 > 0) {
+            Swal.fire({
+                title: 'Xác nhận?',
+                text: "Dữ liệu sẽ được lưu lại!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ok!',
+                cancelButtonText: 'Hủy'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const data = {
+                        moTa: moTaModalEditAll ? moTaModalEditAll.value : "",
+                        soLuong: soLuongModalEditAll ? soLuongModalEditAll.value : "",
+                        giaNhap: giaNhapModalEditAll ? giaNhapModalEditAll.value : "",
+                        giaBan: giaBanModalEditAll ? giaBanModalEditAll.value : "",
+                        trangThai: trangThaiValue,
+                        hinhAnh1: !(fileHinhAnh1ModalEditAll.value == "") ? getFileName(fileHinhAnh1ModalEditAll.value) : getFileName(fileHinhAnh1ModalEditAll.src),
+                        hinhAnh2: !(fileHinhAnh2ModalEditAll.value == "") ? getFileName(fileHinhAnh2ModalEditAll.value) : getFileName(fileHinhAnh1ModalEditAll.src),
+                        hinhAnh3: !(fileHinhAnh3ModalEditAll.value == "") ? getFileName(fileHinhAnh3ModalEditAll.value) : getFileName(fileHinhAnh3ModalEditAll.src),
+                    };
+                    console.log("data json: ", data);
+                    console.log("id mau sac holder:", idMauSacHolder);
+                    console.log("data params file: ", formData);
+                    fetch(`/chi-tiet-sp/update-dynamic` + "?idSanPham=" + pathVariable + "&idMauSac=" + idMauSacHolder + "&moTa=" + data.moTa + "&soLuong=" + data.soLuong + "&giaNhap=" + data.giaNhap + "&giaBan=" + data.giaBan + "&trangThai=" + data.trangThai + "&hinhAnh1=" + data.hinhAnh1 + "&hinhAnh2=" + data.hinhAnh2 + "&hinhAnh3=" + data.hinhAnh3, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    }).then(() => {
+                        Swal.fire(
+                            'Đã thanh toán!',
+                            'Dữ liệu đã được ghi nhận.',
+                            'success'
+                        ).then(() => {
+                            loadDSSPCT(currentPage);
                         });
+                    });
+                    if(fileHinhAnh1ModalEditAll.value != ""|| fileHinhAnh2ModalEditAll != "" || fileHinhAnh3ModalEditAll.value !=""){
                         var formData = new FormData($('#uploadFormEdit')[0]);
                         $.ajax({
                             url: '/uploads',
@@ -2611,11 +2610,13 @@
                             }
                         });
                     }
-                });
-            } else {
 
-            }
-        });
+                }
+            });
+        } else {
+
+        }
+    });
 
 </script>
 <script>

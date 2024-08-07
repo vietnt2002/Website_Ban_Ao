@@ -172,9 +172,14 @@ public class SPCTController {
     @CrossOrigin
     @PostMapping("/update-dynamic")
     public ResponseEntity<Integer> doUpdateAllKieuTay(@RequestParam Map<String, Object> params){
+        System.out.println("==================================do update all");
         Map<String,Object> searchParams = new HashMap<>();
         searchParams.put("idSanPham", params.get("idSanPham"));
         searchParams.put("idMauSac", params.get("idMauSac"));
+        for (String string : params.keySet()) {
+            System.out.println("test keyset: "+string);
+            System.out.println("test object: " + params.get(string));
+        }
         for (String string : searchParams.keySet()) {
             System.out.println("test keyset search parsm: "+string);
             System.out.println("test object search params: " + searchParams.get(string));
@@ -183,21 +188,28 @@ public class SPCTController {
         for (ChiTietSanPham chiTietSanPham : lstChiTietSP) {
             System.out.println("test spct: "+ chiTietSanPham.getIdSanPham().getTen());
             if(!params.get("soLuong").equals("")){
+                System.out.println("=======================do set so luong: " + params.get("soLuong"));
                 chiTietSanPham.setSoLuong(Integer.valueOf(params.get("soLuong").toString()));
             }
             if(!params.get("giaNhap").equals("")){
+                System.out.println("=======================do set gia nhap: "+ params.get("giaNhap"));
                 chiTietSanPham.setGiaNhap(BigDecimal.valueOf(Long.valueOf(params.get("giaNhap").toString())));
             }
             if(!params.get("giaBan").equals("")){
+                System.out.println("====================== do set gia ban: "+ params.get("giaBan"));
                 chiTietSanPham.setGiaBan(BigDecimal.valueOf(Long.valueOf(params.get("giaBan").toString())));
             }
+
             if(!params.get("moTa").equals("")){
+                System.out.println("====================== do set mo ta: "+ params.get("moTa"));
                 chiTietSanPham.setMoTa(params.get("moTa").toString());
             }
             if(!params.get("trangThai").equals("")){
+                System.out.println("===================== do set trang thai: "+ params.get("trangThai"));
                 chiTietSanPham.setTrangThai(Integer.valueOf(params.get("moTa").toString()));
             }
             if(!params.get("hinhAnh1").equals("")||!params.get("hinhAnh2").equals("")||!params.get("hinhAnh3").equals("")){
+                System.out.println("======= do set hinh anh");
                 HinhAnh newHinhAnh = new HinhAnh();
                 newHinhAnh.setId(chiTietSanPham.getId());
                 newHinhAnh.setHinhAnh1(params.get("hinhAnh1").toString());
@@ -206,9 +218,9 @@ public class SPCTController {
                 hinhAnhRepo.save(newHinhAnh);
             }
         }
-        for (String string : params.keySet()) {
-            System.out.println("test keyset: "+string);
-            System.out.println("test object: " + params.get(string));
+        chiTietSPRepository.saveAll(lstChiTietSP);
+        for (ChiTietSanPham chiTietSanPham : lstChiTietSP) {
+            System.out.println("new data:  "+chiTietSanPham);
         }
         return ResponseEntity.ok(1);
     }
