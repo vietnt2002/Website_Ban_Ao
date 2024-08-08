@@ -210,8 +210,7 @@ public class SPCTController {
             }
             if(!params.get("hinhAnh1").equals("")||!params.get("hinhAnh2").equals("")||!params.get("hinhAnh3").equals("")){
                 System.out.println("======= do set hinh anh");
-                HinhAnh newHinhAnh = new HinhAnh();
-                newHinhAnh.setId(chiTietSanPham.getId());
+                HinhAnh newHinhAnh = hinhAnhRepo.findByIdCTSP(chiTietSanPham.getId());
                 newHinhAnh.setHinhAnh1(params.get("hinhAnh1").toString());
                 newHinhAnh.setHinhAnh2(params.get("hinhAnh2").toString());
                 newHinhAnh.setHinhAnh3(params.get("hinhAnh3").toString());
