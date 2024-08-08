@@ -206,7 +206,7 @@ public class SPCTController {
             }
             if(!params.get("trangThai").equals("")){
                 System.out.println("===================== do set trang thai: "+ params.get("trangThai"));
-                chiTietSanPham.setTrangThai(Integer.valueOf(params.get("moTa").toString()));
+                chiTietSanPham.setTrangThai(Integer.valueOf(params.get("trangThai").toString()));
             }
             if(!params.get("hinhAnh1").equals("")||!params.get("hinhAnh2").equals("")||!params.get("hinhAnh3").equals("")){
                 System.out.println("======= do set hinh anh");

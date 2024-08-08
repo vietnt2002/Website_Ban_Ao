@@ -2547,13 +2547,18 @@
         e.preventDefault();
         console.log("test check btn");
         console.log("id spct local: ", idSPCTLocal);
-        let trangThaiValue = 0;
-        if (trangThaiModalEditAll.checked) {
-            trangThaiValue = 1;
-        } else if (!trangThaiModalEditAll.checked) {
-            trangThaiValue = 0;
-        } else if (document.getElementById("trangThaiContainer").style.display === "none") {
+        console.log("=============================================t=====est display switch: ",document.getElementById("trangThaiContainer").style.display);
+        let trangThaiValue = "";
+        if (document.getElementById("trangThaiContainer").style.display === "none") {
+            console.log("=============================================test display switch: ");
             trangThaiValue = "";
+        }
+        else{
+            if (trangThaiModalEditAll.checked) {
+                trangThaiValue = 1;
+            } else if (!trangThaiModalEditAll.checked) {
+                trangThaiValue = 0;
+            }
         }
         if (1 > 0) {
             Swal.fire({
