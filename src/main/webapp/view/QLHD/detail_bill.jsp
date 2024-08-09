@@ -1380,7 +1380,6 @@
                                 <td>${i.index + 1}</td>
                                 <td>
                                     <c:set var="hinhAnh" value="${hinhAnhMap[chiTiet.idCTSP.id]}"/>
-                                    <!-- Kiểm tra và hiển thị ảnh -->
                                     <c:choose>
                                         <c:when test="${not empty hinhAnh.hinhAnh1}">
                                             <img src="/image/${hinhAnh.hinhAnh1}" alt="Ảnh sản phẩm" width="50">
@@ -1402,19 +1401,34 @@
                                     </c:if>
                                     <c:if test="${hoaDonDTO.loaiHoaDon == 1}">
                                         <c:choose>
-                                            <c:when test="${hoaDonDTO.trangThai != 1 && hoaDonDTO.trangThai != 3}">
-                                                <input type="number" value="${chiTiet.soLuong}" disabled
-                                                       style="width: 50px;">
-                                            </c:when>
-                                            <c:otherwise>
+                                            <c:when test="${hoaDonDTO.phuongThucThanhToan == 1}">
                                                 <input type="number" id="soLuong-${chiTiet.idCTSP.id}"
                                                        value="${chiTiet.soLuong}"
                                                        data-id="${chiTiet.idCTSP.id}" data-hoadon="${hoaDonDTO.id}"
                                                        class="form-control form-control-sm" style="width: 100px;"
-                                                       min="1">
+                                                       min="1" disabled>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <c:choose>
+                                                    <c:when test="${hoaDonDTO.trangThai != 1 && hoaDonDTO.trangThai != 3}">
+                                                        <input type="number" id="soLuong-${chiTiet.idCTSP.id}"
+                                                               value="${chiTiet.soLuong}"
+                                                               data-id="${chiTiet.idCTSP.id}" data-hoadon="${hoaDonDTO.id}"
+                                                               class="form-control form-control-sm" style="width: 100px;"
+                                                               min="1" disabled>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <input type="number" id="soLuong-${chiTiet.idCTSP.id}"
+                                                               value="${chiTiet.soLuong}"
+                                                               data-id="${chiTiet.idCTSP.id}" data-hoadon="${hoaDonDTO.id}"
+                                                               class="form-control form-control-sm" style="width: 100px;"
+                                                               min="1">
+                                                    </c:otherwise>
+                                                </c:choose>
                                             </c:otherwise>
                                         </c:choose>
                                     </c:if>
+
                                 </td>
                                 <td class="text-danger fw-bold" id="tongTienSanPham-${chiTiet.idCTSP.id}">
                                     <c:set var="tongTienSanPham" value="${chiTiet.donGia * chiTiet.soLuong}"></c:set>
@@ -1760,6 +1774,14 @@
     });
     </c:if>
 
+<%--    Thong báo trường hợp Duplicate đơn hàng--%>
+    <c:if test="${not empty confirmError}">
+    Toast.fire({
+        icon: "error",
+        title: "${confirmError}"
+    });
+    </c:if>
+
     // $(document).ready(function () {
     //     $('#userDropdown .fas').on('click', function (e) {
     //         e.stopPropagation();
@@ -1796,10 +1818,13 @@
         const printAfterReload = sessionStorage.getItem('printAfterReload');
         const firstLoad = sessionStorage.getItem('firstLoad');
         const hasErrorString = "${not empty errorProductDetail}".trim();
-        const hasError = hasErrorString.toLowerCase() === 'true';
+        const confirmErrorString = "${not empty confirmError}".trim();
+
+        // Kiểm tra nếu có lỗi
+        const hasError = hasErrorString.toLowerCase() === 'true' || confirmErrorString.toLowerCase() === 'true';
 
         // Nếu không có lỗi và printAfterReload là true thì mở máy in
-        if (printAfterReload === 'true' && !hasError ) {
+        if (printAfterReload === 'true' && !hasError) {
             openPrintDeliveryModal();
         }
 
@@ -1858,13 +1883,11 @@
 
     };
 
-    document.getElementById('cancelForm').addEventListener('submit', function(event) {
+    document.getElementById('cancelForm').addEventListener('submit', function (event) {
         event.preventDefault(); // Ngăn form submit mặc định để xử lý logic riêng
         // Submit form
         this.submit();
     });
-
-
 
 
     // Validate ô input mô tả xác nhận
@@ -2157,8 +2180,6 @@
 
 
 </script>
-
-
 
 
 <%--Chức năng xóa sản phẩm chi tiết khỏi chi tiết hóa đơn--%>

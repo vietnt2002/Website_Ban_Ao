@@ -595,6 +595,13 @@ public class QuanLyHoaDonController {
                 }
             }
 
+            // Kiểm tra trạng thái hiện tại của hóa đơn
+            if (hoaDon.getTrangThai() != _hoaDonRepo.CHO_XAC_NHAN && hoaDon.getTrangThai() != _hoaDonRepo.CHO_GIAO_HANG && hoaDon.getTrangThai() != _hoaDonRepo.DANG_GIAO_HANG) {
+                redirectAttributes.addFlashAttribute("confirmError", "Trạng thái của hóa đơn đã thay đổi. Vui lòng tải lại trang.");
+                return "redirect:/hoa-don/detail/" + idHD;
+            }
+
+
             if (hoaDon.getTrangThai() == _hoaDonRepo.CHO_XAC_NHAN) {
                 List<ChiTietHoaDon> chiTietList = _hoaDonChiTietRepo.findAllByHoaDon_Id(idHD);
                 if (chiTietList.size() < 1) {
@@ -637,10 +644,7 @@ public class QuanLyHoaDonController {
                         chiTietSanPham.setTrangThai(1);
                         _chiTietSanPhamRepo.save(chiTietSanPham);
 
-                        if (chiTietHD.getIdHoaDon().getId().equals(idHD)) {
-                            chiTietHD.setTrangThai(1);
-                            _hoaDonChiTietRepo.save(chiTietHD);
-                        }
+
                     }
                 }
             }
@@ -672,14 +676,15 @@ public class QuanLyHoaDonController {
                 hoaDon.setNgayChoGiaoHang(LocalDateTime.now());
                 lichSuHoaDon.setNgayChoGiaoHang(LocalDateTime.now());
                 lichSuHoaDon.setTrangThai(HoaDonRepository.CHO_GIAO_HANG);
+
+//                lichSuHoaDon.setIdHoaDon(hoaDon);
+//                lichSuHoaDon.setIdNhanVien(nhanVien);
+//                lichSuHoaDon.setGhiChu(moTa);
                 _lichSuHoaDonRepo.save(lichSuHoaDon);
 
                 // Gửi Email khi đã xác nhận đơn hàng
 
 
-//                lichSuHoaDon.setIdHoaDon(hoaDon);
-//                lichSuHoaDon.setIdNhanVien(nhanVien);
-//                lichSuHoaDon.setGhiChu(moTa);
                 break;
             case HoaDonRepository.CHO_GIAO_HANG:
                 hoaDon.setTrangThai(HoaDonRepository.DANG_GIAO_HANG);
@@ -701,6 +706,16 @@ public class QuanLyHoaDonController {
                 lichSuHoaDon.setNgayHoanThanh(LocalDateTime.now());
                 lichSuHoaDon.setTrangThai(HoaDonRepository.DA_HOAN_THANH);
                 _lichSuHoaDonRepo.save(lichSuHoaDon);
+
+                // Cập nhật trạng thái Chi tiết hóa đơn
+                List<ChiTietHoaDon> chiTietList = _hoaDonChiTietRepo.findAllByHoaDon_Id(hoaDon.getId());
+                for (ChiTietHoaDon chiTietHD : chiTietList) {
+                    if (chiTietHD.getIdHoaDon().getId().equals(hoaDon.getId())) {
+                        chiTietHD.setTrangThai(1);
+                        _hoaDonChiTietRepo.save(chiTietHD);
+                    }
+                }
+
                 break;
             default:
                 throw new IllegalArgumentException("Trạng thái không hợp lệ.");
@@ -864,6 +879,13 @@ public class QuanLyHoaDonController {
 //            return "redirect:/hoa-don/detail/" + hoaDonId;
 //        }
 
+        // Kiểm tra nếu trạng thái hiện tại của hóa đơn đã thay đổi
+        if (hoaDon.getTrangThai() != hoaDonRepository.CHO_XAC_NHAN && hoaDon.getTrangThai() != hoaDonRepository.CHO_GIAO_HANG) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Trạng thái của hóa đơn đã thay đổi. Vui lòng tải lại trang.");
+            return "redirect:/hoa-don/detail/" + hoaDonId;
+        }
+
+
         // Kiểm tra nếu đơn hàng quá 3 ngày sau khi thành công thì không cho hủy đơn
         if (hoaDon.getTrangThai() == hoaDonRepository.DA_HOAN_THANH) {
             LocalDateTime threeDaysAfterSuccess = hoaDon.getNgayThanhToan().plusDays(3);
@@ -980,6 +1002,8 @@ public class QuanLyHoaDonController {
             if (hdct.getIdCTSP().getId().equals(idCTSP)) {
                 // Nếu sản phẩm chi tiết đã có trong giỏ hàng, cộng dồn số lượng
                 hdct.setSoLuong(hdct.getSoLuong() + 1);
+                hdct.setTrangThai(0);
+                hdct.setNgayTao(LocalDateTime.now());
                 _hoaDonChiTietRepo.save(hdct);
                 spTonTaiTrongGioHang = true;
 
@@ -1006,6 +1030,8 @@ public class QuanLyHoaDonController {
             // Lấy giá của sản phẩm chi tiết để lưu vào chi tiết hóa đơn
             hdct.setDonGia(chiTietSanPham.getGiaBan());
             listHDCT.add(hdct);
+            hdct.setTrangThai(0);
+            hdct.setNgayTao(LocalDateTime.now());
             _hoaDonChiTietRepo.save(hdct);
             // Giảm số lượng của sản phẩm chi tiết trong kho (tạm thời không xử lý số lượng tồn)
             if (hoaDon.getTrangThai() == hoaDonRepository.CHO_GIAO_HANG) {
