@@ -722,8 +722,6 @@
     });
     <%--    --%>
 </script>
-
-
 <%--pooldata--%>
 <script>
      let spct ={
@@ -742,7 +740,6 @@
 
 </script>
 <%--endPool--%>
-
 <%--loadingcbo--%>
 <script>
     const lblMauSacAdd = document.getElementById("lblMauSacAdd");
@@ -1025,8 +1022,6 @@
 
 </script>
 <%--end loadingcbo--%>
-
-
 <script>
     let idSPLocal = "";
     let currentPage = 1;
@@ -1160,6 +1155,7 @@
                 }
             });
     });
+
     $(document).on('click', "button[id^='detailSPBtn_']", e => {
         e.preventDefault();
         const queryString = window.location.pathname;
