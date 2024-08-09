@@ -1232,6 +1232,11 @@
     const hinhAnh1DisplayModalEdit = document.getElementById('hinhAnh1DisplayModalEdit');
     const hinhAnh2DisplayModalEdit = document.getElementById('hinhAnh2DisplayModalEdit');
     const hinhAnh3DisplayModalEdit = document.getElementById('hinhAnh3DisplayModalEdit');
+
+    const hinhAnh1DisplayModalEditAll = document.getElementById('hinhAnh1DisplayModalEditAll');
+    const hinhAnh2DisplayModalEditAll = document.getElementById('hinhAnh2DisplayModalEditAll');
+    const hinhAnh3DisplayModalEditAll = document.getElementById('hinhAnh3DisplayModalEditAll');
+
 </script>
 <script>
     // filefunc
@@ -1300,6 +1305,41 @@
             console.log("file cmp: ", fileHinhAnh3ModalEdit.files[0]);
             const imgURL = URL.createObjectURL(fileHinhAnh3ModalEdit.files[0]);
             hinhAnh3DisplayModalEdit.src = imgURL;
+        }
+    });
+    //form edit all
+    fileHinhAnh1ModalEditAll.addEventListener('change', function (e) {
+        const files = e.target.files;
+        console.log("test change data: ", files);
+        if (files.length > 0) {
+            const file = files[0];
+            console.log("File selected: ", file);
+            console.log("file cmp: ", fileHinhAnh1ModalEditAll.files[0]);
+            fileHinhAnh1ModalEditAllObject = fileHinhAnh1ModalEditAll.files[0];
+            const imgURL = URL.createObjectURL(fileHinhAnh1ModalEditAll.files[0]);
+            hinhAnh1DisplayModalEditAll.src = imgURL;
+        }
+    });
+    fileHinhAnh2ModalEditAll.addEventListener('change', function (e) {
+        const files = e.target.files;
+        console.log("test change data: ", files);
+        if (files.length > 0) {
+            const file = files[0];
+            console.log("File selected: ", file);
+            console.log("file cmp: ", fileHinhAnh2ModalEditAll.files[0]);
+            const imgURL = URL.createObjectURL(fileHinhAnh2ModalEditAll.files[0]);
+            hinhAnh2DisplayModalEditAll.src = imgURL;
+        }
+    });
+    fileHinhAnh3ModalEditAll.addEventListener('change', function (e) {
+        const files = e.target.files;
+        console.log("test change data: ", files);
+        if (files.length > 0) {
+            const file = files[0];
+            console.log("File selected: ", file);
+            console.log("file cmp: ", fileHinhAnh3ModalEditAll.files[0]);
+            const imgURL = URL.createObjectURL(fileHinhAnh3ModalEditAll.files[0]);
+            hinhAnh3DisplayModalEditAll.src = imgURL;
         }
     });
 </script>
@@ -1654,7 +1694,7 @@
                             '<td><input class="mt-2" style="width: 20px;height: 20px" type="checkbox" id="cbMoTa_' + spct.idMauSac.id + '"></td>' +
                             '<td><input class="mt-2" style="width: 20px;height: 20px" type="checkbox" id="cbTrangThai_' + spct.idMauSac.id + '"></td>' +
                             '<td>' +
-                            '<button id="editAllSPCTBtn_' + spct.idMauSac.id + '" class="btn btn-primary me-2">Sửa toàn bộ</button>' +
+                            '<button id="editAllSPCTBtn_' + spct.idMauSac.id + '" class="btn btn-primary me-2">Sửa theo màu</button>' +
                             '</td>' +
                             '</tr>';
                     }
@@ -2600,7 +2640,7 @@
                         });
                     });
                     if(fileHinhAnh1ModalEditAll.value != ""|| fileHinhAnh2ModalEditAll != "" || fileHinhAnh3ModalEditAll.value !=""){
-                        var formData = new FormData($('#uploadFormEdit')[0]);
+                        var formData = new FormData($('#uploadFormEditAll')[0]);
                         $.ajax({
                             url: '/uploads',
                             type: 'POST',
@@ -2615,11 +2655,9 @@
                             }
                         });
                     }
-
                 }
             });
         } else {
-
         }
     });
 
