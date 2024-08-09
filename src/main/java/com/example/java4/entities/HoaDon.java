@@ -154,7 +154,14 @@ public class HoaDon {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         HoaDon hoaDon = (HoaDon) o;
-        return Objects.equals(id, hoaDon.id) && Objects.equals(ma, hoaDon.ma) && Objects.equals(phuongThucThanhToan, hoaDon.phuongThucThanhToan) && Objects.equals(ngayTao, hoaDon.ngayTao) && Objects.equals(ngayThanhToan, hoaDon.ngayThanhToan) && Objects.equals(tongTien, hoaDon.tongTien) && Objects.equals(loaiHoaDon, hoaDon.loaiHoaDon) && Objects.equals(trangThai, hoaDon.trangThai);
+        return Objects.equals(id, hoaDon.id) &&
+                Objects.equals(ma, hoaDon.ma) &&
+                Objects.equals(phuongThucThanhToan, hoaDon.phuongThucThanhToan) &&
+                Objects.equals(ngayTao, hoaDon.ngayTao) &&
+                Objects.equals(ngayThanhToan, hoaDon.ngayThanhToan) &&
+                Objects.equals(tongTien, hoaDon.tongTien) &&
+                Objects.equals(loaiHoaDon, hoaDon.loaiHoaDon) &&
+                Objects.equals(trangThai, hoaDon.trangThai);
     }
 
     @Override
@@ -191,4 +198,9 @@ public class HoaDon {
     public void setIdKhachHang(KhachHang khachHangByIdKhachHang) {
         this.idKhachHang = khachHangByIdKhachHang;
     }
+
+
+
+
+
 }
