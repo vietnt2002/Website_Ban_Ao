@@ -42,6 +42,11 @@ public interface KhuyenMaiRepository extends JpaRepository<KhuyenMai,String> {
     @Query(value = "SELECT COUNT(*) FROM khuyenMai where trangThai=0",nativeQuery = true)
     Integer getCountStt0();
 
+
+    //Sáng
+    @Query("select km from KhuyenMai km where km.trangThai = ?1 ")
+    List<KhuyenMai> findByTrangThai(Integer trangThai);
+
 //  =====Tài====
 //    Tìm kiếm khuyến mãi theo hóa đơn
 

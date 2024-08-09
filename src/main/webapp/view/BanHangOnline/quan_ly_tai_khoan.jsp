@@ -258,7 +258,7 @@
                         <c:otherwise>
                             <!-- Hiển thị nút đăng xuất khi đã đăng nhập -->
                             <li><a class="dropdown-item" href="/cua-hang/don-mua">Đơn mua</a></li>
-                            <li><a class="dropdown-item" href="/cua-hang/quan-ly-tai-khoan">Quản lý tài khoản</a></li>
+                            <li><a class="dropdown-item" href="/cua-hang/quan-ly-tai-khoan">Tài Khoản Của Tôi</a></li>
                             <li><a class="dropdown-item" href="/cua-hang/logout">Đăng xuất</a></li>
                         </c:otherwise>
                     </c:choose>
@@ -310,8 +310,6 @@
                             <small id="matKhauError" class="text-danger"></small>
                         </div>
                         <div class="form-group">
-                            <label for="remember-me" class="text-info"><span>Remember me</span> <span><input
-                                    id="remember-me" name="remember-me" type="checkbox"></span></label><br>
                             <input type="submit" name="submit" class="btn btn-info btn-md w-100" value="Submit">
                         </div>
                         <div id="register-link" class="text-right">
@@ -423,7 +421,7 @@
                 </div>
                 <ul class="menu-list">
                     <li class="menu-item">
-                        <a href="#">Quản Lý Tài Khoản</a>
+                        <a href="#">Tài Khoản Của Tôi</a>
                         <ul class="submenu-list">
                             <li class="submenu-item"><a href="/cua-hang/quan-ly-tai-khoan">Hồ Sơ</a></li>
                             <li class="submenu-item"><a href="/cua-hang/dia-chi">Địa Chỉ</a></li>
@@ -739,7 +737,7 @@
     });
 
 
-    // Hàm hiển thị hình ảnh khi chọn ảnh ở trang quản lý tài khoản
+    // Hàm hiển thị hình ảnh khi chọn ảnh ở trang tài khoản của tôi
     function previewImage() {
         const fileInput = document.getElementById('profileImage');
         const imagePreview = document.getElementById('profileImagePreview');
