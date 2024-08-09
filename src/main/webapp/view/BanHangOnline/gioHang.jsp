@@ -246,7 +246,7 @@
                         <c:otherwise>
                             <!-- Hiển thị nút đăng xuất khi đã đăng nhập -->
                             <li><a class="dropdown-item" href="/cua-hang/don-mua">Đơn mua</a></li>
-                            <li><a class="dropdown-item" href="/cua-hang/quan-ly-tai-khoan">Quản lý tài khoản</a></li>
+                            <li><a class="dropdown-item" href="/cua-hang/quan-ly-tai-khoan">Tài khoản của tôi</a></li>
                             <li><a class="dropdown-item" href="/cua-hang/logout">Đăng xuất</a></li>
                         </c:otherwise>
                     </c:choose>
@@ -297,8 +297,6 @@
                             <small id="matKhauError" class="text-danger"></small>
                         </div>
                         <div class="form-group">
-                            <label for="remember-me" class="text-info"><span>Remember me</span> <span><input
-                                    id="remember-me" name="remember-me" type="checkbox"></span></label><br>
                             <input type="submit" name="submit" class="btn btn-info btn-md w-100" value="Submit">
                         </div>
                         <div id="register-link" class="text-right">
@@ -456,7 +454,7 @@
                                         </a>
                                     </div>
                                     <input type="text" class="form-control form-control-sm bg-secondary text-center"
-                                           value="${i.soLuong}">
+                                           value="${i.soLuong}" readonly>
                                     <div class="input-group-btn">
                                         <a href="/cua-hang/tang-so-luong/${i.idHDCT}">
                                             <button type="button" class="btn btn-sm btn-primary btn-plus">
@@ -1303,6 +1301,7 @@
     //Thêm địa chỉ
     $(document).ready(function () {
         var token = '4787bafa-2157-11ef-a90d-aaf29aa34580';
+        var phoneNumbers = [];
 
         // Function to get JSON with token
         function getJSONWithToken(url, callback) {
@@ -1318,9 +1317,19 @@
             });
         }
 
-        //Lấy tỉnh thành
+        // Function to check if the phone number is valid (Vietnam format)
+        function isValidPhoneNumber(phone) {
+            var regex = /^(03|05|07|08|09)[0-9]{8}$/;
+            return regex.test(phone);
+        }
+
+        // Function to check if the phone number is unique
+        function isPhoneNumberUnique(phone) {
+            return phoneNumbers.indexOf(phone) === -1;
+        }
+
+        // Lấy tỉnh thành
         getJSONWithToken('https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/province', function (data_tinh) {
-            // Sắp xếp theo ProvinceID tăng dần
             data_tinh.data.sort(function (a, b) {
                 return a.ProvinceID - b.ProvinceID;
             });
@@ -1359,6 +1368,7 @@
             $(".text-danger").text("");
 
             var isValid = true;
+            var phoneNumber = $("#sdtNguoiNhan1").val().trim();
 
             // Kiểm tra Tên người nhận
             if ($("#tenNguoiNhan1").val().trim() === "") {
@@ -1367,9 +1377,17 @@
             }
 
             // Kiểm tra SĐT người nhận
-            if ($("#sdtNguoiNhan1").val().trim() === "") {
+            if (phoneNumber === "") {
                 $("#sdtNguoiNhan1Error").text("Vui lòng nhập số điện thoại");
                 isValid = false;
+            } else if (!isValidPhoneNumber(phoneNumber)) {
+                $("#sdtNguoiNhan1Error").text("Số điện thoại không hợp lệ.");
+                isValid = false;
+            } else if (!isPhoneNumberUnique(phoneNumber)) {
+                $("#sdtNguoiNhan1Error").text("Số điện thoại đã tồn tại.");
+                isValid = false;
+            } else {
+                phoneNumbers.push(phoneNumber);
             }
 
             // Kiểm tra Địa chỉ
@@ -1413,7 +1431,7 @@
                 console.log("id qh: " + idQuanHuyen);
                 console.log("id px: " + idPX);
 
-                //test thêm mới
+                // Thêm dữ liệu ẩn vào form
                 $("<input>").attr({
                     type: "hidden",
                     name: "idTinhThanh",
@@ -1431,7 +1449,6 @@
                     name: "idPX",
                     value: idPX
                 }).appendTo("#themDiaChi");
-                //
 
                 $("<input>").attr({
                     type: "hidden",
@@ -1455,6 +1472,7 @@
             }
         });
     });
+
 
     //Sửa địa chỉ
     $(document).ready(function () {

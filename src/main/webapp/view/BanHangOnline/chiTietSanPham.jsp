@@ -213,7 +213,7 @@
                         <c:otherwise>
                             <!-- Hiển thị nút đăng xuất khi đã đăng nhập -->
                             <li><a class="dropdown-item" href="/cua-hang/don-mua">Đơn mua</a></li>
-                            <li><a class="dropdown-item" href="/cua-hang/quan-ly-tai-khoan">Quản lý tài khoản</a></li>
+                            <li><a class="dropdown-item" href="/cua-hang/quan-ly-tai-khoan">Tài khoản của tôi</a></li>
                             <li><a class="dropdown-item" href="/cua-hang/logout">Đăng xuất</a></li>
                         </c:otherwise>
                     </c:choose>
@@ -265,8 +265,6 @@
                             <small id="matKhauError" class="text-danger"></small>
                         </div>
                         <div class="form-group">
-                            <label for="remember-me" class="text-info"><span>Remember me</span> <span><input
-                                    id="remember-me" name="remember-me" type="checkbox"></span></label><br>
                             <input type="submit" name="submit" class="btn btn-info btn-md w-100" value="Submit">
                         </div>
                         <div id="register-link" class="text-right">
@@ -416,15 +414,6 @@
 
         <div class="col-lg-7 pb-5">
             <h3 class="font-weight-semi-bold">${ctsp.idSanPham.ten} - ${ctsp.idSanPham.ma}</h3>
-            <div class="d-flex mb-3">
-                <div class="text-primary mr-2">
-                    <small class="fas fa-star"></small>
-                    <small class="fas fa-star"></small>
-                    <small class="fas fa-star"></small>
-                    <small class="fas fa-star-half-alt"></small>
-                    <small class="far fa-star"></small>
-                </div>
-            </div>
 
             <h3 class="font-weight-semi-bold mb-4">
                 <fmt:formatNumber value="${ctsp.giaBan}" type="currency" currencySymbol="₫"/>
@@ -476,7 +465,7 @@
                                 <i class="fa fa-minus"></i>
                             </button>
                         </div>
-                        <input type="text" class="form-control bg-secondary text-center" id="soLuong" name="soLuong"
+                        <input type="number" class="form-control bg-secondary text-center" id="soLuong" name="soLuong"
                                value="1">
                         <div class="input-group-btn">
                             <button type="button" class="btn btn-primary btn-plus">

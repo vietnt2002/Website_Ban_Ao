@@ -417,7 +417,7 @@ public class TrangChuController {
         listSanPham = sanPhamRepo.findAll();
         DiaChi diaChi = diaChiRepo.getDiaChiByIdKhachHangAndTrangThai(UserInfor.idKhachHang, DiaChiRepository.MAC_DINH);
         listDiaChi = diaChiRepo.getAllDiaChi(UserInfor.idKhachHang);
-        listKhuyenMai = khuyenMaiRepo.findAll();
+        listKhuyenMai = khuyenMaiRepo.findByTrangThai(1);
         HoaDon hoaDon = hoaDonRepo.findByIdKhachHang(UserInfor.idKhachHang, HoaDonRepository.CHO_THANH_TOAN);
         model.addAttribute("listKhachHang", khachHangRepo.findAll());
         boolean check = false;
@@ -721,13 +721,13 @@ public class TrangChuController {
     }
 
     @PostMapping("/khuyen-mai/{id}")
-    public String findKhuyenMai(@PathVariable String id) {
+    public String findKhuyenMai(@PathVariable String id, RedirectAttributes redirectAttributes) {
         HoaDon hoaDon = hoaDonRepo.findByIdKhachHang(UserInfor.idKhachHang, HoaDonRepository.CHO_THANH_TOAN);
         KhuyenMai khuyenMai = khuyenMaiRepo.findByIdKM(id);
         khuyenMai.setId(id);
         hoaDon.setIdKhuyenMai(khuyenMai);
         hoaDonRepo.save(hoaDon);
-
+        redirectAttributes.addFlashAttribute("successMessage", "Thêm phiếu giảm giá thành công");
         return "redirect:/cua-hang/gio-hang";
     }
 
@@ -737,7 +737,7 @@ public class TrangChuController {
         HoaDon hoaDon = hoaDonRepo.findByIdKhachHang(UserInfor.idKhachHang, HoaDonRepository.CHO_THANH_TOAN);
         hoaDon.setIdKhuyenMai(null);
         hoaDonRepo.save(hoaDon);
-
+        redirectAttributes.addFlashAttribute("successMessage", "Xóa phiếu giảm giá thành công");
         return "redirect:/cua-hang/gio-hang";
     }
 
