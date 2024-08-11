@@ -1393,6 +1393,7 @@
     let howManyCboKichThuoc = 0;
     let howManyCboMauSacMemo = 0;
     let howManyCboKichThuocMemo = 0;
+    let msMemo = 0;
     let lstMauSac = [];
     function refresh(e) {
         e.preventDefault();
@@ -1413,9 +1414,10 @@
         document.getElementById("lblMauSacAdd"+indx).textContent = ms.ten;
         console.log('Selected mau sac ID:', idMauSacAdd);
         console.log('data set index: ', indx);
+        msMemo = lstMauSac.length;
         lstMauSac.push(ms.ten);
         console.log("test lst mausac: ",lstMauSac);
-        // loadKichThuocWrapper();
+        loadKichThuocWrapper();
         //do load cbo kich thuoc wrapper
         // You can add more logic here to handle the selected value
     }
@@ -1579,8 +1581,6 @@
                 }
             });
     }
-    loadCboKichThuoc();
-
     const loadTotalCboMauSac = () => {
         const htmlDropdown = document.getElementById("mauSacBox");
         let newHtmlContent = '';
@@ -1609,11 +1609,11 @@
         const htmlKichThuocWrapper = document.getElementById("kichThuocWrapper");
         let newHtmlContent = ''; // Temporary variable to hold new HTML content
 
-        lstMauSac.forEach((ms, i) => {
+        for (let i = msMemo; i < lstMauSac.length; i++) {
             newHtmlContent +=
                 '<div class="col col-md-12">' +
                 '<div class="d-flex">' +
-                '<p class="mt-2" style="width: 80px;">' + ms + '</p>' +  // Concatenation with `ms`
+                '<p class="mt-2" style="width: 80px;">' + lstMauSac.at(i) + '</p>' +
                 '<div class="icon-container">' +
                 '<i class="bi bi-folder-plus col-3" data-bs-toggle="modal" ' +
                 'data-bs-target="#ModalHotAddKT" ' +
@@ -1632,8 +1632,7 @@
                 '</div>' +
                 '</div>' +
                 '</div>';
-        });
-
+        }
         // Adding the new HTML content to the DOM
         htmlKichThuocWrapper.insertAdjacentHTML('beforeend', newHtmlContent);
     }
@@ -1660,7 +1659,6 @@
         howManyCboKichThuocMemo = howManyCboKichThuoc;
         htmlDropdown.insertAdjacentHTML('beforeend', newHtmlContent); // Add the new HTML content
     };
-    loadTotalCboKichThuoc();
     // iconAdd
     iconAddMoreCboMauSac.addEventListener('click', function (e) {
         e.preventDefault();
