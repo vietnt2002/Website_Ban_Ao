@@ -87,6 +87,11 @@
             display: none;
         }
 
+        .highlight {
+            font-weight: bold;
+            background-color: #f0f0f0; /* Optional: Adds a background color */
+        }
+
     </style>
 
 </head>
@@ -110,34 +115,28 @@
         <!-- Divider -->
         <hr class="sidebar-divider my-0">
 
+        <!-- Nav Item - Dashboard -->
         <c:choose>
             <c:when test="${sessionScope.userRole == 'Quản lý'}">
+                <!-- Nav Item - Charts -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/thong-ke/view" style="display: flex; align-items: center">
+                        <i class="bi bi-graph-up" style="margin-left: 2px"></i>
+                        <span style="margin-left: 6px">Thống kê doanh thu</span></a>
+                </li>
+
                 <!-- Nav Item - Dashboard -->
-                <li class="nav-item active">
-                    <a class="nav-link" href="/ban-hang-tai-quay">
-                        <i class="fas fa-fw fa-tachometer-alt"></i>
-                        <span>Bán hàng tại quầy</span></a>
+                <li class="nav-item" style="background: linear-gradient(45deg, black, transparent)">
+                    <a class="nav-link" href="/ban-hang-tai-quay" style="display: flex; align-items: center">
+                        <i class="bi bi-shop" style="margin-left: 2px"></i>
+                        <span style="margin-left: 6px">Bán hàng tại quầy</span></a>
                 </li>
 
                 <!-- Nav Item - Charts -->
                 <li class="nav-item">
-                    <a class="nav-link" href="/ban-hang-tai-quay/admin/ban-tai-quay">
-                        <i class="fas fa-fw fa-chart-area"></i>
-                        <span>Thống kê doanh thu</span></a>
-                </li>
-
-                <!-- Nav Item - Charts -->
-                <li class="nav-item">
-                    <a class="nav-link" href="/hoa-don/hien-thi">
-                        <i class="fas fa-fw fa-chart-area"></i>
-                        <span>Quản lý đơn hàng</span></a>
-                </li>
-
-                <!-- Nav Item - Charts -->
-                <li class="nav-item">
-                    <a class="nav-link" href="/hoa-don/hien-thi">
-                        <i class="fas fa-fw fa-chart-area"></i>
-                        <span>Quản lý hóa đơn</span></a>
+                    <a class="nav-link" href="/hoa-don/hien-thi" style="display: flex; align-items: center">
+                        <i class="bi bi-journal-text" style="margin-left: 2px"></i>
+                        <span style="margin-left: 6px">Quản lý hóa đơn</span></a>
                 </li>
 
                 <!-- Nav Item - Pages Collapse Menu -->
@@ -156,17 +155,24 @@
                 </li>
 
                 <!-- Nav Item - Charts -->
-                <li class="nav-item">
-                    <a class="nav-link" href="/store/quan-ly-nhan-vien">
-                        <i class="fas fa-fw fa-chart-area"></i>
-                        <span>Quản lý nhân viên</span></a>
+                <li class="nav-item" style="background: linear-gradient(45deg, black, transparent)">
+                    <a class="nav-link" href="/qlnv/quan-ly-nhan-vien" style="display: flex; align-items: center">
+                        <i class="bi bi-person-bounding-box" style="color: white; margin-left: 2px"></i>
+                        <span style="font-weight: bold; margin-left: 6px">Quản lý nhân viên</span></a>
                 </li>
 
                 <!-- Nav Item - Charts -->
                 <li class="nav-item">
-                    <a class="nav-link" href="/store/quan-ly-khach-hang">
-                        <i class="fas fa-fw fa-chart-area"></i>
-                        <span>Quản lý khách hàng</span></a>
+                    <a class="nav-link" href="/qlkh/quan-ly-khach-hang" style="display: flex; align-items: center">
+                        <i class="bi bi-person-bounding-box" style="margin-left: 2px"></i>
+                        <span style="margin-left: 6px">Quản lý khách hàng</span></a>
+                </li>
+
+                <!-- Nav Item - Charts -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/qlkm/quan-ly-km" style="display: flex; align-items: center">
+                        <i class="bi bi-gift" style="margin-left: 2px"></i>
+                        <span style="margin-left: 6px">Quản lý khuyến mãi</span></a>
                 </li>
 
                 <!-- Divider -->
@@ -179,24 +185,24 @@
             </c:when>
             <c:otherwise>
                 <!-- Nav Item - Dashboard -->
-                <li class="nav-item active">
-                    <a class="nav-link" href="/ban-hang-tai-quay">
-                        <i class="fas fa-fw fa-tachometer-alt"></i>
-                        <span>Bán hàng tại quầy</span></a>
+                <li class="nav-item" style="background: linear-gradient(45deg, black, transparent)">
+                    <a class="nav-link" href="/ban-hang-tai-quay" style="display: flex; align-items: center">
+                        <i class="bi bi-shop" style="color: white; margin-left: 2px"></i>
+                        <span style="font-weight: bold; margin-left: 6px">Bán hàng tại quầy</span></a>
                 </li>
 
                 <!-- Nav Item - Charts -->
                 <li class="nav-item">
-                    <a class="nav-link" href="/hoa-don/hien-thi">
-                        <i class="fas fa-fw fa-chart-area"></i>
-                        <span>Quản lý hóa đơn</span></a>
+                    <a class="nav-link" href="/hoa-don/hien-thi" style="display: flex; align-items: center">
+                        <i class="bi bi-journal-text" style="margin-left: 2px"></i>
+                        <span style="margin-left: 6px">Quản lý hóa đơn</span></a>
                 </li>
 
                 <!-- Nav Item - Charts -->
                 <li class="nav-item">
-                    <a class="nav-link" href="charts.html">
-                        <i class="fas fa-fw fa-chart-area"></i>
-                        <span>Quản lý khách hàng</span></a>
+                    <a class="nav-link" href="/qlkh/quan-ly-khach-hang" style="display: flex; align-items: center">
+                        <i class="bi bi-person-bounding-box" style="margin-left: 2px"></i>
+                        <span style="margin-left: 6px">Quản lý khách hàng</span></a>
                 </li>
             </c:otherwise>
         </c:choose>
@@ -415,7 +421,7 @@
                                     + Chọn sản phẩm
                                 </a>
                             </div>
-                            <table class="table table-hover">
+                            <table class="table table-hover" id="myTable">
                                 <thead>
                                 <tr>
                                     <th>STT</th>
@@ -429,29 +435,28 @@
                                 </thead>
                                 <tbody>
                                 <c:forEach varStatus="i" items="${listHoaDon}" var="hoaDon">
-<%--                                   <c:if test="${hoaDon.trangThai==0}">--%>
-                                       <tr>
-                                           <td>${i.index+1}</td>
-                                           <td>${hoaDon.ma}</td>
-                                           <td>${hoaDon.idNhanVien.hoTen}</td>
-                                           <td>
-                                               <c:if test="${hoaDon.idKhachHang.id==null}">Khách lẻ</c:if>
-                                               <c:if test="${hoaDon.idKhachHang.id!=null}">${hoaDon.idKhachHang.hoTen}</c:if>
-                                           </td>
-                                           <td>${hoaDon.ngayTao}</td>
-                                           <td>${hoaDon.trangThai==0?"Chua thanh toan":"Da thanh toan"}</td>
-                                           <td>
-                                               <a href="/ban-hang-tai-quay/detail-hoa-don/${hoaDon.id}"
-                                                  class="btn btn-primary">
-                                                   <i class="bi bi-eye-fill"></i>
-                                               </a>
-                                           </td>
-                                       </tr>
-<%--                                   </c:if>--%>
-
+                                    <tr data-id="${hoaDon.id}" class="${hoaDon.id == highlightId ? 'highlight' : ''}">
+                                        <td>${i.index+1}</td>
+                                        <td>${hoaDon.ma}</td>
+                                        <td>${hoaDon.idNhanVien.hoTen}</td>
+                                        <td>
+                                            <c:if test="${hoaDon.idKhachHang.id == null}">Khách lẻ</c:if>
+                                            <c:if test="${hoaDon.idKhachHang.id != null}">${hoaDon.idKhachHang.hoTen}</c:if>
+                                        </td>
+                                        <td class="original-date">${hoaDon.ngayTao}</td>
+                                        <td>${hoaDon.trangThai == 0 ? "Chua thanh toan" : "Da thanh toan"}</td>
+                                        <td>
+                                            <a href="/ban-hang-tai-quay/detail-hoa-don/${hoaDon.id}?highlightId=${hoaDon.id}"
+                                               class="btn btn-primary">
+                                                <i class="bi bi-eye-fill"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
                                 </c:forEach>
                                 </tbody>
                             </table>
+
+
                             <!-- Giỏ hàng -->
                             <h3>Giỏ hàng</h3>
                             <table class="table table-hover">
@@ -500,11 +505,11 @@
                                         <td>${hdct.idCTSP.idMauSac.ten}</td>
                                         <td>${hdct.idCTSP.idKichThuoc.ten}</td>
                                         <td style="display: flex; align-items: center;">
-                                            <form class="d-flex" method="post" action="/ban-hang-tai-quay/update-sl/${hdct.idCTSP.id}" >
+                                            <form class="d-flex" method="post" action="/ban-hang-tai-quay/update-sl/${hdct.idCTSP.id}" onsubmit="return validateForm(this);">
                                                 <input type="hidden" name="idHoaDon" value="${hoaDon.id}">
                                                 <input type="hidden" id="tongSL" name="tongSL" value="${hdct.idCTSP.soLuong}">
                                                 <input type="hidden" id="soLuongCu" name="soLuongCu" value="${hdct.soLuong}">
-                                                <input id="soLuong" class="form-control me-2" type="text" name="soLuong" value="${hdct.soLuong}" style="width: 50px">
+                                                <input id="soLuong" class="form-control me-2" type="text" name="soLuong" value="${hdct.soLuong}" style="width: 50px" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                                                 <button class="btn btn-light" type="submit">
                                                     <i class="bi bi-pencil"></i>
                                                 </button>
@@ -514,7 +519,7 @@
                                         <td>
                                             <form class="delete-form" action="/ban-hang-tai-quay/delete-hdct/${hdct.id}/${hdct.idCTSP.id}" method="post">
                                                 <input type="hidden" name="idHoaDon" value="${hoaDon.id}">
-                                                <button class="delete-button2 btn btn-danger" type="button" >Delete</button>
+                                                <button class="delete-button2 btn btn-danger" type="button" ><i class="bi bi-trash"></i></button>
                                             </form>
 
                                         </td>
@@ -574,24 +579,48 @@
                                            style="height: 38px;width: 79px;margin-top: 16px; margin-right: 6px;">
                                             + Chọn
                                         </a>
-                                        <a class="col-sm-3 btn btn-outline-danger" href="/ban-hang-tai-quay/huy-khuyen-mai/${hoaDon.idKhuyenMai.id}"
-                                           style="height: 38px;width: 79px;margin-top: 16px;">
-                                            X Hủy
-                                        </a>
+                                        <c:if test="${hoaDon.idKhuyenMai.id!=null}">
+                                            <a class="col-sm-3 btn btn-outline-danger" href="/ban-hang-tai-quay/huy-khuyen-mai/${hoaDon.idKhuyenMai.id}"
+                                               style="height: 38px;width: 79px;margin-top: 16px;">
+                                                X Hủy
+                                            </a>
+                                        </c:if>
                                     </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label">Số tiền giảm:</label>
+                                        <c:if test="${hoaDon.idKhuyenMai.soTienGiam!=null}">
+                                            <input type="text" id="soTienGiamKM" class="form-control" value="${hoaDon.idKhuyenMai.soTienGiam}" readonly>
+                                        </c:if>
+                                        <c:if test="${hoaDon.idKhuyenMai.soTienGiam==null}">
+                                            <input type="text" class="form-control" value="0 ₫" readonly>
+                                        </c:if>
+                                    </div>
+
                                     <div class="mb-3">
                                         <label class="form-label">Ngày Tạo</label>
-                                        <input type="text" class="form-control" name="ngayTao" value="${hoaDon.ngayTao}" readonly>
+                                        <input type="hidden" class="form-control" name="ngayTao" value="${hoaDon.ngayTao}" readonly>
+                                        <c:if test="${hoaDon.ngayTao==null}">
+                                            <input type="text" class="form-control" value="" readonly>
+                                        </c:if>
+                                        <c:if test="${hoaDon.ngayTao!=null}">
+                                            <input type="text" class="form-control" id="formatted-date" value="${hoaDon.ngayTao}" readonly>
+                                        </c:if>
                                     </div>
+
                                     <div class="mb-3">
                                         <label class="form-label">Thành Tiền</label>
-                                        <c:if test="${total>0}">
+                                        <c:if test="${total-hoaDon.idKhuyenMai.soTienGiam>0}">
                                             <input id="tongTienKhiTruKM" type="text" class="form-control" name="tongTien"
                                                    value="${total-hoaDon.idKhuyenMai.soTienGiam}" readonly/>
                                             <input type="hidden" class="form-control"
                                                    id="tongTien" value="${total-hoaDon.idKhuyenMai.soTienGiam}" readonly/>
                                         </c:if>
-                                        <c:if test="${total==null}">
+<%--                                        <c:if test="${total==null}">--%>
+<%--                                            <input type="number" class="form-control" value="0"--%>
+<%--                                                   readonly/>--%>
+<%--                                        </c:if>--%>
+                                        <c:if test="${total-hoaDon.idKhuyenMai.soTienGiam<=0}">
                                             <input type="number" class="form-control" value="0"
                                                    readonly/>
                                         </c:if>
@@ -628,23 +657,24 @@
                                             <label class="form-label">Trả Lại</label>
                                             <input id="tienTraLai" type="text" class="form-control" required readonly>
                                         </div>
-                                        <div class="row mb-3 mt-4 justify-content-end text-end">
-                                            <div class="col-sm-10">
-                                                <button id="checkBtn" idhd =${hoaDon.id} type="submit" class="btn btn-success ">THANH TOÁN</button>
+                                        <div class="mb-3" style="margin-top: 25px">
+                                            <div class="col-sm-12">
+                                                <button id="checkBtn" idhd =${hoaDon.id} type="submit" class="btn btn-outline-primary"><i class="bi bi-wallet2" style="padding-right: 5px"></i>Thanh Toán</button>
+                                                <%--Hủy hóa đơn--%>
+                                                <a href="#" id="cancelOrder" class="btn btn-outline-danger"><i class="bi bi-x"></i> Hủy Đơn</a>
                                             </div>
                                         </div>
                                     </div>
 
                                     <div id="vnpay-div" class="content-div hidden">
-                                        <div class="row mb-3 mt-4 justify-content-end text-end">
-                                            <div class="col-sm-10">
-                                                <%--                                                <div class="col-sm-10">--%>
-                                                <%--                                                    <button id="checkBtn2" idhd =${hoaDon.id} type="submit" class="btn btn-success ">THANH TOÁN</button>--%>
-                                                <%--                                                </div>--%>
-
-                                                <form class="thanhToan-form" action="/ban-hang-tai-quay/pay/${total-hoaDon.idKhuyenMai.soTienGiam}/${hoaDon.ma}" method="get">
-                                                    <button class="thanhToan-button2 btn btn-success" type="button" >THANH TOÁN</button>
-                                                </form>
+                                        <div class="mb-3" style="margin-top: 15px">
+                                            <div class="col-sm-12">
+                                                <div style="display: flex; align-items: center;">
+                                                    <form class="thanhToan-form" action="/ban-hang-tai-quay/pay/${total-hoaDon.idKhuyenMai.soTienGiam}/${hoaDon.ma}" method="get">
+                                                        <button class="thanhToan-button2 btn btn-outline-primary" type="button" style="margin-top: 16px"><i class="bi bi-wallet2" style="padding-right: 5px"></i> Thanh Toán</button>
+                                                    </form>
+                                                    <a href="#" id="cancelOrder" class="btn btn-outline-danger" style="margin-left: 10px;"><i class="bi bi-x"></i> Hủy Đơn</a>
+                                                </div>
 
                                             </div>
                                         </div>
@@ -876,15 +906,16 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <c:forEach items="${pageData.content}" var="kh">
+                                <c:forEach items="${listKH}" var="kh">
                                     <tr>
                                         <td>${kh.hoTen}</td>
                                         <td>${kh.sdt}</td>
                                         <td>
-                                            <form action="/ban-hang-tai-quay/find-kh/${kh.id}" method="post">
+                                            <form action="/ban-hang-tai-quay/find-kh/${kh.id}" method="post" onsubmit="return validateBeforeAddToCart();">
                                                 <input type="hidden" name="idHoaDon" value="${hoaDon.id}">
                                                 <input type="hidden" name="maHoaDon" value="${hoaDon.ma}">
                                                 <input type="hidden" class="form-control" name="ngayTao" value="${hoaDon.ngayTao}">
+                                                <input type="hidden" name="idHoaDon" value="${hoaDon.id}" id="selectedInvoiceId">
                                                 <button class="btn btn-primary" type="submit">
                                                     <i class="bi bi-plus-square"></i>
                                                 </button>
@@ -936,6 +967,7 @@
                                                 <label ><strong>Chọn sản phẩm</strong></label>
                                                 <select class="form-control" id="combobox1">
                                                     <!-- Các option sẽ được nạp ở đây -->
+                                                    <option value="">Tất cả</option>
                                                     <c:forEach items="${listSanPham}" var="sanPham">
                                                         <option value="${sanPham.id}">${sanPham.ten}</option>
                                                     </c:forEach>
@@ -947,6 +979,7 @@
                                                 <label ><strong>Chọn màu sắc</strong></label>
                                                 <select class="form-control" id="combobox2">
                                                     <!-- Các option sẽ được nạp ở đây -->
+                                                    <option value="">Tất cả</option>
                                                     <c:forEach items="${listMauSac}" var="mauSac">
                                                         <option value="${mauSac.id}">${mauSac.ten}</option>
                                                     </c:forEach>
@@ -959,6 +992,7 @@
                                                 <label ><strong>Chọn kích thước</strong></label>
                                                 <select class="form-control" id="combobox3">
                                                     <!-- Các option sẽ được nạp ở đây -->
+                                                    <option value="">Tất cả</option>
                                                     <c:forEach items="${listKichThuoc}" var="kichThuoc">
                                                         <option value="${kichThuoc.id}">${kichThuoc.ten}</option>
                                                     </c:forEach>
@@ -971,6 +1005,7 @@
                                                 <label ><strong>Chọn chất liệu</strong></label>
                                                 <select class="form-control" id="combobox4">
                                                     <!-- Các option sẽ được nạp ở đây -->
+                                                    <option value="">Tất cả</option>
                                                     <c:forEach items="${listChatLieu}" var="chatLieu">
                                                         <option value="${chatLieu.id}">${chatLieu.ten}</option>
                                                     </c:forEach>
@@ -983,6 +1018,7 @@
                                                 <label ><strong>Chọn kiểu tay</strong></label>
                                                 <select class="form-control" id="combobox5">
                                                     <!-- Các option sẽ được nạp ở đây -->
+                                                    <option value="">Tất cả</option>
                                                     <c:forEach items="${listKieuTay}" var="kieuTay">
                                                         <option value="${kieuTay.id}">${kieuTay.ten}</option>
                                                     </c:forEach>
@@ -1113,6 +1149,103 @@
 
 <script>
 
+    //check validate khi update số lượng ở giỏ hàng
+    function validateForm(form) {
+        var soLuong = form.soLuong.value;
+
+        if (soLuong.trim() === "") {
+            Swal.fire({
+                title: 'Lỗi!',
+                text: 'Số lượng không được để trống',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+            return false;
+        }
+
+        if (isNaN(soLuong) || parseInt(soLuong) <= 0) {
+            alert("Số lượng phải là số dương và không được chứa chữ");
+            return false;
+        }
+
+        return true;
+    }
+
+
+    // Fomat ngày trên ô input
+    function formatDateString(dateString) {
+        const date = new Date(dateString);
+        return date.toLocaleString();
+    }
+    const inputElement = document.getElementById('formatted-date');
+
+    const originalDateString = inputElement.value;
+
+    const formattedDateString = formatDateString(originalDateString);
+
+    inputElement.value = formattedDateString;
+    //Kết thúc
+
+
+    // Fomat đúng định dạng ở tạo hóa đơn
+    function formatDateString2(dateString) {
+        const date = new Date(dateString);
+        return date.toLocaleString();
+    }
+    // Get all the original date cells and formatted date cells
+    const originalDateCells = document.querySelectorAll('.original-date');
+
+    // Loop through each original date cell and format the date
+    for (let i = 0; i < originalDateCells.length; i++) {
+        const originalDateString = originalDateCells[i].innerText;
+        const formattedDateString2 = formatDateString2(originalDateString);
+        originalDateCells[i].innerText = formattedDateString2;
+    }
+    <%--// Function to format the date--%>
+    <%--function formatDate(dateString) {--%>
+    <%--    const date = new Date(dateString);--%>
+    <%--    const day = String(date.getDate()).padStart(2, '0');--%>
+    <%--    const month = String(date.getMonth() + 1).padStart(2, '0');--%>
+    <%--    const year = date.getFullYear();--%>
+    <%--    const hours = String(date.getHours()).padStart(2, '0');--%>
+    <%--    const minutes = String(date.getMinutes()).padStart(2, '0');--%>
+    <%--    const seconds = String(date.getSeconds()).padStart(2, '0');--%>
+
+    <%--    console.log(`Formatted Date: ${day}/${month}/${year} ${hours}:${minutes}:${seconds}`);--%>
+
+    <%--    return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;--%>
+    <%--}--%>
+
+    <%--// Apply the format to each cell--%>
+    <%--document.querySelectorAll('.original-date').forEach(function(cell) {--%>
+    <%--    const originalDate = cell.textContent.trim();--%>
+    <%--    cell.textContent = formatDate(originalDate);--%>
+    <%--});--%>
+
+    <%--document.addEventListener('DOMContentLoaded', function() {--%>
+    <%--    // Code to format dates--%>
+    <%--    document.querySelectorAll('.original-date').forEach(function(cell) {--%>
+    <%--        const originalDate = cell.textContent.trim();--%>
+    <%--        cell.textContent = formatDate(originalDate);--%>
+    <%--    });--%>
+    <%--});--%>
+
+    //Kết thúc
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var highlightId = '${highlightId}';
+        if (highlightId) {
+            var rows = document.querySelectorAll('#myTable tbody tr');
+            rows.forEach(function (row) {
+                if (row.getAttribute('data-id') === highlightId) {
+                    row.classList.add('highlight');
+                }
+            });
+        }
+    });
+
+
     //chọn phương thức hiển thị khi chọn radio
     document.addEventListener('DOMContentLoaded', (event) => {
         const radioButtons = document.querySelectorAll('input[name="optradio"]');
@@ -1143,7 +1276,7 @@
     });
     // End
 
-    //input
+    //input tổng tiền
     document.addEventListener('DOMContentLoaded', function() {
         var input = document.getElementById('tongTienKhiTruKM');
         var value = parseInt(input.value);
@@ -1156,55 +1289,19 @@
         input.value = formattedValue;
     });
 
-    // //Nhập input
-    // document.addEventListener('DOMContentLoaded', function() {
-    //     var input = document.getElementById('tienKhachDua');
+    //input tổng tiền
+    document.addEventListener('DOMContentLoaded', function() {
+        var input = document.getElementById('soTienGiamKM');
+        var value = parseInt(input.value);
+
+        var formattedValue = new Intl.NumberFormat('vi-VN', {
+            style: 'currency',
+            currency: 'VND'
+        }).format(value);
+
+        input.value = formattedValue;
+    });
     //
-    //     input.addEventListener('input', function(event) {
-    //         var value = input.value.replace(/\D/g, ''); // Loại bỏ tất cả các ký tự không phải số
-    //         if (value) {
-    //             var formattedValue = new Intl.NumberFormat('vi-VN', {
-    //                 style: 'currency',
-    //                 currency: 'VND'
-    //             }).format(value);
-    //
-    //             input.value = formattedValue;
-    //         }
-    //     });
-    //
-    //     input.addEventListener('focus', function(event) {
-    //         var value = input.value.replace(/\D/g, ''); // Loại bỏ tất cả các ký tự không phải số
-    //         input.value = value;
-    //     });
-    //
-    //     input.addEventListener('blur', function(event) {
-    //         var value = input.value.replace(/\D/g, ''); // Loại bỏ tất cả các ký tự không phải số
-    //         if (value) {
-    //             var formattedValue = new Intl.NumberFormat('vi-VN', {
-    //                 style: 'currency',
-    //                 currency: 'VND'
-    //             }).format(value);
-    //
-    //             input.value = formattedValue;
-    //         }
-    //     });
-    //
-    //     // Hàm để lấy giá trị gốc
-    //     function getRawValue() {
-    //         var value = input.value.replace(/\D/g, ''); // Loại bỏ tất cả các ký tự không phải số
-    //         return value;
-    //     }
-    //
-    //
-    //
-    //     // Ví dụ sử dụng hàm lấy giá trị gốc
-    //    input.addEventListener('change', function() {
-    //         console.log("Giá trị gốc: " + getRawValue());
-    //
-    //     });
-    //
-    //
-    // });
 
     document.addEventListener('DOMContentLoaded', function() {
         var tongTienInput = document.getElementById('tongTien');
@@ -1288,7 +1385,7 @@
         }
     });
 
-    //
+    //xóa sản phẩm trong giỏ hàng
     document.querySelectorAll('.delete-button2').forEach(button => {
         button.addEventListener('click', function() {
             const form = this.closest('.delete-form');
@@ -1308,6 +1405,27 @@
         });
     });
 
+    //hủy hóa đơn
+    document.getElementById('cancelOrder').addEventListener('click', function(event) {
+        event.preventDefault(); // Ngăn chặn hành động mặc định của thẻ <a>
+
+        Swal.fire({
+            title: 'Bạn có muốn hủy đơn không?',
+            // text: "Bạn không thể hoàn tác hành động này!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Có, hủy đơn!',
+            cancelButtonText: 'Không'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Chuyển hướng đến URL để hủy đơn
+                window.location.href = "/ban-hang-tai-quay/delete-hoa-don/${hoaDon.id}";
+            }
+        })
+    });
+    //
 
     function searchByName(param){
         var txtSearch = param.value;
@@ -1409,7 +1527,7 @@
         if (selectedInvoiceId === "") {
             Swal.fire({
                 title: 'Lỗi!',
-                text: 'Vui lòng chọn hóa đơn trước khi thêm sản phẩm vào giỏ hàng.',
+                text: 'Vui lòng chọn hóa đơn.',
                 icon: 'error',
                 confirmButtonText: 'OK'
             });
@@ -1625,7 +1743,7 @@
         var txtSearch = param.value;
         console.log(txtSearch);
         $.ajax({
-            url: "/ban-hang-tai-quay/searchSPCT/${hoaDon.id}",
+            url: "/ban-hang-tai-quay/searchSPCT",
             type: "POST",
             data: {
                 search:txtSearch
@@ -1672,15 +1790,26 @@
     $(document).ready(function(){
         $('#combobox1').on('change', function() {
             var productId = $(this).val();
-            $.ajax({
-                url: "/ban-hang-tai-quay/locSPCTBySanPham/"+productId,
-                type: 'GET',
-                data: {id: productId},
-                success: function(data) {
-                    $('#contentAjax2').empty()
-                    $('#contentAjax2').append(data);
-                }
-            });
+            if (productId==""){
+                $.ajax({
+                    url: "/ban-hang-tai-quay/locSPCTTheoAll",
+                    type: 'GET',
+                    success: function(data) {
+                        $('#contentAjax2').empty()
+                        $('#contentAjax2').append(data);
+                    }
+                });
+            }else {
+                $.ajax({
+                    url: "/ban-hang-tai-quay/locSPCTBySanPham/"+productId,
+                    type: 'GET',
+                    data: {id: productId},
+                    success: function(data) {
+                        $('#contentAjax2').empty()
+                        $('#contentAjax2').append(data);
+                    }
+                });
+            }
         });
     });
 
@@ -1688,15 +1817,27 @@
     $(document).ready(function(){
         $('#combobox2').on('change', function() {
             var productId = $(this).val();
-            $.ajax({
-                url: "/ban-hang-tai-quay/locSPCTByMauSac/"+productId,
-                type: 'GET',
-                data: {id: productId},
-                success: function(data) {
-                    $('#contentAjax2').empty()
-                    $('#contentAjax2').append(data);
-                }
-            });
+            if (productId==""){
+                $.ajax({
+                    url: "/ban-hang-tai-quay/locSPCTTheoAll",
+                    type: 'GET',
+                    success: function(data) {
+                        $('#contentAjax2').empty()
+                        $('#contentAjax2').append(data);
+                    }
+                });
+            }else {
+                $.ajax({
+                    url: "/ban-hang-tai-quay/locSPCTByMauSac/"+productId,
+                    type: 'GET',
+                    data: {id: productId},
+                    success: function(data) {
+                        $('#contentAjax2').empty()
+                        $('#contentAjax2').append(data);
+                    }
+                });
+            }
+
         });
     });
 
@@ -1704,15 +1845,26 @@
     $(document).ready(function(){
         $('#combobox3').on('change', function() {
             var productId = $(this).val();
-            $.ajax({
-                url: "/ban-hang-tai-quay/locSPCTByKichThuoc/"+productId,
-                type: 'GET',
-                data: {id: productId},
-                success: function(data) {
-                    $('#contentAjax2').empty()
-                    $('#contentAjax2').append(data);
-                }
-            });
+            if (productId==""){
+                $.ajax({
+                    url: "/ban-hang-tai-quay/locSPCTTheoAll",
+                    type: 'GET',
+                    success: function(data) {
+                        $('#contentAjax2').empty()
+                        $('#contentAjax2').append(data);
+                    }
+                });
+            }else {
+                $.ajax({
+                    url: "/ban-hang-tai-quay/locSPCTByKichThuoc/"+productId,
+                    type: 'GET',
+                    data: {id: productId},
+                    success: function(data) {
+                        $('#contentAjax2').empty()
+                        $('#contentAjax2').append(data);
+                    }
+                });
+            }
         });
     });
 
@@ -1720,15 +1872,26 @@
     $(document).ready(function(){
         $('#combobox4').on('change', function() {
             var productId = $(this).val();
-            $.ajax({
-                url: "/ban-hang-tai-quay/locSPCTByChatLieu/"+productId,
-                type: 'GET',
-                data: {id: productId},
-                success: function(data) {
-                    $('#contentAjax2').empty()
-                    $('#contentAjax2').append(data);
-                }
-            });
+            if (productId==""){
+                $.ajax({
+                    url: "/ban-hang-tai-quay/locSPCTTheoAll",
+                    type: 'GET',
+                    success: function(data) {
+                        $('#contentAjax2').empty()
+                        $('#contentAjax2').append(data);
+                    }
+                });
+            }else {
+                $.ajax({
+                    url: "/ban-hang-tai-quay/locSPCTByChatLieu/"+productId,
+                    type: 'GET',
+                    data: {id: productId},
+                    success: function(data) {
+                        $('#contentAjax2').empty()
+                        $('#contentAjax2').append(data);
+                    }
+                });
+            }
         });
     });
 
@@ -1736,15 +1899,27 @@
     $(document).ready(function(){
         $('#combobox5').on('change', function() {
             var productId = $(this).val();
-            $.ajax({
-                url: "/ban_hang_tai_quay/locSPCTByKieuTay/${hoaDon.id}/"+productId,
-                type: 'GET',
-                data: {id: productId},
-                success: function(data) {
-                    $('#contentAjax2').empty()
-                    $('#contentAjax2').append(data);
-                }
-            });
+            console.log("Id kiểu tay: ",productId)
+            if (productId==""){
+                $.ajax({
+                    url: "/ban-hang-tai-quay/locSPCTTheoAll",
+                    type: 'GET',
+                    success: function(data) {
+                        $('#contentAjax2').empty()
+                        $('#contentAjax2').append(data);
+                    }
+                });
+            }else {
+                $.ajax({
+                    url: "/ban-hang-tai-quay/locSPCTByKieuTay/"+productId,
+                    type: 'GET',
+                    data: {id: productId},
+                    success: function(data) {
+                        $('#contentAjax2').empty()
+                        $('#contentAjax2').append(data);
+                    }
+                });
+            }
         });
     });
 
