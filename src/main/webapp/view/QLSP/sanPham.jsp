@@ -635,28 +635,10 @@
                                         </div>
                                     </div>
 
-                                    <div class="col col-md-12">
-                                        <div class="d-flex">
-                                            <p class="mt-2" style="width: 80px;">Kích thước: </p>
-                                            <div class="icon-container">
-                                                <i class=" bi bi-folder-plus col-3" data-bs-toggle="modal"
-                                                   data-bs-target="#ModalHotAddKT"
-                                                   id="iconHotAddKichThuoc"
-                                                   style="font-size: 25px"></i>
-                                            </div>
-                                            <div class="d-flex flex-wrap gap-2" id="kichThuocBox">
+                                    <div id="kichThuocWrapper">
 
-                                            </div>
-                                            <div class="icon-container">
-                                                <i class=" bi bi-plus col-3" id="iconAddMoreCboKichThuoc"
-                                                   style="font-size: 25px"></i>
-                                            </div>
-                                            <div class="icon-container">
-                                                <i class=" bi bi-dash col-3" id="iconRemoveMoreCboKichThuoc"
-                                                   style="font-size: 25px"></i>
-                                            </div>
-                                        </div>
                                     </div>
+
                                 </div>
                                 <button id="saveMultipleAddBtn" class="btn btn-primary me-5">Lưu</button>
                             </div>
@@ -1408,9 +1390,10 @@
     let idChatLieuAdd = "";
     let idKieuTayAdd = "";
     let howManyCboMauSac = 1;
-    let howManyCboKichThuoc = 1;
+    let howManyCboKichThuoc = 0;
     let howManyCboMauSacMemo = 0;
     let howManyCboKichThuocMemo = 0;
+    let lstMauSac = [];
     function refresh(e) {
         e.preventDefault();
         idMauSacAdd = "";
@@ -1430,6 +1413,10 @@
         document.getElementById("lblMauSacAdd"+indx).textContent = ms.ten;
         console.log('Selected mau sac ID:', idMauSacAdd);
         console.log('data set index: ', indx);
+        lstMauSac.push(ms.ten);
+        console.log("test lst mausac: ",lstMauSac);
+        // loadKichThuocWrapper();
+        //do load cbo kich thuoc wrapper
         // You can add more logic here to handle the selected value
     }
 
@@ -1510,7 +1497,6 @@
 
     const loadCboMauSac = () => {
         let datatest = "data testing";
-
         let data = [];
         fetch("/mau-sac/index", {
             headers: {
@@ -1617,6 +1603,41 @@
         htmlDropdown.insertAdjacentHTML('beforeend',newHtmlContent);
     }
     loadTotalCboMauSac();
+    ///work
+    //Conduct
+    const loadKichThuocWrapper = () => {
+        const htmlKichThuocWrapper = document.getElementById("kichThuocWrapper");
+        let newHtmlContent = ''; // Temporary variable to hold new HTML content
+
+        lstMauSac.forEach((ms, i) => {
+            newHtmlContent +=
+                '<div class="col col-md-12">' +
+                '<div class="d-flex">' +
+                '<p class="mt-2" style="width: 80px;">' + ms + '</p>' +  // Concatenation with `ms`
+                '<div class="icon-container">' +
+                '<i class="bi bi-folder-plus col-3" data-bs-toggle="modal" ' +
+                'data-bs-target="#ModalHotAddKT" ' +
+                'id="iconHotAddKichThuoc" ' +
+                'style="font-size: 25px"></i>' +
+                '</div>' +
+                '<div class="d-flex flex-wrap gap-2" id="kichThuocBox">' +
+                '</div>' +
+                '<div class="icon-container">' +
+                '<i class="bi bi-plus col-3" id="iconAddMoreCboKichThuoc" ' +
+                'style="font-size: 25px"></i>' +
+                '</div>' +
+                '<div class="icon-container">' +
+                '<i class="bi bi-dash col-3" id="iconRemoveMoreCboKichThuoc" ' +
+                'style="font-size: 25px"></i>' +
+                '</div>' +
+                '</div>' +
+                '</div>';
+        });
+
+        // Adding the new HTML content to the DOM
+        htmlKichThuocWrapper.insertAdjacentHTML('beforeend', newHtmlContent);
+    }
+    loadKichThuocWrapper();
 
     const loadTotalCboKichThuoc = () => {
         const htmlDropdown = document.getElementById("kichThuocBox");
@@ -1842,7 +1863,7 @@
     const addBtn = document.querySelectorAll('#addBtn');
     const editSPBtn = document.querySelectorAll('#editSPBtn');
     const saveEditBtn = document.querySelectorAll('#saveEditBtn');
-    const saveAddBtn = document.querySelectorAll('#saveAddBtn');
+    const saveMultipleAddBtn = document.querySelectorAll('#saveMultipleAddBtn');
     addBtn.forEach(button => {
         button.addEventListener('click', function (e) {
             e.preventDefault();
@@ -1911,7 +1932,7 @@
         return fileName;
     }
 
-    saveAddBtn.forEach(button => {
+    saveMultipleAddBtn.forEach(button => {
         button.addEventListener('click', function (e) {
             e.preventDefault();
             console.log("test check btn");
@@ -1937,15 +1958,8 @@
                 tenSperr.textContent = "";
                 sttCheck++;
             }
-            if (validateNull(hinhAnh)) {
-                hinhAnhErr.textContent = "Vui lòng chọn hình ảnh";
-                sttCheck = 0;
-            } else {
-                hinhAnhErr.textContent = "";
-                sttCheck++;
-            }
 
-            if (sttCheck == 2) {
+            if (sttCheck == 1) {
                 Swal.fire({
                     title: 'Xác nhận?',
                     text: "Dữ liệu sẽ được lưu lại!",
@@ -1962,22 +1976,36 @@
                             trangThai: trangThai,
                             hinhAnh: getFileName(hinhAnh)
                         };
-                        var formData = new FormData($('#uploadFormAdd')[0]); // Use FormData to get all form data
-                        // Handle file upload via AJAX
+                        const dataTypeSPCT = {
+                            idSp: "",
+                            idMauSac: "",
+                            idKichThuoc: "",
+                            idChatLieu: "",
+                            idKieuTay: "",
+                            moTa: "",
+                            soLuong: "",
+                            giaNhap: "",
+                            giaBan: "",
+                            trangThai: 0
+                        }
+                        const lstSPCT = [];
 
-                        $.ajax({
-                            url: '/upload',
-                            type: 'POST',
-                            data: formData,
-                            processData: false,
-                            contentType: false,
-                            success: function (response) {
-                                console.log("save image success ");
-                            },
-                            error: function (xhr, status, error) {
-                                console.log("save image =error");
-                            }
-                        });
+                        // var formData = new FormData($('#uploadFormAdd')[0]); // Use FormData to get all form data
+                        // // Handle file upload via AJAX
+                        //
+                        // $.ajax({
+                        //     url: '/upload',
+                        //     type: 'POST',
+                        //     data: formData,
+                        //     processData: false,
+                        //     contentType: false,
+                        //     success: function (response) {
+                        //         console.log("save image success ");
+                        //     },
+                        //     error: function (xhr, status, error) {
+                        //         console.log("save image =error");
+                        //     }
+                        // });
                         fetch(`/san-pham/save`, {
                             method: 'POST',
                             headers: {
@@ -2023,95 +2051,6 @@
             return false;
         }
     }
-
-    saveEditBtn.forEach(button => {
-        button.addEventListener('click', function (e) {
-            e.preventDefault();
-            console.log("test check btn");
-            var tenSP = document.getElementById('tenSPEdit').value;
-            var hinhAnh = document.getElementById('hinhAnhEdit').value;
-            var trangThaiRaw = document.getElementById('trangThaiEdit').checked;
-            var tenSperr = document.getElementById("tenSPEditErr");
-            var hinhAnhErr = document.getElementById("hinhAnhEditErr");
-            let trangThai = 0;
-            let sttCheck = 0;
-            console.log("====================== ten sp:", tenSP);
-            console.log("====================== hinh anh:", hinhAnh);
-
-            if (trangThaiRaw == true) {
-                trangThai = 1;
-            } else {
-                trangThai = 0;
-            }
-            if (validateNull(tenSP)) {
-                tenSperr.textContent = "Vui lòng nhập tên sản phẩm";
-                sttCheck = 0;
-            } else {
-                tenSperr.textContent = "";
-                sttCheck++;
-            }
-            if (validateNull(hinhAnh)) {
-                hinhAnhErr.textContent = "Vui lòng chọn hình ảnh";
-                sttCheck = 0;
-            } else {
-                hinhAnhErr.textContent = "";
-                sttCheck++;
-            }
-            if (sttCheck == 2) {
-                Swal.fire({
-                    title: 'Xác nhận?',
-                    text: "Dữ liệu sẽ được lưu lại!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Ok!',
-                    cancelButtonText: 'Hủy'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        const data = {
-                            ten: tenSP,
-                            hinhAnh: getFileName(hinhAnh),
-                            trangThai: trangThai
-                        };
-                        var formData = new FormData($('#uploadFormEdit')[0]); // Use FormData to get all form data
-                        // Handle file upload via AJAX
-                        console.log("form data: ", $('#uploadFormEdit')[0]);
-                        $.ajax({
-                            url: '/upload',
-                            type: 'POST',
-                            data: formData,
-                            processData: false,
-                            contentType: false,
-                            success: function (response) {
-                                console.log("save image success ");
-                            },
-                            error: function (xhr, status, error) {
-                                console.log("save image =error");
-                            }
-                        });
-                        fetch(`/san-pham/update/` + idSPLocal, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify(data)
-                        }).then(() => {
-                            Swal.fire(
-                                'Đã thanh toán!',
-                                'Dữ liệu đã được ghi nhận.',
-                                'success'
-                            ).then(() => {
-                                loadDSSP(currentPage);
-                            });
-                        });
-                    }
-                });
-            } else {
-                thongBao.textContent = "Số tiền khách đưa phải lớn hơn hoặc bằng tổng tiền.";
-            }
-        });
-    });
 
 </script>
 <script>
