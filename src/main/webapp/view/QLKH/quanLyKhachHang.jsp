@@ -387,7 +387,7 @@
                                 Tìm kiếm thông tin
                             </div>
                             <div class="card-body">
-                                <form method="post" action="/qlnv/tim-kiem">
+                                <form method="post" action="/qlkh/tim-kiem">
                                     <div class="row mb-2">
                                         <div class="col-6">
                                             <label for="timKiem" class="col-sm-2 col-form-label mb-3">Tìm kiếm: </label>
