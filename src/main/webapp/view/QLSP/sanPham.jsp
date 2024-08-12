@@ -1393,8 +1393,8 @@
     let howManyCboKichThuoc = 0;
     let howManyCboMauSacMemo = 0;
     let howManyCboKichThuocMemo = 0;
-    let msMemo = 0;
     let lstMauSac = [];
+    let checkChooseDropdown = "";
     function refresh(e) {
         e.preventDefault();
         idMauSacAdd = "";
@@ -1414,9 +1414,13 @@
         document.getElementById("lblMauSacAdd"+indx).textContent = ms.ten;
         console.log('Selected mau sac ID:', idMauSacAdd);
         console.log('data set index: ', indx);
-        msMemo = lstMauSac.length;
-        lstMauSac.push(ms.ten);
+        ///conduct lstMauSac
+        if(howManyCboMauSac>lstMauSac.length){
+            lstMauSac.push(ms.ten);
+        }
+            lstMauSac[indx] = ms.ten;
         console.log("test lst mausac: ",lstMauSac);
+        checkChooseDropdown  = ms.ten;
         loadKichThuocWrapper();
         //do load cbo kich thuoc wrapper
         // You can add more logic here to handle the selected value
@@ -1608,9 +1612,9 @@
     //Conduct
     const loadKichThuocWrapper = () => {
         const htmlKichThuocWrapper = document.getElementById("kichThuocWrapper");
+        htmlKichThuocWrapper.innerHTML = '';
         let newHtmlContent = ''; // Temporary variable to hold new HTML content
-
-        for (let i = msMemo; i < lstMauSac.length; i++) {
+        for (let i = 0; i < lstMauSac.length; i++) {
             newHtmlContent +=
                 '<div class="col col-md-12">' +
                 '<div class="d-flex">' +
@@ -1662,10 +1666,23 @@
     // iconAdd
     iconAddMoreCboMauSac.addEventListener('click', function (e) {
         e.preventDefault();
-        console.log("icon add more");
-        howManyCboMauSac++;
-        loadTotalCboMauSac();
-        loadCboMauSac();
+        if(checkChooseDropdown != ""){
+            console.log("add more at: ", checkChooseDropdown );
+            console.log("icon add more");
+            howManyCboMauSac++;
+            loadTotalCboMauSac();
+            loadCboMauSac();
+            checkChooseDropdown = "";
+        }
+        else{
+            Swal.fire({
+                title: 'Xác nhận?',
+                text: "Vui lòng chọn trước khi thêm mới !",
+                icon: 'warning',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'Ok!',
+            })
+        }
     });
     // iconAddMoreCboKichThuoc.addEventListener('click', function (e) {
     //     e.preventDefault();
@@ -1677,9 +1694,16 @@
     // iconRemove
     iconRemoveMoreCboMauSac.addEventListener('click', function (e) {
         e.preventDefault();
-        console.log("remove")
         const htmlDropdown = document.getElementById("mauSacBox");
+        const htmlKichThuocWrapper = document.getElementById("kichThuocWrapper");
         htmlDropdown.removeChild(htmlDropdown.lastChild);
+        if(checkChooseDropdown !=""){
+            htmlKichThuocWrapper.removeChild(htmlKichThuocWrapper.lastChild);
+            lstMauSac.pop();
+        }
+        else{
+             checkChooseDropdown = "hold";
+        }
         howManyCboMauSacMemo--;
         howManyCboMauSac--;
         loadTotalCboMauSac();
@@ -1690,6 +1714,7 @@
         e.preventDefault();
         const htmlDropdown = document.getElementById("kichThuocBox");
         htmlDropdown.removeChild(htmlDropdown.lastChild);
+        console.log("lst mau sac :", lstMauSac);
         howManyCboKichThuocMemo--;
         howManyCboKichThuoc--;
         loadCboKichThuoc();
