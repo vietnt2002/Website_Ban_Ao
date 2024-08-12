@@ -1581,6 +1581,7 @@
                 }
             });
     }
+
     const loadTotalCboMauSac = () => {
         const htmlDropdown = document.getElementById("mauSacBox");
         let newHtmlContent = '';
@@ -1636,7 +1637,6 @@
         // Adding the new HTML content to the DOM
         htmlKichThuocWrapper.insertAdjacentHTML('beforeend', newHtmlContent);
     }
-    loadKichThuocWrapper();
 
     const loadTotalCboKichThuoc = () => {
         const htmlDropdown = document.getElementById("kichThuocBox");
@@ -1667,22 +1667,25 @@
         loadTotalCboMauSac();
         loadCboMauSac();
     });
-    iconAddMoreCboKichThuoc.addEventListener('click', function (e) {
-        e.preventDefault();
-        console.log("icon add more");
-        howManyCboKichThuoc++;
-        loadTotalCboKichThuoc();
-        loadCboKichThuoc();
-    });
+    // iconAddMoreCboKichThuoc.addEventListener('click', function (e) {
+    //     e.preventDefault();
+    //     console.log("icon add more");
+    //     howManyCboKichThuoc++;
+    //     loadTotalCboKichThuoc();
+    //     loadCboKichThuoc();
+    // });
     // iconRemove
     iconRemoveMoreCboMauSac.addEventListener('click', function (e) {
         e.preventDefault();
+        console.log("remove")
         const htmlDropdown = document.getElementById("mauSacBox");
         htmlDropdown.removeChild(htmlDropdown.lastChild);
         howManyCboMauSacMemo--;
         howManyCboMauSac--;
+        loadTotalCboMauSac();
         loadCboMauSac();
     });
+
     iconRemoveMoreCboKichThuoc.addEventListener('click', function (e) {
         e.preventDefault();
         const htmlDropdown = document.getElementById("kichThuocBox");
