@@ -1098,6 +1098,42 @@
 </script>
 
 <script>
+    const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+        }
+    });
+
+    <c:if test="${not empty error}">
+    Toast.fire({
+        icon: "error",
+        title: "${error}"
+    });
+    </c:if>
+
+    <c:if test="${not empty successMessage}">
+    Toast.fire({
+        icon: "success",
+        title: "${successMessage}"
+    });
+    </c:if>
+
+    <c:if test="${not empty message}">
+    Toast.fire({
+        icon: "success",
+        title: "${message}"
+    });
+    </c:if>
+
+
+
+
     $(document).ready(function () {
         $('#searchInput').on('input', function () {
             var searchText = $(this).val().toLowerCase();
