@@ -1695,11 +1695,10 @@
     iconRemoveMoreCboMauSac.addEventListener('click', function (e) {
         e.preventDefault();
         const htmlDropdown = document.getElementById("mauSacBox");
-        const htmlKichThuocWrapper = document.getElementById("kichThuocWrapper");
         htmlDropdown.removeChild(htmlDropdown.lastChild);
         if(checkChooseDropdown !=""){
-            htmlKichThuocWrapper.removeChild(htmlKichThuocWrapper.lastChild);
             lstMauSac.pop();
+            loadKichThuocWrapper();
         }
         else{
              checkChooseDropdown = "hold";
