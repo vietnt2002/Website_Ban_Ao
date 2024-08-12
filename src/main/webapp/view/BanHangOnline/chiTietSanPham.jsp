@@ -465,7 +465,7 @@
                                 <i class="fa fa-minus"></i>
                             </button>
                         </div>
-                        <input type="number" class="form-control bg-secondary text-center" id="soLuong" name="soLuong"
+                        <input type="text" class="form-control bg-secondary text-center" id="soLuong" name="soLuong"
                                value="1">
                         <div class="input-group-btn">
                             <button type="button" class="btn btn-primary btn-plus">
